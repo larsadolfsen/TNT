@@ -1,76 +1,47 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
-
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
-
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      <shopify-account menu="{{ section.settings.customer_account_menu }}">
-        {{ 'icon-account.svg' | inline_asset_content }}
-      </shopify-account>
-    {% endif %}
-
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
-
-      {{ 'icon-cart.svg' | inline_asset_content }}
-    </a>
+<!-- Header (Not Sticky) -->
+<header class="bg-white border-b border-outline-variant py-4 px-4">
+  <div class="max-w-screen-xl mx-auto flex flex-col gap-4">
+    <div class="flex items-center justify-between">
+      <button id="menu-toggle" class="focus:outline-none" aria-label="Menu">
+        <span class="material-symbols-outlined text-2xl text-primary block">menu</span>
+      </button>
+      <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline">
+        {%- if section.settings.logo_text != blank -%}
+          {{ section.settings.logo_text }}
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+      <a href="{{ routes.cart_url }}" class="relative cursor-pointer text-primary no-underline">
+        <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
+        <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold px-1.5 rounded-full transition-transform duration-300">
+          {{ cart.item_count }}
+        </span>
+      </a>
+    </div>
+    <!-- Search Bar -->
+    <form action="{{ routes.search_url }}" method="get" class="relative m-0">
+      <input 
+        type="text" 
+        name="q" 
+        id="search-input" 
+        class="w-full h-10 pl-10 pr-4 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container focus:outline-none" 
+        placeholder="Søg i sortimentet..."
+      />
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">search</span>
+    </form>
   </div>
 </header>
 
-{% stylesheet %}
-  header {
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
-  "name": "t:general.header",
+  "name": "Custom Header",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
-    },
-    {
-      "type": "link_list",
-      "id": "customer_account_menu",
-      "label": "t:labels.customer_account_menu",
-      "default": "customer-account-main-menu"
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text Override",
+      "default": "Textil & Voksdug"
     }
   ]
 }

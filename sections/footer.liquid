@@ -1,56 +1,119 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
-
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
-
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+<!-- Footer -->
+<footer class="bg-primary text-white py-12 px-6">
+  <div class="max-w-screen-xl mx-auto space-y-10">
+    <div class="space-y-4">
+      <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold block text-white no-underline">
+        {%- if section.settings.footer_title != blank -%}
+          {{ section.settings.footer_title }}
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+      <p class="text-sm text-slate-300 max-w-sm">
+        {{ section.settings.footer_description }}
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-8">
+      <!-- Menu 1 -->
+      <div class="space-y-4">
+        <h4 class="text-xs font-bold uppercase tracking-widest text-slate-400">
+          {%- if section.settings.menu_1_title != blank -%}
+            {{ section.settings.menu_1_title }}
+          {%- else -%}
+            {{ linklists[section.settings.menu_1].title }}
+          {%- endif -%}
+        </h4>
+        <nav class="flex flex-col gap-3 text-sm">
+          {%- if section.settings.menu_1 != blank -%}
+            {%- for link in linklists[section.settings.menu_1].links -%}
+              <a class="text-slate-200 no-underline hover:text-white" href="{{ link.url }}">{{ link.title }}</a>
+            {%- endfor -%}
+          {%- else -%}
+            <a class="text-slate-200 no-underline hover:text-white" href="#">Fragt &amp; Retur</a>
+            <a class="text-slate-200 no-underline hover:text-white" href="#">Handelsbetingelser</a>
+            <a class="text-slate-200 no-underline hover:text-white" href="#">Kontakt os</a>
+          {%- endif -%}
+        </nav>
+      </div>
+      
+      <!-- Menu 2 -->
+      <div class="space-y-4">
+        <h4 class="text-xs font-bold uppercase tracking-widest text-slate-400">
+          {%- if section.settings.menu_2_title != blank -%}
+            {{ section.settings.menu_2_title }}
+          {%- else -%}
+            {{ linklists[section.settings.menu_2].title }}
+          {%- endif -%}
+        </h4>
+        <nav class="flex flex-col gap-3 text-sm">
+          {%- if section.settings.menu_2 != blank -%}
+            {%- for link in linklists[section.settings.menu_2].links -%}
+              <a class="text-slate-200 no-underline hover:text-white" href="{{ link.url }}">{{ link.title }}</a>
+            {%- endfor -%}
+          {%- else -%}
+            <a class="text-slate-200 no-underline hover:text-white" href="#">Om os</a>
+            <a class="text-slate-200 no-underline hover:text-white" href="#">Vaskevejledning</a>
+          {%- endif -%}
+        </nav>
+      </div>
+    </div>
+    
+    <div class="pt-8 border-t border-slate-700 flex flex-col items-center gap-4 text-center">
+      <div class="flex gap-4">
+        <span class="text-[10px] border border-slate-600 px-2 py-1 rounded text-slate-300">OEKO-TEX®</span>
+        <span class="text-[10px] border border-slate-600 px-2 py-1 rounded text-slate-300">Phthalat-fri</span>
+      </div>
+      <p class="text-[10px] text-slate-500 italic">
+        &copy; {{ 'now' | date: '%Y' }} {% if section.settings.copyright_text != blank %}{{ section.settings.copyright_text }}{% else %}{{ shop.name }}{% endif %}. {{ powered_by_link }}
+      </p>
+    </div>
   </div>
 </footer>
 
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "Custom Footer",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "text",
+      "id": "footer_title",
+      "label": "Footer Title Override",
+      "default": "Textil & Voksdug"
     },
     {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
-      "default": true
+      "type": "textarea",
+      "id": "footer_description",
+      "label": "Footer Description",
+      "default": "Skandinavisk design og duge efter mål siden 2004."
+    },
+    {
+      "type": "link_list",
+      "id": "menu_1",
+      "label": "First Menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_1_title",
+      "label": "First Menu Title Override",
+      "default": "Hjælp"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_2",
+      "label": "Second Menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_2_title",
+      "label": "Second Menu Title Override",
+      "default": "Info"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "Textil & Voksdug. CVR: 12345678"
     }
   ]
 }

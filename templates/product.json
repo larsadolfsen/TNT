@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "product",
+      "type": "custom-cut-product",
       "settings": {}
     }
   },
