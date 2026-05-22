@@ -26,7 +26,10 @@
     },
     "price": {
       "type": "product-price",
-      "settings": {}
+      "settings": {
+        "price_suffix": "pr. stk. inkl. moms",
+        "price_subtext": ""
+      }
     },
     "urgency": {
       "type": "product-urgency",
