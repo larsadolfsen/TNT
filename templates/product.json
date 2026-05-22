@@ -76,6 +76,26 @@
     },
     "materials": {
       "type": "product-materials",
+      "blocks": {
+        "badge_yMRTWz": {
+          "type": "badge",
+          "settings": {
+            "icon": "",
+            "title": "{{ product.metafields.shopify[\"tablecloth-features\"] | metafield_text: field: 'label' }}"
+          }
+        },
+        "badge_nm7hPg": {
+          "type": "badge",
+          "settings": {
+            "icon": "eco",
+            "title": "100% Phthalatfri"
+          }
+        }
+      },
+      "block_order": [
+        "badge_yMRTWz",
+        "badge_nm7hPg"
+      ],
       "settings": {}
     },
     "description": {
