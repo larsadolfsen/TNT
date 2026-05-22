@@ -1,12 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "media": {
-      "type": "product-media",
-      "settings": {}
-    },
     "intro": {
       "type": "product-intro",
-      "settings": {}
+      "settings": {
+        "title": "{{ product.title }}",
+        "rating_score": "4,8",
+        "rating_count": "163",
+        "badge_text": "300+ købt den seneste måned"
+      }
+    },
+    "media": {
+      "type": "product-media",
+      "settings": {
+        "image_badge": "BESTSELLER"
+      }
     },
     "price": {
       "type": "product-price",
@@ -14,11 +30,17 @@
     },
     "urgency": {
       "type": "product-urgency",
-      "settings": {}
+      "settings": {
+        "urgency_text": "Kun få på lager – bestil snart"
+      }
     },
     "customizer": {
       "type": "product-customizer",
-      "settings": {}
+      "settings": {
+        "surcharge_amount": 60,
+        "free_shipping_threshold": 599,
+        "surcharge_product": ""
+      }
     },
     "buy-buttons": {
       "type": "product-buy-buttons",
@@ -26,11 +48,16 @@
     },
     "shipping-progress": {
       "type": "product-shipping-progress",
-      "settings": {}
+      "settings": {
+        "free_shipping_threshold": 599
+      }
     },
     "cross-sell": {
       "type": "product-cross-sell",
-      "settings": {}
+      "settings": {
+        "cross_sell_1": "",
+        "cross_sell_2": ""
+      }
     },
     "materials": {
       "type": "product-materials",
@@ -38,11 +65,20 @@
     },
     "description": {
       "type": "product-description",
-      "settings": {}
+      "settings": {
+        "heading": "Om produktet",
+        "use_product_description": true,
+        "custom_description": ""
+      }
     },
     "testimonial": {
       "type": "product-testimonial",
-      "settings": {}
+      "settings": {
+        "heading": "Det siger kunderne",
+        "stars": 5,
+        "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
+        "author": "Mette S., Verificeret køber"
+      }
     },
     "accordions": {
       "type": "product-accordions",
@@ -50,12 +86,15 @@
     },
     "banner-text": {
       "type": "product-banner-text",
-      "settings": {}
+      "settings": {
+        "heading": "Klar voksdug – Den ultimative beskyttelse af dit bord",
+        "content": "<p>Vores klare voksdug er designet til at give dit bord den maksimale beskyttelse uden at gå på kompromis med æstetikken. Med en tykkelse på 0,20 mm PVC får du en dug, der er både robust og utroligt nem at vedligeholde. Den gennemsigtige finish sikrer, at dit bords naturlige skønhed – om det er smukt egetræ eller moderne marmor – forbliver fuldt synligt.</p><p>Dugen er 100% phthalatfri og OEKO-TEX® certificeret, hvilket gør den sikker at bruge for hele familien, selv i hjem med små børn. Den er ekstremt vand- og smudsafvisende, så spild fra kaffe, rødvin eller børnenes madpakker nemt kan tørres af med en fugtig klud. Hver dug skæres præcist efter dine personlige mål, så den passer perfekt til dit unikke bord.</p>"
+      }
     }
   },
   "order": [
-    "media",
     "intro",
+    "media",
     "price",
     "urgency",
     "customizer",
