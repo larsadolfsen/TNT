@@ -9,6 +9,14 @@
 {%- assign progress = cart_total_dkk | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
 {%- assign missing = threshold | minus: cart_total_dkk -%}
 
+{%- assign product_price = 0 -%}
+{%- if product -%}
+  {%- assign product_price = product.selected_or_first_available_variant.price | divided_by: 100.0 -%}
+{%- endif -%}
+{%- assign potential_total = cart_total_dkk | plus: product_price -%}
+{%- assign potential_progress = potential_total | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
+{%- assign potential_width = potential_progress | minus: progress | at_least: 0 -%}
+
 <section class="max-w-screen-xl mx-auto px-4 py-3">
   <!-- Dynamic Free Shipping Progress Bar Widget (No border) -->
   <div id="free-shipping-widget" class="bg-white p-4 rounded-xl space-y-2 border border-outline-variant" data-threshold="{{ threshold }}">
@@ -22,8 +30,9 @@
       </span>
       <span id="shipping-percent-text">{{ progress | round }}%</span>
     </div>
-    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex">
       <div id="shipping-progress-bar" class="h-full {% if cart_total_dkk < threshold %}bg-emerald-600{% else %}bg-emerald-500{% endif %} transition-all duration-300" style="width: {{ progress }}%"></div>
+      <div id="shipping-potential-bar" class="h-full bg-blue-600 transition-all duration-300" style="width: {{ potential_width }}%"></div>
     </div>
   </div>
 </section>
@@ -35,6 +44,7 @@
 
     let threshold = parseFloat(widget.getAttribute("data-threshold")) || 590.00;
     let cartTotal = {{ cart.total_price | divided_by: 100.0 }};
+    let productPrice = {% if product %}{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}{% else %}0{% endif %};
 
     function formatPrice(value) {
       return value.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
@@ -42,6 +52,7 @@
 
     function updateUI() {
       const progressBar = document.getElementById("shipping-progress-bar");
+      const potentialBar = document.getElementById("shipping-potential-bar");
       const statusText = document.getElementById("shipping-status-text");
       const percentText = document.getElementById("shipping-percent-text");
 
@@ -49,6 +60,18 @@
 
       const progressPercent = Math.min((cartTotal / threshold) * 100, 100);
       progressBar.style.width = progressPercent + "%";
+
+      let potentialPercent = progressPercent;
+      if (productPrice > 0) {
+        const potentialTotal = cartTotal + productPrice;
+        potentialPercent = Math.min((potentialTotal / threshold) * 100, 100);
+      }
+
+      if (potentialBar) {
+        const potentialWidth = Math.max(0, potentialPercent - progressPercent);
+        potentialBar.style.width = potentialWidth + "%";
+      }
+
       percentText.textContent = Math.round(progressPercent) + "%";
 
       if (cartTotal < threshold) {
@@ -65,6 +88,14 @@
     document.addEventListener("cart-updated-total", (e) => {
       if (e.detail && typeof e.detail.cartTotal === "number") {
         cartTotal = e.detail.cartTotal;
+        updateUI();
+      }
+    });
+
+    // Listen for product price updates (e.g. customizer or variant selection changes)
+    document.addEventListener("product-price-updated", (e) => {
+      if (e.detail && typeof e.detail.price === "number") {
+        productPrice = e.detail.price;
         updateUI();
       }
     });

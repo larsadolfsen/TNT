@@ -4,10 +4,10 @@
   Supports both customized (custom-cut) and simple products.
 {% endcomment %}
 
-<section class="w-full bg-white py-6 px-4 my-6">
+<section class="w-full bg-white pt-2 pb-6 px-4 my-0">
   <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
     <!-- Left: Selected Specs & Price -->
-    <div class="flex flex-col text-left w-full md:w-auto px-4 md:px-0">
+    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full md:w-auto px-4 md:px-0">
       <p id="summary-mål" class="text-xs text-on-surface-variant font-medium">140 × 200 cm</p>
     </div>
     
@@ -57,9 +57,10 @@
     const hasCustomizer = !!document.getElementById("shape-selector");
     const summaryMal = document.getElementById("summary-mål");
     
-    // 1. If no customizer is present, hide the dimensions summary (since it's a simple product)
-    if (!hasCustomizer && summaryMal) {
-      summaryMal.style.display = "none";
+    // 1. If no customizer is present, hide the dimensions summary container (since it's a simple product)
+    const summaryContainer = document.getElementById("buy-buttons-summary-container");
+    if (!hasCustomizer && summaryContainer) {
+      summaryContainer.style.display = "none";
     }
 
     // Parse simple variant data
@@ -107,6 +108,11 @@
         
         const btn = document.getElementById("btn-add-to-cart");
         if (btn) btn.textContent = btnText;
+
+        // Dispatch custom event to notify other scripts about product price update
+        document.dispatchEvent(new CustomEvent("product-price-updated", {
+          detail: { price: totalCents / 100 }
+        }));
       }
     }
 
@@ -181,6 +187,13 @@
       });
     }
 
+    document.addEventListener("change", (e) => {
+      if (e.target && (e.target.name === "id" || e.target.classList.contains("single-option-selector"))) {
+        if (hasCustomizer) return;
+        setTimeout(recalculateBuyPrice, 50); // slight delay to allow other scripts to set variant value
+      }
+    });
+
     // 3. Simple product add to cart behavior
     const addToCartBtn = document.getElementById("btn-add-to-cart");
     if (addToCartBtn) {
@@ -239,6 +252,9 @@
           if (cartCounter) {
             cartCounter.textContent = cartData.item_count;
           }
+          document.dispatchEvent(new CustomEvent("cart-updated-total", {
+            detail: { cartTotal: cartData.total_price / 100.0 }
+          }));
         })
         .catch(err => {
           console.error(err);

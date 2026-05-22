@@ -354,6 +354,11 @@
       if (basePriceDisplay) {
         basePriceDisplay.textContent = formatPrice(activeVariant.price * 100);
       }
+
+      // Dispatch custom event to notify other scripts about product price update
+      document.dispatchEvent(new CustomEvent("product-price-updated", {
+        detail: { price: totalPrice }
+      }));
     }
 
     // Live Free Shipping Status Bar Calculator
@@ -361,6 +366,7 @@
       const shippingProgressBar = document.getElementById("shipping-progress-bar");
       const shippingStatusText = document.getElementById("shipping-status-text");
       const shippingPercentText = document.getElementById("shipping-percent-text");
+      const potentialBar = document.getElementById("shipping-potential-bar");
       
       if (!shippingProgressBar || !shippingStatusText || !shippingPercentText) return;
       
@@ -369,6 +375,12 @@
       
       shippingProgressBar.style.width = progressPercent + "%";
       shippingPercentText.textContent = Math.round(progressPercent) + "%";
+      
+      if (potentialBar) {
+        const potentialTotal = total + appState.currentClothPrice;
+        const potentialPercent = Math.min((potentialTotal / freeShippingThreshold) * 100, 100);
+        potentialBar.style.width = Math.max(0, potentialPercent - progressPercent) + "%";
+      }
       
       if (total < freeShippingThreshold) {
         const missing = freeShippingThreshold - total;
@@ -705,6 +717,7 @@
           appState.cartTotal = cartData.total_price / 100.0;
           
           if (cartCounter) cartCounter.textContent = appState.cartCount;
+          document.dispatchEvent(new CustomEvent("cart-updated-total", { detail: { cartTotal: appState.cartTotal } }));
           updateFreeShippingWidget();
 
           // Open cart modal dialog
@@ -742,6 +755,7 @@
             appState.cartCount += 1;
             appState.cartTotal += pris;
             if (cartCounter) cartCounter.textContent = appState.cartCount;
+            document.dispatchEvent(new CustomEvent("cart-updated-total", { detail: { cartTotal: appState.cartTotal } }));
             updateFreeShippingWidget();
             showToast(navn + " er tilføjet!");
             
@@ -780,6 +794,7 @@
             appState.cartCount = cartData.item_count;
             appState.cartTotal = cartData.total_price / 100.0;
             if (cartCounter) cartCounter.textContent = appState.cartCount;
+            document.dispatchEvent(new CustomEvent("cart-updated-total", { detail: { cartTotal: appState.cartTotal } }));
             updateFreeShippingWidget();
             
             this.textContent = "TILFØJET";
