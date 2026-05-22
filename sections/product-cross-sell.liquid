@@ -1,0 +1,86 @@
+{% comment %}
+  Product Cross-sell Section
+  Renders up to 2 cross-sell product cards with quick-add buttons.
+{% endcomment %}
+
+<section class="px-4 py-10 border-t border-outline-variant max-w-screen-xl mx-auto">
+  <h3 class="text-lg font-bold text-primary mb-6">Gør købet komplet</h3>
+  <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-4">
+    <!-- Card 1 -->
+    {%- assign cs_prod_1 = section.settings.cross_sell_1 -%}
+    {%- if cs_prod_1 != blank -%}
+      {%- assign cs_variant_1 = cs_prod_1.first_available_variant -%}
+      <div class="flex-shrink-0 w-44 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+        <div class="aspect-square bg-surface-container">
+          <img alt="{{ cs_prod_1.title }}" class="w-full h-full object-cover" src="{{ cs_prod_1.featured_image | image_url: width: 300 }}" width="300" height="300"/>
+        </div>
+        <div class="p-3 space-y-1">
+          <p class="text-xs font-bold text-primary truncate">{{ cs_prod_1.title }}</p>
+          <p class="text-xs text-primary">{{ cs_variant_1.price | money }}</p>
+          <button data-id="{{ cs_variant_1.id }}" data-navn="{{ cs_prod_1.title }}" data-pris="{{ cs_variant_1.price | divided_by: 100 }}" class="btn-cross-sell w-full mt-2 py-1.5 text-[10px] font-bold bg-primary text-white rounded hover:bg-slate-800 transition-colors cursor-pointer">TILFØJ</button>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="flex-shrink-0 w-44 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+        <div class="aspect-square bg-surface-container">
+          <img alt="Dugholdere" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3q8voEmliO4VwxQb6kInoHXYV4yQ44zu38WSBUJ6infMVqpD0TLdCN7S8v49YIXOfNU0tjjru5XoGEltxlA4uk60WqVoJvFCQsi9IOpT4uAi-IhDeAr7aQN6rqdGxwWJDC-S90tuJvMIEWGLTmgi5WOwrGjCF_xxnZYgVxSKYOzTu57p_vCIyMdptx4s4NHwo_WWVSLrGjtvfuTiqnRJcQZdipeP2LFKWtPPZDBpBRGesbjvCfbI__yH4D43N3l9x5uLHkrQhhK0a" width="300" height="300"/>
+        </div>
+        <div class="p-3 space-y-1">
+          <p class="text-xs font-bold text-primary truncate">Dugholdere i stål</p>
+          <p class="text-xs text-primary">49,00 kr.</p>
+          <button data-id="holdere-mock" data-navn="Dugholdere i stål" data-pris="49" class="btn-cross-sell w-full mt-2 py-1.5 text-[10px] font-bold bg-primary text-white rounded hover:bg-slate-800 transition-colors cursor-pointer">TILFØJ</button>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Card 2 -->
+    {%- assign cs_prod_2 = section.settings.cross_sell_2 -%}
+    {%- if cs_prod_2 != blank -%}
+      {%- assign cs_variant_2 = cs_prod_2.first_available_variant -%}
+      <div class="flex-shrink-0 w-44 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+        <div class="aspect-square bg-surface-container">
+          <img alt="{{ cs_prod_2.title }}" class="w-full h-full object-cover" src="{{ cs_prod_2.featured_image | image_url: width: 300 }}" width="300" height="300"/>
+        </div>
+        <div class="p-3 space-y-1">
+          <p class="text-xs font-bold text-primary truncate">{{ cs_prod_2.title }}</p>
+          <p class="text-xs text-primary">{{ cs_variant_2.price | money }}</p>
+          <button data-id="{{ cs_variant_2.id }}" data-navn="{{ cs_prod_2.title }}" data-pris="{{ cs_variant_2.price | divided_by: 100 }}" class="btn-cross-sell w-full mt-2 py-1.5 text-[10px] font-bold bg-primary text-white rounded hover:bg-slate-800 transition-colors cursor-pointer">TILFØJ</button>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="flex-shrink-0 w-44 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+        <div class="aspect-square bg-surface-container">
+          <img alt="Opbevaring" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG8LJSBQCnrrQMlodcn5g-wgXMzOiKvuBRaV3mhi75TiUQignYncFT-v1fsBZJmKDw7UOdeTcQTICqryNUb6qtV7_Sgrg22dqm_ca3chJl6Qzx1z_4VgpmGVP-1ZV3FXIVJ7IcUusZ79HARWIQYpsv4MjFgduq8ZKJmsZhqe4W1bHbDDKdDFWZR8Eduskzguzv-rXcY4zaiicuXI9GC92QlDp_snd-jC-uLyKHYWK64-MY78i88VsnxE_IwcGCHvFnGhSEgW9BS95J" width="300" height="300"/>
+        </div>
+        <div class="p-3 space-y-1">
+          <p class="text-xs font-bold text-primary truncate">Opbevaringspose</p>
+          <p class="text-xs text-primary">89,00 kr.</p>
+          <button data-id="pose-mock" data-navn="Opbevaringspose" data-pris="89" class="btn-cross-sell w-full mt-2 py-1.5 text-[10px] font-bold bg-primary text-white rounded hover:bg-slate-800 transition-colors cursor-pointer">TILFØJ</button>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Cross-sell",
+  "settings": [
+    {
+      "type": "product",
+      "id": "cross_sell_1",
+      "label": "Cross-sell Product 1"
+    },
+    {
+      "type": "product",
+      "id": "cross_sell_2",
+      "label": "Cross-sell Product 2"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Cross-sell"
+    }
+  ]
+}
+{% endschema %}

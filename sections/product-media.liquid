@@ -1,0 +1,71 @@
+{% comment %}
+  Product Media Gallery Section
+  Renders the featured image, absolute bestseller badge, and gallery indicator dots.
+{% endcomment %}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+
+<section class="relative max-w-screen-xl mx-auto">
+  <div class="aspect-[3/2] bg-surface-container overflow-hidden">
+    {%- if featured_image -%}
+      <img 
+        id="main-product-img" 
+        alt="{{ product.title }}" 
+        class="w-full h-full object-cover transition-all duration-200 opacity-100" 
+        src="{{ featured_image | image_url: width: 1200 }}"
+        width="1200"
+        height="800"
+      />
+    {%- else -%}
+      <img 
+        id="main-product-img" 
+        alt="Klar voksdug" 
+        class="w-full h-full object-cover transition-all duration-200 opacity-100" 
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT6v3nHI941v3VLOOVZi6aiIWU9Bk0oFqdFrpEO7HFKCiZVZWAkbZafIRHYpjXJ-vkib7-EqYsE-5f6cnWn3VaO92Upxnr3Udg0oV4LbzaJlQitsTts1KuFfq1PU0VMG5FNT1Mx8PjaQZMPzcPs3QUaHTsVPYlxETHQLH5N6-GqTQnIQ63D-Wyjal17RpHnqDmyEDHeA5W9mgHscm42-_bB9kfmytEfumkgNPSNYbcZvTfvcT4xd6XZB0EuIRQ-DmyrVWWdxzFyBaa"
+        width="1200"
+        height="800"
+      />
+    {%- endif -%}
+  </div>
+  <div class="absolute top-4 left-4">
+    <span class="bg-white/90 backdrop-blur text-primary text-[10px] font-bold px-3 py-1.5 rounded tracking-widest shadow-sm border border-outline-variant">
+      {{ section.settings.image_badge | default: "BESTSELLER" }}
+    </span>
+  </div>
+</section>
+
+<!-- Indicator Dots -->
+<div class="flex justify-center items-center gap-2 px-4 mt-3 max-w-screen-xl mx-auto" id="gallery-dots">
+  {%- if product.images.size > 0 -%}
+    {%- for image in product.images -%}
+      <button 
+        class="dot-btn w-2.5 h-2.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-slate-300{% endif %} focus:outline-none transition-colors" 
+        data-src="{{ image.src | image_url: width: 1200 }}"
+        aria-label="Skift billede {{ forloop.index }}"
+      ></button>
+    {%- endfor -%}
+  {%- else -%}
+    <button class="dot-btn w-2.5 h-2.5 rounded-full bg-primary focus:outline-none transition-colors" data-src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT6v3nHI941v3VLOOVZi6aiIWU9Bk0oFqdFrpEO7HFKCiZVZWAkbZafIRHYpjXJ-vkib7-EqYsE-5f6cnWn3VaO92Upxnr3Udg0oV4LbzaJlQitsTts1KuFfq1PU0VMG5FNT1Mx8PjaQZMPzcPs3QUaHTsVPYlxETHQLH5N6-GqTQnIQ63D-Wyjal17RpHnqDmyEDHeA5W9mgHscm42-_bB9kfmytEfumkgNPSNYbcZvTfvcT4xd6XZB0EuIRQ-DmyrVWWdxzFyBaa"></button>
+    <button class="dot-btn w-2.5 h-2.5 rounded-full bg-slate-300 focus:outline-none transition-colors" data-src="https://lh3.googleusercontent.com/aida/ADBb0ugB3-cue9umr_GH4yO2_ErqQL6CkCRqoxECS2OollSkHH4PV3oRdZ3Y17T8etd7H-Pl83sg45fUcg6JwvsS-sW_Of55YW7Erz8HXbaJH43az3YWD35q9Vs1TEOkZV9HH7YaXqntridEgXj_iPkPNdVs7q20_TMvdkauZ-paVWNfPrAP8av1hq2hX2M7WFN4BylMg-606Jz15xKiR6cxASDgEo735sRgoLSBSa_96QNxQdcneTw4byWQW7CX"></button>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Product Media Gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "image_badge",
+      "label": "Image Sticker Text",
+      "default": "BESTSELLER"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Media Gallery"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,66 @@
+{% comment %}
+  Product Shipping Progress & Trust Badges Section
+  Renders the dynamic free shipping progress bar based on current cart total,
+  and lists key trust badges with a dynamic shipping countdown timer.
+{% endcomment %}
+
+{%- assign cart_total_dkk = cart.total_price | divided_by: 100.0 -%}
+{%- assign threshold = section.settings.free_shipping_threshold | default: 599.00 -%}
+{%- assign progress = cart_total_dkk | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
+{%- assign missing = threshold | minus: cart_total_dkk -%}
+
+<section class="max-w-screen-xl mx-auto px-4 py-4">
+  <div class="space-y-4">
+    <!-- Dynamic Free Shipping Progress Bar Widget (No border) -->
+    <div id="free-shipping-widget" class="bg-white p-4 rounded-xl space-y-2 border border-outline-variant" data-threshold="{{ threshold }}">
+      <div class="flex justify-between text-xs text-primary font-bold">
+        <span id="shipping-status-text">
+          {%- if cart_total_dkk < threshold -%}
+            Køb for {{ missing | times: 100 | money }} mere for at få fri fragt
+          {%- else -%}
+            Du har opnået fri fragt!
+          {%- endif -%}
+        </span>
+        <span id="shipping-percent-text">{{ progress | round }}%</span>
+      </div>
+      <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+        <div id="shipping-progress-bar" class="h-full {% if cart_total_dkk < threshold %}bg-emerald-600{% else %}bg-emerald-500{% endif %} transition-all duration-300" style="width: {{ progress }}%"></div>
+      </div>
+    </div>
+    
+    <!-- Consolidating the Trust & Shipment details into a single clean list -->
+    <div class="space-y-2.5 pt-2 text-sm">
+      <div class="flex items-center gap-2.5 text-primary font-medium">
+        <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <span>Afsendes i dag – Bestil inden <span id="countdown-timer" class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">00:00:00</span></span>
+      </div>
+      <div class="flex items-center gap-2.5 text-primary font-medium">
+        <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <span>Sendes på rulle – Ingen folder ved modtagelse</span>
+      </div>
+      <div class="flex items-center gap-2.5 text-primary font-medium">
+        <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <span>30 dages fuld returret</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Shipping Widget",
+  "settings": [
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free Shipping Threshold (DKK)",
+      "default": 599
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Shipping Widget"
+    }
+  ]
+}
+{% endschema %}

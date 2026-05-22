@@ -1,0 +1,30 @@
+{% comment %}
+  Product Stock Urgency Section
+  Renders the stock warning message with an warning icon.
+{% endcomment %}
+
+<section class="max-w-screen-xl mx-auto px-4 py-3">
+  <p class="text-sm font-medium text-amber-700 flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-lg">error</span>
+    <span>{{ section.settings.urgency_text | default: "Kun få på lager – bestil snart" }}</span>
+  </p>
+</section>
+
+{% schema %}
+{
+  "name": "Product Stock Urgency",
+  "settings": [
+    {
+      "type": "text",
+      "id": "urgency_text",
+      "label": "Urgency Warning Text",
+      "default": "Kun få på lager – bestil snart"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Stock Urgency"
+    }
+  ]
+}
+{% endschema %}

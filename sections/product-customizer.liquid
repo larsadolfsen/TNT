@@ -1,0 +1,812 @@
+{% comment %}
+  Product Customizer Steps Section
+  Renders the interactive customization journey (Steps 1–4) for custom-cut tablecloths.
+  Contains variant metadata, modals, toasts, and the javascript state/recalculation engine.
+{% endcomment %}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<section class="px-4 py-8 bg-surface-container border-y border-outline-variant max-w-screen-xl mx-auto my-4">
+  <h2 class="text-lg font-bold text-primary mb-6">Vælg dine mål</h2>
+  <div class="space-y-8">
+    <!-- Step 1: Shape -->
+    <div class="space-y-3">
+      <div class="flex items-center justify-between w-full">
+        <div class="flex items-center gap-3">
+          <span class="w-6 h-6 flex items-center justify-center bg-primary text-white text-xs font-bold rounded-full">1</span>
+          <span class="font-bold text-sm uppercase tracking-wider text-primary">Vælg form</span>
+        </div>
+        <button class="info-btn text-on-surface-variant hover:text-primary focus:outline-none flex items-center" aria-label="Hjælp">
+          <span class="material-symbols-outlined text-xl">info</span>
+        </button>
+      </div>
+      <div class="grid grid-cols-3 gap-2" id="shape-selector">
+        <button data-shape="firkantet" class="shape-btn flex flex-col items-center justify-center py-4 rounded-xl border-2 border-primary bg-white text-primary transition-all">
+          <span class="material-symbols-outlined mb-1">rectangle</span>
+          <span class="text-xs font-bold">Firkantet</span>
+        </button>
+        <button data-shape="rund" class="shape-btn flex flex-col items-center justify-center py-4 rounded-xl border border-outline-variant bg-white text-on-surface-variant transition-all">
+          <span class="material-symbols-outlined mb-1">circle</span>
+          <span class="text-xs">Rund</span>
+        </button>
+        <button data-shape="oval" class="shape-btn flex flex-col items-center justify-center py-4 rounded-xl border border-outline-variant bg-white text-on-surface-variant transition-all">
+          <span class="material-symbols-outlined mb-1">shape_line</span>
+          <span class="text-xs">Oval</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Width Stepper -->
+    <div class="space-y-3">
+      <div class="flex items-center justify-between w-full">
+        <div class="flex items-center gap-3">
+          <span class="w-6 h-6 flex items-center justify-center bg-primary text-white text-xs font-bold rounded-full">2</span>
+          <span id="width-step-title" class="font-bold text-sm uppercase tracking-wider text-primary">Vælg bredde</span>
+        </div>
+        <button class="info-btn text-on-surface-variant hover:text-primary focus:outline-none flex items-center" aria-label="Hjælp">
+          <span class="material-symbols-outlined text-xl">info</span>
+        </button>
+      </div>
+      <div class="flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden">
+        <button id="btn-width-minus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+          <span class="material-symbols-outlined">remove</span>
+        </button>
+        <input id="input-width" class="w-full h-14 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="140 cm" readonly/>
+        <button id="btn-width-plus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+          <span class="material-symbols-outlined">add</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Length Stepper -->
+    <div class="space-y-3 transition-opacity duration-300" id="length-container">
+      <div class="flex items-center justify-between w-full">
+        <div class="flex items-center gap-3">
+          <span class="w-6 h-6 flex items-center justify-center bg-primary text-white text-xs font-bold rounded-full">3</span>
+          <span id="length-step-title" class="font-bold text-sm uppercase tracking-wider text-primary">Vælg længde</span>
+        </div>
+        <button class="info-btn text-on-surface-variant hover:text-primary focus:outline-none flex items-center" aria-label="Hjælp">
+          <span class="material-symbols-outlined text-xl">info</span>
+        </button>
+      </div>
+      <div class="flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden">
+        <button id="btn-length-minus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+          <span class="material-symbols-outlined">remove</span>
+        </button>
+        <input id="input-length" class="w-full h-14 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="200 cm" readonly/>
+        <button id="btn-length-plus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+          <span class="material-symbols-outlined">add</span>
+        </button>
+      </div>
+      <p id="round-info-text" class="text-xs text-on-surface-variant hidden">Runde duge leveres med en fast diameter svarende til rullebredden.</p>
+    </div>
+
+    <!-- Step 4: Quantity Stepper -->
+    <div class="space-y-3" id="quantity-container">
+      <div class="flex items-center justify-between w-full">
+        <div class="flex items-center gap-3">
+          <span class="w-6 h-6 flex items-center justify-center bg-primary text-white text-xs font-bold rounded-full">4</span>
+          <span id="quantity-step-title" class="font-bold text-sm uppercase tracking-wider text-primary">Vælg antal</span>
+        </div>
+        <button class="info-btn text-on-surface-variant hover:text-primary focus:outline-none flex items-center" aria-label="Hjælp">
+          <span class="material-symbols-outlined text-xl">info</span>
+        </button>
+      </div>
+      <div class="flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden">
+        <button id="btn-quantity-minus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+          <span class="material-symbols-outlined">remove</span>
+        </button>
+        <input id="input-quantity" class="w-full h-14 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="1" readonly/>
+        <button id="btn-quantity-plus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+          <span class="material-symbols-outlined">add</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Help Modal Overlay -->
+<div id="help-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 p-4 transition-opacity duration-300">
+  <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-xl relative transform scale-95 transition-transform duration-300">
+    <!-- Close Button -->
+    <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 focus:outline-none cursor-pointer">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <!-- Content -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-bold text-primary">Guide til bestilling af metermål</h3>
+      <ul class="space-y-2.5 text-sm text-on-surface-variant list-disc pl-5">
+        <li>Vælg den dug, du ønsker at bestille.</li>
+        <li>Vælg den længde du ønsker (min. 50 cm pr. dug)</li>
+        <li>Vi anbefaler 15-25 cm. til nedhæng i hver side.</li>
+        <li>Vælg antal, hvis du ønsker mere end en dug i samme længde og design</li>
+        <li>Når du har udfyldt alle felter, tryk læg i kurv</li>
+      </ul>
+      <div class="bg-slate-50 p-4 rounded-xl border border-outline-variant mt-4">
+        <h4 class="font-bold text-xs uppercase text-slate-500 tracking-wider mb-1">Eksempel på bestilling:</h4>
+        <p class="text-xs text-on-surface-variant leading-relaxed">
+          Har du et bord som er 2 meter langt, indtaster du i feltet 240 (i alt 40 cm. til nedløb)
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Compact Cart Notification Top Card -->
+<div id="cart-modal" class="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 z-[110] bg-white rounded-2xl p-4 shadow-2xl border border-outline-variant transform -translate-y-full transition-transform duration-300 hidden flex-col space-y-3">
+  <!-- Close Button -->
+  <button id="close-cart-modal" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 flex items-center justify-center w-7 h-7 rounded-full bg-slate-100 focus:outline-none cursor-pointer">
+    <span class="material-symbols-outlined text-lg">close</span>
+  </button>
+  
+  <!-- Header -->
+  <div class="flex items-center gap-1.5 text-emerald-600 font-bold pb-2 border-b border-outline-variant">
+    <span class="material-symbols-outlined text-lg">check_circle</span>
+    <span class="text-xs">Tilføjet til kurv</span>
+  </div>
+  
+  <!-- Added Product Specifications -->
+  <div class="flex gap-3 bg-surface-container p-2 rounded-xl">
+    <div class="w-12 h-12 bg-white rounded-lg overflow-hidden border border-outline-variant flex-shrink-0">
+      <img id="modal-product-img" src="" alt="Valgt produkt" class="w-full h-full object-cover" width="120" height="120"/>
+    </div>
+    <div class="space-y-0.5 min-w-0">
+      <h4 class="font-bold text-xs text-primary truncate">Klar gennemsigtig voksdug</h4>
+      <p id="modal-product-specs" class="text-[10px] text-on-surface-variant">Firkantet · 140 × 200 cm</p>
+      <p id="modal-product-price" class="text-xs font-bold text-primary">118,00 kr.</p>
+    </div>
+  </div>
+
+  <!-- Free shipping progression inside modal -->
+  <div class="bg-slate-50 p-3 rounded-xl space-y-1.5">
+    <div class="flex justify-between text-[10px] text-primary font-bold">
+      <span id="modal-shipping-status-text">Køb for 481,00 kr. mere for at få fri fragt</span>
+      <span id="modal-shipping-percent-text">20%</span>
+    </div>
+    <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+      <div id="modal-shipping-progress-bar" class="h-full bg-emerald-600 transition-all duration-300" style="width: 20%"></div>
+    </div>
+  </div>
+
+  <!-- CTA Actions inside modal -->
+  <div class="grid grid-cols-2 gap-2 pt-1">
+    <button id="btn-modal-continue" class="border border-outline-variant text-primary font-bold h-10 rounded-full text-xs hover:bg-slate-50 active:scale-95 transition-transform cursor-pointer focus:outline-none">
+      Fortsæt
+    </button>
+    <a href="{{ routes.cart_url }}" id="btn-modal-checkout" class="bg-[#FFD814] text-primary font-bold h-10 rounded-full text-xs shadow-sm active:scale-95 transition-transform flex items-center justify-center no-underline">
+      Gå til kurv
+    </a>
+  </div>
+</div>
+
+<!-- Toast notification popup -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[calc(1280px-2rem)] z-50 bg-primary border border-slate-800 text-white text-sm px-4 py-3 rounded-full shadow-xl flex items-center justify-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+  <span class="material-symbols-outlined text-emerald-400">check_circle</span>
+  <span id="toast-text" class="truncate">Lagt i kurven</span>
+</div>
+
+<!-- Shopify Variant Data JSON -->
+<script id="variant-data" type="application/json">
+  [
+    {%- for variant in product.variants -%}
+      {
+        "id": {{ variant.id }},
+        "title": {{ variant.title | json }},
+        "price": {{ variant.price | divided_by: 100.0 }},
+        "available": {{ variant.available }},
+        "options": {{ variant.options | json }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Parse variants
+    let variants = [];
+    try {
+      variants = JSON.parse(document.getElementById('variant-data').textContent);
+    } catch (e) {
+      console.error("Failed to parse variant data", e);
+    }
+
+    // Parse allowed widths from variant titles (e.g. "140 cm" or option name)
+    let allowedWidths = [140];
+    if (variants.length > 0) {
+      const parsedWidths = variants.map(v => {
+        const match = v.title.match(/(\d+)/);
+        return match ? parseInt(match[1]) : null;
+      }).filter(w => w !== null);
+      if (parsedWidths.length > 0) {
+        allowedWidths = [...new Set(parsedWidths)].sort((a, b) => a - b);
+      }
+    }
+
+    const defaultWidth = allowedWidths.includes(140) ? 140 : (allowedWidths[allowedWidths.length - 1] || 140);
+    const surchargeValue = {{ section.settings.surcharge_amount | default: 60.00 }};
+    const freeShippingThreshold = {{ section.settings.free_shipping_threshold | default: 599.00 }};
+    const surchargeVariantId = {% if section.settings.surcharge_product != blank %}{{ section.settings.surcharge_product.first_available_variant.id | default: 'null' }}{% else %}null{% endif %};
+
+    // State Management
+    let appState = {
+      shape: "firkantet", 
+      width: defaultWidth,
+      length: 200, 
+      quantity: 1,
+      cartCount: {{ cart.item_count }},
+      cartTotal: {{ cart.total_price | divided_by: 100.0 }},
+      basePricePerMeter: {{ current_variant.price | divided_by: 100.0 }},
+      currentClothPrice: 0.00
+    };
+
+    // Cache elements safely
+    const shapeButtons = document.querySelectorAll(".shape-btn");
+    const widthInput = document.getElementById("input-width");
+    const widthMinusBtn = document.getElementById("btn-width-minus");
+    const widthPlusBtn = document.getElementById("btn-width-plus");
+    const widthStepTitle = document.getElementById("width-step-title");
+    const lengthInput = document.getElementById("input-length");
+    const lengthMinusBtn = document.getElementById("btn-length-minus");
+    const lengthPlusBtn = document.getElementById("btn-length-plus");
+    const lengthContainer = document.getElementById("length-container");
+    const lengthStepTitle = document.getElementById("length-step-title");
+    const roundInfoText = document.getElementById("round-info-text");
+    const summaryMalText = document.getElementById("summary-mål");
+    const summaryPrisText = document.getElementById("summary-pris");
+    const addToCartBtn = document.getElementById("btn-add-to-cart");
+    const cartCounter = document.getElementById("cart-counter");
+    const crossSellButtons = document.querySelectorAll(".btn-cross-sell");
+    const toast = document.getElementById("toast");
+    const toastText = document.getElementById("toast-text");
+    
+    // Quantity Elements
+    const quantityInput = document.getElementById("input-quantity");
+    const quantityMinusBtn = document.getElementById("btn-quantity-minus");
+    const quantityPlusBtn = document.getElementById("btn-quantity-plus");
+
+    // Help Modal Elements
+    const helpModal = document.getElementById("help-modal");
+    const closeModal = document.getElementById("close-modal");
+    const infoBtns = document.querySelectorAll(".info-btn");
+
+    // Cart Modal Elements
+    const cartNotificationModal = document.getElementById("cart-modal");
+    const closeCartModalBtn = document.getElementById("close-cart-modal");
+    const modalProductImg = document.getElementById("modal-product-img");
+    const modalProductSpecs = document.getElementById("modal-product-specs");
+    const modalProductPrice = document.getElementById("modal-product-price");
+    const modalProductTitle = document.querySelector("#cart-modal h4");
+    const btnModalContinue = document.getElementById("btn-modal-continue");
+
+    // Gallery Elements
+    const dotButtons = document.querySelectorAll(".dot-btn");
+    const mainProductImg = document.getElementById("main-product-img");
+
+    // Format Price Utility
+    function formatPrice(value) {
+      return value.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
+    }
+
+    // Find Active Variant based on selected width
+    function getActiveVariant() {
+      if (variants.length === 0) return { id: null, price: appState.basePricePerMeter };
+      let match = variants.find(v => v.title.includes(appState.width.toString()));
+      return match || variants[0];
+    }
+
+    // Calculation Engine
+    function recalculate() {
+      const activeVariant = getActiveVariant();
+      appState.basePricePerMeter = activeVariant.price * 100;
+
+      let singlePrice = 0;
+      let surcharge = 0;
+      let surchargeText = "";
+      
+      // Add surcharge if shape is round, oval OR if width is changed from the standard 140 cm
+      if (appState.shape === "rund" || appState.shape === "oval" || appState.width !== 140) {
+        surcharge = surchargeValue;
+        surchargeText = " (inkl. " + formatPrice(surcharge) + " tilpasningstillæg)";
+      }
+      
+      if (appState.shape === "rund") {
+        appState.length = appState.width;
+        singlePrice = ((appState.width / 100) * appState.basePricePerMeter) + surcharge;
+        
+        if (summaryMalText) {
+          summaryMalText.textContent = "Ø " + appState.width + " cm" + surchargeText;
+        }
+        if (lengthContainer) lengthContainer.classList.add("hidden"); 
+        if (widthStepTitle) widthStepTitle.textContent = "Vælg diameter";
+      } else {
+        if (appState.length < 50) appState.length = 50;
+        
+        singlePrice = ((appState.length / 100) * appState.basePricePerMeter) + surcharge;
+        
+        if (summaryMalText) {
+          summaryMalText.textContent = appState.width + " × " + appState.length + " cm" + surchargeText;
+        }
+        if (lengthContainer) lengthContainer.classList.remove("hidden"); 
+        if (lengthInput) {
+          lengthInput.disabled = false;
+          lengthInput.value = appState.length + " cm";
+        }
+        if (lengthMinusBtn) lengthMinusBtn.disabled = false;
+        if (lengthPlusBtn) lengthPlusBtn.disabled = false;
+        if (roundInfoText) roundInfoText.classList.add("hidden");
+        if (lengthStepTitle) lengthStepTitle.textContent = "Vælg længde";
+        if (widthStepTitle) widthStepTitle.textContent = "Vælg bredde";
+      }
+
+      const totalPrice = singlePrice * appState.quantity;
+      appState.currentClothPrice = totalPrice;
+
+      const formatted = formatPrice(totalPrice);
+      if (summaryPrisText) {
+        summaryPrisText.textContent = "Pris: " + formatted;
+      }
+      if (addToCartBtn) {
+        addToCartBtn.textContent = "Læg i kurv – " + formatted;
+      }
+      
+      // Update dynamic display on top
+      const basePriceDisplay = document.getElementById("base-price-display");
+      if (basePriceDisplay) {
+        basePriceDisplay.textContent = formatPrice(activeVariant.price * 100);
+      }
+    }
+
+    // Live Free Shipping Status Bar Calculator
+    function updateFreeShippingWidget() {
+      const shippingProgressBar = document.getElementById("shipping-progress-bar");
+      const shippingStatusText = document.getElementById("shipping-status-text");
+      const shippingPercentText = document.getElementById("shipping-percent-text");
+      
+      if (!shippingProgressBar || !shippingStatusText || !shippingPercentText) return;
+      
+      const total = appState.cartTotal;
+      const progressPercent = Math.min((total / freeShippingThreshold) * 100, 100);
+      
+      shippingProgressBar.style.width = progressPercent + "%";
+      shippingPercentText.textContent = Math.round(progressPercent) + "%";
+      
+      if (total < freeShippingThreshold) {
+        const missing = freeShippingThreshold - total;
+        shippingStatusText.textContent = "Køb for " + formatPrice(missing) + " mere for at få fri fragt";
+        shippingProgressBar.className = "h-full bg-emerald-600 transition-all duration-300";
+      } else {
+        shippingStatusText.textContent = "Du har opnået fri fragt!";
+        shippingProgressBar.className = "h-full bg-emerald-500 transition-all duration-300";
+      }
+    }
+
+    function updateModalFreeShippingWidget() {
+      const modalProgressBar = document.getElementById("modal-shipping-progress-bar");
+      const modalStatusText = document.getElementById("modal-shipping-status-text");
+      const modalPercentText = document.getElementById("modal-shipping-percent-text");
+      
+      if (!modalProgressBar || !modalStatusText || !modalPercentText) return;
+      
+      const total = appState.cartTotal;
+      const progressPercent = Math.min((total / freeShippingThreshold) * 100, 100);
+      
+      modalProgressBar.style.width = progressPercent + "%";
+      modalPercentText.textContent = Math.round(progressPercent) + "%";
+      
+      if (total < freeShippingThreshold) {
+        const missing = freeShippingThreshold - total;
+        modalStatusText.textContent = "Køb for " + formatPrice(missing) + " mere for at få fri fragt";
+        modalProgressBar.className = "h-full bg-emerald-600 transition-all duration-300";
+      } else {
+        modalStatusText.textContent = "Du har opnået fri fragt!";
+        modalProgressBar.className = "h-full bg-emerald-500 transition-all duration-300";
+      }
+    }
+
+    // Countdown Timer to 12.00 noon
+    function startCountdown() {
+      const countdownTimer = document.getElementById("countdown-timer");
+      if (!countdownTimer) return;
+      
+      function updateTimer() {
+        const now = new Date();
+        const target = new Date();
+        target.setHours(12, 0, 0, 0);
+        
+        if (now >= target) {
+          target.setDate(target.getDate() + 1);
+        }
+        
+        const diff = target - now;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        countdownTimer.textContent = 
+          String(hours).padStart(2, '0') + ":" + 
+          String(minutes).padStart(2, '0') + ":" + 
+          String(seconds).padStart(2, '0');
+      }
+      
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    }
+
+    // Show toast notification
+    let toastTimeout;
+    function showToast(message) {
+      if (!toast || !toastText) return;
+      toastText.textContent = message;
+      toast.classList.remove("translate-y-20", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove("translate-y-0", "opacity-100");
+        toast.classList.add("translate-y-20", "opacity-0");
+      }, 2500);
+    }
+
+    // Show cart modal confirmation
+    function openCartModal(imgSrc, title, specs, priceText) {
+      if (!cartNotificationModal) return;
+      if (modalProductImg) modalProductImg.src = imgSrc;
+      if (modalProductTitle) modalProductTitle.textContent = title;
+      if (modalProductSpecs) modalProductSpecs.textContent = specs;
+      if (modalProductPrice) modalProductPrice.textContent = priceText;
+      
+      updateModalFreeShippingWidget();
+
+      cartNotificationModal.classList.remove("hidden");
+      cartNotificationModal.classList.add("flex");
+      
+      setTimeout(() => {
+        cartNotificationModal.classList.remove("-translate-y-full");
+        cartNotificationModal.classList.add("translate-y-0");
+      }, 10);
+
+      clearTimeout(window.cartModalTimeout);
+      window.cartModalTimeout = setTimeout(closeCartModal, 6000);
+    }
+
+    function closeCartModal() {
+      if (!cartNotificationModal) return;
+      cartNotificationModal.classList.add("-translate-y-full");
+      cartNotificationModal.classList.remove("translate-y-0");
+      
+      setTimeout(() => {
+        cartNotificationModal.classList.add("hidden");
+        cartNotificationModal.classList.remove("flex");
+      }, 300);
+    }
+
+    // Help Modal Controller
+    if (infoBtns && helpModal) {
+      infoBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          helpModal.classList.remove("hidden");
+          helpModal.classList.add("flex");
+        });
+      });
+    }
+
+    if (closeModal && helpModal) {
+      closeModal.addEventListener("click", () => {
+        helpModal.classList.add("hidden");
+        helpModal.classList.remove("flex");
+      });
+    }
+
+    if (helpModal) {
+      helpModal.addEventListener("click", (e) => {
+        if (e.target === helpModal) {
+          helpModal.classList.add("hidden");
+          helpModal.classList.remove("flex");
+        }
+      });
+    }
+
+    if (closeCartModalBtn) {
+      closeCartModalBtn.addEventListener("click", closeCartModal);
+    }
+    if (btnModalContinue) {
+      btnModalContinue.addEventListener("click", closeCartModal);
+    }
+
+    // Gallery Dots Interaction
+    if (dotButtons && mainProductImg) {
+      dotButtons.forEach(btn => {
+        btn.addEventListener("click", function() {
+          dotButtons.forEach(b => b.classList.replace("bg-primary", "bg-slate-300"));
+          this.classList.replace("bg-slate-300", "bg-primary");
+          
+          mainProductImg.classList.replace("opacity-100", "opacity-0");
+          setTimeout(() => {
+            mainProductImg.src = this.getAttribute("data-src");
+            mainProductImg.classList.replace("opacity-0", "opacity-100");
+          }, 150);
+        });
+      });
+    }
+
+    // Shape Selector Buttons
+    if (shapeButtons) {
+      shapeButtons.forEach(btn => {
+        btn.addEventListener("click", function() {
+          shapeButtons.forEach(b => {
+            b.classList.remove("border-2", "border-primary", "text-primary");
+            b.classList.add("border", "border-outline-variant", "text-on-surface-variant");
+            const span = b.querySelector("span:last-child");
+            if (span) span.classList.remove("font-bold");
+          });
+          
+          this.classList.remove("border", "border-outline-variant", "text-on-surface-variant");
+          this.classList.add("border-2", "border-primary", "text-primary");
+          const activeSpan = this.querySelector("span:last-child");
+          if (activeSpan) activeSpan.classList.add("font-bold");
+
+          appState.shape = this.getAttribute("data-shape");
+          recalculate();
+        });
+      });
+    }
+
+    // Width Stepper Interactions
+    if (widthMinusBtn && widthInput) {
+      widthMinusBtn.addEventListener("click", () => {
+        const idx = allowedWidths.indexOf(appState.width);
+        if (idx > 0) {
+          appState.width = allowedWidths[idx - 1];
+          widthInput.value = appState.width + " cm";
+          recalculate();
+        }
+      });
+    }
+
+    if (widthPlusBtn && widthInput) {
+      widthPlusBtn.addEventListener("click", () => {
+        const idx = allowedWidths.indexOf(appState.width);
+        if (idx < allowedWidths.length - 1) {
+          appState.width = allowedWidths[idx + 1];
+          widthInput.value = appState.width + " cm";
+          recalculate();
+        }
+      });
+    }
+
+    // Length Stepper Interactions
+    if (lengthMinusBtn && lengthInput) {
+      lengthMinusBtn.addEventListener("click", () => {
+        if (appState.length > 50) {
+          appState.length -= 10;
+          lengthInput.value = appState.length + " cm";
+          recalculate();
+        }
+      });
+    }
+
+    if (lengthPlusBtn && lengthInput) {
+      lengthPlusBtn.addEventListener("click", () => {
+        appState.length += 10;
+        lengthInput.value = appState.length + " cm";
+        recalculate();
+      });
+    }
+
+    // Quantity Stepper Interactions
+    if (quantityMinusBtn && quantityInput) {
+      quantityMinusBtn.addEventListener("click", () => {
+        if (appState.quantity > 1) {
+          appState.quantity -= 1;
+          quantityInput.value = appState.quantity;
+          recalculate();
+        }
+      });
+    }
+
+    if (quantityPlusBtn && quantityInput) {
+      quantityPlusBtn.addEventListener("click", () => {
+        appState.quantity += 1;
+        quantityInput.value = appState.quantity;
+        recalculate();
+      });
+    }
+
+    // Add Tablecloth to Shopify Cart
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener("click", () => {
+        // Only run customizer AJAX add-to-cart if customizer is present
+        if (!document.getElementById("shape-selector")) return;
+
+        addToCartBtn.disabled = true;
+        addToCartBtn.classList.add("opacity-50");
+
+        const activeVariant = getActiveVariant();
+        if (!activeVariant.id) {
+          showToast("Fejl: Kunne ikke finde det valgte variant ID.");
+          addToCartBtn.disabled = false;
+          addToCartBtn.classList.remove("opacity-50");
+          return;
+        }
+
+        let items = [];
+
+        // Add main product to cart
+        items.push({
+          id: activeVariant.id,
+          quantity: appState.length * appState.quantity,
+          properties: {
+            "Form": appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1),
+            "Bredde": appState.width + " cm",
+            "Længde": appState.length + " cm",
+            "Mål": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
+            "Antal dug(e)": appState.quantity,
+            "_unique_key": Date.now().toString() + "-" + Math.random().toString(36).substr(2, 9)
+          }
+        });
+
+        // Add customization surcharge companion product (if needed)
+        const hasSurcharge = appState.shape === "rund" || appState.shape === "oval" || appState.width !== 140;
+        if (hasSurcharge && surchargeVariantId) {
+          items.push({
+            id: surchargeVariantId,
+            quantity: appState.quantity,
+            properties: {
+              "Tilknyttet dug": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
+              "_unique_key": Date.now().toString() + "-surcharge"
+            }
+          });
+        }
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: items })
+        })
+        .then(response => {
+          if (!response.ok) throw new Error("Adding to cart failed");
+          return response.json();
+        })
+        .then(data => {
+          showToast("Lagt i kurven!");
+          return fetch('/cart.js');
+        })
+        .then(res => res.json())
+        .then(cartData => {
+          appState.cartCount = cartData.item_count;
+          appState.cartTotal = cartData.total_price / 100.0;
+          
+          if (cartCounter) cartCounter.textContent = appState.cartCount;
+          updateFreeShippingWidget();
+
+          // Open cart modal dialog
+          const textMål = appState.shape === "rund" ? "Ø " + appState.width + " cm" : appState.width + " × " + appState.length + " cm";
+          const formFormatted = appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1);
+          
+          const modalImgSrc = mainProductImg ? mainProductImg.src : "";
+          openCartModal(
+            modalImgSrc, 
+            "{{ product.title }}",
+            `${formFormatted} · ${textMål} (${appState.quantity} stk)`,
+            formatPrice(appState.currentClothPrice)
+          );
+        })
+        .catch(err => {
+          console.error(err);
+          showToast("Der opstod en fejl. Prøv igen.");
+        })
+        .finally(() => {
+          addToCartBtn.disabled = false;
+          addToCartBtn.classList.remove("opacity-50");
+        });
+      });
+    }
+
+    // Cross-sell Buttons Interaction (Direct AJAX Add to Cart)
+    if (crossSellButtons) {
+      crossSellButtons.forEach(btn => {
+        btn.addEventListener("click", function() {
+          const id = this.getAttribute("data-id");
+          const navn = this.getAttribute("data-navn");
+          const pris = parseFloat(this.getAttribute("data-pris"));
+          
+          if (id.includes("-mock")) {
+            appState.cartCount += 1;
+            appState.cartTotal += pris;
+            if (cartCounter) cartCounter.textContent = appState.cartCount;
+            updateFreeShippingWidget();
+            showToast(navn + " er tilføjet!");
+            
+            this.textContent = "TILFØJET";
+            this.classList.replace("bg-primary", "bg-emerald-600");
+            setTimeout(() => {
+              this.textContent = "TILFØJ";
+              this.classList.replace("bg-emerald-600", "bg-primary");
+            }, 2000);
+            return;
+          }
+
+          this.disabled = true;
+          this.classList.add("opacity-50");
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              items: [{
+                id: parseInt(id),
+                quantity: 1
+              }]
+            })
+          })
+          .then(response => {
+            if (!response.ok) throw new Error("Add failed");
+            return response.json();
+          })
+          .then(data => {
+            showToast(navn + " er tilføjet!");
+            return fetch('/cart.js');
+          })
+          .then(res => res.json())
+          .then(cartData => {
+            appState.cartCount = cartData.item_count;
+            appState.cartTotal = cartData.total_price / 100.0;
+            if (cartCounter) cartCounter.textContent = appState.cartCount;
+            updateFreeShippingWidget();
+            
+            this.textContent = "TILFØJET";
+            this.classList.replace("bg-primary", "bg-emerald-600");
+          })
+          .catch(err => {
+            console.error(err);
+            showToast("Kunne ikke tilføje til kurv.");
+          })
+          .finally(() => {
+            this.disabled = false;
+            this.classList.remove("opacity-50");
+            setTimeout(() => {
+              this.textContent = "TILFØJ";
+              this.classList.replace("bg-emerald-600", "bg-primary");
+            }, 2000);
+          });
+        });
+      });
+    }
+
+    // Initializations
+    recalculate();
+    updateFreeShippingWidget();
+    startCountdown();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Customizer",
+  "settings": [
+    {
+      "type": "number",
+      "id": "surcharge_amount",
+      "label": "Custom Surcharge Amount (DKK)",
+      "default": 60
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free Shipping Threshold (DKK)",
+      "default": 599
+    },
+    {
+      "type": "product",
+      "id": "surcharge_product",
+      "label": "Customization Surcharge Product",
+      "info": "Choose the product that charges the 60 kr custom surcharge."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Customizer"
+    }
+  ]
+}
+{% endschema %}

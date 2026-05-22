@@ -1,11 +1,31 @@
 {
   "sections": {
-    "main": {
-      "type": "custom-cut-product",
+    "media": {
+      "type": "product-media",
+      "settings": {}
+    },
+    "price-intro": {
+      "type": "product-price-intro",
+      "settings": {}
+    },
+    "urgency": {
+      "type": "product-urgency",
+      "settings": {}
+    },
+    "customizer": {
+      "type": "product-customizer",
       "settings": {}
     },
     "buy-buttons": {
       "type": "product-buy-buttons",
+      "settings": {}
+    },
+    "shipping-progress": {
+      "type": "product-shipping-progress",
+      "settings": {}
+    },
+    "cross-sell": {
+      "type": "product-cross-sell",
       "settings": {}
     },
     "materials": {
@@ -30,8 +50,13 @@
     }
   },
   "order": [
-    "main",
+    "media",
+    "price-intro",
+    "urgency",
+    "customizer",
     "buy-buttons",
+    "shipping-progress",
+    "cross-sell",
     "materials",
     "description",
     "testimonial",
