@@ -1,11 +1,9 @@
 {% comment %}
-  Product Price and Intro Section
-  Renders the product title, star reviews rating, buy volume badge, and base price per meter display.
+  Product Intro Section
+  Renders the product title, star reviews rating, and buy volume badge.
 {% endcomment %}
 
-{%- assign current_variant = product.selected_or_first_available_variant -%}
-
-<section class="max-w-screen-xl mx-auto px-4 pt-4 pb-3">
+<section class="max-w-screen-xl mx-auto px-4 pt-4 pb-1">
   <!-- Product Intro -->
   <h1 class="font-normal text-primary leading-tight text-lg">
     {{ product.title }}
@@ -27,20 +25,11 @@
       {{ section.settings.badge_text | default: "300+ købt den seneste måned" }}
     </span>
   </div>
-
-  <!-- Pricing -->
-  <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden mt-6">
-    <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
-      {{ current_variant.price | money }}
-    </span>
-    <span class="text-sm text-on-surface-variant font-medium whitespace-nowrap">pr. meter · inkl. moms</span>
-  </div>
-  <p class="text-xs text-on-surface-variant mt-1.5">Skæres efter mål, så du kun betaler for den længde, du vælger.</p>
 </section>
 
 {% schema %}
 {
-  "name": "Product Price & Intro",
+  "name": "Product Intro",
   "settings": [
     {
       "type": "text",
@@ -63,7 +52,7 @@
   ],
   "presets": [
     {
-      "name": "Product Price & Intro"
+      "name": "Product Intro"
     }
   ]
 }

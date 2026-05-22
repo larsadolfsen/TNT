@@ -4,8 +4,12 @@
       "type": "product-media",
       "settings": {}
     },
-    "price-intro": {
-      "type": "product-price-intro",
+    "intro": {
+      "type": "product-intro",
+      "settings": {}
+    },
+    "price": {
+      "type": "product-price",
       "settings": {}
     },
     "urgency": {
@@ -51,7 +55,8 @@
   },
   "order": [
     "media",
-    "price-intro",
+    "intro",
+    "price",
     "urgency",
     "customizer",
     "buy-buttons",

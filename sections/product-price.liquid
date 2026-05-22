@@ -1,0 +1,29 @@
+{% comment %}
+  Product Price Section
+  Renders the product price and base price per meter display.
+{% endcomment %}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<section class="max-w-screen-xl mx-auto px-4 pt-2 pb-3">
+  <!-- Pricing -->
+  <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
+    <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
+      {{ current_variant.price | money }}
+    </span>
+    <span class="text-sm text-on-surface-variant font-medium whitespace-nowrap">pr. meter · inkl. moms</span>
+  </div>
+  <p class="text-xs text-on-surface-variant mt-1.5">Skæres efter mål, så du kun betaler for den længde, du vælger.</p>
+</section>
+
+{% schema %}
+{
+  "name": "Product Price",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Product Price"
+    }
+  ]
+}
+{% endschema %}
