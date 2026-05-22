@@ -74,7 +74,24 @@
       const container = track.parentElement;
       if (!container) return;
 
+      // Prevent duplicate initialization (e.g. in theme editor)
+      if (track.dataset.galleryInitialized === "true") return;
+      track.dataset.galleryInitialized = "true";
+
+      const slides = Array.from(track.children);
+      const N = slides.length;
+      if (N <= 1) return;
+
+      // Clone first and last slides for infinite looping animation
+      const firstClone = slides[0].cloneNode(true);
+      const lastClone = slides[N - 1].cloneNode(true);
+
+      // Append firstClone to end, prepend lastClone to start
+      track.appendChild(firstClone);
+      track.insertBefore(lastClone, slides[0]);
+
       let currentIndex = 0;
+      let isAnimating = false;
 
       // Find initial active index
       dots.forEach((dot, index) => {
@@ -83,13 +100,27 @@
         }
       });
 
+      // Set initial position (DOM index 1 corresponds to currentIndex 0)
+      track.style.transition = "none";
+      track.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
+
       function showImage(index) {
-        if (index >= dots.length) {
+        if (isAnimating) return;
+        
+        let targetIndex = index;
+        let isWrapped = false;
+        let wrapToDOMIndex = null;
+
+        if (targetIndex >= N) {
+          isWrapped = true;
+          wrapToDOMIndex = 1; // Slide 0
           currentIndex = 0;
-        } else if (index < 0) {
-          currentIndex = dots.length - 1;
+        } else if (targetIndex < 0) {
+          isWrapped = true;
+          wrapToDOMIndex = N; // Slide N - 1
+          currentIndex = N - 1;
         } else {
-          currentIndex = index;
+          currentIndex = targetIndex;
         }
 
         const activeDot = dots[currentIndex];
@@ -103,14 +134,24 @@
         activeDot.classList.remove("bg-slate-300");
         activeDot.classList.add("bg-primary");
 
-        // Slide transition
-        track.style.transition = "transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
-
         // Update hidden main image for cart modal compatibility
         if (mainImg) {
           mainImg.src = newSrc;
         }
+
+        const domIndex = isWrapped ? (targetIndex + 1) : (currentIndex + 1);
+
+        isAnimating = true;
+        track.style.transition = "transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+        track.style.transform = `translateX(-${domIndex * 100}%)`;
+
+        setTimeout(() => {
+          if (isWrapped) {
+            track.style.transition = "none";
+            track.style.transform = `translateX(-${wrapToDOMIndex * 100}%)`;
+          }
+          isAnimating = false;
+        }, 300);
       }
 
       // Click on dots
@@ -130,6 +171,14 @@
 
       container.addEventListener("pointerdown", (e) => {
         if (e.button !== 0) return; // Left click or touch only
+        
+        // If we are currently in a transition/wrap, snap immediately to the destination
+        if (isAnimating) {
+          track.style.transition = "none";
+          track.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
+          isAnimating = false;
+        }
+
         pointerStartX = e.clientX;
         pointerStartY = e.clientY;
         isDragging = true;
@@ -148,14 +197,14 @@
         if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) {
           isDragging = false;
           track.style.transition = "transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-          track.style.transform = `translateX(-${currentIndex * 100}%)`;
+          track.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
           return;
         }
 
         // Follow pointer exactly
         const containerWidth = container.offsetWidth || 1;
         const dragPercent = (diffX / containerWidth) * 100;
-        const totalTranslate = -(currentIndex * 100) + dragPercent;
+        const totalTranslate = -((currentIndex + 1) * 100) + dragPercent;
         
         track.style.transform = `translateX(${totalTranslate}%)`;
       });
@@ -163,8 +212,6 @@
       document.addEventListener("pointerup", (e) => {
         if (!isDragging) return;
         isDragging = false;
-
-        track.style.transition = "transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
 
         const pointerEndX = e.clientX;
         const pointerEndY = e.clientY;
@@ -188,7 +235,6 @@
       container.addEventListener("pointercancel", () => {
         if (isDragging) {
           isDragging = false;
-          track.style.transition = "transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
           showImage(currentIndex);
         }
       });
