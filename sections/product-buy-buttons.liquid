@@ -109,6 +109,9 @@
         const btn = document.getElementById("btn-add-to-cart");
         if (btn) btn.textContent = btnText;
 
+        // Set global variable to resolve initial page load race condition
+        window.currentPageProductPrice = totalCents / 100;
+
         // Dispatch custom event to notify other scripts about product price update
         document.dispatchEvent(new CustomEvent("product-price-updated", {
           detail: { price: totalCents / 100 }

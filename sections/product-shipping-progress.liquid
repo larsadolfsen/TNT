@@ -32,7 +32,7 @@
     </div>
     <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex">
       <div id="shipping-progress-bar" class="h-full {% if cart_total_dkk < threshold %}bg-emerald-600{% else %}bg-emerald-500{% endif %} transition-all duration-300" style="width: {{ progress }}%"></div>
-      <div id="shipping-potential-bar" class="h-full bg-blue-600 transition-all duration-300" style="width: {{ potential_width }}%"></div>
+      <div id="shipping-potential-bar" class="h-full bg-emerald-400 transition-all duration-300" style="width: {{ potential_width }}%"></div>
     </div>
   </div>
 </section>
@@ -44,7 +44,7 @@
 
     let threshold = parseFloat(widget.getAttribute("data-threshold")) || 590.00;
     let cartTotal = {{ cart.total_price | divided_by: 100.0 }};
-    let productPrice = {% if product %}{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}{% else %}0{% endif %};
+    let productPrice = window.currentPageProductPrice !== undefined ? window.currentPageProductPrice : ({% if product %}{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}{% else %}0{% endif %});
 
     function formatPrice(value) {
       return value.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";

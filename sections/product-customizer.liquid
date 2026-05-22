@@ -355,6 +355,9 @@
         basePriceDisplay.textContent = formatPrice(activeVariant.price * 100);
       }
 
+      // Set global variable to resolve initial page load race condition
+      window.currentPageProductPrice = totalPrice;
+
       // Dispatch custom event to notify other scripts about product price update
       document.dispatchEvent(new CustomEvent("product-price-updated", {
         detail: { price: totalPrice }
