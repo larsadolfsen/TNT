@@ -6,7 +6,7 @@
 <section class="max-w-screen-xl mx-auto px-4 pt-4 pb-1">
   <!-- Product Intro -->
   <h1 class="font-normal text-primary leading-tight text-lg">
-    {{ product.title }}
+    {{ section.settings.title | default: product.title }}
   </h1>
   <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1 mt-1.5">
     <div class="flex items-center gap-1">
@@ -31,6 +31,12 @@
 {
   "name": "Product Intro",
   "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Heading",
+      "info": "Leave blank to use the default Shopify product title."
+    },
     {
       "type": "text",
       "id": "rating_score",
