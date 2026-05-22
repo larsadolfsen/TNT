@@ -11,15 +11,32 @@
     <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
       {{ current_variant.price | money }}
     </span>
-    <span class="text-sm text-on-surface-variant font-medium whitespace-nowrap">pr. meter · inkl. moms</span>
+    {%- if section.settings.price_suffix != blank -%}
+      <span class="text-sm text-on-surface-variant font-medium whitespace-nowrap">{{ section.settings.price_suffix }}</span>
+    {%- endif -%}
   </div>
-  <p class="text-xs text-on-surface-variant mt-1.5">Skæres efter mål, så du kun betaler for den længde, du vælger.</p>
+  {%- if section.settings.price_subtext != blank -%}
+    <p class="text-xs text-on-surface-variant mt-1.5">{{ section.settings.price_subtext }}</p>
+  {%- endif -%}
 </section>
 
 {% schema %}
 {
   "name": "Product Price",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "price_suffix",
+      "label": "Price suffix",
+      "default": "pr. meter · inkl. moms"
+    },
+    {
+      "type": "text",
+      "id": "price_subtext",
+      "label": "Price subtext",
+      "default": "Skæres efter mål, så du kun betaler for den længde, du vælger."
+    }
+  ],
   "presets": [
     {
       "name": "Product Price"
