@@ -14,6 +14,17 @@
     
     <!-- Right: Button and Payment Badges -->
     <div class="flex flex-col items-center gap-3 w-full md:w-auto px-4 md:px-0">
+      <!-- Quantity Selector (Only visible for simple products when no customizer is present) -->
+      <div id="buy-buttons-quantity-container" class="w-full md:w-96 flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden mb-1">
+        <button type="button" id="btn-buy-qty-minus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer">
+          <span class="material-symbols-outlined">remove</span>
+        </button>
+        <input id="input-buy-qty" class="w-full h-14 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="1" />
+        <button type="button" id="btn-buy-qty-plus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer">
+          <span class="material-symbols-outlined">add</span>
+        </button>
+      </div>
+
       <button id="btn-add-to-cart" class="w-full md:w-96 bg-[#FFD814] hover:bg-[#F7CA00] text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
         Læg i kurv – {{ product.selected_or_first_available_variant.price | money }}
       </button>
@@ -35,6 +46,7 @@
       {
         "id": {{ variant.id }},
         "title": {{ variant.title | json }},
+        "price": {{ variant.price }},
         "price_formatted": {{ variant.price | money | json }}
       }{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
@@ -59,24 +71,114 @@
       console.error("Failed to parse simple variants", e);
     }
 
-    // 2. Add listener to standard variant selector to update price dynamically
+    // 2. Quantity & Price Stepper state for simple product
+    let buyQty = 1;
+    const buyQtyContainer = document.getElementById("buy-buttons-quantity-container");
+    const buyQtyInput = document.getElementById("input-buy-qty");
+    const buyQtyMinusBtn = document.getElementById("btn-buy-qty-minus");
+    const buyQtyPlusBtn = document.getElementById("btn-buy-qty-plus");
+
+    if (hasCustomizer && buyQtyContainer) {
+      buyQtyContainer.style.display = "none";
+    }
+
+    function recalculateBuyPrice() {
+      if (hasCustomizer) return;
+      
+      let selectedId = null;
+      const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+      if (variantInput) {
+        selectedId = parseInt(variantInput.value);
+      } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        selectedId = parseInt(urlParams.get('variant')) || "{{ product.selected_or_first_available_variant.id }}";
+      }
+      
+      const match = simpleVariants.find(v => v.id === selectedId);
+      if (match) {
+        // Calculate total price
+        const totalCents = match.price * buyQty;
+        const formattedPrice = (totalCents / 100).toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
+        
+        const priceText = "Pris: " + formattedPrice;
+        const btnText = "Læg i kurv – " + formattedPrice;
+        
+        const summaryPris = document.getElementById("summary-pris");
+        if (summaryPris) summaryPris.textContent = priceText;
+        
+        const btn = document.getElementById("btn-add-to-cart");
+        if (btn) btn.textContent = btnText;
+      }
+    }
+
+    if (!hasCustomizer && buyQtyInput) {
+      // Auto-select text on focus
+      buyQtyInput.addEventListener("focus", (e) => {
+        e.target.select();
+      });
+
+      // Handle real-time typing
+      buyQtyInput.addEventListener("input", (e) => {
+        let sanitized = e.target.value.replace(/\D/g, "");
+        e.target.value = sanitized;
+
+        const parsed = parseInt(sanitized);
+        if (!isNaN(parsed) && parsed > 0) {
+          buyQty = parsed;
+          recalculateBuyPrice();
+        }
+      });
+
+      // Handle blur
+      buyQtyInput.addEventListener("blur", (e) => {
+        const parsed = parseInt(e.target.value);
+        if (isNaN(parsed) || parsed < 1) {
+          e.target.value = buyQty;
+        } else {
+          buyQty = parsed;
+          e.target.value = buyQty;
+        }
+        recalculateBuyPrice();
+      });
+
+      // Handle Enter keypress
+      buyQtyInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          buyQtyInput.blur();
+        }
+      });
+
+      // Handle minus click
+      if (buyQtyMinusBtn) {
+        buyQtyMinusBtn.addEventListener("click", () => {
+          if (buyQty > 1) {
+            buyQty -= 1;
+            buyQtyInput.value = buyQty;
+            recalculateBuyPrice();
+          }
+        });
+      }
+
+      // Handle plus click
+      if (buyQtyPlusBtn) {
+        buyQtyPlusBtn.addEventListener("click", () => {
+          buyQty += 1;
+          buyQtyInput.value = buyQty;
+          recalculateBuyPrice();
+        });
+      }
+
+      // Initial calculation on load
+      recalculateBuyPrice();
+    }
+
+    // Add listener to standard variant selector to update price dynamically
     const variantSelect = document.querySelector('select[name="id"]');
     if (variantSelect) {
       variantSelect.addEventListener("change", (e) => {
-        if (document.getElementById("shape-selector")) return; // Let customizer handle it
-        
-        const selectedId = parseInt(e.target.value);
-        const match = simpleVariants.find(v => v.id === selectedId);
-        if (match) {
-          const priceText = "Pris: " + match.price_formatted;
-          const btnText = "Læg i kurv – " + match.price_formatted;
-          
-          const summaryPris = document.getElementById("summary-pris");
-          if (summaryPris) summaryPris.textContent = priceText;
-          
-          const btn = document.getElementById("btn-add-to-cart");
-          if (btn) btn.textContent = btnText;
-        }
+        if (hasCustomizer) return; // Let customizer handle it
+        recalculateBuyPrice();
       });
     }
 
@@ -118,7 +220,7 @@
           body: JSON.stringify({
             items: [{
               id: parseInt(variantId),
-              quantity: 1
+              quantity: buyQty
             }]
           })
         })

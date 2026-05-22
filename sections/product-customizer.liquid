@@ -96,7 +96,7 @@
         <button id="btn-quantity-minus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
           <span class="material-symbols-outlined">remove</span>
         </button>
-        <input id="input-quantity" class="w-full h-14 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="1" readonly/>
+        <input id="input-quantity" class="w-full h-14 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="1"/>
         <button id="btn-quantity-plus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
           <span class="material-symbols-outlined">add</span>
         </button>
@@ -594,6 +594,47 @@
     }
 
     // Quantity Stepper Interactions
+    if (quantityInput) {
+      // Auto-select text on focus for easier editing
+      quantityInput.addEventListener("focus", (e) => {
+        e.target.select();
+      });
+
+      // Handle real-time typing
+      quantityInput.addEventListener("input", (e) => {
+        // Strip out non-digit characters
+        let sanitized = e.target.value.replace(/\D/g, "");
+        e.target.value = sanitized;
+
+        const parsed = parseInt(sanitized);
+        if (!isNaN(parsed) && parsed > 0) {
+          appState.quantity = parsed;
+          recalculate();
+        }
+      });
+
+      // Handle leaving the field (blur)
+      quantityInput.addEventListener("blur", (e) => {
+        const parsed = parseInt(e.target.value);
+        if (isNaN(parsed) || parsed < 1) {
+          // Revert to last valid quantity
+          e.target.value = appState.quantity;
+        } else {
+          appState.quantity = parsed;
+          e.target.value = appState.quantity;
+        }
+        recalculate();
+      });
+
+      // Handle Enter key to confirm value
+      quantityInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          quantityInput.blur();
+        }
+      });
+    }
+
     if (quantityMinusBtn && quantityInput) {
       quantityMinusBtn.addEventListener("click", () => {
         if (appState.quantity > 1) {
