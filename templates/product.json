@@ -77,11 +77,18 @@
     "materials": {
       "type": "product-materials",
       "blocks": {
+        "badge_7Nz4EV": {
+          "type": "badge",
+          "settings": {
+            "icon": "eco",
+            "title": "100% Phthalatfri"
+          }
+        },
         "badge_yMRTWz": {
           "type": "badge",
           "settings": {
-            "icon": "",
-            "title": "{{ product.metafields.shopify[\"tablecloth-features\"] | metafield_text: field: 'label' }}"
+            "icon": "eco",
+            "title": "Oeko-Tex Standard 100®"
           }
         },
         "badge_nm7hPg": {
@@ -93,6 +100,7 @@
         }
       },
       "block_order": [
+        "badge_7Nz4EV",
         "badge_yMRTWz",
         "badge_nm7hPg"
       ],
