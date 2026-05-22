@@ -224,7 +224,7 @@
 
     const defaultWidth = allowedWidths.includes(140) ? 140 : (allowedWidths[allowedWidths.length - 1] || 140);
     const surchargeValue = {{ section.settings.surcharge_amount | default: 60.00 }};
-    let freeShippingThreshold = window.freeShippingThreshold || 599.00;
+    let freeShippingThreshold = window.freeShippingThreshold || 590.00;
     const surchargeVariantId = {% if section.settings.surcharge_product != blank %}{{ section.settings.surcharge_product.first_available_variant.id | default: 'null' }}{% else %}null{% endif %};
 
     // State Management
@@ -513,21 +513,8 @@
       btnModalContinue.addEventListener("click", closeCartModal);
     }
 
-    // Gallery Dots Interaction
-    if (dotButtons && mainProductImg) {
-      dotButtons.forEach(btn => {
-        btn.addEventListener("click", function() {
-          dotButtons.forEach(b => b.classList.replace("bg-primary", "bg-slate-300"));
-          this.classList.replace("bg-slate-300", "bg-primary");
-          
-          mainProductImg.classList.replace("opacity-100", "opacity-0");
-          setTimeout(() => {
-            mainProductImg.src = this.getAttribute("data-src");
-            mainProductImg.classList.replace("opacity-0", "opacity-100");
-          }, 150);
-        });
-      });
-    }
+    // Gallery Dots Interaction (handled in product-media.liquid)
+    // The main gallery interactions are managed by product-media.liquid to work across templates.
 
     // Shape Selector Buttons
     if (shapeButtons) {

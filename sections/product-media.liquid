@@ -51,6 +51,94 @@
   {%- endif -%}
 </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const mainImg = document.getElementById("main-product-img");
+    const dots = document.querySelectorAll(".dot-btn");
+    if (!mainImg || dots.length <= 1) return;
+
+    let currentIndex = 0;
+
+    // Find initial active index
+    dots.forEach((dot, index) => {
+      if (dot.classList.contains("bg-primary")) {
+        currentIndex = index;
+      }
+    });
+
+    function showImage(index) {
+      if (index >= dots.length) {
+        currentIndex = 0;
+      } else if (index < 0) {
+        currentIndex = dots.length - 1;
+      } else {
+        currentIndex = index;
+      }
+
+      const activeDot = dots[currentIndex];
+      const newSrc = activeDot.getAttribute("data-src");
+
+      // Update dots styles
+      dots.forEach(d => {
+        d.classList.remove("bg-primary");
+        d.classList.add("bg-slate-300");
+      });
+      activeDot.classList.remove("bg-slate-300");
+      activeDot.classList.add("bg-primary");
+
+      // Fade transition
+      mainImg.classList.replace("opacity-100", "opacity-0");
+      setTimeout(() => {
+        mainImg.src = newSrc;
+        mainImg.classList.replace("opacity-0", "opacity-100");
+      }, 150);
+    }
+
+    // Click on dots
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => {
+        showImage(index);
+      });
+    });
+
+    // Swipe detection on the image container
+    const container = mainImg.closest('.aspect-\\[3\\/2\\]') || mainImg.parentElement;
+    if (container) {
+      container.style.touchAction = "pan-y";
+      container.style.userSelect = "none";
+      mainImg.style.userSelect = "none";
+      mainImg.setAttribute("draggable", "false");
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      container.addEventListener("touchstart", (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+
+      container.addEventListener("touchend", (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // Minimum swipe distance of 40px, and horizontal angle validation
+        if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX < 0) {
+            // Swipe Left -> Next Image
+            showImage(currentIndex + 1);
+          } else {
+            // Swipe Right -> Previous Image
+            showImage(currentIndex - 1);
+          }
+        }
+      }, { passive: true });
+    }
+  });
+</script>
+
 {% schema %}
 {
   "name": "Product Media Gallery",

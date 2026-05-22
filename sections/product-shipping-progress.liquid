@@ -5,7 +5,7 @@
 {% endcomment %}
 
 {%- assign cart_total_dkk = cart.total_price | divided_by: 100.0 -%}
-{%- assign threshold = 599.00 -%}
+{%- assign threshold = 590.00 -%}
 {%- assign progress = cart_total_dkk | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
 {%- assign missing = threshold | minus: cart_total_dkk -%}
 
@@ -51,7 +51,7 @@
     const widget = document.getElementById("free-shipping-widget");
     if (!widget) return;
 
-    let threshold = parseFloat(widget.getAttribute("data-threshold")) || 599.00;
+    let threshold = parseFloat(widget.getAttribute("data-threshold")) || 590.00;
     let cartTotal = {{ cart.total_price | divided_by: 100.0 }};
 
     function formatPrice(value) {
