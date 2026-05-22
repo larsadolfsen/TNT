@@ -32,19 +32,19 @@
     </div>
     <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex">
       <div id="shipping-progress-bar" class="h-full {% if cart_total_dkk < threshold %}bg-emerald-600{% else %}bg-emerald-500{% endif %} transition-all duration-300" style="width: {{ progress }}%"></div>
-      <div id="shipping-potential-bar" class="h-full bg-emerald-400 transition-all duration-300" style="width: {{ potential_width }}%"></div>
+      <div id="shipping-potential-bar" class="h-full bg-emerald-300 transition-all duration-300" style="width: {{ potential_width }}%"></div>
     </div>
   </div>
 </section>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  function initShippingWidget() {
     const widget = document.getElementById("free-shipping-widget");
     if (!widget) return;
 
     let threshold = parseFloat(widget.getAttribute("data-threshold")) || 590.00;
-    let cartTotal = {{ cart.total_price | divided_by: 100.0 }};
-    let productPrice = window.currentPageProductPrice !== undefined ? window.currentPageProductPrice : ({% if product %}{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}{% else %}0{% endif %});
+    let cartTotal = {{ cart.total_price }} / 100.0;
+    let productPrice = window.currentPageProductPrice !== undefined ? window.currentPageProductPrice : ({% if product %}{{ product.selected_or_first_available_variant.price }}{% else %}0{% endif %} / 100.0);
 
     function formatPrice(value) {
       return value.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
@@ -94,6 +94,7 @@
 
     // Listen for product price updates (e.g. customizer or variant selection changes)
     document.addEventListener("product-price-updated", (e) => {
+      console.log("Shipping widget: received product-price-updated event:", e.detail);
       if (e.detail && typeof e.detail.price === "number") {
         productPrice = e.detail.price;
         updateUI();
@@ -156,7 +157,13 @@
 
     // Initial update
     updateUI();
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initShippingWidget);
+  } else {
+    initShippingWidget();
+  }
 </script>
 
 {% schema %}
