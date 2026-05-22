@@ -34,14 +34,6 @@
         "urgency_text": "Kun få på lager – bestil snart"
       }
     },
-    "customizer": {
-      "type": "product-customizer",
-      "settings": {
-        "surcharge_amount": 60,
-        "free_shipping_threshold": 599,
-        "surcharge_product": ""
-      }
-    },
     "buy-buttons": {
       "type": "product-buy-buttons",
       "settings": {}
@@ -97,7 +89,6 @@
     "media",
     "price",
     "urgency",
-    "customizer",
     "buy-buttons",
     "shipping-progress",
     "cross-sell",
