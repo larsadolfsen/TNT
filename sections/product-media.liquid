@@ -45,98 +45,113 @@
         aria-label="Skift billede {{ forloop.index }}"
       ></button>
     {%- endfor -%}
-  {%- else -%}
-    <button class="dot-btn w-2.5 h-2.5 rounded-full bg-primary focus:outline-none transition-colors" data-src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT6v3nHI941v3VLOOVZi6aiIWU9Bk0oFqdFrpEO7HFKCiZVZWAkbZafIRHYpjXJ-vkib7-EqYsE-5f6cnWn3VaO92Upxnr3Udg0oV4LbzaJlQitsTts1KuFfq1PU0VMG5FNT1Mx8PjaQZMPzcPs3QUaHTsVPYlxETHQLH5N6-GqTQnIQ63D-Wyjal17RpHnqDmyEDHeA5W9mgHscm42-_bB9kfmytEfumkgNPSNYbcZvTfvcT4xd6XZB0EuIRQ-DmyrVWWdxzFyBaa"></button>
-    <button class="dot-btn w-2.5 h-2.5 rounded-full bg-slate-300 focus:outline-none transition-colors" data-src="https://lh3.googleusercontent.com/aida/ADBb0ugB3-cue9umr_GH4yO2_ErqQL6CkCRqoxECS2OollSkHH4PV3oRdZ3Y17T8etd7H-Pl83sg45fUcg6JwvsS-sW_Of55YW7Erz8HXbaJH43az3YWD35q9Vs1TEOkZV9HH7YaXqntridEgXj_iPkPNdVs7q20_TMvdkauZ-paVWNfPrAP8av1hq2hX2M7WFN4BylMg-606Jz15xKiR6cxASDgEo735sRgoLSBSa_96QNxQdcneTw4byWQW7CX"></button>
   {%- endif -%}
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const mainImg = document.getElementById("main-product-img");
-    const dots = document.querySelectorAll(".dot-btn");
-    if (!mainImg || dots.length <= 1) return;
+  (() => {
+    const initGallery = () => {
+      const mainImg = document.getElementById("main-product-img");
+      const dots = document.querySelectorAll(".dot-btn");
+      if (!mainImg || dots.length <= 1) return;
 
-    let currentIndex = 0;
+      let currentIndex = 0;
 
-    // Find initial active index
-    dots.forEach((dot, index) => {
-      if (dot.classList.contains("bg-primary")) {
-        currentIndex = index;
-      }
-    });
-
-    function showImage(index) {
-      if (index >= dots.length) {
-        currentIndex = 0;
-      } else if (index < 0) {
-        currentIndex = dots.length - 1;
-      } else {
-        currentIndex = index;
-      }
-
-      const activeDot = dots[currentIndex];
-      const newSrc = activeDot.getAttribute("data-src");
-
-      // Update dots styles
-      dots.forEach(d => {
-        d.classList.remove("bg-primary");
-        d.classList.add("bg-slate-300");
-      });
-      activeDot.classList.remove("bg-slate-300");
-      activeDot.classList.add("bg-primary");
-
-      // Fade transition
-      mainImg.classList.replace("opacity-100", "opacity-0");
-      setTimeout(() => {
-        mainImg.src = newSrc;
-        mainImg.classList.replace("opacity-0", "opacity-100");
-      }, 150);
-    }
-
-    // Click on dots
-    dots.forEach((dot, index) => {
-      dot.addEventListener("click", () => {
-        showImage(index);
-      });
-    });
-
-    // Swipe detection on the image container
-    const container = mainImg.closest('.aspect-\\[3\\/2\\]') || mainImg.parentElement;
-    if (container) {
-      container.style.touchAction = "pan-y";
-      container.style.userSelect = "none";
-      mainImg.style.userSelect = "none";
-      mainImg.setAttribute("draggable", "false");
-
-      let touchStartX = 0;
-      let touchStartY = 0;
-
-      container.addEventListener("touchstart", (e) => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-      }, { passive: true });
-
-      container.addEventListener("touchend", (e) => {
-        const touchEndX = e.changedTouches[0].clientX;
-        const touchEndY = e.changedTouches[0].clientY;
-
-        const diffX = touchEndX - touchStartX;
-        const diffY = touchEndY - touchStartY;
-
-        // Minimum swipe distance of 40px, and horizontal angle validation
-        if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
-          if (diffX < 0) {
-            // Swipe Left -> Next Image
-            showImage(currentIndex + 1);
-          } else {
-            // Swipe Right -> Previous Image
-            showImage(currentIndex - 1);
-          }
+      // Find initial active index
+      dots.forEach((dot, index) => {
+        if (dot.classList.contains("bg-primary")) {
+          currentIndex = index;
         }
-      }, { passive: true });
+      });
+
+      function showImage(index) {
+        if (index >= dots.length) {
+          currentIndex = 0;
+        } else if (index < 0) {
+          currentIndex = dots.length - 1;
+        } else {
+          currentIndex = index;
+        }
+
+        const activeDot = dots[currentIndex];
+        const newSrc = activeDot.getAttribute("data-src");
+
+        // Update dots styles
+        dots.forEach(d => {
+          d.classList.remove("bg-primary");
+          d.classList.add("bg-slate-300");
+        });
+        activeDot.classList.remove("bg-slate-300");
+        activeDot.classList.add("bg-primary");
+
+        // Fade transition
+        mainImg.classList.replace("opacity-100", "opacity-0");
+        setTimeout(() => {
+          mainImg.src = newSrc;
+          mainImg.classList.replace("opacity-0", "opacity-100");
+        }, 150);
+      }
+
+      // Click on dots
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          showImage(index);
+        });
+      });
+
+      // Swipe detection using pointer events for both touch and desktop mouse dragging
+      const container = mainImg.parentElement;
+      if (container) {
+        container.style.touchAction = "pan-y";
+        container.style.userSelect = "none";
+        mainImg.style.userSelect = "none";
+        mainImg.setAttribute("draggable", "false");
+
+        let pointerStartX = 0;
+        let pointerStartY = 0;
+        let isDragging = false;
+
+        container.addEventListener("pointerdown", (e) => {
+          pointerStartX = e.clientX;
+          pointerStartY = e.clientY;
+          isDragging = true;
+        });
+
+        document.addEventListener("pointerup", (e) => {
+          if (!isDragging) return;
+          isDragging = false;
+
+          const pointerEndX = e.clientX;
+          const pointerEndY = e.clientY;
+
+          const diffX = pointerEndX - pointerStartX;
+          const diffY = pointerEndY - pointerStartY;
+
+          // Minimum swipe distance of 40px, and horizontal dominant direction
+          if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX < 0) {
+              // Swipe Left -> Next Image
+              showImage(currentIndex + 1);
+            } else {
+              // Swipe Right -> Previous Image
+              showImage(currentIndex - 1);
+            }
+          }
+        });
+
+        // Cancel dragging if browser cancels the pointer
+        container.addEventListener("pointercancel", () => {
+          isDragging = false;
+        });
+      }
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initGallery);
+    } else {
+      initGallery();
     }
-  });
+  })();
 </script>
 
 {% schema %}
