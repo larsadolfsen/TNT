@@ -1,0 +1,92 @@
+<section class="px-4 py-4 bg-white" id="shopify-section-accordions-{{ section.id }}">
+  <div class="divide-y divide-outline-variant border-y border-outline-variant max-w-screen-xl mx-auto">
+    {%- for block in section.blocks -%}
+      <div class="accordion-item py-4" {{ block.shopify_attributes }}>
+        <button class="accordion-trigger flex items-center justify-between w-full text-left font-bold text-primary focus:outline-none">
+          <span class="text-sm">{{ block.settings.title }}</span>
+          <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200">expand_more</span>
+        </button>
+        <div class="accordion-content hidden mt-3 text-sm text-on-surface-variant space-y-2">
+          {{ block.settings.content }}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const sectionContainer = document.getElementById("shopify-section-accordions-{{ section.id }}");
+    if (!sectionContainer) return;
+    
+    const triggers = sectionContainer.querySelectorAll(".accordion-trigger");
+    triggers.forEach(trigger => {
+      trigger.addEventListener("click", function() {
+        const content = this.nextElementSibling;
+        const icon = this.querySelector(".material-symbols-outlined");
+        
+        if (content.classList.contains("hidden")) {
+          content.classList.remove("hidden");
+          if (icon) icon.classList.add("rotate-180");
+        } else {
+          content.classList.add("hidden");
+          if (icon) icon.classList.remove("rotate-180");
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Klap-ud Paneler",
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion Panel",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Produktspecifikationer"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Indhold",
+          "default": "<p><strong>Tykkelse:</strong> 0,2 mm (robust PVC-folie)</p><p><strong>Overflade:</strong> Glat, transparent og gennemsigtig</p><p><strong>Bredde:</strong> 140 cm standardbredde</p><p><strong>Certificering:</strong> OEKO-TEX Standard 100 og 100% Phthalatfri</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Klap-ud Paneler",
+      "blocks": [
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Produktspecifikationer",
+            "content": "<p><strong>Tykkelse:</strong> 0,2 mm (robust PVC-folie)</p><p><strong>Overflade:</strong> Glat, transparent og gennemsigtig</p><p><strong>Bredde:</strong> 140 cm standardbredde</p><p><strong>Certificering:</strong> OEKO-TEX Standard 100 og 100% Phthalatfri</p>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Om brandet",
+            "content": "<p>Textil &amp; Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Vedligeholdelse",
+            "content": "<p><strong>Daglig rengøring:</strong> Tør blot overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
