@@ -224,7 +224,7 @@
 
     const defaultWidth = allowedWidths.includes(140) ? 140 : (allowedWidths[allowedWidths.length - 1] || 140);
     const surchargeValue = {{ section.settings.surcharge_amount | default: 60.00 }};
-    const freeShippingThreshold = {{ section.settings.free_shipping_threshold | default: 599.00 }};
+    let freeShippingThreshold = window.freeShippingThreshold || {{ section.settings.free_shipping_threshold | default: 599.00 }};
     const surchargeVariantId = {% if section.settings.surcharge_product != blank %}{{ section.settings.surcharge_product.first_available_variant.id | default: 'null' }}{% else %}null{% endif %};
 
     // State Management
@@ -813,6 +813,15 @@
         });
       });
     }
+
+    // Listen for threshold updates
+    document.addEventListener("shipping-threshold-updated", (e) => {
+      if (e.detail && typeof e.detail.threshold === "number") {
+        freeShippingThreshold = e.detail.threshold;
+        recalculate();
+        updateFreeShippingWidget();
+      }
+    });
 
     // Initializations
     recalculate();
