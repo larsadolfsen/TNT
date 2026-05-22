@@ -47,6 +47,24 @@
     },
     "trust-checkmarks": {
       "type": "product-trust-checkmarks",
+      "blocks": {
+        "countdown_wdaUbK": {
+          "type": "countdown",
+          "settings": {
+            "text": "Afsendes i dag – Bestil inden"
+          }
+        },
+        "checkmark_J7LE8N": {
+          "type": "checkmark",
+          "settings": {
+            "text": "30 dages fuld returret"
+          }
+        }
+      },
+      "block_order": [
+        "countdown_wdaUbK",
+        "checkmark_J7LE8N"
+      ],
       "settings": {}
     },
     "cross-sell": {
