@@ -12,9 +12,14 @@
     "main": {
       "type": "custom-cut-product",
       "settings": {}
+    },
+    "buy-buttons": {
+      "type": "product-buy-buttons",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "main",
+    "buy-buttons"
   ]
 }

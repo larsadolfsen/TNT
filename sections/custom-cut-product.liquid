@@ -191,27 +191,8 @@
         </div>
       </div>
 
-      <!-- Summary & CTA Section -->
+      <!-- Shipping & Trust Badges Section -->
       <div class="pt-4 border-t border-outline-variant space-y-4">
-        <div class="flex justify-between items-end">
-          <div>
-            <p id="summary-mål" class="text-xs text-on-surface-variant">Valgt mål: 140 × 200 cm</p>
-            <p id="summary-pris" class="text-sm font-bold text-primary">Pris fra: 118,00 kr.</p>
-          </div>
-        </div>
-        
-        <button id="btn-add-to-cart" class="w-full bg-[#FFD814] text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-transform cursor-pointer focus:outline-none">
-          Læg i kurv – 118,00 kr.
-        </button>
-
-        <!-- Payment Icons directly under the button -->
-        <div class="flex justify-center items-center gap-2 py-1 text-on-surface-variant font-medium text-xs">
-          <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">VISA</span>
-          <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">MASTERCARD</span>
-          <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">MOBILEPAY</span>
-          <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">APPLE PAY</span>
-        </div>
-
         <!-- Dynamic Free Shipping Progress Bar Widget (No border) -->
         <div id="free-shipping-widget" class="bg-white p-4 rounded-xl space-y-2">
           <div class="flex justify-between text-xs text-primary font-bold">
@@ -514,7 +495,9 @@
         appState.length = appState.width;
         singlePrice = ((appState.width / 100) * appState.basePricePerMeter) + surcharge;
         
-        summaryMalText.textContent = "Valgt mål: Ø " + appState.width + " cm" + surchargeText;
+        if (summaryMalText) {
+          summaryMalText.textContent = "Ø " + appState.width + " cm" + surchargeText;
+        }
         lengthContainer.classList.add("hidden"); 
         widthStepTitle.textContent = "Vælg diameter";
       } else {
@@ -522,7 +505,9 @@
         
         singlePrice = ((appState.length / 100) * appState.basePricePerMeter) + surcharge;
         
-        summaryMalText.textContent = appState.width + " × " + appState.length + " cm" + surchargeText;
+        if (summaryMalText) {
+          summaryMalText.textContent = appState.width + " × " + appState.length + " cm" + surchargeText;
+        }
         lengthContainer.classList.remove("hidden"); 
         lengthInput.disabled = false;
         lengthMinusBtn.disabled = false;
@@ -537,11 +522,18 @@
       appState.currentClothPrice = totalPrice;
 
       const formatted = formatPrice(totalPrice);
-      summaryPrisText.textContent = "Pris: " + formatted;
-      addToCartBtn.textContent = "Læg i kurv – " + formatted;
+      if (summaryPrisText) {
+        summaryPrisText.textContent = "Pris: " + formatted;
+      }
+      if (addToCartBtn) {
+        addToCartBtn.textContent = "Læg i kurv – " + formatted;
+      }
       
       // Update dynamic display on top
-      document.getElementById("base-price-display").textContent = formatPrice(activeVariant.price * 100);
+      const basePriceDisplay = document.getElementById("base-price-display");
+      if (basePriceDisplay) {
+        basePriceDisplay.textContent = formatPrice(activeVariant.price * 100);
+      }
     }
 
     // Live Free Shipping Status Bar Calculator
@@ -770,90 +762,92 @@
     });
 
     // Add Tablecloth to Shopify Cart
-    addToCartBtn.addEventListener("click", () => {
-      addToCartBtn.disabled = true;
-      addToCartBtn.classList.add("opacity-50");
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener("click", () => {
+        addToCartBtn.disabled = true;
+        addToCartBtn.classList.add("opacity-50");
 
-      const activeVariant = getActiveVariant();
-      if (!activeVariant.id) {
-        showToast("Fejl: Kunne ikke finde det valgte variant ID.");
-        addToCartBtn.disabled = false;
-        addToCartBtn.classList.remove("opacity-50");
-        return;
-      }
-
-      // We will perform an AJAX cart add
-      let items = [];
-
-      // Add main product to cart
-      // For custom-cut, quantity is centimeters * quantity multiplier
-      items.push({
-        id: activeVariant.id,
-        quantity: appState.length * appState.quantity,
-        properties: {
-          "Form": appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1),
-          "Bredde": appState.width + " cm",
-          "Længde": appState.length + " cm",
-          "Mål": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
-          "Antal dug(e)": appState.quantity,
-          "_unique_key": Date.now().toString() + "-" + Math.random().toString(36).substr(2, 9)
+        const activeVariant = getActiveVariant();
+        if (!activeVariant.id) {
+          showToast("Fejl: Kunne ikke finde det valgte variant ID.");
+          addToCartBtn.disabled = false;
+          addToCartBtn.classList.remove("opacity-50");
+          return;
         }
-      });
 
-      // Add customization surcharge companion product (if needed)
-      const hasSurcharge = appState.shape === "rund" || appState.shape === "oval" || appState.width !== 140;
-      if (hasSurcharge && surchargeVariantId) {
+        // We will perform an AJAX cart add
+        let items = [];
+
+        // Add main product to cart
+        // For custom-cut, quantity is centimeters * quantity multiplier
         items.push({
-          id: surchargeVariantId,
-          quantity: appState.quantity,
+          id: activeVariant.id,
+          quantity: appState.length * appState.quantity,
           properties: {
-            "Tilknyttet dug": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
-            "_unique_key": Date.now().toString() + "-surcharge"
+            "Form": appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1),
+            "Bredde": appState.width + " cm",
+            "Længde": appState.length + " cm",
+            "Mål": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
+            "Antal dug(e)": appState.quantity,
+            "_unique_key": Date.now().toString() + "-" + Math.random().toString(36).substr(2, 9)
           }
         });
-      }
 
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: items })
-      })
-      .then(response => {
-        if (!response.ok) throw new Error("Adding to cart failed");
-        return response.json();
-      })
-      .then(data => {
-        showToast("Lagt i kurven!");
-        // Refresh cart count and totals
-        return fetch('/cart.js');
-      })
-      .then(res => res.json())
-      .then(cartData => {
-        appState.cartCount = cartData.item_count;
-        appState.cartTotal = cartData.total_price / 100.0;
-        
-        cartCounter.textContent = appState.cartCount;
-        updateFreeShippingWidget();
+        // Add customization surcharge companion product (if needed)
+        const hasSurcharge = appState.shape === "rund" || appState.shape === "oval" || appState.width !== 140;
+        if (hasSurcharge && surchargeVariantId) {
+          items.push({
+            id: surchargeVariantId,
+            quantity: appState.quantity,
+            properties: {
+              "Tilknyttet dug": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
+              "_unique_key": Date.now().toString() + "-surcharge"
+            }
+          });
+        }
 
-        // Open cart modal dialog
-        const textMål = appState.shape === "rund" ? "Ø " + appState.width + " cm" : appState.width + " × " + appState.length + " cm";
-        const formFormatted = appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1);
-        openCartModal(
-          mainProductImg.src, 
-          "{{ product.title }}",
-          `${formFormatted} · ${textMål} (${appState.quantity} stk)`,
-          formatPrice(appState.currentClothPrice)
-        );
-      })
-      .catch(err => {
-        console.error(err);
-        showToast("Der opstod en fejl. Prøv igen.");
-      })
-      .finally(() => {
-        addToCartBtn.disabled = false;
-        addToCartBtn.classList.remove("opacity-50");
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: items })
+        })
+        .then(response => {
+          if (!response.ok) throw new Error("Adding to cart failed");
+          return response.json();
+        })
+        .then(data => {
+          showToast("Lagt i kurven!");
+          // Refresh cart count and totals
+          return fetch('/cart.js');
+        })
+        .then(res => res.json())
+        .then(cartData => {
+          appState.cartCount = cartData.item_count;
+          appState.cartTotal = cartData.total_price / 100.0;
+          
+          cartCounter.textContent = appState.cartCount;
+          updateFreeShippingWidget();
+
+          // Open cart modal dialog
+          const textMål = appState.shape === "rund" ? "Ø " + appState.width + " cm" : appState.width + " × " + appState.length + " cm";
+          const formFormatted = appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1);
+          openCartModal(
+            mainProductImg.src, 
+            "{{ product.title }}",
+            `${formFormatted} · ${textMål} (${appState.quantity} stk)`,
+            formatPrice(appState.currentClothPrice)
+          );
+        })
+        .catch(err => {
+          console.error(err);
+          showToast("Der opstod en fejl. Prøv igen.");
+        })
+        .finally(() => {
+          addToCartBtn.disabled = false;
+          addToCartBtn.classList.remove("opacity-50");
+        });
       });
-    });
+    }
 
     // Cross-sell Buttons Interaction (Direct AJAX Add to Cart)
     crossSellButtons.forEach(btn => {

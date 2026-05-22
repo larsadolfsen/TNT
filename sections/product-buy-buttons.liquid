@@ -1,0 +1,199 @@
+{% comment %}
+  Product Buy Buttons Section
+  Renders the dimensions summary, final price, Add to Cart CTA button, and payment method badges.
+  Supports both customized (custom-cut) and simple products.
+{% endcomment %}
+
+<section class="w-full bg-slate-50 border-y border-outline-variant py-6 px-4 my-6">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- Left: Selected Specs & Price -->
+    <div class="flex flex-col text-left w-full md:w-auto px-4 md:px-0">
+      <p id="summary-mål" class="text-xs text-on-surface-variant font-medium">140 × 200 cm</p>
+      <p id="summary-pris" class="text-base font-bold text-primary mt-1">Pris: {{ product.selected_or_first_available_variant.price | money }}</p>
+    </div>
+    
+    <!-- Right: Button and Payment Badges -->
+    <div class="flex flex-col items-center gap-3 w-full md:w-auto px-4 md:px-0">
+      <button id="btn-add-to-cart" class="w-full md:w-96 bg-[#FFD814] hover:bg-[#F7CA00] text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+        Læg i kurv – {{ product.selected_or_first_available_variant.price | money }}
+      </button>
+      
+      <!-- Payment Badges -->
+      <div class="flex justify-center items-center gap-2 text-on-surface-variant font-medium text-xs">
+        <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">VISA</span>
+        <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">MASTERCARD</span>
+        <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">MOBILEPAY</span>
+        <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">APPLE PAY</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script id="simple-variant-data" type="application/json">
+  [
+    {%- for variant in product.variants -%}
+      {
+        "id": {{ variant.id }},
+        "title": {{ variant.title | json }},
+        "price_formatted": {{ variant.price | money | json }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const hasCustomizer = !!document.getElementById("shape-selector");
+    const summaryMal = document.getElementById("summary-mål");
+    
+    // 1. If no customizer is present, hide the dimensions summary (since it's a simple product)
+    if (!hasCustomizer && summaryMal) {
+      summaryMal.style.display = "none";
+    }
+
+    // Parse simple variant data
+    let simpleVariants = [];
+    try {
+      simpleVariants = JSON.parse(document.getElementById('simple-variant-data').textContent);
+    } catch (e) {
+      console.error("Failed to parse simple variants", e);
+    }
+
+    // 2. Add listener to standard variant selector to update price dynamically
+    const variantSelect = document.querySelector('select[name="id"]');
+    if (variantSelect) {
+      variantSelect.addEventListener("change", (e) => {
+        if (document.getElementById("shape-selector")) return; // Let customizer handle it
+        
+        const selectedId = parseInt(e.target.value);
+        const match = simpleVariants.find(v => v.id === selectedId);
+        if (match) {
+          const priceText = "Pris: " + match.price_formatted;
+          const btnText = "Læg i kurv – " + match.price_formatted;
+          
+          const summaryPris = document.getElementById("summary-pris");
+          if (summaryPris) summaryPris.textContent = priceText;
+          
+          const btn = document.getElementById("btn-add-to-cart");
+          if (btn) btn.textContent = btnText;
+        }
+      });
+    }
+
+    // 3. Simple product add to cart behavior
+    const addToCartBtn = document.getElementById("btn-add-to-cart");
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener("click", (e) => {
+        // If the customizer is present on the page, let the customizer script handle the click event
+        if (document.getElementById("shape-selector")) {
+          return;
+        }
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        addToCartBtn.disabled = true;
+        addToCartBtn.classList.add("opacity-50");
+        
+        // Find variant ID
+        let variantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) {
+          variantId = variantInput.value;
+        } else {
+          const urlParams = new URLSearchParams(window.location.search);
+          variantId = urlParams.get('variant') || "{{ product.selected_or_first_available_variant.id }}";
+        }
+        
+        if (!variantId) {
+          localShowToast("Fejl: Kunne ikke finde variant ID.");
+          addToCartBtn.disabled = false;
+          addToCartBtn.classList.remove("opacity-50");
+          return;
+        }
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: [{
+              id: parseInt(variantId),
+              quantity: 1
+            }]
+          })
+        })
+        .then(response => {
+          if (!response.ok) throw new Error("Adding to cart failed");
+          return response.json();
+        })
+        .then(data => {
+          localShowToast("Lagt i kurven!");
+          
+          // Refresh cart count
+          return fetch('/cart.js');
+        })
+        .then(res => res.json())
+        .then(cartData => {
+          const cartCounter = document.getElementById("cart-counter");
+          if (cartCounter) {
+            cartCounter.textContent = cartData.item_count;
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          localShowToast("Der opstod en fejl. Prøv igen.");
+        })
+        .finally(() => {
+          addToCartBtn.disabled = false;
+          addToCartBtn.classList.remove("opacity-50");
+        });
+      });
+    }
+
+    // Helper: Local toast alert (fallback if customizer toast is not present)
+    function localShowToast(message) {
+      let toast = document.getElementById("toast");
+      let toastText = document.getElementById("toast-text");
+      
+      if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toast";
+        toast.className = "fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[calc(1280px-2rem)] z-50 bg-[#0e1a28] border border-slate-800 text-white text-sm px-4 py-3 rounded-full shadow-xl flex items-center justify-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none";
+        
+        const icon = document.createElement("span");
+        icon.className = "material-symbols-outlined text-emerald-400";
+        icon.textContent = "check_circle";
+        
+        toastText = document.createElement("span");
+        toastText.id = "toast-text";
+        toastText.className = "truncate";
+        
+        toast.appendChild(icon);
+        toast.appendChild(toastText);
+        document.body.appendChild(toast);
+      }
+      
+      toastText.textContent = message;
+      toast.classList.remove("translate-y-20", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
+
+      clearTimeout(window.localToastTimeout);
+      window.localToastTimeout = setTimeout(() => {
+        toast.classList.remove("translate-y-0", "opacity-100");
+        toast.classList.add("translate-y-20", "opacity-0");
+      }, 2500);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Buy Buttons",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Product Buy Buttons"
+    }
+  ]
+}
+{% endschema %}

@@ -4,6 +4,10 @@
       "type": "custom-cut-product",
       "settings": {}
     },
+    "buy-buttons": {
+      "type": "product-buy-buttons",
+      "settings": {}
+    },
     "materials": {
       "type": "product-materials",
       "settings": {}
@@ -27,6 +31,7 @@
   },
   "order": [
     "main",
+    "buy-buttons",
     "materials",
     "description",
     "testimonial",
