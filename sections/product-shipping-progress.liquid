@@ -5,7 +5,7 @@
 {% endcomment %}
 
 {%- assign cart_total_dkk = cart.total_price | divided_by: 100.0 -%}
-{%- assign threshold = section.settings.free_shipping_threshold | default: 599.00 -%}
+{%- assign threshold = 599.00 -%}
 {%- assign progress = cart_total_dkk | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
 {%- assign missing = threshold | minus: cart_total_dkk -%}
 
@@ -149,14 +149,7 @@
 {% schema %}
 {
   "name": "Product Shipping Widget",
-  "settings": [
-    {
-      "type": "number",
-      "id": "free_shipping_threshold",
-      "label": "Free Shipping Threshold (DKK)",
-      "default": 599
-    }
-  ],
+  "settings": [],
   "presets": [
     {
       "name": "Product Shipping Widget"

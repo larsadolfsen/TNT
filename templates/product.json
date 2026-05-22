@@ -43,9 +43,7 @@
     },
     "shipping-progress": {
       "type": "product-shipping-progress",
-      "settings": {
-        "free_shipping_threshold": 599
-      }
+      "settings": {}
     },
     "cross-sell": {
       "type": "product-cross-sell",

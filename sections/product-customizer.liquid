@@ -224,7 +224,7 @@
 
     const defaultWidth = allowedWidths.includes(140) ? 140 : (allowedWidths[allowedWidths.length - 1] || 140);
     const surchargeValue = {{ section.settings.surcharge_amount | default: 60.00 }};
-    let freeShippingThreshold = window.freeShippingThreshold || {{ section.settings.free_shipping_threshold | default: 599.00 }};
+    let freeShippingThreshold = window.freeShippingThreshold || 599.00;
     const surchargeVariantId = {% if section.settings.surcharge_product != blank %}{{ section.settings.surcharge_product.first_available_variant.id | default: 'null' }}{% else %}null{% endif %};
 
     // State Management
@@ -839,12 +839,6 @@
       "id": "surcharge_amount",
       "label": "Custom Surcharge Amount (DKK)",
       "default": 60
-    },
-    {
-      "type": "number",
-      "id": "free_shipping_threshold",
-      "label": "Free Shipping Threshold (DKK)",
-      "default": 599
     },
     {
       "type": "product",
