@@ -45,6 +45,10 @@
       "type": "product-shipping-progress",
       "settings": {}
     },
+    "trust-checkmarks": {
+      "type": "product-trust-checkmarks",
+      "settings": {}
+    },
     "cross-sell": {
       "type": "product-cross-sell",
       "settings": {
@@ -92,6 +96,7 @@
     "urgency",
     "buy-buttons",
     "shipping-progress",
+    "trust-checkmarks",
     "cross-sell",
     "materials",
     "description",
