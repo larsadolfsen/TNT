@@ -47,16 +47,62 @@
     {%- endif -%}
   {%- endif -%}
 
+  {%- assign visible_count = 1 -%}
+  {%- case t -%}
+    {%- when 'blog' -%}
+      {%- if current_tags -%}
+        {%- assign visible_count = 2 -%}
+      {%- endif -%}
+    {%- when 'article' -%}
+      {%- assign visible_count = 2 -%}
+    {%- when 'product' -%}
+      {%- if c_level_0 != blank -%}
+        {%- assign visible_count = 2 -%}
+        {%- if c_level_1 != blank -%}
+          {%- assign visible_count = 3 -%}
+          {%- if c_level_2 != blank -%}
+            {%- assign visible_count = 4 -%}
+            {%- if c_level_3 != blank -%}
+              {%- assign visible_count = 5 -%}
+              {%- if c_level_4 != blank -%}
+                {%- assign visible_count = 6 -%}
+                {%- if c_level_5 != blank -%}
+                  {%- assign visible_count = 7 -%}
+                  {%- if c_level_6 != blank -%}
+                    {%- assign visible_count = 8 -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- when 'collection' and collection.handle -%}
+      {%- if c_level_1 != blank -%}
+        {%- assign visible_count = 2 -%}
+        {%- if c_level_2 != blank -%}
+          {%- assign visible_count = 3 -%}
+          {%- if c_level_3 != blank -%}
+            {%- assign visible_count = 4 -%}
+            {%- if c_level_4 != blank -%}
+              {%- assign visible_count = 5 -%}
+              {%- if c_level_5 != blank -%}
+                {%- assign visible_count = 6 -%}
+                {%- if c_level_6 != blank -%}
+                  {%- assign visible_count = 7 -%}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+  {%- endcase -%}
+
   {%- assign show_mobile_ellipsis = false -%}
-  {%- if t == 'blog' and current_tags -%}
-    {%- assign show_mobile_ellipsis = true -%}
-  {%- elsif t == 'article' -%}
-    {%- assign show_mobile_ellipsis = true -%}
-  {%- elsif t == 'collection' and c_level_1 != blank -%}
-    {%- assign show_mobile_ellipsis = true -%}
-  {%- elsif t == 'product' and c_level_0 != blank -%}
+  {%- if visible_count > 2 -%}
     {%- assign show_mobile_ellipsis = true -%}
   {%- endif -%}
+
 
   <style>
     .breadcrumb-collapsed-item {
@@ -84,7 +130,7 @@
   </style>
 
   <div class="max-w-screen-xl mx-auto px-4 h-12 md:h-auto md:pt-6 md:pb-2 flex items-center">
-    <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs text-on-surface-variant flex items-center gap-1.5 overflow-x-auto whitespace-nowrap h-full md:h-auto md:py-1 hide-scrollbar" aria-label="Brødkrummer">
+    <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs text-on-surface-variant flex items-center gap-0.5 overflow-x-auto whitespace-nowrap h-full md:h-auto md:py-1 hide-scrollbar" aria-label="Brødkrummer">
       
       {%- if show_mobile_ellipsis -%}
         <button type="button" onclick="this.closest('[data-breadcrumbs-nav]').classList.add('is-expanded')" class="breadcrumb-ellipsis hover:underline text-on-surface-variant cursor-pointer border-none bg-transparent p-0 text-[12px] font-normal" aria-label="Vis hele stien">...</button>
@@ -126,8 +172,8 @@
               <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
             {%- endif -%}
             {%- if c_level_1 != blank -%}
-              <a href="{{ c_level_1.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_1.title }}</a>
-              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+              <a href="{{ c_level_1.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_1.title }}</a>
+              <span class="material-symbols-outlined text-[14px]">chevron_right</span>
             {%- endif -%}
             <a href="{{ c_level_0.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_0.title }}</a>
             <span class="material-symbols-outlined text-[14px]">chevron_right</span>
@@ -152,8 +198,8 @@
             <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
           {%- if c_level_2 != blank -%}
-            <a href="{{ c_level_2.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_2.title }}</a>
-            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+            <a href="{{ c_level_2.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_2.title }}</a>
+            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
           {%- if c_level_1 != blank -%}
             <a href="{{ c_level_1.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_1.title }}</a>
