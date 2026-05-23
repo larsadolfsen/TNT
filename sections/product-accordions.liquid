@@ -4,9 +4,9 @@
       <div class="accordion-item py-4" {{ block.shopify_attributes }}>
         <button class="accordion-trigger flex items-center justify-between w-full text-left font-bold text-primary focus:outline-none">
           <span class="text-sm">{{ block.settings.title }}</span>
-          <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200">expand_more</span>
+          <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200{% if forloop.first %} rotate-180{% endif %}">expand_more</span>
         </button>
-        <div class="accordion-content hidden mt-3 text-sm text-on-surface-variant space-y-2">
+        <div class="accordion-content{% unless forloop.first %} hidden{% endunless %} mt-3 text-sm text-on-surface-variant space-y-2">
           {{ block.settings.content }}
         </div>
       </div>
@@ -39,7 +39,7 @@
 
 {% schema %}
 {
-  "name": "Klap-ud Paneler",
+  "name": "Accordion",
   "blocks": [
     {
       "type": "accordion",
@@ -62,7 +62,7 @@
   ],
   "presets": [
     {
-      "name": "Klap-ud Paneler",
+      "name": "Accordion",
       "blocks": [
         {
           "type": "accordion",
