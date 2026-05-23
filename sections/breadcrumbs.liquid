@@ -1,0 +1,66 @@
+{% comment %}
+  Breadcrumbs Section
+  Renders breadcrumbs navigation dynamically based on the current template.
+{% endcomment %}
+
+{%- unless template == 'index' or template == 'cart' or template == 'list-collections' or template == '404' -%}
+  {%- assign t = template | split: '.' | first -%}
+
+  <div class="max-w-screen-xl mx-auto px-4 pt-6 pb-2">
+    <nav class="text-xs text-on-surface-variant flex items-center gap-1.5 overflow-x-auto whitespace-nowrap py-1" aria-label="Brødkrummer">
+      <a href="{{ routes.root_url }}" class="hover:underline text-on-surface-variant no-underline">Forside</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+
+      {%- case t -%}
+        {%- when 'page' -%}
+          <span class="text-primary font-semibold" aria-current="page">{{ page.title }}</span>
+
+        {%- when 'product' -%}
+          {%- if collection.url -%}
+            <a href="{{ collection.url }}" class="hover:underline text-on-surface-variant no-underline">{{ collection.title }}</a>
+            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- else -%}
+            <a href="/collections" class="hover:underline text-on-surface-variant no-underline">Kollektioner</a>
+            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- endif -%}
+          <span class="text-primary font-semibold" aria-current="page">{{ product.title }}</span>
+
+        {%- when 'collection' and collection.handle -%}
+          {%- if collection.handle != 'all' -%}
+            <a href="/collections" class="hover:underline text-on-surface-variant no-underline">Kollektioner</a>
+            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- endif -%}
+          <span class="text-primary font-semibold" aria-current="page">{{ collection.title }}</span>
+
+        {%- when 'blog' -%}
+          {%- if current_tags -%}
+            <a href="{{ blog.url }}" class="hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
+            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+            <span class="text-primary font-semibold" aria-current="page">{{ current_tags | join: " + " }}</span>
+          {%- else -%}
+            <span class="text-primary font-semibold" aria-current="page">{{ blog.title }}</span>
+          {%- endif -%}
+
+        {%- when 'article' -%}
+          <a href="{{ blog.url }}" class="hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span class="text-primary font-semibold" aria-current="page">{{ article.title }}</span>
+
+        {%- else -%}
+          <span class="text-primary font-semibold" aria-current="page">{{ page_title }}</span>
+      {%- endcase -%}
+    </nav>
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Brødkrummer",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Brødkrummer"
+    }
+  ]
+}
+{% endschema %}

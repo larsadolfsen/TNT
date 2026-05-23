@@ -9,9 +9,12 @@
  */
 {
   "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "settings": {}
+    },
     "collection_header_EXpicG": {
       "type": "collection-header",
-      "name": "Kollektion Header",
       "settings": {
         "title_override": "{{ product.title }}",
         "show_description": true
@@ -148,6 +151,7 @@
     }
   },
   "order": [
+    "breadcrumbs",
     "collection_header_EXpicG",
     "trust",
     "media",

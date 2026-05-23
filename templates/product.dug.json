@@ -13,10 +13,6 @@
       "type": "product-media",
       "settings": {}
     },
-    "title": {
-      "type": "product-title",
-      "settings": {}
-    },
     "trust": {
       "type": "product-trust",
       "settings": {}
@@ -52,7 +48,6 @@
   },
   "order": [
     "media",
-    "title",
     "trust",
     "price",
     "urgency",
