@@ -55,10 +55,12 @@
     "customizer": {
       "type": "product-customizer",
       "settings": {
-        "surcharge_amount": 60,
-        "surcharge_product": "tilpasning-til-rund-dug",
+        "surcharge_product_round": "tilpasning-til-rund-dug",
+        "surcharge_product_oval": "rund-dug",
+        "surcharge_product_width": "tilpasning-af-bredde",
         "step_size": 10,
-        "min_length": 50
+        "min_length": 50,
+        "min_width": 80
       }
     },
     "buy-buttons": {
