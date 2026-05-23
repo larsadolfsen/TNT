@@ -17,9 +17,11 @@
 {%- assign potential_progress = potential_total | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
 {%- assign potential_width = potential_progress | minus: progress | at_least: 0 -%}
 
+{%- assign hide_everything_except_text = section.settings.hide_everything_except_text -%}
+
 <section class="max-w-screen-xl mx-auto px-4 py-3">
   <!-- Dynamic Free Shipping Progress Bar Widget (No border) -->
-  <div id="free-shipping-widget" class="bg-white p-4 rounded-xl space-y-2 border border-outline-variant" data-threshold="{{ threshold }}">
+  <div id="free-shipping-widget" class="{% if hide_everything_except_text %}py-1{% else %}bg-white p-4 rounded-xl space-y-2 border border-outline-variant{% endif %}" data-threshold="{{ threshold }}">
     <div class="flex justify-between text-xs text-primary font-bold">
       <span id="shipping-status-text">
         {%- if cart_total_dkk < threshold -%}
@@ -28,9 +30,9 @@
           Du har opnået fri fragt!
         {%- endif -%}
       </span>
-      <span id="shipping-percent-text">{{ progress | round }}%</span>
+      <span id="shipping-percent-text" class="{% if hide_everything_except_text %}hidden{% endif %}">{{ progress | round }}%</span>
     </div>
-    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex">
+    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex {% if hide_everything_except_text %}hidden{% endif %}">
       <div id="shipping-progress-bar" class="h-full {% if cart_total_dkk < threshold %}bg-emerald-600{% else %}bg-emerald-500{% endif %} transition-all duration-300" style="width: {{ progress }}%"></div>
       <div id="shipping-potential-bar" class="h-full bg-emerald-300 transition-all duration-300" style="width: {{ potential_width }}%"></div>
     </div>
@@ -169,7 +171,14 @@
 {% schema %}
 {
   "name": "Product Shipping Widget",
-  "settings": [],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "hide_everything_except_text",
+      "label": "Skjul alt undtagen tekst",
+      "default": false
+    }
+  ],
   "presets": [
     {
       "name": "Product Shipping Widget"

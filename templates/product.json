@@ -51,7 +51,9 @@
     },
     "shipping-progress": {
       "type": "product-shipping-progress",
-      "settings": {}
+      "settings": {
+        "hide_everything_except_text": true
+      }
     },
     "buy-buttons": {
       "type": "product-buy-buttons",
