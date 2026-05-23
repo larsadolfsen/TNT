@@ -31,6 +31,12 @@
         "image_badge": "BESTSELLER"
       }
     },
+    "shipping-progress": {
+      "type": "product-shipping-progress",
+      "settings": {
+        "hide_everything_except_text": true
+      }
+    },
     "price": {
       "type": "product-price",
       "settings": {
@@ -59,12 +65,6 @@
         "text_before_price": "Læg i kurv –"
       }
     },
-    "shipping-progress": {
-      "type": "product-shipping-progress",
-      "settings": {
-        "hide_everything_except_text": false
-      }
-    },
     "trust-checkmarks": {
       "type": "product-trust-checkmarks",
       "settings": {}
@@ -81,11 +81,11 @@
     "page_title_r3GkDj",
     "trust",
     "media",
+    "shipping-progress",
     "price",
     "urgency",
     "customizer",
     "buy-buttons",
-    "shipping-progress",
     "trust-checkmarks",
     "cross-sell"
   ]
