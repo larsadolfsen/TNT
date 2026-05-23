@@ -30,6 +30,11 @@
   if max_width == blank or max_width == 0
     assign max_width = 140
   endif
+
+  assign surcharge_amount = 0.00
+  if section.settings.surcharge_product != blank
+    assign surcharge_amount = section.settings.surcharge_product.price | divided_by: 100.0
+  endif
 -%}
 
 <section class="px-4 py-8 bg-surface-container border-y border-outline-variant max-w-screen-xl mx-auto my-4">
@@ -257,7 +262,7 @@
     }
 
     const defaultWidth = allowedWidths.includes(140) ? 140 : (allowedWidths[allowedWidths.length - 1] || 140);
-    const surchargeValue = {{ section.settings.surcharge_amount | default: 60.00 }};
+    const surchargeValue = {{ surcharge_amount }};
     let freeShippingThreshold = window.freeShippingThreshold || 590.00;
     const surchargeVariantId = {% if section.settings.surcharge_product != blank %}{{ section.settings.surcharge_product.first_available_variant.id | default: 'null' }}{% else %}null{% endif %};
     const stepSizeValue = {{ section.settings.step_size | default: 10 }};
@@ -891,16 +896,10 @@
   "name": "Product Customizer",
   "settings": [
     {
-      "type": "number",
-      "id": "surcharge_amount",
-      "label": "Custom Surcharge Amount (DKK)",
-      "default": 60
-    },
-    {
       "type": "product",
       "id": "surcharge_product",
       "label": "Customization Surcharge Product",
-      "info": "Choose the product that charges the 60 kr custom surcharge."
+      "info": "Choose the product that charges the custom surcharge."
     },
     {
       "type": "number",
