@@ -1,6 +1,6 @@
 <section class="px-4 py-10 space-y-6 bg-white max-w-screen-xl mx-auto">
-  <div class="aspect-video w-full rounded-xl overflow-hidden bg-surface-container">
-    {%- if section.settings.image != blank -%}
+  {%- if section.settings.image != blank -%}
+    <div class="aspect-video w-full rounded-xl overflow-hidden bg-surface-container">
       <img 
         alt="{{ section.settings.image.alt | default: section.settings.heading }}" 
         class="w-full h-full object-cover" 
@@ -8,16 +8,10 @@
         width="1200" 
         height="675"
       />
-    {%- else -%}
-      <img 
-        alt="Klar voksdug beskytter bordet" 
-        class="w-full h-full object-cover" 
-        src="https://lh3.googleusercontent.com/aida/ADBb0ugB3-cue9umr_GH4yO2_ErqQL6CkCRqoxECS2OollSkHH4PV3oRdZ3Y17T8etd7H-Pl83sg45fUcg6JwvsS-sW_Of55YW7Erz8HXbaJH43az3YWD35q9Vs1TEOkZV9HH7YaXqntridEgXj_iPkPNdVs7q20_TMvdkauZ-paVWNfPrAP8av1hq2hX2M7WFN4BylMg-606Jz15xKiR6cxASDgEo735sRgoLSBSa_96QNxQdcneTw4byWQW7CX" 
-        width="800" 
-        height="450"
-      />
-    {%- endif -%}
-  </div>
+    </div>
+  {%- endif -%}
+
+
   
   <div class="space-y-4">
     {%- if section.settings.heading != blank -%}
@@ -32,7 +26,7 @@
 
 {% schema %}
 {
-  "name": "Billed-banner & Tekst",
+  "name": "Tekst",
   "settings": [
     {
       "type": "image_picker",
@@ -54,7 +48,7 @@
   ],
   "presets": [
     {
-      "name": "Billed-banner & Tekst"
+      "name": "Tekst"
     }
   ]
 }

@@ -89,7 +89,7 @@
     },
     "product_banner_text_MkWDWF": {
       "type": "product-banner-text",
-      "name": "Billed-banner & Tekst",
+      "name": "Tekst",
       "settings": {
         "heading": "",
         "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>"
