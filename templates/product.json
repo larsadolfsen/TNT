@@ -61,16 +61,6 @@
         "text_before_price": "Læg i kurv"
       }
     },
-    "product_banner_text_MkWDWF": {
-      "type": "product-banner-text",
-      "name": "Tekst",
-      "settings": {
-        "heading": "Produkt Info",
-        "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>",
-        "border_top": true,
-        "border_bottom": false
-      }
-    },
     "trust-checkmarks": {
       "type": "product-trust-checkmarks",
       "blocks": {
@@ -202,7 +192,6 @@
     "urgency",
     "shipping-progress",
     "buy-buttons",
-    "product_banner_text_MkWDWF",
     "trust-checkmarks",
     "materials",
     "testimonial",
