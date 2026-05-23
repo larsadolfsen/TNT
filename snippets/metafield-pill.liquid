@@ -1,0 +1,20 @@
+{% comment %}
+  Renders a single metafield value pill, supporting color swatches and text.
+  Accepts:
+  - item: {Object|String} The metafield value or list element
+  - key: {String} The metafield key/name (e.g. 'color' or 'fabric')
+{% endcomment %}
+
+{%- liquid
+  assign name = item.name | default: item.label | default: item.title | default: item
+  assign color_hex = item.color | default: item.hex_code | default: item.color_code | default: nil
+-%}
+
+{%- if name != blank -%}
+  <span class="inline-flex items-center gap-1.5 bg-slate-100 border border-slate-200/40 text-slate-800 text-xs font-medium px-2.5 py-1 rounded-md">
+    {%- if key == 'color' and color_hex != nil -%}
+      <span class="w-3.5 h-3.5 rounded-sm border border-black/10 flex-shrink-0" style="background-color: {{ color_hex }}; display: inline-block;"></span>
+    {%- endif -%}
+    <span>{{ name }}</span>
+  </span>
+{%- endif -%}
