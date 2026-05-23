@@ -863,10 +863,32 @@
                 <a href="${product.url}" class="text-primary no-underline hover:text-secondary line-clamp-2">${product.title}</a>
               </h3>
               
-              <!-- Rating: Single Star & Score -->
+              <!-- Rating: 5 Stars -->
               <div class="flex items-center gap-1 text-[10px] text-secondary mt-1">
-                <span class="material-symbols-outlined text-[12px] filled-star text-[#FFB800] select-none">star</span>
-                <span class="font-bold text-primary">${product.rating}</span>
+                <div class="flex text-[#FFB800] gap-0.5">
+                  ${(() => {
+                    let starsHtml = "";
+                    const ratingFloor = Math.floor(product.rating);
+                    const decimal = product.rating - ratingFloor;
+                    for (let i = 1; i <= 5; i++) {
+                      if (i <= ratingFloor) {
+                        starsHtml += `<span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                      } else if (i === ratingFloor + 1) {
+                        if (decimal >= 0.75) {
+                          starsHtml += `<span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                        } else if (decimal >= 0.25) {
+                          starsHtml += `<span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star_half</span>`;
+                        } else {
+                          starsHtml += `<span class="material-symbols-outlined text-[12px] text-outline-variant select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                        }
+                      } else {
+                        starsHtml += `<span class="material-symbols-outlined text-[12px] text-outline-variant select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                      }
+                    }
+                    return starsHtml;
+                  })()}
+                </div>
+                <span class="font-bold text-primary ml-1">${product.rating}</span>
                 <span class="text-on-surface-variant">(${product.reviews})</span>
               </div>
             </div>
