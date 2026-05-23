@@ -35,9 +35,7 @@
     },
     "shipping-progress": {
       "type": "product-shipping-progress",
-      "settings": {
-        "hide_everything_except_text": true
-      }
+      "settings": {}
     },
     "trust-checkmarks": {
       "type": "product-trust-checkmarks",

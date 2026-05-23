@@ -46,19 +46,27 @@
       "settings": {
         "show_urgency": true,
         "urgency_text": "Kun få på lager – bestil snart",
-        "hide_under_limit": 500
+        "hide_under_limit": 10
       }
     },
     "shipping-progress": {
       "type": "product-shipping-progress",
-      "settings": {
-        "hide_everything_except_text": true
-      }
+      "settings": {}
     },
     "buy-buttons": {
       "type": "product-buy-buttons",
       "settings": {
         "text_before_price": "Læg i kurv"
+      }
+    },
+    "product_banner_text_MkWDWF": {
+      "type": "product-banner-text",
+      "name": "Tekst",
+      "settings": {
+        "heading": "Produkt Info",
+        "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>",
+        "border_top": true,
+        "border_bottom": false
       }
     },
     "trust-checkmarks": {
@@ -90,14 +98,6 @@
         "checkmark_J7LE8N"
       ],
       "settings": {}
-    },
-    "product_banner_text_MkWDWF": {
-      "type": "product-banner-text",
-      "name": "Tekst",
-      "settings": {
-        "heading": "Produkt Info",
-        "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>"
-      }
     },
     "materials": {
       "type": "product-materials",
@@ -185,7 +185,9 @@
       "settings": {
         "image": "{{ product.featured_image }}",
         "heading": "",
-        "content": "<p>{{ product.description }}</p>"
+        "content": "<p>{{ product.description }}</p>",
+        "border_top": true,
+        "border_bottom": true
       }
     }
   },
@@ -198,8 +200,8 @@
     "urgency",
     "shipping-progress",
     "buy-buttons",
-    "trust-checkmarks",
     "product_banner_text_MkWDWF",
+    "trust-checkmarks",
     "materials",
     "testimonial",
     "product_accordions_gTH8We",
