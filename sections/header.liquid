@@ -1,3 +1,31 @@
+{%- liquid
+  assign show_search = section.settings.show_search_default
+  assign show_menu = section.settings.show_menu_default
+
+  case template.name
+    when 'index'
+      assign show_search = section.settings.show_search_index
+      assign show_menu = section.settings.show_menu_index
+    when 'collection'
+      assign show_search = section.settings.show_search_collection
+      assign show_menu = section.settings.show_menu_collection
+    when 'product'
+      assign show_search = section.settings.show_search_product
+      assign show_menu = section.settings.show_menu_product
+    when 'page'
+      assign show_search = section.settings.show_search_page
+      assign show_menu = section.settings.show_menu_page
+    when 'search'
+      assign show_search = section.settings.show_search_search
+      assign show_menu = section.settings.show_menu_search
+    when 'blog' or 'article'
+      assign show_search = section.settings.show_search_blog
+      assign show_menu = section.settings.show_menu_blog
+    when 'cart'
+      assign show_search = section.settings.show_search_cart
+      assign show_menu = section.settings.show_menu_cart
+  endcase
+-%}
 <!-- Header (Not Sticky) -->
 <header class="bg-white border-b border-outline-variant py-4 px-4">
   <div class="max-w-screen-xl mx-auto flex flex-col gap-4">
@@ -13,7 +41,7 @@
         {%- endif -%}
       </a>
       <div class="flex items-center gap-4">
-        {%- unless section.settings.show_search -%}
+        {%- unless show_search -%}
           <button 
             type="button" 
             onclick="toggleSearchInput()" 
@@ -36,7 +64,7 @@
       id="header-search-form" 
       action="{{ routes.search_url }}" 
       method="get" 
-      class="relative m-0 {% unless section.settings.show_search %}hidden{% endunless %} transition-all duration-300"
+      class="relative m-0 {% unless show_search %}hidden{% endunless %} transition-all duration-300"
     >
       <input 
         type="text" 
@@ -49,7 +77,7 @@
     </form>
 
     <!-- Menu under search bar -->
-    {%- if section.settings.show_menu and section.settings.menu != blank -%}
+    {%- if show_menu and section.settings.menu != blank -%}
       {%- assign header_menu = linklists[section.settings.menu] -%}
       {%- if header_menu.links.size > 0 -%}
         <nav class="w-full overflow-x-auto hide-scrollbar py-1 -mx-4 px-4 md:mx-0 md:px-0" aria-label="Kategori menu">
@@ -406,14 +434,130 @@
       "default": "Textil & Voksdug"
     },
     {
+      "type": "header",
+      "content": "Forside (Home page)"
+    },
+    {
       "type": "checkbox",
-      "id": "show_search",
+      "id": "show_search_index",
       "label": "Vis søgefelt",
       "default": true
     },
     {
       "type": "checkbox",
-      "id": "show_menu",
+      "id": "show_menu_index",
+      "label": "Vis menu under søgefelt",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Kollektionsside (Collection page)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_collection",
+      "label": "Vis søgefelt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_menu_collection",
+      "label": "Vis menu under søgefelt",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Produktside (Product page)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_product",
+      "label": "Vis søgefelt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_menu_product",
+      "label": "Vis menu under søgefelt",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Standard sider (Page)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_page",
+      "label": "Vis søgefelt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_menu_page",
+      "label": "Vis menu under søgefelt",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Søgeside (Search page)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_search",
+      "label": "Vis søgefelt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_menu_search",
+      "label": "Vis menu under søgefelt",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Blog & Artikelside (Blog & Article pages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_blog",
+      "label": "Vis søgefelt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_menu_blog",
+      "label": "Vis menu under søgefelt",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Kurveside (Cart page)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_cart",
+      "label": "Vis søgefelt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_menu_cart",
+      "label": "Vis menu under søgefelt",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Øvrige sider (Other pages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_default",
+      "label": "Vis søgefelt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_menu_default",
       "label": "Vis menu under søgefelt",
       "default": true
     },

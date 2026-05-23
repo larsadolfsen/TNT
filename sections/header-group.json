@@ -15,8 +15,22 @@
       "type": "header",
       "settings": {
         "logo_text": "Textil & Voksdug",
-        "show_search": true,
-        "show_menu": true,
+        "show_search_index": true,
+        "show_menu_index": true,
+        "show_search_collection": true,
+        "show_menu_collection": true,
+        "show_search_product": true,
+        "show_menu_product": true,
+        "show_search_page": true,
+        "show_menu_page": true,
+        "show_search_search": true,
+        "show_menu_search": true,
+        "show_search_blog": true,
+        "show_menu_blog": true,
+        "show_search_cart": true,
+        "show_menu_cart": true,
+        "show_search_default": true,
+        "show_menu_default": true,
         "menu": "main-menu"
       }
     }
