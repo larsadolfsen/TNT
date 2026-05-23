@@ -4,6 +4,7 @@
   Supports both customized (custom-cut) and simple products.
 {% endcomment %}
 
+{%- assign text_before_price = section.settings.text_before_price | default: "Læg i kurv – " -%}
 <section class="w-full bg-white pt-2 pb-6 px-4 my-0">
   <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
     <!-- Left: Selected Specs & Price -->
@@ -24,8 +25,8 @@
         </button>
       </div>
 
-      <button id="btn-add-to-cart" class="w-full md:w-96 bg-[#FFD814] hover:bg-[#F7CA00] text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
-        Læg i kurv – {{ product.selected_or_first_available_variant.price | money }}
+      <button id="btn-add-to-cart" data-text-before-price="{{ text_before_price }}" class="w-full md:w-96 bg-[#FFD814] hover:bg-[#F7CA00] text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+        {{ text_before_price }}{{ product.selected_or_first_available_variant.price | money }}
       </button>
       
       <!-- Payment Badges -->
@@ -101,12 +102,13 @@
         const formattedPrice = (totalCents / 100).toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
         
         const priceText = "Pris: " + formattedPrice;
-        const btnText = "Læg i kurv – " + formattedPrice;
+        const btn = document.getElementById("btn-add-to-cart");
+        const prefix = btn ? (btn.getAttribute("data-text-before-price") || "Læg i kurv – ") : "Læg i kurv – ";
+        const btnText = prefix + formattedPrice;
         
         const summaryPris = document.getElementById("summary-pris");
         if (summaryPris) summaryPris.textContent = priceText;
         
-        const btn = document.getElementById("btn-add-to-cart");
         if (btn) btn.textContent = btnText;
 
         // Set global variable to resolve initial page load race condition
@@ -309,7 +311,14 @@
 {% schema %}
 {
   "name": "Product Buy Buttons",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_before_price",
+      "label": "Tekst før pris på købsknap",
+      "default": "Læg i kurv – "
+    }
+  ],
   "presets": [
     {
       "name": "Product Buy Buttons"

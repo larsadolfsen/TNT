@@ -26,7 +26,9 @@
     {% endfor %}
   </table>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
+  <button type="submit" name="checkout" class="w-full md:w-96 py-3.5 px-8 mt-6 bg-[#FFD814] hover:bg-[#F7CA00] text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all cursor-pointer border-0 block focus:outline-none">
+    {{ 'cart.checkout' | t }}
+  </button>
 </form>
 
 {% schema %}

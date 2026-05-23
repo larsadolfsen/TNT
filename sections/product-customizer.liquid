@@ -346,7 +346,8 @@
         summaryPrisText.textContent = "Pris: " + formatted;
       }
       if (addToCartBtn) {
-        addToCartBtn.textContent = "Læg i kurv – " + formatted;
+        const prefix = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv – ";
+        addToCartBtn.textContent = prefix + formatted;
       }
       
       // Update dynamic display on top
