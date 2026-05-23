@@ -22,7 +22,12 @@
     },
     "collection-subcollections": {
       "type": "collection-subcollections",
-      "settings": {}
+      "settings": {
+        "title": "SØG UD FRA DIT BEHOV",
+        "mode": "automatic",
+        "main_collection": "{{ collection }}",
+        "show_all_label": "Vis alle"
+      }
     },
     "collection-subcategories": {
       "type": "collection-subcategories",
@@ -30,7 +35,12 @@
     },
     "main-collection": {
       "type": "main-collection",
-      "settings": {}
+      "settings": {
+        "show_thickness_filter": true,
+        "show_width_filter": true,
+        "show_form_filter": true,
+        "show_price_filter": true
+      }
     }
   },
   "order": [
