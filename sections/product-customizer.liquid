@@ -31,10 +31,14 @@
     assign max_width = 140
   endif
 
-  assign surcharge_amount = 0.00
-  if section.settings.surcharge_product != blank
-    assign surcharge_amount = section.settings.surcharge_product.price | divided_by: 100.0
-  endif
+  assign surcharge_round_id = section.settings.surcharge_product_round.first_available_variant.id | default: 'null'
+  assign surcharge_round_price = section.settings.surcharge_product_round.price | divided_by: 100.0 | default: 0.00
+
+  assign surcharge_oval_id = section.settings.surcharge_product_oval.first_available_variant.id | default: 'null'
+  assign surcharge_oval_price = section.settings.surcharge_product_oval.price | divided_by: 100.0 | default: 0.00
+
+  assign surcharge_width_id = section.settings.surcharge_product_width.first_available_variant.id | default: 'null'
+  assign surcharge_width_price = section.settings.surcharge_product_width.price | divided_by: 100.0 | default: 0.00
 -%}
 
 <section class="px-4 py-8 bg-surface-container border-y border-outline-variant max-w-screen-xl mx-auto my-4">
@@ -261,10 +265,16 @@
       }
     }
 
-    const defaultWidth = allowedWidths.includes(140) ? 140 : (allowedWidths[allowedWidths.length - 1] || 140);
-    const surchargeValue = {{ surcharge_amount }};
+    const surchargeRoundId = {{ surcharge_round_id }};
+    const surchargeRoundValue = {{ surcharge_round_price }};
+
+    const surchargeOvalId = {{ surcharge_oval_id }};
+    const surchargeOvalValue = {{ surcharge_oval_price }};
+
+    const surchargeWidthId = {{ surcharge_width_id }};
+    const surchargeWidthValue = {{ surcharge_width_price }};
+
     let freeShippingThreshold = window.freeShippingThreshold || 590.00;
-    const surchargeVariantId = {% if section.settings.surcharge_product != blank %}{{ section.settings.surcharge_product.first_available_variant.id | default: 'null' }}{% else %}null{% endif %};
     const stepSizeValue = {{ section.settings.step_size | default: 10 }};
     const minLengthValue = {{ section.settings.min_length | default: 50 }};
 
@@ -351,10 +361,22 @@
       let surcharge = 0;
       let surchargeText = "";
       
-      // Add surcharge if shape is round, oval OR if width is changed from the standard 140 cm
-      if (appState.shape === "rund" || appState.shape === "oval" || appState.width !== 140) {
-        surcharge = surchargeValue;
-        surchargeText = " (inkl. " + formatPrice(surcharge) + " tilpasningstillæg)";
+      // Determine active surcharge based on shape and width
+      if (appState.shape === "rund") {
+        surcharge = surchargeRoundValue;
+        if (surcharge > 0) {
+          surchargeText = " (inkl. " + formatPrice(surcharge) + " rund tilpasningstillæg)";
+        }
+      } else if (appState.shape === "oval") {
+        surcharge = surchargeOvalValue;
+        if (surcharge > 0) {
+          surchargeText = " (inkl. " + formatPrice(surcharge) + " oval tilpasningstillæg)";
+        }
+      } else if (appState.width !== 140) {
+        surcharge = surchargeWidthValue;
+        if (surcharge > 0) {
+          surchargeText = " (inkl. " + formatPrice(surcharge) + " breddetilpasningstillæg)";
+        }
       }
       
       if (appState.shape === "rund") {
@@ -741,10 +763,18 @@
         });
 
         // Add customization surcharge companion product (if needed)
-        const hasSurcharge = appState.shape === "rund" || appState.shape === "oval" || appState.width !== 140;
-        if (hasSurcharge && surchargeVariantId) {
+        let activeSurchargeVariantId = null;
+        if (appState.shape === "rund") {
+          activeSurchargeVariantId = surchargeRoundId;
+        } else if (appState.shape === "oval") {
+          activeSurchargeVariantId = surchargeOvalId;
+        } else if (appState.width !== 140) {
+          activeSurchargeVariantId = surchargeWidthId;
+        }
+
+        if (activeSurchargeVariantId) {
           items.push({
-            id: surchargeVariantId,
+            id: activeSurchargeVariantId,
             quantity: appState.quantity,
             properties: {
               "Tilknyttet dug": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
@@ -897,9 +927,21 @@
   "settings": [
     {
       "type": "product",
-      "id": "surcharge_product",
-      "label": "Customization Surcharge Product",
-      "info": "Choose the product that charges the custom surcharge."
+      "id": "surcharge_product_round",
+      "label": "Rund tilpasning tillægsprodukt",
+      "info": "Vælg produktet, der opkræver tillæg for rund dug."
+    },
+    {
+      "type": "product",
+      "id": "surcharge_product_oval",
+      "label": "Oval tilpasning tillægsprodukt",
+      "info": "Vælg produktet, der opkræver tillæg for oval dug."
+    },
+    {
+      "type": "product",
+      "id": "surcharge_product_width",
+      "label": "Bredde tilpasning tillægsprodukt",
+      "info": "Vælg produktet, der opkræver tillæg for tilpasning af bredde (når bredden ikke er 140 cm)."
     },
     {
       "type": "number",
