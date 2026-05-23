@@ -80,7 +80,7 @@
       "type": "product-banner-text",
       "name": "Tekst",
       "settings": {
-        "heading": "",
+        "heading": "Produkt Info",
         "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>",
         "border_top": true,
         "border_bottom": true
