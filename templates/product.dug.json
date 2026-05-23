@@ -60,7 +60,7 @@
         "surcharge_product_width": "tilpasning-af-bredde",
         "step_size": 10,
         "min_length": 50,
-        "min_width": 80
+        "min_width": 50
       }
     },
     "buy-buttons": {
