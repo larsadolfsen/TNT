@@ -20,6 +20,10 @@
         "show_description": true
       }
     },
+    "collection-subcollections": {
+      "type": "collection-subcollections",
+      "settings": {}
+    },
     "collection-subcategories": {
       "type": "collection-subcategories",
       "settings": {}
@@ -32,6 +36,7 @@
   "order": [
     "breadcrumbs",
     "collection-header",
+    "collection-subcollections",
     "collection-subcategories",
     "main-collection"
   ]

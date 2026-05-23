@@ -9,26 +9,30 @@
     <!-- Card 1 -->
     {%- assign cs_prod_1 = section.settings.cross_sell_1 -%}
     {%- if cs_prod_1 != blank -%}
-      {%- assign cs_variant_1 = cs_prod_1.first_available_variant -%}
-      <div class="flex-shrink-0 w-44 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
-        <div class="aspect-square bg-surface-container">
-          <img alt="{{ cs_prod_1.title }}" class="w-full h-full object-cover" src="{{ cs_prod_1.featured_image | image_url: width: 300 }}" width="300" height="300"/>
-        </div>
-        <div class="p-3 space-y-1">
-          <p class="text-xs font-bold text-primary truncate">{{ cs_prod_1.title }}</p>
-          <p class="text-xs text-primary">{{ cs_variant_1.price | money }}</p>
-          <button data-id="{{ cs_variant_1.id }}" data-navn="{{ cs_prod_1.title }}" data-pris="{{ cs_variant_1.price | divided_by: 100 }}" class="btn-cross-sell w-full mt-2 py-1.5 text-[10px] font-bold bg-primary text-white rounded hover:bg-slate-800 transition-colors cursor-pointer">TILFØJ</button>
-        </div>
-      </div>
+      {% render 'product-card', product: cs_prod_1, class: 'w-44 flex-shrink-0' %}
     {%- else -%}
-      <div class="flex-shrink-0 w-44 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
-        <div class="aspect-square bg-surface-container">
-          <img alt="Dugholdere" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3q8voEmliO4VwxQb6kInoHXYV4yQ44zu38WSBUJ6infMVqpD0TLdCN7S8v49YIXOfNU0tjjru5XoGEltxlA4uk60WqVoJvFCQsi9IOpT4uAi-IhDeAr7aQN6rqdGxwWJDC-S90tuJvMIEWGLTmgi5WOwrGjCF_xxnZYgVxSKYOzTu57p_vCIyMdptx4s4NHwo_WWVSLrGjtvfuTiqnRJcQZdipeP2LFKWtPPZDBpBRGesbjvCfbI__yH4D43N3l9x5uLHkrQhhK0a" width="300" height="300"/>
+      <div class="product-card flex flex-col bg-white border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative w-44 flex-shrink-0">
+        <div class="relative w-full aspect-square flex-shrink-0 bg-surface-container overflow-hidden">
+          <img alt="Dugholdere i stål" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3q8voEmliO4VwxQb6kInoHXYV4yQ44zu38WSBUJ6infMVqpD0TLdCN7S8v49YIXOfNU0tjjru5XoGEltxlA4uk60WqVoJvFCQsi9IOpT4uAi-IhDeAr7aQN6rqdGxwWJDC-S90tuJvMIEWGLTmgi5WOwrGjCF_xxnZYgVxSKYOzTu57p_vCIyMdptx4s4NHwo_WWVSLrGjtvfuTiqnRJcQZdipeP2LFKWtPPZDBpBRGesbjvCfbI__yH4D43N3l9x5uLHkrQhhK0a" width="300" height="300"/>
         </div>
-        <div class="p-3 space-y-1">
-          <p class="text-xs font-bold text-primary truncate">Dugholdere i stål</p>
-          <p class="text-xs text-primary">49,00 kr.</p>
-          <button data-id="holdere-mock" data-navn="Dugholdere i stål" data-pris="49" class="btn-cross-sell w-full mt-2 py-1.5 text-[10px] font-bold bg-primary text-white rounded hover:bg-slate-800 transition-colors cursor-pointer">TILFØJ</button>
+        <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
+          <div class="space-y-1">
+            <h3 class="font-sans text-xs font-bold text-primary leading-tight hover:text-secondary mb-1 truncate">
+              Dugholdere i stål
+            </h3>
+            <div class="flex items-center gap-1 text-[10px] text-secondary mt-1">
+              <span class="material-symbols-outlined text-[12px] filled-star text-[#FFB800] select-none">star</span>
+              <span class="font-bold text-primary">4.8</span>
+              <span class="text-on-surface-variant">(142)</span>
+            </div>
+          </div>
+          <div class="mt-3 space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[10px] text-on-surface-variant leading-none">Pris</span>
+              <span class="text-xs sm:text-sm font-bold text-primary leading-none">49,00 kr.</span>
+            </div>
+            <button data-id="holdere-mock" data-navn="Dugholdere i stål" data-pris="49" class="btn-cross-sell w-full bg-[#FFD814] hover:bg-[#e6c212] text-primary py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors focus:outline-none text-[11px] sm:text-xs font-bold border-0 cursor-pointer">Køb</button>
+          </div>
         </div>
       </div>
     {%- endif -%}
@@ -36,26 +40,30 @@
     <!-- Card 2 -->
     {%- assign cs_prod_2 = section.settings.cross_sell_2 -%}
     {%- if cs_prod_2 != blank -%}
-      {%- assign cs_variant_2 = cs_prod_2.first_available_variant -%}
-      <div class="flex-shrink-0 w-44 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
-        <div class="aspect-square bg-surface-container">
-          <img alt="{{ cs_prod_2.title }}" class="w-full h-full object-cover" src="{{ cs_prod_2.featured_image | image_url: width: 300 }}" width="300" height="300"/>
-        </div>
-        <div class="p-3 space-y-1">
-          <p class="text-xs font-bold text-primary truncate">{{ cs_prod_2.title }}</p>
-          <p class="text-xs text-primary">{{ cs_variant_2.price | money }}</p>
-          <button data-id="{{ cs_variant_2.id }}" data-navn="{{ cs_prod_2.title }}" data-pris="{{ cs_variant_2.price | divided_by: 100 }}" class="btn-cross-sell w-full mt-2 py-1.5 text-[10px] font-bold bg-primary text-white rounded hover:bg-slate-800 transition-colors cursor-pointer">TILFØJ</button>
-        </div>
-      </div>
+      {% render 'product-card', product: cs_prod_2, class: 'w-44 flex-shrink-0' %}
     {%- else -%}
-      <div class="flex-shrink-0 w-44 bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
-        <div class="aspect-square bg-surface-container">
-          <img alt="Opbevaring" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG8LJSBQCnrrQMlodcn5g-wgXMzOiKvuBRaV3mhi75TiUQignYncFT-v1fsBZJmKDw7UOdeTcQTICqryNUb6qtV7_Sgrg22dqm_ca3chJl6Qzx1z_4VgpmGVP-1ZV3FXIVJ7IcUusZ79HARWIQYpsv4MjFgduq8ZKJmsZhqe4W1bHbDDKdDFWZR8Eduskzguzv-rXcY4zaiicuXI9GC92QlDp_snd-jC-uLyKHYWK64-MY78i88VsnxE_IwcGCHvFnGhSEgW9BS95J" width="300" height="300"/>
+      <div class="product-card flex flex-col bg-white border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative w-44 flex-shrink-0">
+        <div class="relative w-full aspect-square flex-shrink-0 bg-surface-container overflow-hidden">
+          <img alt="Opbevaringspose" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG8LJSBQCnrrQMlodcn5g-wgXMzOiKvuBRaV3mhi75TiUQignYncFT-v1fsBZJmKDw7UOdeTcQTICqryNUb6qtV7_Sgrg22dqm_ca3chJl6Qzx1z_4VgpmGVP-1ZV3FXIVJ7IcUusZ79HARWIQYpsv4MjFgduq8ZKJmsZhqe4W1bHbDDKdDFWZR8Eduskzguzv-rXcY4zaiicuXI9GC92QlDp_snd-jC-uLyKHYWK64-MY78i88VsnxE_IwcGCHvFnGhSEgW9BS95J" width="300" height="300"/>
         </div>
-        <div class="p-3 space-y-1">
-          <p class="text-xs font-bold text-primary truncate">Opbevaringspose</p>
-          <p class="text-xs text-primary">89,00 kr.</p>
-          <button data-id="pose-mock" data-navn="Opbevaringspose" data-pris="89" class="btn-cross-sell w-full mt-2 py-1.5 text-[10px] font-bold bg-primary text-white rounded hover:bg-slate-800 transition-colors cursor-pointer">TILFØJ</button>
+        <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
+          <div class="space-y-1">
+            <h3 class="font-sans text-xs font-bold text-primary leading-tight hover:text-secondary mb-1 truncate">
+              Opbevaringspose
+            </h3>
+            <div class="flex items-center gap-1 text-[10px] text-secondary mt-1">
+              <span class="material-symbols-outlined text-[12px] filled-star text-[#FFB800] select-none">star</span>
+              <span class="font-bold text-primary">4.8</span>
+              <span class="text-on-surface-variant">(142)</span>
+            </div>
+          </div>
+          <div class="mt-3 space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[10px] text-on-surface-variant leading-none">Pris</span>
+              <span class="text-xs sm:text-sm font-bold text-primary leading-none">89,00 kr.</span>
+            </div>
+            <button data-id="pose-mock" data-navn="Opbevaringspose" data-pris="89" class="btn-cross-sell w-full bg-[#FFD814] hover:bg-[#e6c212] text-primary py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors focus:outline-none text-[11px] sm:text-xs font-bold border-0 cursor-pointer">Køb</button>
+          </div>
         </div>
       </div>
     {%- endif -%}

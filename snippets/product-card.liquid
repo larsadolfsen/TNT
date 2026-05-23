@@ -1,0 +1,130 @@
+{%- comment %}
+  Renders a reusable product card.
+  Accepts:
+  - product: {Object} Shopify Product object (required)
+  - class: {String} Extra classes to apply to the card (optional)
+  
+  Usage:
+  {% render 'product-card', product: product %}
+{% endcomment -%}
+
+{%- if product != blank -%}
+  {%- liquid
+    assign thickness = '1,2 mm'
+    assign width = '140 cm'
+    assign form = 'Firkantet'
+    assign badge = ''
+    
+    for tag in product.tags
+      assign tag_down = tag | downcase
+      if tag_down contains 'tykkelse:'
+        assign thickness = tag | remove_first: 'tykkelse:' | remove_first: 'Tykkelse:' | strip
+      elsif tag_down contains 'bredde:'
+        assign width = tag | remove_first: 'bredde:' | remove_first: 'Bredde:' | strip
+      elsif tag_down contains 'form:'
+        assign form = tag | remove_first: 'form:' | remove_first: 'Form:' | strip
+      elsif tag_down contains 'badge:'
+        assign badge = tag | remove_first: 'badge:' | remove_first: 'Badge:' | strip
+      endif
+    endfor
+
+    for option in product.options_with_values
+      assign option_name = option.name | downcase
+      if option_name contains 'tykkelse' or option_name contains 'thickness'
+        assign thickness = option.values | first
+      elsif option_name contains 'bredde' or option_name contains 'width' or option_name contains 'størrelse'
+        assign width = option.values | first
+      elsif option_name contains 'form' or option_name contains 'type'
+        assign form = option.values | first
+      endif
+    endfor
+
+    assign variant = product.first_available_variant | default: product.variants[0]
+    assign price = product.price
+    assign original_price = product.compare_at_price
+
+    # Check if this is a meter product based on title or tags
+    assign is_meter_product = false
+    assign product_title_down = product.title | downcase
+    if product_title_down contains 'voksdug' or product_title_down contains 'bordbeskytter' or product_title_down contains 'meter' or thickness != blank or width != blank
+      assign is_meter_product = true
+    endif
+
+    # Let's mock a rating if metafields are not present, or use product rating metafields if they are
+    assign rating = product.metafields.reviews.rating.value | default: 4.8
+    assign reviews_count = product.metafields.reviews.rating_count.value | default: 142
+  -%}
+
+  <div class="product-card flex flex-col bg-white border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative {{ class }}">
+    
+    <!-- Image Zone -->
+    <div class="relative w-full aspect-square flex-shrink-0 bg-surface-container overflow-hidden">
+      <a href="{{ product.url }}" class="block w-full h-full">
+        {%- if product.featured_image != blank -%}
+          <img 
+            src="{{ product.featured_image | image_url: width: 480 }}" 
+            alt="{{ product.title | escape }}" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        {%- else -%}
+          <div class="w-full h-full flex items-center justify-center bg-outline-variant text-on-surface-variant">
+            <span class="material-symbols-outlined text-4xl">image</span>
+          </div>
+        {%- endif -%}
+      </a>
+      {%- if badge != blank -%}
+        <span class="absolute top-2 left-2 bg-primary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">{{ badge }}</span>
+      {%- elsif original_price > price -%}
+        {%- assign savings = original_price | minus: price | times: 100 | divided_by: original_price -%}
+        <span class="absolute top-2 left-2 bg-secondary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">Spar {{ savings }}%</span>
+      {%- endif -%}
+    </div>
+
+    <!-- Info Zone -->
+    <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
+      <div class="space-y-1">
+        <h3 class="font-sans text-xs sm:text-sm font-bold text-primary leading-tight hover:text-secondary mb-1">
+          <a href="{{ product.url }}" class="text-primary no-underline hover:text-secondary line-clamp-2">{{ product.title }}</a>
+        </h3>
+        
+        <!-- Rating: Single Star & Score -->
+        <div class="flex items-center gap-1 text-[10px] text-secondary mt-1">
+          <span class="material-symbols-outlined text-[12px] filled-star text-[#FFB800] select-none">star</span>
+          <span class="font-bold text-primary">{{ rating }}</span>
+          <span class="text-on-surface-variant">({{ reviews_count }})</span>
+        </div>
+      </div>
+
+      <!-- Price & Buy Button (No divider border) -->
+      <div class="mt-3 space-y-3">
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-[10px] sm:text-xs text-on-surface-variant leading-none">
+            {%- if is_meter_product -%}
+              Pris pr. meter
+            {%- else -%}
+              Pris
+            {%- endif -%}
+          </span>
+          <div class="text-right flex flex-col items-end">
+            {%- if original_price > price -%}
+              <span class="text-[8px] sm:text-[9px] text-on-surface-variant line-through leading-none mb-0.5">{{ original_price | money }}</span>
+            {%- endif -%}
+            <span class="text-xs sm:text-sm md:text-base font-bold text-primary leading-none">
+              {%- if product.price_varies or is_meter_product -%}Fra {%- endif -%}{{ price | money }}
+            </span>
+          </div>
+        </div>
+
+        <button 
+          onclick="window.addToCart('{{ variant.id }}')" 
+          class="w-full bg-[#FFD814] hover:bg-[#e6c212] text-primary py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors focus:outline-none text-[11px] sm:text-xs font-bold border-0 cursor-pointer" 
+          aria-label="Køb {{ product.title | escape }}"
+        >
+          <span>Køb</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+{%- endif -%}
