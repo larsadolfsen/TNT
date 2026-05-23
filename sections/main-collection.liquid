@@ -1,3 +1,145 @@
+{%- liquid
+  # Dynamically extract all available filter values from the products of the collection in the backend (Liquid)
+  assign thickness_list = ""
+  assign width_list = ""
+  assign form_list = ""
+
+  paginate collection.products by 250
+    for product in collection.products
+      assign thickness = ''
+      assign width = ''
+      assign form = ''
+      
+      for tag in product.tags
+        assign tag_down = tag | downcase
+        if tag_down contains 'tykkelse:'
+          assign thickness = tag | remove_first: 'tykkelse:' | remove_first: 'Tykkelse:' | strip
+        elsif tag_down contains 'bredde:'
+          assign width = tag | remove_first: 'bredde:' | remove_first: 'Bredde:' | strip
+        elsif tag_down contains 'form:'
+          assign form = tag | remove_first: 'form:' | remove_first: 'Form:' | strip
+        endif
+      endfor
+
+      for option in product.options_with_values
+        assign option_name = option.name | downcase
+        if option_name contains 'tykkelse' or option_name contains 'thickness'
+          assign thickness = option.values | first
+        elsif option_name contains 'bredde' or option_name contains 'width' or option_name contains 'størrelse'
+          assign width = option.values | first
+        elsif option_name contains 'form' or option_name contains 'type'
+          assign form = option.values | first
+        endif
+      endfor
+
+      if thickness != blank
+        assign check_thickness = thickness | prepend: '|' | append: '|'
+        unless thickness_list contains check_thickness
+          assign thickness_list = thickness_list | append: thickness | append: '|'
+        endunless
+      endif
+
+      if width != blank
+        assign check_width = width | prepend: '|' | append: '|'
+        unless width_list contains check_width
+          assign width_list = width_list | append: width | append: '|'
+        endunless
+      endif
+
+      if form != blank
+        assign check_form = form | prepend: '|' | append: '|'
+        unless form_list contains check_form
+          assign form_list = form_list | append: form | append: '|'
+        endunless
+      endif
+    endfor
+  endpaginate
+
+  assign raw_thicknesses = thickness_list | split: '|' | compact
+  assign raw_widths = width_list | split: '|' | compact
+  assign raw_forms = form_list | split: '|' | compact
+
+  # Clean/Fallback
+  if raw_thicknesses == empty or raw_thicknesses.size == 0
+    assign raw_thicknesses = "0,8 mm|1,2 mm|2,0 mm" | split: "|"
+  endif
+  if raw_widths == empty or raw_widths.size == 0
+    assign raw_widths = "41x33 cm|80 cm|90 cm|100 cm|140 cm" | split: "|"
+  endif
+  if raw_forms == empty or raw_forms.size == 0
+    assign raw_forms = "Firkantet|Rund|Dækkeserviet" | split: "|"
+  endif
+
+  # Numeric sort for thicknesses: "0,8 mm" -> padded key for sort e.g. "0008:0,8 mm"
+  assign thickness_padded_list = ""
+  for thick in raw_thicknesses
+    if thick == blank
+      continue
+    endif
+    assign thick_num_str = thick | replace: ',', '.' | split: ' ' | first
+    assign thick_num = thick_num_str | plus: 0
+    assign thick_num_int = thick_num | multiplied_by: 10 | plus: 0
+    if thick_num_int < 10
+      assign padded = "000" | append: thick_num_int
+    elsif thick_num_int < 100
+      assign padded = "00" | append: thick_num_int
+    elsif thick_num_int < 1000
+      assign padded = "0" | append: thick_num_int
+    else
+      assign padded = thick_num_int
+    endif
+    assign thickness_padded_list = thickness_padded_list | append: padded | append: ':' | append: thick | append: '|'
+  endfor
+  assign thickness_padded_arr = thickness_padded_list | split: '|' | sort
+  assign thicknesses = ""
+  for item in thickness_padded_arr
+    if item == blank
+      continue
+    endif
+    assign val = item | split: ':' | last
+    assign thicknesses = thicknesses | append: val | append: '|'
+  endfor
+  assign thicknesses = thicknesses | split: '|' | compact
+
+  # Numeric sort for widths: "41x33 cm" -> 41, "80 cm" -> 80
+  assign width_padded_list = ""
+  for wd in raw_widths
+    if wd == blank
+      continue
+    endif
+    if wd contains 'x'
+      assign parts = wd | split: 'x'
+      assign width_num_str = parts[0]
+    else
+      assign parts = wd | split: ' '
+      assign width_num_str = parts[0]
+    endif
+    assign width_num = width_num_str | plus: 0
+    if width_num < 10
+      assign padded = "000" | append: width_num
+    elsif width_num < 100
+      assign padded = "00" | append: width_num
+    elsif width_num < 1000
+      assign padded = "0" | append: width_num
+    else
+      assign padded = width_num
+    endif
+    assign width_padded_list = width_padded_list | append: padded | append: ':' | append: wd | append: '|'
+  endfor
+  assign width_padded_arr = width_padded_list | split: '|' | sort
+  assign widths = ""
+  for item in width_padded_arr
+    if item == blank
+      continue
+    endif
+    assign val = item | split: ':' | last
+    assign widths = widths | append: val | append: '|'
+  endfor
+  assign widths = widths | split: '|' | compact
+
+  # Alphabetical sort for forms
+  assign forms = raw_forms | sort
+-%}
 <div class="max-w-screen-xl mx-auto px-4 py-4">
   <!-- Main Layout Grid -->
   <div class="lg:grid lg:grid-cols-4 lg:gap-8 items-start">
@@ -10,70 +152,76 @@
       </div>
 
       <div class="space-y-6">
+        {%- if section.settings.show_thickness_filter -%}
         <!-- Filter: Tykkelse -->
         <div>
           <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Tykkelse</h3>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="tykkelse" value="0,8 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>0,8 mm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="tykkelse" value="1,2 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>1,2 mm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="tykkelse" value="2,0 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>2,0 mm</span>
-            </label>
+            {%- for thick in thicknesses -%}
+              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                <input type="checkbox" name="tykkelse" value="{{ thick | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                <span>{{ thick }}</span>
+              </label>
+            {%- endfor -%}
           </div>
         </div>
+        {%- endif -%}
 
+        {%- if section.settings.show_width_filter -%}
         <!-- Filter: Bredde -->
         <div>
           <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Størrelse / Bredde</h3>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="bredde" value="41x33 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>41x33 cm (Dækkeserviet)</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="bredde" value="80 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>80 cm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="bredde" value="90 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>90 cm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="bredde" value="100 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>100 cm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="bredde" value="140 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>140 cm</span>
-            </label>
+            {%- for wd in widths -%}
+              {%- liquid
+                assign display_wd = wd
+                if wd == '41x33 cm'
+                  assign display_wd = '41x33 cm (Dækkeserviet)'
+                endif
+              -%}
+              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                <input type="checkbox" name="bredde" value="{{ wd | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                <span>{{ display_wd }}</span>
+              </label>
+            {%- endfor -%}
           </div>
         </div>
+        {%- endif -%}
 
+        {%- if section.settings.show_form_filter -%}
         <!-- Filter: Form -->
         <div>
           <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Type / Form</h3>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="form" value="Firkantet" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>Firkantet (Rulle)</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="form" value="Rund" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>Rund skåret</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="form" value="Dækkeserviet" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>Dækkeserviet</span>
-            </label>
+            {%- for fr in forms -%}
+              {%- liquid
+                assign display_fr = fr
+                if fr == 'Firkantet'
+                  assign display_fr = 'Firkantet (Rulle)'
+                elsif fr == 'Rund'
+                  assign display_fr = 'Rund skåret'
+                endif
+              -%}
+              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                <input type="checkbox" name="form" value="{{ fr | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                <span>{{ display_fr }}</span>
+              </label>
+            {%- endfor -%}
           </div>
         </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_price_filter -%}
+        <!-- Filter: Pris -->
+        <div>
+          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Pris</h3>
+          <div class="flex items-center gap-2">
+            <input type="number" id="price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
+            <span class="text-xs text-on-surface-variant">-</span>
+            <input type="number" id="price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
+          </div>
+        </div>
+        {%- endif -%}
       </div>
     </aside>
 
@@ -125,70 +273,76 @@
       </div>
       
       <div class="space-y-6 overflow-y-auto max-h-[calc(100vh-200px)] pr-2 hide-scrollbar">
+        {%- if section.settings.show_thickness_filter -%}
         <!-- Filter: Tykkelse -->
         <div>
           <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Tykkelse</h3>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-tykkelse" value="0,8 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>0,8 mm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-tykkelse" value="1,2 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>1,2 mm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-tykkelse" value="2,0 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>2,0 mm</span>
-            </label>
+            {%- for thick in thicknesses -%}
+              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                <input type="checkbox" name="mobile-tykkelse" value="{{ thick | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                <span>{{ thick }}</span>
+              </label>
+            {%- endfor -%}
           </div>
         </div>
+        {%- endif -%}
 
+        {%- if section.settings.show_width_filter -%}
         <!-- Filter: Bredde -->
         <div>
           <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Størrelse / Bredde</h3>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-bredde" value="41x33 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>41x33 cm (Dækkeserviet)</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-bredde" value="80 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>80 cm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-bredde" value="90 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>90 cm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-bredde" value="100 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>100 cm</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-bredde" value="140 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>140 cm</span>
-            </label>
+            {%- for wd in widths -%}
+              {%- liquid
+                assign display_wd = wd
+                if wd == '41x33 cm'
+                  assign display_wd = '41x33 cm (Dækkeserviet)'
+                endif
+              -%}
+              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                <input type="checkbox" name="mobile-bredde" value="{{ wd | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                <span>{{ display_wd }}</span>
+              </label>
+            {%- endfor -%}
           </div>
         </div>
+        {%- endif -%}
 
+        {%- if section.settings.show_form_filter -%}
         <!-- Filter: Form -->
         <div>
           <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Type / Form</h3>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-form" value="Firkantet" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>Firkantet (Rulle)</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-form" value="Rund" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>Rund skåret</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-              <input type="checkbox" name="mobile-form" value="Dækkeserviet" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-              <span>Dækkeserviet</span>
-            </label>
+            {%- for fr in forms -%}
+              {%- liquid
+                assign display_fr = fr
+                if fr == 'Firkantet'
+                  assign display_fr = 'Firkantet (Rulle)'
+                elsif fr == 'Rund'
+                  assign display_fr = 'Rund skåret'
+                endif
+              -%}
+              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                <input type="checkbox" name="mobile-form" value="{{ fr | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                <span>{{ display_fr }}</span>
+              </label>
+            {%- endfor -%}
           </div>
         </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_price_filter -%}
+        <!-- Filter: Pris -->
+        <div>
+          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Pris</h3>
+          <div class="flex items-center gap-2">
+            <input type="number" id="mobile-price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
+            <span class="text-xs text-on-surface-variant">-</span>
+            <input type="number" id="mobile-price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
+          </div>
+        </div>
+        {%- endif -%}
       </div>
     </div>
     <div class="pt-4 border-t border-outline-variant flex gap-3">
@@ -444,6 +598,25 @@
     filterProducts();
   }
 
+  function syncPriceFilters(changedInput) {
+    const id = changedInput.id;
+    const val = changedInput.value;
+    if (id === 'price-min') {
+      const el = document.getElementById('mobile-price-min');
+      if (el) el.value = val;
+    } else if (id === 'price-max') {
+      const el = document.getElementById('mobile-price-max');
+      if (el) el.value = val;
+    } else if (id === 'mobile-price-min') {
+      const el = document.getElementById('price-min');
+      if (el) el.value = val;
+    } else if (id === 'mobile-price-max') {
+      const el = document.getElementById('price-max');
+      if (el) el.value = val;
+    }
+    filterProducts();
+  }
+
   function getSelectedFilters() {
     const tykkelse = [...document.querySelectorAll('input[name="tykkelse"]:checked')].map(el => el.value);
     const bredde = [...document.querySelectorAll('input[name="bredde"]:checked')].map(el => el.value);
@@ -457,7 +630,15 @@
     const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
     const sortBy = document.getElementById("sort-select").value;
 
+    const minPriceInput = document.getElementById("price-min");
+    const maxPriceInput = document.getElementById("price-max");
+    const minPrice = minPriceInput && minPriceInput.value ? parseFloat(minPriceInput.value) : 0;
+    const maxPrice = maxPriceInput && maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
+
     let filtered = products.filter(product => {
+      if (product.price < minPrice || product.price > maxPrice) {
+        return false;
+      }
       if (activeFilters.tykkelse.length > 0 && !activeFilters.tykkelse.includes(product.thickness)) {
         return false;
       }
@@ -598,6 +779,10 @@
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
       checkbox.checked = false;
     });
+    ['price-min', 'price-max', 'mobile-price-min', 'mobile-price-max'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
     if (shouldRender) {
       filterProducts();
     }
@@ -634,6 +819,7 @@
   });
 
   window.syncFilters = syncFilters;
+  window.syncPriceFilters = syncPriceFilters;
   window.filterProducts = filterProducts;
   window.applyQuickFilter = applyQuickFilter;
   window.clearAllFilters = clearAllFilters;
@@ -643,7 +829,36 @@
 {% schema %}
 {
   "name": "Kollektion Grid & Filtre",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Synlige filtre"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_thickness_filter",
+      "label": "Vis Tykkelse filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_width_filter",
+      "label": "Vis Størrelse / Bredde filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_form_filter",
+      "label": "Vis Type / Form filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_filter",
+      "label": "Vis Pris filter",
+      "default": true
+    }
+  ],
   "presets": [
     {
       "name": "Kollektion Grid & Filtre"
