@@ -110,6 +110,39 @@
       ],
       "settings": {}
     },
+    "product_accordions_gTH8We": {
+      "type": "product-accordions",
+      "blocks": {
+        "accordion_YxA6fQ": {
+          "type": "accordion",
+          "settings": {
+            "title": "Produktspecifikationer",
+            "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>"
+          }
+        },
+        "accordion_nMCDk3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Om Textil & Voksdug",
+            "content": "<p>Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>"
+          }
+        },
+        "accordion_R4FLnV": {
+          "type": "accordion",
+          "settings": {
+            "title": "Vedligeholdelse",
+            "content": "<p><strong>Daglig rengøring:</strong> Tør blot overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_YxA6fQ",
+        "accordion_nMCDk3",
+        "accordion_R4FLnV"
+      ],
+      "name": "Klap-ud Paneler",
+      "settings": {}
+    },
     "testimonial": {
       "type": "product-testimonial",
       "settings": {
@@ -150,6 +183,7 @@
     "shipping-progress",
     "trust-checkmarks",
     "materials",
+    "product_accordions_gTH8We",
     "testimonial",
     "cross-sell",
     "accordions",
