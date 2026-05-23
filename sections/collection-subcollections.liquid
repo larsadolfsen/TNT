@@ -8,11 +8,15 @@
   {%- liquid
     assign show_all_label = section.settings.show_all_label | default: "Vis alle"
     assign main_col = section.settings.main_collection
+    assign parent_col = collection.metafields.custom.parent.value
+    assign main_col_handle = main_col.handle | default: parent_col.handle
     
     # Determine the "Vis alle" main link url
     assign main_url = "#"
     if main_col != blank
       assign main_url = main_col.url
+    elsif parent_col != blank
+      assign main_url = parent_col.url
     else
       assign main_url = collection.url
     endif
@@ -24,7 +28,7 @@
         for prod in collection.products
           for col_item in prod.collections
             if col_item.handle != collection.handle and col_item.handle != 'all' and col_item.handle != 'frontpage'
-              if main_col == blank or col_item.handle != main_col.handle
+              if main_col_handle == blank or col_item.handle != main_col_handle
                 assign check_handle = col_item.handle | prepend: '|' | append: '|'
                 unless col_handles_str contains check_handle
                   assign col_handles_str = col_handles_str | append: col_item.handle | append: '|'
@@ -54,11 +58,11 @@
     endif
 
     # "Vis alle" is active if no subcollection pill is currently selected,
-    # or if we are actively viewing the configured main collection.
+    # or if we are actively viewing the configured main collection (or parent collection).
     assign is_show_all_active = false
     if is_any_pill_active == false
       assign is_show_all_active = true
-    elsif main_col != blank and collection.handle == main_col.handle
+    elsif main_col_handle != blank and collection.handle == main_col_handle
       assign is_show_all_active = true
     endif
   -%}
@@ -142,9 +146,15 @@
           if is_pill_active
             assign pill_class = "bg-primary text-white border border-primary font-bold"
           endif
+
+          assign pill_label = sub_col.metafields.custom.label_override.value | default: sub_col.metafields.custom.label_override | default: sub_col.title
+          assign subtitle = sub_col.metafields.custom.subtitle.value | default: sub_col.metafields.custom.subtitle | default: sub_col.metafields.custom.suffix.value | default: sub_col.metafields.custom.suffix
+          if subtitle != blank
+            assign pill_label = pill_label | append: ' (' | append: subtitle | append: ')'
+          endif
         -%}
         <a href="{{ sub_col.url }}" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          {{ sub_col.title }}
+          {{ pill_label }}
         </a>
       {%- endfor -%}
 
@@ -185,7 +195,7 @@
         { "value": "manual", "label": "Manuel (Brug blokke)" },
         { "value": "automatic", "label": "Automatisk (Fra produkternes kollektioner)" }
       ],
-      "default": "manual",
+      "default": "automatic",
       "info": "Manuel tilstand giver dig mulighed for at tilføje præcise undertekster som '(Let rengøring)'."
     },
     {
