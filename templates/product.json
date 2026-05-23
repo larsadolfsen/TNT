@@ -91,8 +91,8 @@
       "type": "product-banner-text",
       "name": "Billed-banner & Tekst",
       "settings": {
-        "heading": "Klar voksdug – Den ultimative beskyttelse af dit bord",
-        "content": "<p>Vores klare voksdug er designet til at give dit bord den maksimale beskyttelse uden at gå på kompromis med æstetikken. Med en tykkelse på 0,20 mm PVC får du en dug, der er både robust og utroligt nem at vedligeholde. Den gennemsigtige finish sikrer, at dit bords naturlige skønhed – om det er smukt egetræ eller moderne marmor – forbliver fuldt synligt.</p><p>Dugen er 100% phthalatfri og OEKO-TEX® certificeret, hvilket gør den sikker at bruge for hele familien, selv i hjem med små børn. Den er ekstremt vand- og smudsafvisende, så spild fra kaffe, rødvin eller børnenes madpakker nemt kan tørres af med en fugtig klud. Hver dug skæres præcist efter dine personlige mål, så den passer perfekt til dit unikke bord.</p>"
+        "heading": "",
+        "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>"
       }
     },
     "materials": {
