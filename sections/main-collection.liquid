@@ -1,145 +1,3 @@
-{%- liquid
-  # Dynamically extract all available filter values from the products of the collection in the backend (Liquid)
-  assign thickness_list = ""
-  assign width_list = ""
-  assign form_list = ""
-
-  paginate collection.products by 250
-    for product in collection.products
-      assign thickness = ''
-      assign width = ''
-      assign form = ''
-      
-      for tag in product.tags
-        assign tag_down = tag | downcase
-        if tag_down contains 'tykkelse:'
-          assign thickness = tag | remove_first: 'tykkelse:' | remove_first: 'Tykkelse:' | strip
-        elsif tag_down contains 'bredde:'
-          assign width = tag | remove_first: 'bredde:' | remove_first: 'Bredde:' | strip
-        elsif tag_down contains 'form:'
-          assign form = tag | remove_first: 'form:' | remove_first: 'Form:' | strip
-        endif
-      endfor
-
-      for option in product.options_with_values
-        assign option_name = option.name | downcase
-        if option_name contains 'tykkelse' or option_name contains 'thickness'
-          assign thickness = option.values | first
-        elsif option_name contains 'bredde' or option_name contains 'width' or option_name contains 'størrelse'
-          assign width = option.values | first
-        elsif option_name contains 'form' or option_name contains 'type'
-          assign form = option.values | first
-        endif
-      endfor
-
-      if thickness != blank
-        assign check_thickness = thickness | prepend: '|' | append: '|'
-        unless thickness_list contains check_thickness
-          assign thickness_list = thickness_list | append: thickness | append: '|'
-        endunless
-      endif
-
-      if width != blank
-        assign check_width = width | prepend: '|' | append: '|'
-        unless width_list contains check_width
-          assign width_list = width_list | append: width | append: '|'
-        endunless
-      endif
-
-      if form != blank
-        assign check_form = form | prepend: '|' | append: '|'
-        unless form_list contains check_form
-          assign form_list = form_list | append: form | append: '|'
-        endunless
-      endif
-    endfor
-  endpaginate
-
-  assign raw_thicknesses = thickness_list | split: '|' | compact
-  assign raw_widths = width_list | split: '|' | compact
-  assign raw_forms = form_list | split: '|' | compact
-
-  # Clean/Fallback
-  if raw_thicknesses == empty or raw_thicknesses.size == 0
-    assign raw_thicknesses = "0,8 mm|1,2 mm|2,0 mm" | split: "|"
-  endif
-  if raw_widths == empty or raw_widths.size == 0
-    assign raw_widths = "41x33 cm|80 cm|90 cm|100 cm|140 cm" | split: "|"
-  endif
-  if raw_forms == empty or raw_forms.size == 0
-    assign raw_forms = "Firkantet|Rund|Dækkeserviet" | split: "|"
-  endif
-
-  # Numeric sort for thicknesses: "0,8 mm" -> padded key for sort e.g. "0008:0,8 mm"
-  assign thickness_padded_list = ""
-  for thick in raw_thicknesses
-    if thick == blank
-      continue
-    endif
-    assign thick_num_str = thick | replace: ',', '.' | split: ' ' | first
-    assign thick_num = thick_num_str | plus: 0
-    assign thick_num_int = thick_num | multiplied_by: 10 | plus: 0
-    if thick_num_int < 10
-      assign padded = "000" | append: thick_num_int
-    elsif thick_num_int < 100
-      assign padded = "00" | append: thick_num_int
-    elsif thick_num_int < 1000
-      assign padded = "0" | append: thick_num_int
-    else
-      assign padded = thick_num_int
-    endif
-    assign thickness_padded_list = thickness_padded_list | append: padded | append: ':' | append: thick | append: '|'
-  endfor
-  assign thickness_padded_arr = thickness_padded_list | split: '|' | sort
-  assign thicknesses = ""
-  for item in thickness_padded_arr
-    if item == blank
-      continue
-    endif
-    assign val = item | split: ':' | last
-    assign thicknesses = thicknesses | append: val | append: '|'
-  endfor
-  assign thicknesses = thicknesses | split: '|' | compact
-
-  # Numeric sort for widths: "41x33 cm" -> 41, "80 cm" -> 80
-  assign width_padded_list = ""
-  for wd in raw_widths
-    if wd == blank
-      continue
-    endif
-    if wd contains 'x'
-      assign parts = wd | split: 'x'
-      assign width_num_str = parts[0]
-    else
-      assign parts = wd | split: ' '
-      assign width_num_str = parts[0]
-    endif
-    assign width_num = width_num_str | plus: 0
-    if width_num < 10
-      assign padded = "000" | append: width_num
-    elsif width_num < 100
-      assign padded = "00" | append: width_num
-    elsif width_num < 1000
-      assign padded = "0" | append: width_num
-    else
-      assign padded = width_num
-    endif
-    assign width_padded_list = width_padded_list | append: padded | append: ':' | append: wd | append: '|'
-  endfor
-  assign width_padded_arr = width_padded_list | split: '|' | sort
-  assign widths = ""
-  for item in width_padded_arr
-    if item == blank
-      continue
-    endif
-    assign val = item | split: ':' | last
-    assign widths = widths | append: val | append: '|'
-  endfor
-  assign widths = widths | split: '|' | compact
-
-  # Alphabetical sort for forms
-  assign forms = raw_forms | sort
--%}
 <div class="max-w-screen-xl mx-auto px-4 py-4">
   <!-- Main Layout Grid -->
   <div class="lg:grid lg:grid-cols-4 lg:gap-8 items-start">
@@ -152,76 +10,186 @@
       </div>
 
       <div class="space-y-6">
-        {%- if section.settings.show_thickness_filter -%}
-        <!-- Filter: Tykkelse -->
-        <div>
-          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Tykkelse</h3>
-          <div class="space-y-2">
-            {%- for thick in thicknesses -%}
-              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-                <input type="checkbox" name="tykkelse" value="{{ thick | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-                <span>{{ thick }}</span>
-              </label>
-            {%- endfor -%}
-          </div>
-        </div>
-        {%- endif -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_title = block.settings.title
+            assign block_type = block.settings.type
+            assign block_key = block.settings.key | strip | downcase
+            assign block_mapping = block.settings.display_mapping
+            
+            # Extract unique values for this filter from all products
+            assign values_list_str = ""
+          -%}
+          
+          {%- if block_type == 'price' -%}
+            <!-- Filter: Pris -->
+            <div {{ block.shopify_attributes }}>
+              <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
+              <div class="flex items-center gap-2">
+                <input type="number" id="price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
+                <span class="text-xs text-on-surface-variant">-</span>
+                <input type="number" id="price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
+              </div>
+            </div>
+            {%- continue -%}
+          {%- endif -%}
 
-        {%- if section.settings.show_width_filter -%}
-        <!-- Filter: Bredde -->
-        <div>
-          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Størrelse / Bredde</h3>
-          <div class="space-y-2">
-            {%- for wd in widths -%}
+          {%- paginate collection.products by 250 -%}
+            {%- for product in collection.products -%}
               {%- liquid
-                assign display_wd = wd
-                if wd == '41x33 cm'
-                  assign display_wd = '41x33 cm (Dækkeserviet)'
+                assign val = ""
+                if block_type == 'tag'
+                  for tag in product.tags
+                    assign tag_down = tag | downcase
+                    assign check_prefix = block_key | append: ':'
+                    if tag_down contains check_prefix
+                      assign val = tag | remove_first: check_prefix | strip
+                      assign first_char = block_key | slice: 0 | upcase
+                      assign rest = block_key | slice: 1, block_key.size
+                      assign title_key = first_char | append: rest | append: ':'
+                      assign val = val | remove_first: title_key | strip
+                    endif
+                  endfor
+                elsif block_type == 'option'
+                  for option in product.options_with_values
+                    assign option_name = option.name | downcase
+                    if option_name contains block_key
+                      assign opt_index = forloop.index0
+                      assign variant = product.first_available_variant | default: product.variants[0]
+                      assign val = variant.options[opt_index]
+                    endif
+                  endfor
+                endif
+
+                if val != blank
+                  assign check_val = val | prepend: '|' | append: '|'
+                  unless values_list_str contains check_val
+                    assign values_list_str = values_list_str | append: val | append: '|'
+                  endunless
                 endif
               -%}
-              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-                <input type="checkbox" name="bredde" value="{{ wd | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-                <span>{{ display_wd }}</span>
-              </label>
             {%- endfor -%}
-          </div>
-        </div>
-        {%- endif -%}
+          {%- endpaginate -%}
 
-        {%- if section.settings.show_form_filter -%}
-        <!-- Filter: Form -->
-        <div>
-          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Type / Form</h3>
-          <div class="space-y-2">
-            {%- for fr in forms -%}
-              {%- liquid
-                assign display_fr = fr
-                if fr == 'Firkantet'
-                  assign display_fr = 'Firkantet (Rulle)'
-                elsif fr == 'Rund'
-                  assign display_fr = 'Rund skåret'
+          {%- liquid
+            assign raw_values = values_list_str | split: '|' | compact
+            
+            # Fallbacks for empty collections
+            if raw_values == empty or raw_values.size == 0
+              if block_key contains 'tykkelse' or block_key contains 'thick'
+                assign raw_values = "0,8 mm|1,2 mm|2,0 mm" | split: "|"
+              elsif block_key contains 'bredde' or block_key contains 'width' or block_key contains 'størrelse' or block_key contains 'size'
+                assign raw_values = "41x33 cm|80 cm|90 cm|100 cm|140 cm" | split: "|"
+              elsif block_key contains 'form' or block_key contains 'type'
+                assign raw_values = "Firkantet|Rund|Dækkeserviet" | split: "|"
+              endif
+            endif
+
+            assign is_thickness = false
+            assign is_width = false
+            if block_key contains 'tykkelse' or block_key contains 'thick'
+              assign is_thickness = true
+            elsif block_key contains 'bredde' or block_key contains 'width' or block_key contains 'størrelse' or block_key contains 'size'
+              assign is_width = true
+            endif
+
+            if is_thickness
+              assign values_padded_list = ""
+              for v in raw_values
+                if v == blank
+                  continue
                 endif
-              -%}
-              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-                <input type="checkbox" name="form" value="{{ fr | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-                <span>{{ display_fr }}</span>
-              </label>
-            {%- endfor -%}
-          </div>
-        </div>
-        {%- endif -%}
+                assign v_num_str = v | replace: ',', '.' | split: ' ' | first
+                assign v_num = v_num_str | plus: 0
+                assign v_num_int = v_num | multiplied_by: 10 | plus: 0
+                if v_num_int < 10
+                  assign padded = "000" | append: v_num_int
+                elsif v_num_int < 100
+                  assign padded = "00" | append: v_num_int
+                elsif v_num_int < 1000
+                  assign padded = "0" | append: v_num_int
+                else
+                  assign padded = v_num_int
+                endif
+                assign values_padded_list = values_padded_list | append: padded | append: ':' | append: v | append: '|'
+              endfor
+              assign values_padded_arr = values_padded_list | split: '|' | sort
+              assign sorted_values = ""
+              for item in values_padded_arr
+                if item == blank
+                  continue
+                endif
+                assign real_val = item | split: ':' | last
+                assign sorted_values = sorted_values | append: real_val | append: '|'
+              endfor
+              assign sorted_values = sorted_values | split: '|' | compact
+            elsif is_width
+              assign values_padded_list = ""
+              for v in raw_values
+                if v == blank
+                  continue
+                endif
+                if v contains 'x'
+                  assign parts = v | split: 'x'
+                  assign v_num_str = parts[0]
+                else
+                  assign parts = v | split: ' '
+                  assign v_num_str = parts[0]
+                endif
+                assign v_num = v_num_str | plus: 0
+                if v_num < 10
+                  assign padded = "000" | append: v_num
+                elsif v_num < 100
+                  assign padded = "00" | append: v_num
+                elsif v_num < 1000
+                  assign padded = "0" | append: v_num
+                else
+                  assign padded = v_num
+                endif
+                assign values_padded_list = values_padded_list | append: padded | append: ':' | append: v | append: '|'
+              endfor
+              assign values_padded_arr = values_padded_list | split: '|' | sort
+              assign sorted_values = ""
+              for item in values_padded_arr
+                if item == blank
+                  continue
+                endif
+                assign real_val = item | split: ':' | last
+                assign sorted_values = sorted_values | append: real_val | append: '|'
+              endfor
+              assign sorted_values = sorted_values | split: '|' | compact
+            else
+              assign sorted_values = raw_values | sort
+            endif
+          -%}
 
-        {%- if section.settings.show_price_filter -%}
-        <!-- Filter: Pris -->
-        <div>
-          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Pris</h3>
-          <div class="flex items-center gap-2">
-            <input type="number" id="price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-            <span class="text-xs text-on-surface-variant">-</span>
-            <input type="number" id="price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-          </div>
-        </div>
-        {%- endif -%}
+          {%- if sorted_values.size > 0 -%}
+            <!-- Filter: {{ block_title }} -->
+            <div {{ block.shopify_attributes }}>
+              <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
+              <div class="space-y-2">
+                {%- for val in sorted_values -%}
+                  {%- liquid
+                    assign display_val = val
+                    if block_mapping == 'width' and val == '41x33 cm'
+                      assign display_val = '41x33 cm (Dækkeserviet)'
+                    elsif block_mapping == 'form'
+                      if val == 'Firkantet'
+                        assign display_val = 'Firkantet (Rulle)'
+                      elsif val == 'Rund'
+                        assign display_val = 'Rund skåret'
+                      endif
+                    endif
+                  -%}
+                  <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                    <input type="checkbox" name="{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                    <span>{{ display_val }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
       </div>
     </aside>
 
@@ -273,76 +241,186 @@
       </div>
       
       <div class="space-y-6 overflow-y-auto max-h-[calc(100vh-200px)] pr-2 hide-scrollbar">
-        {%- if section.settings.show_thickness_filter -%}
-        <!-- Filter: Tykkelse -->
-        <div>
-          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Tykkelse</h3>
-          <div class="space-y-2">
-            {%- for thick in thicknesses -%}
-              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-                <input type="checkbox" name="mobile-tykkelse" value="{{ thick | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-                <span>{{ thick }}</span>
-              </label>
-            {%- endfor -%}
-          </div>
-        </div>
-        {%- endif -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_title = block.settings.title
+            assign block_type = block.settings.type
+            assign block_key = block.settings.key | strip | downcase
+            assign block_mapping = block.settings.display_mapping
+            
+            # Extract unique values for this filter from all products
+            assign values_list_str = ""
+          -%}
+          
+          {%- if block_type == 'price' -%}
+            <!-- Filter: Pris -->
+            <div {{ block.shopify_attributes }}>
+              <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
+              <div class="flex items-center gap-2">
+                <input type="number" id="mobile-price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
+                <span class="text-xs text-on-surface-variant">-</span>
+                <input type="number" id="mobile-price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
+              </div>
+            </div>
+            {%- continue -%}
+          {%- endif -%}
 
-        {%- if section.settings.show_width_filter -%}
-        <!-- Filter: Bredde -->
-        <div>
-          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Størrelse / Bredde</h3>
-          <div class="space-y-2">
-            {%- for wd in widths -%}
+          {%- paginate collection.products by 250 -%}
+            {%- for product in collection.products -%}
               {%- liquid
-                assign display_wd = wd
-                if wd == '41x33 cm'
-                  assign display_wd = '41x33 cm (Dækkeserviet)'
+                assign val = ""
+                if block_type == 'tag'
+                  for tag in product.tags
+                    assign tag_down = tag | downcase
+                    assign check_prefix = block_key | append: ':'
+                    if tag_down contains check_prefix
+                      assign val = tag | remove_first: check_prefix | strip
+                      assign first_char = block_key | slice: 0 | upcase
+                      assign rest = block_key | slice: 1, block_key.size
+                      assign title_key = first_char | append: rest | append: ':'
+                      assign val = val | remove_first: title_key | strip
+                    endif
+                  endfor
+                elsif block_type == 'option'
+                  for option in product.options_with_values
+                    assign option_name = option.name | downcase
+                    if option_name contains block_key
+                      assign opt_index = forloop.index0
+                      assign variant = product.first_available_variant | default: product.variants[0]
+                      assign val = variant.options[opt_index]
+                    endif
+                  endfor
+                endif
+
+                if val != blank
+                  assign check_val = val | prepend: '|' | append: '|'
+                  unless values_list_str contains check_val
+                    assign values_list_str = values_list_str | append: val | append: '|'
+                  endunless
                 endif
               -%}
-              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-                <input type="checkbox" name="mobile-bredde" value="{{ wd | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-                <span>{{ display_wd }}</span>
-              </label>
             {%- endfor -%}
-          </div>
-        </div>
-        {%- endif -%}
+          {%- endpaginate -%}
 
-        {%- if section.settings.show_form_filter -%}
-        <!-- Filter: Form -->
-        <div>
-          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Type / Form</h3>
-          <div class="space-y-2">
-            {%- for fr in forms -%}
-              {%- liquid
-                assign display_fr = fr
-                if fr == 'Firkantet'
-                  assign display_fr = 'Firkantet (Rulle)'
-                elsif fr == 'Rund'
-                  assign display_fr = 'Rund skåret'
+          {%- liquid
+            assign raw_values = values_list_str | split: '|' | compact
+            
+            # Fallbacks for empty collections
+            if raw_values == empty or raw_values.size == 0
+              if block_key contains 'tykkelse' or block_key contains 'thick'
+                assign raw_values = "0,8 mm|1,2 mm|2,0 mm" | split: "|"
+              elsif block_key contains 'bredde' or block_key contains 'width' or block_key contains 'størrelse' or block_key contains 'size'
+                assign raw_values = "41x33 cm|80 cm|90 cm|100 cm|140 cm" | split: "|"
+              elsif block_key contains 'form' or block_key contains 'type'
+                assign raw_values = "Firkantet|Rund|Dækkeserviet" | split: "|"
+              endif
+            endif
+
+            assign is_thickness = false
+            assign is_width = false
+            if block_key contains 'tykkelse' or block_key contains 'thick'
+              assign is_thickness = true
+            elsif block_key contains 'bredde' or block_key contains 'width' or block_key contains 'størrelse' or block_key contains 'size'
+              assign is_width = true
+            endif
+
+            if is_thickness
+              assign values_padded_list = ""
+              for v in raw_values
+                if v == blank
+                  continue
                 endif
-              -%}
-              <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
-                <input type="checkbox" name="mobile-form" value="{{ fr | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-                <span>{{ display_fr }}</span>
-              </label>
-            {%- endfor -%}
-          </div>
-        </div>
-        {%- endif -%}
+                assign v_num_str = v | replace: ',', '.' | split: ' ' | first
+                assign v_num = v_num_str | plus: 0
+                assign v_num_int = v_num | multiplied_by: 10 | plus: 0
+                if v_num_int < 10
+                  assign padded = "000" | append: v_num_int
+                elsif v_num_int < 100
+                  assign padded = "00" | append: v_num_int
+                elsif v_num_int < 1000
+                  assign padded = "0" | append: v_num_int
+                else
+                  assign padded = v_num_int
+                endif
+                assign values_padded_list = values_padded_list | append: padded | append: ':' | append: v | append: '|'
+              endfor
+              assign values_padded_arr = values_padded_list | split: '|' | sort
+              assign sorted_values = ""
+              for item in values_padded_arr
+                if item == blank
+                  continue
+                endif
+                assign real_val = item | split: ':' | last
+                assign sorted_values = sorted_values | append: real_val | append: '|'
+              endfor
+              assign sorted_values = sorted_values | split: '|' | compact
+            elsif is_width
+              assign values_padded_list = ""
+              for v in raw_values
+                if v == blank
+                  continue
+                endif
+                if v contains 'x'
+                  assign parts = v | split: 'x'
+                  assign v_num_str = parts[0]
+                else
+                  assign parts = v | split: ' '
+                  assign v_num_str = parts[0]
+                endif
+                assign v_num = v_num_str | plus: 0
+                if v_num < 10
+                  assign padded = "000" | append: v_num
+                elsif v_num < 100
+                  assign padded = "00" | append: v_num
+                elsif v_num < 1000
+                  assign padded = "0" | append: v_num
+                else
+                  assign padded = v_num
+                endif
+                assign values_padded_list = values_padded_list | append: padded | append: ':' | append: v | append: '|'
+              endfor
+              assign values_padded_arr = values_padded_list | split: '|' | sort
+              assign sorted_values = ""
+              for item in values_padded_arr
+                if item == blank
+                  continue
+                endif
+                assign real_val = item | split: ':' | last
+                assign sorted_values = sorted_values | append: real_val | append: '|'
+              endfor
+              assign sorted_values = sorted_values | split: '|' | compact
+            else
+              assign sorted_values = raw_values | sort
+            endif
+          -%}
 
-        {%- if section.settings.show_price_filter -%}
-        <!-- Filter: Pris -->
-        <div>
-          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Pris</h3>
-          <div class="flex items-center gap-2">
-            <input type="number" id="mobile-price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-            <span class="text-xs text-on-surface-variant">-</span>
-            <input type="number" id="mobile-price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-          </div>
-        </div>
-        {%- endif -%}
+          {%- if sorted_values.size > 0 -%}
+            <!-- Filter: {{ block_title }} -->
+            <div {{ block.shopify_attributes }}>
+              <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
+              <div class="space-y-2">
+                {%- for val in sorted_values -%}
+                  {%- liquid
+                    assign display_val = val
+                    if block_mapping == 'width' and val == '41x33 cm'
+                      assign display_val = '41x33 cm (Dækkeserviet)'
+                    elsif block_mapping == 'form'
+                      if val == 'Firkantet'
+                        assign display_val = 'Firkantet (Rulle)'
+                      elsif val == 'Rund'
+                        assign display_val = 'Rund skåret'
+                      endif
+                    endif
+                  -%}
+                  <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                    <input type="checkbox" name="mobile-{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                    <span>{{ display_val }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
       </div>
     </div>
     <div class="pt-4 border-t border-outline-variant flex gap-3">
@@ -408,7 +486,17 @@
           "badge": {{ badge | json }},
           "rating": 4.8,
           "reviews": 12,
-          "popularity": {{ forloop.index }}
+          "popularity": {{ forloop.index }},
+          "tags": {{ product.tags | json }},
+          "options": {
+            {%- for option in product.options_with_values -%}
+              {%- liquid
+                assign opt_index = forloop.index0
+                assign opt_val = variant.options[opt_index]
+              -%}
+              {{ option.name | json }}: {{ opt_val | json }}{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          }
         }{%- unless forloop.last -%},{%- endunless -%}
       {%- endfor -%}
     {%- endpaginate -%}
@@ -618,11 +706,21 @@
   }
 
   function getSelectedFilters() {
-    const tykkelse = [...document.querySelectorAll('input[name="tykkelse"]:checked')].map(el => el.value);
-    const bredde = [...document.querySelectorAll('input[name="bredde"]:checked')].map(el => el.value);
-    const form = [...document.querySelectorAll('input[name="form"]:checked')].map(el => el.value);
-    
-    return { tykkelse, bredde, form };
+    const filters = {};
+    const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    checkedCheckboxes.forEach(cb => {
+      let name = cb.name;
+      if (name.startsWith('mobile-')) {
+        name = name.replace('mobile-', '');
+      }
+      if (!filters[name]) {
+        filters[name] = [];
+      }
+      if (!filters[name].includes(cb.value)) {
+        filters[name].push(cb.value);
+      }
+    });
+    return filters;
   }
 
   function filterProducts() {
@@ -636,22 +734,57 @@
     const maxPrice = maxPriceInput && maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
 
     let filtered = products.filter(product => {
+      // 1. Price Range Check
       if (product.price < minPrice || product.price > maxPrice) {
         return false;
       }
-      if (activeFilters.tykkelse.length > 0 && !activeFilters.tykkelse.includes(product.thickness)) {
-        return false;
+
+      // 2. Dynamic checkboxes filtering
+      for (const filterKey in activeFilters) {
+        const selectedValues = activeFilters[filterKey];
+        if (selectedValues.length === 0) continue;
+
+        let productValue = "";
+        
+        // Match specific standard keys first to keep backward compatibility
+        if (filterKey === 'tykkelse') {
+          productValue = product.thickness;
+        } else if (filterKey === 'bredde') {
+          productValue = product.width;
+        } else if (filterKey === 'form') {
+          productValue = product.form;
+        }
+
+        // If not found in standard properties, search in all tags and options
+        if (!productValue) {
+          // Check tags (e.g. tag is "farve:Rød", search tag starting with "farve:")
+          const tagPrefix = filterKey.toLowerCase() + ":";
+          if (product.tags) {
+            const matchingTag = product.tags.find(t => t.toLowerCase().startsWith(tagPrefix));
+            if (matchingTag) {
+              productValue = matchingTag.substring(tagPrefix.length).trim();
+            }
+          }
+        }
+
+        if (!productValue && product.options) {
+          // Check product variant options (case insensitive option name match)
+          const optName = Object.keys(product.options).find(k => k.toLowerCase().includes(filterKey.toLowerCase()));
+          if (optName) {
+            productValue = product.options[optName];
+          }
+        }
+
+        if (!productValue || !selectedValues.includes(productValue)) {
+          return false;
+        }
       }
-      if (activeFilters.bredde.length > 0 && !activeFilters.bredde.includes(product.width)) {
-        return false;
-      }
-      if (activeFilters.form.length > 0 && !activeFilters.form.includes(product.form)) {
-        return false;
-      }
+
+      // 3. Search query check
       if (searchQuery) {
         const matchesTitle = product.title.toLowerCase().includes(searchQuery);
-        const matchesThickness = product.thickness.toLowerCase().includes(searchQuery);
-        const matchesForm = product.form.toLowerCase().includes(searchQuery);
+        const matchesThickness = product.thickness ? product.thickness.toLowerCase().includes(searchQuery) : false;
+        const matchesForm = product.form ? product.form.toLowerCase().includes(searchQuery) : false;
         if (!matchesTitle && !matchesThickness && !matchesForm) {
           return false;
         }
@@ -710,7 +843,7 @@
         <div class="product-card flex flex-col bg-white border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative">
           
           <!-- Image Zone -->
-          <div class="relative w-full aspect-[3/2] flex-shrink-0 bg-surface-container overflow-hidden">
+          <div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden" style="aspect-ratio: 3/2;">
             <a href="${product.url}" class="block w-full h-full">
               <img 
                 src="${product.image}" 
@@ -829,39 +962,88 @@
 {% schema %}
 {
   "name": "Kollektion Grid & Filtre",
-  "settings": [
+  "settings": [],
+  "blocks": [
     {
-      "type": "header",
-      "content": "Synlige filtre"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_thickness_filter",
-      "label": "Vis Tykkelse filter",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_width_filter",
-      "label": "Vis Størrelse / Bredde filter",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_form_filter",
-      "label": "Vis Type / Form filter",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_price_filter",
-      "label": "Vis Pris filter",
-      "default": true
+      "type": "filter",
+      "name": "Filter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Filter overskrift",
+          "default": "Filter"
+        },
+        {
+          "type": "select",
+          "id": "type",
+          "label": "Filter kildetype",
+          "options": [
+            { "value": "tag", "label": "Produkt Tag (f.eks. tykkelse:X)" },
+            { "value": "option", "label": "Variant Option (f.eks. Størrelse)" },
+            { "value": "price", "label": "Pris Range" }
+          ],
+          "default": "tag"
+        },
+        {
+          "type": "text",
+          "id": "key",
+          "label": "Søgenøgle / Præfiks",
+          "info": "For tag: f.eks. 'tykkelse'. For option: f.eks. 'bredde'. (Udfyldes ikke for pris)",
+          "default": "tykkelse"
+        },
+        {
+          "type": "select",
+          "id": "display_mapping",
+          "label": "Visningsformat (Valgfrit)",
+          "options": [
+            { "value": "none", "label": "Standard (Vis rå værdi)" },
+            { "value": "form", "label": "Type / Form (Firkantet -> Rulle, Rund -> Rund skåret)" },
+            { "value": "width", "label": "Bredde (41x33 cm -> Dækkeserviet)" }
+          ],
+          "default": "none"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Kollektion Grid & Filtre"
+      "name": "Kollektion Grid & Filtre",
+      "blocks": [
+        {
+          "type": "filter",
+          "settings": {
+            "title": "Tykkelse",
+            "type": "tag",
+            "key": "tykkelse"
+          }
+        },
+        {
+          "type": "filter",
+          "settings": {
+            "title": "Størrelse / Bredde",
+            "type": "option",
+            "key": "bredde",
+            "display_mapping": "width"
+          }
+        },
+        {
+          "type": "filter",
+          "settings": {
+            "title": "Type / Form",
+            "type": "option",
+            "key": "form",
+            "display_mapping": "form"
+          }
+        },
+        {
+          "type": "filter",
+          "settings": {
+            "title": "Pris",
+            "type": "price"
+          }
+        }
+      ]
     }
   ]
 }
