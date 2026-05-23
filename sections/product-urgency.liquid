@@ -14,8 +14,8 @@
 {%- endif -%}
 
 <section id="product-urgency-section" class="max-w-screen-xl mx-auto px-4 py-3" style="{% unless show_urgency %}display: none;{% endunless %}">
-  <p class="text-sm font-medium text-amber-700 flex items-center gap-1.5">
-    <span class="material-symbols-outlined text-lg">error</span>
+  <p class="text-xs font-medium text-amber-700 flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-sm">error</span>
     <span>{{ section.settings.urgency_text | default: "Kun få på lager – bestil snart" }}</span>
   </p>
 </section>
