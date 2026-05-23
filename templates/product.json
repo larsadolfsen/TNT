@@ -78,13 +78,6 @@
       ],
       "settings": {}
     },
-    "cross-sell": {
-      "type": "product-cross-sell",
-      "settings": {
-        "cross_sell_1": "",
-        "cross_sell_2": ""
-      }
-    },
     "materials": {
       "type": "product-materials",
       "blocks": {
@@ -98,15 +91,15 @@
         "badge_yMRTWz": {
           "type": "badge",
           "settings": {
-            "icon": "eco",
+            "icon": "filter_vintage",
             "title": "Oeko-Tex Standard 100®"
           }
         },
         "badge_nm7hPg": {
           "type": "badge",
           "settings": {
-            "icon": "eco",
-            "title": "100% Phthalatfri"
+            "icon": "star",
+            "title": "Europæisk"
           }
         }
       },
@@ -117,6 +110,22 @@
       ],
       "settings": {}
     },
+    "testimonial": {
+      "type": "product-testimonial",
+      "settings": {
+        "heading": "Det siger kunderne",
+        "stars": 5,
+        "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
+        "author": "Mette S., Verificeret køber"
+      }
+    },
+    "cross-sell": {
+      "type": "product-cross-sell",
+      "settings": {
+        "cross_sell_1": "",
+        "cross_sell_2": ""
+      }
+    },
     "description": {
       "type": "product-description",
       "settings": {
@@ -126,15 +135,6 @@
         "show_category_metafields": true,
         "show_empty_fields": true,
         "metafields_namespace": "shopify"
-      }
-    },
-    "testimonial": {
-      "type": "product-testimonial",
-      "settings": {
-        "heading": "Det siger kunderne",
-        "stars": 5,
-        "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
-        "author": "Mette S., Verificeret køber"
       }
     },
     "accordions": {
@@ -160,10 +160,10 @@
     "buy-buttons",
     "shipping-progress",
     "trust-checkmarks",
-    "cross-sell",
     "materials",
-    "description",
     "testimonial",
+    "cross-sell",
+    "description",
     "accordions",
     "banner-text"
   ]
