@@ -91,7 +91,7 @@
         selectedId = parseInt(variantInput.value);
       } else {
         const urlParams = new URLSearchParams(window.location.search);
-        selectedId = parseInt(urlParams.get('variant')) || "{{ product.selected_or_first_available_variant.id }}";
+        selectedId = parseInt(urlParams.get('variant') || "{{ product.selected_or_first_available_variant.id }}");
       }
       
       const match = simpleVariants.find(v => v.id === selectedId);
