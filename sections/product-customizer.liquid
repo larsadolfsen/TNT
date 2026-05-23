@@ -31,14 +31,26 @@
     assign max_width = 140
   endif
 
-  assign surcharge_round_id = section.settings.surcharge_product_round.first_available_variant.id | default: 'null'
-  assign surcharge_round_price = section.settings.surcharge_product_round.price | divided_by: 100.0 | default: 0.00
+  assign surcharge_round_id = 'null'
+  assign surcharge_round_price = 0.00
+  if section.settings.surcharge_product_round != blank
+    assign surcharge_round_id = section.settings.surcharge_product_round.first_available_variant.id | default: 'null'
+    assign surcharge_round_price = section.settings.surcharge_product_round.price | divided_by: 100.0 | default: 0.00
+  endif
 
-  assign surcharge_oval_id = section.settings.surcharge_product_oval.first_available_variant.id | default: 'null'
-  assign surcharge_oval_price = section.settings.surcharge_product_oval.price | divided_by: 100.0 | default: 0.00
+  assign surcharge_oval_id = 'null'
+  assign surcharge_oval_price = 0.00
+  if section.settings.surcharge_product_oval != blank
+    assign surcharge_oval_id = section.settings.surcharge_product_oval.first_available_variant.id | default: 'null'
+    assign surcharge_oval_price = section.settings.surcharge_product_oval.price | divided_by: 100.0 | default: 0.00
+  endif
 
-  assign surcharge_width_id = section.settings.surcharge_product_width.first_available_variant.id | default: 'null'
-  assign surcharge_width_price = section.settings.surcharge_product_width.price | divided_by: 100.0 | default: 0.00
+  assign surcharge_width_id = 'null'
+  assign surcharge_width_price = 0.00
+  if section.settings.surcharge_product_width != blank
+    assign surcharge_width_id = section.settings.surcharge_product_width.first_available_variant.id | default: 'null'
+    assign surcharge_width_price = section.settings.surcharge_product_width.price | divided_by: 100.0 | default: 0.00
+  endif
 -%}
 
 <section class="px-4 py-8 bg-surface-container border-y border-outline-variant max-w-screen-xl mx-auto my-4">
@@ -272,14 +284,14 @@
       }
     }
 
-    const surchargeRoundId = {{ surcharge_round_id }};
-    const surchargeRoundValue = {{ surcharge_round_price }};
+    const surchargeRoundId = {{ surcharge_round_id | default: 'null' }};
+    const surchargeRoundValue = {{ surcharge_round_price | default: 0.00 }};
 
-    const surchargeOvalId = {{ surcharge_oval_id }};
-    const surchargeOvalValue = {{ surcharge_oval_price }};
+    const surchargeOvalId = {{ surcharge_oval_id | default: 'null' }};
+    const surchargeOvalValue = {{ surcharge_oval_price | default: 0.00 }};
 
-    const surchargeWidthId = {{ surcharge_width_id }};
-    const surchargeWidthValue = {{ surcharge_width_price }};
+    const surchargeWidthId = {{ surcharge_width_id | default: 'null' }};
+    const surchargeWidthValue = {{ surcharge_width_price | default: 0.00 }};
 
     let freeShippingThreshold = window.freeShippingThreshold || 590.00;
     const stepSizeValue = {{ section.settings.step_size | default: 10 }};
