@@ -6,10 +6,26 @@
 {%- unless template == 'index' or template == 'cart' or template == 'list-collections' or template == '404' -%}
   {%- assign t = template | split: '.' | first -%}
 
-  <div class="max-w-screen-xl mx-auto px-4 pt-6 pb-2">
-    <nav class="text-xs text-on-surface-variant flex items-center gap-1.5 overflow-x-auto whitespace-nowrap py-1" aria-label="Brødkrummer">
-      <a href="{{ routes.root_url }}" class="hover:underline text-on-surface-variant no-underline">Forside</a>
-      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+  {%- assign show_ellipsis = false -%}
+  {%- if t == 'product' and collection.url -%}
+    {%- assign show_ellipsis = true -%}
+  {%- elsif t == 'blog' and current_tags -%}
+    {%- assign show_ellipsis = true -%}
+  {%- elsif t == 'article' -%}
+    {%- assign show_ellipsis = true -%}
+  {%- endif -%}
+
+  <div class="max-w-screen-xl mx-auto px-4 h-12 md:h-auto md:pt-6 md:pb-2 flex items-center">
+    <nav class="text-xs text-on-surface-variant flex items-center gap-1.5 overflow-x-auto whitespace-nowrap h-full md:h-auto md:py-1 hide-scrollbar" aria-label="Brødkrummer">
+      {%- if show_ellipsis -%}
+        <a href="{{ routes.root_url }}" class="hidden md:inline hover:underline text-on-surface-variant no-underline">Forside</a>
+        <span class="hidden md:inline material-symbols-outlined text-[14px]">chevron_right</span>
+        <a href="{{ routes.root_url }}" class="inline md:hidden hover:underline text-on-surface-variant no-underline">...</a>
+        <span class="inline md:hidden material-symbols-outlined text-[14px]">chevron_right</span>
+      {%- else -%}
+        <a href="{{ routes.root_url }}" class="hover:underline text-on-surface-variant no-underline">Forside</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      {%- endif -%}
 
       {%- case t -%}
         {%- when 'page' -%}
@@ -19,17 +35,10 @@
           {%- if collection.url -%}
             <a href="{{ collection.url }}" class="hover:underline text-on-surface-variant no-underline">{{ collection.title }}</a>
             <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-          {%- else -%}
-            <a href="/collections" class="hover:underline text-on-surface-variant no-underline">Kollektioner</a>
-            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
           <span class="text-primary font-semibold" aria-current="page">{{ product.title }}</span>
 
         {%- when 'collection' and collection.handle -%}
-          {%- if collection.handle != 'all' -%}
-            <a href="/collections" class="hover:underline text-on-surface-variant no-underline">Kollektioner</a>
-            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-          {%- endif -%}
           <span class="text-primary font-semibold" aria-current="page">{{ collection.title }}</span>
 
         {%- when 'blog' -%}
