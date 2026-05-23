@@ -16,18 +16,18 @@
         "show_description": true
       }
     },
+    "collection-subcategories": {
+      "type": "collection-subcategories",
+      "settings": {}
+    },
     "collection-subcollections": {
       "type": "collection-subcollections",
       "settings": {
         "title": "SØG UD FRA DIT BEHOV",
         "mode": "automatic",
-        "main_collection": "{{ collection.metafields.custom.parent.value }}",
+        "main_collection": "{{ collection }}",
         "show_all_label": "Vis alle"
       }
-    },
-    "collection-subcategories": {
-      "type": "collection-subcategories",
-      "settings": {}
     },
     "main-collection": {
       "type": "main-collection",
