@@ -16,7 +16,7 @@
       "settings": {
         "logo_text": "Textil & Voksdug",
         "show_search": true,
-        "show_menu": false,
+        "show_menu": true,
         "menu": "main-menu"
       }
     }

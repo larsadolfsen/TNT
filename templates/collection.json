@@ -11,7 +11,10 @@
   "sections": {
     "collection-header": {
       "type": "collection-header",
-      "settings": {}
+      "settings": {
+        "title_override": "",
+        "show_description": true
+      }
     },
     "collection-subcategories": {
       "type": "collection-subcategories",
