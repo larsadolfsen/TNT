@@ -12,26 +12,41 @@
           {{ shop.name }}
         {%- endif -%}
       </a>
-      <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); toggleCartDrawer(true);" class="relative cursor-pointer text-primary no-underline">
-        <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
-        <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
-          {{ cart.item_count }}
-        </span>
-      </a>
+      <div class="flex items-center gap-4">
+        {%- unless section.settings.show_search -%}
+          <button 
+            type="button" 
+            onclick="toggleSearchInput()" 
+            class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
+            aria-label="Søg"
+          >
+            <span class="material-symbols-outlined text-2xl text-primary block">search</span>
+          </button>
+        {%- endunless -%}
+        <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); toggleCartDrawer(true);" class="relative cursor-pointer text-primary no-underline flex items-center justify-center">
+          <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
+          <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
+            {{ cart.item_count }}
+          </span>
+        </a>
+      </div>
     </div>
     <!-- Search Bar -->
-    {%- if section.settings.show_search -%}
-      <form action="{{ routes.search_url }}" method="get" class="relative m-0">
-        <input 
-          type="text" 
-          name="q" 
-          id="search-input" 
-          class="w-full h-10 pl-10 pr-4 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container focus:outline-none" 
-          placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
-        />
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">search</span>
-      </form>
-    {%- endif -%}
+    <form 
+      id="header-search-form" 
+      action="{{ routes.search_url }}" 
+      method="get" 
+      class="relative m-0 {% unless section.settings.show_search %}hidden{% endunless %} transition-all duration-300"
+    >
+      <input 
+        type="text" 
+        name="q" 
+        id="search-input" 
+        class="w-full h-10 pl-10 pr-4 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container focus:outline-none" 
+        placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
+      />
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">search</span>
+    </form>
 
     <!-- Menu under search bar -->
     {%- if section.settings.show_menu and section.settings.menu != blank -%}
@@ -141,6 +156,18 @@
       setTimeout(() => {
         drawer.classList.add("hidden");
       }, 300);
+    }
+  }
+
+  function toggleSearchInput() {
+    const searchForm = document.getElementById("header-search-form");
+    if (!searchForm) return;
+    searchForm.classList.toggle("hidden");
+    if (!searchForm.classList.contains("hidden")) {
+      const searchInput = document.getElementById("search-input");
+      if (searchInput) {
+        searchInput.focus();
+      }
     }
   }
 
@@ -320,6 +347,7 @@
   window.updateCartUI = updateCartUI;
   window.toggleCartDrawer = toggleCartDrawer;
   window.toggleMobileMenu = toggleMobileMenu;
+  window.toggleSearchInput = toggleSearchInput;
 
   // Intercept søgning på kollektionssiden
   document.addEventListener("DOMContentLoaded", () => {
@@ -341,6 +369,25 @@
           }
         });
       }
+    }
+    
+    // Luk skuffer når der klikkes udenfor
+    const menuDrawer = document.getElementById("mobile-menu-drawer");
+    if (menuDrawer) {
+      menuDrawer.addEventListener("click", (e) => {
+        if (e.target === menuDrawer) {
+          toggleMobileMenu(false);
+        }
+      });
+    }
+
+    const cartDrawer = document.getElementById("cart-drawer");
+    if (cartDrawer) {
+      cartDrawer.addEventListener("click", (e) => {
+        if (e.target === cartDrawer) {
+          toggleCartDrawer(false);
+        }
+      });
     }
     
     updateCartUI();

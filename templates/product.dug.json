@@ -13,8 +13,12 @@
       "type": "product-media",
       "settings": {}
     },
-    "intro": {
-      "type": "product-intro",
+    "title": {
+      "type": "product-title",
+      "settings": {}
+    },
+    "trust": {
+      "type": "product-trust",
       "settings": {}
     },
     "price": {
@@ -48,7 +52,8 @@
   },
   "order": [
     "media",
-    "intro",
+    "title",
+    "trust",
     "price",
     "urgency",
     "customizer",

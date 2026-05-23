@@ -1,14 +1,11 @@
 {% comment %}
-  Product Intro Section
-  Renders the product title, star reviews rating, and buy volume badge.
+  Product Trust Section
+  Renders the star reviews rating and buy volume badge.
 {% endcomment %}
 
-<section class="max-w-screen-xl mx-auto px-4 pt-4 pb-1">
-  <!-- Product Intro -->
-  <h1 class="font-normal text-primary leading-tight text-lg">
-    {{ section.settings.title | default: product.title }}
-  </h1>
-  <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1 mt-1.5">
+<section class="max-w-screen-xl mx-auto px-4 pt-1 pb-1">
+  <!-- Product Trust -->
+  <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
     <div class="flex items-center gap-1">
       <div class="flex text-amber-500">
         <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -21,22 +18,18 @@
         {{ section.settings.rating_score | default: "4,8" }} · {{ section.settings.rating_count | default: "163" }} anmeldelser
       </span>
     </div>
-    <span class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
-      {{ section.settings.badge_text | default: "300+ købt den seneste måned" }}
-    </span>
+    {%- if section.settings.badge_text != blank -%}
+      <span class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+        {{ section.settings.badge_text }}
+      </span>
+    {%- endif -%}
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Product Intro",
+  "name": "Product Trust",
   "settings": [
-    {
-      "type": "inline_richtext",
-      "id": "title",
-      "label": "Heading",
-      "info": "Leave blank to use the default Shopify product title."
-    },
     {
       "type": "text",
       "id": "rating_score",
@@ -58,7 +51,7 @@
   ],
   "presets": [
     {
-      "name": "Product Intro"
+      "name": "Product Trust"
     }
   ]
 }

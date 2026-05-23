@@ -619,6 +619,17 @@
     }
   }
 
+  document.addEventListener("DOMContentLoaded", () => {
+    const filterDrawer = document.getElementById("mobile-filter-drawer");
+    if (filterDrawer) {
+      filterDrawer.addEventListener("click", (e) => {
+        if (e.target === filterDrawer) {
+          toggleMobileFilter(false);
+        }
+      });
+    }
+  });
+
   window.syncFilters = syncFilters;
   window.filterProducts = filterProducts;
   window.applyQuickFilter = applyQuickFilter;
