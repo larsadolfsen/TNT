@@ -14,7 +14,7 @@
       "settings": {}
     },
     "collection_header_EXpicG": {
-      "type": "collection-header",
+      "type": "page-title",
       "settings": {
         "title_override": "{{ product.title }}",
         "show_description": true
