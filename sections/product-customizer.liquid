@@ -257,9 +257,16 @@
       }
     }
 
+    const minWidthLimit = {{ section.settings.min_width | default: 80 }};
     const maxWidthLimit = {{ max_width | json }};
-    if (maxWidthLimit && allowedWidths.length > 0) {
-      const filteredWidths = allowedWidths.filter(w => w <= maxWidthLimit);
+    if (allowedWidths.length > 0) {
+      let filteredWidths = allowedWidths;
+      if (minWidthLimit) {
+        filteredWidths = filteredWidths.filter(w => w >= minWidthLimit);
+      }
+      if (maxWidthLimit) {
+        filteredWidths = filteredWidths.filter(w => w <= maxWidthLimit);
+      }
       if (filteredWidths.length > 0) {
         allowedWidths = filteredWidths;
       }
@@ -954,6 +961,12 @@
       "id": "min_length",
       "label": "Minimum længde (cm)",
       "default": 50
+    },
+    {
+      "type": "number",
+      "id": "min_width",
+      "label": "Minimum bredde (cm)",
+      "default": 80
     }
   ],
   "presets": [
