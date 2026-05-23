@@ -9,10 +9,12 @@
  */
 {
   "sections": {
-    "title": {
-      "type": "product-title",
+    "collection_header_EXpicG": {
+      "type": "collection-header",
+      "name": "Kollektion Header",
       "settings": {
-        "title": "{{ product.title }}"
+        "title_override": "{{ product.title }}",
+        "show_description": true
       }
     },
     "trust": {
@@ -117,7 +119,10 @@
       "settings": {
         "heading": "Om produktet",
         "use_product_description": true,
-        "custom_description": ""
+        "custom_description": "",
+        "show_category_metafields": true,
+        "show_empty_fields": true,
+        "metafields_namespace": "shopify"
       }
     },
     "testimonial": {
@@ -143,7 +148,7 @@
     }
   },
   "order": [
-    "title",
+    "collection_header_EXpicG",
     "trust",
     "media",
     "price",
