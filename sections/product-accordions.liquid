@@ -6,7 +6,7 @@
           <span class="text-sm">{{ block.settings.title }}</span>
           <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200{% if forloop.first %} rotate-180{% endif %}">expand_more</span>
         </button>
-        <div class="accordion-content{% unless forloop.first %} hidden{% endunless %} mt-3 text-sm text-on-surface-variant space-y-2">
+        <div class="rte accordion-content{% unless forloop.first %} hidden{% endunless %} mt-3 text-sm text-on-surface-variant">
           {{ block.settings.content }}
         </div>
       </div>
