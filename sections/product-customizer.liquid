@@ -6,6 +6,32 @@
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
+{%- liquid
+  assign max_width = product.metafields.custom.bredde.value | default: product.metafields.custom.bredde | plus: 0
+  if max_width == 0
+    assign max_width = ""
+  endif
+  if max_width == blank
+    for tag in product.tags
+      assign tag_down = tag | downcase
+      if tag_down contains 'bredde:'
+        assign max_width = tag | remove_first: 'bredde:' | remove_first: 'Bredde:' | strip | plus: 0
+      endif
+    endfor
+  endif
+  if max_width == blank or max_width == 0
+    for option in product.options_with_values
+      assign option_name = option.name | downcase
+      if option_name contains 'bredde' or option_name contains 'width' or option_name contains 'størrelse'
+        assign max_width = option.values | first | plus: 0
+      endif
+    endfor
+  endif
+  if max_width == blank or max_width == 0
+    assign max_width = 140
+  endif
+-%}
+
 <section class="px-4 py-8 bg-surface-container border-y border-outline-variant max-w-screen-xl mx-auto my-4">
   <h2 class="text-lg font-bold text-primary mb-6">Vælg dine mål</h2>
   <div class="space-y-8">
@@ -117,7 +143,7 @@
       <h3 class="text-lg font-bold text-primary">Guide til bestilling af metermål</h3>
       <ul class="space-y-2.5 text-sm text-on-surface-variant list-disc pl-5">
         <li>Vælg den dug, du ønsker at bestille.</li>
-        <li>Vælg den længde du ønsker (min. 50 cm pr. dug)</li>
+        <li>Vælg den længde du ønsker (min. {{ section.settings.min_length | default: 50 }} cm pr. dug)</li>
         <li>Vi anbefaler 15-25 cm. til nedhæng i hver side.</li>
         <li>Vælg antal, hvis du ønsker mere end en dug i samme længde og design</li>
         <li>Når du har udfyldt alle felter, tryk læg i kurv</li>
@@ -222,16 +248,26 @@
       }
     }
 
+    const maxWidthLimit = {{ max_width | json }};
+    if (maxWidthLimit && allowedWidths.length > 0) {
+      const filteredWidths = allowedWidths.filter(w => w <= maxWidthLimit);
+      if (filteredWidths.length > 0) {
+        allowedWidths = filteredWidths;
+      }
+    }
+
     const defaultWidth = allowedWidths.includes(140) ? 140 : (allowedWidths[allowedWidths.length - 1] || 140);
     const surchargeValue = {{ section.settings.surcharge_amount | default: 60.00 }};
     let freeShippingThreshold = window.freeShippingThreshold || 590.00;
     const surchargeVariantId = {% if section.settings.surcharge_product != blank %}{{ section.settings.surcharge_product.first_available_variant.id | default: 'null' }}{% else %}null{% endif %};
+    const stepSizeValue = {{ section.settings.step_size | default: 10 }};
+    const minLengthValue = {{ section.settings.min_length | default: 50 }};
 
     // State Management
     let appState = {
       shape: "firkantet", 
       width: defaultWidth,
-      length: 200, 
+      length: Math.max(200, minLengthValue), 
       quantity: 1,
       cartCount: {{ cart.item_count }},
       cartTotal: {{ cart.total_price | divided_by: 100.0 }},
@@ -326,7 +362,7 @@
         if (lengthContainer) lengthContainer.classList.add("hidden"); 
         if (widthStepTitle) widthStepTitle.textContent = "Vælg diameter";
       } else {
-        if (appState.length < 50) appState.length = 50;
+        if (appState.length < minLengthValue) appState.length = minLengthValue;
         
         singlePrice = ((appState.length / 100) * appState.basePricePerMeter) + surcharge;
         
@@ -590,8 +626,8 @@
     // Length Stepper Interactions
     if (lengthMinusBtn && lengthInput) {
       lengthMinusBtn.addEventListener("click", () => {
-        if (appState.length > 50) {
-          appState.length -= 10;
+        if (appState.length > minLengthValue) {
+          appState.length = Math.max(minLengthValue, appState.length - stepSizeValue);
           lengthInput.value = appState.length + " cm";
           recalculate();
         }
@@ -600,7 +636,7 @@
 
     if (lengthPlusBtn && lengthInput) {
       lengthPlusBtn.addEventListener("click", () => {
-        appState.length += 10;
+        appState.length += stepSizeValue;
         lengthInput.value = appState.length + " cm";
         recalculate();
       });
@@ -840,6 +876,8 @@
     });
 
     // Initializations
+    if (widthInput) widthInput.value = appState.width + " cm";
+    if (lengthInput) lengthInput.value = appState.length + " cm";
     recalculate();
     updateFreeShippingWidget();
     startCountdown();
@@ -861,6 +899,18 @@
       "id": "surcharge_product",
       "label": "Customization Surcharge Product",
       "info": "Choose the product that charges the 60 kr custom surcharge."
+    },
+    {
+      "type": "number",
+      "id": "step_size",
+      "label": "Længde trin (cm)",
+      "default": 10
+    },
+    {
+      "type": "number",
+      "id": "min_length",
+      "label": "Minimum længde (cm)",
+      "default": 50
     }
   ],
   "presets": [
