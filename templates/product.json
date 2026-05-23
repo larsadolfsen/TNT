@@ -46,7 +46,7 @@
       "settings": {
         "show_urgency": true,
         "urgency_text": "Kun få på lager – bestil snart",
-        "hide_under_limit": 10
+        "hide_under_limit": 500
       }
     },
     "shipping-progress": {
@@ -66,7 +66,7 @@
           "type": "countdown",
           "settings": {
             "text": "Sendes om",
-            "suffix": " timer"
+            "suffix": "timer"
           }
         },
         "checkmark_DgADT4": {
