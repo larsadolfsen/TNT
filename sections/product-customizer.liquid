@@ -249,41 +249,29 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // Parse variants
+    // Parse variants and attach width
     let variants = [];
     try {
       variants = JSON.parse(document.getElementById('variant-data').textContent);
+      variants.forEach(v => {
+        const match = v.title.match(/(\d+)/);
+        v.width = match ? parseInt(match[1]) : 140;
+      });
     } catch (e) {
       console.error("Failed to parse variant data", e);
     }
 
-    // Parse allowed widths from variant titles (e.g. "140 cm" or option name)
-    let allowedWidths = [140];
-    if (variants.length > 0) {
-      const parsedWidths = variants.map(v => {
-        const match = v.title.match(/(\d+)/);
-        return match ? parseInt(match[1]) : null;
-      }).filter(w => w !== null);
-      if (parsedWidths.length > 0) {
-        allowedWidths = [...new Set(parsedWidths)].sort((a, b) => a - b);
-      }
-    }
-
     const minWidthLimit = {{ section.settings.min_width | default: 80 }};
     const maxWidthLimit = {{ max_width | json }};
-    if (allowedWidths.length > 0) {
-      let filteredWidths = allowedWidths;
-      if (minWidthLimit) {
-        filteredWidths = filteredWidths.filter(w => w >= minWidthLimit);
-      }
-      if (maxWidthLimit) {
-        filteredWidths = filteredWidths.filter(w => w <= maxWidthLimit);
-      }
-      if (filteredWidths.length > 0) {
-        allowedWidths = filteredWidths;
-      }
+
+    // Find default width: prefer 140 if it is within limits, otherwise clamp
+    let defaultWidth = 140;
+    if (defaultWidth > maxWidthLimit) {
+      defaultWidth = maxWidthLimit;
     }
-    const defaultWidth = allowedWidths.includes(140) ? 140 : (allowedWidths[allowedWidths.length - 1] || 140);
+    if (defaultWidth < minWidthLimit) {
+      defaultWidth = minWidthLimit;
+    }
 
     const surchargeRoundId = {{ surcharge_round_id | default: 'null' }};
     const surchargeRoundValue = {{ surcharge_round_price | default: 0.00 }};
@@ -297,6 +285,7 @@
     let freeShippingThreshold = window.freeShippingThreshold || 590.00;
     const stepSizeValue = {{ section.settings.step_size | default: 10 }};
     const minLengthValue = {{ section.settings.min_length | default: 50 }};
+    const widthStepSizeValue = {{ section.settings.width_step | default: 10 }};
 
     // State Management
     let appState = {
@@ -358,11 +347,17 @@
       return value.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
     }
 
-    // Find Active Variant based on selected width
+    // Find Active Variant based on selected width (smallest variant whose width is >= selected width)
     function getActiveVariant() {
       if (variants.length === 0) return { id: null, price: appState.basePricePerMeter };
-      let match = variants.find(v => v.title.includes(appState.width.toString()));
-      return match || variants[0];
+      let potentialVariants = variants.filter(v => v.width >= appState.width);
+      if (potentialVariants.length > 0) {
+        potentialVariants.sort((a, b) => a.width - b.width);
+        return potentialVariants[0];
+      }
+      // Fallback: sort descending by width to get the largest available variant
+      let sortedAll = [...variants].sort((a, b) => b.width - a.width);
+      return sortedAll[0] || variants[0];
     }
 
     // Calculation Engine
@@ -650,9 +645,8 @@
     // Width Stepper Interactions
     if (widthMinusBtn && widthInput) {
       widthMinusBtn.addEventListener("click", () => {
-        const idx = allowedWidths.indexOf(appState.width);
-        if (idx > 0) {
-          appState.width = allowedWidths[idx - 1];
+        if (appState.width > minWidthLimit) {
+          appState.width = Math.max(minWidthLimit, appState.width - widthStepSizeValue);
           widthInput.value = appState.width + " cm";
           recalculate();
         }
@@ -661,9 +655,8 @@
 
     if (widthPlusBtn && widthInput) {
       widthPlusBtn.addEventListener("click", () => {
-        const idx = allowedWidths.indexOf(appState.width);
-        if (idx < allowedWidths.length - 1) {
-          appState.width = allowedWidths[idx + 1];
+        if (appState.width < maxWidthLimit) {
+          appState.width = Math.min(maxWidthLimit, appState.width + widthStepSizeValue);
           widthInput.value = appState.width + " cm";
           recalculate();
         }
@@ -980,6 +973,12 @@
       "id": "min_width",
       "label": "Minimum bredde (cm)",
       "default": 80
+    },
+    {
+      "type": "number",
+      "id": "width_step",
+      "label": "Bredde/Diameter trin (cm)",
+      "default": 10
     }
   ],
   "presets": [
