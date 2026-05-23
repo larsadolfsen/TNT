@@ -1,74 +1,98 @@
+{%- liquid
+  assign show_all_label = section.settings.show_all_label | default: "Vis alle"
+  assign main_col = section.settings.main_collection
+  assign parent_col = collection.metafields.custom.parent.value
+  assign main_col_handle = main_col.handle | default: parent_col.handle
+  
+  # Determine the "Vis alle" main link url
+  assign main_url = "#"
+  if main_col != blank
+    assign main_url = main_col.url
+  elsif parent_col != blank
+    assign main_url = parent_col.url
+  else
+    assign main_url = collection.url
+  endif
+
+  assign target_parent = parent_col | default: collection
+
+  # Dynamic extraction of sibling/subcollections from products if in automatic mode
+  assign col_handles_str = ""
+  if section.settings.mode == 'automatic'
+    paginate target_parent.products by 250
+      for prod in target_parent.products
+        for col_item in prod.collections
+          if col_item.handle != target_parent.handle and col_item.handle != 'all' and col_item.handle != 'frontpage'
+            assign col_parent = col_item.metafields.custom.parent.value
+            if col_parent != blank and col_parent.handle == target_parent.handle
+              assign check_handle = col_item.handle | prepend: '|' | append: '|'
+              unless col_handles_str contains check_handle
+                assign col_handles_str = col_handles_str | append: col_item.handle | append: '|'
+              endunless
+            endif
+          endif
+        endfor
+      endfor
+    endpaginate
+    assign col_handles = col_handles_str | split: '|'
+  endif
+
+  # Determine if we actually have any valid subcollections
+  assign has_subcollections = false
+  if section.settings.mode == 'manual'
+    for block in section.blocks
+      if block.settings.collection != blank
+        assign has_subcollections = true
+        break
+      endif
+    endfor
+  else
+    if col_handles_str != blank
+      for sub_handle in col_handles
+        if sub_handle != blank
+          assign sub_col = collections[sub_handle]
+          if sub_col != blank
+            assign has_subcollections = true
+            break
+          endif
+        endif
+      endfor
+    endif
+  endif
+
+  # Check if any rendered pill matches the current collection handle to manage active states
+  assign is_any_pill_active = false
+  if section.settings.mode == 'manual'
+    for block in section.blocks
+      if block.settings.collection != blank and block.settings.collection.handle == collection.handle
+        assign is_any_pill_active = true
+      endif
+    endfor
+  else
+    for sub_handle in col_handles
+      if sub_handle != blank and sub_handle == collection.handle
+        assign is_any_pill_active = true
+      endif
+    endfor
+  endif
+
+  # "Vis alle" is active if no subcollection pill is currently selected,
+  # or if we are actively viewing the configured main collection (or parent collection).
+  assign is_show_all_active = false
+  if is_any_pill_active == false
+    assign is_show_all_active = true
+  elsif main_col_handle != blank and collection.handle == main_col_handle
+    assign is_show_all_active = true
+  endif
+-%}
+
+{%- if has_subcollections or request.design_mode -%}
 <div class="max-w-screen-xl mx-auto px-4 mt-6 mb-6">
   {%- if section.settings.title != blank -%}
     <h2 class="text-xs font-bold text-primary uppercase tracking-wider mb-3">
       {{ section.settings.title }}
     </h2>
   {%- endif -%}
-
-  {%- liquid
-    assign show_all_label = section.settings.show_all_label | default: "Vis alle"
-    assign main_col = section.settings.main_collection
-    assign parent_col = collection.metafields.custom.parent.value
-    assign main_col_handle = main_col.handle | default: parent_col.handle
-    
-    # Determine the "Vis alle" main link url
-    assign main_url = "#"
-    if main_col != blank
-      assign main_url = main_col.url
-    elsif parent_col != blank
-      assign main_url = parent_col.url
-    else
-      assign main_url = collection.url
-    endif
-
-    assign target_parent = parent_col | default: collection
-
-    # Dynamic extraction of sibling/subcollections from products if in automatic mode
-    assign col_handles_str = ""
-    if section.settings.mode == 'automatic'
-      paginate target_parent.products by 250
-        for prod in target_parent.products
-          for col_item in prod.collections
-            if col_item.handle != target_parent.handle and col_item.handle != 'all' and col_item.handle != 'frontpage'
-              assign col_parent = col_item.metafields.custom.parent.value
-              if col_parent != blank and col_parent.handle == target_parent.handle
-                assign check_handle = col_item.handle | prepend: '|' | append: '|'
-                unless col_handles_str contains check_handle
-                  assign col_handles_str = col_handles_str | append: col_item.handle | append: '|'
-                endunless
-              endif
-            endif
-          endfor
-        endfor
-      endpaginate
-      assign col_handles = col_handles_str | split: '|'
-    endif
-
-    # Check if any rendered pill matches the current collection handle to manage active states
-    assign is_any_pill_active = false
-    if section.settings.mode == 'manual'
-      for block in section.blocks
-        if block.settings.collection != blank and block.settings.collection.handle == collection.handle
-          assign is_any_pill_active = true
-        endif
-      endfor
-    else
-      for sub_handle in col_handles
-        if sub_handle != blank and sub_handle == collection.handle
-          assign is_any_pill_active = true
-        endif
-      endfor
-    endif
-
-    # "Vis alle" is active if no subcollection pill is currently selected,
-    # or if we are actively viewing the configured main collection (or parent collection).
-    assign is_show_all_active = false
-    if is_any_pill_active == false
-      assign is_show_all_active = true
-    elsif main_col_handle != blank and collection.handle == main_col_handle
-      assign is_show_all_active = true
-    endif
-  -%}
 
   <div class="flex overflow-x-auto gap-2.5 pb-2 hide-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
     <!-- 'Vis alle' pill -->
@@ -112,7 +136,7 @@
         </a>
       {%- endfor -%}
 
-      {%- if section.blocks.size == 0 -%}
+      {%- if has_subcollections == false and request.design_mode -%}
         <!-- Fallback Mockup Data when no blocks are defined yet -->
         <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
           Børnefamilien (Let rengøring)
@@ -161,7 +185,7 @@
         </a>
       {%- endfor -%}
 
-      {%- if target_parent.products.size == 0 or col_handles_str == "" -%}
+      {%- if has_subcollections == false and request.design_mode -%}
         <!-- Fallback Mockup Data in automatic mode if empty -->
         <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
           Børnefamilien (Let rengøring)
@@ -179,6 +203,7 @@
     {%- endif -%}
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
