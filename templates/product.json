@@ -34,6 +34,7 @@
     "urgency": {
       "type": "product-urgency",
       "settings": {
+        "show_urgency": true,
         "urgency_text": "Kun få på lager – bestil snart"
       }
     },

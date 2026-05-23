@@ -3,17 +3,25 @@
   Renders the stock warning message with an warning icon.
 {% endcomment %}
 
+{%- if section.settings.show_urgency -%}
 <section class="max-w-screen-xl mx-auto px-4 py-3">
   <p class="text-sm font-medium text-amber-700 flex items-center gap-1.5">
     <span class="material-symbols-outlined text-lg">error</span>
     <span>{{ section.settings.urgency_text | default: "Kun få på lager – bestil snart" }}</span>
   </p>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Product Stock Urgency",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_urgency",
+      "label": "Show stock urgency",
+      "default": true
+    },
     {
       "type": "text",
       "id": "urgency_text",
