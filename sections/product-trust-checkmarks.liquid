@@ -10,7 +10,7 @@
         {%- when 'countdown' -%}
           <div class="flex items-center gap-2.5 text-primary font-medium" {{ block.shopify_attributes }}>
             <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-            <span>{{ block.settings.text }} <span id="countdown-timer" class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">00:00:00</span></span>
+            <span>{{ block.settings.text }} <span id="countdown-timer" class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">00:00:00</span>{{ block.settings.suffix }}</span>
           </div>
         {%- when 'checkmark' -%}
           <div class="flex items-center gap-2.5 text-primary font-medium" {{ block.shopify_attributes }}>
@@ -65,8 +65,14 @@
         {
           "type": "text",
           "id": "text",
-          "label": "Text",
+          "label": "Prefix Text",
           "default": "Afsendes i dag – Bestil inden"
+        },
+        {
+          "type": "text",
+          "id": "suffix",
+          "label": "Suffix Text",
+          "default": ""
         }
       ]
     },

@@ -65,7 +65,8 @@
         "countdown_wdaUbK": {
           "type": "countdown",
           "settings": {
-            "text": "Sendes om"
+            "text": "Sendes om",
+            "suffix": ""
           }
         },
         "checkmark_DgADT4": {
