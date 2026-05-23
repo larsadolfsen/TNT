@@ -75,6 +75,16 @@
         "cross_sell_1": "",
         "cross_sell_2": ""
       }
+    },
+    "product_banner_text_PPtReU": {
+      "type": "product-banner-text",
+      "name": "Tekst",
+      "settings": {
+        "heading": "",
+        "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>",
+        "border_top": true,
+        "border_bottom": true
+      }
     }
   },
   "order": [
@@ -87,6 +97,7 @@
     "customizer",
     "buy-buttons",
     "trust-checkmarks",
-    "cross-sell"
+    "cross-sell",
+    "product_banner_text_PPtReU"
   ]
 }
