@@ -283,6 +283,7 @@
         allowedWidths = filteredWidths;
       }
     }
+    const defaultWidth = allowedWidths.includes(140) ? 140 : (allowedWidths[allowedWidths.length - 1] || 140);
 
     const surchargeRoundId = {{ surcharge_round_id | default: 'null' }};
     const surchargeRoundValue = {{ surcharge_round_price | default: 0.00 }};
