@@ -66,7 +66,7 @@
           "type": "countdown",
           "settings": {
             "text": "Sendes om",
-            "suffix": ""
+            "suffix": " timer"
           }
         },
         "checkmark_DgADT4": {
