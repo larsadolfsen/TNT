@@ -33,10 +33,12 @@
     {{ content_for_header }}
   </head>
 
-  <body>
+  <body class="template-{{ template.name | handle }}">
     {% sections 'header-group' %}
 
-    {{ content_for_layout }}
+    <main id="MainContent" class="focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
 
     {% sections 'footer-group' %}
   </body>

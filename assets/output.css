@@ -1462,13 +1462,6 @@
       }
     }
   }
-  .hover\:bg-slate-800 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-slate-800);
-      }
-    }
-  }
   .hover\:text-\[\#FFD814\] {
     &:hover {
       @media (hover: hover) {
@@ -1841,6 +1834,62 @@
   }
   & a:hover {
     color: var(--color-primary);
+  }
+}
+@media (min-width: 768px) {
+  .template-product #MainContent {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    column-gap: 2rem;
+    row-gap: 0;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    align-items: start;
+  }
+  .template-product #MainContent > .shopify-section {
+    grid-column: 2;
+    width: 100%;
+  }
+  .template-product #MainContent > [id$="__breadcrumbs"], .template-product #MainContent > #shopify-section-breadcrumbs {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    margin-bottom: 0.5rem;
+  }
+  .template-product #MainContent > [id$="__media"], .template-product #MainContent > #shopify-section-media {
+    grid-column: 1;
+    grid-row: 2 / span 25;
+    position: sticky;
+    top: 6rem;
+    z-index: 10;
+  }
+  .template-product #MainContent > [id$="__cross-sell"], .template-product #MainContent > #shopify-section-cross-sell, .template-product #MainContent > [id$="__banner-text"], .template-product #MainContent > #shopify-section-banner-text, .template-product #MainContent > [id$="__testimonial"], .template-product #MainContent > #shopify-section-testimonial {
+    grid-column: 1 / -1;
+    margin-top: 1.5rem;
+  }
+  .template-product #MainContent > .shopify-section > section {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .template-product #MainContent > [id$="__materials"] > section {
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+  }
+  .template-product #MainContent > [id$="__customizer"] > section {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-radius: 1rem;
+  }
+}
+@media (min-width: 1024px) {
+  .template-product #MainContent {
+    column-gap: 3.5rem;
+    padding: 2.5rem 2rem;
   }
 }
 @property --tw-translate-x {
