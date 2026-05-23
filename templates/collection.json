@@ -41,8 +41,8 @@
   },
   "order": [
     "collection-header",
-    "collection-subcollections",
     "collection-subcategories",
+    "collection-subcollections",
     "main-collection"
   ]
 }
