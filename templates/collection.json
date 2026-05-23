@@ -16,6 +16,13 @@
         "show_description": true
       }
     },
+    "product_title_bdJwKb": {
+      "type": "product-title",
+      "name": "Product Title",
+      "settings": {
+        "title": "{{ collection.title }}"
+      }
+    },
     "collection-subcategories": {
       "type": "collection-subcategories",
       "settings": {}
@@ -27,6 +34,7 @@
   },
   "order": [
     "collection-header",
+    "product_title_bdJwKb",
     "collection-subcategories",
     "main-collection"
   ]
