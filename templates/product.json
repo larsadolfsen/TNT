@@ -126,17 +126,6 @@
         "cross_sell_2": ""
       }
     },
-    "description": {
-      "type": "product-description",
-      "settings": {
-        "heading": "Om produktet",
-        "use_product_description": true,
-        "custom_description": "",
-        "show_category_metafields": true,
-        "show_empty_fields": true,
-        "metafields_namespace": "shopify"
-      }
-    },
     "accordions": {
       "type": "product-accordions",
       "settings": {}
@@ -163,7 +152,6 @@
     "materials",
     "testimonial",
     "cross-sell",
-    "description",
     "accordions",
     "banner-text"
   ]
