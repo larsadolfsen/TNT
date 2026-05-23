@@ -8,7 +8,7 @@
 {%- assign hide_under_limit = section.settings.hide_under_limit | default: 5 -%}
 
 {%- if current_variant and current_variant.inventory_management != blank -%}
-  {%- if current_variant.inventory_quantity < hide_under_limit -%}
+  {%- if current_variant.inventory_quantity <= 0 or current_variant.inventory_quantity >= hide_under_limit -%}
     {%- assign show_urgency = false -%}
   {%- endif -%}
 {%- endif -%}
@@ -60,7 +60,7 @@
 
       let show = true;
       if (variant.inventory_management) {
-        if (variant.inventory_quantity < urgencyData.hideUnderLimit) {
+        if (variant.inventory_quantity <= 0 || variant.inventory_quantity >= urgencyData.hideUnderLimit) {
           show = false;
         }
       }
@@ -100,9 +100,9 @@
     {
       "type": "number",
       "id": "hide_under_limit",
-      "label": "Skjul hvis under X enheder",
+      "label": "Vis kun hvis under X enheder",
       "default": 5,
-      "info": "Skjul stock urgency hvis der er under dette antal enheder tilbage."
+      "info": "Vis kun stock urgency hvis der er under dette antal enheder tilbage. Banneret skjules også, hvis varen er helt udsolgt."
     }
   ],
   "presets": [
