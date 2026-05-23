@@ -837,6 +837,9 @@
     --tw-border-style: none;
     border-style: none;
   }
+  .border-\[\#FFD814\] {
+    border-color: #FFD814;
+  }
   .border-black\/10 {
     border-color: color-mix(in srgb, #000 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -860,9 +863,6 @@
   }
   .border-primary {
     border-color: var(--color-primary);
-  }
-  .border-secondary {
-    border-color: var(--color-secondary);
   }
   .border-slate-200 {
     border-color: var(--color-slate-200);
@@ -1197,6 +1197,9 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
+  .text-\[\#FFD814\] {
+    color: #FFD814;
+  }
   .text-amber-500 {
     color: var(--color-amber-500);
   }
@@ -1371,6 +1374,13 @@
       }
     }
   }
+  .hover\:border-\[\#FFD814\] {
+    &:hover {
+      @media (hover: hover) {
+        border-color: #FFD814;
+      }
+    }
+  }
   .hover\:border-primary\/40 {
     &:hover {
       @media (hover: hover) {
@@ -1378,13 +1388,6 @@
         @supports (color: color-mix(in lab, red, red)) {
           border-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
         }
-      }
-    }
-  }
-  .hover\:border-secondary {
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-secondary);
       }
     }
   }
@@ -1433,6 +1436,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-slate-800);
+      }
+    }
+  }
+  .hover\:text-\[\#FFD814\] {
+    &:hover {
+      @media (hover: hover) {
+        color: #FFD814;
       }
     }
   }
