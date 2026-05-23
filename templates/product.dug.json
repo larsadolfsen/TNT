@@ -56,7 +56,9 @@
       "type": "product-customizer",
       "settings": {
         "surcharge_amount": 60,
-        "surcharge_product": ""
+        "surcharge_product": "tilpasning-til-rund-dug",
+        "step_size": 10,
+        "min_length": 50
       }
     },
     "buy-buttons": {
