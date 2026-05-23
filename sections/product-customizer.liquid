@@ -743,6 +743,8 @@
             quantity: appState.quantity,
             properties: {
               "Tilknyttet dug": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
+              "Form": appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1),
+              "Bredde": appState.width + " cm",
               "_unique_key": Date.now().toString() + "-surcharge"
             }
           });
