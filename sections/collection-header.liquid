@@ -1,0 +1,53 @@
+<div class="max-w-screen-xl mx-auto px-4 pt-6 pb-2">
+  <!-- Breadcrumbs -->
+  <nav class="text-xs text-on-surface-variant mb-4 flex items-center gap-1.5 overflow-x-auto whitespace-nowrap py-1" aria-label="Brødkrummer">
+    <a href="{{ routes.root_url }}" class="hover:underline text-on-surface-variant no-underline">Forside</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    {%- if collection.handle != 'all' -%}
+      <a href="/collections" class="hover:underline text-on-surface-variant no-underline">Kollektioner</a>
+      <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    {%- endif -%}
+    <span class="text-primary font-semibold" aria-current="page">{{ collection.title }}</span>
+  </nav>
+
+  <!-- Category Introduction -->
+  <header class="mb-2">
+    <h1 class="font-serif text-2xl md:text-4xl font-bold text-primary mb-2">
+      {%- if section.settings.title_override != blank -%}
+        {{ section.settings.title_override }}
+      {%- else -%}
+        {{ collection.title }}
+      {%- endif -%}
+    </h1>
+    {%- if section.settings.show_description and collection.description != blank -%}
+      <div class="text-sm text-on-surface-variant mt-2 max-w-3xl">
+        {{ collection.description }}
+      </div>
+    {%- endif -%}
+  </header>
+</div>
+
+{% schema %}
+{
+  "name": "Kollektion Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_override",
+      "label": "Overskrift override",
+      "info": "Efterlad tom for at bruge kollektionens eget navn"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Vis kollektionsbeskrivelse",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kollektion Header"
+    }
+  ]
+}
+{% endschema %}

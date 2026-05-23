@@ -1,0 +1,194 @@
+<div class="max-w-screen-xl mx-auto px-4 mb-10">
+  <section aria-label="Underkategorier" class="relative">
+    <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible">
+      
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign sub_title = block.settings.title
+            assign sub_desc = block.settings.subtitle
+            assign sub_url = block.settings.collection.url | default: "#"
+            assign sub_image = block.settings.image
+
+            if sub_title == blank and block.settings.collection != blank
+              assign sub_title = block.settings.collection.title
+            endif
+            
+            if sub_desc == blank and block.settings.collection != blank
+              assign sub_desc = block.settings.collection.description | strip_html | truncatewords: 8
+            endif
+
+            if sub_image == blank and block.settings.collection != blank
+              assign sub_image = block.settings.collection.featured_image
+            endif
+          -%}
+          
+          {%- if block.settings.filter_type != 'none' and block.settings.filter_value != blank -%}
+            <button 
+              onclick="applyQuickFilter('{{ block.settings.filter_type }}', '{{ block.settings.filter_value | escape }}')" 
+              class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer"
+              {{ block.shopify_attributes }}
+            >
+              <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
+                {%- if sub_image != blank -%}
+                  <img 
+                    src="{{ sub_image | image_url: width: 400, height: 400, crop: 'center' }}" 
+                    alt="{{ sub_title | escape }}" 
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'w-full h-full bg-slate-200' }}
+                {%- endif -%}
+              </div>
+              <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">{{ sub_title }}</h3>
+              {%- if sub_desc != blank -%}
+                <p class="text-[10px] text-on-surface-variant m-0 mt-0.5">{{ sub_desc }}</p>
+              {%- endif -%}
+            </button>
+          {%- else -%}
+            <a 
+              href="{{ sub_url }}" 
+              class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none no-underline block"
+              {{ block.shopify_attributes }}
+            >
+              <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
+                {%- if sub_image != blank -%}
+                  <img 
+                    src="{{ sub_image | image_url: width: 400, height: 400, crop: 'center' }}" 
+                    alt="{{ sub_title | escape }}" 
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'w-full h-full bg-slate-200' }}
+                {%- endif -%}
+              </div>
+              <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">{{ sub_title }}</h3>
+              {%- if sub_desc != blank -%}
+                <p class="text-[10px] text-on-surface-variant m-0 mt-0.5">{{ sub_desc }}</p>
+              {%- endif -%}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Fallback Mockup Data (Exactly matches client's draft HTML layout) -->
+        
+        <!-- Underkategori 1 -->
+        <button onclick="applyQuickFilter('tykkelse', '0,8 mm')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
+          <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
+            <img 
+              src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80" 
+              alt="Soft Transparens" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Soft Transparens</h3>
+          <p class="text-[10px] text-on-surface-variant m-0 mt-0.5">Let hverdagsbeskyttelse i 0,8 mm</p>
+        </button>
+
+        <!-- Underkategori 2 -->
+        <button onclick="applyQuickFilter('tykkelse', '2,0 mm')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
+          <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
+            <img 
+              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80" 
+              alt="Pure Shield" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Pure Shield</h3>
+          <p class="text-[10px] text-on-surface-variant m-0 mt-0.5">Tung bordbeskyttelse i 2,0 mm</p>
+        </button>
+
+        <!-- Underkategori 3 -->
+        <button onclick="applyQuickFilter('form', 'Rund')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
+          <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
+            <img 
+              src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80" 
+              alt="Cirkel-serien" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Cirkel-serien</h3>
+          <p class="text-[10px] text-on-surface-variant m-0 mt-0.5">Runde udskæringer</p>
+        </button>
+
+        <!-- Underkategori 4 -->
+        <button onclick="applyQuickFilter('form', 'Dækkeserviet')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
+          <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
+            <img 
+              src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80" 
+              alt="Læder-serien" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Eksklusivt Tilbehør</h3>
+          <p class="text-[10px] text-on-surface-variant m-0 mt-0.5">Organic Raw i recycled læder</p>
+        </button>
+
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Underkategorier",
+  "max_blocks": 12,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "subcategory",
+      "name": "Underkategori",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Vælg kollektion"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel (Valgfri)",
+          "info": "Bruger kollektionens titel som standard"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Undertekst (Valgfri)",
+          "info": "Bruger kort kollektionsbeskrivelse som standard"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Billede (Valgfri)",
+          "info": "Bruger kollektionens fremhævede billede som standard"
+        },
+        {
+          "type": "select",
+          "id": "filter_type",
+          "label": "Hurtig-filter type",
+          "options": [
+            { "value": "none", "label": "Ingen (Standard link)" },
+            { "value": "tykkelse", "label": "Tykkelse" },
+            { "value": "bredde", "label": "Bredde" },
+            { "value": "form", "label": "Form / Type" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "text",
+          "id": "filter_value",
+          "label": "Hurtig-filter værdi",
+          "placeholder": "F.eks. 0,8 mm eller Rund"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Underkategorier"
+    }
+  ]
+}
+{% endschema %}

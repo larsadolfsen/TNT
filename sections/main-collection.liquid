@@ -1,0 +1,639 @@
+<div class="max-w-screen-xl mx-auto px-4 py-4">
+  <!-- Main Layout Grid -->
+  <div class="lg:grid lg:grid-cols-4 lg:gap-8 items-start">
+    
+    <!-- Desktop Sidebar Filters -->
+    <aside class="hidden lg:block lg:col-span-1 bg-white p-5 border border-outline-variant rounded-2xl sticky top-28">
+      <div class="flex justify-between items-center pb-4 border-b border-outline-variant mb-4">
+        <h2 class="text-sm font-bold text-primary uppercase tracking-wider m-0">Filtrering</h2>
+        <button onclick="clearAllFilters()" class="text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0">Ryd alle</button>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Filter: Tykkelse -->
+        <div>
+          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Tykkelse</h3>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="tykkelse" value="0,8 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>0,8 mm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="tykkelse" value="1,2 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>1,2 mm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="tykkelse" value="2,0 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>2,0 mm</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter: Bredde -->
+        <div>
+          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Størrelse / Bredde</h3>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="bredde" value="41x33 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>41x33 cm (Dækkeserviet)</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="bredde" value="80 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>80 cm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="bredde" value="90 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>90 cm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="bredde" value="100 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>100 cm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="bredde" value="140 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>140 cm</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter: Form -->
+        <div>
+          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Type / Form</h3>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="form" value="Firkantet" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>Firkantet (Rulle)</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="form" value="Rund" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>Rund skåret</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="form" value="Dækkeserviet" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>Dækkeserviet</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Product Area -->
+    <section class="lg:col-span-3">
+      
+      <!-- Mobile Controls & Info -->
+      <div class="flex flex-col gap-4 mb-6">
+        <div class="flex items-center justify-between">
+          <div class="text-xs text-on-surface-variant">
+            Viser <span id="product-count-display" class="font-semibold text-primary">0</span> produkter
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <!-- Sortering -->
+            <div class="relative">
+              <select id="sort-select" onchange="filterProducts()" class="text-xs border border-outline-variant rounded-xl bg-surface-container py-2 pl-3 pr-8 focus:ring-1 focus:ring-primary focus:border-primary text-primary font-semibold cursor-pointer">
+                <option value="popularity">Mest populære</option>
+                <option value="price-asc">Pris: Lav til høj</option>
+                <option value="price-desc">Pris: Høj til lav</option>
+              </select>
+            </div>
+
+            <!-- Mobil Filter Knap -->
+            <button onclick="toggleMobileFilter(true)" class="lg:hidden flex items-center gap-2 border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-xs text-primary font-semibold bg-transparent cursor-pointer">
+              <span class="material-symbols-outlined text-sm">filter_list</span>
+              Filtrer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+        <!-- Genereres via Javascript -->
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Mobile Filter Slide-out Drawer -->
+<div id="mobile-filter-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end transition-opacity duration-300 opacity-0">
+  <div class="bg-white w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
+        <span class="font-serif text-xl font-bold text-primary tracking-tight">Filtrer produkter</span>
+        <button onclick="toggleMobileFilter(false)" class="material-symbols-outlined text-2xl text-primary bg-transparent border-0 cursor-pointer" aria-label="Luk filtre">close</button>
+      </div>
+      
+      <div class="space-y-6 overflow-y-auto max-h-[calc(100vh-200px)] pr-2 hide-scrollbar">
+        <!-- Filter: Tykkelse -->
+        <div>
+          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Tykkelse</h3>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-tykkelse" value="0,8 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>0,8 mm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-tykkelse" value="1,2 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>1,2 mm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-tykkelse" value="2,0 mm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>2,0 mm</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter: Bredde -->
+        <div>
+          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Størrelse / Bredde</h3>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-bredde" value="41x33 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>41x33 cm (Dækkeserviet)</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-bredde" value="80 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>80 cm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-bredde" value="90 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>90 cm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-bredde" value="100 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>100 cm</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-bredde" value="140 cm" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>140 cm</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter: Form -->
+        <div>
+          <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">Type / Form</h3>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-form" value="Firkantet" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>Firkantet (Rulle)</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-form" value="Rund" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>Rund skåret</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+              <input type="checkbox" name="mobile-form" value="Dækkeserviet" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+              <span>Dækkeserviet</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 border-t border-outline-variant flex gap-3">
+      <button onclick="clearAllFilters()" class="flex-1 py-3 border border-outline-variant rounded-xl text-xs font-bold text-primary bg-transparent cursor-pointer">Ryd alle</button>
+      <button onclick="toggleMobileFilter(false)" class="flex-1 py-3 bg-primary text-white rounded-xl text-xs font-bold border-0 cursor-pointer">Vis resultater</button>
+    </div>
+  </div>
+</div>
+
+<script id="collection-products-json" type="application/json">
+  [
+    {%- paginate collection.products by 250 -%}
+      {%- for product in collection.products -%}
+        {%- liquid
+          assign thickness = '1,2 mm'
+          assign width = '140 cm'
+          assign form = 'Firkantet'
+          assign badge = ''
+          
+          for tag in product.tags
+            assign tag_down = tag | downcase
+            if tag_down contains 'tykkelse:'
+              assign thickness = tag | remove_first: 'tykkelse:' | remove_first: 'Tykkelse:' | strip
+            elsif tag_down contains 'bredde:'
+              assign width = tag | remove_first: 'bredde:' | remove_first: 'Bredde:' | strip
+            elsif tag_down contains 'form:'
+              assign form = tag | remove_first: 'form:' | remove_first: 'Form:' | strip
+            elsif tag_down contains 'badge:'
+              assign badge = tag | remove_first: 'badge:' | remove_first: 'Badge:' | strip
+            endif
+          endfor
+
+          for option in product.options_with_values
+            assign option_name = option.name | downcase
+            if option_name contains 'tykkelse' or option_name contains 'thickness'
+              assign thickness = option.values | first
+            elsif option_name contains 'bredde' or option_name contains 'width' or option_name contains 'størrelse'
+              assign width = option.values | first
+            elsif option_name contains 'form' or option_name contains 'type'
+              assign form = option.values | first
+            endif
+          endfor
+
+          assign variant = product.first_available_variant | default: product.variants[0]
+          assign price = product.price | money_without_currency | replace: '.', '' | replace: ',', '.' | plus: 0
+          assign originalPrice = product.compare_at_price | money_without_currency | replace: '.', '' | replace: ',', '.' | plus: 0
+          if originalPrice == 0
+            assign originalPrice = 'null'
+          endif
+        -%}
+        {
+          "id": {{ variant.id | json }},
+          "title": {{ product.title | json }},
+          "price": {{ price }},
+          "price_formatted": {{ product.price | money | json }},
+          "originalPrice": {{ originalPrice }},
+          "originalPrice_formatted": {{ product.compare_at_price | money | json }},
+          "image": {{ product.featured_image | image_url: width: 480 | json }},
+          "url": {{ product.url | json }},
+          "thickness": {{ thickness | json }},
+          "width": {{ width | json }},
+          "form": {{ form | json }},
+          "badge": {{ badge | json }},
+          "rating": 4.8,
+          "reviews": 12,
+          "popularity": {{ forloop.index }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    {%- endpaginate -%}
+  ]
+</script>
+
+<style>
+  .filled-star {
+    font-variation-settings: 'FILL' 1 !important;
+  }
+</style>
+
+<script>
+  // Fallback Mockup Data (Exactly matches client's draft HTML layout)
+  const mockProducts = [
+    {
+      id: 1,
+      title: "Pure Shield Gennemsigtig Voksdug 2,0 mm",
+      price: 199,
+      price_formatted: "Dkr 199,-",
+      originalPrice: 249,
+      originalPrice_formatted: "Dkr 249,-",
+      image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80",
+      thickness: "2,0 mm",
+      width: "140 cm",
+      form: "Firkantet",
+      badge: "Spar 20%",
+      rating: 4.9,
+      reviews: 38,
+      popularity: 95,
+      url: "#"
+    },
+    {
+      id: 2,
+      title: "Soft Transparens Gennemsigtig Voksdug 0,8 mm",
+      price: 99,
+      price_formatted: "Dkr 99,-",
+      originalPrice: null,
+      originalPrice_formatted: null,
+      image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80",
+      thickness: "0,8 mm",
+      width: "140 cm",
+      form: "Firkantet",
+      badge: "Bestseller",
+      rating: 4.7,
+      reviews: 52,
+      popularity: 88,
+      url: "#"
+    },
+    {
+      id: 3,
+      title: "Cirkel Shield Rund Klar Voksdug 2,0 mm",
+      price: 249,
+      price_formatted: "Dkr 249,-",
+      originalPrice: 299,
+      originalPrice_formatted: "Dkr 299,-",
+      image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80",
+      thickness: "2,0 mm",
+      width: "100 cm",
+      form: "Rund",
+      badge: "Populær",
+      rating: 4.8,
+      reviews: 17,
+      popularity: 82,
+      url: "#"
+    },
+    {
+      id: 4,
+      title: "Organic Raw Dækkeserviet i Recycled Læder",
+      price: 49,
+      price_formatted: "Dkr 49,-",
+      originalPrice: null,
+      originalPrice_formatted: null,
+      image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80",
+      thickness: "1,2 mm",
+      width: "41x33 cm",
+      form: "Dækkeserviet",
+      badge: "Nyhed",
+      rating: 4.6,
+      reviews: 29,
+      popularity: 76,
+      url: "#"
+    },
+    {
+      id: 5,
+      title: "Klar Voksdug Smal Rulle 2,0 mm",
+      price: 159,
+      price_formatted: "Dkr 159,-",
+      originalPrice: null,
+      originalPrice_formatted: null,
+      image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80",
+      thickness: "2,0 mm",
+      width: "80 cm",
+      form: "Firkantet",
+      badge: null,
+      rating: 4.5,
+      reviews: 12,
+      popularity: 64,
+      url: "#"
+    },
+    {
+      id: 6,
+      title: "Medium Protector Gennemsigtig Voksdug 1,2 mm",
+      price: 129,
+      price_formatted: "Dkr 129,-",
+      originalPrice: 159,
+      originalPrice_formatted: "Dkr 159,-",
+      image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80",
+      thickness: "1,2 mm",
+      width: "90 cm",
+      form: "Firkantet",
+      badge: "Tilbud",
+      rating: 4.4,
+      reviews: 8,
+      popularity: 60,
+      url: "#"
+    },
+    {
+      id: 7,
+      title: "Soft Circle Rund Klar Voksdug 0,8 mm",
+      price: 119,
+      price_formatted: "Dkr 119,-",
+      originalPrice: null,
+      originalPrice_formatted: null,
+      image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80",
+      thickness: "0,8 mm",
+      width: "100 cm",
+      form: "Rund",
+      badge: null,
+      rating: 4.7,
+      reviews: 22,
+      popularity: 70,
+      url: "#"
+    },
+    {
+      id: 8,
+      title: "Bred Bordbeskyttelse Klar Voksdug 1,2 mm",
+      price: 139,
+      price_formatted: "Dkr 139,-",
+      originalPrice: null,
+      originalPrice_formatted: null,
+      image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80",
+      thickness: "1,2 mm",
+      width: "140 cm",
+      form: "Firkantet",
+      badge: null,
+      rating: 4.3,
+      reviews: 14,
+      popularity: 55,
+      url: "#"
+    }
+  ];
+
+  let rawCollectionProducts = [];
+  try {
+    rawCollectionProducts = JSON.parse(document.getElementById('collection-products-json').textContent);
+  } catch(e) {
+    console.warn("Could not parse collection-products-json", e);
+  }
+
+  // Fallback to mockup products if the current collection has 0 items
+  const products = rawCollectionProducts.length > 0 ? rawCollectionProducts : mockProducts;
+
+  const productGrid = document.getElementById("product-grid");
+  const productCountDisplay = document.getElementById("product-count-display");
+  const searchInput = document.getElementById("search-input");
+
+  window.onload = function() {
+    filterProducts();
+  };
+
+  function syncFilters(changedInput) {
+    const name = changedInput.name;
+    const value = changedInput.value;
+    const isChecked = changedInput.checked;
+    
+    let counterpartName;
+    if (name.startsWith('mobile-')) {
+      counterpartName = name.replace('mobile-', '');
+    } else {
+      counterpartName = 'mobile-' + name;
+    }
+
+    const counterparts = document.querySelectorAll(`input[name="${counterpartName}"][value="${value}"]`);
+    counterparts.forEach(el => el.checked = isChecked);
+
+    filterProducts();
+  }
+
+  function getSelectedFilters() {
+    const tykkelse = [...document.querySelectorAll('input[name="tykkelse"]:checked')].map(el => el.value);
+    const bredde = [...document.querySelectorAll('input[name="bredde"]:checked')].map(el => el.value);
+    const form = [...document.querySelectorAll('input[name="form"]:checked')].map(el => el.value);
+    
+    return { tykkelse, bredde, form };
+  }
+
+  function filterProducts() {
+    const activeFilters = getSelectedFilters();
+    const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    const sortBy = document.getElementById("sort-select").value;
+
+    let filtered = products.filter(product => {
+      if (activeFilters.tykkelse.length > 0 && !activeFilters.tykkelse.includes(product.thickness)) {
+        return false;
+      }
+      if (activeFilters.bredde.length > 0 && !activeFilters.bredde.includes(product.width)) {
+        return false;
+      }
+      if (activeFilters.form.length > 0 && !activeFilters.form.includes(product.form)) {
+        return false;
+      }
+      if (searchQuery) {
+        const matchesTitle = product.title.toLowerCase().includes(searchQuery);
+        const matchesThickness = product.thickness.toLowerCase().includes(searchQuery);
+        const matchesForm = product.form.toLowerCase().includes(searchQuery);
+        if (!matchesTitle && !matchesThickness && !matchesForm) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    if (sortBy === "price-asc") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price-desc") {
+      filtered.sort((a, b) => b.price - a.price);
+    } else {
+      filtered.sort((a, b) => b.popularity - a.popularity);
+    }
+
+    renderProducts(filtered);
+  }
+
+  function renderProducts(items) {
+    if (!productGrid) return;
+    productCountDisplay.innerText = items.length;
+    productGrid.innerHTML = "";
+
+    if (items.length === 0) {
+      productGrid.innerHTML = `
+        <div class="col-span-full py-12 text-center">
+          <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2">sentiment_dissatisfied</span>
+          <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
+          <button onclick="clearAllFilters()" class="mt-4 text-xs text-secondary underline bg-transparent border-0 cursor-pointer">Ryd filtre</button>
+        </div>
+      `;
+      return;
+    }
+
+    items.forEach(product => {
+      let originalPriceHtml = "";
+      if (product.originalPrice && product.originalPrice > product.price) {
+        const displayOrig = product.originalPrice_formatted ? product.originalPrice_formatted : `Dkr ${product.originalPrice},-`;
+        originalPriceHtml = `<span class="text-[9px] text-on-surface-variant line-through leading-none">${displayOrig}</span>`;
+      }
+
+      let badgeHtml = "";
+      if (product.badge) {
+        badgeHtml = `<span class="absolute top-2 left-2 bg-primary text-white text-[8px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase z-10">${product.badge}</span>`;
+      }
+
+      const ratingStars = Array.from({length: 5}, (_, i) => {
+        const fill = i < Math.floor(product.rating) ? 'filled-star' : '';
+        return `<span class="material-symbols-outlined text-[12px] ${fill} text-secondary">star</span>`;
+      }).join('');
+
+      const displayPrice = product.price_formatted ? product.price_formatted : `Dkr ${product.price},-`;
+
+      const cardHtml = `
+        <div class="flex flex-row md:flex-col bg-white border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 min-h-[160px] md:h-auto group relative">
+          
+          <!-- Billedzone (Venstre på mobil, Top på desktop) -->
+          <div class="relative w-[110px] sm:w-[140px] md:w-full md:aspect-square flex-shrink-0 bg-surface-container overflow-hidden">
+            <a href="${product.url}" class="block w-full h-full">
+              <img 
+                src="${product.image}" 
+                alt="${product.title}" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                onerror="this.src='https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80'"
+                loading="lazy"
+              />
+            </a>
+            ${badgeHtml}
+          </div>
+
+          <!-- Infozone (Højre på mobil, Bund på desktop) -->
+          <div class="flex-1 p-3 sm:p-4 flex flex-col justify-between min-w-0">
+            <div>
+              <h3 class="font-serif text-xs sm:text-sm md:text-base font-bold text-primary leading-tight mb-1 hover:text-secondary truncate-2-lines">
+                <a href="${product.url}" class="text-primary no-underline hover:text-secondary">${product.title}</a>
+              </h3>
+              
+              <!-- Rating -->
+              <div class="flex items-center gap-1 text-[10px] text-secondary mt-1">
+                <div class="flex">${ratingStars}</div>
+                <span class="font-semibold ml-0.5">${product.rating}</span>
+                <span class="text-on-surface-variant">(${product.reviews})</span>
+              </div>
+            </div>
+
+            <!-- Pris og Køb-knap -->
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mt-3">
+              <div class="flex flex-col">
+                ${originalPriceHtml}
+                <span class="text-sm md:text-lg font-bold text-primary leading-tight">
+                  ${displayPrice} 
+                  <span class="text-[9px] md:text-[10px] font-normal text-on-surface-variant">/m</span>
+                </span>
+              </div>
+
+              <!-- En fuld "Læg i kurv" knap på både mobil og desktop -->
+              <button onclick="window.addToCart(${product.id})" class="bg-primary hover:bg-secondary text-white px-3 py-2 rounded-xl flex items-center justify-center gap-1.5 transition-colors focus:outline-none text-xs font-semibold w-full sm:w-auto border-0 cursor-pointer" aria-label="Læg i kurv">
+                <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                <span>Læg i kurv</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      `;
+      productGrid.insertAdjacentHTML("beforeend", cardHtml);
+    });
+  }
+
+  function applyQuickFilter(type, value) {
+    clearAllFilters(false);
+    const inputs = document.querySelectorAll(`input[name="${type}"], input[name="mobile-${type}"]`);
+    inputs.forEach(input => {
+      if (input.value === value) {
+        input.checked = true;
+      }
+    });
+    filterProducts();
+  }
+
+  function clearAllFilters(shouldRender = true) {
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    if (shouldRender) {
+      filterProducts();
+    }
+  }
+
+  function toggleMobileFilter(open) {
+    const drawer = document.getElementById("mobile-filter-drawer");
+    if (!drawer) return;
+    const panel = drawer.querySelector("div");
+    if (open) {
+      drawer.classList.remove("hidden");
+      setTimeout(() => {
+        drawer.classList.remove("opacity-0");
+        panel.classList.remove("translate-x-full");
+      }, 10);
+    } else {
+      drawer.classList.add("opacity-0");
+      panel.classList.add("translate-x-full");
+      setTimeout(() => {
+        drawer.classList.add("hidden");
+      }, 300);
+    }
+  }
+
+  window.syncFilters = syncFilters;
+  window.filterProducts = filterProducts;
+  window.applyQuickFilter = applyQuickFilter;
+  window.clearAllFilters = clearAllFilters;
+  window.toggleMobileFilter = toggleMobileFilter;
+</script>
+
+{% schema %}
+{
+  "name": "Kollektion Grid & Filtre",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Kollektion Grid & Filtre"
+    }
+  ]
+}
+{% endschema %}
