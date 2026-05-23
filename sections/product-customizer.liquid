@@ -297,7 +297,7 @@
     // Calculation Engine
     function recalculate() {
       const activeVariant = getActiveVariant();
-      appState.basePricePerMeter = activeVariant.price * 100;
+      appState.basePricePerMeter = activeVariant.price;
 
       // Dispatch custom event to notify other scripts about active variant update
       if (activeVariant && activeVariant.id) {
@@ -363,7 +363,7 @@
       // Update dynamic display on top
       const basePriceDisplay = document.getElementById("base-price-display");
       if (basePriceDisplay) {
-        basePriceDisplay.textContent = formatPrice(activeVariant.price * 100);
+        basePriceDisplay.textContent = formatPrice(activeVariant.price);
       }
 
       // Set global variable to resolve initial page load race condition
