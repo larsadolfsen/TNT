@@ -21,14 +21,17 @@
       assign main_url = collection.url
     endif
 
+    assign target_parent = parent_col | default: collection
+
     # Dynamic extraction of sibling/subcollections from products if in automatic mode
     assign col_handles_str = ""
     if section.settings.mode == 'automatic'
-      paginate collection.products by 250
-        for prod in collection.products
+      paginate target_parent.products by 250
+        for prod in target_parent.products
           for col_item in prod.collections
-            if col_item.handle != collection.handle and col_item.handle != 'all' and col_item.handle != 'frontpage'
-              if main_col_handle == blank or col_item.handle != main_col_handle
+            if col_item.handle != target_parent.handle and col_item.handle != 'all' and col_item.handle != 'frontpage'
+              assign col_parent = col_item.metafields.custom.parent.value
+              if col_parent != blank and col_parent.handle == target_parent.handle
                 assign check_handle = col_item.handle | prepend: '|' | append: '|'
                 unless col_handles_str contains check_handle
                   assign col_handles_str = col_handles_str | append: col_item.handle | append: '|'
@@ -158,7 +161,7 @@
         </a>
       {%- endfor -%}
 
-      {%- if collection.products.size == 0 or col_handles_str == "" -%}
+      {%- if target_parent.products.size == 0 or col_handles_str == "" -%}
         <!-- Fallback Mockup Data in automatic mode if empty -->
         <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
           Børnefamilien (Let rengøring)
