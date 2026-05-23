@@ -65,6 +65,12 @@
             "text": "Afsendes i dag – Bestil inden"
           }
         },
+        "checkmark_DgADT4": {
+          "type": "checkmark",
+          "settings": {
+            "text": "Fragt fra 59 kr."
+          }
+        },
         "checkmark_J7LE8N": {
           "type": "checkmark",
           "settings": {
@@ -74,6 +80,7 @@
       },
       "block_order": [
         "countdown_wdaUbK",
+        "checkmark_DgADT4",
         "checkmark_J7LE8N"
       ],
       "settings": {}
@@ -110,6 +117,15 @@
       ],
       "settings": {}
     },
+    "testimonial": {
+      "type": "product-testimonial",
+      "settings": {
+        "heading": "Det siger kunderne",
+        "stars": 5,
+        "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
+        "author": "Mette S., Verificeret køber"
+      }
+    },
     "product_accordions_gTH8We": {
       "type": "product-accordions",
       "blocks": {
@@ -143,25 +159,12 @@
       "name": "Klap-ud Paneler",
       "settings": {}
     },
-    "testimonial": {
-      "type": "product-testimonial",
-      "settings": {
-        "heading": "Det siger kunderne",
-        "stars": 5,
-        "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
-        "author": "Mette S., Verificeret køber"
-      }
-    },
     "cross-sell": {
       "type": "product-cross-sell",
       "settings": {
         "cross_sell_1": "",
         "cross_sell_2": ""
       }
-    },
-    "accordions": {
-      "type": "product-accordions",
-      "settings": {}
     },
     "banner-text": {
       "type": "product-banner-text",
@@ -183,10 +186,9 @@
     "shipping-progress",
     "trust-checkmarks",
     "materials",
-    "product_accordions_gTH8We",
     "testimonial",
+    "product_accordions_gTH8We",
     "cross-sell",
-    "accordions",
     "banner-text"
   ]
 }
