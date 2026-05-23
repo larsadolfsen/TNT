@@ -6,53 +6,181 @@
 {%- unless template == 'index' or template == 'cart' or template == 'list-collections' or template == '404' -%}
   {%- assign t = template | split: '.' | first -%}
 
-  {%- assign show_ellipsis = false -%}
-  {%- if t == 'product' and collection.url -%}
-    {%- assign show_ellipsis = true -%}
-  {%- elsif t == 'blog' and current_tags -%}
-    {%- assign show_ellipsis = true -%}
-  {%- elsif t == 'article' -%}
-    {%- assign show_ellipsis = true -%}
+  {%- comment -%}
+    Identify the collection and build parent chain if applicable
+  {%- endcomment -%}
+  {%- assign leaf_collection = nil -%}
+  {%- if t == 'collection' -%}
+    {%- assign leaf_collection = collection -%}
+  {%- elsif t == 'product' -%}
+    {%- assign leaf_collection = collection -%}
+    {%- if leaf_collection == blank -%}
+      {%- assign leaf_collection = product.collections.first -%}
+    {%- endif -%}
   {%- endif -%}
 
-  <div class="max-w-screen-xl mx-auto px-4 h-12 md:h-auto md:pt-6 md:pb-2 flex items-center">
-    <nav class="text-xs text-on-surface-variant flex items-center gap-1.5 overflow-x-auto whitespace-nowrap h-full md:h-auto md:py-1 hide-scrollbar" aria-label="Brødkrummer">
-      {%- if show_ellipsis -%}
-        <a href="{{ routes.root_url }}" class="hidden md:inline hover:underline text-on-surface-variant no-underline">Forside</a>
-        <span class="hidden md:inline material-symbols-outlined text-[14px]">chevron_right</span>
-        <a href="{{ routes.root_url }}" class="inline md:hidden hover:underline text-on-surface-variant no-underline">...</a>
-        <span class="inline md:hidden material-symbols-outlined text-[14px]">chevron_right</span>
-      {%- else -%}
-        <a href="{{ routes.root_url }}" class="hover:underline text-on-surface-variant no-underline">Forside</a>
-        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+  {%- assign c_level_0 = nil -%}
+  {%- assign c_level_1 = nil -%}
+  {%- assign c_level_2 = nil -%}
+  {%- assign c_level_3 = nil -%}
+  {%- assign c_level_4 = nil -%}
+  {%- assign c_level_5 = nil -%}
+  {%- assign c_level_6 = nil -%}
+
+  {%- if leaf_collection != blank -%}
+    {%- assign c_level_0 = leaf_collection -%}
+    {%- assign c_level_1 = c_level_0.metafields.custom.parent.value -%}
+    {%- if c_level_1 != blank -%}
+      {%- assign c_level_2 = c_level_1.metafields.custom.parent.value -%}
+      {%- if c_level_2 != blank -%}
+        {%- assign c_level_3 = c_level_2.metafields.custom.parent.value -%}
+        {%- if c_level_3 != blank -%}
+          {%- assign c_level_4 = c_level_3.metafields.custom.parent.value -%}
+          {%- if c_level_4 != blank -%}
+            {%- assign c_level_5 = c_level_4.metafields.custom.parent.value -%}
+            {%- if c_level_5 != blank -%}
+              {%- assign c_level_6 = c_level_5.metafields.custom.parent.value -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
       {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- assign show_mobile_ellipsis = false -%}
+  {%- if t == 'blog' and current_tags -%}
+    {%- assign show_mobile_ellipsis = true -%}
+  {%- elsif t == 'article' -%}
+    {%- assign show_mobile_ellipsis = true -%}
+  {%- elsif t == 'collection' and c_level_1 != blank -%}
+    {%- assign show_mobile_ellipsis = true -%}
+  {%- elsif t == 'product' and c_level_0 != blank -%}
+    {%- assign show_mobile_ellipsis = true -%}
+  {%- endif -%}
+
+  <style>
+    .breadcrumb-collapsed-item {
+      display: none !important;
+    }
+    .breadcrumb-ellipsis {
+      display: inline-flex !important;
+    }
+
+    @media (min-width: 768px) {
+      .breadcrumb-collapsed-item {
+        display: inline-flex !important;
+      }
+      .breadcrumb-ellipsis {
+        display: none !important;
+      }
+    }
+
+    .breadcrumbs-nav.is-expanded .breadcrumb-collapsed-item {
+      display: inline-flex !important;
+    }
+    .breadcrumbs-nav.is-expanded .breadcrumb-ellipsis {
+      display: none !important;
+    }
+  </style>
+
+  <div class="max-w-screen-xl mx-auto px-4 h-12 md:h-auto md:pt-6 md:pb-2 flex items-center">
+    <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs text-on-surface-variant flex items-center gap-1.5 overflow-x-auto whitespace-nowrap h-full md:h-auto md:py-1 hide-scrollbar" aria-label="Brødkrummer">
+      
+      {%- if show_mobile_ellipsis -%}
+        <button type="button" onclick="this.closest('[data-breadcrumbs-nav]').classList.add('is-expanded')" class="breadcrumb-ellipsis hover:underline text-on-surface-variant cursor-pointer border-none bg-transparent p-0 text-[12px] font-normal" aria-label="Vis hele stien">...</button>
+        <span class="breadcrumb-ellipsis material-symbols-outlined text-[14px] select-none">chevron_right</span>
+      {%- endif -%}
+
+      {%- comment -%} Forside (root) {%- endcomment -%}
+      {%- assign forside_class = "" -%}
+      {%- if show_mobile_ellipsis -%}
+        {%- assign forside_class = "breadcrumb-collapsed-item" -%}
+      {%- endif -%}
+      <a href="{{ routes.root_url }}" class="{{ forside_class }} hover:underline text-on-surface-variant no-underline">Forside</a>
+      <span class="{{ forside_class }} material-symbols-outlined text-[14px]">chevron_right</span>
 
       {%- case t -%}
         {%- when 'page' -%}
           <span class="text-primary font-semibold" aria-current="page">{{ page.title }}</span>
 
         {%- when 'product' -%}
-          {%- if collection.url -%}
-            <a href="{{ collection.url }}" class="hover:underline text-on-surface-variant no-underline">{{ collection.title }}</a>
+          {%- if c_level_0 != blank -%}
+            {%- if c_level_6 != blank -%}
+              <a href="{{ c_level_6.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_6.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_5 != blank -%}
+              <a href="{{ c_level_5.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_5.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_4 != blank -%}
+              <a href="{{ c_level_4.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_4.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_3 != blank -%}
+              <a href="{{ c_level_3.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_3.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_2 != blank -%}
+              <a href="{{ c_level_2.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_2.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_1 != blank -%}
+              <a href="{{ c_level_1.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_1.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+            {%- endif -%}
+            <a href="{{ c_level_0.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_0.title }}</a>
             <span class="material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
           <span class="text-primary font-semibold" aria-current="page">{{ product.title }}</span>
 
         {%- when 'collection' and collection.handle -%}
+          {%- if c_level_6 != blank -%}
+            <a href="{{ c_level_6.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_6.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_5 != blank -%}
+            <a href="{{ c_level_5.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_5.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_4 != blank -%}
+            <a href="{{ c_level_4.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_4.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_3 != blank -%}
+            <a href="{{ c_level_3.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_3.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_2 != blank -%}
+            <a href="{{ c_level_2.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_2.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_1 != blank -%}
+            <a href="{{ c_level_1.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_1.title }}</a>
+            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- endif -%}
           <span class="text-primary font-semibold" aria-current="page">{{ collection.title }}</span>
 
         {%- when 'blog' -%}
           {%- if current_tags -%}
-            <a href="{{ blog.url }}" class="hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
-            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+            {%- assign blog_class = "" -%}
+            {%- if show_mobile_ellipsis -%}
+              {%- assign blog_class = "breadcrumb-collapsed-item" -%}
+            {%- endif -%}
+            <a href="{{ blog.url }}" class="{{ blog_class }} hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
+            <span class="{{ blog_class }} material-symbols-outlined text-[14px]">chevron_right</span>
             <span class="text-primary font-semibold" aria-current="page">{{ current_tags | join: " + " }}</span>
           {%- else -%}
             <span class="text-primary font-semibold" aria-current="page">{{ blog.title }}</span>
           {%- endif -%}
 
         {%- when 'article' -%}
-          <a href="{{ blog.url }}" class="hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
-          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          {%- assign blog_class = "" -%}
+          {%- if show_mobile_ellipsis -%}
+            {%- assign blog_class = "breadcrumb-collapsed-item" -%}
+          {%- endif -%}
+          <a href="{{ blog.url }}" class="{{ blog_class }} hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
+          <span class="{{ blog_class }} material-symbols-outlined text-[14px]">chevron_right</span>
           <span class="text-primary font-semibold" aria-current="page">{{ article.title }}</span>
 
         {%- else -%}
@@ -60,6 +188,202 @@
       {%- endcase -%}
     </nav>
   </div>
+
+  {%- comment -%}
+    Breadcrumb JSON-LD Schema
+  {%- endcomment -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Forside",
+        "item": "{{ shop.url }}{{ routes.root_url }}"
+      }
+      {%- assign position = 2 -%}
+      {%- case t -%}
+        {%- when 'page' -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ page.title | json }},
+            "item": "{{ shop.url }}{{ page.url }}"
+          }
+        {%- when 'blog' -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ blog.title | json }},
+            "item": "{{ shop.url }}{{ blog.url }}"
+          }
+          {%- if current_tags -%}
+            {%- assign position = position | plus: 1 -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ current_tags | join: " + " | json }},
+              "item": "{{ shop.url }}{{ blog.url }}/tagged/{{ current_tags | join: '+' }}"
+            }
+          {%- endif -%}
+        {%- when 'article' -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ blog.title | json }},
+            "item": "{{ shop.url }}{{ blog.url }}"
+          }
+          {%- assign position = position | plus: 1 -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ article.title | json }},
+            "item": "{{ shop.url }}{{ article.url }}"
+          }
+        {%- when 'collection' and collection.handle -%}
+          {%- if c_level_6 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_6.title | json }},
+              "item": "{{ shop.url }}{{ c_level_6.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_5 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_5.title | json }},
+              "item": "{{ shop.url }}{{ c_level_5.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_4 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_4.title | json }},
+              "item": "{{ shop.url }}{{ c_level_4.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_3 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_3.title | json }},
+              "item": "{{ shop.url }}{{ c_level_3.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_2 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_2.title | json }},
+              "item": "{{ shop.url }}{{ c_level_2.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_1 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_1.title | json }},
+              "item": "{{ shop.url }}{{ c_level_1.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ collection.title | json }},
+            "item": "{{ shop.url }}{{ collection.url }}"
+          }
+        {%- when 'product' -%}
+          {%- if c_level_0 != blank -%}
+            {%- if c_level_6 != blank -%}
+              ,{
+                "@type": "ListItem",
+                "position": {{ position }},
+                "name": {{ c_level_6.title | json }},
+                "item": "{{ shop.url }}{{ c_level_6.url }}"
+              }
+              {%- assign position = position | plus: 1 -%}
+            {%- endif -%}
+            {%- if c_level_5 != blank -%}
+              ,{
+                "@type": "ListItem",
+                "position": {{ position }},
+                "name": {{ c_level_5.title | json }},
+                "item": "{{ shop.url }}{{ c_level_5.url }}"
+              }
+              {%- assign position = position | plus: 1 -%}
+            {%- endif -%}
+            {%- if c_level_4 != blank -%}
+              ,{
+                "@type": "ListItem",
+                "position": {{ position }},
+                "name": {{ c_level_4.title | json }},
+                "item": "{{ shop.url }}{{ c_level_4.url }}"
+              }
+              {%- assign position = position | plus: 1 -%}
+            {%- endif -%}
+            {%- if c_level_3 != blank -%}
+              ,{
+                "@type": "ListItem",
+                "position": {{ position }},
+                "name": {{ c_level_3.title | json }},
+                "item": "{{ shop.url }}{{ c_level_3.url }}"
+              }
+              {%- assign position = position | plus: 1 -%}
+            {%- endif -%}
+            {%- if c_level_2 != blank -%}
+              ,{
+                "@type": "ListItem",
+                "position": {{ position }},
+                "name": {{ c_level_2.title | json }},
+                "item": "{{ shop.url }}{{ c_level_2.url }}"
+              }
+              {%- assign position = position | plus: 1 -%}
+            {%- endif -%}
+            {%- if c_level_1 != blank -%}
+              ,{
+                "@type": "ListItem",
+                "position": {{ position }},
+                "name": {{ c_level_1.title | json }},
+                "item": "{{ shop.url }}{{ c_level_1.url }}"
+              }
+              {%- assign position = position | plus: 1 -%}
+            {%- endif -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_0.title | json }},
+              "item": "{{ shop.url }}{{ c_level_0.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ product.title | json }},
+            "item": "{{ shop.url }}{{ product.url }}"
+          }
+        {%- else -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ page_title | json }},
+            "item": "{{ shop.url }}{{ request.path }}"
+          }
+      {%- endcase -%}
+    ]
+  }
+  </script>
 {%- endunless -%}
 
 {% schema %}
