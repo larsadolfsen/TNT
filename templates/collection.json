@@ -25,7 +25,7 @@
       "settings": {
         "title": "SØG UD FRA DIT BEHOV",
         "mode": "automatic",
-        "main_collection": "{{ collection }}",
+        "main_collection": "{{ collection.metafields.custom.parent.value }}",
         "show_all_label": "Vis alle"
       }
     },
