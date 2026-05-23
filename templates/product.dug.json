@@ -65,17 +65,6 @@
         "text_before_price": "Læg i kurv –"
       }
     },
-    "trust-checkmarks": {
-      "type": "product-trust-checkmarks",
-      "settings": {}
-    },
-    "cross-sell": {
-      "type": "product-cross-sell",
-      "settings": {
-        "cross_sell_1": "",
-        "cross_sell_2": ""
-      }
-    },
     "product_banner_text_PPtReU": {
       "type": "product-banner-text",
       "name": "Tekst",
@@ -84,6 +73,43 @@
         "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>",
         "border_top": true,
         "border_bottom": true
+      }
+    },
+    "trust-checkmarks": {
+      "type": "product-trust-checkmarks",
+      "blocks": {
+        "countdown_4gXjVB": {
+          "type": "countdown",
+          "settings": {
+            "text": "Afsendes i dag – Bestil inden",
+            "suffix": "timer"
+          }
+        },
+        "checkmark_7inAb8": {
+          "type": "checkmark",
+          "settings": {
+            "text": "Fragt fra 59 kr."
+          }
+        },
+        "checkmark_XTeX48": {
+          "type": "checkmark",
+          "settings": {
+            "text": "30 dages fuld returret"
+          }
+        }
+      },
+      "block_order": [
+        "countdown_4gXjVB",
+        "checkmark_7inAb8",
+        "checkmark_XTeX48"
+      ],
+      "settings": {}
+    },
+    "cross-sell": {
+      "type": "product-cross-sell",
+      "settings": {
+        "cross_sell_1": "",
+        "cross_sell_2": ""
       }
     }
   },
@@ -96,8 +122,8 @@
     "urgency",
     "customizer",
     "buy-buttons",
+    "product_banner_text_PPtReU",
     "trust-checkmarks",
-    "cross-sell",
-    "product_banner_text_PPtReU"
+    "cross-sell"
   ]
 }
