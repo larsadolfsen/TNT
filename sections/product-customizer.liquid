@@ -352,7 +352,10 @@
       if (summaryPrisText) {
         summaryPrisText.textContent = "Pris: " + formatted;
       }
-      if (addToCartBtn) {
+      const priceDisplay = document.getElementById("btn-price-display");
+      if (priceDisplay) {
+        priceDisplay.textContent = formatted;
+      } else if (addToCartBtn) {
         const prefix = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv – ";
         addToCartBtn.textContent = prefix + formatted;
       }

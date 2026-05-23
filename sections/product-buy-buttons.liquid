@@ -26,7 +26,8 @@
       </div>
 
       <button id="btn-add-to-cart" data-text-before-price="{{ text_before_price }}" class="w-full bg-[#FFD814] hover:bg-[#F7CA00] text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
-        {{ text_before_price }}{{ product.selected_or_first_available_variant.price | money }}
+        <span>{{ text_before_price }}</span>
+        <span id="btn-price-display" class="ml-1.5">{{ product.selected_or_first_available_variant.price | money }}</span>
       </button>
       
       <!-- Payment Badges -->
@@ -103,13 +104,17 @@
         
         const priceText = "Pris: " + formattedPrice;
         const btn = document.getElementById("btn-add-to-cart");
-        const prefix = btn ? (btn.getAttribute("data-text-before-price") || "Læg i kurv – ") : "Læg i kurv – ";
-        const btnText = prefix + formattedPrice;
+        const priceDisplay = document.getElementById("btn-price-display");
         
         const summaryPris = document.getElementById("summary-pris");
         if (summaryPris) summaryPris.textContent = priceText;
         
-        if (btn) btn.textContent = btnText;
+        if (priceDisplay) {
+          priceDisplay.textContent = formattedPrice;
+        } else if (btn) {
+          const prefix = btn.getAttribute("data-text-before-price") || "Læg i kurv – ";
+          btn.textContent = prefix + formattedPrice;
+        }
 
         // Set global variable to resolve initial page load race condition
         window.currentPageProductPrice = totalCents / 100;
