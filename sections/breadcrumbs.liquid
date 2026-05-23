@@ -101,7 +101,7 @@
 
       {%- case t -%}
         {%- when 'page' -%}
-          <span class="text-primary font-semibold" aria-current="page">{{ page.title }}</span>
+          {%- comment -%} Page title omitted {%- endcomment -%}
 
         {%- when 'product' -%}
           {%- if c_level_0 != blank -%}
@@ -132,7 +132,7 @@
             <a href="{{ c_level_0.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_0.title }}</a>
             <span class="material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
-          <span class="text-primary font-semibold" aria-current="page">{{ product.title }}</span>
+          {%- comment -%} Product title omitted {%- endcomment -%}
 
         {%- when 'collection' and collection.handle -%}
           {%- if c_level_6 != blank -%}
@@ -159,7 +159,7 @@
             <a href="{{ c_level_1.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_1.title }}</a>
             <span class="material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
-          <span class="text-primary font-semibold" aria-current="page">{{ collection.title }}</span>
+          {%- comment -%} Collection title omitted {%- endcomment -%}
 
         {%- when 'blog' -%}
           {%- if current_tags -%}
@@ -169,9 +169,9 @@
             {%- endif -%}
             <a href="{{ blog.url }}" class="{{ blog_class }} hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
             <span class="{{ blog_class }} material-symbols-outlined text-[14px]">chevron_right</span>
-            <span class="text-primary font-semibold" aria-current="page">{{ current_tags | join: " + " }}</span>
+            {%- comment -%} Tag title omitted {%- endcomment -%}
           {%- else -%}
-            <span class="text-primary font-semibold" aria-current="page">{{ blog.title }}</span>
+            {%- comment -%} Blog title omitted {%- endcomment -%}
           {%- endif -%}
 
         {%- when 'article' -%}
@@ -181,10 +181,10 @@
           {%- endif -%}
           <a href="{{ blog.url }}" class="{{ blog_class }} hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
           <span class="{{ blog_class }} material-symbols-outlined text-[14px]">chevron_right</span>
-          <span class="text-primary font-semibold" aria-current="page">{{ article.title }}</span>
+          {%- comment -%} Article title omitted {%- endcomment -%}
 
         {%- else -%}
-          <span class="text-primary font-semibold" aria-current="page">{{ page_title }}</span>
+          {%- comment -%} Page title omitted {%- endcomment -%}
       {%- endcase -%}
     </nav>
   </div>
