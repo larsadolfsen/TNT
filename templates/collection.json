@@ -9,10 +9,6 @@
  */
 {
   "sections": {
-    "breadcrumbs": {
-      "type": "breadcrumbs",
-      "settings": {}
-    },
     "collection-header": {
       "type": "page-title",
       "settings": {
@@ -44,7 +40,6 @@
     }
   },
   "order": [
-    "breadcrumbs",
     "collection-header",
     "collection-subcollections",
     "collection-subcategories",
