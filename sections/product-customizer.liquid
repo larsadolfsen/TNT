@@ -299,6 +299,13 @@
       const activeVariant = getActiveVariant();
       appState.basePricePerMeter = activeVariant.price * 100;
 
+      // Dispatch custom event to notify other scripts about active variant update
+      if (activeVariant && activeVariant.id) {
+        document.dispatchEvent(new CustomEvent("variant-changed", {
+          detail: { variantId: activeVariant.id }
+        }));
+      }
+
       let singlePrice = 0;
       let surcharge = 0;
       let surchargeText = "";

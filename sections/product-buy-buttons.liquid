@@ -6,16 +6,16 @@
 
 {%- assign text_before_price = section.settings.text_before_price | default: "Læg i kurv – " -%}
 <section class="w-full bg-white pt-2 pb-6 px-4 my-0">
-  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+  <div class="max-w-screen-xl mx-auto flex flex-col gap-4">
     <!-- Left: Selected Specs & Price -->
-    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full md:w-auto px-4 md:px-0">
+    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full">
       <p id="summary-mål" class="text-xs text-on-surface-variant font-medium">140 × 200 cm</p>
     </div>
     
     <!-- Right: Button and Payment Badges -->
-    <div class="flex flex-col items-center gap-3 w-full md:w-auto px-4 md:px-0">
+    <div class="flex flex-col items-center gap-3 w-full">
       <!-- Quantity Selector (Only visible for simple products when no customizer is present) -->
-      <div id="buy-buttons-quantity-container" class="w-full md:w-96 flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden mb-1">
+      <div id="buy-buttons-quantity-container" class="w-full flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden mb-1">
         <button type="button" id="btn-buy-qty-minus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer">
           <span class="material-symbols-outlined">remove</span>
         </button>
@@ -25,7 +25,7 @@
         </button>
       </div>
 
-      <button id="btn-add-to-cart" data-text-before-price="{{ text_before_price }}" class="w-full md:w-96 bg-[#FFD814] hover:bg-[#F7CA00] text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+      <button id="btn-add-to-cart" data-text-before-price="{{ text_before_price }}" class="w-full bg-[#FFD814] hover:bg-[#F7CA00] text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
         {{ text_before_price }}{{ product.selected_or_first_available_variant.price | money }}
       </button>
       
@@ -117,6 +117,11 @@
         // Dispatch custom event to notify other scripts about product price update
         document.dispatchEvent(new CustomEvent("product-price-updated", {
           detail: { price: totalCents / 100 }
+        }));
+
+        // Dispatch custom event to notify other scripts about active variant update
+        document.dispatchEvent(new CustomEvent("variant-changed", {
+          detail: { variantId: selectedId }
         }));
       }
     }

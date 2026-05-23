@@ -3,13 +3,82 @@
   Renders the stock warning message with an warning icon.
 {% endcomment %}
 
-{%- if section.settings.show_urgency -%}
-<section class="max-w-screen-xl mx-auto px-4 py-3">
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign show_urgency = section.settings.show_urgency -%}
+{%- assign hide_under_limit = section.settings.hide_under_limit | default: 5 -%}
+
+{%- if current_variant and current_variant.inventory_management != blank -%}
+  {%- if current_variant.inventory_quantity < hide_under_limit -%}
+    {%- assign show_urgency = false -%}
+  {%- endif -%}
+{%- endif -%}
+
+<section id="product-urgency-section" class="max-w-screen-xl mx-auto px-4 py-3" style="{% unless show_urgency %}display: none;{% endunless %}">
   <p class="text-sm font-medium text-amber-700 flex items-center gap-1.5">
     <span class="material-symbols-outlined text-lg">error</span>
     <span>{{ section.settings.urgency_text | default: "Kun få på lager – bestil snart" }}</span>
   </p>
 </section>
+
+{%- if product -%}
+<script id="product-urgency-variant-data" type="application/json">
+  {
+    "variants": [
+      {%- for variant in product.variants -%}
+        {
+          "id": {{ variant.id }},
+          "inventory_quantity": {{ variant.inventory_quantity | default: 0 }},
+          "inventory_management": {{ variant.inventory_management | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ],
+    "hideUnderLimit": {{ hide_under_limit }}
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const dataEl = document.getElementById("product-urgency-variant-data");
+    const sectionEl = document.getElementById("product-urgency-section");
+    if (!dataEl || !sectionEl) return;
+
+    let urgencyData = { variants: [], hideUnderLimit: 5 };
+    try {
+      urgencyData = JSON.parse(dataEl.textContent);
+    } catch (e) {
+      console.error("Failed to parse stock urgency data", e);
+    }
+
+    function updateUrgency(variantId) {
+      {%- unless section.settings.show_urgency -%}
+        sectionEl.style.display = "none";
+        return;
+      {%- endunless -%}
+
+      const variant = urgencyData.variants.find(v => v.id === parseInt(variantId));
+      if (!variant) return;
+
+      let show = true;
+      if (variant.inventory_management) {
+        if (variant.inventory_quantity < urgencyData.hideUnderLimit) {
+          show = false;
+        }
+      }
+
+      if (show) {
+        sectionEl.style.display = "";
+      } else {
+        sectionEl.style.display = "none";
+      }
+    }
+
+    document.addEventListener("variant-changed", (e) => {
+      if (e.detail && e.detail.variantId) {
+        updateUrgency(e.detail.variantId);
+      }
+    });
+  });
+</script>
 {%- endif -%}
 
 {% schema %}
@@ -27,6 +96,13 @@
       "id": "urgency_text",
       "label": "Urgency Warning Text",
       "default": "Kun få på lager – bestil snart"
+    },
+    {
+      "type": "number",
+      "id": "hide_under_limit",
+      "label": "Skjul hvis under X enheder",
+      "default": 5,
+      "info": "Skjul stock urgency hvis der er under dette antal enheder tilbage."
     }
   ],
   "presets": [
@@ -36,3 +112,4 @@
   ]
 }
 {% endschema %}
+
