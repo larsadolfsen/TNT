@@ -33,9 +33,15 @@
         "show_menu_default": true,
         "menu": "main-menu"
       }
+    },
+    "breadcrumbs_7wx37P": {
+      "type": "breadcrumbs",
+      "name": "Brødkrummer",
+      "settings": {}
     }
   },
   "order": [
-    "header"
+    "header",
+    "breadcrumbs_7wx37P"
   ]
 }
