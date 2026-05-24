@@ -15,5 +15,4 @@ export = "run"
 module = "./src/run.js"
 
 [extensions.build]
-command = "npm run build"
 path = "dist/index.wasm"

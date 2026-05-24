@@ -31,17 +31,28 @@
             -%}
             <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal max-w-sm mt-1">
               <div class="flex justify-between gap-2">
-                <span>{{ item.product.title }}{% if item.variant.title != 'Default Title' %}, {{ item.variant.title }}{% endif %}</span>
+                <span>
+                  {{- item.product.title -}}
+                  {%- if item.variant.title != 'Default Title' -%}
+                    , {{ item.variant.title }}
+                  {%- else -%}
+                    , {{ item.properties._width }}x{{ item.properties._length }} cm
+                  {%- endif -%}
+                </span>
                 <span class="text-primary font-medium flex-shrink-0">{{ base_price_cents | money }}</span>
               </div>
-              <div class="flex justify-between gap-2">
-                <span>{{ shape_name }}</span>
-                <span class="text-primary font-medium flex-shrink-0">{{ shape_surcharge_cents | money }}</span>
-              </div>
-              <div class="flex justify-between gap-2">
-                <span>Tilpasset i bredden</span>
-                <span class="text-primary font-medium flex-shrink-0">{{ width_surcharge_cents | money }}</span>
-              </div>
+              {%- if shape_surcharge_cents > 0 -%}
+                <div class="flex justify-between gap-2">
+                  <span>{{ shape_name }}</span>
+                  <span class="text-primary font-medium flex-shrink-0">{{ shape_surcharge_cents | money }}</span>
+                </div>
+              {%- endif -%}
+              {%- if width_surcharge_cents > 0 -%}
+                <div class="flex justify-between gap-2">
+                  <span>Tilpasset i bredden</span>
+                  <span class="text-primary font-medium flex-shrink-0">{{ width_surcharge_cents | money }}</span>
+                </div>
+              {%- endif -%}
               <div class="flex justify-between border-t border-outline-variant/60 pt-1 mt-1">
                 <span>Pris pr. stk.</span>
                 <span class="flex-shrink-0">{{ unit_price_cents | money }}</span>

@@ -322,7 +322,30 @@
           shapeName = "Oval dug";
         }
 
-        const variantText = item.variant_title ? `, ${item.variant_title}` : '';
+        const width = item.properties._width || "";
+        const length = item.properties._length || "";
+        let variantText = "";
+        if (item.variant_title) {
+          if (item.variant_title.toLowerCase() === "default title") {
+            variantText = `, ${width}x${length} cm`;
+          } else {
+            variantText = `, ${item.variant_title}`;
+          }
+        }
+
+        const shapeLine = shapeSurchargeCents > 0 ? `
+            <div class="flex justify-between gap-2">
+              <span>${shapeName}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatMoney(shapeSurchargeCents)}</span>
+            </div>
+        ` : '';
+
+        const widthLine = widthSurchargeCents > 0 ? `
+            <div class="flex justify-between gap-2">
+              <span>Tilpasset i bredden</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatMoney(widthSurchargeCents)}</span>
+            </div>
+        ` : '';
 
         detailsHtml = `
           <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal">
@@ -330,14 +353,8 @@
               <span>${item.product_title}${variantText}</span>
               <span class="text-primary font-medium flex-shrink-0">${formatMoney(basePriceCents)}</span>
             </div>
-            <div class="flex justify-between gap-2">
-              <span>${shapeName}</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatMoney(shapeSurchargeCents)}</span>
-            </div>
-            <div class="flex justify-between gap-2">
-              <span>Tilpasset i bredden</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatMoney(widthSurchargeCents)}</span>
-            </div>
+            ${shapeLine}
+            ${widthLine}
             <div class="flex justify-between border-t border-outline-variant/60 pt-1 mt-1">
               <span>Pris pr. stk.</span>
               <span class="flex-shrink-0">${formatMoney(unitPriceCents)}</span>
@@ -391,6 +408,20 @@
   }
 
   async function addToCart(variantId, qty = 1) {
+    // Optimistic update of cart-counter
+    const counters = document.querySelectorAll('#cart-counter');
+    const originalCounts = [];
+    counters.forEach(counter => {
+      const currentCount = parseInt(counter.innerText) || 0;
+      originalCounts.push({ counter, text: counter.innerText, hasScale0: counter.classList.contains("scale-0") });
+      const newCount = currentCount + qty;
+      counter.innerText = newCount;
+      if (newCount > 0) {
+        counter.classList.remove("scale-0");
+        counter.classList.add("scale-100");
+      }
+    });
+
     try {
       const response = await fetch('/cart/add.js', {
         method: 'POST',
@@ -412,6 +443,17 @@
       toggleCartDrawer(true);
     } catch (error) {
       console.error("Fejl ved tilføjelse til kurv:", error);
+      // Revert optimistic update
+      originalCounts.forEach(item => {
+        item.counter.innerText = item.text;
+        if (item.hasScale0) {
+          item.counter.classList.add("scale-0");
+          item.counter.classList.remove("scale-100");
+        } else {
+          item.counter.classList.remove("scale-0");
+          item.counter.classList.add("scale-100");
+        }
+      });
       showToast("Der opstod en fejl ved tilføjelse til kurv.");
     }
   }

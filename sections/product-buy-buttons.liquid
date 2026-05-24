@@ -241,6 +241,20 @@
           return;
         }
 
+        // Optimistic update of cart-counter
+        const counters = document.querySelectorAll('#cart-counter');
+        const originalCounts = [];
+        counters.forEach(counter => {
+          const currentCount = parseInt(counter.innerText) || 0;
+          originalCounts.push({ counter, text: counter.innerText, hasScale0: counter.classList.contains("scale-0") });
+          const newCount = currentCount + buyQty;
+          counter.innerText = newCount;
+          if (newCount > 0) {
+            counter.classList.remove("scale-0");
+            counter.classList.add("scale-100");
+          }
+        });
+
         fetch('/cart/add.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -273,6 +287,17 @@
         })
         .catch(err => {
           console.error(err);
+          // Revert optimistic update
+          originalCounts.forEach(item => {
+            item.counter.innerText = item.text;
+            if (item.hasScale0) {
+              item.counter.classList.add("scale-0");
+              item.counter.classList.remove("scale-100");
+            } else {
+              item.counter.classList.remove("scale-0");
+              item.counter.classList.add("scale-100");
+            }
+          });
           localShowToast("Der opstod en fejl. Prøv igen.");
         })
         .finally(() => {

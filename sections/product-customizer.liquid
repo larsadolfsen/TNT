@@ -449,7 +449,14 @@
 
       // Update summary text (the multi-line breakdown)
       if (summaryMalText) {
-        const variantText = activeVariant.title ? ", " + activeVariant.title : "";
+        let variantText = "";
+        if (activeVariant.title) {
+          if (activeVariant.title.trim().toLowerCase() === "default title") {
+            variantText = `, ${appState.width}x${appState.length} cm`;
+          } else {
+            variantText = ", " + activeVariant.title;
+          }
+        }
         const productName = "{{ product.title }}" + variantText;
         
         let shapeName = "Rektangulær dug";
@@ -461,20 +468,28 @@
 
         const baseLinePrice = singlePrice - shapeSurcharge - widthSurcharge;
 
+        const shapeLine = shapeSurcharge > 0 ? `
+            <div class="flex justify-between gap-2">
+              <span>${shapeName}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatPrice(shapeSurcharge)}</span>
+            </div>
+        ` : '';
+
+        const widthLine = widthSurcharge > 0 ? `
+            <div class="flex justify-between gap-2">
+              <span>Tilpasset i bredden</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatPrice(widthSurcharge)}</span>
+            </div>
+        ` : '';
+
         summaryMalText.innerHTML = `
           <div class="space-y-1 text-xs text-on-surface-variant font-normal leading-normal w-full max-w-sm mt-2 mb-2">
             <div class="flex justify-between gap-4">
               <span>${productName}</span>
               <span class="text-primary font-medium flex-shrink-0">${formatPrice(baseLinePrice)}</span>
             </div>
-            <div class="flex justify-between gap-2">
-              <span>${shapeName}</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatPrice(shapeSurcharge)}</span>
-            </div>
-            <div class="flex justify-between gap-2">
-              <span>Tilpasset i bredden</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatPrice(widthSurcharge)}</span>
-            </div>
+            ${shapeLine}
+            ${widthLine}
             <div class="flex justify-between border-t border-outline-variant/60 pt-1 mt-1">
               <span>Pris pr. stk.</span>
               <span class="flex-shrink-0">${formatPrice(singlePrice)}</span>
@@ -837,6 +852,28 @@
           }
         });
 
+        // Optimistic update of cart count, total and counters
+        const quantityAdded = appState.quantity;
+        const priceAdded = appState.currentClothPrice;
+
+        const originalCartCount = appState.cartCount;
+        const originalCartTotal = appState.cartTotal;
+
+        appState.cartCount += quantityAdded;
+        appState.cartTotal += priceAdded;
+
+        const counters = document.querySelectorAll('#cart-counter');
+        const originalCounts = [];
+        counters.forEach(counter => {
+          originalCounts.push({ counter, text: counter.innerText, hasScale0: counter.classList.contains("scale-0") });
+          counter.innerText = appState.cartCount;
+          if (appState.cartCount > 0) {
+            counter.classList.remove("scale-0");
+            counter.classList.add("scale-100");
+          }
+        });
+        updateFreeShippingWidget();
+
         fetch('/cart/add.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -873,6 +910,20 @@
         })
         .catch(err => {
           console.error(err);
+          // Revert optimistic update
+          appState.cartCount = originalCartCount;
+          appState.cartTotal = originalCartTotal;
+          originalCounts.forEach(item => {
+            item.counter.innerText = item.text;
+            if (item.hasScale0) {
+              item.counter.classList.add("scale-0");
+              item.counter.classList.remove("scale-100");
+            } else {
+              item.counter.classList.remove("scale-0");
+              item.counter.classList.add("scale-100");
+            }
+          });
+          updateFreeShippingWidget();
           showToast("Der opstod en fejl. Prøv igen.");
         })
         .finally(() => {
@@ -910,6 +961,25 @@
           this.disabled = true;
           this.classList.add("opacity-50");
 
+          // Optimistic update of cart count, total and counters
+          const originalCartCount = appState.cartCount;
+          const originalCartTotal = appState.cartTotal;
+
+          appState.cartCount += 1;
+          appState.cartTotal += pris;
+
+          const counters = document.querySelectorAll('#cart-counter');
+          const originalCounts = [];
+          counters.forEach(counter => {
+            originalCounts.push({ counter, text: counter.innerText, hasScale0: counter.classList.contains("scale-0") });
+            counter.innerText = appState.cartCount;
+            if (appState.cartCount > 0) {
+              counter.classList.remove("scale-0");
+              counter.classList.add("scale-100");
+            }
+          });
+          updateFreeShippingWidget();
+
           fetch('/cart/add.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -941,6 +1011,20 @@
           })
           .catch(err => {
             console.error(err);
+            // Revert optimistic update
+            appState.cartCount = originalCartCount;
+            appState.cartTotal = originalCartTotal;
+            originalCounts.forEach(item => {
+              item.counter.innerText = item.text;
+              if (item.hasScale0) {
+                item.counter.classList.add("scale-0");
+                item.counter.classList.remove("scale-100");
+              } else {
+                item.counter.classList.remove("scale-0");
+                item.counter.classList.add("scale-100");
+              }
+            });
+            updateFreeShippingWidget();
             showToast("Kunne ikke tilføje til kurv.");
           })
           .finally(() => {
