@@ -3,16 +3,30 @@
   Renders the product price and base price per meter display.
 {% endcomment %}
 
-{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign display_price = current_variant.price
+  assign suffix = section.settings.price_suffix
+  
+  assign is_metervare = false
+  if product.metafields.custom.metervare.value == true or product.metafields.custom.metervare == true
+    assign is_metervare = true
+  endif
+
+  if is_metervare
+    assign display_price = current_variant.price | times: 100
+    assign suffix = 'pr. meter · inkl. moms'
+  endif
+-%}
 
 <section class="max-w-screen-xl mx-auto px-4 pt-2 pb-3">
   <!-- Pricing -->
   <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
     <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
-      {{ current_variant.price | money }}
+      {{ display_price | money }}
     </span>
-    {%- if section.settings.price_suffix != blank -%}
-      <span class="text-sm text-on-surface-variant font-medium whitespace-nowrap">{{ section.settings.price_suffix }}</span>
+    {%- if suffix != blank -%}
+      <span class="text-sm text-on-surface-variant font-medium whitespace-nowrap">{{ suffix }}</span>
     {%- endif -%}
   </div>
   {%- if section.settings.price_subtext != blank -%}

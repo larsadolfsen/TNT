@@ -268,6 +268,7 @@
       console.error("Failed to parse variant data", e);
     }
 
+    const isMetervare = {% if product.metafields.custom.metervare.value == true or product.metafields.custom.metervare == true %}true{% else %}false{% endif %};
     const minWidthLimit = {{ section.settings.min_width | default: 80 }};
     const maxWidthLimit = {{ max_width | json }};
 
@@ -442,7 +443,8 @@
       // Update dynamic display on top
       const basePriceDisplay = document.getElementById("base-price-display");
       if (basePriceDisplay) {
-        basePriceDisplay.textContent = formatPrice(activeVariant.price);
+        const displayPrice = isMetervare ? activeVariant.price * 100 : activeVariant.price;
+        basePriceDisplay.textContent = formatPrice(displayPrice);
       }
 
       // Update summary text (the multi-line breakdown)

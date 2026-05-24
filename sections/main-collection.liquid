@@ -465,8 +465,19 @@
           endfor
 
           assign variant = product.first_available_variant | default: product.variants[0]
-          assign price = product.price | money_without_currency | replace: '.', '' | replace: ',', '.' | plus: 0
-          assign originalPrice = product.compare_at_price | money_without_currency | replace: '.', '' | replace: ',', '.' | plus: 0
+          
+          assign display_price_cents = product.price
+          assign display_original_price_cents = product.compare_at_price
+          
+          if product.type == 'Metervare'
+            assign display_price_cents = product.price | multiplied_by: 100
+            if product.compare_at_price != blank and product.compare_at_price > 0
+              assign display_original_price_cents = product.compare_at_price | multiplied_by: 100
+            endif
+          endif
+
+          assign price = display_price_cents | money_without_currency | replace: '.', '' | replace: ',', '.' | plus: 0
+          assign originalPrice = display_original_price_cents | money_without_currency | replace: '.', '' | replace: ',', '.' | plus: 0
           if originalPrice == 0
             assign originalPrice = 'null'
           endif
@@ -474,10 +485,11 @@
         {
           "id": {{ variant.id | json }},
           "title": {{ product.title | json }},
+          "type": {{ product.type | json }},
           "price": {{ price }},
-          "price_formatted": {{ product.price | money | json }},
+          "price_formatted": {{ display_price_cents | money | json }},
           "originalPrice": {{ originalPrice }},
-          "originalPrice_formatted": {{ product.compare_at_price | money | json }},
+          "originalPrice_formatted": {{ display_original_price_cents | money | json }},
           "image": {{ product.featured_image | image_url: width: 480 | json }},
           "url": {{ product.url | json }},
           "thickness": {{ thickness | json }},
@@ -836,8 +848,18 @@
 
       const displayPrice = product.price_formatted ? product.price_formatted : `Dkr ${product.price},-`;
 
-      // Determine if it is a meter-sold product
+      // Determine if it is a Metervare product (priced per meter)
+      const isMetervare = product.type === "Metervare";
+
+      // Determine if it is a general meter-sold product (priced per cm)
       const isMeterProduct = product.thickness || product.width || product.title.toLowerCase().includes("voksdug") || product.title.toLowerCase().includes("bordbeskytter");
+
+      let priceLabel = 'Pris';
+      if (isMetervare) {
+        priceLabel = 'Pris pr. meter';
+      } else if (isMeterProduct) {
+        priceLabel = 'Pris pr. cm';
+      }
 
       const cardHtml = `
         <div class="product-card flex flex-col bg-white border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative">
@@ -897,11 +919,11 @@
             <div class="mt-3 space-y-3">
               <div class="flex flex-col items-start gap-1">
                 <span class="text-[10px] sm:text-xs text-on-surface-variant leading-none">
-                  ${isMeterProduct ? 'Pris pr. cm' : 'Pris'}
+                  ${priceLabel}
                 </span>
                 <div class="flex items-baseline gap-1.5 flex-wrap">
                   <span class="text-xs sm:text-sm md:text-base font-bold text-primary leading-none">
-                    ${isMeterProduct ? 'Fra ' : ''}${displayPrice}
+                    ${isMetervare || isMeterProduct ? 'Fra ' : ''}${displayPrice}
                   </span>
                   ${originalPriceHtml}
                 </div>
