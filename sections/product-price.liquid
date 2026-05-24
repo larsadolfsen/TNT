@@ -15,7 +15,7 @@
 
   if is_metervare
     assign display_price = current_variant.price | times: 100
-    assign suffix = 'pr. meter · inkl. moms'
+    assign suffix = 'pr. meter inkl. moms'
   endif
 -%}
 
@@ -42,7 +42,7 @@
       "type": "text",
       "id": "price_suffix",
       "label": "Price suffix",
-      "default": "pr. meter · inkl. moms"
+      "default": "pr. meter inkl. moms"
     },
     {
       "type": "text",
