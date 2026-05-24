@@ -450,12 +450,10 @@
       // Update summary text (the multi-line breakdown)
       if (summaryMalText) {
         let variantText = "";
-        if (activeVariant.title) {
-          if (activeVariant.title.trim().toLowerCase() === "default title") {
-            variantText = `, (${appState.width}x${appState.length} cm)`;
-          } else {
-            variantText = ", " + activeVariant.title;
-          }
+        if (activeVariant.title && activeVariant.title.trim().toLowerCase() !== "default title") {
+          variantText = ", " + activeVariant.title;
+        } else {
+          variantText = `, (${appState.width}x${appState.length} cm)`;
         }
         const productName = "{{ product.title }}" + variantText;
         

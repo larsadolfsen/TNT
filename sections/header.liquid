@@ -325,12 +325,10 @@
         const width = item.properties._width || "";
         const length = item.properties._length || "";
         let variantText = "";
-        if (item.variant_title) {
-          if (item.variant_title.toLowerCase() === "default title") {
-            variantText = `, (${width}x${length} cm)`;
-          } else {
-            variantText = `, ${item.variant_title}`;
-          }
+        if (item.variant_title && item.variant_title.toLowerCase() !== "default title") {
+          variantText = `, ${item.variant_title}`;
+        } else {
+          variantText = `, (${width}x${length} cm)`;
         }
 
         const shapeLine = shapeSurchargeCents > 0 ? `
