@@ -34,7 +34,7 @@
     "price": {
       "type": "product-price",
       "settings": {
-        "price_suffix": "pr. cm inkl. moms",
+        "price_suffix": "pr. meter inkl. moms",
         "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger."
       }
     },
