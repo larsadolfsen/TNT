@@ -1237,6 +1237,9 @@
   .text-amber-700 {
     color: var(--color-amber-700);
   }
+  .text-black {
+    color: var(--color-black);
+  }
   .text-emerald-400 {
     color: var(--color-emerald-400);
   }
