@@ -383,47 +383,28 @@
       }
 
       let singlePrice = 0;
-      let surcharge = 0;
-      let surchargesList = [];
+      let shapeSurcharge = 0;
       
       // Shape surcharge (Firkantet, Rund, Oval)
       if (appState.shape === "rund") {
-        if (surchargeRoundValue > 0) {
-          surcharge += surchargeRoundValue;
-          surchargesList.push(formatPrice(surchargeRoundValue) + " rund tilpasningstillæg");
-        }
+        shapeSurcharge = surchargeRoundValue;
       } else if (appState.shape === "oval") {
-        if (surchargeOvalValue > 0) {
-          surcharge += surchargeOvalValue;
-          surchargesList.push(formatPrice(surchargeOvalValue) + " oval tilpasningstillæg");
-        }
+        shapeSurcharge = surchargeOvalValue;
       } else if (appState.shape === "firkantet") {
-        if (surchargeRectangularValue > 0) {
-          surcharge += surchargeRectangularValue;
-          surchargesList.push(formatPrice(surchargeRectangularValue) + " firkantet tilpasningstillæg");
-        }
+        shapeSurcharge = surchargeRectangularValue;
       }
 
-      // Width surcharge (Bred dug)
+      let widthSurcharge = 0;
       if (appState.width !== 140) {
-        if (surchargeWidthValue > 0) {
-          surcharge += surchargeWidthValue;
-          surchargesList.push(formatPrice(surchargeWidthValue) + " breddetilpasningstillæg");
-        }
+        widthSurcharge = surchargeWidthValue;
       }
 
-      let surchargeText = "";
-      if (surchargesList.length > 0) {
-        surchargeText = " (inkl. " + surchargesList.join(" og ") + ")";
-      }
+      const surcharge = shapeSurcharge + widthSurcharge;
       
       if (appState.shape === "rund") {
         appState.length = appState.width;
         singlePrice = ((appState.width / 100) * appState.basePricePerMeter) + surcharge;
         
-        if (summaryMalText) {
-          summaryMalText.textContent = "Ø " + appState.width + " cm" + surchargeText;
-        }
         if (lengthContainer) lengthContainer.classList.add("hidden"); 
         if (widthStepTitle) widthStepTitle.textContent = "Vælg diameter";
       } else {
@@ -431,9 +412,6 @@
         
         singlePrice = ((appState.length / 100) * appState.basePricePerMeter) + surcharge;
         
-        if (summaryMalText) {
-          summaryMalText.textContent = appState.width + " × " + appState.length + " cm" + surchargeText;
-        }
         if (lengthContainer) lengthContainer.classList.remove("hidden"); 
         if (lengthInput) {
           lengthInput.disabled = false;
@@ -465,6 +443,44 @@
       const basePriceDisplay = document.getElementById("base-price-display");
       if (basePriceDisplay) {
         basePriceDisplay.textContent = formatPrice(activeVariant.price);
+      }
+
+      // Update summary text (the multi-line breakdown)
+      if (summaryMalText) {
+        const variantText = activeVariant.title ? ", " + activeVariant.title : "";
+        const productName = "{{ product.title }}" + variantText;
+        
+        let shapeName = "Rektangulær dug";
+        if (appState.shape === "rund") {
+          shapeName = "Rund dug";
+        } else if (appState.shape === "oval") {
+          shapeName = "Oval dug";
+        }
+
+        const shapeSurchargeVal = shapeSurcharge * appState.quantity;
+        const widthSurchargeVal = widthSurcharge * appState.quantity;
+        const baseLinePrice = totalPrice - shapeSurchargeVal - widthSurchargeVal;
+
+        summaryMalText.innerHTML = `
+          <div class="space-y-1 text-xs text-on-surface-variant font-normal leading-normal w-full max-w-sm mt-2 mb-2">
+            <div class="flex justify-between gap-4">
+              <span>${productName}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatPrice(baseLinePrice)}</span>
+            </div>
+            <div class="flex justify-between gap-2">
+              <span>${shapeName}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatPrice(shapeSurchargeVal)}</span>
+            </div>
+            <div class="flex justify-between gap-2">
+              <span>Tilpasset i bredden</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatPrice(widthSurchargeVal)}</span>
+            </div>
+            <div class="flex justify-between border-t border-outline-variant/60 pt-1 font-bold text-primary text-xs mt-1">
+              <span>Total</span>
+              <span class="flex-shrink-0">${formatPrice(totalPrice)}</span>
+            </div>
+          </div>
+        `;
       }
 
       // Set global variable to resolve initial page load race condition
