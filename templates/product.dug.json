@@ -77,8 +77,8 @@
         "countdown_4gXjVB": {
           "type": "countdown",
           "settings": {
-            "text": "Vi sender om",
-            "suffix": "timer"
+            "text": "Bestil inden",
+            "suffix": "timer, for at få den sendt i dag."
           }
         },
         "checkmark_7inAb8": {
