@@ -77,7 +77,7 @@
         "countdown_4gXjVB": {
           "type": "countdown",
           "settings": {
-            "text": "Sendes om",
+            "text": "Vi sender om",
             "suffix": "timer"
           }
         },
