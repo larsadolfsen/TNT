@@ -452,7 +452,7 @@
         let variantText = "";
         if (activeVariant.title) {
           if (activeVariant.title.trim().toLowerCase() === "default title") {
-            variantText = `, ${appState.width}x${appState.length} cm`;
+            variantText = `, (${appState.width}x${appState.length} cm)`;
           } else {
             variantText = ", " + activeVariant.title;
           }

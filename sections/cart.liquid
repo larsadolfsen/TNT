@@ -36,7 +36,7 @@
                   {%- if item.variant.title != 'Default Title' -%}
                     , {{ item.variant.title }}
                   {%- else -%}
-                    , {{ item.properties._width }}x{{ item.properties._length }} cm
+                    , ({{ item.properties._width }}x{{ item.properties._length }} cm)
                   {%- endif -%}
                 </span>
                 <span class="text-primary font-medium flex-shrink-0">{{ base_price_cents | money }}</span>
