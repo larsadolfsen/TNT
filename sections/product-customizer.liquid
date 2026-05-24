@@ -773,7 +773,8 @@
             "Antal dug(e)": appState.quantity,
             "_length": appState.length,
             "_width": appState.width,
-            "_shape": appState.shape
+            "_shape": appState.shape,
+            "_unit_price": Math.round((appState.currentClothPrice / appState.quantity) * 100).toString()
           }
         });
 
