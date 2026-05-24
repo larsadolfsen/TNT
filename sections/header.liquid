@@ -438,7 +438,9 @@
 
       const item = await response.json();
       showToast(`Tilføjet: ${item.product_title}`);
-      toggleCartDrawer(true);
+      setTimeout(() => {
+        toggleCartDrawer(true);
+      }, 350);
     } catch (error) {
       console.error("Fejl ved tilføjelse til kurv:", error);
       // Revert optimistic update

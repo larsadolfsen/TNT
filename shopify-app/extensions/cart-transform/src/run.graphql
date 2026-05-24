@@ -26,8 +26,13 @@ query Input {
           }
         }
       }
-      properties {
-        key
+      _length: attribute(key: "_length") {
+        value
+      }
+      _width: attribute(key: "_width") {
+        value
+      }
+      _shape: attribute(key: "_shape") {
         value
       }
     }

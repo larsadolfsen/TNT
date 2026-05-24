@@ -272,11 +272,24 @@
         .then(data => {
           localShowToast("Lagt i kurven!");
           
-          // Refresh cart count
-          return fetch('/cart.js');
+          // Refresh cart count with a delay to let Shopify session catch up
+          return new Promise(resolve => {
+            setTimeout(() => {
+              fetch('/cart.js')
+                .then(res => {
+                  if (!res.ok) throw new Error("Cart fetch failed");
+                  return res.json();
+                })
+                .then(resolve)
+                .catch(err => {
+                  console.error(err);
+                  resolve(null);
+                });
+            }, 350);
+          });
         })
-        .then(res => res.json())
         .then(cartData => {
+          if (!cartData) return;
           const cartCounter = document.getElementById("cart-counter");
           if (cartCounter) {
             cartCounter.textContent = cartData.item_count;

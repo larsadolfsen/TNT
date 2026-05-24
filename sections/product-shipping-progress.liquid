@@ -86,10 +86,62 @@
       }
     }
 
+    let ratesFetched = false;
+    function fetchShippingRates() {
+      if (ratesFetched) return;
+      const country = window.Shopify?.country || 'Denmark';
+      fetch(`/cart/shipping_rates.json?shipping_address[country]=${country}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Rates fetch failed");
+          return res.json();
+        })
+        .then(data => {
+          ratesFetched = true;
+          const rates = data.shipping_rates;
+          if (rates && rates.length > 0) {
+            // Find standard rate (either name standard or description has standard)
+            const standardRate = rates.find(r => 
+              (r.name && r.name.toLowerCase().includes("standard")) || 
+              (r.description && r.description.toLowerCase().includes("standard"))
+            );
+            if (standardRate && standardRate.description) {
+              // Match gratis/free threshold e.g. "Gratis for ordrer på 599,00 kr. og derover"
+              const match = standardRate.description.match(/(?:ordrer på|over|ved køb over|over for)\s*([\d.,]+)/i) || 
+                            standardRate.description.match(/([\d.,]+)\s*kr/i) ||
+                            standardRate.description.match(/([\d.,]+)/);
+              if (match) {
+                let cleanNum = match[1];
+                if (cleanNum.includes(',') && cleanNum.includes('.')) {
+                  cleanNum = cleanNum.replace(/\./g, '').replace(',', '.');
+                } else if (cleanNum.includes(',')) {
+                  cleanNum = cleanNum.replace(',', '.');
+                } else if (cleanNum.includes('.')) {
+                  const parts = cleanNum.split('.');
+                  if (parts[parts.length - 1].length !== 2) {
+                    cleanNum = cleanNum.replace(/\./g, '');
+                  }
+                }
+                const val = parseFloat(cleanNum);
+                if (!isNaN(val) && val > 0) {
+                  window.freeShippingThreshold = val;
+                  document.dispatchEvent(new CustomEvent("shipping-threshold-updated", { detail: { threshold: val } }));
+                }
+              }
+            }
+          }
+        })
+        .catch(err => {
+          console.warn("Could not load dynamic shipping threshold:", err);
+        });
+    }
+
     // Listen for customizer cart updates to update cartTotal
     document.addEventListener("cart-updated-total", (e) => {
       if (e.detail && typeof e.detail.cartTotal === "number") {
         cartTotal = e.detail.cartTotal;
+        if (cartTotal > 0) {
+          fetchShippingRates();
+        }
         updateUI();
       }
     });
@@ -112,50 +164,10 @@
       }
     });
 
-    // Fetch dynamic threshold from shipping rates
-    const country = window.Shopify?.country || 'Denmark';
-    fetch(`/cart/shipping_rates.json?shipping_address[country]=${country}`)
-      .then(res => {
-        if (!res.ok) throw new Error("Rates fetch failed");
-        return res.json();
-      })
-      .then(data => {
-        const rates = data.shipping_rates;
-        if (rates && rates.length > 0) {
-          // Find standard rate (either name standard or description has standard)
-          const standardRate = rates.find(r => 
-            (r.name && r.name.toLowerCase().includes("standard")) || 
-            (r.description && r.description.toLowerCase().includes("standard"))
-          );
-          if (standardRate && standardRate.description) {
-            // Match gratis/free threshold e.g. "Gratis for ordrer på 599,00 kr. og derover"
-            const match = standardRate.description.match(/(?:ordrer på|over|ved køb over|over for)\s*([\d.,]+)/i) || 
-                          standardRate.description.match(/([\d.,]+)\s*kr/i) ||
-                          standardRate.description.match(/([\d.,]+)/);
-            if (match) {
-              let cleanNum = match[1];
-              if (cleanNum.includes(',') && cleanNum.includes('.')) {
-                cleanNum = cleanNum.replace(/\./g, '').replace(',', '.');
-              } else if (cleanNum.includes(',')) {
-                cleanNum = cleanNum.replace(',', '.');
-              } else if (cleanNum.includes('.')) {
-                const parts = cleanNum.split('.');
-                if (parts[parts.length - 1].length !== 2) {
-                  cleanNum = cleanNum.replace(/\./g, '');
-                }
-              }
-              const val = parseFloat(cleanNum);
-              if (!isNaN(val) && val > 0) {
-                window.freeShippingThreshold = val;
-                document.dispatchEvent(new CustomEvent("shipping-threshold-updated", { detail: { threshold: val } }));
-              }
-            }
-          }
-        }
-      })
-      .catch(err => {
-        console.warn("Could not load dynamic shipping threshold:", err);
-      });
+    // Fetch dynamic threshold from shipping rates if cart has items
+    if (cartTotal > 0) {
+      fetchShippingRates();
+    }
 
     // Initial update
     updateUI();

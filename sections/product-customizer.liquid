@@ -883,10 +883,23 @@
         })
         .then(data => {
           showToast("Lagt i kurven!");
-          return fetch('/cart.js');
+          return new Promise(resolve => {
+            setTimeout(() => {
+              fetch('/cart.js')
+                .then(res => {
+                  if (!res.ok) throw new Error("Cart fetch failed");
+                  return res.json();
+                })
+                .then(resolve)
+                .catch(err => {
+                  console.error(err);
+                  resolve(null);
+                });
+            }, 350);
+          });
         })
-        .then(res => res.json())
         .then(cartData => {
+          if (!cartData) return;
           appState.cartCount = cartData.item_count;
           appState.cartTotal = cartData.total_price / 100.0;
           
@@ -994,10 +1007,23 @@
           })
           .then(data => {
             showToast(navn + " er tilføjet!");
-            return fetch('/cart.js');
+            return new Promise(resolve => {
+              setTimeout(() => {
+                fetch('/cart.js')
+                  .then(res => {
+                    if (!res.ok) throw new Error("Cart fetch failed");
+                    return res.json();
+                  })
+                  .then(resolve)
+                  .catch(err => {
+                    console.error(err);
+                    resolve(null);
+                  });
+              }, 350);
+            });
           })
-          .then(res => res.json())
           .then(cartData => {
+            if (!cartData) return;
             appState.cartCount = cartData.item_count;
             appState.cartTotal = cartData.total_price / 100.0;
             if (cartCounter) cartCounter.textContent = appState.cartCount;

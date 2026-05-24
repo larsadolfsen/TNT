@@ -1,54 +1,41 @@
-// @ts-check
+var __defProp = Object.defineProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
 
-/**
- * @typedef {import("../generated/api").InputQuery} InputQuery
- * @typedef {import("../generated/api").FunctionRunResult} FunctionRunResult
- */
-
-/**
- * @param {InputQuery} input
- * @returns {FunctionRunResult}
- */
-export function run(input) {
+// src/run.js
+var run_exports = {};
+__export(run_exports, {
+  default: () => run_default,
+  run: () => run
+});
+function run(input) {
   const operations = [];
-
   for (const line of input.cart.lines) {
     if (line.merchandise.__typename !== "ProductVariant") {
       continue;
     }
-
     const variant = line.merchandise;
     const fabricRollMetafield = variant.product.fabric_roll;
-
-    // If there's no fabric roll metafield, this is not a customizer product
     if (!fabricRollMetafield || !fabricRollMetafield.value) {
       continue;
     }
-
     const fabricRollVariantId = fabricRollMetafield.value;
-
-    // Read attributes
     const lengthVal = line._length?.value;
     const shapeVal = line._shape?.value;
     const widthVal = line._width?.value;
-
     let length = lengthVal ? parseInt(lengthVal, 10) : 0;
     let shape = shapeVal ? shapeVal.toLowerCase() : "";
     let width = widthVal ? widthVal.replace(/\D/g, "") : "";
-
     if (length <= 0) {
       continue;
     }
-
     const expandedItems = [];
-
-    // 1. Add fabric roll component (quantity is length in cm * parent quantity)
     expandedItems.push({
       merchandiseId: fabricRollVariantId,
-      quantity: length * line.quantity,
+      quantity: length * line.quantity
     });
-
-    // 2. Add shape surcharge component if applicable
     let shapeSurchargeVariantId = null;
     if (shape === "rund") {
       shapeSurchargeVariantId = variant.product.surcharge_round ? variant.product.surcharge_round.value : null;
@@ -57,37 +44,47 @@ export function run(input) {
     } else if (shape === "firkantet") {
       shapeSurchargeVariantId = variant.product.surcharge_rectangular ? variant.product.surcharge_rectangular.value : null;
     }
-
     if (shapeSurchargeVariantId) {
       expandedItems.push({
         merchandiseId: shapeSurchargeVariantId,
-        quantity: line.quantity,
+        quantity: line.quantity
       });
     }
-
-    // 3. Add width surcharge component if applicable (Bred dug)
     if (width !== "" && width !== "140") {
       const widthSurchargeVariantId = variant.product.surcharge_width ? variant.product.surcharge_width.value : null;
       if (widthSurchargeVariantId) {
         expandedItems.push({
           merchandiseId: widthSurchargeVariantId,
-          quantity: line.quantity,
+          quantity: line.quantity
         });
       }
     }
-
-    // Push the expand operation for this cart line
     operations.push({
       expand: {
         cartLineId: line.id,
-        expandedCartItems: expandedItems,
-      },
+        expandedCartItems: expandedItems
+      }
     });
   }
-
   return {
-    operations: operations,
+    operations
   };
 }
+var run_default = run;
 
-export default run;
+// node_modules/@shopify/shopify_function/run.ts
+function run_default2(userfunction) {
+  try {
+    ShopifyFunction;
+  } catch (e) {
+    throw new Error(
+      "ShopifyFunction is not defined. Please rebuild your function using the latest version of Shopify CLI."
+    );
+  }
+  const input_obj = ShopifyFunction.readInput();
+  const output_obj = userfunction(input_obj);
+  ShopifyFunction.writeOutput(output_obj);
+}
+
+// node_modules/@shopify/shopify_function/index.ts
+run_default2(run_exports?.default);
