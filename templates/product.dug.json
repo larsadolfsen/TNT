@@ -55,6 +55,7 @@
     "customizer": {
       "type": "product-customizer",
       "settings": {
+        "surcharge_product_rectangular": "firkantet-dug",
         "surcharge_product_round": "rund-dug",
         "surcharge_product_oval": "afrunding-af-dug",
         "surcharge_product_width": "tilpasning-af-bredde",
