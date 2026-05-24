@@ -102,11 +102,11 @@
         </button>
       </div>
       <div class="flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden">
-        <button id="btn-width-minus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+        <button id="btn-width-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
           <span class="material-symbols-outlined">remove</span>
         </button>
-        <input id="input-width" class="w-full h-14 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="140 cm" readonly/>
-        <button id="btn-width-plus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+        <input id="input-width" class="w-full h-12 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="140 cm" readonly/>
+        <button id="btn-width-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
           <span class="material-symbols-outlined">add</span>
         </button>
       </div>
@@ -124,11 +124,11 @@
         </button>
       </div>
       <div class="flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden">
-        <button id="btn-length-minus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+        <button id="btn-length-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
           <span class="material-symbols-outlined">remove</span>
         </button>
-        <input id="input-length" class="w-full h-14 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="200 cm" readonly/>
-        <button id="btn-length-plus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+        <input id="input-length" class="w-full h-12 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="200 cm" readonly/>
+        <button id="btn-length-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
           <span class="material-symbols-outlined">add</span>
         </button>
       </div>
@@ -147,11 +147,11 @@
         </button>
       </div>
       <div class="flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden">
-        <button id="btn-quantity-minus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+        <button id="btn-quantity-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
           <span class="material-symbols-outlined">remove</span>
         </button>
-        <input id="input-quantity" class="w-full h-14 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="1"/>
-        <button id="btn-quantity-plus" class="w-14 h-14 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
+        <input id="input-quantity" class="w-full h-12 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="1"/>
+        <button id="btn-quantity-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
           <span class="material-symbols-outlined">add</span>
         </button>
       </div>
@@ -782,6 +782,25 @@
           return;
         }
 
+        let shapeSurcharge = 0;
+        if (appState.shape === "rund") {
+          shapeSurcharge = surchargeRoundValue;
+        } else if (appState.shape === "oval") {
+          shapeSurcharge = surchargeOvalValue;
+        } else if (appState.shape === "firkantet") {
+          shapeSurcharge = surchargeRectangularValue;
+        }
+        const shapeSurchargeCents = Math.round(shapeSurcharge * 100);
+
+        let widthSurcharge = 0;
+        if (appState.width !== 140) {
+          widthSurcharge = surchargeWidthValue;
+        }
+        const widthSurchargeCents = Math.round(widthSurcharge * 100);
+
+        const totalSinglePriceCents = Math.round((appState.currentClothPrice / appState.quantity) * 100);
+        const adjustedBasePriceCents = totalSinglePriceCents - shapeSurchargeCents - widthSurchargeCents;
+
         let items = [];
 
         // Add parent product to cart
@@ -797,7 +816,10 @@
             "_length": appState.length,
             "_width": appState.width,
             "_shape": appState.shape,
-            "_unit_price": Math.round((appState.currentClothPrice / appState.quantity) * 100).toString()
+            "_unit_price": totalSinglePriceCents.toString(),
+            "_base_price": adjustedBasePriceCents.toString(),
+            "_shape_surcharge": shapeSurchargeCents.toString(),
+            "_width_surcharge": widthSurchargeCents.toString()
           }
         });
 

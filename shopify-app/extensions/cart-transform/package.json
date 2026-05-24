@@ -1,0 +1,16 @@
+{
+  "name": "cart-transform",
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@shopify/shopify_function": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.5.0",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "shopify app function build"
+  }
+}
