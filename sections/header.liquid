@@ -237,78 +237,92 @@
     }, 2500);
   }
 
+  let currentCart = null;
+
+  function renderCart(cart) {
+    currentCart = cart;
+
+    // Opdater kurve-tællere
+    const counters = document.querySelectorAll('#cart-counter');
+    counters.forEach(counter => {
+      counter.innerText = cart.item_count;
+      if (cart.item_count > 0) {
+        counter.classList.remove("scale-0");
+        counter.classList.add("scale-100");
+      } else {
+        counter.classList.remove("scale-100");
+        counter.classList.add("scale-0");
+      }
+    });
+
+    // Opdater kurveskuffen
+    const cartItemsContainer = document.getElementById("cart-items");
+    const cartSubtotal = document.getElementById("cart-subtotal");
+    if (!cartItemsContainer || !cartSubtotal) return;
+
+    cartItemsContainer.innerHTML = "";
+
+    if (cart.item_count === 0) {
+      cartItemsContainer.innerHTML = `
+        <div class="py-12 text-center text-on-surface-variant flex flex-col items-center justify-center">
+          <span class="material-symbols-outlined text-4xl mb-2 text-on-surface-variant/40">shopping_basket</span>
+          <p class="text-sm font-semibold">Din indkøbskurv er tom.</p>
+        </div>
+      `;
+      cartSubtotal.innerText = "Dkr 0,-";
+      return;
+    }
+
+    cart.items.forEach(item => {
+      let subtitle = item.variant_title || "";
+      if (item.properties && Object.keys(item.properties).length > 0) {
+        const props = Object.entries(item.properties)
+          .map(([k, v]) => {
+            if (k.startsWith('_')) return null; // Skjul interne data
+            return `${k}: ${v}`;
+          })
+          .filter(Boolean)
+          .join(' • ');
+        if (props) {
+          subtitle = subtitle ? subtitle + " • " + props : props;
+        }
+      }
+
+      const imgUrl = item.image ? item.image : "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=150&q=80";
+
+      const itemHtml = `
+        <div class="group relative flex gap-4 border-b border-outline-variant/60 pb-4">
+          <img src="${imgUrl}" alt="${item.product_title}" class="w-16 h-16 object-cover rounded-xl bg-surface-container flex-shrink-0" />
+          <div class="flex-1 min-w-0 flex flex-col justify-between">
+            <div class="pr-6">
+              <h4 class="text-xs font-semibold text-primary truncate" title="${item.product_title}">${item.product_title}</h4>
+              <p class="text-[10px] text-on-surface-variant truncate">${subtitle}</p>
+            </div>
+            <div class="flex justify-between items-center mt-2">
+              <div class="flex items-center border border-outline-variant rounded-full bg-surface-container overflow-hidden">
+                <button onclick="changeQuantity('${item.key}', -1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">-</button>
+                <span class="w-6 text-center text-[11px] text-primary font-bold">${item.quantity}</span>
+                <button onclick="changeQuantity('${item.key}', 1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">+</button>
+              </div>
+              <span class="text-xs font-bold text-primary">${formatMoney(item.final_line_price)}</span>
+            </div>
+          </div>
+          <button onclick="removeItem('${item.key}')" class="absolute top-0 right-0 p-1 text-on-surface-variant hover:text-red-600 bg-transparent border-0 cursor-pointer md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity duration-200" aria-label="Fjern vare">
+            <span class="material-symbols-outlined text-lg">delete</span>
+          </button>
+        </div>
+      `;
+      cartItemsContainer.insertAdjacentHTML("beforeend", itemHtml);
+    });
+
+    cartSubtotal.innerText = formatMoney(cart.total_price);
+  }
+
   async function updateCartUI() {
     try {
       const response = await fetch('/cart.js');
       const cart = await response.json();
-      
-      // Opdater kurve-tællere
-      const counters = document.querySelectorAll('#cart-counter');
-      counters.forEach(counter => {
-        counter.innerText = cart.item_count;
-        if (cart.item_count > 0) {
-          counter.classList.remove("scale-0");
-          counter.classList.add("scale-100");
-        } else {
-          counter.classList.remove("scale-100");
-          counter.classList.add("scale-0");
-        }
-      });
-
-      // Opdater kurveskuffen
-      const cartItemsContainer = document.getElementById("cart-items");
-      const cartSubtotal = document.getElementById("cart-subtotal");
-      if (!cartItemsContainer || !cartSubtotal) return;
-
-      cartItemsContainer.innerHTML = "";
-
-      if (cart.item_count === 0) {
-        cartItemsContainer.innerHTML = `
-          <div class="py-12 text-center text-on-surface-variant flex flex-col items-center justify-center">
-            <span class="material-symbols-outlined text-4xl mb-2 text-on-surface-variant/40">shopping_basket</span>
-            <p class="text-sm font-semibold">Din indkøbskurv er tom.</p>
-          </div>
-        `;
-        cartSubtotal.innerText = "Dkr 0,-";
-        return;
-      }
-
-      cart.items.forEach(item => {
-        let subtitle = item.variant_title || "";
-        if (item.properties && Object.keys(item.properties).length > 0) {
-          const props = Object.entries(item.properties)
-            .map(([k, v]) => `${k}: ${v}`)
-            .join(' • ');
-          if (props) {
-            subtitle = subtitle ? subtitle + " • " + props : props;
-          }
-        }
-
-        const imgUrl = item.image ? item.image : "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=150&q=80";
-
-        const itemHtml = `
-          <div class="flex gap-4 border-b border-outline-variant/60 pb-4">
-            <img src="${imgUrl}" alt="${item.product_title}" class="w-16 h-16 object-cover rounded-xl bg-surface-container flex-shrink-0" />
-            <div class="flex-1 min-w-0 flex flex-col justify-between">
-              <div>
-                <h4 class="text-xs font-semibold text-primary truncate" title="${item.product_title}">${item.product_title}</h4>
-                <p class="text-[10px] text-on-surface-variant truncate">${subtitle}</p>
-              </div>
-              <div class="flex justify-between items-center mt-2">
-                <div class="flex items-center border border-outline-variant rounded-full bg-surface-container overflow-hidden">
-                  <button onclick="changeQuantity(${item.variant_id}, -1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">-</button>
-                  <span class="w-6 text-center text-[11px] text-primary font-bold">${item.quantity}</span>
-                  <button onclick="changeQuantity(${item.variant_id}, 1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">+</button>
-                </div>
-                <span class="text-xs font-bold text-primary">${formatMoney(item.final_line_price)}</span>
-              </div>
-            </div>
-          </div>
-        `;
-        cartItemsContainer.insertAdjacentHTML("beforeend", itemHtml);
-      });
-
-      cartSubtotal.innerText = formatMoney(cart.total_price);
+      renderCart(cart);
     } catch (error) {
       console.error("Fejl ved opdatering af kurv:", error);
     }
@@ -340,38 +354,102 @@
     }
   }
 
-  async function changeQuantity(variantId, change) {
+  async function changeQuantity(itemKey, change) {
+    if (!currentCart) return;
+
+    const existingItem = currentCart.items.find(item => item.key === itemKey);
+    if (!existingItem) return;
+
+    const newQty = existingItem.quantity + change;
+    if (newQty < 0) return;
+
+    // Gem oprindelig tilstand for rollback
+    const originalCart = JSON.parse(JSON.stringify(currentCart));
+
+    // Optimistisk opdatering af local state
+    if (newQty === 0) {
+      currentCart.items = currentCart.items.filter(item => item.key !== itemKey);
+    } else {
+      existingItem.quantity = newQty;
+      existingItem.final_line_price = existingItem.price * newQty;
+    }
+    
+    currentCart.item_count = currentCart.items.reduce((sum, item) => sum + item.quantity, 0);
+    currentCart.total_price = currentCart.items.reduce((sum, item) => sum + item.final_line_price, 0);
+
+    // Render med det samme (0ms delay!)
+    renderCart(currentCart);
+
     try {
-      const cartResponse = await fetch('/cart.js');
-      const cart = await cartResponse.json();
-      const existingItem = cart.items.find(item => item.variant_id === variantId);
-      if (!existingItem) return;
-
-      const newQty = existingItem.quantity + change;
-
       const response = await fetch('/cart/change.js', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          id: variantId.toString(),
+          id: itemKey,
           quantity: newQty
         })
       });
 
       if (!response.ok) {
-        throw new Error('Kunne ikke ændre antal');
+        throw new Error('Kunne ikke ændre antal på serveren');
       }
 
-      await updateCartUI();
+      const updatedCart = await response.json();
+      renderCart(updatedCart);
     } catch (error) {
       console.error("Fejl ved ændring af antal:", error);
+      renderCart(originalCart);
+      showToast("Kunne ikke ændre antal. Prøv igen.");
+    }
+  }
+
+  async function removeItem(itemKey) {
+    if (!currentCart) return;
+
+    const existingItem = currentCart.items.find(item => item.key === itemKey);
+    if (!existingItem) return;
+
+    // Gem oprindelig tilstand
+    const originalCart = JSON.parse(JSON.stringify(currentCart));
+
+    // Optimistisk opdatering
+    currentCart.items = currentCart.items.filter(item => item.key !== itemKey);
+    currentCart.item_count = currentCart.items.reduce((sum, item) => sum + item.quantity, 0);
+    currentCart.total_price = currentCart.items.reduce((sum, item) => sum + item.final_line_price, 0);
+
+    // Render med det samme
+    renderCart(currentCart);
+
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: itemKey,
+          quantity: 0
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Kunne ikke fjerne vare på serveren');
+      }
+
+      const updatedCart = await response.json();
+      renderCart(updatedCart);
+    } catch (error) {
+      console.error("Fejl ved fjernelse af vare:", error);
+      renderCart(originalCart);
+      showToast("Kunne ikke fjerne varen. Prøv igen.");
     }
   }
 
   window.addToCart = addToCart;
   window.changeQuantity = changeQuantity;
+  window.removeItem = removeItem;
   window.updateCartUI = updateCartUI;
   window.toggleCartDrawer = toggleCartDrawer;
   window.toggleMobileMenu = toggleMobileMenu;

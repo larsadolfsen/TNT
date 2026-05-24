@@ -761,42 +761,21 @@
 
         let items = [];
 
-        // Add main product to cart
+        // Add parent product to cart
         items.push({
           id: activeVariant.id,
-          quantity: appState.length * appState.quantity,
+          quantity: appState.quantity,
           properties: {
             "Form": appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1),
             "Bredde": appState.width + " cm",
             "Længde": appState.length + " cm",
             "Mål": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
             "Antal dug(e)": appState.quantity,
-            "_unique_key": Date.now().toString() + "-" + Math.random().toString(36).substr(2, 9)
+            "_length": appState.length,
+            "_width": appState.width,
+            "_shape": appState.shape
           }
         });
-
-        // Add customization surcharge companion product (if needed)
-        let activeSurchargeVariantId = null;
-        if (appState.shape === "rund") {
-          activeSurchargeVariantId = surchargeRoundId;
-        } else if (appState.shape === "oval") {
-          activeSurchargeVariantId = surchargeOvalId;
-        } else if (appState.width !== 140) {
-          activeSurchargeVariantId = surchargeWidthId;
-        }
-
-        if (activeSurchargeVariantId) {
-          items.push({
-            id: activeSurchargeVariantId,
-            quantity: appState.quantity,
-            properties: {
-              "Tilknyttet dug": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
-              "Form": appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1),
-              "Bredde": appState.width + " cm",
-              "_unique_key": Date.now().toString() + "-surcharge"
-            }
-          });
-        }
 
         fetch('/cart/add.js', {
           method: 'POST',
