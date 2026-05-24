@@ -60,7 +60,8 @@
         "surcharge_product_width": "tilpasning-af-bredde",
         "step_size": 10,
         "min_length": 50,
-        "min_width": 50
+        "min_width": 50,
+        "width_step": 10
       }
     },
     "buy-buttons": {
@@ -175,6 +176,17 @@
       "name": "Accordion",
       "settings": {}
     },
+    "product_banner_text_krEjWz": {
+      "type": "product-banner-text",
+      "name": "Tekst",
+      "settings": {
+        "image": "{{ product.featured_image }}",
+        "heading": "",
+        "content": "{{ product.description }}",
+        "border_top": true,
+        "border_bottom": true
+      }
+    },
     "product_cross_sell_n3NNME": {
       "type": "product-cross-sell",
       "name": "Product Cross-sell",
@@ -197,6 +209,7 @@
     "product_materials_pGqPAt",
     "product_testimonial_ELFjCz",
     "product_accordions_C6EJAf",
+    "product_banner_text_krEjWz",
     "product_cross_sell_n3NNME"
   ]
 }
