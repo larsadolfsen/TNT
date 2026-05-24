@@ -18,13 +18,9 @@
           {%- if item.properties._base_price != blank -%}
             {%- liquid
               assign base_price_cents = item.properties._base_price | plus: 0
-              assign base_price = base_price_cents | times: item.quantity
-              
               assign shape_surcharge_cents = item.properties._shape_surcharge | default: "0" | plus: 0
-              assign shape_surcharge = shape_surcharge_cents | times: item.quantity
-              
               assign width_surcharge_cents = item.properties._width_surcharge | default: "0" | plus: 0
-              assign width_surcharge = width_surcharge_cents | times: item.quantity
+              assign unit_price_cents = base_price_cents | plus: shape_surcharge_cents | plus: width_surcharge_cents
               
               assign shape_name = "Rektangulær dug"
               if item.properties._shape == "rund"
@@ -36,20 +32,26 @@
             <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal max-w-sm mt-1">
               <div class="flex justify-between gap-2">
                 <span>{{ item.product.title }}{% if item.variant.title != 'Default Title' %}, {{ item.variant.title }}{% endif %}</span>
-                <span class="text-primary font-medium flex-shrink-0">{{ base_price | money }}</span>
+                <span class="text-primary font-medium flex-shrink-0">{{ base_price_cents | money }}</span>
               </div>
               <div class="flex justify-between gap-2">
                 <span>{{ shape_name }}</span>
-                <span class="text-primary font-medium flex-shrink-0">{{ shape_surcharge | money }}</span>
+                <span class="text-primary font-medium flex-shrink-0">{{ shape_surcharge_cents | money }}</span>
               </div>
               <div class="flex justify-between gap-2">
                 <span>Tilpasset i bredden</span>
-                <span class="text-primary font-medium flex-shrink-0">{{ width_surcharge | money }}</span>
+                <span class="text-primary font-medium flex-shrink-0">{{ width_surcharge_cents | money }}</span>
               </div>
               <div class="flex justify-between border-t border-outline-variant/60 pt-1 font-bold text-primary text-xs mt-1">
-                <span>Total</span>
-                <span class="flex-shrink-0">{{ item.final_line_price | money }}</span>
+                <span>Pris pr. stk.</span>
+                <span class="flex-shrink-0">{{ unit_price_cents | money }}</span>
               </div>
+              {%- if item.quantity > 1 -%}
+                <div class="flex justify-between border-t border-outline-variant/40 pt-1 text-primary text-xs font-semibold">
+                  <span>I alt ({{ item.quantity }} stk.)</span>
+                  <span class="flex-shrink-0">{{ item.final_line_price | money }}</span>
+                </div>
+              {%- endif -%}
             </div>
             <div class="mt-2 text-xs">
               {{ 'cart.remove' | t | link_to: item.url_to_remove, class: 'text-red-600 hover:underline font-medium' }}

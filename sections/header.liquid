@@ -313,10 +313,7 @@
         const basePriceCents = parseInt(item.properties._base_price, 10);
         const shapeSurchargeCents = parseInt(item.properties._shape_surcharge || "0", 10);
         const widthSurchargeCents = parseInt(item.properties._width_surcharge || "0", 10);
-
-        const basePriceVal = basePriceCents * item.quantity;
-        const shapeSurchargeVal = shapeSurchargeCents * item.quantity;
-        const widthSurchargeVal = widthSurchargeCents * item.quantity;
+        const unitPriceCents = basePriceCents + shapeSurchargeCents + widthSurchargeCents;
 
         let shapeName = "Rektangulær dug";
         if (item.properties._shape === "rund") {
@@ -331,19 +328,19 @@
           <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal">
             <div class="flex justify-between gap-2">
               <span>${item.product_title}${variantText}</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatMoney(basePriceVal)}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatMoney(basePriceCents)}</span>
             </div>
             <div class="flex justify-between gap-2">
               <span>${shapeName}</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatMoney(shapeSurchargeVal)}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatMoney(shapeSurchargeCents)}</span>
             </div>
             <div class="flex justify-between gap-2">
               <span>Tilpasset i bredden</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatMoney(widthSurchargeVal)}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatMoney(widthSurchargeCents)}</span>
             </div>
             <div class="flex justify-between border-t border-outline-variant/60 pt-1 font-bold text-primary text-xs mt-1">
-              <span>Total</span>
-              <span class="flex-shrink-0">${formatMoney(linePrice)}</span>
+              <span>Pris pr. stk.</span>
+              <span class="flex-shrink-0">${formatMoney(unitPriceCents)}</span>
             </div>
           </div>
         `;
@@ -372,7 +369,7 @@
                   <span class="material-symbols-outlined text-[16px]">delete</span>
                 </button>
               </div>
-              ${!isCustom ? `<span class="text-xs font-bold text-primary">${formatMoney(linePrice)}</span>` : ''}
+              <span class="text-xs font-bold text-primary">${formatMoney(linePrice)}</span>
             </div>
           </div>
         </div>
