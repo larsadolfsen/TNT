@@ -825,8 +825,6 @@
           quantity: appState.quantity,
           properties: {
             "Form": appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1),
-            "Bredde": appState.width + " cm",
-            "Længde": appState.length + " cm",
             "Mål": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
             "Antal dug(e)": appState.quantity,
             "_length": appState.length,
