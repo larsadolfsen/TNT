@@ -31,6 +31,13 @@
     assign max_width = 140
   endif
 
+  assign surcharge_rectangular_id = 'null'
+  assign surcharge_rectangular_price = 0.00
+  if section.settings.surcharge_product_rectangular != blank
+    assign surcharge_rectangular_id = section.settings.surcharge_product_rectangular.first_available_variant.id | default: 'null'
+    assign surcharge_rectangular_price = section.settings.surcharge_product_rectangular.price | divided_by: 100.0 | default: 0.00
+  endif
+
   assign surcharge_round_id = 'null'
   assign surcharge_round_price = 0.00
   if section.settings.surcharge_product_round != blank
@@ -273,6 +280,9 @@
       defaultWidth = minWidthLimit;
     }
 
+    const surchargeRectangularId = {{ surcharge_rectangular_id | default: 'null' }};
+    const surchargeRectangularValue = {{ surcharge_rectangular_price | default: 0.00 }};
+
     const surchargeRoundId = {{ surcharge_round_id | default: 'null' }};
     const surchargeRoundValue = {{ surcharge_round_price | default: 0.00 }};
 
@@ -374,24 +384,37 @@
 
       let singlePrice = 0;
       let surcharge = 0;
-      let surchargeText = "";
+      let surchargesList = [];
       
-      // Determine active surcharge based on shape and width
+      // Shape surcharge (Firkantet, Rund, Oval)
       if (appState.shape === "rund") {
-        surcharge = surchargeRoundValue;
-        if (surcharge > 0) {
-          surchargeText = " (inkl. " + formatPrice(surcharge) + " rund tilpasningstillæg)";
+        if (surchargeRoundValue > 0) {
+          surcharge += surchargeRoundValue;
+          surchargesList.push(formatPrice(surchargeRoundValue) + " rund tilpasningstillæg");
         }
       } else if (appState.shape === "oval") {
-        surcharge = surchargeOvalValue;
-        if (surcharge > 0) {
-          surchargeText = " (inkl. " + formatPrice(surcharge) + " oval tilpasningstillæg)";
+        if (surchargeOvalValue > 0) {
+          surcharge += surchargeOvalValue;
+          surchargesList.push(formatPrice(surchargeOvalValue) + " oval tilpasningstillæg");
         }
-      } else if (appState.width !== 140) {
-        surcharge = surchargeWidthValue;
-        if (surcharge > 0) {
-          surchargeText = " (inkl. " + formatPrice(surcharge) + " breddetilpasningstillæg)";
+      } else if (appState.shape === "firkantet") {
+        if (surchargeRectangularValue > 0) {
+          surcharge += surchargeRectangularValue;
+          surchargesList.push(formatPrice(surchargeRectangularValue) + " firkantet tilpasningstillæg");
         }
+      }
+
+      // Width surcharge (Bred dug)
+      if (appState.width !== 140) {
+        if (surchargeWidthValue > 0) {
+          surcharge += surchargeWidthValue;
+          surchargesList.push(formatPrice(surchargeWidthValue) + " breddetilpasningstillæg");
+        }
+      }
+
+      let surchargeText = "";
+      if (surchargesList.length > 0) {
+        surchargeText = " (inkl. " + surchargesList.join(" og ") + ")";
       }
       
       if (appState.shape === "rund") {
@@ -918,6 +941,12 @@
 {
   "name": "Product Customizer",
   "settings": [
+    {
+      "type": "product",
+      "id": "surcharge_product_rectangular",
+      "label": "Firkantet tilpasning tillægsprodukt",
+      "info": "Vælg produktet, der opkræver tillæg for firkantet dug."
+    },
     {
       "type": "product",
       "id": "surcharge_product_round",
