@@ -403,14 +403,14 @@
       
       if (appState.shape === "rund") {
         appState.length = appState.width;
-        singlePrice = ((appState.width / 100) * appState.basePricePerMeter) + surcharge;
+        singlePrice = (appState.width * appState.basePricePerMeter) + surcharge;
         
         if (lengthContainer) lengthContainer.classList.add("hidden"); 
         if (widthStepTitle) widthStepTitle.textContent = "Vælg diameter";
       } else {
         if (appState.length < minLengthValue) appState.length = minLengthValue;
         
-        singlePrice = ((appState.length / 100) * appState.basePricePerMeter) + surcharge;
+        singlePrice = (appState.length * appState.basePricePerMeter) + surcharge;
         
         if (lengthContainer) lengthContainer.classList.remove("hidden"); 
         if (lengthInput) {
