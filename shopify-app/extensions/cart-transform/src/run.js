@@ -88,7 +88,7 @@ export function run(input) {
     operations.push({
       expand: {
         cartLineId: line.id,
-        expandedItems: expandedItems,
+        expandedCartItems: expandedItems,
       },
     });
   }
