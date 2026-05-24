@@ -457,9 +457,7 @@
           shapeName = "Oval dug";
         }
 
-        const shapeSurchargeVal = shapeSurcharge * appState.quantity;
-        const widthSurchargeVal = widthSurcharge * appState.quantity;
-        const baseLinePrice = totalPrice - shapeSurchargeVal - widthSurchargeVal;
+        const baseLinePrice = singlePrice - shapeSurcharge - widthSurcharge;
 
         summaryMalText.innerHTML = `
           <div class="space-y-1 text-xs text-on-surface-variant font-normal leading-normal w-full max-w-sm mt-2 mb-2">
@@ -469,15 +467,15 @@
             </div>
             <div class="flex justify-between gap-2">
               <span>${shapeName}</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatPrice(shapeSurchargeVal)}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatPrice(shapeSurcharge)}</span>
             </div>
             <div class="flex justify-between gap-2">
               <span>Tilpasset i bredden</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatPrice(widthSurchargeVal)}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatPrice(widthSurcharge)}</span>
             </div>
-            <div class="flex justify-between border-t border-outline-variant/60 pt-1 font-bold text-primary text-xs mt-1">
-              <span>Total</span>
-              <span class="flex-shrink-0">${formatPrice(totalPrice)}</span>
+            <div class="flex justify-between border-t border-outline-variant/60 pt-1 mt-1">
+              <span>Pris pr. stk.</span>
+              <span class="flex-shrink-0">${formatPrice(singlePrice)}</span>
             </div>
           </div>
         `;
