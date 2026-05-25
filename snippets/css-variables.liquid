@@ -1,32 +1,59 @@
 {% style %}
   {% # Loads header font variations with display: swap %}
-  {{ settings.type_header_font | font_face: font_display: 'swap' }}
-  {{ settings.type_header_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
-  {{ settings.type_header_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_header_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {% if settings.type_header_font.family != blank %}
+    {{ settings.type_header_font | font_face: font_display: 'swap' }}
+    {%- assign header_font_bold = settings.type_header_font | font_modify: 'weight', 'bold' -%}
+    {%- if header_font_bold -%}
+      {{ header_font_bold | font_face: font_display: 'swap' }}
+      {{ header_font_bold | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {{ settings.type_header_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {% endif %}
 
   {% # Loads body font variations with display: swap %}
-  {{ settings.type_body_font | font_face: font_display: 'swap' }}
-  {{ settings.type_body_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
-  {{ settings.type_body_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_body_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {% if settings.type_body_font.family != blank %}
+    {{ settings.type_body_font | font_face: font_display: 'swap' }}
+    {%- assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold' -%}
+    {%- if body_font_bold -%}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {{ settings.type_body_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {% endif %}
 
   :root {
-    --font-header-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
-    --font-header-style: {{ settings.type_header_font.style }};
-    --font-header-weight: {{ settings.type_header_font.weight }};
+    {% if settings.type_header_font.family != blank %}
+      --font-header-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+      --font-header-style: {{ settings.type_header_font.style }};
+      --font-header-weight: {{ settings.type_header_font.weight }};
+    {% else %}
+      --font-header-family: "Playfair Display", serif;
+      --font-header-style: normal;
+      --font-header-weight: 400;
+    {% endif %}
 
-    --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-    --font-body-style: {{ settings.type_body_font.style }};
-    --font-body-weight: {{ settings.type_body_font.weight }};
+    {% if settings.type_body_font.family != blank %}
+      --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+      --font-body-style: {{ settings.type_body_font.style }};
+      --font-body-weight: {{ settings.type_body_font.weight }};
 
-    --font-primary--family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-    --font-primary--style: {{ settings.type_body_font.style }};
-    --font-primary--weight: {{ settings.type_body_font.weight }};
+      --font-primary--family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+      --font-primary--style: {{ settings.type_body_font.style }};
+      --font-primary--weight: {{ settings.type_body_font.weight }};
+    {% else %}
+      --font-body-family: "Work Sans", sans-serif;
+      --font-body-style: normal;
+      --font-body-weight: 400;
+
+      --font-primary--family: "Work Sans", sans-serif;
+      --font-primary--style: normal;
+      --font-primary--weight: 400;
+    {% endif %}
 
     --page-width: {{ settings.max_page_width }};
     --page-margin: {{ settings.min_page_margin }}px;
-    --color-primary: {{ settings.primary_color }};
+    --color-primary: {{ settings.primary_dark_color | default: '#0e1a28' }};
+    --color-primary-brand: {{ settings.primary_color | default: '#FFD814' }};
     --color-background: {{ settings.background_color }};
     --color-foreground: {{ settings.foreground_color }};
     --style-border-radius-inputs: {{ settings.input_corner_radius }}px;

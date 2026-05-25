@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0e1a28;
+  --color-primary: var(--color-primary);
   --color-secondary: #8a5100;
-  --color-secondary-container: #FFD814;
+  --color-secondary-container: var(--color-primary-brand);
+  --color-brand-yellow: var(--color-primary-brand);
   --color-on-secondary-container: #1a1c1c;
   --color-surface: #ffffff;
   --color-surface-container: #f9f9f9;
   --color-outline-variant: #e2e2e2;
   --color-on-surface-variant: #666666;
 
-  --font-sans: "Work Sans", "sans-serif";
-  --font-serif: "Playfair Display", "serif";
+  --font-sans: var(--font-body-family), "sans-serif";
+  --font-serif: var(--font-header-family), "serif";
 }
 
 .material-symbols-outlined {

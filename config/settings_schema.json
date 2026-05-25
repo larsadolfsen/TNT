@@ -70,6 +70,12 @@
       },
       {
         "type": "color",
+        "id": "primary_dark_color",
+        "default": "#0e1a28",
+        "label": "Primary dark color"
+      },
+      {
+        "type": "color",
         "id": "background_color",
         "default": "#FFFFFF",
         "label": "t:labels.background"
