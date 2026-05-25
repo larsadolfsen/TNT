@@ -1,245 +1,71 @@
 {% comment %}
-  Product Customizer Steps Section
-  Renders the interactive customization journey (Steps 1–4) for custom-cut tablecloths.
-  Contains variant metadata, modals, toasts, and the javascript state/recalculation engine.
+  New Product Customizer Section
+  Built from scratch. Renders a premium length stepper.
 {% endcomment %}
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
 {%- liquid
-  assign max_width = product.metafields.custom.bredde.value | default: product.metafields.custom.bredde | plus: 0
-  if max_width == 0
-    assign max_width = ""
-  endif
-  if max_width == blank
-    for tag in product.tags
-      assign tag_down = tag | downcase
-      if tag_down contains 'bredde:'
-        assign max_width = tag | remove_first: 'bredde:' | remove_first: 'Bredde:' | strip | plus: 0
-      endif
-    endfor
-  endif
-  if max_width == blank or max_width == 0
-    for option in product.options_with_values
-      assign option_name = option.name | downcase
-      if option_name contains 'bredde' or option_name contains 'width' or option_name contains 'størrelse'
-        assign max_width = option.values | first | plus: 0
-      endif
-    endfor
-  endif
-  if max_width == blank or max_width == 0
-    assign max_width = 140
-  endif
-
-  assign surcharge_rectangular_id = 'null'
-  assign surcharge_rectangular_price = 0.00
-  if section.settings.surcharge_product_rectangular != blank
-    assign surcharge_rectangular_id = section.settings.surcharge_product_rectangular.first_available_variant.id | default: 'null'
-    assign surcharge_rectangular_price = section.settings.surcharge_product_rectangular.price | divided_by: 100.0 | default: 0.00
-  endif
-
-  assign surcharge_round_id = 'null'
-  assign surcharge_round_price = 0.00
-  if section.settings.surcharge_product_round != blank
-    assign surcharge_round_id = section.settings.surcharge_product_round.first_available_variant.id | default: 'null'
-    assign surcharge_round_price = section.settings.surcharge_product_round.price | divided_by: 100.0 | default: 0.00
-  endif
-
-  assign surcharge_oval_id = 'null'
-  assign surcharge_oval_price = 0.00
-  if section.settings.surcharge_product_oval != blank
-    assign surcharge_oval_id = section.settings.surcharge_product_oval.first_available_variant.id | default: 'null'
-    assign surcharge_oval_price = section.settings.surcharge_product_oval.price | divided_by: 100.0 | default: 0.00
-  endif
-
-  assign surcharge_width_id = 'null'
-  assign surcharge_width_price = 0.00
-  if section.settings.surcharge_product_width != blank
-    assign surcharge_width_id = section.settings.surcharge_product_width.first_available_variant.id | default: 'null'
-    assign surcharge_width_price = section.settings.surcharge_product_width.price | divided_by: 100.0 | default: 0.00
-  endif
+  assign min_length = section.settings.min_length | default: 50
+  assign step_size = section.settings.step_size | default: 10
 -%}
 
-<section class="px-6 py-8 bg-surface-container border-y border-outline-variant max-w-screen-xl mx-auto my-4">
-  <h2 class="text-lg font-bold text-primary mb-6">Vælg dine mål</h2>
-  <div class="space-y-8">
-    <!-- Step 1: Shape -->
-    <div class="space-y-3">
-      <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-3">
-          <span class="w-6 h-6 flex items-center justify-center bg-primary text-white text-xs font-bold rounded-full">1</span>
-          <span class="font-bold text-sm uppercase tracking-wider text-primary">Vælg form</span>
-        </div>
-        <button class="info-btn text-on-surface-variant hover:text-primary focus:outline-none flex items-center" aria-label="Hjælp">
-          <span class="material-symbols-outlined text-xl">info</span>
+<!-- Hidden element to signal to product-buy-buttons that customizer is active -->
+<div id="shape-selector" style="display: none;"></div>
+
+<div class="px-6 py-6 bg-slate-50 border-y border-slate-100 max-w-screen-xl mx-auto my-4 rounded-2xl">
+  <div class="flex flex-col gap-4">
+    <!-- Length Selection Header -->
+    <div class="flex items-center gap-3">
+      <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full">1</span>
+      <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Vælg længde</span>
+    </div>
+
+    <!-- Pill-shaped Stepper matching screenshot -->
+    <div class="flex justify-start">
+      <div class="inline-flex items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none">
+        <!-- Minus button -->
+        <button type="button" id="btn-length-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-950 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+          &mdash;
         </button>
-      </div>
-      <div class="grid grid-cols-3 gap-2" id="shape-selector">
-        <button data-shape="firkantet" class="shape-btn flex flex-col items-center justify-center py-4 rounded-xl border-2 border-primary bg-white text-primary transition-all">
-          <span class="material-symbols-outlined mb-1">rectangle</span>
-          <span class="text-xs font-bold">Firkantet</span>
-        </button>
-        <button data-shape="rund" class="shape-btn flex flex-col items-center justify-center py-4 rounded-xl border border-outline-variant bg-white text-on-surface-variant transition-all">
-          <span class="material-symbols-outlined mb-1">circle</span>
-          <span class="text-xs">Rund</span>
-        </button>
-        <button data-shape="oval" class="shape-btn flex flex-col items-center justify-center py-4 rounded-xl border border-outline-variant bg-white text-on-surface-variant transition-all">
-          <span class="material-symbols-outlined mb-1">shape_line</span>
-          <span class="text-xs">Oval</span>
+        <!-- Value display -->
+        <span id="display-length" class="w-28 text-center font-bold text-slate-900 text-base">200 cm</span>
+        <!-- Plus button -->
+        <button type="button" id="btn-length-plus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-950 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+          &#43;
         </button>
       </div>
     </div>
 
-    <!-- Step 2: Width Stepper -->
-    <div class="space-y-3">
-      <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-3">
-          <span class="w-6 h-6 flex items-center justify-center bg-primary text-white text-xs font-bold rounded-full">2</span>
-          <span id="width-step-title" class="font-bold text-sm uppercase tracking-wider text-primary">Vælg bredde</span>
-        </div>
-        <button class="info-btn text-on-surface-variant hover:text-primary focus:outline-none flex items-center" aria-label="Hjælp">
-          <span class="material-symbols-outlined text-xl">info</span>
-        </button>
+    <!-- Quantity Selector (Customizer Quantity) -->
+    <div class="flex flex-col gap-2 mt-2">
+      <div class="flex items-center gap-3">
+        <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full">2</span>
+        <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Antal</span>
       </div>
-      <div class="flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden">
-        <button id="btn-width-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
-          <span class="material-symbols-outlined">remove</span>
+      <div class="inline-flex items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none w-max">
+        <!-- Minus button -->
+        <button type="button" id="btn-qty-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-950 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+          &mdash;
         </button>
-        <input id="input-width" class="w-full h-12 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="140 cm" readonly/>
-        <button id="btn-width-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
-          <span class="material-symbols-outlined">add</span>
+        <!-- Value display -->
+        <span id="display-qty" class="w-16 text-center font-bold text-slate-900 text-base">1</span>
+        <!-- Plus button -->
+        <button type="button" id="btn-qty-plus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+          &#43;
         </button>
       </div>
     </div>
-
-    <!-- Step 3: Length Stepper -->
-    <div class="space-y-3 transition-opacity duration-300" id="length-container">
-      <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-3">
-          <span class="w-6 h-6 flex items-center justify-center bg-primary text-white text-xs font-bold rounded-full">3</span>
-          <span id="length-step-title" class="font-bold text-sm uppercase tracking-wider text-primary">Vælg længde</span>
-        </div>
-        <button class="info-btn text-on-surface-variant hover:text-primary focus:outline-none flex items-center" aria-label="Hjælp">
-          <span class="material-symbols-outlined text-xl">info</span>
-        </button>
-      </div>
-      <div class="flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden">
-        <button id="btn-length-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
-          <span class="material-symbols-outlined">remove</span>
-        </button>
-        <input id="input-length" class="w-full h-12 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="200 cm" readonly/>
-        <button id="btn-length-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
-          <span class="material-symbols-outlined">add</span>
-        </button>
-      </div>
-      <p id="round-info-text" class="text-xs text-on-surface-variant hidden">Runde duge leveres med en fast diameter svarende til rullebredden.</p>
-    </div>
-
-    <!-- Step 4: Quantity Stepper -->
-    <div class="space-y-3" id="quantity-container">
-      <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-3">
-          <span class="w-6 h-6 flex items-center justify-center bg-primary text-white text-xs font-bold rounded-full">4</span>
-          <span id="quantity-step-title" class="font-bold text-sm uppercase tracking-wider text-primary">Vælg antal</span>
-        </div>
-        <button class="info-btn text-on-surface-variant hover:text-primary focus:outline-none flex items-center" aria-label="Hjælp">
-          <span class="material-symbols-outlined text-xl">info</span>
-        </button>
-      </div>
-      <div class="flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden">
-        <button id="btn-quantity-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
-          <span class="material-symbols-outlined">remove</span>
-        </button>
-        <input id="input-quantity" class="w-full h-12 text-center border-none focus:ring-0 text-lg font-bold text-primary bg-transparent focus:outline-none" type="text" value="1"/>
-        <button id="btn-quantity-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors">
-          <span class="material-symbols-outlined">add</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Help Modal Overlay -->
-<div id="help-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 p-4 transition-opacity duration-300">
-  <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-xl relative transform scale-95 transition-transform duration-300">
-    <!-- Close Button -->
-    <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 focus:outline-none cursor-pointer">
-      <span class="material-symbols-outlined">close</span>
-    </button>
-    <!-- Content -->
-    <div class="space-y-4">
-      <h3 class="text-lg font-bold text-primary">Guide til bestilling af metermål</h3>
-      <ul class="space-y-2.5 text-sm text-on-surface-variant list-disc pl-5">
-        <li>Vælg den dug, du ønsker at bestille.</li>
-        <li>Vælg den længde du ønsker (min. {{ section.settings.min_length | default: 50 }} cm pr. dug)</li>
-        <li>Vi anbefaler 15-25 cm. til nedhæng i hver side.</li>
-        <li>Vælg antal, hvis du ønsker mere end en dug i samme længde og design</li>
-        <li>Når du har udfyldt alle felter, tryk læg i kurv</li>
-      </ul>
-      <div class="bg-slate-50 p-4 rounded-xl border border-outline-variant mt-4">
-        <h4 class="font-bold text-xs uppercase text-slate-500 tracking-wider mb-1">Eksempel på bestilling:</h4>
-        <p class="text-xs text-on-surface-variant leading-relaxed">
-          Har du et bord som er 2 meter langt, indtaster du i feltet 240 (i alt 40 cm. til nedløb)
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Compact Cart Notification Top Card -->
-<div id="cart-modal" class="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 z-[110] bg-white rounded-2xl p-4 shadow-2xl border border-outline-variant transform -translate-y-full transition-transform duration-300 hidden flex-col space-y-3">
-  <!-- Close Button -->
-  <button id="close-cart-modal" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 flex items-center justify-center w-7 h-7 rounded-full bg-slate-100 focus:outline-none cursor-pointer">
-    <span class="material-symbols-outlined text-lg">close</span>
-  </button>
-  
-  <!-- Header -->
-  <div class="flex items-center gap-1.5 text-emerald-600 font-bold pb-2 border-b border-outline-variant">
-    <span class="material-symbols-outlined text-lg">check_circle</span>
-    <span class="text-xs">Tilføjet til kurv</span>
-  </div>
-  
-  <!-- Added Product Specifications -->
-  <div class="flex gap-3 bg-surface-container p-2 rounded-xl">
-    <div class="w-12 h-12 bg-white rounded-lg overflow-hidden border border-outline-variant flex-shrink-0">
-      <img id="modal-product-img" src="" alt="Valgt produkt" class="w-full h-full object-cover" width="120" height="120"/>
-    </div>
-    <div class="space-y-0.5 min-w-0">
-      <h4 class="font-bold text-xs text-primary truncate">Klar gennemsigtig voksdug</h4>
-      <p id="modal-product-specs" class="text-[10px] text-on-surface-variant">Firkantet · 140 × 200 cm</p>
-      <p id="modal-product-price" class="text-xs font-bold text-primary">118,00 kr.</p>
-    </div>
-  </div>
-
-  <!-- Free shipping progression inside modal -->
-  <div class="bg-slate-50 p-3 rounded-xl space-y-1.5">
-    <div class="flex justify-between text-[10px] text-primary font-bold">
-      <span id="modal-shipping-status-text">Køb for 481,00 kr. mere for at få fri fragt</span>
-      <span id="modal-shipping-percent-text">20%</span>
-    </div>
-    <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-      <div id="modal-shipping-progress-bar" class="h-full bg-emerald-600 transition-all duration-300" style="width: 20%"></div>
-    </div>
-  </div>
-
-  <!-- CTA Actions inside modal -->
-  <div class="grid grid-cols-2 gap-2 pt-1">
-    <button id="btn-modal-continue" class="border border-outline-variant text-primary font-bold h-10 rounded-full text-xs hover:bg-slate-50 active:scale-95 transition-transform cursor-pointer focus:outline-none">
-      Fortsæt
-    </button>
-    <a href="{{ routes.cart_url }}" id="btn-modal-checkout" class="bg-[#FFD814] text-primary font-bold h-10 rounded-full text-xs shadow-sm active:scale-95 transition-transform flex items-center justify-center no-underline">
-      Gå til kurv
-    </a>
   </div>
 </div>
 
 <!-- Toast notification popup -->
-<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[calc(1280px-2rem)] z-50 bg-primary border border-slate-800 text-white text-sm px-4 py-3 rounded-full shadow-xl flex items-center justify-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[calc(1280px-2rem)] z-50 bg-[#0e1a28] border border-slate-800 text-white text-sm px-4 py-3 rounded-full shadow-xl flex items-center justify-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
   <span class="material-symbols-outlined text-emerald-400">check_circle</span>
   <span id="toast-text" class="truncate">Lagt i kurven</span>
 </div>
 
-<!-- Shopify Variant Data JSON -->
+<!-- Variant Data JSON -->
 <script id="variant-data" type="application/json">
   [
     {%- for variant in product.variants -%}
@@ -247,8 +73,7 @@
         "id": {{ variant.id }},
         "title": {{ variant.title | json }},
         "price": {{ variant.price | divided_by: 100.0 }},
-        "available": {{ variant.available }},
-        "options": {{ variant.options | json }}
+        "available": {{ variant.available }}
       }{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
   ]
@@ -256,686 +81,195 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // Parse variants and attach width
+    // 1. Config variables from Liquid settings
+    const minLength = {{ min_length | json }};
+    const stepSize = {{ step_size | json }};
+    
+    // Parse variants
     let variants = [];
     try {
       variants = JSON.parse(document.getElementById('variant-data').textContent);
-      variants.forEach(v => {
-        const match = v.title.match(/(\d+)/);
-        v.width = match ? parseInt(match[1]) : 140;
-      });
     } catch (e) {
-      console.error("Failed to parse variant data", e);
+      console.error("Failed to parse variants", e);
     }
 
-    const isMetervare = {% if product.metafields.custom.metervare.value == true or product.metafields.custom.metervare == true %}true{% else %}false{% endif %};
-    const minWidthLimit = {{ section.settings.min_width | default: 80 }};
-    const maxWidthLimit = {{ max_width | json }};
-
-    // Find default width: prefer 140 if it is within limits, otherwise clamp
-    let defaultWidth = 140;
-    if (defaultWidth > maxWidthLimit) {
-      defaultWidth = maxWidthLimit;
-    }
-    if (defaultWidth < minWidthLimit) {
-      defaultWidth = minWidthLimit;
+    // Helper: Parse width from variant title (e.g. "140 cm bred" -> 140)
+    function getVariantWidth(variantTitle) {
+      const match = variantTitle.match(/(\d+)/);
+      return match ? parseInt(match[1]) : 140;
     }
 
-    const surchargeRectangularId = {{ surcharge_rectangular_id | default: 'null' }};
-    const surchargeRectangularValue = {{ surcharge_rectangular_price | default: 0.00 }};
-
-    const surchargeRoundId = {{ surcharge_round_id | default: 'null' }};
-    const surchargeRoundValue = {{ surcharge_round_price | default: 0.00 }};
-
-    const surchargeOvalId = {{ surcharge_oval_id | default: 'null' }};
-    const surchargeOvalValue = {{ surcharge_oval_price | default: 0.00 }};
-
-    const surchargeWidthId = {{ surcharge_width_id | default: 'null' }};
-    const surchargeWidthValue = {{ surcharge_width_price | default: 0.00 }};
-
-    let freeShippingThreshold = window.freeShippingThreshold || 590.00;
-    const stepSizeValue = {{ section.settings.step_size | default: 10 }};
-    const minLengthValue = {{ section.settings.min_length | default: 50 }};
-    const widthStepSizeValue = {{ section.settings.width_step | default: 10 }};
-
-    // State Management
-    let appState = {
-      shape: "firkantet", 
-      width: defaultWidth,
-      length: Math.max(200, minLengthValue), 
-      quantity: 1,
-      cartCount: {{ cart.item_count }},
-      cartTotal: {{ cart.total_price | divided_by: 100.0 }},
-      basePricePerMeter: {{ current_variant.price | divided_by: 100.0 }},
-      currentClothPrice: 0.00
+    // State
+    let state = {
+      length: 200,
+      quantity: 1
     };
 
-    // Cache elements safely
-    const shapeButtons = document.querySelectorAll(".shape-btn");
-    const widthInput = document.getElementById("input-width");
-    const widthMinusBtn = document.getElementById("btn-width-minus");
-    const widthPlusBtn = document.getElementById("btn-width-plus");
-    const widthStepTitle = document.getElementById("width-step-title");
-    const lengthInput = document.getElementById("input-length");
-    const lengthMinusBtn = document.getElementById("btn-length-minus");
-    const lengthPlusBtn = document.getElementById("btn-length-plus");
-    const lengthContainer = document.getElementById("length-container");
-    const lengthStepTitle = document.getElementById("length-step-title");
-    const roundInfoText = document.getElementById("round-info-text");
-    const summaryMalText = document.getElementById("summary-mål");
-    const summaryPrisText = document.getElementById("summary-pris");
+    // DOM cache
+    const displayLength = document.getElementById("display-length");
+    const btnLengthMinus = document.getElementById("btn-length-minus");
+    const btnLengthPlus = document.getElementById("btn-length-plus");
+
+    const displayQty = document.getElementById("display-qty");
+    const btnQtyMinus = document.getElementById("btn-qty-minus");
+    const btnQtyPlus = document.getElementById("btn-qty-plus");
+
     const addToCartBtn = document.getElementById("btn-add-to-cart");
-    const cartCounter = document.getElementById("cart-counter");
-    const crossSellButtons = document.querySelectorAll(".btn-cross-sell");
-    const toast = document.getElementById("toast");
-    const toastText = document.getElementById("toast-text");
-    
-    // Quantity Elements
-    const quantityInput = document.getElementById("input-quantity");
-    const quantityMinusBtn = document.getElementById("btn-quantity-minus");
-    const quantityPlusBtn = document.getElementById("btn-quantity-plus");
+    const summaryMal = document.getElementById("summary-mål");
 
-    // Help Modal Elements
-    const helpModal = document.getElementById("help-modal");
-    const closeModal = document.getElementById("close-modal");
-    const infoBtns = document.querySelectorAll(".info-btn");
-
-    // Cart Modal Elements
-    const cartNotificationModal = document.getElementById("cart-modal");
-    const closeCartModalBtn = document.getElementById("close-cart-modal");
-    const modalProductImg = document.getElementById("modal-product-img");
-    const modalProductSpecs = document.getElementById("modal-product-specs");
-    const modalProductPrice = document.getElementById("modal-product-price");
-    const modalProductTitle = document.querySelector("#cart-modal h4");
-    const btnModalContinue = document.getElementById("btn-modal-continue");
-
-    // Gallery Elements
-    const dotButtons = document.querySelectorAll(".dot-btn");
-    const mainProductImg = document.getElementById("main-product-img");
-
-    // Format Price Utility
-    function formatPrice(value) {
-      return value.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
-    }
-
-    // Find Active Variant based on selected width (smallest variant whose width is >= selected width)
-    function getActiveVariant() {
-      if (variants.length === 0) return { id: null, price: appState.basePricePerMeter };
-      let potentialVariants = variants.filter(v => v.width >= appState.width);
-      if (potentialVariants.length > 0) {
-        potentialVariants.sort((a, b) => a.width - b.width);
-        return potentialVariants[0];
+    // Recalculate price display
+    function updateUI() {
+      // Find currently selected variant ID on the page (variant picker sets this)
+      let activeVariantId = null;
+      const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+      if (variantInput) {
+        activeVariantId = parseInt(variantInput.value);
       }
-      // Fallback: sort descending by width to get the largest available variant
-      let sortedAll = [...variants].sort((a, b) => b.width - a.width);
-      return sortedAll[0] || variants[0];
-    }
-
-    // Calculation Engine
-    function recalculate() {
-      const activeVariant = getActiveVariant();
-      appState.basePricePerMeter = activeVariant.price;
-
-      // Dispatch custom event to notify other scripts about active variant update
-      if (activeVariant && activeVariant.id) {
-        document.dispatchEvent(new CustomEvent("variant-changed", {
-          detail: { variantId: activeVariant.id }
-        }));
-      }
-
-      let singlePrice = 0;
-      let shapeSurcharge = 0;
       
-      // Shape surcharge (Firkantet, Rund, Oval)
-      if (appState.shape === "rund") {
-        shapeSurcharge = surchargeRoundValue;
-      } else if (appState.shape === "oval") {
-        shapeSurcharge = surchargeOvalValue;
-      } else if (appState.shape === "firkantet") {
-        shapeSurcharge = surchargeRectangularValue;
-      }
-
-      let widthSurcharge = 0;
-      if (appState.width !== 140) {
-        widthSurcharge = surchargeWidthValue;
-      }
-
-      const surcharge = shapeSurcharge + widthSurcharge;
-      
-      if (appState.shape === "rund") {
-        appState.length = appState.width;
-        singlePrice = (appState.width * appState.basePricePerMeter) + surcharge;
+      const activeVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+      if (activeVariant) {
+        // Calculate price: (price per cm) * length * quantity
+        const totalClothPrice = activeVariant.price * state.length * state.quantity;
         
-        if (lengthContainer) lengthContainer.classList.add("hidden"); 
-        if (widthStepTitle) widthStepTitle.textContent = "Vælg diameter";
-      } else {
-        if (appState.length < minLengthValue) appState.length = minLengthValue;
+        const formattedPrice = totalClothPrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
         
-        singlePrice = (appState.length * appState.basePricePerMeter) + surcharge;
-        
-        if (lengthContainer) lengthContainer.classList.remove("hidden"); 
-        if (lengthInput) {
-          lengthInput.disabled = false;
-          lengthInput.value = appState.length + " cm";
-        }
-        if (lengthMinusBtn) lengthMinusBtn.disabled = false;
-        if (lengthPlusBtn) lengthPlusBtn.disabled = false;
-        if (roundInfoText) roundInfoText.classList.add("hidden");
-        if (lengthStepTitle) lengthStepTitle.textContent = "Vælg længde";
-        if (widthStepTitle) widthStepTitle.textContent = "Vælg bredde";
-      }
-
-      const totalPrice = singlePrice * appState.quantity;
-      appState.currentClothPrice = totalPrice;
-
-      const formatted = formatPrice(totalPrice);
-      if (summaryPrisText) {
-        summaryPrisText.textContent = "Pris: " + formatted;
-      }
-      const priceDisplay = document.getElementById("btn-price-display");
-      if (priceDisplay) {
-        priceDisplay.textContent = formatted;
-      } else if (addToCartBtn) {
-        const prefix = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv – ";
-        addToCartBtn.textContent = prefix + formatted;
-      }
-      
-      // Update dynamic display on top
-      const basePriceDisplay = document.getElementById("base-price-display");
-      if (basePriceDisplay) {
-        const displayPrice = isMetervare ? activeVariant.price * 100 : activeVariant.price;
-        basePriceDisplay.textContent = formatPrice(displayPrice);
-      }
-
-      // Update summary text (the multi-line breakdown)
-      if (summaryMalText) {
-        let variantText = "";
-        if (activeVariant.title && activeVariant.title.trim().toLowerCase() !== "default title") {
-          variantText = ", " + activeVariant.title;
-        } else {
-          variantText = `, (${appState.width}x${appState.length} cm)`;
-        }
-        const productName = "{{ product.title }}" + variantText;
-        
-        let shapeName = "Rektangulær dug";
-        if (appState.shape === "rund") {
-          shapeName = "Rund dug";
-        } else if (appState.shape === "oval") {
-          shapeName = "Oval dug";
+        // Update price display on buy button
+        const priceDisplay = document.getElementById("btn-price-display");
+        if (priceDisplay) {
+          priceDisplay.textContent = formattedPrice;
+        } else if (addToCartBtn) {
+          const prefix = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv – ";
+          addToCartBtn.textContent = prefix + formattedPrice;
         }
 
-        const baseLinePrice = singlePrice - shapeSurcharge - widthSurcharge;
+        // Update the summary section if it exists
+        const summaryPris = document.getElementById("summary-pris");
+        if (summaryPris) {
+          summaryPris.textContent = "Pris: " + formattedPrice;
+        }
 
-        const shapeLine = shapeSurcharge > 0 ? `
-            <div class="flex justify-between gap-2">
-              <span>${shapeName}</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatPrice(shapeSurcharge)}</span>
-            </div>
-        ` : '';
-
-        const widthLine = widthSurcharge > 0 ? `
-            <div class="flex justify-between gap-2">
-              <span>Tilpasset i bredden</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatPrice(widthSurcharge)}</span>
-            </div>
-        ` : '';
-
-        summaryMalText.innerHTML = `
-          <div class="space-y-1 text-xs text-on-surface-variant font-normal leading-normal w-full max-w-sm mt-2 mb-2">
-            <div class="flex justify-between gap-4">
-              <span>${productName}</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatPrice(baseLinePrice)}</span>
-            </div>
-            ${shapeLine}
-            ${widthLine}
-            <div class="flex justify-between border-t border-outline-variant/60 pt-1 mt-1">
-              <span>Pris pr. stk.</span>
-              <span class="flex-shrink-0">${formatPrice(singlePrice)}</span>
-            </div>
-          </div>
-        `;
-      }
-
-      // Set global variable to resolve initial page load race condition
-      window.currentPageProductPrice = totalPrice;
-
-      // Dispatch custom event to notify other scripts about product price update
-      document.dispatchEvent(new CustomEvent("product-price-updated", {
-        detail: { price: totalPrice }
-      }));
-    }
-
-    // Live Free Shipping Status Bar Calculator
-    function updateFreeShippingWidget() {
-      const shippingProgressBar = document.getElementById("shipping-progress-bar");
-      const shippingStatusText = document.getElementById("shipping-status-text");
-      const shippingPercentText = document.getElementById("shipping-percent-text");
-      const potentialBar = document.getElementById("shipping-potential-bar");
-      
-      if (!shippingProgressBar || !shippingStatusText || !shippingPercentText) return;
-      
-      const total = appState.cartTotal;
-      const progressPercent = Math.min((total / freeShippingThreshold) * 100, 100);
-      
-      shippingProgressBar.style.width = progressPercent + "%";
-      shippingPercentText.textContent = Math.round(progressPercent) + "%";
-      
-      if (potentialBar) {
-        const potentialTotal = total + appState.currentClothPrice;
-        const potentialPercent = Math.min((potentialTotal / freeShippingThreshold) * 100, 100);
-        potentialBar.style.width = Math.max(0, potentialPercent - progressPercent) + "%";
-      }
-      
-      if (total < freeShippingThreshold) {
-        const missing = freeShippingThreshold - total;
-        shippingStatusText.textContent = "Køb for " + formatPrice(missing) + " mere for at få fri fragt";
-        shippingProgressBar.className = "h-full bg-emerald-600 transition-all duration-300";
-      } else {
-        shippingStatusText.textContent = "Du har opnået fri fragt!";
-        shippingProgressBar.className = "h-full bg-emerald-500 transition-all duration-300";
+        // Update summary dimensions text (e.g. 140 × 200 cm)
+        if (summaryMal) {
+          const width = getVariantWidth(activeVariant.title);
+          summaryMal.textContent = `${width} × ${state.length} cm`;
+        }
       }
     }
 
-    function updateModalFreeShippingWidget() {
-      const modalProgressBar = document.getElementById("modal-shipping-progress-bar");
-      const modalStatusText = document.getElementById("modal-shipping-status-text");
-      const modalPercentText = document.getElementById("modal-shipping-percent-text");
-      
-      if (!modalProgressBar || !modalStatusText || !modalPercentText) return;
-      
-      const total = appState.cartTotal;
-      const progressPercent = Math.min((total / freeShippingThreshold) * 100, 100);
-      
-      modalProgressBar.style.width = progressPercent + "%";
-      modalPercentText.textContent = Math.round(progressPercent) + "%";
-      
-      if (total < freeShippingThreshold) {
-        const missing = freeShippingThreshold - total;
-        modalStatusText.textContent = "Køb for " + formatPrice(missing) + " mere for at få fri fragt";
-        modalProgressBar.className = "h-full bg-emerald-600 transition-all duration-300";
-      } else {
-        modalStatusText.textContent = "Du har opnået fri fragt!";
-        modalProgressBar.className = "h-full bg-emerald-500 transition-all duration-300";
-      }
-    }
-
-    // Countdown Timer to 12.00 noon
-    function startCountdown() {
-      const countdownTimer = document.getElementById("countdown-timer");
-      if (!countdownTimer) return;
-      
-      function updateTimer() {
-        const now = new Date();
-        const target = new Date();
-        target.setHours(12, 0, 0, 0);
-        
-        if (now >= target) {
-          target.setDate(target.getDate() + 1);
-        }
-        
-        const diff = target - now;
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        
-        countdownTimer.textContent = 
-          String(hours).padStart(2, '0') + ":" + 
-          String(minutes).padStart(2, '0') + ":" + 
-          String(seconds).padStart(2, '0');
-      }
-      
-      updateTimer();
-      setInterval(updateTimer, 1000);
-    }
-
-    // Show toast notification
-    let toastTimeout;
-    function showToast(message) {
-      if (!toast || !toastText) return;
-      toastText.textContent = message;
-      toast.classList.remove("translate-y-20", "opacity-0");
-      toast.classList.add("translate-y-0", "opacity-100");
-
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toast.classList.remove("translate-y-0", "opacity-100");
-        toast.classList.add("translate-y-20", "opacity-0");
-      }, 2500);
-    }
-
-    // Show cart modal confirmation
-    function openCartModal(imgSrc, title, specs, priceText) {
-      if (!cartNotificationModal) return;
-      if (modalProductImg) modalProductImg.src = imgSrc;
-      if (modalProductTitle) modalProductTitle.textContent = title;
-      if (modalProductSpecs) modalProductSpecs.textContent = specs;
-      if (modalProductPrice) modalProductPrice.textContent = priceText;
-      
-      updateModalFreeShippingWidget();
-
-      cartNotificationModal.classList.remove("hidden");
-      cartNotificationModal.classList.add("flex");
-      
-      setTimeout(() => {
-        cartNotificationModal.classList.remove("-translate-y-full");
-        cartNotificationModal.classList.add("translate-y-0");
-      }, 10);
-
-      clearTimeout(window.cartModalTimeout);
-      window.cartModalTimeout = setTimeout(closeCartModal, 6000);
-    }
-
-    function closeCartModal() {
-      if (!cartNotificationModal) return;
-      cartNotificationModal.classList.add("-translate-y-full");
-      cartNotificationModal.classList.remove("translate-y-0");
-      
-      setTimeout(() => {
-        cartNotificationModal.classList.add("hidden");
-        cartNotificationModal.classList.remove("flex");
-      }, 300);
-    }
-
-    // Help Modal Controller
-    if (infoBtns && helpModal) {
-      infoBtns.forEach(btn => {
-        btn.addEventListener("click", () => {
-          helpModal.classList.remove("hidden");
-          helpModal.classList.add("flex");
-        });
-      });
-    }
-
-    if (closeModal && helpModal) {
-      closeModal.addEventListener("click", () => {
-        helpModal.classList.add("hidden");
-        helpModal.classList.remove("flex");
-      });
-    }
-
-    if (helpModal) {
-      helpModal.addEventListener("click", (e) => {
-        if (e.target === helpModal) {
-          helpModal.classList.add("hidden");
-          helpModal.classList.remove("flex");
+    // Steppers listeners
+    if (btnLengthMinus && displayLength) {
+      btnLengthMinus.addEventListener("click", () => {
+        if (state.length > minLength) {
+          state.length -= stepSize;
+          displayLength.textContent = state.length + " cm";
+          updateUI();
         }
       });
     }
 
-    if (closeCartModalBtn) {
-      closeCartModalBtn.addEventListener("click", closeCartModal);
-    }
-    if (btnModalContinue) {
-      btnModalContinue.addEventListener("click", closeCartModal);
-    }
-
-    // Gallery Dots Interaction (handled in product-media.liquid)
-    // The main gallery interactions are managed by product-media.liquid to work across templates.
-
-    // Shape Selector Buttons
-    if (shapeButtons) {
-      shapeButtons.forEach(btn => {
-        btn.addEventListener("click", function() {
-          shapeButtons.forEach(b => {
-            b.classList.remove("border-2", "border-primary", "text-primary");
-            b.classList.add("border", "border-outline-variant", "text-on-surface-variant");
-            const span = b.querySelector("span:last-child");
-            if (span) span.classList.remove("font-bold");
-          });
-          
-          this.classList.remove("border", "border-outline-variant", "text-on-surface-variant");
-          this.classList.add("border-2", "border-primary", "text-primary");
-          const activeSpan = this.querySelector("span:last-child");
-          if (activeSpan) activeSpan.classList.add("font-bold");
-
-          appState.shape = this.getAttribute("data-shape");
-          recalculate();
-        });
+    if (btnLengthPlus && displayLength) {
+      btnLengthPlus.addEventListener("click", () => {
+        state.length += stepSize;
+        displayLength.textContent = state.length + " cm";
+        updateUI();
       });
     }
 
-    // Width Stepper Interactions
-    if (widthMinusBtn && widthInput) {
-      widthMinusBtn.addEventListener("click", () => {
-        if (appState.width > minWidthLimit) {
-          appState.width = Math.max(minWidthLimit, appState.width - widthStepSizeValue);
-          widthInput.value = appState.width + " cm";
-          recalculate();
+    if (btnQtyMinus && displayQty) {
+      btnQtyMinus.addEventListener("click", () => {
+        if (state.quantity > 1) {
+          state.quantity -= 1;
+          displayQty.textContent = state.quantity;
+          updateUI();
         }
       });
     }
 
-    if (widthPlusBtn && widthInput) {
-      widthPlusBtn.addEventListener("click", () => {
-        if (appState.width < maxWidthLimit) {
-          appState.width = Math.min(maxWidthLimit, appState.width + widthStepSizeValue);
-          widthInput.value = appState.width + " cm";
-          recalculate();
-        }
+    if (btnQtyPlus && displayQty) {
+      btnQtyPlus.addEventListener("click", () => {
+        state.quantity += 1;
+        displayQty.textContent = state.quantity;
+        updateUI();
       });
     }
 
-    // Length Stepper Interactions
-    if (lengthMinusBtn && lengthInput) {
-      lengthMinusBtn.addEventListener("click", () => {
-        if (appState.length > minLengthValue) {
-          appState.length = Math.max(minLengthValue, appState.length - stepSizeValue);
-          lengthInput.value = appState.length + " cm";
-          recalculate();
-        }
-      });
-    }
-
-    if (lengthPlusBtn && lengthInput) {
-      lengthPlusBtn.addEventListener("click", () => {
-        appState.length += stepSizeValue;
-        lengthInput.value = appState.length + " cm";
-        recalculate();
-      });
-    }
-
-    // Quantity Stepper Interactions
-    if (quantityInput) {
-      // Auto-select text on focus for easier editing
-      quantityInput.addEventListener("focus", (e) => {
-        e.target.select();
-      });
-
-      // Handle real-time typing
-      quantityInput.addEventListener("input", (e) => {
-        // Strip out non-digit characters
-        let sanitized = e.target.value.replace(/\D/g, "");
-        e.target.value = sanitized;
-
-        const parsed = parseInt(sanitized);
-        if (!isNaN(parsed) && parsed > 0) {
-          appState.quantity = parsed;
-          recalculate();
-        }
-      });
-
-      // Handle leaving the field (blur)
-      quantityInput.addEventListener("blur", (e) => {
-        const parsed = parseInt(e.target.value);
-        if (isNaN(parsed) || parsed < 1) {
-          // Revert to last valid quantity
-          e.target.value = appState.quantity;
-        } else {
-          appState.quantity = parsed;
-          e.target.value = appState.quantity;
-        }
-        recalculate();
-      });
-
-      // Handle Enter key to confirm value
-      quantityInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          quantityInput.blur();
-        }
-      });
-    }
-
-    if (quantityMinusBtn && quantityInput) {
-      quantityMinusBtn.addEventListener("click", () => {
-        if (appState.quantity > 1) {
-          appState.quantity -= 1;
-          quantityInput.value = appState.quantity;
-          recalculate();
-        }
-      });
-    }
-
-    if (quantityPlusBtn && quantityInput) {
-      quantityPlusBtn.addEventListener("click", () => {
-        appState.quantity += 1;
-        quantityInput.value = appState.quantity;
-        recalculate();
-      });
-    }
-
-    // Add Tablecloth to Shopify Cart
+    // Add to cart click handler
     if (addToCartBtn) {
-      addToCartBtn.addEventListener("click", () => {
-        // Only run customizer AJAX add-to-cart if customizer is present
-        if (!document.getElementById("shape-selector")) return;
+      addToCartBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
         addToCartBtn.disabled = true;
         addToCartBtn.classList.add("opacity-50");
 
-        const activeVariant = getActiveVariant();
-        if (!activeVariant.id) {
-          showToast("Fejl: Kunne ikke finde det valgte variant ID.");
+        // Get currently selected variant
+        let activeVariantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) {
+          activeVariantId = parseInt(variantInput.value);
+        }
+        
+        const activeVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+        if (!activeVariant) {
+          showToast("Fejl: Kunne ikke finde varianten.");
           addToCartBtn.disabled = false;
           addToCartBtn.classList.remove("opacity-50");
           return;
         }
 
-        let shapeSurcharge = 0;
-        if (appState.shape === "rund") {
-          shapeSurcharge = surchargeRoundValue;
-        } else if (appState.shape === "oval") {
-          shapeSurcharge = surchargeOvalValue;
-        } else if (appState.shape === "firkantet") {
-          shapeSurcharge = surchargeRectangularValue;
-        }
-        const shapeSurchargeCents = Math.round(shapeSurcharge * 100);
+        const width = getVariantWidth(activeVariant.title);
+        const unitPriceCents = Math.round(activeVariant.price * state.length * 100);
 
-        let widthSurcharge = 0;
-        if (appState.width !== 140) {
-          widthSurcharge = surchargeWidthValue;
-        }
-        const widthSurchargeCents = Math.round(widthSurcharge * 100);
-
-        const totalSinglePriceCents = Math.round((appState.currentClothPrice / appState.quantity) * 100);
-        const adjustedBasePriceCents = totalSinglePriceCents - shapeSurchargeCents - widthSurchargeCents;
-
-        let items = [];
-
-        // Add parent product to cart
-        items.push({
+        const itemToAdd = {
           id: activeVariant.id,
-          quantity: appState.quantity,
+          quantity: state.quantity,
           properties: {
-            "Form": appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1),
-            "Mål": appState.shape === 'rund' ? `Ø ${appState.width} cm` : `${appState.width} × ${appState.length} cm`,
-            "Antal dug(e)": appState.quantity,
-            "_length": appState.length,
-            "_width": appState.width,
-            "_shape": appState.shape,
-            "_unit_price": totalSinglePriceCents.toString(),
-            "_base_price": adjustedBasePriceCents.toString(),
-            "_shape_surcharge": shapeSurchargeCents.toString(),
-            "_width_surcharge": widthSurchargeCents.toString()
+            "_length": state.length.toString(),
+            "_width": width.toString(),
+            "_shape": "firkantet",
+            "_unit_price": unitPriceCents.toString()
           }
-        });
+        };
 
-        // Optimistic update of cart count, total and counters
-        const quantityAdded = appState.quantity;
-        const priceAdded = appState.currentClothPrice;
-
-        const originalCartCount = appState.cartCount;
-        const originalCartTotal = appState.cartTotal;
-
-        appState.cartCount += quantityAdded;
-        appState.cartTotal += priceAdded;
-
+        // Optimistic cart count increment
         const counters = document.querySelectorAll('#cart-counter');
-        const originalCounts = [];
         counters.forEach(counter => {
-          originalCounts.push({ counter, text: counter.innerText, hasScale0: counter.classList.contains("scale-0") });
-          counter.innerText = appState.cartCount;
-          if (appState.cartCount > 0) {
-            counter.classList.remove("scale-0");
-            counter.classList.add("scale-100");
-          }
+          const currentCount = parseInt(counter.innerText) || 0;
+          counter.innerText = currentCount + state.quantity;
+          counter.classList.remove("scale-0");
+          counter.classList.add("scale-100");
         });
-        updateFreeShippingWidget();
 
         fetch('/cart/add.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: items })
+          body: JSON.stringify({ items: [itemToAdd] })
         })
         .then(response => {
-          if (!response.ok) throw new Error("Adding to cart failed");
+          if (!response.ok) throw new Error("Add to cart failed");
           return response.json();
         })
         .then(data => {
           showToast("Lagt i kurven!");
-          return new Promise(resolve => {
-            setTimeout(() => {
-              fetch('/cart.js')
-                .then(res => {
-                  if (!res.ok) throw new Error("Cart fetch failed");
-                  return res.json();
-                })
-                .then(resolve)
-                .catch(err => {
-                  console.error(err);
-                  resolve(null);
+          // Wait for Shopify session to update and fetch cart
+          setTimeout(() => {
+            fetch('/cart.js')
+              .then(res => res.json())
+              .then(cartData => {
+                // Update cart count
+                counters.forEach(counter => {
+                  counter.innerText = cartData.item_count;
                 });
-            }, 350);
-          });
-        })
-        .then(cartData => {
-          if (!cartData) return;
-          appState.cartCount = cartData.item_count;
-          appState.cartTotal = cartData.total_price / 100.0;
-          
-          if (cartCounter) cartCounter.textContent = appState.cartCount;
-          document.dispatchEvent(new CustomEvent("cart-updated-total", { detail: { cartTotal: appState.cartTotal } }));
-          updateFreeShippingWidget();
-
-          // Open cart modal dialog
-          const textMål = appState.shape === "rund" ? "Ø " + appState.width + " cm" : appState.width + " × " + appState.length + " cm";
-          const formFormatted = appState.shape.charAt(0).toUpperCase() + appState.shape.slice(1);
-          
-          const modalImgSrc = mainProductImg ? mainProductImg.src : "";
-          openCartModal(
-            modalImgSrc, 
-            "{{ product.title }}",
-            `${formFormatted} · ${textMål} (${appState.quantity} stk)`,
-            formatPrice(appState.currentClothPrice)
-          );
+                // Dispatch cart update event
+                document.dispatchEvent(new CustomEvent("cart-updated-total", { 
+                  detail: { cartTotal: cartData.total_price / 100.0 } 
+                }));
+              });
+          }, 350);
         })
         .catch(err => {
           console.error(err);
-          // Revert optimistic update
-          appState.cartCount = originalCartCount;
-          appState.cartTotal = originalCartTotal;
-          originalCounts.forEach(item => {
-            item.counter.innerText = item.text;
-            if (item.hasScale0) {
-              item.counter.classList.add("scale-0");
-              item.counter.classList.remove("scale-100");
-            } else {
-              item.counter.classList.remove("scale-0");
-              item.counter.classList.add("scale-100");
-            }
-          });
-          updateFreeShippingWidget();
-          showToast("Der opstod en fejl. Prøv igen.");
+          showToast("Fejl ved tilføjelse til kurv.");
         })
         .finally(() => {
           addToCartBtn.disabled = false;
@@ -944,140 +278,32 @@
       });
     }
 
-    // Cross-sell Buttons Interaction (Direct AJAX Add to Cart)
-    if (crossSellButtons) {
-      crossSellButtons.forEach(btn => {
-        btn.addEventListener("click", function() {
-          const id = this.getAttribute("data-id");
-          const navn = this.getAttribute("data-navn");
-          const pris = parseFloat(this.getAttribute("data-pris"));
-          
-          if (id.includes("-mock")) {
-            appState.cartCount += 1;
-            appState.cartTotal += pris;
-            if (cartCounter) cartCounter.textContent = appState.cartCount;
-            document.dispatchEvent(new CustomEvent("cart-updated-total", { detail: { cartTotal: appState.cartTotal } }));
-            updateFreeShippingWidget();
-            showToast(navn + " er tilføjet!");
-            
-            this.textContent = "TILFØJET";
-            this.classList.replace("bg-primary", "bg-emerald-600");
-            setTimeout(() => {
-              this.textContent = "TILFØJ";
-              this.classList.replace("bg-emerald-600", "bg-primary");
-            }, 2000);
-            return;
-          }
+    // Helper: Toast alert
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      const toastText = document.getElementById("toast-text");
+      if (!toast || !toastText) return;
 
-          this.disabled = true;
-          this.classList.add("opacity-50");
+      toastText.textContent = message;
+      toast.classList.remove("translate-y-20", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
 
-          // Optimistic update of cart count, total and counters
-          const originalCartCount = appState.cartCount;
-          const originalCartTotal = appState.cartTotal;
-
-          appState.cartCount += 1;
-          appState.cartTotal += pris;
-
-          const counters = document.querySelectorAll('#cart-counter');
-          const originalCounts = [];
-          counters.forEach(counter => {
-            originalCounts.push({ counter, text: counter.innerText, hasScale0: counter.classList.contains("scale-0") });
-            counter.innerText = appState.cartCount;
-            if (appState.cartCount > 0) {
-              counter.classList.remove("scale-0");
-              counter.classList.add("scale-100");
-            }
-          });
-          updateFreeShippingWidget();
-
-          fetch('/cart/add.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              items: [{
-                id: parseInt(id),
-                quantity: 1
-              }]
-            })
-          })
-          .then(response => {
-            if (!response.ok) throw new Error("Add failed");
-            return response.json();
-          })
-          .then(data => {
-            showToast(navn + " er tilføjet!");
-            return new Promise(resolve => {
-              setTimeout(() => {
-                fetch('/cart.js')
-                  .then(res => {
-                    if (!res.ok) throw new Error("Cart fetch failed");
-                    return res.json();
-                  })
-                  .then(resolve)
-                  .catch(err => {
-                    console.error(err);
-                    resolve(null);
-                  });
-              }, 350);
-            });
-          })
-          .then(cartData => {
-            if (!cartData) return;
-            appState.cartCount = cartData.item_count;
-            appState.cartTotal = cartData.total_price / 100.0;
-            if (cartCounter) cartCounter.textContent = appState.cartCount;
-            document.dispatchEvent(new CustomEvent("cart-updated-total", { detail: { cartTotal: appState.cartTotal } }));
-            updateFreeShippingWidget();
-            
-            this.textContent = "TILFØJET";
-            this.classList.replace("bg-primary", "bg-emerald-600");
-          })
-          .catch(err => {
-            console.error(err);
-            // Revert optimistic update
-            appState.cartCount = originalCartCount;
-            appState.cartTotal = originalCartTotal;
-            originalCounts.forEach(item => {
-              item.counter.innerText = item.text;
-              if (item.hasScale0) {
-                item.counter.classList.add("scale-0");
-                item.counter.classList.remove("scale-100");
-              } else {
-                item.counter.classList.remove("scale-0");
-                item.counter.classList.add("scale-100");
-              }
-            });
-            updateFreeShippingWidget();
-            showToast("Kunne ikke tilføje til kurv.");
-          })
-          .finally(() => {
-            this.disabled = false;
-            this.classList.remove("opacity-50");
-            setTimeout(() => {
-              this.textContent = "TILFØJ";
-              this.classList.replace("bg-emerald-600", "bg-primary");
-            }, 2000);
-          });
-        });
-      });
+      clearTimeout(window.customizerToastTimeout);
+      window.customizerToastTimeout = setTimeout(() => {
+        toast.classList.remove("translate-y-0", "opacity-100");
+        toast.classList.add("translate-y-20", "opacity-0");
+      }, 2500);
     }
 
-    // Listen for threshold updates
-    document.addEventListener("shipping-threshold-updated", (e) => {
-      if (e.detail && typeof e.detail.threshold === "number") {
-        freeShippingThreshold = e.detail.threshold;
-        recalculate();
-        updateFreeShippingWidget();
+    // Listen for variant selections changes on page to recalculate
+    document.addEventListener("change", (e) => {
+      if (e.target && (e.target.name === "id" || e.target.classList.contains("single-option-selector"))) {
+        setTimeout(updateUI, 50);
       }
     });
 
-    // Initializations
-    if (widthInput) widthInput.value = appState.width + " cm";
-    if (lengthInput) lengthInput.value = appState.length + " cm";
-    recalculate();
-    updateFreeShippingWidget();
-    startCountdown();
+    // Initial load
+    updateUI();
   });
 </script>
 
@@ -1085,30 +311,6 @@
 {
   "name": "Product Customizer",
   "settings": [
-    {
-      "type": "product",
-      "id": "surcharge_product_rectangular",
-      "label": "Firkantet tilpasning tillægsprodukt",
-      "info": "Vælg produktet, der opkræver tillæg for firkantet dug."
-    },
-    {
-      "type": "product",
-      "id": "surcharge_product_round",
-      "label": "Rund tilpasning tillægsprodukt",
-      "info": "Vælg produktet, der opkræver tillæg for rund dug."
-    },
-    {
-      "type": "product",
-      "id": "surcharge_product_oval",
-      "label": "Oval tilpasning tillægsprodukt",
-      "info": "Vælg produktet, der opkræver tillæg for oval dug."
-    },
-    {
-      "type": "product",
-      "id": "surcharge_product_width",
-      "label": "Bredde tilpasning tillægsprodukt",
-      "info": "Vælg produktet, der opkræver tillæg for tilpasning af bredde (når bredden ikke er 140 cm)."
-    },
     {
       "type": "number",
       "id": "step_size",
@@ -1120,18 +322,6 @@
       "id": "min_length",
       "label": "Minimum længde (cm)",
       "default": 50
-    },
-    {
-      "type": "number",
-      "id": "min_width",
-      "label": "Minimum bredde (cm)",
-      "default": 80
-    },
-    {
-      "type": "number",
-      "id": "width_step",
-      "label": "Bredde/Diameter trin (cm)",
-      "default": 10
     }
   ],
   "presets": [
