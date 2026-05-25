@@ -1,0 +1,22 @@
+query {
+  products(first: 20) {
+    edges {
+      node {
+        id
+        title
+        handle
+        status
+        variants(first: 10) {
+          edges {
+            node {
+              id
+              title
+              sku
+              inventoryQuantity
+            }
+          }
+        }
+      }
+    }
+  }
+}

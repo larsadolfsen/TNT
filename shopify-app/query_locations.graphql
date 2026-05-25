@@ -1,0 +1,11 @@
+query {
+  locations(first: 10) {
+    edges {
+      node {
+        id
+        name
+        isActive
+      }
+    }
+  }
+}

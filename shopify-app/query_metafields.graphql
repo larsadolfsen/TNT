@@ -1,0 +1,10 @@
+query {
+  product(id: "gid://shopify/Product/10672593142093") {
+    title
+    metervare: metafield(namespace: "custom", key: "metervare") {
+      namespace
+      key
+      value
+    }
+  }
+}

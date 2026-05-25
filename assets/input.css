@@ -2,6 +2,9 @@
 
 @theme {
   --color-primary: var(--color-primary);
+  --color-background: var(--color-background);
+  --color-background-dark: var(--color-background-dark);
+  --color-background-shade: var(--color-background-shade);
   --color-secondary: #8a5100;
   --color-secondary-container: var(--color-primary-brand);
   --color-brand-yellow: var(--color-primary-brand);

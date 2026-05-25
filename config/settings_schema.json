@@ -77,8 +77,20 @@
       {
         "type": "color",
         "id": "background_color",
-        "default": "#FFFFFF",
-        "label": "t:labels.background"
+        "default": "#ffffff",
+        "label": "Background light color"
+      },
+      {
+        "type": "color",
+        "id": "background_dark_color",
+        "default": "#0e1a28",
+        "label": "Background dark color"
+      },
+      {
+        "type": "color",
+        "id": "background_shade_color",
+        "default": "#f9f9f9",
+        "label": "Background shade color"
       },
       {
         "type": "color",

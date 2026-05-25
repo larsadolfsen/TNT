@@ -1,0 +1,18 @@
+query {
+  product(id: "gid://shopify/Product/10674718015821") {
+    title
+    status
+    resourcePublications(first: 10) {
+      edges {
+        node {
+          isPublished
+          publishDate
+          publication {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
