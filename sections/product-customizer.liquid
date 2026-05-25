@@ -236,7 +236,6 @@
         const refPrice = pricingVariant ? pricingVariant.price : customizedVariant.price;
         const unitPriceCents = Math.round(refPrice * state.length * 100);
 
-        const metervareIdNumeric = metervareVariantId ? parseInt(metervareVariantId.split("/").pop(), 10) : null;
         let titlePrefix = productTitle;
         if (pricingVariant && pricingVariant.title && pricingVariant.title.toLowerCase() !== "default title") {
           titlePrefix = `${productTitle}, ${pricingVariant.title}`;
@@ -244,7 +243,7 @@
         const customizedTitle = `${titlePrefix} - ${width} x ${state.length} cm`;
 
         const itemToAdd = {
-          id: metervareIdNumeric || customizedVariant.id,
+          id: customizedVariant.id,
           quantity: state.quantity,
           properties: {
             "_length": state.length.toString(),
