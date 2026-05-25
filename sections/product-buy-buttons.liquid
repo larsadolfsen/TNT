@@ -5,11 +5,32 @@
 {% endcomment %}
 
 {%- assign text_before_price = section.settings.text_before_price | default: "Læg i kurv – " -%}
+{%- liquid
+  assign base_variant = nil
+  for variant in product.variants
+    unless variant.title contains 'Tilpasset' or variant.title contains 'tilpasset'
+      assign base_variant = variant
+      break
+    endunless
+  endfor
+  if base_variant == nil
+    assign base_variant = product.selected_or_first_available_variant
+  endif
+
+  assign width = 140
+  if base_variant.title contains '140'
+    assign width = 140
+  elsif base_variant.title contains '120'
+    assign width = 120
+  elsif base_variant.title contains '100'
+    assign width = 100
+  endif
+-%}
 <section class="w-full bg-white pt-2 pb-6 px-4 my-0">
   <div class="max-w-screen-xl mx-auto flex flex-col gap-4">
     <!-- Left: Selected Specs & Price -->
     <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full">
-      <div id="summary-mål" class="text-xs text-on-surface-variant font-medium">140 × 200 cm</div>
+      <div id="summary-mål" class="text-xs text-on-surface-variant font-medium">{{ base_variant.title }} {{ width }} x 200 cm</div>
     </div>
     
     <!-- Right: Button and Payment Badges -->

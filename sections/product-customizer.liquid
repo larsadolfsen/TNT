@@ -153,10 +153,10 @@
           summaryPris.textContent = "Pris: " + formattedPrice;
         }
 
-        // Update summary dimensions text (e.g. 140 × 200 cm)
+        // Update summary dimensions text (e.g. Klar gennemsigtig voksdug 140 x 200 cm)
         if (summaryMal) {
           const width = getVariantWidth(pricingVariant.title);
-          summaryMal.textContent = `${width} × ${state.length} cm`;
+          summaryMal.textContent = `${pricingVariant.title} ${width} x ${state.length} cm`;
         }
       }
     }
