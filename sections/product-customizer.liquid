@@ -25,13 +25,13 @@
     <div class="flex justify-start">
       <div class="inline-flex items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none">
         <!-- Minus button -->
-        <button type="button" id="btn-length-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-950 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+        <button type="button" id="btn-length-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &mdash;
         </button>
         <!-- Value display -->
         <span id="display-length" class="w-28 text-center font-bold text-slate-900 text-base">200 cm</span>
         <!-- Plus button -->
-        <button type="button" id="btn-length-plus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-950 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+        <button type="button" id="btn-length-plus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &#43;
         </button>
       </div>
@@ -45,7 +45,7 @@
       </div>
       <div class="inline-flex items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none w-max">
         <!-- Minus button -->
-        <button type="button" id="btn-qty-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-950 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+        <button type="button" id="btn-qty-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &mdash;
         </button>
         <!-- Value display -->
@@ -93,9 +93,13 @@
       console.error("Failed to parse variants", e);
     }
 
-    // Helper: Parse width from variant title (e.g. "140 cm bred" -> 140)
+    const productTitle = {{ product.title | json }};
+    // Helper: Parse width from variant title or product title (e.g. "140 cm bred" -> 140)
     function getVariantWidth(variantTitle) {
-      const match = variantTitle.match(/(\d+)/);
+      let match = variantTitle.match(/(\d+)/);
+      if (!match && productTitle) {
+        match = productTitle.match(/(\d+)/);
+      }
       return match ? parseInt(match[1]) : 140;
     }
 
@@ -126,10 +130,11 @@
         activeVariantId = parseInt(variantInput.value);
       }
       
-      const activeVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-      if (activeVariant) {
+      // Find the pricing variant (the one that is not the 'Tilpasset' variant)
+      const pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+      if (pricingVariant) {
         // Calculate price: (price per cm) * length * quantity
-        const totalClothPrice = activeVariant.price * state.length * state.quantity;
+        const totalClothPrice = pricingVariant.price * state.length * state.quantity;
         
         const formattedPrice = totalClothPrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
         
@@ -202,132 +207,27 @@
         addToCartBtn.disabled = true;
         addToCartBtn.classList.add("opacity-50");
 
-        // Get currently selected variant
-        let activeVariantId = null;
-        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-        if (variantInput) {
-          activeVariantId = parseInt(variantInput.value);
-        }
-        
-        const activeVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-        if (!activeVariant) {
+        // Find variant to add to cart (always add the 'Tilpasset' variant)
+        const customizedVariant = variants.find(v => v.title.toLowerCase().includes("tilpasset")) || variants[0];
+        // Find variant to use for pricing/width reference (not containing 'Tilpasset')
+        const pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+
+        if (!customizedVariant) {
           showToast("Fejl: Kunne ikke finde varianten.");
           addToCartBtn.disabled = false;
           addToCartBtn.classList.remove("opacity-50");
           return;
         }
 
-        const width = getVariantWidth(activeVariant.title);
-        const unitPriceCents = Math.round(activeVariant.price * state.length * 100);
+        const width = getVariantWidth(pricingVariant ? pricingVariant.title : customizedVariant.title);
+        const refPrice = pricingVariant ? pricingVariant.price : customizedVariant.price;
+        const unitPriceCents = Math.round(refPrice * state.length * 100);
 
         const itemToAdd = {
-          id: activeVariant.id,
+          id: customizedVariant.id,
           quantity: state.quantity,
           properties: {
             "_length": state.length.toString(),
             "_width": width.toString(),
             "_shape": "firkantet",
             "_unit_price": unitPriceCents.toString()
-          }
-        };
-
-        // Optimistic cart count increment
-        const counters = document.querySelectorAll('#cart-counter');
-        counters.forEach(counter => {
-          const currentCount = parseInt(counter.innerText) || 0;
-          counter.innerText = currentCount + state.quantity;
-          counter.classList.remove("scale-0");
-          counter.classList.add("scale-100");
-        });
-
-        fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: [itemToAdd] })
-        })
-        .then(response => {
-          if (!response.ok) throw new Error("Add to cart failed");
-          return response.json();
-        })
-        .then(data => {
-          showToast("Lagt i kurven!");
-          // Wait for Shopify session to update and fetch cart
-          setTimeout(() => {
-            fetch('/cart.js')
-              .then(res => res.json())
-              .then(cartData => {
-                // Update cart count
-                counters.forEach(counter => {
-                  counter.innerText = cartData.item_count;
-                });
-                // Dispatch cart update event
-                document.dispatchEvent(new CustomEvent("cart-updated-total", { 
-                  detail: { cartTotal: cartData.total_price / 100.0 } 
-                }));
-              });
-          }, 350);
-        })
-        .catch(err => {
-          console.error(err);
-          showToast("Fejl ved tilføjelse til kurv.");
-        })
-        .finally(() => {
-          addToCartBtn.disabled = false;
-          addToCartBtn.classList.remove("opacity-50");
-        });
-      });
-    }
-
-    // Helper: Toast alert
-    function showToast(message) {
-      const toast = document.getElementById("toast");
-      const toastText = document.getElementById("toast-text");
-      if (!toast || !toastText) return;
-
-      toastText.textContent = message;
-      toast.classList.remove("translate-y-20", "opacity-0");
-      toast.classList.add("translate-y-0", "opacity-100");
-
-      clearTimeout(window.customizerToastTimeout);
-      window.customizerToastTimeout = setTimeout(() => {
-        toast.classList.remove("translate-y-0", "opacity-100");
-        toast.classList.add("translate-y-20", "opacity-0");
-      }, 2500);
-    }
-
-    // Listen for variant selections changes on page to recalculate
-    document.addEventListener("change", (e) => {
-      if (e.target && (e.target.name === "id" || e.target.classList.contains("single-option-selector"))) {
-        setTimeout(updateUI, 50);
-      }
-    });
-
-    // Initial load
-    updateUI();
-  });
-</script>
-
-{% schema %}
-{
-  "name": "Product Customizer",
-  "settings": [
-    {
-      "type": "number",
-      "id": "step_size",
-      "label": "Længde trin (cm)",
-      "default": 10
-    },
-    {
-      "type": "number",
-      "id": "min_length",
-      "label": "Minimum længde (cm)",
-      "default": 50
-    }
-  ],
-  "presets": [
-    {
-      "name": "Product Customizer"
-    }
-  ]
-}
-{% endschema %}
