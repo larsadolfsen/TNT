@@ -236,21 +236,26 @@
         const refPrice = pricingVariant ? pricingVariant.price : customizedVariant.price;
         const unitPriceCents = Math.round(refPrice * state.length * 100);
 
+        const metervareIdNumeric = metervareVariantId ? parseInt(metervareVariantId.split("/").pop(), 10) : null;
+        let titlePrefix = productTitle;
+        if (pricingVariant && pricingVariant.title && pricingVariant.title.toLowerCase() !== "default title") {
+          titlePrefix = `${productTitle}, ${pricingVariant.title}`;
+        }
+        const customizedTitle = `${titlePrefix} - ${width} x ${state.length} cm`;
+
         const itemToAdd = {
-          id: customizedVariant.id,
+          id: metervareIdNumeric || customizedVariant.id,
           quantity: state.quantity,
           properties: {
             "_length": state.length.toString(),
             "_width": width.toString(),
             "_shape": "firkantet",
-            "_unit_price": unitPriceCents.toString()
+            "_unit_price": unitPriceCents.toString(),
+            "_metervare_variant_id": "gid://shopify/ProductVariant/" + pricingVariant.id,
+            "_price_per_cm": refPrice.toString(),
+            "_title": customizedTitle
           }
         };
-
-        if (metervareVariantId) {
-          itemToAdd.properties["_metervare_variant_id"] = metervareVariantId;
-          itemToAdd.properties["_price_per_cm"] = refPrice.toString();
-        }
 
         // Optimistic cart count increment
         const counters = document.querySelectorAll('#cart-counter');
