@@ -27,6 +27,9 @@ query Input {
       _price_per_cm: attribute(key: "_price_per_cm") {
         value
       }
+      _title: attribute(key: "_title") {
+        value
+      }
     }
   }
 }
