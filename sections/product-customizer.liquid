@@ -247,10 +247,8 @@
           }
         };
 
-        if (metervareVariantId) {
-          itemToAdd.properties["_metervare_variant_id"] = metervareVariantId;
-          itemToAdd.properties["_price_per_cm"] = refPrice.toString();
-        }
+        itemToAdd.properties["_metervare_variant_id"] = "gid://shopify/ProductVariant/" + pricingVariant.id;
+        itemToAdd.properties["_price_per_cm"] = refPrice.toString();
 
         // Optimistic cart count increment
         const counters = document.querySelectorAll('#cart-counter');
