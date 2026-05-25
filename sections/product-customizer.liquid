@@ -9,15 +9,47 @@
   assign min_length = section.settings.min_length | default: 50
   assign step_size = section.settings.step_size | default: 10
 
-  assign metervare_product = all_products[section.settings.metervare_product] | default: all_products['firkantet-dug'] | default: all_products['metervare']
+  # 1. Try to resolve the configured product from settings and verify it has SKU BTM001
+  assign metervare_product = all_products[section.settings.metervare_product]
   assign metervare_variant = nil
-  for variant in metervare_product.variants
-    if variant.sku == 'BTM001'
-      assign metervare_variant = variant
-      break
-    endif
-  endfor
+  if metervare_product != nil
+    for variant in metervare_product.variants
+      if variant.sku == 'BTM001'
+        assign metervare_variant = variant
+        break
+      endif
+    endfor
+  endif
+
+  # 2. If not configured or doesn't have SKU BTM001, dynamically search collections
   if metervare_variant == nil
+    for prod in collections.all.products
+      for variant in prod.variants
+        if variant.sku == 'BTM001'
+          assign metervare_product = prod
+          assign metervare_variant = variant
+          break
+        endif
+      endfor
+      if metervare_variant != nil
+        break
+      endif
+    endfor
+  endif
+
+  # 3. Last resort fallback to hardcoded handles
+  if metervare_variant == nil
+    assign metervare_product = all_products['firkantet-dug'] | default: all_products['metervare']
+    for variant in metervare_product.variants
+      if variant.sku == 'BTM001'
+        assign metervare_variant = variant
+        break
+      endif
+    endfor
+  endif
+
+  # Fallback to first available variant if still nil
+  if metervare_variant == nil and metervare_product != nil
     assign metervare_variant = metervare_product.selected_or_first_available_variant
   endif
 -%}
