@@ -9,7 +9,7 @@
   assign min_length = section.settings.min_length | default: 50
   assign step_size = section.settings.step_size | default: 10
 
-  assign metervare_product = all_products[section.settings.metervare_product] | default: all_products['metervare']
+  assign metervare_product = all_products[section.settings.metervare_product] | default: all_products['firkantet-dug'] | default: all_products['metervare']
   assign metervare_variant = nil
   for variant in metervare_product.variants
     if variant.sku == 'BTM001'
