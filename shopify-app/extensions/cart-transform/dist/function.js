@@ -1,15 +1,18 @@
-var __defProp = Object.defineProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
+// extensions/cart-transform/node_modules/@shopify/shopify_function/run.ts
+function run_default(userfunction) {
+  try {
+    ShopifyFunction;
+  } catch (e) {
+    throw new Error(
+      "ShopifyFunction is not defined. Please rebuild your function using the latest version of Shopify CLI."
+    );
+  }
+  const input_obj = ShopifyFunction.readInput();
+  const output_obj = userfunction(input_obj);
+  ShopifyFunction.writeOutput(output_obj);
+}
 
-// src/run.js
-var run_exports = {};
-__export(run_exports, {
-  default: () => run_default,
-  run: () => run
-});
+// extensions/cart-transform/src/run.js
 function run(input) {
   const operations = [];
   console.log(`[CartTransform] Started. Total lines in cart: ${input.cart.lines.length}`);
@@ -77,21 +80,11 @@ function run(input) {
     operations
   };
 }
-var run_default = run;
 
-// node_modules/@shopify/shopify_function/run.ts
-function run_default2(userfunction) {
-  try {
-    ShopifyFunction;
-  } catch (e) {
-    throw new Error(
-      "ShopifyFunction is not defined. Please rebuild your function using the latest version of Shopify CLI."
-    );
-  }
-  const input_obj = ShopifyFunction.readInput();
-  const output_obj = userfunction(input_obj);
-  ShopifyFunction.writeOutput(output_obj);
+// <stdin>
+function run2() {
+  return run_default(run);
 }
-
-// node_modules/@shopify/shopify_function/index.ts
-run_default2(run_exports?.default);
+export {
+  run2 as run
+};

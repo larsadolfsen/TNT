@@ -11,9 +11,8 @@ description = "Cart Transform function to expand customized tablecloths into the
 [[extensions.targeting]]
 target = "purchase.cart-transform.run"
 input_query = "src/run.graphql"
-export = "_start"
-module = "./src/run.js"
+export = "run"
 
 [extensions.build]
-command = "node build.js"
-path = "dist/index.wasm"
+command = ""
+path = "dist/function.wasm"
