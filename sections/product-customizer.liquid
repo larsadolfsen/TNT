@@ -231,3 +231,106 @@
             "_width": width.toString(),
             "_shape": "firkantet",
             "_unit_price": unitPriceCents.toString()
+          }
+        };
+
+        // Optimistic cart count increment
+        const counters = document.querySelectorAll('#cart-counter');
+        counters.forEach(counter => {
+          const currentCount = parseInt(counter.innerText) || 0;
+          counter.innerText = currentCount + state.quantity;
+          counter.classList.remove("scale-0");
+          counter.classList.add("scale-100");
+        });
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [itemToAdd] })
+        })
+        .then(response => {
+          if (!response.ok) throw new Error("Add to cart failed");
+          return response.json();
+        })
+        .then(data => {
+          showToast("Lagt i kurven!");
+          // Wait for Shopify session to update and fetch cart
+          setTimeout(() => {
+            fetch('/cart.js')
+              .then(res => res.json())
+              .then(cartData => {
+                // Update cart count
+                counters.forEach(counter => {
+                  counter.innerText = cartData.item_count;
+                });
+                // Dispatch cart update event
+                document.dispatchEvent(new CustomEvent("cart-updated-total", { 
+                  detail: { cartTotal: cartData.total_price / 100.0 } 
+                }));
+              });
+          }, 350);
+        })
+        .catch(err => {
+          console.error(err);
+          showToast("Fejl ved tilføjelse til kurv.");
+        })
+        .finally(() => {
+          addToCartBtn.disabled = false;
+          addToCartBtn.classList.remove("opacity-50");
+        });
+      });
+    }
+
+    // Helper: Toast alert
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      const toastText = document.getElementById("toast-text");
+      if (!toast || !toastText) return;
+
+      toastText.textContent = message;
+      toast.classList.remove("translate-y-20", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
+
+      clearTimeout(window.customizerToastTimeout);
+      window.customizerToastTimeout = setTimeout(() => {
+        toast.classList.remove("translate-y-0", "opacity-100");
+        toast.classList.add("translate-y-20", "opacity-0");
+      }, 2500);
+    }
+
+    // Listen for variant selections changes on page to recalculate
+    document.addEventListener("change", (e) => {
+      if (e.target && (e.target.name === "id" || e.target.classList.contains("single-option-selector"))) {
+        setTimeout(updateUI, 50);
+      }
+    });
+
+    // Initial load
+    updateUI();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Customizer",
+  "settings": [
+    {
+      "type": "number",
+      "id": "step_size",
+      "label": "Længde trin (cm)",
+      "default": 10
+    },
+    {
+      "type": "number",
+      "id": "min_length",
+      "label": "Minimum længde (cm)",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Customizer"
+    }
+  ]
+}
+{% endschema %}
