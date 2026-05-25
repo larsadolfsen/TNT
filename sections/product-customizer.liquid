@@ -13,7 +13,7 @@
 <!-- Hidden element to signal to product-buy-buttons that customizer is active -->
 <div id="shape-selector" style="display: none;"></div>
 
-<div class="px-6 py-6 bg-slate-50 border-y border-slate-100 max-w-screen-xl mx-auto my-4 rounded-2xl">
+<div class="px-6 py-6 border-y border-slate-100 max-w-screen-xl mx-auto my-4 rounded-2xl">
   <div class="flex flex-col gap-4">
     <!-- Length Selection Header -->
     <div class="flex items-center gap-3">
@@ -22,14 +22,14 @@
     </div>
 
     <!-- Pill-shaped Stepper matching screenshot -->
-    <div class="flex justify-start">
-      <div class="inline-flex items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none">
+    <div class="w-full">
+      <div class="flex w-full justify-between items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none">
         <!-- Minus button -->
         <button type="button" id="btn-length-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &mdash;
         </button>
         <!-- Value display -->
-        <span id="display-length" class="w-28 text-center font-bold text-slate-900 text-base">200 cm</span>
+        <span id="display-length" class="text-center font-bold text-slate-900 text-base">200 cm</span>
         <!-- Plus button -->
         <button type="button" id="btn-length-plus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &#43;
@@ -38,18 +38,18 @@
     </div>
 
     <!-- Quantity Selector (Customizer Quantity) -->
-    <div class="flex flex-col gap-2 mt-2">
+    <div class="flex flex-col gap-2 mt-2 w-full">
       <div class="flex items-center gap-3">
         <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full">2</span>
         <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Antal</span>
       </div>
-      <div class="inline-flex items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none w-max">
+      <div class="flex w-full justify-between items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none">
         <!-- Minus button -->
         <button type="button" id="btn-qty-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &mdash;
         </button>
         <!-- Value display -->
-        <span id="display-qty" class="w-16 text-center font-bold text-slate-900 text-base">1</span>
+        <span id="display-qty" class="text-center font-bold text-slate-900 text-base">1</span>
         <!-- Plus button -->
         <button type="button" id="btn-qty-plus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &#43;
