@@ -8,7 +8,8 @@ query Input {
         ... on ProductVariant {
           id
           product {
-            fabric_roll: metafield(namespace: "custom", key: "fabric_roll_variant_id") {
+            title
+            fabric_roll: metafield(namespace: "custom", key: "fabric_roll_variant") {
               value
             }
             surcharge_round: metafield(namespace: "custom", key: "surcharge_round_variant_id") {

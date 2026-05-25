@@ -68,9 +68,13 @@
               {{ 'cart.remove' | t | link_to: item.url_to_remove, class: 'text-red-600 hover:underline font-medium' }}
             </div>
           {%- else -%}
-            <p class="text-xs font-semibold text-primary truncate" title="{{ item.product_title }}">{{ item.product_title }}</p>
-            {%- if item.variant.title != 'Default Title' -%}
-              <p class="text-[10px] text-on-surface-variant truncate">{{ item.variant.title }}</p>
+            {%- if item.properties._length != blank -%}
+              <p class="text-xs font-semibold text-primary truncate" title="{{ item.title }}">{{ item.title }}</p>
+            {%- else -%}
+              <p class="text-xs font-semibold text-primary truncate" title="{{ item.product_title }}">{{ item.product_title }}</p>
+              {%- if item.variant.title != 'Default Title' -%}
+                <p class="text-[10px] text-on-surface-variant truncate">{{ item.variant.title }}</p>
+              {%- endif -%}
             {%- endif -%}
             <div class="mt-2 text-xs">
               {{ 'cart.remove' | t | link_to: item.url_to_remove, class: 'text-red-600 hover:underline font-medium' }}

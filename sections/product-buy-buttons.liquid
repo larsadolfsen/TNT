@@ -235,7 +235,7 @@
         }
         
         if (!variantId) {
-          localShowToast("Fejl: Kunne ikke finde variant ID.");
+          alert("Fejl: Kunne ikke finde variant ID.");
           addToCartBtn.disabled = false;
           addToCartBtn.classList.remove("opacity-50");
           return;
@@ -270,8 +270,6 @@
           return response.json();
         })
         .then(data => {
-          localShowToast("Lagt i kurven!");
-          
           // Refresh cart count with a delay to let Shopify session catch up
           return new Promise(resolve => {
             setTimeout(() => {
@@ -297,6 +295,10 @@
           document.dispatchEvent(new CustomEvent("cart-updated-total", {
             detail: { cartTotal: cartData.total_price / 100.0 }
           }));
+          
+          if (typeof window.toggleCartDrawer === "function") {
+            window.toggleCartDrawer(true);
+          }
         })
         .catch(err => {
           console.error(err);
@@ -311,47 +313,13 @@
               item.counter.classList.add("scale-100");
             }
           });
-          localShowToast("Der opstod en fejl. Prøv igen.");
+          alert("Der opstod en fejl. Prøv igen.");
         })
         .finally(() => {
           addToCartBtn.disabled = false;
           addToCartBtn.classList.remove("opacity-50");
         });
       });
-    }
-
-    // Helper: Local toast alert (fallback if customizer toast is not present)
-    function localShowToast(message) {
-      let toast = document.getElementById("toast");
-      let toastText = document.getElementById("toast-text");
-      
-      if (!toast) {
-        toast = document.createElement("div");
-        toast.id = "toast";
-        toast.className = "fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[calc(1280px-2rem)] z-50 bg-[#0e1a28] border border-slate-800 text-white text-sm px-4 py-3 rounded-full shadow-xl flex items-center justify-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none";
-        
-        const icon = document.createElement("span");
-        icon.className = "material-symbols-outlined text-emerald-400";
-        icon.textContent = "check_circle";
-        
-        toastText = document.createElement("span");
-        toastText.id = "toast-text";
-        toastText.className = "truncate";
-        
-        toast.appendChild(icon);
-        toast.appendChild(toastText);
-        document.body.appendChild(toast);
-      }
-      
-      toastText.textContent = message;
-      toast.classList.remove("translate-y-20", "opacity-0");
-      toast.classList.add("translate-y-0", "opacity-100");
-
-      clearTimeout(window.localToastTimeout);
-      window.localToastTimeout = setTimeout(() => {
-        toast.classList.remove("translate-y-0", "opacity-100");
-        toast.classList.add("translate-y-20", "opacity-0");
-      }, 2500);
     }
   });
 </script>
