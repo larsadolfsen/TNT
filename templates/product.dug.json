@@ -49,14 +49,9 @@
     "customizer": {
       "type": "product-customizer",
       "settings": {
-        "surcharge_product_rectangular": "firkantet-dug",
-        "surcharge_product_round": "rund-dug",
-        "surcharge_product_oval": "afrunding-af-dug",
-        "surcharge_product_width": "tilpasning-af-bredde",
+        "metervare_product": "firkantet-dug",
         "step_size": 10,
-        "min_length": 50,
-        "min_width": 50,
-        "width_step": 10
+        "min_length": 50
       }
     },
     "buy-buttons": {
