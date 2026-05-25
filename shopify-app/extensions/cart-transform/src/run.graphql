@@ -9,19 +9,7 @@ query Input {
           id
           product {
             title
-            fabric_roll: metafield(namespace: "custom", key: "fabric_roll_variant") {
-              value
-            }
-            surcharge_round: metafield(namespace: "custom", key: "surcharge_round_variant_id") {
-              value
-            }
-            surcharge_oval: metafield(namespace: "custom", key: "surcharge_oval_variant_id") {
-              value
-            }
-            surcharge_width: metafield(namespace: "custom", key: "surcharge_width_variant_id") {
-              value
-            }
-            surcharge_rectangular: metafield(namespace: "custom", key: "surcharge_rectangular_variant_id") {
+            metervare: metafield(namespace: "custom", key: "metervare") {
               value
             }
           }
@@ -33,7 +21,10 @@ query Input {
       _width: attribute(key: "_width") {
         value
       }
-      _shape: attribute(key: "_shape") {
+      _metervare_variant_id: attribute(key: "_metervare_variant_id") {
+        value
+      }
+      _price_per_cm: attribute(key: "_price_per_cm") {
         value
       }
     }

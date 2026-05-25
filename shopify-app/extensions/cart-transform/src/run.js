@@ -21,82 +21,72 @@ export function run(input) {
     }
 
     const variant = line.merchandise;
-    const fabricRollMetafield = variant.product.fabric_roll;
+    const product = variant.product;
+    
+    // Check if the product has the metervare metafield set to true (in Danish: "Sand", or string "true")
+    const isMetervare = product.metervare && (
+      product.metervare.value === "true" || 
+      product.metervare.value === "Sand" || 
+      product.metervare.value === "1"
+    );
 
-    console.log(`[CartTransform] Checking line ${line.id}: Product title = "${variant.product.title}", fabric_roll metafield value = "${fabricRollMetafield?.value}"`);
+    console.log(`[CartTransform] Checking line ${line.id}: Product title = "${product.title}", isMetervare = ${isMetervare}`);
 
-    // If there's no fabric roll metafield, this is not a customizer product
-    if (!fabricRollMetafield || !fabricRollMetafield.value) {
-      console.log(`[CartTransform] Line ${line.id} skipped: No fabric_roll metafield`);
+    if (!isMetervare) {
       continue;
     }
 
-    const fabricRollVariantId = fabricRollMetafield.value;
-
-    // Read attributes
     const lengthVal = line._length?.value;
-    const shapeVal = line._shape?.value;
     const widthVal = line._width?.value;
+    const metervareVariantId = line._metervare_variant_id?.value;
+    const pricePerCmVal = line._price_per_cm?.value;
 
-    console.log(`[CartTransform] Parsed attributes for line ${line.id}: _length="${lengthVal}", _shape="${shapeVal}", _width="${widthVal}"`);
+    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}"`);
 
     let length = lengthVal ? parseInt(lengthVal, 10) : 0;
-    let shape = shapeVal ? shapeVal.toLowerCase() : "";
-    let width = widthVal ? widthVal.replace(/\D/g, "") : "";
-
     if (length <= 0) {
       console.log(`[CartTransform] Line ${line.id} skipped: length <= 0 (${length})`);
       continue;
     }
 
+    if (!metervareVariantId) {
+      console.log(`[CartTransform] Line ${line.id} skipped: Missing _metervare_variant_id attribute`);
+      continue;
+    }
+
     const expandedItems = [];
-
-    // 1. Add fabric roll component (quantity is length in cm * parent quantity)
-    expandedItems.push({
-      merchandiseId: fabricRollVariantId,
+    const componentItem = {
+      merchandiseId: metervareVariantId,
       quantity: length * line.quantity,
-    });
-    console.log(`[CartTransform] Added fabric roll component: variantId="${fabricRollVariantId}", quantity=${length * line.quantity}`);
+    };
 
-    // 2. Add shape surcharge component if applicable
-    let shapeSurchargeVariantId = null;
-    if (shape === "rund") {
-      shapeSurchargeVariantId = variant.product.surcharge_round ? variant.product.surcharge_round.value : null;
-    } else if (shape === "oval") {
-      shapeSurchargeVariantId = variant.product.surcharge_oval ? variant.product.surcharge_oval.value : null;
-    } else if (shape === "firkantet") {
-      shapeSurchargeVariantId = variant.product.surcharge_rectangular ? variant.product.surcharge_rectangular.value : null;
-    }
-
-    if (shapeSurchargeVariantId) {
-      expandedItems.push({
-        merchandiseId: shapeSurchargeVariantId,
-        quantity: line.quantity,
-      });
-      console.log(`[CartTransform] Added shape surcharge component: variantId="${shapeSurchargeVariantId}", quantity=${line.quantity}`);
-    }
-
-    // 3. Add width surcharge component if applicable (Bred dug)
-    if (width !== "" && width !== "140") {
-      const widthSurchargeVariantId = variant.product.surcharge_width ? variant.product.surcharge_width.value : null;
-      if (widthSurchargeVariantId) {
-        expandedItems.push({
-          merchandiseId: widthSurchargeVariantId,
-          quantity: line.quantity,
-        });
-        console.log(`[CartTransform] Added width surcharge component: variantId="${widthSurchargeVariantId}", quantity=${line.quantity}`);
+    // Override the price per unit (centimeter) if price attribute is provided
+    if (pricePerCmVal) {
+      const pricePerCm = parseFloat(pricePerCmVal);
+      if (!isNaN(pricePerCm) && pricePerCm >= 0) {
+        componentItem.price = {
+          adjustment: {
+            fixedPricePerUnit: {
+              amount: pricePerCm.toFixed(2)
+            }
+          }
+        };
+        console.log(`[CartTransform] Set unit price for BTM001 component to: ${pricePerCm.toFixed(2)} kr.`);
       }
     }
 
-    let titlePrefix = variant.product.title;
+    expandedItems.push(componentItem);
+
+    // Build the customized title matching the requested format:
+    // e.g. "Klar gennemsigtig voksdug, 140 cm bred - 140 x 200 cm"
+    let titlePrefix = product.title;
     if (variant.title && variant.title.toLowerCase() !== "default title") {
-      titlePrefix = variant.title;
+      titlePrefix = `${product.title}, ${variant.title}`;
     }
-    const customizedTitle = `${titlePrefix} (${width}x${length}cm)`;
+    const customizedTitle = `${titlePrefix} - ${widthVal || '140'} x ${length} cm`;
 
-    console.log(`[CartTransform] Expanding line ${line.id}. Parent title will be overridden to: "${customizedTitle}"`);
+    console.log(`[CartTransform] Expanding line ${line.id} into metervare bundle. Title: "${customizedTitle}", Component variant: "${metervareVariantId}", Qty: ${length * line.quantity}`);
 
-    // Push the expand operation for this cart line
     operations.push({
       expand: {
         cartLineId: line.id,
@@ -106,7 +96,7 @@ export function run(input) {
     });
   }
 
-  console.log(`[CartTransform] Finished processing. Generated ${operations.length} operations.`);
+  console.log(`[CartTransform] Finished. Generated ${operations.length} operations.`);
 
   return {
     operations: operations,

@@ -8,6 +8,18 @@
 {%- liquid
   assign min_length = section.settings.min_length | default: 50
   assign step_size = section.settings.step_size | default: 10
+
+  assign metervare_product = all_products[section.settings.metervare_product] | default: all_products['metervare']
+  assign metervare_variant = nil
+  for variant in metervare_product.variants
+    if variant.sku == 'BTM001'
+      assign metervare_variant = variant
+      break
+    endif
+  endfor
+  if metervare_variant == nil
+    assign metervare_variant = metervare_product.selected_or_first_available_variant
+  endif
 -%}
 
 <!-- Hidden element to signal to product-buy-buttons that customizer is active -->
@@ -23,15 +35,15 @@
 
     <!-- Pill-shaped Stepper matching screenshot -->
     <div class="w-full">
-      <div class="flex w-full justify-between items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none">
+      <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm select-none">
         <!-- Minus button -->
-        <button type="button" id="btn-length-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+        <button type="button" id="btn-length-minus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &mdash;
         </button>
         <!-- Value display -->
         <span id="display-length" class="text-center font-bold text-slate-900 text-base">200 cm</span>
         <!-- Plus button -->
-        <button type="button" id="btn-length-plus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+        <button type="button" id="btn-length-plus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &#43;
         </button>
       </div>
@@ -43,15 +55,15 @@
         <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full">2</span>
         <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Antal</span>
       </div>
-      <div class="flex w-full justify-between items-center bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm select-none">
+      <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm select-none">
         <!-- Minus button -->
-        <button type="button" id="btn-qty-minus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+        <button type="button" id="btn-qty-minus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &mdash;
         </button>
         <!-- Value display -->
         <span id="display-qty" class="text-center font-bold text-slate-900 text-base">1</span>
         <!-- Plus button -->
-        <button type="button" id="btn-qty-plus" class="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+        <button type="button" id="btn-qty-plus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &#43;
         </button>
       </div>
@@ -84,6 +96,7 @@
     // 1. Config variables from Liquid settings
     const minLength = {{ min_length | json }};
     const stepSize = {{ step_size | json }};
+    const metervareVariantId = {% if metervare_variant %}"gid://shopify/ProductVariant/{{ metervare_variant.id }}"{% else %}null{% endif %};
     
     // Parse variants
     let variants = [];
@@ -234,6 +247,11 @@
           }
         };
 
+        if (metervareVariantId) {
+          itemToAdd.properties["_metervare_variant_id"] = metervareVariantId;
+          itemToAdd.properties["_price_per_cm"] = refPrice.toString();
+        }
+
         // Optimistic cart count increment
         const counters = document.querySelectorAll('#cart-counter');
         counters.forEach(counter => {
@@ -314,6 +332,12 @@
 {
   "name": "Product Customizer",
   "settings": [
+    {
+      "type": "product",
+      "id": "metervare_product",
+      "label": "Metervare Produkt (sku=BTM001)",
+      "info": "Vælg det produkt, der repræsenterer rå metervare (SKU BTM001)"
+    },
     {
       "type": "number",
       "id": "step_size",
