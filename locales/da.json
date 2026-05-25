@@ -1,10 +1,52 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin language editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
-{}
+{
+  "404": {
+    "title": "404",
+    "not_found": "Siden blev ikke fundet.",
+    "back_to_shopping": "Tilbage til butikken"
+  },
+  "blog": {
+    "article_comments": "Kommentarer",
+    "article_metadata_html": "{{ date }} af {{ author }}",
+    "comment_form_body": "Kommentar",
+    "comment_form_email": "E-mail",
+    "comment_form_name": "Navn",
+    "comment_form_submit": "Indsend",
+    "comment_form_title": "Skriv en kommentar"
+  },
+  "cart": {
+    "checkout": "Gå til kassen",
+    "title": "Indkøbskurv",
+    "update": "Opdater",
+    "remove": "Fjern"
+  },
+  "customers": {
+    "login": {
+      "email": "E-mail",
+      "password": "Adgangskode",
+      "submit": "Log ind",
+      "title": "Log ind"
+    }
+  },
+  "collections": {
+    "title": "Kollektioner"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Føj til Apple Wallet",
+    "card": "Gavekort",
+    "expired": "Dette gavekort er udløbet",
+    "expires_on": "Udløber den {{ expires_on }}",
+    "use_at_checkout": "Brug dette gavekort ved kassen"
+  },
+  "password": {
+    "title": "Butikken åbner snart",
+    "password": "Adgangskode",
+    "enter": "Log ind"
+  },
+  "search": {
+    "title": "Søg",
+    "placeholder": "Søg efter artikler, sider eller produkter",
+    "submit": "Søg",
+    "no_results_html": "Ingen resultater fundet for {{ terms }}",
+    "results_for_html": "{{ count }} resultater fundet for {{ terms }}"
+  }
+}

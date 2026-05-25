@@ -30,18 +30,21 @@ export function run(input) {
       product.metervare.value === "1"
     );
 
-    console.log(`[CartTransform] Checking line ${line.id}: Product title = "${product.title}", isMetervare = ${isMetervare}`);
-
-    if (!isMetervare) {
-      continue;
-    }
-
     const lengthVal = line._length?.value;
     const widthVal = line._width?.value;
     const metervareVariantId = line._metervare_variant_id?.value;
     const pricePerCmVal = line._price_per_cm?.value;
+    const titleVal = line._title?.value;
 
-    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}"`);
+    const hasAttributes = lengthVal && metervareVariantId;
+
+    console.log(`[CartTransform] Checking line ${line.id}: Product title = "${product.title}", isMetervare = ${isMetervare}, hasAttributes = ${hasAttributes}`);
+
+    if (!isMetervare && !hasAttributes) {
+      continue;
+    }
+
+    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}", title="${titleVal}"`);
 
     let length = lengthVal ? parseInt(lengthVal, 10) : 0;
     if (length <= 0) {
@@ -71,7 +74,7 @@ export function run(input) {
             }
           }
         };
-        console.log(`[CartTransform] Set unit price for BTM001 component to: ${pricePerCm.toFixed(2)} kr.`);
+        console.log(`[CartTransform] Set unit price for component to: ${pricePerCm.toFixed(2)} kr.`);
       }
     }
 
@@ -79,11 +82,14 @@ export function run(input) {
 
     // Build the customized title matching the requested format:
     // e.g. "Klar gennemsigtig voksdug, 140 cm bred - 140 x 200 cm"
-    let titlePrefix = product.title;
-    if (variant.title && variant.title.toLowerCase() !== "default title") {
-      titlePrefix = `${product.title}, ${variant.title}`;
+    let customizedTitle = titleVal;
+    if (!customizedTitle) {
+      let titlePrefix = product.title;
+      if (variant.title && variant.title.toLowerCase() !== "default title") {
+        titlePrefix = `${product.title}, ${variant.title}`;
+      }
+      customizedTitle = `${titlePrefix} - ${widthVal || '140'} x ${length} cm`;
     }
-    const customizedTitle = `${titlePrefix} - ${widthVal || '140'} x ${length} cm`;
 
     console.log(`[CartTransform] Expanding line ${line.id} into metervare bundle. Title: "${customizedTitle}", Component variant: "${metervareVariantId}", Qty: ${length * line.quantity}`);
 
