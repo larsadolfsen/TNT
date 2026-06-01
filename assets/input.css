@@ -131,13 +131,30 @@
     margin-bottom: 0.25rem;
   }
 
-  /* Product Media (Gallery) in Left Column (Column 1) spanning from row 2 */
+  /* Product Media (Gallery) in Left Column (Column 1) spanning from row 2 when direct child */
   .template-product .row-content > .shopify-block-product-media {
     grid-column: 1;
     grid-row: 2 / span 25; /* Allow it to span many rows corresponding to the right column fields */
+  }
+
+  /* Sticky positioning for the gallery, whether direct child or nested */
+  .template-product .row-content .shopify-block-product-media {
     position: sticky;
     top: 2rem;
     z-index: 10;
+  }
+
+  /* Support for Column (Group) blocks layout inside the Row section */
+  .template-product .row-content > .shopify-block-group,
+  .template-product .row-content > .group {
+    grid-column: 1;
+    align-self: stretch;
+    width: 100%;
+  }
+
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group,
+  .template-product .row-content > .group ~ .group {
+    grid-column: 2;
   }
 
   /* Full-width elements below the two-column grid */
