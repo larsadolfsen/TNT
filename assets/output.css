@@ -2167,6 +2167,18 @@
   .template-product .row-content > .shopify-block:has(.shopify-block-group) ~ .shopify-block:has(.shopify-block-group) {
     grid-column: 2;
   }
+  .template-product .row-content .group > *,
+  .template-product .row-content .shopify-block-group > *,
+  .template-product .row-content .shopify-block:has(.group) .shopify-block {
+    width: 100%;
+  }
+  .template-product .row-content > .group--sticky,
+  .template-product .row-content > .shopify-block:has(.group--sticky) {
+    position: sticky;
+    top: 2rem;
+    z-index: 10;
+    align-self: start;
+  }
   .template-product .row-content > .shopify-block-product-cross-sell,
   .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell),
   .template-product .row-content > .shopify-block:has(.product-cross-sell),

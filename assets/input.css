@@ -166,6 +166,22 @@
     grid-column: 2;
   }
 
+  /* Make all child blocks inside columns stretch to full column width */
+  .template-product .row-content .group > *,
+  .template-product .row-content .shopify-block-group > *,
+  .template-product .row-content .shopify-block:has(.group) .shopify-block {
+    width: 100%;
+  }
+
+  /* Sticky column behavior overrides align-self: stretch to align-self: start and enables position: sticky */
+  .template-product .row-content > .group--sticky,
+  .template-product .row-content > .shopify-block:has(.group--sticky) {
+    position: sticky;
+    top: 2rem;
+    z-index: 10;
+    align-self: start;
+  }
+
   /* Full-width elements below the two-column grid */
   .template-product .row-content > .shopify-block-product-cross-sell,
   .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell),

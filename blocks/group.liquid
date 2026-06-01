@@ -12,7 +12,7 @@
 {% enddoc %}
 
 <div
-  class="group {{ block.settings.layout_direction }}"
+  class="group {{ block.settings.layout_direction }}{% if block.settings.sticky %} group--sticky{% endif %}"
   style="
     --padding: {{ block.settings.padding }}px;
     --alignment: {{ block.settings.alignment }};
@@ -49,6 +49,12 @@
   "name": "t:general.group",
   "blocks": [{ "type": "@theme" }],
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Gør indhold sticky (fastlåst på desktop)",
+      "default": false
+    },
     {
       "type": "select",
       "id": "layout_direction",
