@@ -98,6 +98,39 @@
                 "hide_everything_except_text": true
               },
               "blocks": {}
+            },
+            "product_trust_checkmarks_y8UfaW": {
+              "type": "product-trust-checkmarks",
+              "settings": {},
+              "blocks": {
+                "countdown_4gXjVB": {
+                  "type": "trust-countdown",
+                  "settings": {
+                    "text": "Bestil inden",
+                    "suffix": "timer, for at få den sendt i dag."
+                  },
+                  "blocks": {}
+                },
+                "checkmark_7inAb8": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "1-2 dages levering fra 59 kr."
+                  },
+                  "blocks": {}
+                },
+                "checkmark_XTeX48": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "30 dages fuld returret"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "countdown_4gXjVB",
+                "checkmark_7inAb8",
+                "checkmark_XTeX48"
+              ]
             }
           },
           "block_order": [
@@ -107,47 +140,14 @@
             "product_urgency_73fwVj",
             "product_customizer_6ahfJi",
             "product_buy_buttons_jHXRAz",
-            "product_shipping_progress_QWXqtB"
-          ]
-        },
-        "trust-checkmarks": {
-          "type": "product-trust-checkmarks",
-          "settings": {},
-          "blocks": {
-            "countdown_4gXjVB": {
-              "type": "trust-countdown",
-              "settings": {
-                "text": "Bestil inden",
-                "suffix": "timer, for at få den sendt i dag."
-              },
-              "blocks": {}
-            },
-            "checkmark_7inAb8": {
-              "type": "trust-checkmark",
-              "settings": {
-                "text": "1-2 dages levering fra 59 kr."
-              },
-              "blocks": {}
-            },
-            "checkmark_XTeX48": {
-              "type": "trust-checkmark",
-              "settings": {
-                "text": "30 dages fuld returret"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "countdown_4gXjVB",
-            "checkmark_7inAb8",
-            "checkmark_XTeX48"
+            "product_shipping_progress_QWXqtB",
+            "product_trust_checkmarks_y8UfaW"
           ]
         }
       },
       "block_order": [
         "group_beq9Py",
-        "group_jbctmY",
-        "trust-checkmarks"
+        "group_jbctmY"
       ],
       "settings": {
         "background_color": "light",
