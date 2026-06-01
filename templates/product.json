@@ -61,6 +61,14 @@
             "padding": 0
           },
           "blocks": {
+            "product_buy_buttons_9rdYk9": {
+              "type": "product-buy-buttons",
+              "name": "Product Buy Buttons",
+              "settings": {
+                "text_before_price": "Læg i kurv"
+              },
+              "blocks": {}
+            },
             "product_price_yREmBk": {
               "type": "product-price",
               "name": "Product Price",
@@ -72,6 +80,7 @@
             }
           },
           "block_order": [
+            "product_buy_buttons_9rdYk9",
             "product_price_yREmBk"
           ]
         }
@@ -91,14 +100,6 @@
     "product_content": {
       "type": "rows",
       "blocks": {
-        "price": {
-          "type": "product-price",
-          "settings": {
-            "price_suffix": "pr. stk. inkl. moms",
-            "price_subtext": ""
-          },
-          "blocks": {}
-        },
         "urgency": {
           "type": "product-urgency",
           "settings": {
@@ -256,7 +257,6 @@
         }
       },
       "block_order": [
-        "price",
         "urgency",
         "shipping-progress",
         "buy-buttons",
