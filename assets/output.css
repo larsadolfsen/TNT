@@ -2141,24 +2141,41 @@
     grid-row: 1;
     margin-bottom: 0.25rem;
   }
-  .template-product .row-content > .shopify-block-product-media {
+  .template-product .row-content > .shopify-block-product-media,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-media),
+  .template-product .row-content > .shopify-block:has(.product-media) {
     grid-column: 1;
     grid-row: 2 / span 25;
   }
-  .template-product .row-content .shopify-block-product-media {
+  .template-product .row-content .shopify-block-product-media,
+  .template-product .row-content .product-media {
     position: sticky;
     top: 2rem;
     z-index: 10;
   }
-  .template-product .row-content > .shopify-block-group, .template-product .row-content > .group {
+  .template-product .row-content > .shopify-block-group,
+  .template-product .row-content > .group,
+  .template-product .row-content > .shopify-block:has(.group),
+  .template-product .row-content > .shopify-block:has(.shopify-block-group) {
     grid-column: 1;
     align-self: stretch;
     width: 100%;
   }
-  .template-product .row-content > .shopify-block-group ~ .shopify-block-group, .template-product .row-content > .group ~ .group {
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group,
+  .template-product .row-content > .group ~ .group,
+  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group),
+  .template-product .row-content > .shopify-block:has(.shopify-block-group) ~ .shopify-block:has(.shopify-block-group) {
     grid-column: 2;
   }
-  .template-product .row-content > .shopify-block-product-cross-sell, .template-product .row-content > .shopify-block-product-banner-text, .template-product .row-content > .shopify-block-product-testimonial {
+  .template-product .row-content > .shopify-block-product-cross-sell,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell),
+  .template-product .row-content > .shopify-block:has(.product-cross-sell),
+  .template-product .row-content > .shopify-block-product-banner-text,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text),
+  .template-product .row-content > .shopify-block:has(.product-banner-text),
+  .template-product .row-content > .shopify-block-product-testimonial,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial),
+  .template-product .row-content > .shopify-block:has(.product-testimonial) {
     grid-column: 1 / -1;
     margin-top: 1.5rem;
   }

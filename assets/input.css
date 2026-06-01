@@ -125,20 +125,25 @@
   }
 
   /* Make Breadcrumbs / Page Title span both columns */
-  .template-product .row-content > .shopify-block-page-title {
+  .template-product .row-content > .shopify-block-page-title,
+  .template-product .row-content > .shopify-block:has(.shopify-block-page-title),
+  .template-product .row-content > .shopify-block:has(.page-title) {
     grid-column: 1 / -1;
     grid-row: 1;
     margin-bottom: 0.25rem;
   }
 
   /* Product Media (Gallery) in Left Column (Column 1) spanning from row 2 when direct child */
-  .template-product .row-content > .shopify-block-product-media {
+  .template-product .row-content > .shopify-block-product-media,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-media),
+  .template-product .row-content > .shopify-block:has(.product-media) {
     grid-column: 1;
     grid-row: 2 / span 25; /* Allow it to span many rows corresponding to the right column fields */
   }
 
   /* Sticky positioning for the gallery, whether direct child or nested */
-  .template-product .row-content .shopify-block-product-media {
+  .template-product .row-content .shopify-block-product-media,
+  .template-product .row-content .product-media {
     position: sticky;
     top: 2rem;
     z-index: 10;
@@ -146,21 +151,31 @@
 
   /* Support for Column (Group) blocks layout inside the Row section */
   .template-product .row-content > .shopify-block-group,
-  .template-product .row-content > .group {
+  .template-product .row-content > .group,
+  .template-product .row-content > .shopify-block:has(.group),
+  .template-product .row-content > .shopify-block:has(.shopify-block-group) {
     grid-column: 1;
     align-self: stretch;
     width: 100%;
   }
 
   .template-product .row-content > .shopify-block-group ~ .shopify-block-group,
-  .template-product .row-content > .group ~ .group {
+  .template-product .row-content > .group ~ .group,
+  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group),
+  .template-product .row-content > .shopify-block:has(.shopify-block-group) ~ .shopify-block:has(.shopify-block-group) {
     grid-column: 2;
   }
 
   /* Full-width elements below the two-column grid */
   .template-product .row-content > .shopify-block-product-cross-sell,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell),
+  .template-product .row-content > .shopify-block:has(.product-cross-sell),
   .template-product .row-content > .shopify-block-product-banner-text,
-  .template-product .row-content > .shopify-block-product-testimonial {
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text),
+  .template-product .row-content > .shopify-block:has(.product-banner-text),
+  .template-product .row-content > .shopify-block-product-testimonial,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial),
+  .template-product .row-content > .shopify-block:has(.product-testimonial) {
     grid-column: 1 / -1;
     margin-top: 1.5rem;
   }
