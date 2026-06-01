@@ -17,8 +17,8 @@
           "name": "Product Trust",
           "settings": {
             "rating_score": "4,8",
-            "rating_count": "",
-            "badge_text": "Over 1.000+ butiskanmeldelser"
+            "rating_count": "1000+ anmeldelser",
+            "badge_text": ""
           },
           "blocks": {}
         }
