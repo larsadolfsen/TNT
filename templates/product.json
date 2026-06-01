@@ -33,7 +33,7 @@
       "block_order": [
         "product_trust_KxPA6W"
       ],
-      "name": "Rows",
+      "name": "Title",
       "settings": {
         "background_color": "light",
         "layout_style": "full_width_bg",
@@ -148,6 +148,31 @@
         "group_LAqEGE",
         "group_weAwYD"
       ],
+      "name": "Buy area",
+      "settings": {
+        "background_color": "light",
+        "layout_style": "full_width_bg",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "rows_zVgCzj": {
+      "type": "rows",
+      "blocks": {
+        "product_testimonial_JzMbRz": {
+          "type": "product-testimonial",
+          "settings": {
+            "heading": "Det siger kunderne",
+            "stars": 5,
+            "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
+            "author": "Mette S., Verificeret køber"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_testimonial_JzMbRz"
+      ],
       "name": "Rows",
       "settings": {
         "background_color": "light",
@@ -193,16 +218,6 @@
             "badge_yMRTWz",
             "badge_nm7hPg"
           ]
-        },
-        "testimonial": {
-          "type": "product-testimonial",
-          "settings": {
-            "heading": "Det siger kunderne",
-            "stars": 5,
-            "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
-            "author": "Mette S., Verificeret køber"
-          },
-          "blocks": {}
         },
         "product_accordions_gTH8We": {
           "type": "product-accordions",
@@ -261,7 +276,6 @@
       },
       "block_order": [
         "materials",
-        "testimonial",
         "product_accordions_gTH8We",
         "cross-sell",
         "banner-text"
@@ -278,6 +292,7 @@
     "collection_header_EXpicG",
     "rows_8xAbHH",
     "rows_cVxNep",
+    "rows_zVgCzj",
     "product_content"
   ]
 }
