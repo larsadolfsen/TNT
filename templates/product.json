@@ -83,7 +83,7 @@
               "name": "Product Price",
               "settings": {
                 "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "SkÃ¦res efter mÃ¥l, sÃ¥ du kun betaler for den lÃ¦ngde, du vÃ¦lger."
+                "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger."
               },
               "blocks": {}
             },
@@ -91,7 +91,7 @@
               "type": "product-buy-buttons",
               "name": "Product Buy Buttons",
               "settings": {
-                "text_before_price": "LÃ¦g i kurv â€“"
+                "text_before_price": "Læg i kurv"
               },
               "blocks": {}
             }
