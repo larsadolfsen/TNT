@@ -151,9 +151,9 @@
       ],
       "settings": {
         "background_color": "light",
-        "layout_style": "full_width_bg",
-        "padding_top": 48,
-        "padding_bottom": 48
+        "layout_style": "boxed",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "row_CQqaPe": {
