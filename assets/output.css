@@ -2144,9 +2144,6 @@
   .template-product .row-content > .shopify-block-product-media {
     grid-column: 1;
     grid-row: 2 / span 25;
-    position: sticky;
-    top: 6rem;
-    z-index: 10;
   }
   .template-product .row-content > .shopify-block-product-cross-sell, .template-product .row-content > .shopify-block-product-banner-text, .template-product .row-content > .shopify-block-product-testimonial {
     grid-column: 1 / -1;
