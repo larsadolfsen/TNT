@@ -117,6 +117,10 @@
     width: calc(100% + 2rem) !important;
     max-width: none !important;
   }
+
+  .template-product .product-media-gallery {
+    border-radius: 0px !important;
+  }
 }
 
 /* Product Page Desktop Grid Layout */
@@ -166,6 +170,10 @@
     position: sticky;
     top: 2rem;
     z-index: 10;
+  }
+
+  .template-product .product-media-gallery {
+    border-radius: 1.5rem !important;
   }
 
   /* Support for Column (Group) blocks layout inside the Row section */

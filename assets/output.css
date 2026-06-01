@@ -2136,6 +2136,10 @@
     width: calc(100% + 2rem) !important;
     max-width: none !important;
   }
+
+  .template-product .product-media-gallery {
+    border-radius: 0px !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -2172,6 +2176,9 @@
     position: sticky;
     top: 2rem;
     z-index: 10;
+  }
+  .template-product .product-media-gallery {
+    border-radius: 1.5rem !important;
   }
   .template-product .row-content > .shopify-block-group,
   .template-product .row-content > .group,
