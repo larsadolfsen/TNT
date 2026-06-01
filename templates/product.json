@@ -1,5 +1,39 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "rows_8xAbHH": {
+      "type": "rows",
+      "blocks": {
+        "product_trust_KxPA6W": {
+          "type": "product-trust",
+          "name": "Product Trust",
+          "settings": {
+            "rating_score": "4,8",
+            "rating_count": "",
+            "badge_text": "Over 1.000+ butiskanmeldelser"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_trust_KxPA6W"
+      ],
+      "name": "Rows",
+      "settings": {
+        "background_color": "light",
+        "layout_style": "full_width_bg",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
     "collection_header_EXpicG": {
       "type": "page-title",
       "settings": {
@@ -16,20 +50,23 @@
             "rating_score": "4,8",
             "rating_count": "163",
             "badge_text": "300+ købt den seneste måned"
-          }
+          },
+          "blocks": {}
         },
         "media": {
           "type": "product-media",
           "settings": {
             "image_badge": "BESTSELLER"
-          }
+          },
+          "blocks": {}
         },
         "price": {
           "type": "product-price",
           "settings": {
             "price_suffix": "pr. stk. inkl. moms",
             "price_subtext": ""
-          }
+          },
+          "blocks": {}
         },
         "urgency": {
           "type": "product-urgency",
@@ -37,81 +74,90 @@
             "show_urgency": true,
             "urgency_text": "Kun få på lager – bestil snart",
             "hide_under_limit": 10
-          }
+          },
+          "blocks": {}
         },
         "shipping-progress": {
           "type": "product-shipping-progress",
           "settings": {
             "hide_everything_except_text": true
-          }
+          },
+          "blocks": {}
         },
         "buy-buttons": {
           "type": "product-buy-buttons",
           "settings": {
             "text_before_price": "Læg i kurv"
-          }
+          },
+          "blocks": {}
         },
         "trust-checkmarks": {
           "type": "product-trust-checkmarks",
+          "settings": {},
           "blocks": {
             "countdown_wdaUbK": {
               "type": "trust-countdown",
               "settings": {
                 "text": "Sendes om",
                 "suffix": "timer"
-              }
+              },
+              "blocks": {}
             },
             "checkmark_DgADT4": {
               "type": "trust-checkmark",
               "settings": {
                 "text": "Fragt fra 59 kr."
-              }
+              },
+              "blocks": {}
             },
             "checkmark_J7LE8N": {
               "type": "trust-checkmark",
               "settings": {
                 "text": "30 dages fuld returret"
-              }
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "countdown_wdaUbK",
             "checkmark_DgADT4",
             "checkmark_J7LE8N"
-          ],
-          "settings": {}
+          ]
         },
         "materials": {
           "type": "product-materials",
+          "settings": {},
           "blocks": {
             "badge_7Nz4EV": {
               "type": "material-badge",
               "settings": {
                 "icon": "eco",
                 "title": "100% Phthalatfri"
-              }
+              },
+              "blocks": {}
             },
             "badge_yMRTWz": {
               "type": "material-badge",
               "settings": {
                 "icon": "filter_vintage",
                 "title": "Oeko-Tex® Standard 100"
-              }
+              },
+              "blocks": {}
             },
             "badge_nm7hPg": {
               "type": "material-badge",
               "settings": {
                 "icon": "star",
                 "title": "Europæisk"
-              }
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "badge_7Nz4EV",
             "badge_yMRTWz",
             "badge_nm7hPg"
-          ],
-          "settings": {}
+          ]
         },
         "testimonial": {
           "type": "product-testimonial",
@@ -120,46 +166,51 @@
             "stars": 5,
             "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
             "author": "Mette S., Verificeret køber"
-          }
+          },
+          "blocks": {}
         },
         "product_accordions_gTH8We": {
           "type": "product-accordions",
+          "settings": {},
           "blocks": {
             "accordion_YxA6fQ": {
               "type": "accordion-panel",
               "settings": {
                 "title": "Produktspecifikationer",
                 "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>"
-              }
+              },
+              "blocks": {}
             },
             "accordion_nMCDk3": {
               "type": "accordion-panel",
               "settings": {
                 "title": "Om Textil & Voksdug",
                 "content": "<p>Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>"
-              }
+              },
+              "blocks": {}
             },
             "accordion_R4FLnV": {
               "type": "accordion-panel",
               "settings": {
                 "title": "Vedligeholdelse",
                 "content": "<p><strong>Daglig rengøring:</strong> Tør blot overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da it kan skabe varige folder i materialet.</p>"
-              }
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "accordion_YxA6fQ",
             "accordion_nMCDk3",
             "accordion_R4FLnV"
-          ],
-          "settings": {}
+          ]
         },
         "cross-sell": {
           "type": "product-cross-sell",
           "settings": {
             "cross_sell_1": "",
             "cross_sell_2": ""
-          }
+          },
+          "blocks": {}
         },
         "banner-text": {
           "type": "product-banner-text",
@@ -169,7 +220,8 @@
             "content": "<p>{{ product.description }}</p>",
             "border_top": true,
             "border_bottom": true
-          }
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -195,6 +247,7 @@
     }
   },
   "order": [
+    "rows_8xAbHH",
     "collection_header_EXpicG",
     "product_content"
   ]
