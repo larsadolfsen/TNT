@@ -44,13 +44,27 @@
     "rows_cVxNep": {
       "type": "rows",
       "blocks": {
-        "product_media_kBhm4X": {
-          "type": "product-media",
-          "name": "Product Media Gallery",
+        "group_LAqEGE": {
+          "type": "group",
+          "name": "t:general.column",
           "settings": {
-            "image_badge": "BESTSELLER"
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "padding": 0
           },
-          "blocks": {}
+          "blocks": {
+            "product_media_jV3PT3": {
+              "type": "product-media",
+              "name": "Product Media Gallery",
+              "settings": {
+                "image_badge": "BESTSELLER"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_media_jV3PT3"
+          ]
         },
         "group_weAwYD": {
           "type": "group",
@@ -131,7 +145,7 @@
         }
       },
       "block_order": [
-        "product_media_kBhm4X",
+        "group_LAqEGE",
         "group_weAwYD"
       ],
       "name": "Rows",
