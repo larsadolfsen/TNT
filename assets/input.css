@@ -103,33 +103,36 @@
 /* Product Page Desktop Grid Layout */
 @media (min-width: 768px) {
   .template-product #MainContent {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+  }
+
+  /* Make the row content wrapper be the two-column grid */
+  .template-product .row-content {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
     column-gap: 2rem;
     row-gap: 0;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem;
     align-items: start;
+    width: 100%;
   }
 
   /* Reset default full-width styling on individual columns */
-  .template-product #MainContent > .shopify-section {
+  .template-product .row-content > * {
     grid-column: 2; /* All default sections flow into the right column */
     width: 100%;
   }
 
-  /* Make Breadcrumbs span both columns */
-  .template-product #MainContent > [id$="__breadcrumbs"],
-  .template-product #MainContent > #shopify-section-breadcrumbs {
+  /* Make Breadcrumbs / Page Title span both columns */
+  .template-product .row-content > .shopify-block-page-title {
     grid-column: 1 / -1;
     grid-row: 1;
     margin-bottom: 0.25rem;
   }
 
   /* Product Media (Gallery) in Left Column (Column 1) spanning from row 2 */
-  .template-product #MainContent > [id$="__media"],
-  .template-product #MainContent > #shopify-section-media {
+  .template-product .row-content > .shopify-block-product-media {
     grid-column: 1;
     grid-row: 2 / span 25; /* Allow it to span many rows corresponding to the right column fields */
     position: sticky;
@@ -138,18 +141,15 @@
   }
 
   /* Full-width elements below the two-column grid */
-  .template-product #MainContent > [id$="__cross-sell"],
-  .template-product #MainContent > #shopify-section-cross-sell,
-  .template-product #MainContent > [id$="__banner-text"],
-  .template-product #MainContent > #shopify-section-banner-text,
-  .template-product #MainContent > [id$="__testimonial"],
-  .template-product #MainContent > #shopify-section-testimonial {
+  .template-product .row-content > .shopify-block-product-cross-sell,
+  .template-product .row-content > .shopify-block-product-banner-text,
+  .template-product .row-content > .shopify-block-product-testimonial {
     grid-column: 1 / -1;
     margin-top: 1.5rem;
   }
 
   /* Adjust section layout styles for individual sections when in product column layout */
-  .template-product #MainContent > .shopify-section > section {
+  .template-product .row-content > * > section {
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -158,13 +158,13 @@
   }
 
   /* Override excessive padding on materials to make them tighter in column 2 */
-  .template-product #MainContent > [id$="__materials"] > section {
+  .template-product .row-content > .shopify-block-product-materials > section {
     padding-top: 1rem;
     padding-bottom: 1.5rem;
   }
 
   /* Make sure customizer has proper spacing in right column */
-  .template-product #MainContent > [id$="__customizer"] > section {
+  .template-product .row-content > .shopify-block-product-customizer > section {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     padding-top: 1.5rem;
@@ -178,8 +178,10 @@
 
 @media (min-width: 1024px) {
   .template-product #MainContent {
-    column-gap: 3.5rem;
     padding: 2.5rem 2rem;
+  }
+  .template-product .row-content {
+    column-gap: 3.5rem;
   }
 }
 

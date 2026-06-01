@@ -47,29 +47,29 @@
     {%- endif -%}
   {%- endif -%}
 
-  {%- assign visible_count = 1 -%}
+  {%- assign visible_count = 2 -%}
   {%- case t -%}
     {%- when 'blog' -%}
       {%- if current_tags -%}
-        {%- assign visible_count = 2 -%}
+        {%- assign visible_count = 3 -%}
       {%- endif -%}
     {%- when 'article' -%}
-      {%- assign visible_count = 2 -%}
+      {%- assign visible_count = 3 -%}
     {%- when 'product' -%}
       {%- if c_level_0 != blank -%}
-        {%- assign visible_count = 2 -%}
+        {%- assign visible_count = 3 -%}
         {%- if c_level_1 != blank -%}
-          {%- assign visible_count = 3 -%}
+          {%- assign visible_count = 4 -%}
           {%- if c_level_2 != blank -%}
-            {%- assign visible_count = 4 -%}
+            {%- assign visible_count = 5 -%}
             {%- if c_level_3 != blank -%}
-              {%- assign visible_count = 5 -%}
+              {%- assign visible_count = 6 -%}
               {%- if c_level_4 != blank -%}
-                {%- assign visible_count = 6 -%}
+                {%- assign visible_count = 7 -%}
                 {%- if c_level_5 != blank -%}
-                  {%- assign visible_count = 7 -%}
+                  {%- assign visible_count = 8 -%}
                   {%- if c_level_6 != blank -%}
-                    {%- assign visible_count = 8 -%}
+                    {%- assign visible_count = 9 -%}
                   {%- endif -%}
                 {%- endif -%}
               {%- endif -%}
@@ -79,17 +79,17 @@
       {%- endif -%}
     {%- when 'collection' and collection.handle -%}
       {%- if c_level_1 != blank -%}
-        {%- assign visible_count = 2 -%}
+        {%- assign visible_count = 3 -%}
         {%- if c_level_2 != blank -%}
-          {%- assign visible_count = 3 -%}
+          {%- assign visible_count = 4 -%}
           {%- if c_level_3 != blank -%}
-            {%- assign visible_count = 4 -%}
+            {%- assign visible_count = 5 -%}
             {%- if c_level_4 != blank -%}
-              {%- assign visible_count = 5 -%}
+              {%- assign visible_count = 6 -%}
               {%- if c_level_5 != blank -%}
-                {%- assign visible_count = 6 -%}
+                {%- assign visible_count = 7 -%}
                 {%- if c_level_6 != blank -%}
-                  {%- assign visible_count = 7 -%}
+                  {%- assign visible_count = 8 -%}
                 {%- endif -%}
               {%- endif -%}
             {%- endif -%}
@@ -147,7 +147,7 @@
 
       {%- case t -%}
         {%- when 'page' -%}
-          {%- comment -%} Page title omitted {%- endcomment -%}
+          <span class="text-on-surface-variant font-medium truncate" aria-current="page">{{ page.title }}</span>
 
         {%- when 'product' -%}
           {%- if c_level_0 != blank -%}
@@ -172,13 +172,13 @@
               <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
             {%- endif -%}
             {%- if c_level_1 != blank -%}
-              <a href="{{ c_level_1.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_1.title }}</a>
-              <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+              <a href="{{ c_level_1.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_1.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
             {%- endif -%}
             <a href="{{ c_level_0.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_0.title }}</a>
             <span class="material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
-          {%- comment -%} Product title omitted {%- endcomment -%}
+          <span class="text-on-surface-variant font-medium truncate" aria-current="page">{{ product.title }}</span>
 
         {%- when 'collection' and collection.handle -%}
           {%- if c_level_6 != blank -%}
@@ -198,39 +198,32 @@
             <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
           {%- if c_level_2 != blank -%}
-            <a href="{{ c_level_2.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_2.title }}</a>
-            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+            <a href="{{ c_level_2.url }}" class="breadcrumb-collapsed-item hover:underline text-on-surface-variant no-underline">{{ c_level_2.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
           {%- if c_level_1 != blank -%}
             <a href="{{ c_level_1.url }}" class="hover:underline text-on-surface-variant no-underline">{{ c_level_1.title }}</a>
             <span class="material-symbols-outlined text-[14px]">chevron_right</span>
           {%- endif -%}
-          {%- comment -%} Collection title omitted {%- endcomment -%}
+          <span class="text-on-surface-variant font-medium truncate" aria-current="page">{{ collection.title }}</span>
 
         {%- when 'blog' -%}
           {%- if current_tags -%}
-            {%- assign blog_class = "" -%}
-            {%- if show_mobile_ellipsis -%}
-              {%- assign blog_class = "breadcrumb-collapsed-item" -%}
-            {%- endif -%}
-            <a href="{{ blog.url }}" class="{{ blog_class }} hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
-            <span class="{{ blog_class }} material-symbols-outlined text-[14px]">chevron_right</span>
-            {%- comment -%} Tag title omitted {%- endcomment -%}
+            <a href="{{ blog.url }}" class="hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
+            <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+            {%- assign tag_title = current_tags | join: " + " -%}
+            <span class="text-on-surface-variant font-medium truncate" aria-current="page">{{ tag_title }}</span>
           {%- else -%}
-            {%- comment -%} Blog title omitted {%- endcomment -%}
+            <span class="text-on-surface-variant font-medium truncate" aria-current="page">{{ blog.title }}</span>
           {%- endif -%}
 
         {%- when 'article' -%}
-          {%- assign blog_class = "" -%}
-          {%- if show_mobile_ellipsis -%}
-            {%- assign blog_class = "breadcrumb-collapsed-item" -%}
-          {%- endif -%}
-          <a href="{{ blog.url }}" class="{{ blog_class }} hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
-          <span class="{{ blog_class }} material-symbols-outlined text-[14px]">chevron_right</span>
-          {%- comment -%} Article title omitted {%- endcomment -%}
+          <a href="{{ blog.url }}" class="hover:underline text-on-surface-variant no-underline">{{ blog.title }}</a>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span class="text-on-surface-variant font-medium truncate" aria-current="page">{{ article.title }}</span>
 
         {%- else -%}
-          {%- comment -%} Page title omitted {%- endcomment -%}
+          <span class="text-on-surface-variant font-medium truncate" aria-current="page">{{ page_title }}</span>
       {%- endcase -%}
     </nav>
   </div>

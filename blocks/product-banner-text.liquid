@@ -1,4 +1,4 @@
-﻿{%- liquid
+{%- liquid
   assign border_classes = ""
   if block.settings.border_top
     assign border_classes = border_classes | append: " border-t"
@@ -37,6 +37,7 @@
 {% schema %}
 {
   "name": "Tekst",
+  "class": "shopify-block-product-banner-text",
   "settings": [
     {
       "type": "image_picker",
