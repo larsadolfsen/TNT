@@ -100,6 +100,25 @@
   }
 }
 
+/* Product Page Mobile Breakout Layout */
+@media (max-width: 767px) {
+  /* Prevent clipping of full width mobile media gallery */
+  .template-product .group:has(.shopify-block-product-media),
+  .template-product .group:has(.product-media),
+  .template-product .shopify-block:has(.shopify-block-product-media),
+  .template-product .shopify-block:has(.product-media) {
+    overflow: visible !important;
+  }
+
+  .template-product .shopify-block-product-media > section,
+  .template-product .product-media > section {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    max-width: none !important;
+  }
+}
+
 /* Product Page Desktop Grid Layout */
 @media (min-width: 768px) {
   .template-product #MainContent {
