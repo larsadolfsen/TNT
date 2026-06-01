@@ -24,6 +24,19 @@
         "badge_text": "300+ købt den seneste måned"
       }
     },
+    "rows_eib9mJ": {
+      "type": "rows",
+      "name": "Rækker (Rows)",
+      "settings": {
+        "heading": "Rækker sektion",
+        "subheading": "Sektion wrapper",
+        "header_alignment": "center",
+        "background_color": "light",
+        "layout_style": "full_width_bg",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
     "media": {
       "type": "product-media",
       "settings": {
@@ -182,6 +195,7 @@
   "order": [
     "collection_header_EXpicG",
     "trust",
+    "rows_eib9mJ",
     "media",
     "price",
     "urgency",
