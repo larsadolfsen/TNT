@@ -16,7 +16,7 @@
           "type": "group",
           "name": "t:general.column",
           "settings": {
-            "layout_direction": "group--horizontal",
+            "layout_direction": "group--vertical",
             "alignment": "flex-start",
             "padding": 0
           },
@@ -37,7 +37,7 @@
           "type": "group",
           "name": "t:general.column",
           "settings": {
-            "layout_direction": "group--horizontal",
+            "layout_direction": "group--vertical",
             "alignment": "flex-start",
             "padding": 0
           },
