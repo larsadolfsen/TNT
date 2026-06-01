@@ -78,6 +78,16 @@
             "padding": 0
           },
           "blocks": {
+            "product_customizer_Jzqkbn": {
+              "type": "product-customizer",
+              "name": "Product Customizer",
+              "settings": {
+                "metervare_product": "firkantet-dug",
+                "step_size": 10,
+                "min_length": 50
+              },
+              "blocks": {}
+            },
             "product_price_xaFt46": {
               "type": "product-price",
               "name": "Product Price",
@@ -97,6 +107,7 @@
             }
           },
           "block_order": [
+            "product_customizer_Jzqkbn",
             "product_price_xaFt46",
             "product_buy_buttons_7C6Jp6"
           ]
