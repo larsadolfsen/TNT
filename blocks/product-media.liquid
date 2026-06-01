@@ -70,8 +70,110 @@
   </div>
 </section>
 
+<!-- CSS Styles for Gallery UI (bypasses Tailwind compilation issues) -->
+<style>
+  #gallery-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    margin-top: 12px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  #gallery-thumbnails {
+    display: none;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: start;
+  }
+
+  .thumbnail-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .thumbnail-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    background: none;
+  }
+
+  .thumbnail-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .thumbnail-btn.border-primary {
+    border-color: var(--color-primary) !important;
+  }
+
+  .video-thumbnail-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .video-thumbnail-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #6b7280;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .custom-play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+  }
+
+  .custom-play-overlay.pointer-events-none {
+    pointer-events: none;
+  }
+
+  .custom-play-overlay.opacity-0 {
+    opacity: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    #gallery-dots {
+      display: none !important;
+    }
+    #gallery-thumbnails {
+      display: flex !important;
+    }
+  }
+</style>
+
 <!-- Indicator Dots (Mobile Only) -->
-<div class="flex md:hidden justify-center items-center gap-2 px-4 mt-3 max-w-screen-xl mx-auto" id="gallery-dots">
+<div id="gallery-dots">
   {%- if product.media.size > 1 -%}
     {%- for media in product.media -%}
       <button 
@@ -84,29 +186,28 @@
 </div>
 
 <!-- Thumbnails Container (Desktop/Tablet Only) -->
-<div class="hidden md:flex justify-center flex-wrap gap-3 mt-4 max-w-screen-xl mx-auto items-start" id="gallery-thumbnails">
+<div id="gallery-thumbnails">
   {%- if product.media.size > 1 -%}
     {%- for media in product.media -%}
-      <div class="flex flex-col items-center">
+      <div class="thumbnail-wrapper">
         <button 
-          class="thumbnail-btn w-20 h-20 rounded-xl border-2 {% if forloop.first %}border-primary{% else %}border-transparent{% endif %} overflow-hidden focus:outline-none transition-all cursor-pointer relative"
+          class="thumbnail-btn {% if forloop.first %}border-primary{% endif %}"
           data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
           aria-label="Skift billede {{ forloop.index }}"
         >
           <img 
             src="{{ media.preview_image.src | image_url: width: 200, height: 200, crop: 'center' }}" 
             alt="{{ media.alt | default: product.title }}" 
-            class="w-full h-full object-cover"
             loading="lazy"
           />
           {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
-            <div class="absolute inset-0 flex items-center justify-center bg-black/20">
+            <div class="video-thumbnail-overlay">
               <span class="material-symbols-outlined text-white text-3xl">play_circle</span>
             </div>
           {%- endif -%}
         </button>
         {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
-          <span class="text-[10px] font-bold text-gray-500 mt-1 uppercase tracking-wider">Video</span>
+          <span class="video-thumbnail-label">Video</span>
         {%- endif -%}
       </div>
     {%- endfor -%}
