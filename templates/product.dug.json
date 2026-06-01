@@ -151,7 +151,7 @@
       ],
       "settings": {
         "background_color": "light",
-        "layout_style": "boxed",
+        "layout_style": "full_width_bg",
         "padding_top": 0,
         "padding_bottom": 0
       }
