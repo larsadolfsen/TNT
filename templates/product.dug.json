@@ -177,7 +177,7 @@
       ],
       "name": "Row",
       "settings": {
-        "background_color": "dark",
+        "background_color": "shade",
         "layout_style": "full_width_bg",
         "padding_top": 48,
         "padding_bottom": 48
