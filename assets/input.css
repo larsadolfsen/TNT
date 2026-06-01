@@ -126,9 +126,10 @@
 /* Product Page Desktop Grid Layout */
 @media (min-width: 768px) {
   .template-product #MainContent {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
   }
 
   /* Make the row content wrapper be the two-column grid */
@@ -139,6 +140,9 @@
     row-gap: 0;
     align-items: start;
     width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
   }
 
   /* Reset default full-width styling on individual columns */
@@ -253,11 +257,56 @@
 
 @media (min-width: 1024px) {
   .template-product #MainContent {
-    padding: 2.5rem 2rem;
+    padding: 0;
   }
   .template-product .row-content {
     column-gap: 3.5rem;
+    padding: 2.5rem 2rem;
   }
 }
 
+/* Ensure no horizontal scrolling when using 100vw breakout layouts */
+html, body {
+  overflow-x: hidden;
+}
 
+/* Breakout styles for truly full-width row sections and testimonials */
+@media (min-width: 768px) {
+  .row-section--full-width {
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    max-width: none !important;
+  }
+
+  .row-section--full-width .shopify-block-product-testimonial > section,
+  .row-section--full-width .product-testimonial > section {
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .row-section--full-width {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    max-width: none !important;
+  }
+
+  .row-section--full-width .shopify-block-product-testimonial > section,
+  .row-section--full-width .product-testimonial > section {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    max-width: none !important;
+  }
+}

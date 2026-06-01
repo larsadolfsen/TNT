@@ -16,17 +16,37 @@
 
   <div class="product-media-gallery aspect-[3/2] bg-surface-container overflow-hidden relative rounded-2xl">
     <div id="gallery-track" class="flex h-full w-full" style="transform: translateX(0%); transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);">
-      {%- if product.images.size > 0 -%}
-        {%- for image in product.images -%}
-          <div class="w-full h-full flex-shrink-0">
-            <img 
-              alt="{{ product.title }}" 
-              class="w-full h-full object-cover select-none" 
-              src="{{ image.src | image_url: width: 1200 }}"
-              width="1200"
-              height="800"
-              draggable="false"
-            />
+      {%- if product.media.size > 0 -%}
+        {%- for media in product.media -%}
+          <div class="w-full h-full flex-shrink-0 {% if media.media_type == 'video' or media.media_type == 'external_video' %}video-slide{% endif %}">
+            {%- if media.media_type == 'video' -%}
+              <div class="w-full h-full relative">
+                {{ media | video_tag: class: 'w-full h-full object-cover select-none', autoplay: false, loop: true, muted: true, controls: true }}
+                <div class="absolute inset-0 flex items-center justify-center bg-black/10 custom-play-overlay transition-opacity duration-300 cursor-pointer">
+                  <div class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-black/20">
+                    <span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;">play_arrow</span>
+                  </div>
+                </div>
+              </div>
+            {%- elsif media.media_type == 'external_video' -%}
+              <div class="w-full h-full relative">
+                {{ media | external_video_tag: class: 'w-full h-full object-cover select-none' }}
+                <div class="absolute inset-0 flex items-center justify-center bg-black/10 custom-play-overlay transition-opacity duration-300 cursor-pointer">
+                  <div class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-black/20">
+                    <span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;">play_arrow</span>
+                  </div>
+                </div>
+              </div>
+            {%- else -%}
+              <img 
+                alt="{{ media.alt | default: product.title }}" 
+                class="w-full h-full object-cover select-none" 
+                src="{{ media.preview_image.src | image_url: width: 1200 }}"
+                width="1200"
+                height="800"
+                draggable="false"
+              />
+            {%- endif -%}
           </div>
         {%- endfor -%}
       {%- else -%}
@@ -50,15 +70,45 @@
   </div>
 </section>
 
-<!-- Indicator Dots -->
-<div class="flex justify-center items-center gap-2 px-4 mt-3 max-w-screen-xl mx-auto" id="gallery-dots">
-  {%- if product.images.size > 0 -%}
-    {%- for image in product.images -%}
+<!-- Indicator Dots (Mobile Only) -->
+<div class="flex md:hidden justify-center items-center gap-2 px-4 mt-3 max-w-screen-xl mx-auto" id="gallery-dots">
+  {%- if product.media.size > 1 -%}
+    {%- for media in product.media -%}
       <button 
-        class="dot-btn w-2.5 h-2.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-slate-300{% endif %} focus:outline-none transition-colors" 
-        data-src="{{ image.src | image_url: width: 1200 }}"
+        class="dot-btn w-2.5 h-2.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-slate-300{% endif %} focus:outline-none transition-colors cursor-pointer" 
+        data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
         aria-label="Skift billede {{ forloop.index }}"
       ></button>
+    {%- endfor -%}
+  {%- endif -%}
+</div>
+
+<!-- Thumbnails Container (Desktop/Tablet Only) -->
+<div class="hidden md:flex justify-center flex-wrap gap-3 mt-4 max-w-screen-xl mx-auto items-start" id="gallery-thumbnails">
+  {%- if product.media.size > 1 -%}
+    {%- for media in product.media -%}
+      <div class="flex flex-col items-center">
+        <button 
+          class="thumbnail-btn w-20 h-20 rounded-xl border-2 {% if forloop.first %}border-primary{% else %}border-transparent{% endif %} overflow-hidden focus:outline-none transition-all cursor-pointer relative"
+          data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
+          aria-label="Skift billede {{ forloop.index }}"
+        >
+          <img 
+            src="{{ media.preview_image.src | image_url: width: 200, height: 200, crop: 'center' }}" 
+            alt="{{ media.alt | default: product.title }}" 
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+            <div class="absolute inset-0 flex items-center justify-center bg-black/20">
+              <span class="material-symbols-outlined text-white text-3xl">play_circle</span>
+            </div>
+          {%- endif -%}
+        </button>
+        {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+          <span class="text-[10px] font-bold text-gray-500 mt-1 uppercase tracking-wider">Video</span>
+        {%- endif -%}
+      </div>
     {%- endfor -%}
   {%- endif -%}
 </div>
@@ -69,7 +119,8 @@
       const mainImg = document.getElementById("main-product-img");
       const track = document.getElementById("gallery-track");
       const dots = document.querySelectorAll(".dot-btn");
-      if (!mainImg || !track || dots.length <= 1) return;
+      const thumbnails = document.querySelectorAll(".thumbnail-btn");
+      if (!mainImg || !track) return;
 
       const container = track.parentElement;
       if (!container) return;
@@ -93,16 +144,43 @@
       let currentIndex = 0;
       let isAnimating = false;
 
-      // Find initial active index
-      dots.forEach((dot, index) => {
-        if (dot.classList.contains("bg-primary")) {
-          currentIndex = index;
-        }
-      });
+      // Find initial active index from dots or thumbnails
+      if (dots.length > 0) {
+        dots.forEach((dot, index) => {
+          if (dot.classList.contains("bg-primary")) currentIndex = index;
+        });
+      } else if (thumbnails.length > 0) {
+        thumbnails.forEach((t, index) => {
+          if (t.classList.contains("border-primary")) currentIndex = index;
+        });
+      }
 
       // Set initial position (DOM index 1 corresponds to currentIndex 0)
       track.style.transition = "none";
       track.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
+
+      // Video overlay control logic
+      const initVideoControls = (parent) => {
+        const videoSlides = parent.querySelectorAll(".video-slide");
+        videoSlides.forEach(slide => {
+          const video = slide.querySelector("video");
+          const overlay = slide.querySelector(".custom-play-overlay");
+          if (video && overlay) {
+            overlay.addEventListener("click", (e) => {
+              e.stopPropagation();
+              video.play();
+              overlay.classList.add("pointer-events-none", "opacity-0");
+            });
+            video.addEventListener("play", () => {
+              overlay.classList.add("pointer-events-none", "opacity-0");
+            });
+            video.addEventListener("pause", () => {
+              overlay.classList.remove("pointer-events-none", "opacity-0");
+            });
+          }
+        });
+      };
+      initVideoControls(track);
 
       function showImage(index) {
         if (isAnimating) return;
@@ -124,22 +202,48 @@
         }
 
         const activeDot = dots[currentIndex];
-        const newSrc = activeDot.getAttribute("data-src");
+        const activeThumbnail = thumbnails[currentIndex];
+        const newSrc = (activeDot || activeThumbnail)?.getAttribute("data-src");
 
         // Update dots styles
-        dots.forEach(d => {
-          d.classList.remove("bg-primary");
-          d.classList.add("bg-slate-300");
-        });
-        activeDot.classList.remove("bg-slate-300");
-        activeDot.classList.add("bg-primary");
+        if (dots.length > 0) {
+          dots.forEach(d => {
+            d.classList.remove("bg-primary");
+            d.classList.add("bg-slate-300");
+          });
+          if (activeDot) {
+            activeDot.classList.remove("bg-slate-300");
+            activeDot.classList.add("bg-primary");
+          }
+        }
+
+        // Update thumbnails styles
+        if (thumbnails.length > 0) {
+          thumbnails.forEach(t => {
+            t.classList.remove("border-primary");
+            t.classList.add("border-transparent");
+          });
+          if (activeThumbnail) {
+            activeThumbnail.classList.remove("border-transparent");
+            activeThumbnail.classList.add("border-primary");
+          }
+        }
 
         // Update hidden main image for cart modal compatibility
-        if (mainImg) {
+        if (mainImg && newSrc) {
           mainImg.src = newSrc;
         }
 
         const domIndex = isWrapped ? (targetIndex + 1) : (currentIndex + 1);
+
+        // Pause other videos
+        const domSlides = Array.from(track.children);
+        domSlides.forEach((slide, idx) => {
+          if (idx !== domIndex) {
+            const video = slide.querySelector("video");
+            if (video) video.pause();
+          }
+        });
 
         isAnimating = true;
         track.style.transition = "transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)";
@@ -157,6 +261,13 @@
       // Click on dots
       dots.forEach((dot, index) => {
         dot.addEventListener("click", () => {
+          showImage(index);
+        });
+      });
+
+      // Click on thumbnails
+      thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener("click", () => {
           showImage(index);
         });
       });

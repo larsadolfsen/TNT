@@ -24,7 +24,7 @@
 {%- endcapture -%}
 
 {%- if section.settings.layout_style == 'full_width_bg' -%}
-  <div class="row-section w-full {{ bg_class }} section-{{ section.id }}-padding">
+  <div class="row-section w-full {{ bg_class }} section-{{ section.id }}-padding row-section--full-width">
     <div class="w-full">
 {%- else -%}
   <div class="row-section max-w-[var(--page-width)] mx-auto px-4 md:px-8 section-{{ section.id }}-padding">

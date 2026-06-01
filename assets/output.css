@@ -2549,3 +2549,74 @@
     }
   }
 }
+
+/* --- CUSTOM LAYOUT AND BREAKOUT OVERRIDES --- */
+@media (min-width: 768px) {
+  .template-product #MainContent {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .template-product .row-content {
+    max-width: 1280px !important;
+    margin: 0 auto !important;
+    padding: 1.5rem 1rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .template-product #MainContent {
+    padding: 0 !important;
+  }
+  .template-product .row-content {
+    padding: 2.5rem 2rem !important;
+  }
+}
+
+/* Ensure no horizontal scrolling when using 100vw breakout layouts */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Breakout styles for truly full-width row sections and testimonials */
+@media (min-width: 768px) {
+  .row-section--full-width {
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    max-width: none !important;
+  }
+
+  .row-section--full-width .shopify-block-product-testimonial > section,
+  .row-section--full-width .product-testimonial > section {
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .row-section--full-width {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    max-width: none !important;
+  }
+
+  .row-section--full-width .shopify-block-product-testimonial > section,
+  .row-section--full-width .product-testimonial > section {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    max-width: none !important;
+  }
+}
