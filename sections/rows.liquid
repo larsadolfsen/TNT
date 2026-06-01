@@ -1,0 +1,172 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- capture bg_class -%}
+  {%- case section.settings.background_color -%}
+    {%- when 'light' -%}
+      bg-background text-primary
+    {%- when 'dark' -%}
+      bg-background-dark text-white
+    {%- when 'shade' -%}
+      bg-background-shade text-primary
+  {%- endcase -%}
+{%- endcapture -%}
+
+{%- if section.settings.layout_style == 'full_width_bg' -%}
+  <div class="rows-section w-full {{ bg_class }} section-{{ section.id }}-padding">
+    <div class="max-w-[var(--page-width)] mx-auto px-4 md:px-8">
+{%- else -%}
+  <div class="rows-section max-w-[var(--page-width)] mx-auto px-4 md:px-8 section-{{ section.id }}-padding">
+    <div class="w-full {{ bg_class }} rounded-3xl px-6 py-10 md:px-12 md:py-16 shadow-md border border-outline-variant/30">
+{%- endif -%}
+
+      {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+        <div class="mb-10 md:mb-16 text-{{ section.settings.header_alignment }}">
+          {%- if section.settings.subheading != blank -%}
+            <span class="inline-block text-xs uppercase tracking-widest font-bold opacity-80 mb-3 bg-brand-yellow/15 text-primary px-3 py-1 rounded-full border border-brand-yellow/30 {% if section.settings.background_color == 'dark' %} bg-white/10 text-white border-white/20 {% endif %}">
+              {{ section.settings.subheading }}
+            </span>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="text-3xl md:text-4xl font-extrabold font-serif tracking-tight mt-1 leading-tight">
+              {{ section.settings.heading }}
+            </h2>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="rows-content">
+        {% content_for 'blocks' %}
+      </div>
+
+{%- if section.settings.layout_style == 'full_width_bg' -%}
+    </div>
+  </div>
+{%- else -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Rækker (Rows)",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Overskrift",
+      "default": "Rækker sektion"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Underoverskrift",
+      "default": "Sektion wrapper"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Overskriftsjustering",
+      "options": [
+        {
+          "value": "left",
+          "label": "Venstre"
+        },
+        {
+          "value": "center",
+          "label": "Centreret"
+        },
+        {
+          "value": "right",
+          "label": "Højre"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Baggrundsfarve",
+      "options": [
+        {
+          "value": "light",
+          "label": "Lys"
+        },
+        {
+          "value": "dark",
+          "label": "Mørk"
+        },
+        {
+          "value": "shade",
+          "label": "Grå / Tonet"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layoutbredde",
+      "options": [
+        {
+          "value": "full_width_bg",
+          "label": "Fuld bredde baggrund (indhold boks-bredde)"
+        },
+        {
+          "value": "boxed",
+          "label": "Boks (begrænset bredde)"
+        }
+      ],
+      "default": "full_width_bg"
+    },
+    {
+      "type": "header",
+      "content": "Sektionsafstand (Padding)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rækker (Rows)"
+    }
+  ]
+}
+{% endschema %}
