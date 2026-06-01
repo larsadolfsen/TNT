@@ -2142,8 +2142,8 @@
     margin-bottom: 0.25rem;
   }
   .template-product .row-content > .shopify-block-product-media,
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-media),
-  .template-product .row-content > .shopify-block:has(.product-media) {
+  .template-product .row-content > .shopify-block:has(> .shopify-block-product-media),
+  .template-product .row-content > .shopify-block:has(> .product-media) {
     grid-column: 1;
     grid-row: 2 / span 25;
   }

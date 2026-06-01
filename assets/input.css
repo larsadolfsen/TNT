@@ -135,8 +135,8 @@
 
   /* Product Media (Gallery) in Left Column (Column 1) spanning from row 2 when direct child */
   .template-product .row-content > .shopify-block-product-media,
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-media),
-  .template-product .row-content > .shopify-block:has(.product-media) {
+  .template-product .row-content > .shopify-block:has(> .shopify-block-product-media),
+  .template-product .row-content > .shopify-block:has(> .product-media) {
     grid-column: 1;
     grid-row: 2 / span 25; /* Allow it to span many rows corresponding to the right column fields */
   }
