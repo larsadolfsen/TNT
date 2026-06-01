@@ -61,11 +61,13 @@
             "padding": 0
           },
           "blocks": {
-            "product_buy_buttons_9rdYk9": {
-              "type": "product-buy-buttons",
-              "name": "Product Buy Buttons",
+            "product_urgency_Qd4fTg": {
+              "type": "product-urgency",
+              "name": "Product Stock Urgency",
               "settings": {
-                "text_before_price": "Læg i kurv"
+                "show_urgency": true,
+                "urgency_text": "Kun få på lager",
+                "hide_under_limit": 5
               },
               "blocks": {}
             },
@@ -77,11 +79,20 @@
                 "price_subtext": "Skæres efter mål, så du kun betaler for det du behøver."
               },
               "blocks": {}
+            },
+            "product_buy_buttons_9rdYk9": {
+              "type": "product-buy-buttons",
+              "name": "Product Buy Buttons",
+              "settings": {
+                "text_before_price": "Læg i kurv"
+              },
+              "blocks": {}
             }
           },
           "block_order": [
-            "product_buy_buttons_9rdYk9",
-            "product_price_yREmBk"
+            "product_urgency_Qd4fTg",
+            "product_price_yREmBk",
+            "product_buy_buttons_9rdYk9"
           ]
         }
       },
