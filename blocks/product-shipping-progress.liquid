@@ -1,4 +1,4 @@
-﻿{% comment %}
+{% comment %}
   Product Shipping Progress & Trust Badges Section
   Renders the dynamic free shipping progress bar based on current cart total,
   and lists key trust badges with a dynamic shipping countdown timer.
@@ -25,9 +25,9 @@
     <div class="flex justify-between text-xs text-primary font-bold">
       <span id="shipping-status-text">
         {%- if cart_total_dkk < threshold -%}
-          KÃ¸b for {{ missing | times: 100 | money }} mere for at fÃ¥ fri fragt
+          Køb for {{ missing | times: 100 | money }} mere for at få fri fragt
         {%- else -%}
-          Du har opnÃ¥et fri fragt!
+          Du har opnået fri fragt!
         {%- endif -%}
       </span>
       <span id="shipping-percent-text" class="{% if hide_everything_except_text %}hidden{% endif %}">{{ progress | round }}%</span>
@@ -78,10 +78,10 @@
 
       if (cartTotal < threshold) {
         const missing = threshold - cartTotal;
-        statusText.textContent = "KÃ¸b for " + formatPrice(missing) + " mere for at fÃ¥ fri fragt";
+        statusText.textContent = "Køb for " + formatPrice(missing) + " mere for at få fri fragt";
         progressBar.className = "h-full bg-emerald-600 transition-all duration-300";
       } else {
-        statusText.textContent = "Du har opnÃ¥et fri fragt!";
+        statusText.textContent = "Du har opnået fri fragt!";
         progressBar.className = "h-full bg-emerald-500 transition-all duration-300";
       }
     }
@@ -105,8 +105,8 @@
               (r.description && r.description.toLowerCase().includes("standard"))
             );
             if (standardRate && standardRate.description) {
-              // Match gratis/free threshold e.g. "Gratis for ordrer pÃ¥ 599,00 kr. og derover"
-              const match = standardRate.description.match(/(?:ordrer pÃ¥|over|ved kÃ¸b over|over for)\s*([\d.,]+)/i) || 
+              // Match gratis/free threshold e.g. "Gratis for ordrer på 599,00 kr. og derover"
+              const match = standardRate.description.match(/(?:ordrer på|over|ved køb over|over for)\s*([\d.,]+)/i) || 
                             standardRate.description.match(/([\d.,]+)\s*kr/i) ||
                             standardRate.description.match(/([\d.,]+)/);
               if (match) {

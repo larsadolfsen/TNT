@@ -15,7 +15,7 @@
 
 <section id="product-urgency-section-{{ block.id }}" class="max-w-screen-xl mx-auto px-4 pt-0 pb-3" style="{% unless show_urgency %}display: none;{% endunless %}">
   <p class="text-xs font-medium text-amber-700">
-    {{ block.settings.urgency_text | default: "Kun fÃ¥ pÃ¥ lager â€“ bestil snart" }}
+    {{ block.settings.urgency_text | default: "Kun få på lager – bestil snart" }}
   </p>
 </section>
 
@@ -94,14 +94,14 @@
       "type": "text",
       "id": "urgency_text",
       "label": "Urgency Warning Text",
-      "default": "Kun fÃ¥ pÃ¥ lager â€“ bestil snart"
+      "default": "Kun få på lager – bestil snart"
     },
     {
       "type": "number",
       "id": "hide_under_limit",
       "label": "Vis kun hvis under X enheder",
       "default": 5,
-      "info": "Vis kun stock urgency hvis der er under dette antal enheder tilbage. Banneret skjules ogsÃ¥, hvis varen er helt udsolgt."
+      "info": "Vis kun stock urgency hvis der er under dette antal enheder tilbage. Banneret skjules også, hvis varen er helt udsolgt."
     }
   ],
   "presets": [

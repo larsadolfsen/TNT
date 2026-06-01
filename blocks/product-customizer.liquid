@@ -62,7 +62,7 @@
     <!-- Length Selection Header -->
     <div class="flex items-center gap-3">
       <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full">1</span>
-      <span class="font-bold text-sm uppercase tracking-wider text-slate-800">VÃ¦lg lÃ¦ngde</span>
+      <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Vælg længde</span>
     </div>
 
     <!-- Pill-shaped Stepper matching screenshot -->
@@ -164,7 +164,7 @@
     const btnQtyPlus = document.getElementById("btn-qty-plus");
 
     const addToCartBtn = document.getElementById("btn-add-to-cart");
-    const summaryMal = document.getElementById("summary-mÃ¥l");
+    const summaryMal = document.getElementById("summary-mål");
 
     // Recalculate price display
     function updateUI() {
@@ -188,7 +188,7 @@
         if (priceDisplay) {
           priceDisplay.textContent = formattedPrice;
         } else if (addToCartBtn) {
-          const prefix = addToCartBtn.getAttribute("data-text-before-price") || "LÃ¦g i kurv â€“ ";
+          const prefix = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv – ";
           addToCartBtn.textContent = prefix + formattedPrice;
         }
 
@@ -326,7 +326,7 @@
         })
         .catch(err => {
           console.error(err);
-          showToast("Fejl ved tilfÃ¸jelse til kurv.");
+          showToast("Fejl ved tilføjelse til kurv.");
         })
         .finally(() => {
           addToCartBtn.disabled = false;
@@ -373,18 +373,18 @@
       "type": "product",
       "id": "metervare_product",
       "label": "Metervare Produkt (sku=BTM001)",
-      "info": "VÃ¦lg det produkt, der reprÃ¦senterer rÃ¥ metervare (SKU BTM001)"
+      "info": "Vælg det produkt, der repræsenterer rå metervare (SKU BTM001)"
     },
     {
       "type": "number",
       "id": "step_size",
-      "label": "LÃ¦ngde trin (cm)",
+      "label": "Længde trin (cm)",
       "default": 10
     },
     {
       "type": "number",
       "id": "min_length",
-      "label": "Minimum lÃ¦ngde (cm)",
+      "label": "Minimum længde (cm)",
       "default": 50
     }
   ],

@@ -1,10 +1,10 @@
-﻿{% comment %}
+{% comment %}
   Product Buy Buttons Section
   Renders the dimensions summary, final price, Add to Cart CTA button, and payment method badges.
   Supports both customized (custom-cut) and simple products.
 {% endcomment %}
 
-{%- assign text_before_price = block.settings.text_before_price | default: "LÃ¦g i kurv â€“ " -%}
+{%- assign text_before_price = block.settings.text_before_price | default: "Læg i kurv – " -%}
 {%- liquid
   assign base_variant = nil
   for variant in product.variants
@@ -30,7 +30,7 @@
   <div class="max-w-screen-xl mx-auto flex flex-col gap-4">
     <!-- Left: Selected Specs & Price -->
     <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full">
-      <div id="summary-mÃ¥l" class="text-xs text-on-surface-variant font-medium">{{ base_variant.title }} {{ width }} x 200 cm</div>
+      <div id="summary-mål" class="text-xs text-on-surface-variant font-medium">{{ base_variant.title }} {{ width }} x 200 cm</div>
     </div>
     
     <!-- Right: Button and Payment Badges -->
@@ -78,7 +78,7 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const hasCustomizer = !!document.getElementById("shape-selector");
-    const summaryMal = document.getElementById("summary-mÃ¥l");
+    const summaryMal = document.getElementById("summary-mål");
     
     // 1. If no customizer is present, hide the dimensions summary container (since it's a simple product)
     const summaryContainer = document.getElementById("buy-buttons-summary-container");
@@ -133,7 +133,7 @@
         if (priceDisplay) {
           priceDisplay.textContent = formattedPrice;
         } else if (btn) {
-          const prefix = btn.getAttribute("data-text-before-price") || "LÃ¦g i kurv â€“ ";
+          const prefix = btn.getAttribute("data-text-before-price") || "Læg i kurv – ";
           btn.textContent = prefix + formattedPrice;
         }
 
@@ -334,7 +334,7 @@
               item.counter.classList.add("scale-100");
             }
           });
-          alert("Der opstod en fejl. PrÃ¸v igen.");
+          alert("Der opstod en fejl. Prøv igen.");
         })
         .finally(() => {
           addToCartBtn.disabled = false;
@@ -352,8 +352,8 @@
     {
       "type": "text",
       "id": "text_before_price",
-      "label": "Tekst fÃ¸r pris pÃ¥ kÃ¸bsknap",
-      "default": "LÃ¦g i kurv â€“ "
+      "label": "Tekst før pris på købsknap",
+      "default": "Læg i kurv – "
     }
   ],
   "presets": [
