@@ -4,8 +4,8 @@
 {% endcomment %}
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
-{%- assign show_urgency = section.settings.show_urgency -%}
-{%- assign hide_under_limit = section.settings.hide_under_limit | default: 5 -%}
+{%- assign show_urgency = block.settings.show_urgency -%}
+{%- assign hide_under_limit = block.settings.hide_under_limit | default: 5 -%}
 
 {%- if current_variant and current_variant.inventory_management != blank -%}
   {%- if current_variant.inventory_quantity <= 0 or current_variant.inventory_quantity >= hide_under_limit -%}
@@ -13,14 +13,14 @@
   {%- endif -%}
 {%- endif -%}
 
-<section id="product-urgency-section" class="max-w-screen-xl mx-auto px-4 pt-0 pb-3" style="{% unless show_urgency %}display: none;{% endunless %}">
+<section id="product-urgency-section-{{ block.id }}" class="max-w-screen-xl mx-auto px-4 pt-0 pb-3" style="{% unless show_urgency %}display: none;{% endunless %}">
   <p class="text-xs font-medium text-amber-700">
-    {{ section.settings.urgency_text | default: "Kun få på lager – bestil snart" }}
+    {{ block.settings.urgency_text | default: "Kun fÃ¥ pÃ¥ lager â€“ bestil snart" }}
   </p>
 </section>
 
 {%- if product -%}
-<script id="product-urgency-variant-data" type="application/json">
+<script id="product-urgency-variant-data-{{ block.id }}" type="application/json">
   {
     "variants": [
       {%- for variant in product.variants -%}
@@ -37,8 +37,8 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const dataEl = document.getElementById("product-urgency-variant-data");
-    const sectionEl = document.getElementById("product-urgency-section");
+    const dataEl = document.getElementById("product-urgency-variant-data-{{ block.id }}");
+    const sectionEl = document.getElementById("product-urgency-section-{{ block.id }}");
     if (!dataEl || !sectionEl) return;
 
     let urgencyData = { variants: [], hideUnderLimit: 5 };
@@ -49,7 +49,7 @@
     }
 
     function updateUrgency(variantId) {
-      {%- unless section.settings.show_urgency -%}
+      {%- unless block.settings.show_urgency -%}
         sectionEl.style.display = "none";
         return;
       {%- endunless -%}
@@ -94,14 +94,14 @@
       "type": "text",
       "id": "urgency_text",
       "label": "Urgency Warning Text",
-      "default": "Kun få på lager – bestil snart"
+      "default": "Kun fÃ¥ pÃ¥ lager â€“ bestil snart"
     },
     {
       "type": "number",
       "id": "hide_under_limit",
       "label": "Vis kun hvis under X enheder",
       "default": 5,
-      "info": "Vis kun stock urgency hvis der er under dette antal enheder tilbage. Banneret skjules også, hvis varen er helt udsolgt."
+      "info": "Vis kun stock urgency hvis der er under dette antal enheder tilbage. Banneret skjules ogsÃ¥, hvis varen er helt udsolgt."
     }
   ],
   "presets": [

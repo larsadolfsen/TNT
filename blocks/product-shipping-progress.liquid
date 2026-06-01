@@ -1,4 +1,4 @@
-{% comment %}
+﻿{% comment %}
   Product Shipping Progress & Trust Badges Section
   Renders the dynamic free shipping progress bar based on current cart total,
   and lists key trust badges with a dynamic shipping countdown timer.
@@ -17,7 +17,7 @@
 {%- assign potential_progress = potential_total | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
 {%- assign potential_width = potential_progress | minus: progress | at_least: 0 -%}
 
-{%- assign hide_everything_except_text = section.settings.hide_everything_except_text -%}
+{%- assign hide_everything_except_text = block.settings.hide_everything_except_text -%}
 
 <section class="max-w-screen-xl mx-auto px-4 py-3">
   <!-- Dynamic Free Shipping Progress Bar Widget (No border) -->
@@ -25,9 +25,9 @@
     <div class="flex justify-between text-xs text-primary font-bold">
       <span id="shipping-status-text">
         {%- if cart_total_dkk < threshold -%}
-          Køb for {{ missing | times: 100 | money }} mere for at få fri fragt
+          KÃ¸b for {{ missing | times: 100 | money }} mere for at fÃ¥ fri fragt
         {%- else -%}
-          Du har opnået fri fragt!
+          Du har opnÃ¥et fri fragt!
         {%- endif -%}
       </span>
       <span id="shipping-percent-text" class="{% if hide_everything_except_text %}hidden{% endif %}">{{ progress | round }}%</span>
@@ -78,10 +78,10 @@
 
       if (cartTotal < threshold) {
         const missing = threshold - cartTotal;
-        statusText.textContent = "Køb for " + formatPrice(missing) + " mere for at få fri fragt";
+        statusText.textContent = "KÃ¸b for " + formatPrice(missing) + " mere for at fÃ¥ fri fragt";
         progressBar.className = "h-full bg-emerald-600 transition-all duration-300";
       } else {
-        statusText.textContent = "Du har opnået fri fragt!";
+        statusText.textContent = "Du har opnÃ¥et fri fragt!";
         progressBar.className = "h-full bg-emerald-500 transition-all duration-300";
       }
     }
@@ -105,8 +105,8 @@
               (r.description && r.description.toLowerCase().includes("standard"))
             );
             if (standardRate && standardRate.description) {
-              // Match gratis/free threshold e.g. "Gratis for ordrer på 599,00 kr. og derover"
-              const match = standardRate.description.match(/(?:ordrer på|over|ved køb over|over for)\s*([\d.,]+)/i) || 
+              // Match gratis/free threshold e.g. "Gratis for ordrer pÃ¥ 599,00 kr. og derover"
+              const match = standardRate.description.match(/(?:ordrer pÃ¥|over|ved kÃ¸b over|over for)\s*([\d.,]+)/i) || 
                             standardRate.description.match(/([\d.,]+)\s*kr/i) ||
                             standardRate.description.match(/([\d.,]+)/);
               if (match) {

@@ -1,0 +1,21 @@
+<section class="max-w-screen-xl mx-auto px-4 py-2" {{ block.shopify_attributes }}>
+  <div class="space-y-2.5 text-sm">
+    {% content_for 'blocks' %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Trust Checkmarks",
+  "blocks": [
+    {
+      "type": "@theme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Trust Checkmarks"
+    }
+  ]
+}
+{% endschema %}

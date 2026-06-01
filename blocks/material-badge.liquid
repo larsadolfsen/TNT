@@ -1,0 +1,33 @@
+<div class="flex flex-col items-center text-center space-y-2" {{ block.shopify_attributes }}>
+  {%- if block.settings.icon != blank -%}
+    <span class="material-symbols-outlined text-2xl text-slate-600">{{ block.settings.icon }}</span>
+  {%- endif -%}
+  {%- if block.settings.title != blank -%}
+    <span class="text-[10px] font-bold text-slate-700 leading-tight uppercase tracking-wider">{{ block.settings.title }}</span>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Material Badge",
+  "settings": [
+    {
+      "type": "text",
+      "id": "icon",
+      "label": "Material Symbol Ikon",
+      "default": "eco"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titel",
+      "default": "100% Phthalatfri"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Material Badge"
+    }
+  ]
+}
+{% endschema %}

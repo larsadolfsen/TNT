@@ -1,0 +1,47 @@
+<section class="px-4 py-4 bg-white" id="shopify-section-accordions-{{ block.id }}" {{ block.shopify_attributes }}>
+  <div class="divide-y divide-outline-variant border-y border-outline-variant max-w-screen-xl mx-auto">
+    {% content_for 'blocks' %}
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const sectionContainer = document.getElementById("shopify-section-accordions-{{ block.id }}");
+    if (!sectionContainer) return;
+    
+    const triggers = sectionContainer.querySelectorAll(".accordion-trigger");
+    triggers.forEach(trigger => {
+      if (trigger.dataset.accordionBound === "true") return;
+      trigger.dataset.accordionBound = "true";
+      
+      trigger.addEventListener("click", function() {
+        const content = this.nextElementSibling;
+        const icon = this.querySelector(".material-symbols-outlined");
+        
+        if (content.classList.contains("hidden")) {
+          content.classList.remove("hidden");
+          if (icon) icon.classList.add("rotate-180");
+        } else {
+          content.classList.add("hidden");
+          if (icon) icon.classList.remove("rotate-180");
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Accordions",
+  "blocks": [
+    {
+      "type": "@theme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Accordions"
+    }
+  ]
+}
+{% endschema %}

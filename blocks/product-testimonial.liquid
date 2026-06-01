@@ -1,22 +1,22 @@
-<section class="px-4 py-10 bg-surface-container border-y border-outline-variant">
+﻿<section class="px-4 py-10 bg-surface-container border-y border-outline-variant">
   <div class="max-w-screen-xl mx-auto">
-    {%- if section.settings.heading != blank -%}
-      <h3 class="text-center font-bold text-primary mb-6">{{ section.settings.heading }}</h3>
+    {%- if block.settings.heading != blank -%}
+      <h3 class="text-center font-bold text-primary mb-6">{{ block.settings.heading }}</h3>
     {%- endif -%}
     
     <div class="bg-white p-6 rounded-2xl shadow-sm space-y-3 italic text-center max-w-lg mx-auto">
       <div class="flex justify-center text-amber-500 mb-2">
-        {%- for i in (1..section.settings.stars) -%}
+        {%- for i in (1..block.settings.stars) -%}
           <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
         {%- endfor -%}
       </div>
       
-      {%- if section.settings.quote != blank -%}
-        <p class="text-sm text-primary">"{{ section.settings.quote }}"</p>
+      {%- if block.settings.quote != blank -%}
+        <p class="text-sm text-primary">"{{ block.settings.quote }}"</p>
       {%- endif -%}
       
-      {%- if section.settings.author != blank -%}
-        <p class="text-xs font-bold text-on-surface-variant not-italic">— {{ section.settings.author }}</p>
+      {%- if block.settings.author != blank -%}
+        <p class="text-xs font-bold text-on-surface-variant not-italic">â€” {{ block.settings.author }}</p>
       {%- endif -%}
     </div>
   </div>
@@ -45,13 +45,13 @@
       "type": "textarea",
       "id": "quote",
       "label": "Anmeldelse",
-      "default": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild."
+      "default": "Fantastisk kvalitet! Man ser nÃ¦sten ikke at dugen er pÃ¥, og den beskytter vores egetrÃ¦sbord perfekt mod bÃ¸rnenes spild."
     },
     {
       "type": "text",
       "id": "author",
       "label": "Forfatter",
-      "default": "Mette S., Verificeret køber"
+      "default": "Mette S., Verificeret kÃ¸ber"
     }
   ],
   "presets": [

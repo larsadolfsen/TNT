@@ -1,4 +1,4 @@
-{% comment %}
+﻿{% comment %}
   Product Price Section
   Renders the product price and base price per meter display.
 {% endcomment %}
@@ -6,7 +6,7 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign display_price = current_variant.price
-  assign suffix = section.settings.price_suffix
+  assign suffix = block.settings.price_suffix
   
   assign is_metervare = false
   if product.metafields.custom.metervare.value == true or product.metafields.custom.metervare == true
@@ -29,8 +29,8 @@
       <span class="text-sm text-on-surface-variant font-medium whitespace-nowrap">{{ suffix }}</span>
     {%- endif -%}
   </div>
-  {%- if section.settings.price_subtext != blank -%}
-    <p class="text-xs text-on-surface-variant mt-1.5">{{ section.settings.price_subtext }}</p>
+  {%- if block.settings.price_subtext != blank -%}
+    <p class="text-xs text-on-surface-variant mt-1.5">{{ block.settings.price_subtext }}</p>
   {%- endif -%}
 </section>
 
@@ -48,7 +48,7 @@
       "type": "text",
       "id": "price_subtext",
       "label": "Price subtext",
-      "default": "Skæres efter mål, så du kun betaler for den længde, du vælger."
+      "default": "SkÃ¦res efter mÃ¥l, sÃ¥ du kun betaler for den lÃ¦ngde, du vÃ¦lger."
     }
   ],
   "presets": [

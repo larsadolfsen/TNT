@@ -1,0 +1,23 @@
+<div class="flex items-center gap-2.5 text-primary font-medium" {{ block.shopify_attributes }}>
+  <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+  <span>{{ block.settings.text }}</span>
+</div>
+
+{% schema %}
+{
+  "name": "Trust Checkmark",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Indtast fordel her"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Checkmark"
+    }
+  ]
+}
+{% endschema %}
