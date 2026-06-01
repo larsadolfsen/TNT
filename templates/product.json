@@ -43,9 +43,80 @@
         "padding_top": 48,
         "padding_bottom": 48
       }
+    },
+    "row_nmPTLb": {
+      "type": "row",
+      "blocks": {
+        "group_hEdHPg": {
+          "type": "group",
+          "name": "t:general.column",
+          "settings": {
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "padding": 0
+          },
+          "blocks": {
+            "product_media_NERnUf": {
+              "type": "product-media",
+              "name": "Product Media Gallery",
+              "settings": {
+                "image_badge": "BESTSELLER"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_media_NERnUf"
+          ]
+        },
+        "group_d8Bkjn": {
+          "type": "group",
+          "name": "t:general.column",
+          "settings": {
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "padding": 0
+          },
+          "blocks": {
+            "product_price_xaFt46": {
+              "type": "product-price",
+              "name": "Product Price",
+              "settings": {
+                "price_suffix": "pr. meter inkl. moms",
+                "price_subtext": "SkÃ¦res efter mÃ¥l, sÃ¥ du kun betaler for den lÃ¦ngde, du vÃ¦lger."
+              },
+              "blocks": {}
+            },
+            "product_buy_buttons_7C6Jp6": {
+              "type": "product-buy-buttons",
+              "name": "Product Buy Buttons",
+              "settings": {
+                "text_before_price": "LÃ¦g i kurv â€“"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_price_xaFt46",
+            "product_buy_buttons_7C6Jp6"
+          ]
+        }
+      },
+      "block_order": [
+        "group_hEdHPg",
+        "group_d8Bkjn"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "light",
+        "layout_style": "full_width_bg",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
-    "row_t6riLp"
+    "row_t6riLp",
+    "row_nmPTLb"
   ]
 }
