@@ -41,7 +41,7 @@
             "sticky": false,
             "layout_direction": "group--vertical",
             "alignment": "flex-start",
-            "padding": 0
+            "padding": 24
           },
           "blocks": {
             "page_title_LtKcwz": {
