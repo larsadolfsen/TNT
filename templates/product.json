@@ -12,6 +12,15 @@
     "row_t6riLp": {
       "type": "row",
       "blocks": {
+        "page_title_Lq47YW": {
+          "type": "page-title",
+          "name": "Page Title",
+          "settings": {
+            "title_override": "{{ closest.product.title }}",
+            "show_description": true
+          },
+          "blocks": {}
+        },
         "product_trust_wtyTtH": {
           "type": "product-trust",
           "name": "Product Trust",
@@ -21,27 +30,18 @@
             "badge_text": "300+ købt den seneste måned"
           },
           "blocks": {}
-        },
-        "page_title_Lq47YW": {
-          "type": "page-title",
-          "name": "Page Title",
-          "settings": {
-            "title_override": "{{ closest.product.title }}",
-            "show_description": true
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "product_trust_wtyTtH",
-        "page_title_Lq47YW"
+        "page_title_Lq47YW",
+        "product_trust_wtyTtH"
       ],
       "name": "Row",
       "settings": {
         "background_color": "light",
         "layout_style": "full_width_bg",
-        "padding_top": 48,
-        "padding_bottom": 48
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "row_nmPTLb": {
