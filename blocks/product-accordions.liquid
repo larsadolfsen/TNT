@@ -5,9 +5,37 @@
     padding-left: {{ block.settings.padding_sides }}px !important;
     padding-right: {{ block.settings.padding_sides }}px !important;
   }
+
+  #shopify-section-accordions-{{ block.id }} > *:first-child {
+    border-top: 1px solid var(--color-outline-variant);
+  }
+
+  #shopify-section-accordions-{{ block.id }} > *:last-child {
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+
+  @media screen and (max-width: 767px) {
+    .row-section:not(.row-section--full-width) #shopify-block-{{ block.id }} {
+      margin-left: -2.5rem !important;
+      margin-right: -2.5rem !important;
+      width: calc(100% + 5rem) !important;
+    }
+
+    .row-section--full-width #shopify-block-{{ block.id }} {
+      margin-left: -1rem !important;
+      margin-right: -1rem !important;
+      width: calc(100% + 2rem) !important;
+    }
+
+    #shopify-section-accordions-{{ block.id }} .accordion-trigger,
+    #shopify-section-accordions-{{ block.id }} .accordion-content {
+      padding-left: 24px !important;
+      padding-right: 24px !important;
+    }
+  }
 {%- endstyle -%}
 
-<div class="divide-y divide-outline-variant border-y border-outline-variant" id="shopify-section-accordions-{{ block.id }}" {{ block.shopify_attributes }}>
+<div class="divide-y divide-outline-variant" id="shopify-section-accordions-{{ block.id }}" {{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 
