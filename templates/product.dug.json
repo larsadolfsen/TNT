@@ -28,20 +28,11 @@
             "badge_text": "300+ købt den seneste måned"
           },
           "blocks": {}
-        },
-        "product_price_b3pD9M": {
-          "type": "product-price",
-          "settings": {
-            "price_suffix": "pr. meter inkl. moms",
-            "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger."
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "page_title_BFEyAw",
-        "product_trust_UAAjJ7",
-        "product_price_b3pD9M"
+        "product_trust_UAAjJ7"
       ],
       "name": "Row",
       "settings": {
@@ -86,6 +77,14 @@
             "padding": 24
           },
           "blocks": {
+            "product_price_XNeEn4": {
+              "type": "product-price",
+              "settings": {
+                "price_suffix": "pr. meter inkl. moms",
+                "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger."
+              },
+              "blocks": {}
+            },
             "product_urgency_73fwVj": {
               "type": "product-urgency",
               "settings": {
@@ -153,6 +152,7 @@
             }
           },
           "block_order": [
+            "product_price_XNeEn4",
             "product_urgency_73fwVj",
             "product_customizer_6ahfJi",
             "product_buy_buttons_jHXRAz",
