@@ -13,7 +13,7 @@
   {{ block.shopify_attributes }}
 >
   <span 
-    class="inline-block text-[10px] font-bold px-3 py-1.5 rounded tracking-widest shadow-sm border uppercase"
+    class="inline-block text-[10px] font-bold px-3 py-1.5 rounded-md tracking-widest shadow-sm border uppercase"
     style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; border-color: {{ block.settings.background_color }};"
   >
     {{ block.settings.text | default: "BESTSELLER" }}
@@ -61,7 +61,7 @@
       "step": 2,
       "unit": "px",
       "label": "Afstand i toppen",
-      "default": 12
+      "default": 0
     },
     {
       "type": "range",
@@ -71,7 +71,7 @@
       "step": 2,
       "unit": "px",
       "label": "Afstand i bunden",
-      "default": 12
+      "default": 0
     },
     {
       "type": "range",
