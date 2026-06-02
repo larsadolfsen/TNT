@@ -1,1 +1,384 @@
--NoNewline
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "row_VRkqnV": {
+      "type": "row",
+      "blocks": {
+        "page_title_BFEyAw": {
+          "type": "page-title",
+          "settings": {
+            "title_override": "{{ product.title }}",
+            "show_description": true,
+            "padding_top": 12,
+            "padding_bottom": 0,
+            "padding_sides": 16
+          },
+          "blocks": {}
+        },
+        "product_trust_UAAjJ7": {
+          "type": "product-trust",
+          "settings": {
+            "rating_score": "4,8",
+            "rating_count": "163",
+            "badge_text": "300+ købt den seneste måned",
+            "padding_top": 0,
+            "padding_bottom": 16,
+            "padding_sides": 16
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "page_title_BFEyAw",
+        "product_trust_UAAjJ7"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "light",
+        "layout_style": "full_width_bg",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 0,
+        "disable_block_padding_vertical_mobile": false,
+        "disable_block_padding_horizontal_mobile": false
+      }
+    },
+    "product_content": {
+      "type": "row",
+      "blocks": {
+        "group_beq9Py": {
+          "type": "group",
+          "name": "Media",
+          "settings": {
+            "sticky": true,
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {
+            "product_media_Rq68bn": {
+              "type": "product-media",
+              "settings": {
+                "image_badge": "BESTSELLER",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_media_Rq68bn"
+          ]
+        },
+        "group_jbctmY": {
+          "type": "group",
+          "name": "Buy",
+          "settings": {
+            "sticky": false,
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {
+            "product_price_XNeEn4": {
+              "type": "product-price",
+              "settings": {
+                "price_suffix": "pr. meter inkl. moms",
+                "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger.",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "product_urgency_73fwVj": {
+              "type": "product-urgency",
+              "settings": {
+                "show_urgency": true,
+                "urgency_text": "Kun få på lager – bestil snart",
+                "hide_under_limit": 5,
+                "padding_top": 12,
+                "padding_bottom": 12,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "product_customizer_6ahfJi": {
+              "type": "product-customizer",
+              "settings": {
+                "metervare_product": "firkantet-dug",
+                "step_size": 10,
+                "min_length": 50,
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "product_buy_buttons_jHXRAz": {
+              "type": "product-buy-buttons",
+              "settings": {
+                "text_before_price": "Læg i kurv –",
+                "padding_top": 12,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "product_shipping_progress_QWXqtB": {
+              "type": "product-shipping-progress",
+              "settings": {
+                "hide_everything_except_text": true,
+                "padding_top": 8,
+                "padding_bottom": 12,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "product_trust_checkmarks_y8UfaW": {
+              "type": "product-trust-checkmarks",
+              "settings": {
+                "padding_top": 12,
+                "padding_bottom": 12,
+                "padding_sides": 0
+              },
+              "blocks": {
+                "countdown_4gXjVB": {
+                  "type": "trust-countdown",
+                  "settings": {
+                    "text": "Bestil inden",
+                    "suffix": "timer. Så sender vi i dag."
+                  },
+                  "blocks": {}
+                },
+                "checkmark_7inAb8": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "1-2 dages levering fra 59 kr."
+                  },
+                  "blocks": {}
+                },
+                "checkmark_XTeX48": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "30 dages fuld returret"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "countdown_4gXjVB",
+                "checkmark_7inAb8",
+                "checkmark_XTeX48"
+              ]
+            }
+          },
+          "block_order": [
+            "product_price_XNeEn4",
+            "product_urgency_73fwVj",
+            "product_customizer_6ahfJi",
+            "product_buy_buttons_jHXRAz",
+            "product_shipping_progress_QWXqtB",
+            "product_trust_checkmarks_y8UfaW"
+          ]
+        }
+      },
+      "block_order": [
+        "group_beq9Py",
+        "group_jbctmY"
+      ],
+      "settings": {
+        "background_color": "light",
+        "layout_style": "full_width_bg",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 0,
+        "disable_block_padding_vertical_mobile": false,
+        "disable_block_padding_horizontal_mobile": false
+      }
+    },
+    "row_CQqaPe": {
+      "type": "row",
+      "blocks": {
+        "product_testimonial_gzGpa4": {
+          "type": "product-testimonial",
+          "settings": {
+            "heading": "Det siger kunderne",
+            "stars": 5,
+            "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
+            "author": "Mette S., Verificeret køber",
+            "stars_2": 5,
+            "quote_2": "Super hurtig levering og rigtig flot dug. Målene passede perfekt.",
+            "author_2": "Thomas K., Verificeret køber",
+            "stars_3": 5,
+            "quote_3": "Rigtig god service. Dugen er nem at tørre af og ser virkelig eksklusiv ud.",
+            "author_3": "Sofia L., Verificeret køber",
+            "stars_4": 5,
+            "quote_4": "Perfekt beskyttelse til vores spisebord. Dugen ligger stabilt og glider ikke.",
+            "author_4": "Jonas M., Verificeret køber",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_testimonial_gzGpa4"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "shade",
+        "layout_style": "full_width_bg",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 0,
+        "disable_block_padding_vertical_mobile": false,
+        "disable_block_padding_horizontal_mobile": false
+      }
+    },
+    "row_VY7RVT": {
+      "type": "row",
+      "blocks": {
+        "product_materials_akUM8W": {
+          "type": "product-materials",
+          "settings": {
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {
+            "badge_qNRGJX": {
+              "type": "material-badge",
+              "settings": {
+                "icon": "eco",
+                "title": "100% Phthalatfri"
+              },
+              "blocks": {}
+            },
+            "badge_NPwiJF": {
+              "type": "material-badge",
+              "settings": {
+                "icon": "verified",
+                "title": "Oeko-Tex 100"
+              },
+              "blocks": {}
+            },
+            "badge_QGPn7b": {
+              "type": "material-badge",
+              "settings": {
+                "icon": "local_shipping",
+                "title": "Sendes på rulle"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "badge_qNRGJX",
+            "badge_NPwiJF",
+            "badge_QGPn7b"
+          ]
+        },
+        "product_accordions_xFiWe3": {
+          "type": "product-accordions",
+          "settings": {
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {
+            "accordion_Bqa6TC": {
+              "type": "accordion-panel",
+              "settings": {
+                "title": "Produktspecifikationer",
+                "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>"
+              },
+              "blocks": {}
+            },
+            "accordion_QJ83Ua": {
+              "type": "accordion-panel",
+              "settings": {
+                "title": "Om brandet",
+                "content": "<p>Textil &amp; Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>"
+              },
+              "blocks": {}
+            },
+            "accordion_ECACmL": {
+              "type": "accordion-panel",
+              "settings": {
+                "title": "Vedligeholdelse",
+                "content": "<p><strong>Daglig rengøring:</strong> Tør blot overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "accordion_Bqa6TC",
+            "accordion_QJ83Ua",
+            "accordion_ECACmL"
+          ]
+        },
+        "product_banner_text_ecegUE": {
+          "type": "product-banner-text",
+          "settings": {
+            "image": "{{ product.featured_image }}",
+            "heading": "",
+            "content": "<p>{{ product.description }}</p>",
+            "border_top": true,
+            "border_bottom": true,
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "product_cross_sell_VAGeAJ": {
+          "type": "product-cross-sell",
+          "settings": {
+            "cross_sell_1": "",
+            "cross_sell_2": "",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_materials_akUM8W",
+        "product_accordions_xFiWe3",
+        "product_banner_text_ecegUE",
+        "product_cross_sell_VAGeAJ"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "light",
+        "layout_style": "boxed",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 0,
+        "disable_block_padding_vertical_mobile": false,
+        "disable_block_padding_horizontal_mobile": false
+      }
+    }
+  },
+  "order": [
+    "row_VRkqnV",
+    "product_content",
+    "row_CQqaPe",
+    "row_VY7RVT"
+  ]
+}
