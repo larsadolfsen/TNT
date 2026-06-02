@@ -2,31 +2,249 @@
   #shopify-block-{{ block.id }} {
     padding-top: {{ block.settings.padding_top }}px !important;
     padding-bottom: {{ block.settings.padding_bottom }}px !important;
-    padding-left: {{ block.settings.padding_horizontal }}px !important;
-    padding-right: {{ block.settings.padding_horizontal }}px !important;
+    padding-left: {{ block.settings.padding_sides }}px !important;
+    padding-right: {{ block.settings.padding_sides }}px !important;
+  }
+
+  .testimonial-slider-{{ block.id }} {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-bottom: 16px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .testimonial-slider-{{ block.id }}::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonial-item-{{ block.id }} {
+    flex-shrink: 0;
+    width: 85%;
+    scroll-snap-align: center;
+  }
+
+  .testimonial-dot-btn-{{ block.id }} {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: all 0.2s ease-in-out;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media screen and (min-width: 768px) {
+    .testimonial-slider-{{ block.id }} {
+      display: grid;
+      gap: 24px;
+      overflow-x: visible;
+      padding-bottom: 0;
+    }
+
+    .testimonial-item-{{ block.id }} {
+      width: 100%;
+    }
+
+    .testimonial-grid-2-{{ block.id }} {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 896px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .testimonial-grid-3-{{ block.id }} {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .testimonial-grid-4-{{ block.id }} {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 {%- endstyle -%}
 
-<section class="p-4 bg-surface-container" {{ block.shopify_attributes }}>
+{%- assign testimonial_count = 0 -%}
+{%- if block.settings.quote != blank -%}
+  {%- assign testimonial_count = testimonial_count | plus: 1 -%}
+{%- endif -%}
+{%- if block.settings.quote_2 != blank -%}
+  {%- assign testimonial_count = testimonial_count | plus: 1 -%}
+{%- endif -%}
+{%- if block.settings.quote_3 != blank -%}
+  {%- assign testimonial_count = testimonial_count | plus: 1 -%}
+{%- endif -%}
+{%- if block.settings.quote_4 != blank -%}
+  {%- assign testimonial_count = testimonial_count | plus: 1 -%}
+{%- endif -%}
+
+<section class="py-8 bg-surface-container" {{ block.shopify_attributes }}>
+  <div class="max-w-[var(--page-width)] mx-auto px-4 md:px-8">
     {%- if block.settings.heading != blank -%}
-      <h3 class="text-center font-bold text-primary mb-6">{{ block.settings.heading }}</h3>
+      <h3 class="text-center font-bold text-primary mb-6 text-xl md:text-2xl">{{ block.settings.heading }}</h3>
     {%- endif -%}
-    
-    <div class="bg-white p-6 rounded-2xl shadow-sm space-y-3 italic text-center max-w-lg mx-auto">
-      <div class="flex justify-center text-amber-500 mb-2">
-        {%- for i in (1..block.settings.stars) -%}
-          <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
-        {%- endfor -%}
+
+    {%- if testimonial_count == 1 -%}
+      <div class="bg-white p-6 rounded-2xl shadow-sm space-y-3 italic text-center max-w-lg mx-auto">
+        <div class="flex justify-center text-amber-500 mb-2">
+          {%- for i in (1..block.settings.stars) -%}
+            <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+          {%- endfor -%}
+        </div>
+        {%- if block.settings.quote != blank -%}
+          <p class="text-sm text-primary">"{{ block.settings.quote }}"</p>
+        {%- endif -%}
+        {%- if block.settings.author != blank -%}
+          <p class="text-xs font-bold text-on-surface-variant not-italic">— {{ block.settings.author }}</p>
+        {%- endif -%}
       </div>
-      
-      {%- if block.settings.quote != blank -%}
-        <p class="text-sm text-primary">"{{ block.settings.quote }}"</p>
-      {%- endif -%}
-      
-      {%- if block.settings.author != blank -%}
-        <p class="text-xs font-bold text-on-surface-variant not-italic">— {{ block.settings.author }}</p>
-      {%- endif -%}
-    </div>
+    {%- elsif testimonial_count > 1 -%}
+      <div class="relative w-full overflow-hidden">
+        <!-- Slider / Grid wrapper -->
+        <div 
+          id="testimonial-slider-{{ block.id }}" 
+          class="testimonial-slider-{{ block.id }} {% if testimonial_count == 2 %}testimonial-grid-2-{{ block.id }}{% elsif testimonial_count == 3 %}testimonial-grid-3-{{ block.id }}{% else %}testimonial-grid-4-{{ block.id }}{% endif %} px-2 md:px-0"
+        >
+          <!-- Review 1 -->
+          {%- if block.settings.quote != blank -%}
+            <div class="testimonial-item-{{ block.id }} bg-white p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
+              <div>
+                <div class="flex justify-center text-amber-500 mb-2">
+                  {%- for i in (1..block.settings.stars) -%}
+                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+                  {%- endfor -%}
+                </div>
+                <p class="text-sm text-primary">"{{ block.settings.quote }}"</p>
+              </div>
+              {%- if block.settings.author != blank -%}
+                <p class="text-xs font-bold text-on-surface-variant not-italic mt-2">— {{ block.settings.author }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          <!-- Review 2 -->
+          {%- if block.settings.quote_2 != blank -%}
+            <div class="testimonial-item-{{ block.id }} bg-white p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
+              <div>
+                <div class="flex justify-center text-amber-500 mb-2">
+                  {%- for i in (1..block.settings.stars_2) -%}
+                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+                  {%- endfor -%}
+                </div>
+                <p class="text-sm text-primary">"{{ block.settings.quote_2 }}"</p>
+              </div>
+              {%- if block.settings.author_2 != blank -%}
+                <p class="text-xs font-bold text-on-surface-variant not-italic mt-2">— {{ block.settings.author_2 }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          <!-- Review 3 -->
+          {%- if block.settings.quote_3 != blank -%}
+            <div class="testimonial-item-{{ block.id }} bg-white p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
+              <div>
+                <div class="flex justify-center text-amber-500 mb-2">
+                  {%- for i in (1..block.settings.stars_3) -%}
+                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+                  {%- endfor -%}
+                </div>
+                <p class="text-sm text-primary">"{{ block.settings.quote_3 }}"</p>
+              </div>
+              {%- if block.settings.author_3 != blank -%}
+                <p class="text-xs font-bold text-on-surface-variant not-italic mt-2">— {{ block.settings.author_3 }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          <!-- Review 4 -->
+          {%- if block.settings.quote_4 != blank -%}
+            <div class="testimonial-item-{{ block.id }} bg-white p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
+              <div>
+                <div class="flex justify-center text-amber-500 mb-2">
+                  {%- for i in (1..block.settings.stars_4) -%}
+                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+                  {%- endfor -%}
+                </div>
+                <p class="text-sm text-primary">"{{ block.settings.quote_4 }}"</p>
+              </div>
+              {%- if block.settings.author_4 != blank -%}
+                <p class="text-xs font-bold text-on-surface-variant not-italic mt-2">— {{ block.settings.author_4 }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <!-- Slider Dots (Mobile only) -->
+        <div class="flex justify-center gap-2 mt-4 md:hidden">
+          {%- for i in (1..testimonial_count) -%}
+            <button 
+              type="button" 
+              class="testimonial-dot-btn-{{ block.id }} testimonial-dot-{{ block.id }}"
+              aria-label="Gå til anmeldelse {{ i }}"
+            ></button>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const slider = document.getElementById('testimonial-slider-{{ block.id }}');
+          const dots = document.querySelectorAll('.testimonial-dot-{{ block.id }}');
+          if (!slider || dots.length === 0) return;
+
+          const updateDots = () => {
+            const sliderRect = slider.getBoundingClientRect();
+            const sliderCenter = sliderRect.left + sliderRect.width / 2;
+            
+            let closestIndex = 0;
+            let minDistance = Infinity;
+            
+            const items = slider.querySelectorAll('.testimonial-item-{{ block.id }}');
+            items.forEach((item, index) => {
+              const itemRect = item.getBoundingClientRect();
+              const itemCenter = itemRect.left + itemRect.width / 2;
+              const distance = Math.abs(sliderCenter - itemCenter);
+              if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = index;
+              }
+            });
+            
+            dots.forEach((dot, index) => {
+              if (index === closestIndex) {
+                dot.style.backgroundColor = 'var(--color-primary)';
+                dot.style.opacity = '1';
+              } else {
+                dot.style.backgroundColor = 'var(--color-outline-variant)';
+                dot.style.opacity = '0.5';
+              }
+            });
+          };
+
+          slider.addEventListener('scroll', updateDots);
+          
+          dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+              const items = slider.querySelectorAll('.testimonial-item-{{ block.id }}');
+              const item = items[index];
+              if (item) {
+                const offset = item.offsetLeft - (slider.clientWidth - item.clientWidth) / 2;
+                slider.scrollTo({
+                  left: offset,
+                  behavior: 'smooth'
+                });
+              }
+            });
+          });
+          
+          // Initial run to color the dots correctly
+          updateDots();
+        });
+      </script>
+    {%- endif -%}
+  </div>
 </section>
 
 {% schema %}
@@ -39,6 +257,10 @@
       "id": "heading",
       "label": "Sektionsoverskrift",
       "default": "Det siger kunderne"
+    },
+    {
+      "type": "header",
+      "content": "Anmeldelse 1"
     },
     {
       "type": "range",
@@ -62,6 +284,85 @@
       "default": "Mette S., Verificeret køber"
     },
     {
+      "type": "header",
+      "content": "Anmeldelse 2"
+    },
+    {
+      "type": "range",
+      "id": "stars_2",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Stjerner",
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "quote_2",
+      "label": "Anmeldelse",
+      "default": "Super hurtig levering og rigtig flot dug. Målene passede perfekt."
+    },
+    {
+      "type": "text",
+      "id": "author_2",
+      "label": "Forfatter",
+      "default": "Thomas K., Verificeret køber"
+    },
+    {
+      "type": "header",
+      "content": "Anmeldelse 3"
+    },
+    {
+      "type": "range",
+      "id": "stars_3",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Stjerner",
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "quote_3",
+      "label": "Anmeldelse",
+      "default": "Rigtig god service. Dugen er nem at tørre af og ser virkelig eksklusiv ud."
+    },
+    {
+      "type": "text",
+      "id": "author_3",
+      "label": "Forfatter",
+      "default": "Sofia L., Verificeret køber"
+    },
+    {
+      "type": "header",
+      "content": "Anmeldelse 4"
+    },
+    {
+      "type": "range",
+      "id": "stars_4",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Stjerner",
+      "default": 5
+    },
+    {
+      "type": "textarea",
+      "id": "quote_4",
+      "label": "Anmeldelse",
+      "default": "Perfekt beskyttelse til vores spisebord. Dugen ligger stabilt og glider ikke."
+    },
+    {
+      "type": "text",
+      "id": "author_4",
+      "label": "Forfatter",
+      "default": "Jonas M., Verificeret køber"
+    },
+    {
+      "type": "header",
+      "content": "Afstand"
+    },
+    {
       "type": "range",
       "id": "padding_top",
       "min": 0,
@@ -83,12 +384,12 @@
     },
     {
       "type": "range",
-      "id": "padding_horizontal",
+      "id": "padding_sides",
       "min": 0,
       "max": 100,
       "step": 2,
       "unit": "px",
-      "label": "Sideafstand",
+      "label": "Afstand i siderne",
       "default": 0
     }
   ],

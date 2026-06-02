@@ -7,8 +7,8 @@
   #shopify-block-{{ block.id }} {
     padding-top: {{ block.settings.padding_top }}px !important;
     padding-bottom: {{ block.settings.padding_bottom }}px !important;
-    padding-left: {{ block.settings.padding_horizontal }}px !important;
-    padding-right: {{ block.settings.padding_horizontal }}px !important;
+    padding-left: {{ block.settings.padding_sides }}px !important;
+    padding-right: {{ block.settings.padding_sides }}px !important;
   }
 {%- endstyle -%}
 
@@ -78,12 +78,12 @@
     },
     {
       "type": "range",
-      "id": "padding_horizontal",
+      "id": "padding_sides",
       "min": 0,
       "max": 100,
       "step": 2,
       "unit": "px",
-      "label": "Sideafstand",
+      "label": "Afstand i siderne",
       "default": 0
     }
   ],

@@ -2,12 +2,16 @@
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
+    padding-left: {{ section.settings.padding_sides | times: 0.75 | round }}px;
+    padding-right: {{ section.settings.padding_sides | times: 0.75 | round }}px;
   }
 
   @media screen and (min-width: 768px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
+      padding-left: {{ section.settings.padding_sides }}px;
+      padding-right: {{ section.settings.padding_sides }}px;
     }
   }
 
@@ -124,6 +128,16 @@
       "unit": "px",
       "label": "Afstand i bunden",
       "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_sides",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i siderne",
+      "default": 0
     },
     {
       "type": "checkbox",

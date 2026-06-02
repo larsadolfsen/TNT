@@ -11,10 +11,18 @@
   {% content_for 'block', type: 'group', id: 'group' %}
 {% enddoc %}
 
+{%- style -%}
+  #shopify-block-{{ block.id }} .group {
+    padding-top: {{ block.settings.padding_top }}px !important;
+    padding-bottom: {{ block.settings.padding_bottom }}px !important;
+    padding-left: {{ block.settings.padding_sides }}px !important;
+    padding-right: {{ block.settings.padding_sides }}px !important;
+  }
+{%- endstyle -%}
+
 <div
   class="group {{ block.settings.layout_direction }}{% if block.settings.sticky %} group--sticky{% endif %}"
   style="
-    --padding: {{ block.settings.padding }}px;
     --alignment: {{ block.settings.alignment }};
   "
   {{ block.shopify_attributes }}
@@ -34,13 +42,11 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0 var(--padding);
   }
 
   .group--vertical {
     flex-direction: column;
     align-items: var(--alignment);
-    padding: var(--padding) 0;
   }
 {% endstylesheet %}
 
@@ -79,13 +85,33 @@
     },
     {
       "type": "range",
-      "id": "padding",
-      "label": "t:labels.padding",
-      "default": 0,
+      "id": "padding_top",
       "min": 0,
-      "max": 200,
+      "max": 100,
       "step": 2,
-      "unit": "px"
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_sides",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i siderne",
+      "default": 0
     }
   ],
   "presets": [
@@ -95,7 +121,9 @@
       "settings": {
         "layout_direction": "group--vertical",
         "alignment": "flex-start",
-        "padding": 0
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 0
       }
     },
     {
@@ -103,7 +131,9 @@
       "category": "t:general.layout",
       "settings": {
         "layout_direction": "group--horizontal",
-        "padding": 0
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 0
       }
     }
   ]

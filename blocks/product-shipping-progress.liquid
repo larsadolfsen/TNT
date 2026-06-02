@@ -23,15 +23,15 @@
   #shopify-block-{{ block.id }} {
     padding-top: {{ block.settings.padding_top }}px !important;
     padding-bottom: {{ block.settings.padding_bottom }}px !important;
-    padding-left: {{ block.settings.padding_horizontal }}px !important;
-    padding-right: {{ block.settings.padding_horizontal }}px !important;
+    padding-left: {{ block.settings.padding_sides }}px !important;
+    padding-right: {{ block.settings.padding_sides }}px !important;
   }
 {%- endstyle -%}
 
 <div {{ block.shopify_attributes }}>
   <!-- Dynamic Free Shipping Progress Bar Widget (No border) -->
   <div id="free-shipping-widget" class="{% if hide_everything_except_text %}py-1{% else %}bg-white p-4 rounded-xl space-y-2 border border-outline-variant{% endif %}" data-threshold="{{ threshold }}">
-    <div class="flex justify-between text-xs text-primary font-bold">
+    <div class="flex {% if hide_everything_except_text %}justify-center text-center{% else %}justify-between{% endif %} text-xs text-primary font-bold">
       <span id="shipping-status-text">
         {%- if cart_total_dkk < threshold -%}
           Køb for {{ missing | times: 100 | money }} mere for at få fri fragt
@@ -221,12 +221,12 @@
     },
     {
       "type": "range",
-      "id": "padding_horizontal",
+      "id": "padding_sides",
       "min": 0,
       "max": 100,
       "step": 2,
       "unit": "px",
-      "label": "Sideafstand",
+      "label": "Afstand i siderne",
       "default": 0
     }
   ],

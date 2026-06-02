@@ -119,7 +119,7 @@
   }
 
   .template-product .product-media-gallery {
-    border-radius: 0px !important;
+    border-radius: 1rem !important;
   }
 
   /* Reduce space between mobile media gallery (dots) and the product content details on mobile */
@@ -349,5 +349,14 @@ html, body {
   width: 100%;
   padding-left: 0 !important;
   padding-right: 0 !important;
+}
+
+/* Nested sub-blocks inside galleries, accordions, and trust checkmarks should have 0 padding */
+.shopify-block-trust-checkmark,
+.shopify-block-trust-countdown,
+.shopify-block-accordion-panel,
+.shopify-block-material-badge {
+  display: block;
+  padding: 0 !important;
 }
 

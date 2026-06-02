@@ -2,14 +2,13 @@
   #shopify-block-{{ block.id }} {
     padding-top: {{ block.settings.padding_top }}px !important;
     padding-bottom: {{ block.settings.padding_bottom }}px !important;
-    padding-left: {{ block.settings.padding_horizontal }}px !important;
-    padding-right: {{ block.settings.padding_horizontal }}px !important;
+    padding-left: {{ block.settings.padding_sides }}px !important;
+    padding-right: {{ block.settings.padding_sides }}px !important;
   }
 {%- endstyle -%}
 
 <div class="flex flex-wrap justify-center items-start gap-8 md:gap-16" {{ block.shopify_attributes }}>
-    {% content_for 'blocks' %}
-  </div>
+  {% content_for 'blocks' %}
 </div>
 
 {% schema %}
@@ -44,12 +43,12 @@
     },
     {
       "type": "range",
-      "id": "padding_horizontal",
+      "id": "padding_sides",
       "min": 0,
       "max": 100,
       "step": 2,
       "unit": "px",
-      "label": "Sideafstand",
+      "label": "Afstand i siderne",
       "default": 0
     }
   ],
