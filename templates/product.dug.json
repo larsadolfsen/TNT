@@ -30,7 +30,7 @@
             "rating_count": "163",
             "badge_text": "300+ købt den seneste måned",
             "padding_top": 0,
-            "padding_bottom": 0,
+            "padding_bottom": 16,
             "padding_sides": 16
           },
           "blocks": {}
