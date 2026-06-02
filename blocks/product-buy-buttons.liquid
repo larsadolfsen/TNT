@@ -26,6 +26,21 @@
     assign width = 100
   endif
 -%}
+{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
+  {%- style -%}
+    {%- if block.settings.suppress_padding_top -%}
+      #shopify-block-{{ block.id }} {
+        padding-top: 0 !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.suppress_padding_bottom -%}
+      #shopify-block-{{ block.id }} {
+        padding-bottom: 0 !important;
+      }
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}
+
 <div class="flex flex-col gap-4" {{ block.shopify_attributes }}>
     <!-- Left: Selected Specs & Price -->
     <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full">
@@ -352,6 +367,18 @@
       "id": "text_before_price",
       "label": "Tekst før pris på købsknap",
       "default": "Læg i kurv – "
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_top",
+      "label": "Fjern afstand i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_bottom",
+      "label": "Fjern afstand i bunden",
+      "default": false
     }
   ],
   "presets": [

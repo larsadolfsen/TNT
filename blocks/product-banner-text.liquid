@@ -8,6 +8,21 @@
   endif
 -%}
 
+{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
+  {%- style -%}
+    {%- if block.settings.suppress_padding_top -%}
+      #shopify-block-{{ block.id }} {
+        padding-top: 0 !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.suppress_padding_bottom -%}
+      #shopify-block-{{ block.id }} {
+        padding-bottom: 0 !important;
+      }
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}
+
 <section class="p-4 space-y-6 bg-white border-outline-variant{{ border_classes }}" {{ block.shopify_attributes }}>
   {%- if block.settings.image != blank -%}
     <div class="aspect-video w-full rounded-xl overflow-hidden bg-surface-container">
@@ -67,6 +82,18 @@
       "id": "border_bottom",
       "label": "Vis kant i bunden",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_top",
+      "label": "Fjern afstand i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_bottom",
+      "label": "Fjern afstand i bunden",
+      "default": false
     }
   ],
   "presets": [

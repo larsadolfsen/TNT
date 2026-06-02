@@ -6,6 +6,21 @@
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 
+{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
+  {%- style -%}
+    {%- if block.settings.suppress_padding_top -%}
+      #shopify-block-{{ block.id }} {
+        padding-top: 0 !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.suppress_padding_bottom -%}
+      #shopify-block-{{ block.id }} {
+        padding-bottom: 0 !important;
+      }
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}
+
 <div class="relative w-full" {{ block.shopify_attributes }}>
   <!-- Hidden dummy image for third-party cart compatibility -->
   {%- if featured_image -%}
@@ -486,6 +501,18 @@
       "id": "image_badge",
       "label": "Image Sticker Text",
       "default": "BESTSELLER"
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_top",
+      "label": "Fjern afstand i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_bottom",
+      "label": "Fjern afstand i bunden",
+      "default": false
     }
   ],
   "presets": [

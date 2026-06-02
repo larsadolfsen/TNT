@@ -1,3 +1,18 @@
+{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
+  {%- style -%}
+    {%- if block.settings.suppress_padding_top -%}
+      #shopify-block-{{ block.id }} {
+        padding-top: 0 !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.suppress_padding_bottom -%}
+      #shopify-block-{{ block.id }} {
+        padding-bottom: 0 !important;
+      }
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}
+
 {% comment %}
   Product Stock Urgency Section
   Renders the stock warning message with an warning icon.
@@ -102,6 +117,18 @@
       "label": "Vis kun hvis under X enheder",
       "default": 5,
       "info": "Vis kun stock urgency hvis der er under dette antal enheder tilbage. Banneret skjules også, hvis varen er helt udsolgt."
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_top",
+      "label": "Fjern afstand i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_bottom",
+      "label": "Fjern afstand i bunden",
+      "default": false
     }
   ],
   "presets": [

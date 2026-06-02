@@ -54,6 +54,21 @@
   endif
 -%}
 
+{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
+  {%- style -%}
+    {%- if block.settings.suppress_padding_top -%}
+      #shopify-block-{{ block.id }} {
+        padding-top: 0 !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.suppress_padding_bottom -%}
+      #shopify-block-{{ block.id }} {
+        padding-bottom: 0 !important;
+      }
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}
+
 <!-- Hidden element to signal to product-buy-buttons that customizer is active -->
 <div id="shape-selector" style="display: none;"></div>
 
@@ -386,6 +401,18 @@
       "id": "min_length",
       "label": "Minimum længde (cm)",
       "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_top",
+      "label": "Fjern afstand i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_bottom",
+      "label": "Fjern afstand i bunden",
+      "default": false
     }
   ],
   "presets": [

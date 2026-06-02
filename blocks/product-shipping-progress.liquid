@@ -19,6 +19,21 @@
 
 {%- assign hide_everything_except_text = block.settings.hide_everything_except_text -%}
 
+{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
+  {%- style -%}
+    {%- if block.settings.suppress_padding_top -%}
+      #shopify-block-{{ block.id }} {
+        padding-top: 0 !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.suppress_padding_bottom -%}
+      #shopify-block-{{ block.id }} {
+        padding-bottom: 0 !important;
+      }
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}
+
 <div {{ block.shopify_attributes }}>
   <!-- Dynamic Free Shipping Progress Bar Widget (No border) -->
   <div id="free-shipping-widget" class="{% if hide_everything_except_text %}py-1{% else %}bg-white p-4 rounded-xl space-y-2 border border-outline-variant{% endif %}" data-threshold="{{ threshold }}">
@@ -188,6 +203,18 @@
       "type": "checkbox",
       "id": "hide_everything_except_text",
       "label": "Skjul alt undtagen tekst",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_top",
+      "label": "Fjern afstand i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_bottom",
+      "label": "Fjern afstand i bunden",
       "default": false
     }
   ],

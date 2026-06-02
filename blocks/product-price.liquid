@@ -19,6 +19,21 @@
   endif
 -%}
 
+{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
+  {%- style -%}
+    {%- if block.settings.suppress_padding_top -%}
+      #shopify-block-{{ block.id }} {
+        padding-top: 0 !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.suppress_padding_bottom -%}
+      #shopify-block-{{ block.id }} {
+        padding-bottom: 0 !important;
+      }
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}
+
 <div {{ block.shopify_attributes }}>
   <!-- Pricing -->
   <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
@@ -50,6 +65,18 @@
       "id": "price_subtext",
       "label": "Price subtext",
       "default": "Skæres efter mål, så du kun betaler for den længde, du vælger."
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_top",
+      "label": "Fjern afstand i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_bottom",
+      "label": "Fjern afstand i bunden",
+      "default": false
     }
   ],
   "presets": [

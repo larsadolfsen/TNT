@@ -1,3 +1,18 @@
+{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
+  {%- style -%}
+    {%- if block.settings.suppress_padding_top -%}
+      #shopify-block-{{ block.id }} {
+        padding-top: 0 !important;
+      }
+    {%- endif -%}
+    {%- if block.settings.suppress_padding_bottom -%}
+      #shopify-block-{{ block.id }} {
+        padding-bottom: 0 !important;
+      }
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}
+
 <section class="p-4 bg-surface-container" {{ block.shopify_attributes }}>
     {%- if block.settings.heading != blank -%}
       <h3 class="text-center font-bold text-primary mb-6">{{ block.settings.heading }}</h3>
@@ -51,6 +66,18 @@
       "id": "author",
       "label": "Forfatter",
       "default": "Mette S., Verificeret køber"
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_top",
+      "label": "Fjern afstand i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "suppress_padding_bottom",
+      "label": "Fjern afstand i bunden",
+      "default": false
     }
   ],
   "presets": [
