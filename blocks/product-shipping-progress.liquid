@@ -49,6 +49,33 @@
     padding-left: {{ block.settings.padding_sides }}px !important;
     padding-right: {{ block.settings.padding_sides }}px !important;
   }
+  #shopify-block-{{ block.id }} #shipping-amount-ticker,
+  #shopify-block-{{ block.id }} #shipping-percent-text {
+    display: inline-flex;
+    align-items: baseline;
+    overflow: hidden;
+  }
+  #shopify-block-{{ block.id }} .ticker-char {
+    display: inline-block;
+    white-space: pre;
+    line-height: 1;
+  }
+  #shopify-block-{{ block.id }} .ticker-digit {
+    height: 1em;
+    overflow: hidden;
+    position: relative;
+  }
+  #shopify-block-{{ block.id }} .ticker-digit-list {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  #shopify-block-{{ block.id }} .ticker-digit-list span {
+    height: 1em;
+    line-height: 1;
+    display: block;
+    text-align: center;
+  }
 {%- endstyle -%}
 
 <div {{ block.shopify_attributes }}>
@@ -56,11 +83,12 @@
   <div id="free-shipping-widget" class="{% if hide_everything_except_text %}py-1{% else %}bg-white p-4 rounded-xl space-y-2 border border-outline-variant{% endif %}" data-threshold="{{ threshold }}">
     <div class="flex {% if hide_everything_except_text %}justify-center text-center{% else %}justify-between{% endif %} text-xs text-primary font-bold">
       <span id="shipping-status-text">
-        {%- if potential_total < threshold -%}
-          Køb for {{ missing | times: 100 | money }} mere for at få fri fragt
-        {%- else -%}
+        <span id="shipping-progress-msg" class="{% if potential_total >= threshold %}hidden{% endif %}">
+          Køb for <span id="shipping-amount-ticker">{{ missing | times: 100 | money }}</span> mere for at få fri fragt
+        </span>
+        <span id="shipping-success-msg" class="{% if potential_total < threshold %}hidden{% endif %}">
           Du har opnået fri fragt!
-        {%- endif -%}
+        </span>
       </span>
       <span id="shipping-percent-text" class="{% if hide_everything_except_text %}hidden{% endif %}">{{ potential_progress | round }}%</span>
     </div>
@@ -84,13 +112,97 @@
       return value.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
     }
 
+    function createTickerChild(char, isDigit) {
+      const span = document.createElement('span');
+      if (isDigit) {
+        span.className = 'ticker-char ticker-digit';
+        span.setAttribute('data-value', char);
+        
+        const list = document.createElement('span');
+        list.className = 'ticker-digit-list';
+        for (let i = 0; i <= 9; i++) {
+          const digitSpan = document.createElement('span');
+          digitSpan.textContent = i;
+          list.appendChild(digitSpan);
+        }
+        list.style.transform = `translateY(-${char}0%)`;
+        span.appendChild(list);
+      } else {
+        span.className = 'ticker-char ticker-static';
+        span.textContent = char;
+      }
+      return span;
+    }
+
+    function updateTicker(tickerEl, valueString) {
+      const chars = valueString.split('');
+      
+      // Clear ticker if it doesn't contain ticker-char class (e.g. initial plain text load)
+      if (tickerEl.children.length === 0 || !tickerEl.firstElementChild.classList.contains('ticker-char')) {
+        tickerEl.innerHTML = '';
+        chars.forEach(char => {
+          const isDigit = char >= '0' && char <= '9';
+          tickerEl.appendChild(createTickerChild(char, isDigit));
+        });
+        return;
+      }
+
+      // Reconcile right-to-left
+      const currentChildren = Array.from(tickerEl.children);
+      const maxLen = Math.max(chars.length, currentChildren.length);
+      
+      for (let i = 0; i < maxLen; i++) {
+        const charIndex = chars.length - 1 - i;
+        const childIndex = currentChildren.length - 1 - i;
+        
+        const char = charIndex >= 0 ? chars[charIndex] : null;
+        const child = childIndex >= 0 ? currentChildren[childIndex] : null;
+        
+        if (char !== null) {
+          const isDigit = char >= '0' && char <= '9';
+          
+          if (child) {
+            const wasDigit = child.classList.contains('ticker-digit');
+            if (isDigit && wasDigit) {
+              const list = child.querySelector('.ticker-digit-list');
+              if (list) {
+                list.style.transform = `translateY(-${char}0%)`;
+              }
+              child.setAttribute('data-value', char);
+            } else if (!isDigit && !wasDigit) {
+              if (child.textContent !== char) {
+                child.textContent = char;
+              }
+            } else {
+              // Replace child
+              const newChild = createTickerChild(char, isDigit);
+              if (child.parentNode === tickerEl) {
+                tickerEl.replaceChild(newChild, child);
+              }
+            }
+          } else {
+            // Prepend new child at the beginning
+            const newChild = createTickerChild(char, isDigit);
+            tickerEl.insertBefore(newChild, tickerEl.firstChild);
+          }
+        } else {
+          // Remove extra child at the left
+          if (child && child.parentNode === tickerEl) {
+            tickerEl.removeChild(child);
+          }
+        }
+      }
+    }
+
     function updateUI() {
       const progressBar = document.getElementById("shipping-progress-bar");
       const potentialBar = document.getElementById("shipping-potential-bar");
-      const statusText = document.getElementById("shipping-status-text");
+      const progressMsg = document.getElementById("shipping-progress-msg");
+      const successMsg = document.getElementById("shipping-success-msg");
+      const amountTicker = document.getElementById("shipping-amount-ticker");
       const percentText = document.getElementById("shipping-percent-text");
 
-      if (!progressBar || !statusText || !percentText) return;
+      if (!progressBar || !percentText) return;
 
       const progressPercent = Math.min((cartTotal / threshold) * 100, 100);
       progressBar.style.width = progressPercent + "%";
@@ -106,14 +218,20 @@
         potentialBar.style.width = potentialWidth + "%";
       }
 
-      percentText.textContent = Math.round(potentialPercent) + "%";
+      const newPercent = Math.round(potentialPercent) + "%";
+      updateTicker(percentText, newPercent);
 
       if (totalCombined < threshold) {
         const missing = threshold - totalCombined;
-        statusText.textContent = "Køb for " + formatPrice(missing) + " mere for at få fri fragt";
+        if (amountTicker) {
+          updateTicker(amountTicker, formatPrice(missing));
+        }
+        if (progressMsg) progressMsg.classList.remove("hidden");
+        if (successMsg) successMsg.classList.add("hidden");
         progressBar.className = "h-full bg-emerald-600 transition-all duration-300";
       } else {
-        statusText.textContent = "Du har opnået fri fragt!";
+        if (progressMsg) progressMsg.classList.add("hidden");
+        if (successMsg) successMsg.classList.remove("hidden");
         progressBar.className = "h-full bg-emerald-500 transition-all duration-300";
       }
     }

@@ -81,7 +81,7 @@
 {%- endif -%}
 
 <section class="py-8 bg-surface-container" {{ block.shopify_attributes }}>
-  <div class="max-w-[var(--page-width)] mx-auto px-4 md:px-8">
+  <div class="max-w-[var(--page-width)] mx-auto px-6 md:px-8">
     {%- if block.settings.heading != blank -%}
       <h3 class="text-center font-bold text-primary mb-6 text-xl md:text-2xl">{{ block.settings.heading }}</h3>
     {%- endif -%}
@@ -101,11 +101,11 @@
         {%- endif -%}
       </div>
     {%- elsif testimonial_count > 1 -%}
-      <div class="relative -mx-4 overflow-hidden md:mx-0">
+      <div class="relative overflow-hidden">
         <!-- Slider / Grid wrapper -->
         <div 
           id="testimonial-slider-{{ block.id }}" 
-          class="testimonial-slider-{{ block.id }} {% if testimonial_count == 2 %}testimonial-grid-2-{{ block.id }}{% elsif testimonial_count == 3 %}testimonial-grid-3-{{ block.id }}{% else %}testimonial-grid-4-{{ block.id }}{% endif %} px-4 md:px-0"
+          class="testimonial-slider-{{ block.id }} {% if testimonial_count == 2 %}testimonial-grid-2-{{ block.id }}{% elsif testimonial_count == 3 %}testimonial-grid-3-{{ block.id }}{% else %}testimonial-grid-4-{{ block.id }}{% endif %} md:px-0"
         >
           <!-- Review 1 -->
           {%- if block.settings.quote != blank -%}

@@ -325,7 +325,7 @@ html, body {
 }
 
 /* Standard padding on all blocks: 16px left/right, 12px top/bottom */
-.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons) {
+.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions) {
   display: block;
   padding-left: 16px;
   padding-right: 16px;
@@ -362,5 +362,76 @@ html, body {
 .shopify-block-material-badge {
   display: block;
   padding: 0 !important;
+}
+
+/* Product Accordions Edge-to-Edge Alignment */
+.shopify-block-product-accordions {
+  display: block;
+  width: 100%;
+}
+
+/* 1. Full-width row alignment (pull to page margin on mobile, standard page width on desktop) */
+.row-section--full-width .shopify-block-product-accordions {
+  @media (max-width: 767px) {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+  }
+}
+
+/* 2. Boxed row alignment (pull to card margin on both mobile and desktop) */
+.row-section:not(.row-section--full-width) .shopify-block-product-accordions {
+  margin-left: -1.5rem !important;
+  margin-right: -1.5rem !important;
+  width: calc(100% + 3rem) !important;
+
+  @media (min-width: 768px) {
+    margin-left: -3rem !important;
+    margin-right: -3rem !important;
+    width: calc(100% + 6rem) !important;
+  }
+}
+
+/* 3. Default Accordion Padding (fallback for full-width) */
+.accordion-trigger,
+.accordion-content {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .accordion-trigger,
+  .accordion-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* 4. Layout-aware Accordion Padding (boxed row alignment) */
+.row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-trigger,
+.row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-content {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+
+  @media (min-width: 768px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+/* 5. Layout-aware Accordion Padding (full-width alignment overrides) */
+@media (max-width: 767px) {
+  .row-section--full-width .shopify-block-product-accordions .accordion-trigger,
+  .row-section--full-width .shopify-block-product-accordions .accordion-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+@media (min-width: 768px) {
+  .row-section--full-width .shopify-block-product-accordions .accordion-trigger,
+  .row-section--full-width .shopify-block-product-accordions .accordion-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
