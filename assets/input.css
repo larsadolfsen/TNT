@@ -350,7 +350,13 @@ html, body {
   padding-bottom: 8px;
 }
 
-/* Buy buttons block should have 0 horizontal padding to span full-width */
+/* Buy buttons and customizer blocks should have 0 horizontal padding to span full-width */
+.shopify-block-product-buy-buttons,
+.shopify-block-product-customizer {
+  display: block;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 .template-product .row-content .shopify-block-product-buy-buttons > section {
   padding-left: 0 !important;
   padding-right: 0 !important;
