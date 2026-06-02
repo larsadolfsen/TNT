@@ -320,10 +320,10 @@ html, body {
 }
 
 /* Standard internal padding of blocks to 16px top/bottom, 0 left/right */
-.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer) > section,
-.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer) > div,
-.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer) > section,
-.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer) > div {
+.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > section,
+.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > div,
+.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > section,
+.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > div {
   padding-top: 16px;
   padding-bottom: 16px;
   padding-left: 0;
