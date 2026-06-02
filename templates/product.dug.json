@@ -30,7 +30,21 @@
             "rating_count": "163",
             "badge_text": "300+ købt den seneste måned",
             "padding_top": 0,
-            "padding_bottom": 16,
+            "padding_bottom": 0,
+            "padding_sides": 16
+          },
+          "blocks": {}
+        },
+        "badge_yjhr4X": {
+          "type": "badge",
+          "name": "Badge",
+          "settings": {
+            "text": "BESTSELLER",
+            "alignment": "left",
+            "background_color": "#000000",
+            "text_color": "#ffffff",
+            "padding_top": 0,
+            "padding_bottom": 0,
             "padding_sides": 16
           },
           "blocks": {}
@@ -38,7 +52,8 @@
       },
       "block_order": [
         "page_title_BFEyAw",
-        "product_trust_UAAjJ7"
+        "product_trust_UAAjJ7",
+        "badge_yjhr4X"
       ],
       "name": "Row",
       "settings": {
