@@ -5,9 +5,21 @@
     padding-left: {{ block.settings.padding_sides }}px !important;
     padding-right: {{ block.settings.padding_sides }}px !important;
   }
+  .product-materials-grid-{{ block.id }} {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    justify-items: center;
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    .product-materials-grid-{{ block.id }} {
+      gap: 32px;
+    }
+  }
 {%- endstyle -%}
 
-<div class="flex flex-wrap justify-center items-start gap-8 md:gap-16" {{ block.shopify_attributes }}>
+<div class="product-materials-grid-{{ block.id }}" {{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 

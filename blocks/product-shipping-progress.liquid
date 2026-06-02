@@ -6,16 +6,39 @@
 
 {%- assign cart_total_dkk = cart.total_price | divided_by: 100.0 -%}
 {%- assign threshold = 590.00 -%}
-{%- assign progress = cart_total_dkk | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
-{%- assign missing = threshold | minus: cart_total_dkk -%}
 
 {%- assign product_price = 0 -%}
 {%- if product -%}
-  {%- assign product_price = product.selected_or_first_available_variant.price | divided_by: 100.0 -%}
+  {%- assign is_customizable = false -%}
+  {%- for variant in product.variants -%}
+    {%- if variant.sku == 'BTM001' or variant.title contains 'Tilpasset' or variant.title contains 'tilpasset' -%}
+      {%- assign is_customizable = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if is_customizable -%}
+    {%- assign base_variant = nil -%}
+    {%- for variant in product.variants -%}
+      {%- unless variant.title contains 'Tilpasset' or variant.title contains 'tilpasset' -%}
+        {%- assign base_variant = variant -%}
+        {%- break -%}
+      {%- endunless -%}
+    {%- endfor -%}
+    {%- if base_variant == nil -%}
+      {%- assign base_variant = product.selected_or_first_available_variant -%}
+    {%- endif -%}
+    {% comment %} Default customization length on page load is 200 cm {% endcomment %}
+    {%- assign product_price = base_variant.price | divided_by: 100.0 | times: 200 -%}
+  {%- else -%}
+    {%- assign product_price = product.selected_or_first_available_variant.price | divided_by: 100.0 -%}
+  {%- endif -%}
 {%- endif -%}
+
 {%- assign potential_total = cart_total_dkk | plus: product_price -%}
+{%- assign progress = cart_total_dkk | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
 {%- assign potential_progress = potential_total | divided_by: threshold | times: 100.0 | at_most: 100.0 -%}
 {%- assign potential_width = potential_progress | minus: progress | at_least: 0 -%}
+{%- assign missing = threshold | minus: potential_total | at_least: 0 -%}
 
 {%- assign hide_everything_except_text = block.settings.hide_everything_except_text -%}
 
@@ -33,13 +56,13 @@
   <div id="free-shipping-widget" class="{% if hide_everything_except_text %}py-1{% else %}bg-white p-4 rounded-xl space-y-2 border border-outline-variant{% endif %}" data-threshold="{{ threshold }}">
     <div class="flex {% if hide_everything_except_text %}justify-center text-center{% else %}justify-between{% endif %} text-xs text-primary font-bold">
       <span id="shipping-status-text">
-        {%- if cart_total_dkk < threshold -%}
+        {%- if potential_total < threshold -%}
           Køb for {{ missing | times: 100 | money }} mere for at få fri fragt
         {%- else -%}
           Du har opnået fri fragt!
         {%- endif -%}
       </span>
-      <span id="shipping-percent-text" class="{% if hide_everything_except_text %}hidden{% endif %}">{{ progress | round }}%</span>
+      <span id="shipping-percent-text" class="{% if hide_everything_except_text %}hidden{% endif %}">{{ potential_progress | round }}%</span>
     </div>
     <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex {% if hide_everything_except_text %}hidden{% endif %}">
       <div id="shipping-progress-bar" class="h-full {% if cart_total_dkk < threshold %}bg-emerald-600{% else %}bg-emerald-500{% endif %} transition-all duration-300" style="width: {{ progress }}%"></div>
@@ -55,7 +78,7 @@
 
     let threshold = parseFloat(widget.getAttribute("data-threshold")) || 590.00;
     let cartTotal = {{ cart.total_price }} / 100.0;
-    let productPrice = window.currentPageProductPrice !== undefined ? window.currentPageProductPrice : ({% if product %}{{ product.selected_or_first_available_variant.price }}{% else %}0{% endif %} / 100.0);
+    let productPrice = window.currentPageProductPrice !== undefined ? window.currentPageProductPrice : ({% if product %}{% if is_customizable %}{{ base_variant.price | times: 200 }}{% else %}{{ product.selected_or_first_available_variant.price }}{% endif %}{% else %}0{% endif %} / 100.0);
 
     function formatPrice(value) {
       return value.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
@@ -73,9 +96,9 @@
       progressBar.style.width = progressPercent + "%";
 
       let potentialPercent = progressPercent;
+      const totalCombined = cartTotal + productPrice;
       if (productPrice > 0) {
-        const potentialTotal = cartTotal + productPrice;
-        potentialPercent = Math.min((potentialTotal / threshold) * 100, 100);
+        potentialPercent = Math.min((totalCombined / threshold) * 100, 100);
       }
 
       if (potentialBar) {
@@ -83,10 +106,10 @@
         potentialBar.style.width = potentialWidth + "%";
       }
 
-      percentText.textContent = Math.round(progressPercent) + "%";
+      percentText.textContent = Math.round(potentialPercent) + "%";
 
-      if (cartTotal < threshold) {
-        const missing = threshold - cartTotal;
+      if (totalCombined < threshold) {
+        const missing = threshold - totalCombined;
         statusText.textContent = "Køb for " + formatPrice(missing) + " mere for at få fri fragt";
         progressBar.className = "h-full bg-emerald-600 transition-all duration-300";
       } else {

@@ -112,7 +112,23 @@
       {%- endif -%}
   {%- endcase -%}
 
-  {%- assign show_mobile_ellipsis = false -%}
+  {%- assign has_ellipsis = false -%}
+  {%- case t -%}
+    {%- when 'product' -%}
+      {%- if c_level_0 != blank -%}
+        {%- assign has_ellipsis = true -%}
+      {%- endif -%}
+    {%- when 'collection' and collection.handle -%}
+      {%- if c_level_1 != blank -%}
+        {%- assign has_ellipsis = true -%}
+      {%- endif -%}
+    {%- when 'blog' -%}
+      {%- if current_tags -%}
+        {%- assign has_ellipsis = true -%}
+      {%- endif -%}
+    {%- when 'article' -%}
+      {%- assign has_ellipsis = true -%}
+  {%- endcase -%}
 
   <style>
     /* Smooth horizontal scrolling for breadcrumbs */
@@ -153,24 +169,40 @@
       right: 0;
       background: linear-gradient(to left, var(--color-background, #ffffff), transparent);
     }
+
+    /* Ellipsis collapse/expand styles */
+    .breadcrumbs-nav .breadcrumb-ellipsis {
+      display: inline-flex;
+      align-items: center;
+    }
+    .breadcrumbs-nav .breadcrumb-collapsed-item {
+      display: none !important;
+    }
+    .breadcrumbs-nav.is-expanded .breadcrumb-ellipsis {
+      display: none !important;
+    }
+    .breadcrumbs-nav.is-expanded .breadcrumb-collapsed-item {
+      display: inline-flex !important;
+      align-items: center;
+    }
   </style>
 
   <div class="breadcrumbs-wrapper">
     <div class="breadcrumbs-fade-left opacity-0"></div>
     <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs text-on-surface-variant flex items-center gap-0.5 overflow-x-auto whitespace-nowrap h-12 hide-scrollbar" aria-label="Brødkrummer">
         
-        {%- if show_mobile_ellipsis -%}
-          <button type="button" onclick="this.closest('[data-breadcrumbs-nav]').classList.add('is-expanded')" class="breadcrumb-ellipsis hover:underline text-on-surface-variant cursor-pointer border-none bg-transparent p-0 text-[12px] font-normal" aria-label="Vis hele stien">...</button>
-          <span class="breadcrumb-ellipsis material-symbols-outlined text-[14px] select-none">chevron_right</span>
-        {%- endif -%}
-
         {%- comment -%} Forside (root) {%- endcomment -%}
         {%- assign forside_class = "" -%}
-        {%- if show_mobile_ellipsis -%}
+        {%- if has_ellipsis -%}
           {%- assign forside_class = "breadcrumb-collapsed-item" -%}
         {%- endif -%}
         <a href="{{ routes.root_url }}" class="{{ forside_class }} hover:underline text-on-surface-variant no-underline">Forside</a>
         <span class="{{ forside_class }} material-symbols-outlined text-[14px]">chevron_right</span>
+
+        {%- if has_ellipsis -%}
+          <button type="button" onclick="this.closest('[data-breadcrumbs-nav]').classList.add('is-expanded')" class="breadcrumb-ellipsis hover:underline text-on-surface-variant cursor-pointer border-none bg-transparent p-0 text-[12px] font-normal" aria-label="Vis hele stien">...</button>
+          <span class="breadcrumb-ellipsis material-symbols-outlined text-[14px] select-none">chevron_right</span>
+        {%- endif -%}
 
         {%- case t -%}
           {%- when 'page' -%}

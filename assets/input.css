@@ -18,6 +18,10 @@
   --font-serif: var(--font-header-family), "serif";
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+}
+
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

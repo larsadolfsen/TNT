@@ -212,6 +212,14 @@
           const width = getVariantWidth(pricingVariant.title);
           summaryMal.textContent = `${pricingVariant.title} ${width} x ${state.length} cm`;
         }
+
+        // Set global variable to resolve initial page load race condition
+        window.currentPageProductPrice = totalClothPrice;
+
+        // Dispatch custom event to notify other scripts about product price update
+        document.dispatchEvent(new CustomEvent("product-price-updated", {
+          detail: { price: totalClothPrice }
+        }));
       }
     }
 
