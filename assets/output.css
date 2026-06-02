@@ -2646,3 +2646,22 @@ html, body {
   padding-right: 0 !important;
 }
 
+/* Reduce space between mobile media gallery (dots) and the product content details on mobile */
+@media (max-width: 767px) {
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group,
+  .template-product .row-content > .group ~ .group,
+  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group {
+    padding-top: 12px !important;
+  }
+
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > section,
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > div,
+  .template-product .row-content > .group ~ .group > *:first-child > section,
+  .template-product .row-content > .group ~ .group > *:first-child > div,
+  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > section,
+  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > div {
+    padding-top: 4px !important;
+  }
+}
+
+
