@@ -121,6 +121,22 @@
   .template-product .product-media-gallery {
     border-radius: 0px !important;
   }
+
+  /* Reduce space between mobile media gallery (dots) and the product content details on mobile */
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group,
+  .template-product .row-content > .group ~ .group,
+  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group {
+    padding-top: 12px !important;
+  }
+
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > section,
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > div,
+  .template-product .row-content > .group ~ .group > *:first-child > section,
+  .template-product .row-content > .group ~ .group > *:first-child > div,
+  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > section,
+  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > div {
+    padding-top: 4px !important;
+  }
 }
 
 /* Product Page Desktop Grid Layout */
@@ -315,6 +331,8 @@ html, body {
 .shopify-block-page-title > div {
   padding-top: 12px;
   padding-bottom: 0px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 .shopify-block-page-title header {
   margin-bottom: 4px;
@@ -322,4 +340,13 @@ html, body {
 .shopify-block-product-trust > section {
   padding-top: 0px;
   padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
+
+/* Buy buttons block should have 0 horizontal padding to span full-width */
+.template-product .row-content .shopify-block-product-buy-buttons > section {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
