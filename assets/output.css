@@ -2637,8 +2637,6 @@ html, body {
 .shopify-block-page-title > div {
   padding-top: 12px;
   padding-bottom: 0px;
-  padding-left: 0;
-  padding-right: 0;
 }
 .shopify-block-page-title header {
   margin-bottom: 4px;
@@ -2646,8 +2644,6 @@ html, body {
 .shopify-block-product-trust > section {
   padding-top: 0px;
   padding-bottom: 8px;
-  padding-left: 0;
-  padding-right: 0;
 }
 
 /* Buy buttons block should have 0 horizontal padding to span full-width */
