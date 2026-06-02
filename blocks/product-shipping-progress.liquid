@@ -50,24 +50,31 @@
     padding-right: {{ block.settings.padding_sides }}px !important;
   }
   #shopify-block-{{ block.id }} #shipping-amount-ticker {
-    display: inline-block;
+    display: inline-flex;
+    align-items: baseline;
     overflow: hidden;
-    vertical-align: bottom;
-    height: 1.2em;
   }
-  #shopify-block-{{ block.id }} .ticker-wrapper {
+  #shopify-block-{{ block.id }} .ticker-char {
+    display: inline-block;
+    white-space: pre;
+    line-height: 1;
+  }
+  #shopify-block-{{ block.id }} .ticker-digit {
+    height: 1em;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+  }
+  #shopify-block-{{ block.id }} .ticker-digit-list {
     display: flex;
     flex-direction: column;
-    height: 100%;
-  }
-  #shopify-block-{{ block.id }} .ticker-slide {
-    display: block;
-    height: 1.2em;
-    line-height: 1.2em;
-    white-space: nowrap;
-  }
-  #shopify-block-{{ block.id }} .ticker-wrapper.animating {
     transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+  }
+  #shopify-block-{{ block.id }} .ticker-digit-list span {
+    height: 1em;
+    line-height: 1;
+    display: block;
+    text-align: center;
   }
 {%- endstyle -%}
 
@@ -105,81 +112,130 @@
     }
 
     let lastValue = null;
-    let tickerAnimationTimeout = null;
 
-    function updateTicker(tickerEl, newValueString) {
-      function parsePriceValue(str) {
-        const cleaned = str.replace(/[^\d]/g, '');
-        return parseInt(cleaned, 10) || 0;
+    function createTickerChild(char, isDigit) {
+      const span = document.createElement('span');
+      if (isDigit) {
+        span.className = 'ticker-char ticker-digit';
+        span.setAttribute('data-value', char);
+        
+        const list = document.createElement('span');
+        list.className = 'ticker-digit-list';
+        // Add 3 sets of digits 0-9 for infinite continuous rolling in both directions
+        for (let s = 0; s < 3; s++) {
+          for (let i = 0; i <= 9; i++) {
+            const digitSpan = document.createElement('span');
+            digitSpan.textContent = i;
+            list.appendChild(digitSpan);
+          }
+        }
+        const digit = parseInt(char, 10);
+        // Position initially in the middle set (index 10 + digit)
+        list.style.transform = `translateY(-${(10 + digit) * (100 / 30)}%)`;
+        span.appendChild(list);
+      } else {
+        span.className = 'ticker-char ticker-static';
+        span.textContent = char;
       }
+      return span;
+    }
 
-      let wrapper = tickerEl.querySelector('.ticker-wrapper');
-      if (!wrapper) {
+    function updateTicker(tickerEl, valueString, isUp) {
+      const chars = valueString.split('');
+      
+      // Clear ticker if it doesn't contain ticker-char class (e.g. initial plain text load)
+      if (tickerEl.children.length === 0 || !tickerEl.firstElementChild.classList.contains('ticker-char')) {
         tickerEl.innerHTML = '';
-        wrapper = document.createElement('span');
-        wrapper.className = 'ticker-wrapper';
-        const slide = document.createElement('span');
-        slide.className = 'ticker-slide';
-        slide.textContent = newValueString;
-        wrapper.appendChild(slide);
-        tickerEl.appendChild(wrapper);
-        lastValue = parsePriceValue(newValueString);
+        chars.forEach(char => {
+          const isDigit = char >= '0' && char <= '9';
+          tickerEl.appendChild(createTickerChild(char, isDigit));
+        });
         return;
       }
 
-      const newValue = parsePriceValue(newValueString);
-      if (newValue === lastValue) return;
-
-      if (tickerAnimationTimeout) {
-        clearTimeout(tickerAnimationTimeout);
-        tickerAnimationTimeout = null;
-        
-        const targetValue = wrapper.getAttribute('data-target-value') || newValueString;
-        wrapper.innerHTML = '';
-        const slide = document.createElement('span');
-        slide.className = 'ticker-slide';
-        slide.textContent = targetValue;
-        wrapper.appendChild(slide);
-        wrapper.className = 'ticker-wrapper';
-        wrapper.style.transform = 'none';
-      }
-
-      const currentSlide = wrapper.querySelector('.ticker-slide');
-      if (!currentSlide) return;
-
-      const isUp = newValue > lastValue;
-      wrapper.setAttribute('data-target-value', newValueString);
-      lastValue = newValue;
-
-      const newSlide = document.createElement('span');
-      newSlide.className = 'ticker-slide';
-      newSlide.textContent = newValueString;
-
-      if (isUp) {
-        // Roll UP: append new slide to the bottom, then translate wrapper UP
-        wrapper.appendChild(newSlide);
-        wrapper.offsetHeight; // Force reflow
-        
-        wrapper.classList.add('animating');
-        wrapper.style.transform = 'translateY(-1.2em)';
-      } else {
-        // Roll DOWN: prepend new slide to the top, translate wrapper DOWN
-        wrapper.insertBefore(newSlide, currentSlide);
-        wrapper.style.transform = 'translateY(-1.2em)';
-        wrapper.offsetHeight; // Force reflow
-        
-        wrapper.classList.add('animating');
-        wrapper.style.transform = 'translateY(0)';
-      }
-
-      tickerAnimationTimeout = setTimeout(() => {
-        if (currentSlide.parentNode === wrapper) {
-          wrapper.removeChild(currentSlide);
+      // Reconcile right-to-left
+      const currentChildren = Array.from(tickerEl.children);
+      const maxLen = Math.max(chars.length, currentChildren.length);
+      
+      // Map digit indices from left-to-right to apply increasing delays
+      let digitCount = 0;
+      const digitIndices = [];
+      for (let i = 0; i < chars.length; i++) {
+        if (chars[i] >= '0' && chars[i] <= '9') {
+          digitIndices[i] = digitCount;
+          digitCount++;
         }
-        wrapper.classList.remove('animating');
-        wrapper.style.transform = 'none';
-        tickerAnimationTimeout = null;
-      }, 800);
+      }
+
+      for (let i = 0; i < maxLen; i++) {
+        const charIndex = chars.length - 1 - i;
+        const childIndex = currentChildren.length - 1 - i;
+        
+        const char = charIndex >= 0 ? chars[charIndex] : null;
+        const child = childIndex >= 0 ? currentChildren[childIndex] : null;
+        
+        if (char !== null) {
+          const isDigit = char >= '0' && char <= '9';
+          
+          if (child) {
+            const wasDigit = child.classList.contains('ticker-digit');
+            if (isDigit && wasDigit) {
+              const currentD = parseInt(child.getAttribute('data-value'), 10);
+              const targetD = parseInt(char, 10);
+              
+              if (currentD !== targetD) {
+                const list = child.querySelector('.ticker-digit-list');
+                if (list) {
+                  // Determine target index to ensure all digits spin in the same direction
+                  let targetIndex;
+                  if (isUp) {
+                    // Roll UP: Target index is higher (translates list up relative to viewport)
+                    targetIndex = targetD >= currentD ? 10 + targetD : 20 + targetD;
+                  } else {
+                    // Roll DOWN: Target index is lower (translates list down relative to viewport)
+                    targetIndex = targetD <= currentD ? 10 + targetD : targetD;
+                  }
+                  
+                  // Apply staggered transition delay from left-to-right
+                  const digitIndex = digitIndices[charIndex] !== undefined ? digitIndices[charIndex] : 0;
+                  list.style.transitionDelay = (digitIndex * 0.12) + "s";
+                  list.style.transform = `translateY(-${targetIndex * (100 / 30)}%)`;
+                  
+                  // Instantly reset back to the middle set (10 + targetD) on transition completion
+                  list.ontransitionend = (e) => {
+                    if (e.propertyName === 'transform') {
+                      list.style.transition = 'none';
+                      list.style.transform = `translateY(-${(10 + targetD) * (100 / 30)}%)`;
+                      list.offsetHeight; // Force reflow
+                      list.style.transition = '';
+                    }
+                  };
+                }
+                child.setAttribute('data-value', char);
+              }
+            } else if (!isDigit && !wasDigit) {
+              if (child.textContent !== char) {
+                child.textContent = char;
+              }
+            } else {
+              // Replace child due to mismatch
+              const newChild = createTickerChild(char, isDigit);
+              if (child.parentNode === tickerEl) {
+                tickerEl.replaceChild(newChild, child);
+              }
+            }
+          } else {
+            // Prepend new child at the beginning
+            const newChild = createTickerChild(char, isDigit);
+            tickerEl.insertBefore(newChild, tickerEl.firstChild);
+          }
+        } else {
+          // Remove extra child at the left
+          if (child && child.parentNode === tickerEl) {
+            tickerEl.removeChild(child);
+          }
+        }
+      }
     }
 
     function updateUI() {
@@ -208,12 +264,15 @@
       if (totalCombined < threshold) {
         const missing = threshold - totalCombined;
         if (amountTicker) {
-          updateTicker(amountTicker, formatPrice(missing));
+          const isUp = lastValue !== null ? missing > lastValue : false;
+          lastValue = missing;
+          updateTicker(amountTicker, formatPrice(missing), isUp);
         }
         if (progressMsg) progressMsg.classList.remove("hidden");
         if (successMsg) successMsg.classList.add("hidden");
         progressBar.className = "h-full bg-emerald-600 transition-all duration-300";
       } else {
+        lastValue = 0; // reset
         if (progressMsg) progressMsg.classList.add("hidden");
         if (successMsg) successMsg.classList.remove("hidden");
         progressBar.className = "h-full bg-emerald-500 transition-all duration-300";
