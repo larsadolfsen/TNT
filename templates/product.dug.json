@@ -155,7 +155,7 @@
                   "type": "trust-countdown",
                   "settings": {
                     "text": "Bestil inden",
-                    "suffix": "timer, for at få den sendt i dag."
+                    "suffix": "timer. Så sender vi i dag."
                   },
                   "blocks": {}
                 },
