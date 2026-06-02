@@ -99,38 +99,17 @@
   {%- endcase -%}
 
   {%- assign show_mobile_ellipsis = false -%}
-  {%- if visible_count > 2 -%}
-    {%- assign show_mobile_ellipsis = true -%}
-  {%- endif -%}
-
 
   <style>
-    .breadcrumb-collapsed-item {
-      display: none !important;
-    }
-    .breadcrumb-ellipsis {
-      display: inline-flex !important;
-    }
-
-    @media (min-width: 768px) {
-      .breadcrumb-collapsed-item {
-        display: inline-flex !important;
-      }
-      .breadcrumb-ellipsis {
-        display: none !important;
-      }
-    }
-
-    .breadcrumbs-nav.is-expanded .breadcrumb-collapsed-item {
-      display: inline-flex !important;
-    }
-    .breadcrumbs-nav.is-expanded .breadcrumb-ellipsis {
-      display: none !important;
+    /* Smooth horizontal scrolling for breadcrumbs */
+    .breadcrumbs-nav {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
   </style>
 
-  <div class="max-w-screen-xl mx-auto px-4 h-8 md:h-auto md:pt-3 md:pb-1 flex items-center">
-    <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs text-on-surface-variant flex items-center gap-0.5 overflow-x-auto whitespace-nowrap h-full md:h-auto md:py-1 hide-scrollbar" aria-label="Brødkrummer">
+  <div class="max-w-screen-xl mx-auto px-4 h-12 flex items-center">
+    <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs text-on-surface-variant flex items-center gap-0.5 overflow-x-auto whitespace-nowrap h-full hide-scrollbar" aria-label="Brødkrummer">
       
       {%- if show_mobile_ellipsis -%}
         <button type="button" onclick="this.closest('[data-breadcrumbs-nav]').classList.add('is-expanded')" class="breadcrumb-ellipsis hover:underline text-on-surface-variant cursor-pointer border-none bg-transparent p-0 text-[12px] font-normal" aria-label="Vis hele stien">...</button>

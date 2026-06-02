@@ -201,6 +201,7 @@
   .template-product .row-content .group > *,
   .template-product .row-content .shopify-block-group > *,
   .template-product .row-content .shopify-block:has(.group) .shopify-block {
+    display: block;
     width: 100%;
   }
 
@@ -232,26 +233,17 @@
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
-    padding-left: 0;
-    padding-right: 0;
   }
 
-  /* Override excessive padding on materials to make them tighter in column 2 */
-  .template-product .row-content > .shopify-block-product-materials > section {
-    padding-top: 1rem;
-    padding-bottom: 1.5rem;
-  }
-
-  /* Make sure customizer has proper spacing in right column */
-  .template-product .row-content > .shopify-block-product-customizer > section {
+  /* Make sure customizer has proper spacing in right column and standard padding of 16px */
+  .template-product .row-content .shopify-block-product-customizer > div {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding: 16px;
     border-radius: 1rem;
     border: 1px solid var(--color-outline-variant);
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -309,4 +301,25 @@ html, body {
     width: calc(100% + 2rem) !important;
     max-width: none !important;
   }
+}
+
+/* Standard internal padding of blocks to 16px on all sides */
+.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust) > section,
+.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust) > div,
+.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust) > section,
+.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust) > div {
+  padding: 16px;
+}
+
+/* Custom spacing for page title and trust blocks to bring them closer */
+.shopify-block-page-title > div {
+  padding-top: 12px;
+  padding-bottom: 0px;
+}
+.shopify-block-page-title header {
+  margin-bottom: 4px;
+}
+.shopify-block-product-trust > section {
+  padding-top: 0px;
+  padding-bottom: 8px;
 }

@@ -13,7 +13,7 @@
   {%- endif -%}
 {%- endif -%}
 
-<section id="product-urgency-section-{{ block.id }}" class="max-w-screen-xl mx-auto px-4 pt-0 pb-3" style="{% unless show_urgency %}display: none;{% endunless %}">
+<section id="product-urgency-section-{{ block.id }}" class="max-w-screen-xl mx-auto p-4" style="{% unless show_urgency %}display: none;{% endunless %}">
   <p class="text-xs font-medium text-amber-700">
     {{ block.settings.urgency_text | default: "Kun få på lager – bestil snart" }}
   </p>
