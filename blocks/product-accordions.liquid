@@ -5,6 +5,17 @@
     padding-left: {{ block.settings.padding_sides }}px !important;
     padding-right: {{ block.settings.padding_sides }}px !important;
   }
+
+  @media screen and (max-width: 767px) {
+    #shopify-block-{{ block.id }} {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    #shopify-section-accordions-{{ block.id }} {
+      margin-left: -1rem;
+      margin-right: -1rem;
+    }
+  }
 {%- endstyle -%}
 
 <div class="divide-y divide-outline-variant border-y border-outline-variant" id="shopify-section-accordions-{{ block.id }}" {{ block.shopify_attributes }}>

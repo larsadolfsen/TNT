@@ -101,11 +101,11 @@
         {%- endif -%}
       </div>
     {%- elsif testimonial_count > 1 -%}
-      <div class="relative w-full overflow-hidden">
+      <div class="relative -mx-4 overflow-hidden md:mx-0">
         <!-- Slider / Grid wrapper -->
         <div 
           id="testimonial-slider-{{ block.id }}" 
-          class="testimonial-slider-{{ block.id }} {% if testimonial_count == 2 %}testimonial-grid-2-{{ block.id }}{% elsif testimonial_count == 3 %}testimonial-grid-3-{{ block.id }}{% else %}testimonial-grid-4-{{ block.id }}{% endif %} px-2 md:px-0"
+          class="testimonial-slider-{{ block.id }} {% if testimonial_count == 2 %}testimonial-grid-2-{{ block.id }}{% elsif testimonial_count == 3 %}testimonial-grid-3-{{ block.id }}{% else %}testimonial-grid-4-{{ block.id }}{% endif %} px-4 md:px-0"
         >
           <!-- Review 1 -->
           {%- if block.settings.quote != blank -%}

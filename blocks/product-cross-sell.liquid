@@ -14,7 +14,8 @@
 
 <section class="p-4 border-t border-outline-variant" {{ block.shopify_attributes }}>
   <h3 class="text-lg font-bold text-primary mb-6">Gør købet komplet</h3>
-  <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-4">
+  <div class="-mx-4 overflow-hidden">
+    <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-4 px-4">
     <!-- Card 1 -->
     {%- assign cs_prod_1 = block.settings.cross_sell_1 -%}
     {%- if cs_prod_1 != blank -%}
@@ -90,6 +91,7 @@
         </div>
       </div>
     {%- endif -%}
+  </div>
   </div>
 </section>
 
