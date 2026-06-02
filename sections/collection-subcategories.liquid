@@ -1,5 +1,4 @@
-<div class="max-w-screen-xl mx-auto px-4 mb-10">
-  <section aria-label="Underkategorier" class="relative">
+<section aria-label="Underkategorier" class="relative">
     <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible">
       
       {%- if section.blocks.size > 0 -%}
@@ -128,12 +127,12 @@
 
       {%- endif -%}
     </div>
-  </section>
-</div>
+</section>
 
 {% schema %}
 {
   "name": "Underkategorier",
+  "class": "max-w-screen-xl mx-auto px-4 mb-10",
   "max_blocks": 12,
   "settings": [],
   "blocks": [

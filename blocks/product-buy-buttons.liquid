@@ -26,8 +26,7 @@
     assign width = 100
   endif
 -%}
-<section class="w-full bg-white py-4 px-0 my-0">
-  <div class="max-w-screen-xl mx-auto flex flex-col gap-4">
+<div class="flex flex-col gap-4" {{ block.shopify_attributes }}>
     <!-- Left: Selected Specs & Price -->
     <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full">
       <div id="summary-mål" class="text-xs text-on-surface-variant font-medium">{{ base_variant.title }} {{ width }} x 200 cm</div>
@@ -58,9 +57,8 @@
         <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">MOBILEPAY</span>
         <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">APPLE PAY</span>
       </div>
-    </div>
   </div>
-</section>
+</div>
 
 <script id="simple-variant-data" type="application/json">
   [

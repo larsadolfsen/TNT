@@ -6,7 +6,7 @@
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 
-<section class="relative max-w-screen-xl mx-auto">
+<div class="relative w-full" {{ block.shopify_attributes }}>
   <!-- Hidden dummy image for third-party cart compatibility -->
   {%- if featured_image -%}
     <img id="main-product-img" src="{{ featured_image | image_url: width: 1200 }}" class="hidden" alt="" />
@@ -68,7 +68,7 @@
       {{ block.settings.image_badge | default: "BESTSELLER" }}
     </span>
   </div>
-</section>
+</div>
 
 <!-- CSS Styles for Gallery UI (bypasses Tailwind compilation issues) -->
 <style>

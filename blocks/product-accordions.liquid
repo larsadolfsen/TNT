@@ -1,8 +1,7 @@
-<section class="px-4 py-4 bg-white" id="shopify-section-accordions-{{ block.id }}" {{ block.shopify_attributes }}>
-  <div class="divide-y divide-outline-variant border-y border-outline-variant max-w-screen-xl mx-auto">
+<div class="divide-y divide-outline-variant border-y border-outline-variant" id="shopify-section-accordions-{{ block.id }}" {{ block.shopify_attributes }}>
     {% content_for 'blocks' %}
   </div>
-</section>
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {

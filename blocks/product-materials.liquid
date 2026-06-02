@@ -1,8 +1,7 @@
-<section class="p-4 bg-white" {{ block.shopify_attributes }}>
-  <div class="flex flex-wrap justify-center items-start gap-8 md:gap-16 max-w-screen-xl mx-auto">
+<div class="flex flex-wrap justify-center items-start gap-8 md:gap-16" {{ block.shopify_attributes }}>
     {% content_for 'blocks' %}
   </div>
-</section>
+</div>
 
 {% schema %}
 {

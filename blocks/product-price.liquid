@@ -19,7 +19,7 @@
   endif
 -%}
 
-<section class="max-w-screen-xl mx-auto p-4">
+<div {{ block.shopify_attributes }}>
   <!-- Pricing -->
   <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
     <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
@@ -32,7 +32,7 @@
   {%- if block.settings.price_subtext != blank -%}
     <p class="text-xs text-on-surface-variant mt-1.5">{{ block.settings.price_subtext }}</p>
   {%- endif -%}
-</section>
+</div>
 
 {% schema %}
 {

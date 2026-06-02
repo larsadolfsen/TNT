@@ -1,5 +1,4 @@
-<section class="p-4 bg-surface-container">
-  <div class="max-w-screen-xl mx-auto">
+<section class="p-4 bg-surface-container" {{ block.shopify_attributes }}>
     {%- if block.settings.heading != blank -%}
       <h3 class="text-center font-bold text-primary mb-6">{{ block.settings.heading }}</h3>
     {%- endif -%}
@@ -19,7 +18,6 @@
         <p class="text-xs font-bold text-on-surface-variant not-italic">— {{ block.settings.author }}</p>
       {%- endif -%}
     </div>
-  </div>
 </section>
 
 {% schema %}

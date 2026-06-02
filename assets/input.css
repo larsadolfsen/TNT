@@ -319,15 +319,11 @@ html, body {
   }
 }
 
-/* Standard internal padding of blocks to 16px top/bottom, 0 left/right */
-.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > section,
-.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > div,
-.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > section,
-.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > div {
+/* Standard internal padding of blocks to 16px top/bottom */
+.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price),
+.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) {
   padding-top: 16px;
   padding-bottom: 16px;
-  padding-left: 0;
-  padding-right: 0;
 }
 
 /* Standard horizontal padding on the block level */
@@ -338,14 +334,14 @@ html, body {
 }
 
 /* Custom spacing for page title and trust blocks to bring them closer */
-.shopify-block-page-title > div {
+.shopify-block-page-title {
   padding-top: 12px;
   padding-bottom: 0px;
 }
 .shopify-block-page-title header {
   margin-bottom: 4px;
 }
-.shopify-block-product-trust > section {
+.shopify-block-product-trust {
   padding-top: 0px;
   padding-bottom: 8px;
 }
@@ -354,10 +350,6 @@ html, body {
 .shopify-block-product-buy-buttons,
 .shopify-block-product-customizer {
   display: block;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-.template-product .row-content .shopify-block-product-buy-buttons > section {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }

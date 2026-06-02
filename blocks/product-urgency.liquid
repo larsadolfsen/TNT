@@ -13,11 +13,11 @@
   {%- endif -%}
 {%- endif -%}
 
-<section id="product-urgency-section-{{ block.id }}" class="max-w-screen-xl mx-auto p-4" style="{% unless show_urgency %}display: none;{% endunless %}">
+<div id="product-urgency-section-{{ block.id }}" style="{% unless show_urgency %}display: none;{% endunless %}" {{ block.shopify_attributes }}>
   <p class="text-xs font-medium text-amber-700">
     {{ block.settings.urgency_text | default: "Kun få på lager – bestil snart" }}
   </p>
-</section>
+</div>
 
 {%- if product -%}
 <script id="product-urgency-variant-data-{{ block.id }}" type="application/json">
