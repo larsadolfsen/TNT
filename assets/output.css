@@ -2628,6 +2628,7 @@ html, body {
 
 /* Standard horizontal padding on the block level */
 .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons) {
+  display: block;
   padding-left: 16px;
   padding-right: 16px;
 }
