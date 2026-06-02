@@ -2615,29 +2615,39 @@ html, body {
   }
 }
 
-/* Standard internal padding of blocks to 16px on all sides */
-.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust) > section,
-.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust) > div,
-.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust) > section,
-.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust) > div {
-  padding: 16px;
+/* Standard internal padding of blocks to 16px top/bottom, 0 left/right */
+.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer) > section,
+.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer) > div,
+.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer) > section,
+.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer) > div {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Standard horizontal padding on the block level */
+.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons) {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 /* Custom spacing for page title and trust blocks to bring them closer */
 .shopify-block-page-title > div {
   padding-top: 12px;
   padding-bottom: 0px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 0;
+  padding-right: 0;
 }
 .shopify-block-page-title header {
   margin-bottom: 4px;
+  padding: 0;
 }
 .shopify-block-product-trust > section {
   padding-top: 0px;
   padding-bottom: 8px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Buy buttons block should have 0 horizontal padding to span full-width */
