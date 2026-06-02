@@ -45,7 +45,9 @@
         "background_color": "light",
         "layout_style": "full_width_bg",
         "padding_top": 0,
-        "padding_bottom": 0
+        "padding_bottom": 0,
+        "disable_block_padding_vertical_mobile": true,
+        "disable_block_padding_horizontal_mobile": true
       }
     },
     "row_nmPTLb": {
@@ -136,7 +138,9 @@
         "background_color": "light",
         "layout_style": "full_width_bg",
         "padding_top": 0,
-        "padding_bottom": 0
+        "padding_bottom": 0,
+        "disable_block_padding_vertical_mobile": true,
+        "disable_block_padding_horizontal_mobile": true
       }
     },
     "row_WcWUGA": {

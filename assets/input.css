@@ -139,6 +139,14 @@
   }
 }
 
+/* Make all child blocks inside columns stretch to full column width on both mobile and desktop */
+.template-product .row-content .group > *,
+.template-product .row-content .shopify-block-group > *,
+.template-product .row-content .shopify-block:has(.group) .shopify-block {
+  display: block;
+  width: 100%;
+}
+
 /* Product Page Desktop Grid Layout */
 @media (min-width: 768px) {
   .template-product #MainContent {
@@ -213,13 +221,6 @@
     grid-column: 2;
   }
 
-  /* Make all child blocks inside columns stretch to full column width */
-  .template-product .row-content .group > *,
-  .template-product .row-content .shopify-block-group > *,
-  .template-product .row-content .shopify-block:has(.group) .shopify-block {
-    display: block;
-    width: 100%;
-  }
 
   /* Sticky column behavior overrides align-self: stretch to align-self: start and enables position: sticky */
   .template-product .row-content > .group--sticky,
@@ -345,6 +346,7 @@ html, body {
 .shopify-block-product-buy-buttons,
 .shopify-block-product-customizer {
   display: block;
+  width: 100%;
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
