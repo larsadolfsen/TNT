@@ -19,20 +19,14 @@
 
 {%- assign hide_everything_except_text = block.settings.hide_everything_except_text -%}
 
-{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
-  {%- style -%}
-    {%- if block.settings.suppress_padding_top -%}
-      #shopify-block-{{ block.id }} {
-        padding-top: 0 !important;
-      }
-    {%- endif -%}
-    {%- if block.settings.suppress_padding_bottom -%}
-      #shopify-block-{{ block.id }} {
-        padding-bottom: 0 !important;
-      }
-    {%- endif -%}
-  {%- endstyle -%}
-{%- endif -%}
+{%- style -%}
+  #shopify-block-{{ block.id }} {
+    padding-top: {{ block.settings.padding_top }}px !important;
+    padding-bottom: {{ block.settings.padding_bottom }}px !important;
+    padding-left: {{ block.settings.padding_horizontal }}px !important;
+    padding-right: {{ block.settings.padding_horizontal }}px !important;
+  }
+{%- endstyle -%}
 
 <div {{ block.shopify_attributes }}>
   <!-- Dynamic Free Shipping Progress Bar Widget (No border) -->
@@ -206,16 +200,34 @@
       "default": false
     },
     {
-      "type": "checkbox",
-      "id": "suppress_padding_top",
-      "label": "Fjern afstand i toppen",
-      "default": false
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 12
     },
     {
-      "type": "checkbox",
-      "id": "suppress_padding_bottom",
-      "label": "Fjern afstand i bunden",
-      "default": false
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Sideafstand",
+      "default": 16
     }
   ],
   "presets": [

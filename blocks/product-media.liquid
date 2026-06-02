@@ -6,20 +6,14 @@
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 
-{%- if block.settings.suppress_padding_top or block.settings.suppress_padding_bottom -%}
-  {%- style -%}
-    {%- if block.settings.suppress_padding_top -%}
-      #shopify-block-{{ block.id }} {
-        padding-top: 0 !important;
-      }
-    {%- endif -%}
-    {%- if block.settings.suppress_padding_bottom -%}
-      #shopify-block-{{ block.id }} {
-        padding-bottom: 0 !important;
-      }
-    {%- endif -%}
-  {%- endstyle -%}
-{%- endif -%}
+{%- style -%}
+  #shopify-block-{{ block.id }} {
+    padding-top: {{ block.settings.padding_top }}px !important;
+    padding-bottom: {{ block.settings.padding_bottom }}px !important;
+    padding-left: {{ block.settings.padding_horizontal }}px !important;
+    padding-right: {{ block.settings.padding_horizontal }}px !important;
+  }
+{%- endstyle -%}
 
 <div class="relative w-full" {{ block.shopify_attributes }}>
   <!-- Hidden dummy image for third-party cart compatibility -->
@@ -503,16 +497,34 @@
       "default": "BESTSELLER"
     },
     {
-      "type": "checkbox",
-      "id": "suppress_padding_top",
-      "label": "Fjern afstand i toppen",
-      "default": false
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 0
     },
     {
-      "type": "checkbox",
-      "id": "suppress_padding_bottom",
-      "label": "Fjern afstand i bunden",
-      "default": false
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Sideafstand",
+      "default": 0
     }
   ],
   "presets": [

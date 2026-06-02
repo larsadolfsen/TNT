@@ -39,9 +39,7 @@
         "background_color": "light",
         "layout_style": "full_width_bg",
         "padding_top": 16,
-        "padding_bottom": 16,
-        "disable_block_padding_vertical_mobile": true,
-        "disable_block_padding_horizontal_mobile": true
+        "padding_bottom": 16
       }
     },
     "product_content": {
@@ -171,9 +169,7 @@
         "background_color": "light",
         "layout_style": "full_width_bg",
         "padding_top": 0,
-        "padding_bottom": 0,
-        "disable_block_padding_vertical_mobile": true,
-        "disable_block_padding_horizontal_mobile": true
+        "padding_bottom": 0
       }
     },
     "row_CQqaPe": {
