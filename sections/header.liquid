@@ -268,7 +268,10 @@
         }
       }
 
-      const imgUrl = item.image ? item.image : "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=150&q=80";
+      let imgUrl = item.image ? item.image : "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=150&q=80";
+      if (item.properties && item.properties._image) {
+        imgUrl = item.properties._image;
+      }
 
       // Beregn pris for denne linje (brug enten den transformerede pris fra Shopify eller vores gemte _unit_price som fallback)
       let linePrice = item.final_line_price;

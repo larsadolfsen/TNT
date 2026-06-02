@@ -12,7 +12,13 @@
     {% for item in cart.items %}
       <tr>
         <td>
-          {% render 'image', image: item.image, url: item.url %}
+          {%- if item.properties._image != blank -%}
+            <a href="{{ item.url }}" class="image">
+              <img src="{{ item.properties._image }}" alt="{{ item.title }}" />
+            </a>
+          {%- else -%}
+            {% render 'image', image: item.image, url: item.url %}
+          {%- endif -%}
         </td>
         <td>
           {%- if item.properties._base_price != blank -%}
