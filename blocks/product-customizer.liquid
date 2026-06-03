@@ -284,7 +284,9 @@
           const width = getVariantWidth(pricingVariant.title);
           const rawTitle = pricingVariant.title === "Default Title" ? productTitle : pricingVariant.title;
           const displayTitle = rawTitle.split("-")[0].trim();
-          summaryMal.textContent = `Du er ved at købe: ${state.quantity} x ${displayTitle} - ${width} x ${state.length} cm`;
+          const shapeLabels = { firkantet: 'Firkantet', rund: 'Rund', oval: 'Oval' };
+          const shapeLabel = shapeLabels[selectedShape] || '';
+          summaryMal.textContent = `Du er ved at købe: ${state.quantity} x ${shapeLabel} ${displayTitle} - ${width} x ${state.length} cm`;
         }
 
         // Update length calculation display
