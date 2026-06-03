@@ -5,15 +5,19 @@
     padding-left: {{ block.settings.padding_sides }}px !important;
     padding-right: {{ block.settings.padding_sides }}px !important;
   }
+  #shopify-block-{{ block.id }} .shopify-block {
+    padding: 0 !important;
+  }
 {%- endstyle -%}
 
-<div class="space-y-1 text-sm" {{ block.shopify_attributes }}>
+<div class="product-trust-checkmarks-list space-y-1 text-sm" {{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 
 {% schema %}
 {
   "name": "Product Trust Checkmarks",
+  "class": "shopify-block-product-trust-checkmarks",
   "blocks": [
     {
       "type": "@theme"

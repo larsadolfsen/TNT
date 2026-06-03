@@ -68,9 +68,29 @@
 
 <div class="w-full border-y border-slate-100" {{ block.shopify_attributes }}>
   <div class="flex flex-col gap-4">
-    <!-- Length Selection Header -->
+
+    <!-- Step 1: Shape Selector -->
     <div class="flex items-start gap-3">
       <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full mt-0.5 shrink-0">1</span>
+      <div class="flex flex-col w-full">
+        <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Vælg form</span>
+      </div>
+    </div>
+    <div class="flex gap-2 w-full">
+      <button type="button" id="btn-shape-firkantet" data-shape="firkantet" class="shape-btn flex-1 h-11 flex items-center justify-center border border-slate-200 rounded-full text-sm font-semibold text-slate-700 bg-slate-900 text-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none" onclick="selectShape('firkantet')">
+        Firkantet dug
+      </button>
+      <button type="button" id="btn-shape-rund" data-shape="rund" class="shape-btn flex-1 h-11 flex items-center justify-center border border-slate-200 rounded-full text-sm font-semibold text-slate-700 bg-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none" onclick="selectShape('rund')">
+        Rund dug
+      </button>
+      <button type="button" id="btn-shape-oval" data-shape="oval" class="shape-btn flex-1 h-11 flex items-center justify-center border border-slate-200 rounded-full text-sm font-semibold text-slate-700 bg-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none" onclick="selectShape('oval')">
+        Oval dug
+      </button>
+    </div>
+
+    <!-- Step 2: Length Selection -->
+    <div class="flex items-start gap-3">
+      <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full mt-0.5 shrink-0">2</span>
       <div class="flex flex-col">
         <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Vælg længde</span>
         <p class="text-xs text-on-surface-variant mt-1">Vi anbefaler ca. 20 cm til nedhæng i hver ende.</p>
@@ -95,10 +115,10 @@
       <div id="length-calculation" class="text-xs text-on-surface-variant mt-1.5 text-center w-full"></div>
     </div>
 
-    <!-- Quantity Selector (Customizer Quantity) -->
+    <!-- Step 3: Quantity Selector -->
     <div class="flex flex-col gap-2 mt-2 w-full">
       <div class="flex items-center gap-3">
-        <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full">2</span>
+        <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full">3</span>
         <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Antal</span>
       </div>
       <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm select-none">
@@ -139,8 +159,21 @@
 </script>
 
 <script>
+  // Shape selector (global so onclick= attributes can call it)
+  let selectedShape = 'firkantet';
+  function selectShape(shape) {
+    selectedShape = shape;
+    document.querySelectorAll('.shape-btn').forEach(btn => {
+      const isActive = btn.dataset.shape === shape;
+      btn.classList.toggle('bg-slate-900', isActive);
+      btn.classList.toggle('text-white', isActive);
+      btn.classList.toggle('bg-white', !isActive);
+      btn.classList.toggle('text-slate-700', !isActive);
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
-    console.log("Voksdug Customizer - Version: swap-voksdug-metervare (Release 26)");
+    console.log("Voksdug Customizer - Version: swap-voksdug-metervare (Release 27)");
     // 1. Config variables from Liquid settings
     const minLength = {{ min_length | json }};
     const stepSize = {{ step_size | json }};
@@ -323,7 +356,7 @@
           properties: {
             "_length": state.length.toString(),
             "_width": width.toString(),
-            "_shape": "firkantet",
+            "_shape": selectedShape,
             "_unit_price": unitPriceCents.toString()
           }
         };
