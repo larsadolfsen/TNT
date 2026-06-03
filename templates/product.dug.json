@@ -55,40 +55,54 @@
     "row_UzrqP8": {
       "type": "row",
       "blocks": {
-        "badge_bgw3nr": {
-          "type": "badge",
-          "name": "Badge",
+        "product_materials_TzDY9r": {
+          "type": "product-materials",
+          "name": "Materialer & Badges",
           "settings": {
-            "text": "På lager",
-            "only_if_in_stock": true,
-            "alignment": "left",
-            "background_color": "#e6f4ea",
-            "text_color": "#137333",
-            "padding_top": 4,
-            "padding_bottom": 4,
-            "padding_sides": 4
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
           },
-          "blocks": {}
-        },
-        "badge_inGxgH": {
-          "type": "badge",
-          "name": "Badge",
-          "settings": {
-            "text": "BESTSELLER",
-            "only_if_in_stock": false,
-            "alignment": "left",
-            "background_color": "#000000",
-            "text_color": "#ffffff",
-            "padding_top": 4,
-            "padding_bottom": 4,
-            "padding_sides": 4
+          "blocks": {
+            "badge_tp96CE": {
+              "type": "badge",
+              "name": "Badge",
+              "settings": {
+                "text": "På lager",
+                "only_if_in_stock": true,
+                "alignment": "left",
+                "background_color": "#e6f4ea",
+                "text_color": "#137333",
+                "padding_top": 4,
+                "padding_bottom": 4,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "badge_qcjnVh": {
+              "type": "badge",
+              "name": "Badge",
+              "settings": {
+                "text": "BESTSELLER",
+                "only_if_in_stock": false,
+                "alignment": "left",
+                "background_color": "#000000",
+                "text_color": "#ffffff",
+                "padding_top": 4,
+                "padding_bottom": 4,
+                "padding_sides": 4
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
+          "block_order": [
+            "badge_tp96CE",
+            "badge_qcjnVh"
+          ]
         }
       },
       "block_order": [
-        "badge_bgw3nr",
-        "badge_inGxgH"
+        "product_materials_TzDY9r"
       ],
       "name": "Row",
       "settings": {
@@ -112,6 +126,7 @@
             "sticky": true,
             "layout_direction": "group--vertical",
             "alignment": "flex-start",
+            "align_left": false,
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0
@@ -139,6 +154,7 @@
             "sticky": false,
             "layout_direction": "group--vertical",
             "alignment": "flex-start",
+            "align_left": false,
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0
