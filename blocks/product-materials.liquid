@@ -6,15 +6,32 @@
     padding-right: {{ block.settings.padding_sides }}px !important;
   }
   .product-materials-grid-{{ block.id }} {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-    justify-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: {{ block.settings.gap | default: 8 }}px;
+    justify-content: flex-start;
     width: 100%;
   }
+  .product-materials-grid-{{ block.id }} .shopify-block-badge {
+    padding: 0 !important;
+    display: inline-flex !important;
+    width: auto !important;
+  }
+  .product-materials-grid-{{ block.id }} .shopify-block-badge > div {
+    width: auto !important;
+    display: inline-flex !important;
+  }
+
+  /* If it has material-badge blocks, use the 3-column grid layout */
+  .product-materials-grid-{{ block.id }}:has(.shopify-block-material-badge) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: {{ block.settings.gap | default: 8 }}px;
+    justify-items: center;
+  }
   @media (min-width: 768px) {
-    .product-materials-grid-{{ block.id }} {
-      gap: 32px;
+    .product-materials-grid-{{ block.id }}:has(.shopify-block-material-badge) {
+      gap: {{ block.settings.gap | default: 8 | times: 2 }}px;
     }
   }
 {%- endstyle -%}
@@ -62,6 +79,16 @@
       "unit": "px",
       "label": "Afstand i siderne",
       "default": 0
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand imellem elementer",
+      "default": 8
     }
   ],
   "presets": [
