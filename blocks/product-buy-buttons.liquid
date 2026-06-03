@@ -37,12 +37,15 @@
 
 <div class="flex flex-col gap-4" {{ block.shopify_attributes }}>
     <!-- Left: Selected Specs & Price -->
-    <div id="buy-buttons-summary-container" class="flex flex-col text-right w-full">
+    <div id="buy-buttons-summary-container" class="flex flex-col text-center w-full">
       {%- assign display_title = base_variant.title -%}
       {%- if display_title == 'Default Title' -%}
         {%- assign display_title = product.title -%}
       {%- endif -%}
-      <div id="summary-mål" class="text-xs text-on-surface-variant mt-1.5 text-right">{{ display_title }} {{ width }} x 200 cm</div>
+      {%- if display_title contains '-' -%}
+        {%- assign display_title = display_title | split: '-' | first | strip -%}
+      {%- endif -%}
+      <div id="summary-mål" class="text-xs text-on-surface-variant mt-1.5 text-center">{{ display_title }} {{ width }} x 200 cm</div>
     </div>
     
     <!-- Right: Button and Payment Badges -->
