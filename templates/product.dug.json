@@ -43,7 +43,7 @@
             "alignment": "left",
             "background_color": "#000000",
             "text_color": "#ffffff",
-            "padding_top": 0,
+            "padding_top": 4,
             "padding_bottom": 0,
             "padding_sides": 16
           },
@@ -156,6 +156,8 @@
             "product_shipping_progress_QWXqtB": {
               "type": "product-shipping-progress",
               "settings": {
+                "free_shipping_message": "Du er kun [beløb] fra fri fragt",
+                "free_shipping_success_message": "Du har opnået fri fragt!",
                 "hide_everything_except_text": true,
                 "padding_top": 8,
                 "padding_bottom": 12,
@@ -320,7 +322,8 @@
               "type": "accordion-panel",
               "settings": {
                 "title": "Produktspecifikationer",
-                "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>"
+                "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>",
+                "open_by_default": false
               },
               "blocks": {}
             },
@@ -328,7 +331,8 @@
               "type": "accordion-panel",
               "settings": {
                 "title": "Om brandet",
-                "content": "<p>Textil &amp; Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>"
+                "content": "<p>Textil &amp; Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
+                "open_by_default": false
               },
               "blocks": {}
             },
@@ -336,7 +340,8 @@
               "type": "accordion-panel",
               "settings": {
                 "title": "Vedligeholdelse",
-                "content": "<p><strong>Daglig rengøring:</strong> Tør blot overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>"
+                "content": "<p><strong>Daglig rengøring:</strong> Tør blot overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>",
+                "open_by_default": false
               },
               "blocks": {}
             }

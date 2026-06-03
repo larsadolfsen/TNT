@@ -43,12 +43,7 @@
     },
     "main-collection": {
       "type": "main-collection",
-      "settings": {
-        "show_thickness_filter": true,
-        "show_width_filter": true,
-        "show_form_filter": true,
-        "show_price_filter": true
-      }
+      "settings": {}
     }
   },
   "order": [
