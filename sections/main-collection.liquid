@@ -114,7 +114,7 @@
                 endif
                 assign v_num_str = v | replace: ',', '.' | split: ' ' | first
                 assign v_num = v_num_str | plus: 0
-                assign v_num_int = v_num | multiplied_by: 10 | plus: 0
+                assign v_num_int = v_num | times: 10 | plus: 0
                 if v_num_int < 10
                   assign padded = "000" | append: v_num_int
                 elsif v_num_int < 100
@@ -344,7 +344,7 @@
                 endif
                 assign v_num_str = v | replace: ',', '.' | split: ' ' | first
                 assign v_num = v_num_str | plus: 0
-                assign v_num_int = v_num | multiplied_by: 10 | plus: 0
+                assign v_num_int = v_num | times: 10 | plus: 0
                 if v_num_int < 10
                   assign padded = "000" | append: v_num_int
                 elsif v_num_int < 100
@@ -482,9 +482,9 @@
           assign display_original_price_cents = product.compare_at_price
           
           if product.type == 'Metervare'
-            assign display_price_cents = product.price | multiplied_by: 100
+            assign display_price_cents = product.price | times: 100
             if product.compare_at_price != blank and product.compare_at_price > 0
-              assign display_original_price_cents = product.compare_at_price | multiplied_by: 100
+              assign display_original_price_cents = product.compare_at_price | times: 100
             endif
           endif
 

@@ -93,10 +93,11 @@
           <div class="flex text-[#FFB800] gap-0.5">
             {%- assign rating_floor = rating | floor -%}
             {%- assign decimal = rating | minus: rating_floor -%}
+            {%- assign rating_floor_plus_1 = rating_floor | plus: 1 -%}
             {%- for i in (1..5) -%}
               {%- if i <= rating_floor -%}
                 <span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>
-              {%- elsif i == rating_floor | plus: 1 -%}
+              {%- elsif i == rating_floor_plus_1 -%}
                 {%- if decimal >= 0.75 -%}
                   <span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>
                 {%- elsif decimal >= 0.25 -%}

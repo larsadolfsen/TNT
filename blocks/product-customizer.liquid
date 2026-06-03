@@ -88,6 +88,8 @@
           &#43;
         </button>
       </div>
+      <!-- Dynamic calculation info under length selector -->
+      <div id="length-calculation" class="text-xs text-slate-500 mt-2 text-center font-medium"></div>
     </div>
 
     <!-- Quantity Selector (Customizer Quantity) -->
@@ -214,6 +216,27 @@
         if (summaryMal) {
           const width = getVariantWidth(pricingVariant.title);
           summaryMal.textContent = `${pricingVariant.title} ${width} x ${state.length} cm`;
+        }
+
+        // Update length calculation display
+        const lengthCalculation = document.getElementById("length-calculation");
+        if (lengthCalculation) {
+          const lengthInMeters = state.length / 100;
+          const pricePerMeter = pricingVariant.price * 100;
+          const totalLengthPrice = pricingVariant.price * state.length;
+          
+          const formattedLength = lengthInMeters.toLocaleString("da-DK", { 
+            minimumFractionDigits: 1, 
+            maximumFractionDigits: 2 
+          });
+          const formattedPricePerMeter = pricePerMeter % 1 === 0
+            ? pricePerMeter.toLocaleString("da-DK", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+            : pricePerMeter.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          const formattedTotalLengthPrice = totalLengthPrice % 1 === 0
+            ? totalLengthPrice.toLocaleString("da-DK", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+            : totalLengthPrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          
+          lengthCalculation.textContent = `${formattedLength} m x ${formattedPricePerMeter} kr. = ${formattedTotalLengthPrice} kr.`;
         }
 
         // Set global variable to resolve initial page load race condition
