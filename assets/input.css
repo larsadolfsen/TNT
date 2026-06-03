@@ -14,8 +14,8 @@
   --color-outline-variant: #e2e2e2;
   --color-on-surface-variant: #666666;
 
-  --font-sans: var(--font-body-family), "sans-serif";
-  --font-serif: var(--font-header-family), "serif";
+  --font-sans: var(--font-body-family), sans-serif;
+  --font-serif: var(--font-header-family), serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
