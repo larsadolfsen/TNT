@@ -34,63 +34,65 @@
             "padding_sides": 16
           },
           "blocks": {}
-        },
-        "group_wJVtQh": {
-          "type": "group",
-          "name": "t:general.row",
-          "settings": {
-            "sticky": false,
-            "layout_direction": "group--horizontal",
-            "alignment": "flex-start",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 16
-          },
-          "blocks": {
-            "badge_g9wx9B": {
-              "type": "badge",
-              "name": "Badge",
-              "settings": {
-                "text": "På lager",
-                "only_if_in_stock": true,
-                "alignment": "left",
-                "background_color": "#e6f4ea",
-                "text_color": "#137333",
-                "padding_top": 4,
-                "padding_bottom": 4,
-                "padding_sides": 4
-              },
-              "blocks": {}
-            },
-            "badge_G99E3k": {
-              "type": "badge",
-              "name": "Badge",
-              "settings": {
-                "text": "BESTSELLER",
-                "only_if_in_stock": false,
-                "alignment": "left",
-                "background_color": "#000000",
-                "text_color": "#ffffff",
-                "padding_top": 4,
-                "padding_bottom": 4,
-                "padding_sides": 4
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "badge_g9wx9B",
-            "badge_G99E3k"
-          ]
         }
       },
       "block_order": [
         "page_title_BFEyAw",
-        "product_trust_UAAjJ7",
-        "group_wJVtQh"
+        "product_trust_UAAjJ7"
       ],
       "name": "Row",
       "settings": {
+        "disable_columns_layout": false,
+        "background_color": "light",
+        "layout_style": "full_width_bg",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 0,
+        "disable_block_padding_vertical_mobile": false,
+        "disable_block_padding_horizontal_mobile": false
+      }
+    },
+    "row_UzrqP8": {
+      "type": "row",
+      "blocks": {
+        "badge_bgw3nr": {
+          "type": "badge",
+          "name": "Badge",
+          "settings": {
+            "text": "På lager",
+            "only_if_in_stock": true,
+            "alignment": "left",
+            "background_color": "#e6f4ea",
+            "text_color": "#137333",
+            "padding_top": 4,
+            "padding_bottom": 4,
+            "padding_sides": 4
+          },
+          "blocks": {}
+        },
+        "badge_inGxgH": {
+          "type": "badge",
+          "name": "Badge",
+          "settings": {
+            "text": "BESTSELLER",
+            "only_if_in_stock": false,
+            "alignment": "left",
+            "background_color": "#000000",
+            "text_color": "#ffffff",
+            "padding_top": 4,
+            "padding_bottom": 4,
+            "padding_sides": 4
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "badge_bgw3nr",
+        "badge_inGxgH"
+      ],
+      "name": "Row",
+      "settings": {
+        "disable_columns_layout": false,
         "background_color": "light",
         "layout_style": "full_width_bg",
         "padding_top": 0,
@@ -292,6 +294,7 @@
         "group_jbctmY"
       ],
       "settings": {
+        "disable_columns_layout": false,
         "background_color": "light",
         "layout_style": "full_width_bg",
         "padding_top": 0,
@@ -332,6 +335,7 @@
       ],
       "name": "Row",
       "settings": {
+        "disable_columns_layout": false,
         "background_color": "shade",
         "layout_style": "full_width_bg",
         "padding_top": 0,
@@ -419,6 +423,7 @@
       ],
       "name": "Row",
       "settings": {
+        "disable_columns_layout": false,
         "background_color": "light",
         "layout_style": "boxed",
         "padding_top": 0,
@@ -431,6 +436,7 @@
   },
   "order": [
     "row_VRkqnV",
+    "row_UzrqP8",
     "product_content",
     "row_CQqaPe",
     "row_VY7RVT"
