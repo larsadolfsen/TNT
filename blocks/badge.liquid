@@ -7,9 +7,18 @@
   }
 {%- endstyle -%}
 
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign show_badge = true -%}
+{%- if block.settings.only_if_in_stock -%}
+  {%- if current_variant == nil or current_variant.available == false -%}
+    {%- assign show_badge = false -%}
+  {%- endif -%}
+{%- endif -%}
+
 <div 
+  id="badge-container-{{ block.id }}"
   class="w-full flex" 
-  style="justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};" 
+  style="justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};{% unless show_badge %} display: none;{% endunless %}" 
   {{ block.shopify_attributes }}
 >
   <span 
@@ -19,6 +28,52 @@
     {{ block.settings.text | default: "BESTSELLER" }}
   </span>
 </div>
+
+{%- if block.settings.only_if_in_stock and product -%}
+<script id="product-badge-variant-data-{{ block.id }}" type="application/json">
+  {
+    "variants": [
+      {%- for variant in product.variants -%}
+        {
+          "id": {{ variant.id }},
+          "available": {{ variant.available | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const dataEl = document.getElementById("product-badge-variant-data-{{ block.id }}");
+    const containerEl = document.getElementById("badge-container-{{ block.id }}");
+    if (!dataEl || !containerEl) return;
+
+    let badgeData = { variants: [] };
+    try {
+      badgeData = JSON.parse(dataEl.textContent);
+    } catch (e) {
+      console.error("Failed to parse stock badge data", e);
+    }
+
+    function updateBadge(variantId) {
+      const variant = badgeData.variants.find(v => v.id === parseInt(variantId));
+      if (!variant) return;
+
+      if (variant.available) {
+        containerEl.style.display = "";
+      } else {
+        containerEl.style.display = "none";
+      }
+    }
+
+    document.addEventListener("variant-changed", (e) => {
+      if (e.detail && e.detail.variantId) {
+        updateBadge(e.detail.variantId);
+      }
+    });
+  });
+</script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -30,6 +85,12 @@
       "id": "text",
       "label": "Badge Tekst",
       "default": "BESTSELLER"
+    },
+    {
+      "type": "checkbox",
+      "id": "only_if_in_stock",
+      "label": "Vis kun hvis varen er på lager",
+      "default": false
     },
     {
       "type": "text_alignment",
@@ -91,3 +152,4 @@
   ]
 }
 {% endschema %}
+

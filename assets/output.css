@@ -59,7 +59,6 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --font-weight-extrabold: 800;
     --tracking-tight: -0.025em;
     --tracking-wide: 0.025em;
     --tracking-wider: 0.05em;
@@ -408,9 +407,6 @@
   }
   .inline-flex {
     display: inline-flex;
-  }
-  .aspect-\[3\/2\] {
-    aspect-ratio: 1/1;
   }
   .aspect-square {
     aspect-ratio: 1 / 1;

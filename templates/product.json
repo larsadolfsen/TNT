@@ -34,11 +34,27 @@
             "suppress_padding_bottom": false
           },
           "blocks": {}
+        },
+        "badge_stock": {
+          "type": "badge",
+          "name": "Badge",
+          "settings": {
+            "text": "På lager",
+            "alignment": "left",
+            "background_color": "#e6f4ea",
+            "text_color": "#137333",
+            "only_if_in_stock": true,
+            "padding_top": 4,
+            "padding_bottom": 0,
+            "padding_sides": 16
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "page_title_Lq47YW",
-        "product_trust_wtyTtH"
+        "product_trust_wtyTtH",
+        "badge_stock"
       ],
       "name": "Row",
       "settings": {
