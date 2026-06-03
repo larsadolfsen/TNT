@@ -89,7 +89,7 @@
         </button>
       </div>
       <!-- Dynamic calculation info under length selector -->
-      <div id="length-calculation" class="text-xs text-on-surface-variant mt-2 text-center font-medium"></div>
+      <div id="length-calculation" class="text-xs text-on-surface-variant mt-2 font-medium"></div>
     </div>
 
     <!-- Quantity Selector (Customizer Quantity) -->
@@ -236,7 +236,7 @@
             ? totalLengthPrice.toLocaleString("da-DK", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
             : totalLengthPrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
           
-          lengthCalculation.textContent = `${formattedLength} m x ${formattedPricePerMeter} kr. = ${formattedTotalLengthPrice} kr.`;
+          lengthCalculation.innerHTML = `<span class="font-semibold">Længde:</span> ${formattedLength} m x ${formattedPricePerMeter} kr. = ${formattedTotalLengthPrice} kr.`;
         }
 
         // Set global variable to resolve initial page load race condition
