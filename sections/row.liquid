@@ -57,7 +57,7 @@
 
 <div class="{{ outer_class }}">
   <div class="{{ inner_class }}">
-    <div class="row-content">
+    <div class="row-content{% if section.settings.disable_columns_layout %} row-content--no-columns{% endif %}">
       {% content_for 'blocks' %}
     </div>
   </div>
@@ -67,6 +67,12 @@
 {
   "name": "Row",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "disable_columns_layout",
+      "label": "Deaktiver 2-kolonne layout på desktop",
+      "default": false
+    },
     {
       "type": "select",
       "id": "background_color",
