@@ -61,7 +61,8 @@
           "settings": {
             "padding_top": 12,
             "padding_bottom": 12,
-            "padding_sides": 0
+            "padding_sides": 16,
+            "gap": 8
           },
           "blocks": {
             "badge_tp96CE": {
@@ -259,7 +260,8 @@
               "settings": {
                 "padding_top": 12,
                 "padding_bottom": 12,
-                "padding_sides": 0
+                "padding_sides": 0,
+                "gap": 8
               },
               "blocks": {
                 "badge_qNRGJX": {

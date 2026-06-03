@@ -77,7 +77,7 @@
       </div>
     </div>
     <div class="flex gap-2 w-full">
-      <button type="button" id="btn-shape-firkantet" data-shape="firkantet" class="shape-btn flex-1 h-11 flex items-center justify-center border border-slate-200 rounded-full text-sm font-semibold text-slate-700 bg-slate-900 text-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none" onclick="selectShape('firkantet')">
+      <button type="button" id="btn-shape-firkantet" data-shape="firkantet" class="shape-btn flex-1 h-11 flex items-center justify-center border border-slate-200 rounded-full text-sm font-semibold bg-slate-900 text-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none" onclick="selectShape('firkantet')">
         Firkantet dug
       </button>
       <button type="button" id="btn-shape-rund" data-shape="rund" class="shape-btn flex-1 h-11 flex items-center justify-center border border-slate-200 rounded-full text-sm font-semibold text-slate-700 bg-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none" onclick="selectShape('rund')">
@@ -97,7 +97,7 @@
       </div>
     </div>
 
-    <!-- Pill-shaped Stepper matching screenshot -->
+    <!-- Pill-shaped Stepper -->
     <div class="w-full">
       <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm select-none">
         <!-- Minus button -->
@@ -173,7 +173,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    console.log("Voksdug Customizer - Version: swap-voksdug-metervare (Release 27)");
+    console.log("Voksdug Customizer - Version: swap-voksdug-metervare (Release 26)");
     // 1. Config variables from Liquid settings
     const minLength = {{ min_length | json }};
     const stepSize = {{ step_size | json }};
