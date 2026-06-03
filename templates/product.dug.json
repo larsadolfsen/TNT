@@ -59,9 +59,9 @@
           "type": "product-materials",
           "name": "Materialer & Badges",
           "settings": {
-            "padding_top": 4,
-            "padding_bottom": 0,
-            "padding_sides": 16
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
           },
           "blocks": {
             "badge_tp96CE": {
@@ -253,6 +253,45 @@
                 "checkmark_7inAb8",
                 "checkmark_XTeX48"
               ]
+            },
+            "product_materials_dmN3Ub": {
+              "type": "product-materials",
+              "settings": {
+                "padding_top": 12,
+                "padding_bottom": 12,
+                "padding_sides": 0
+              },
+              "blocks": {
+                "badge_qNRGJX": {
+                  "type": "material-badge",
+                  "settings": {
+                    "icon": "eco",
+                    "title": "100% Phthalatfri"
+                  },
+                  "blocks": {}
+                },
+                "badge_NPwiJF": {
+                  "type": "material-badge",
+                  "settings": {
+                    "icon": "verified",
+                    "title": "Oeko-Tex 100"
+                  },
+                  "blocks": {}
+                },
+                "badge_QGPn7b": {
+                  "type": "material-badge",
+                  "settings": {
+                    "icon": "local_shipping",
+                    "title": "Sendes på rulle"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "badge_qNRGJX",
+                "badge_NPwiJF",
+                "badge_QGPn7b"
+              ]
             }
           },
           "block_order": [
@@ -261,7 +300,8 @@
             "product_customizer_6ahfJi",
             "product_buy_buttons_jHXRAz",
             "product_shipping_progress_QWXqtB",
-            "product_trust_checkmarks_y8UfaW"
+            "product_trust_checkmarks_y8UfaW",
+            "product_materials_dmN3Ub"
           ]
         }
       },
@@ -276,51 +316,6 @@
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
-        "disable_block_padding_vertical_mobile": false,
-        "disable_block_padding_horizontal_mobile": false
-      }
-    },
-    "row_BhJEFD": {
-      "type": "row",
-      "blocks": {
-        "material_badge_9aYJU6": {
-          "type": "material-badge",
-          "settings": {
-            "icon": "eco",
-            "title": "100% Phthalatfri"
-          },
-          "blocks": {}
-        },
-        "material_badge_qhrpP7": {
-          "type": "material-badge",
-          "settings": {
-            "icon": "verified",
-            "title": "Oeko-Tex 100"
-          },
-          "blocks": {}
-        },
-        "material_badge_PGPY4x": {
-          "type": "material-badge",
-          "settings": {
-            "icon": "local_shipping",
-            "title": "Sendes på rulle"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "material_badge_9aYJU6",
-        "material_badge_qhrpP7",
-        "material_badge_PGPY4x"
-      ],
-      "name": "Row",
-      "settings": {
-        "disable_columns_layout": false,
-        "background_color": "light",
-        "layout_style": "full_width_bg",
-        "padding_top": 8,
-        "padding_bottom": 8,
-        "padding_sides": 16,
         "disable_block_padding_vertical_mobile": false,
         "disable_block_padding_horizontal_mobile": false
       }
@@ -459,7 +454,6 @@
     "row_VRkqnV",
     "row_UzrqP8",
     "product_content",
-    "row_BhJEFD",
     "row_CQqaPe",
     "row_VY7RVT"
   ]

@@ -318,7 +318,7 @@
         const targetVoksdugImage = pricingVariant && pricingVariant.image ? pricingVariant.image : "";
 
         const itemToAdd = {
-          id: customizedVariant.id,
+          id: metervareVariantIntId,
           quantity: state.quantity,
           properties: {
             "_length": state.length.toString(),
@@ -329,14 +329,17 @@
         };
 
         // Add the product title and image to properties so they can be accessed by the Cart Transform function
-        itemToAdd.properties["_metervare_title"] = pricingVariant ? pricingVariant.title : productTitle;
-        const variantImage = pricingVariant && pricingVariant.image ? pricingVariant.image : (customizedVariant && customizedVariant.image ? customizedVariant.image : "");
+        itemToAdd.properties["_metervare_title"] = productTitle;
+        let variantImage = pricingVariant && pricingVariant.image ? pricingVariant.image : (customizedVariant && customizedVariant.image ? customizedVariant.image : "");
         if (variantImage) {
+          if (variantImage.startsWith("//")) {
+            variantImage = "https:" + variantImage;
+          }
           itemToAdd.properties["_image"] = variantImage;
         }
 
-        if (metervareVariantId) {
-          itemToAdd.properties["_metervare_variant_id"] = metervareVariantId;
+        if (targetVoksdugVariantId) {
+          itemToAdd.properties["_metervare_variant_id"] = `gid://shopify/ProductVariant/${targetVoksdugVariantId}`;
           itemToAdd.properties["_price_per_cm"] = refPrice.toString();
         }
 
