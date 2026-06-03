@@ -17,7 +17,7 @@
           "settings": {
             "title_override": "{{ product.title }}",
             "show_description": true,
-            "padding_top": 12,
+            "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 16
           },
@@ -35,25 +35,57 @@
           },
           "blocks": {}
         },
-        "badge_yjhr4X": {
-          "type": "badge",
-          "name": "Badge",
+        "group_wJVtQh": {
+          "type": "group",
+          "name": "t:general.row",
           "settings": {
-            "text": "BESTSELLER",
-            "alignment": "left",
-            "background_color": "#000000",
-            "text_color": "#ffffff",
-            "padding_top": 4,
+            "sticky": false,
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "padding_top": 0,
             "padding_bottom": 0,
-            "padding_sides": 16
+            "padding_sides": 0
           },
-          "blocks": {}
+          "blocks": {
+            "badge_g9wx9B": {
+              "type": "badge",
+              "name": "Badge",
+              "settings": {
+                "text": "",
+                "alignment": "left",
+                "background_color": "#009966",
+                "text_color": "#ffffff",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "badge_G99E3k": {
+              "type": "badge",
+              "name": "Badge",
+              "settings": {
+                "text": "BESTSELLER",
+                "alignment": "left",
+                "background_color": "#000000",
+                "text_color": "#ffffff",
+                "padding_top": 4,
+                "padding_bottom": 0,
+                "padding_sides": 16
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "badge_g9wx9B",
+            "badge_G99E3k"
+          ]
         }
       },
       "block_order": [
         "page_title_BFEyAw",
         "product_trust_UAAjJ7",
-        "badge_yjhr4X"
+        "group_wJVtQh"
       ],
       "name": "Row",
       "settings": {
