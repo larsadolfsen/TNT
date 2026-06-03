@@ -87,12 +87,12 @@
           {%- assign progress_message = block.settings.free_shipping_message | default: "Du er kun [beløb] fra fri fragt" -%}
           {%- if progress_message contains '[beløb]' -%}
             {%- assign message_parts = progress_message | split: '[beløb]' -%}
-            {{ message_parts[0] }}<span id="shipping-amount-ticker">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
+            {{ message_parts[0] }}<span id="shipping-amount-ticker" class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
           {%- elsif progress_message contains '[amount]' -%}
             {%- assign message_parts = progress_message | split: '[amount]' -%}
-            {{ message_parts[0] }}<span id="shipping-amount-ticker">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
+            {{ message_parts[0] }}<span id="shipping-amount-ticker" class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
           {%- else -%}
-            {{ progress_message | replace: '[beløb]', '<span id="shipping-amount-ticker"></span>' }}
+            {{ progress_message | replace: '[beløb]', '<span id="shipping-amount-ticker" class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded"></span>' }}
           {%- endif -%}
         </span>
         <span id="shipping-success-msg" class="{% if potential_total < threshold %}hidden{% endif %}">

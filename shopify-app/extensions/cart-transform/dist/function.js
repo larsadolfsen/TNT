@@ -1,4 +1,4 @@
-// extensions/cart-transform/node_modules/@shopify/shopify_function/run.ts
+// node_modules/@shopify/shopify_function/run.ts
 function run_default(userfunction) {
   try {
     ShopifyFunction;
@@ -12,7 +12,7 @@ function run_default(userfunction) {
   ShopifyFunction.writeOutput(output_obj);
 }
 
-// extensions/cart-transform/src/run.js
+// src/run.js
 function run(input) {
   const operations = [];
   console.log(`[CartTransform] Started. Total lines in cart: ${input.cart.lines.length}`);
@@ -30,21 +30,21 @@ function run(input) {
     }
     const lengthVal = line._length?.value;
     const widthVal = line._width?.value;
-    const targetVariantId = line._metervare_variant_id?.value;
+    const metervareVariantId = line._metervare_variant_id?.value;
     const pricePerCmVal = line._price_per_cm?.value;
-    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", targetVariantId="${targetVariantId}", pricePerCm="${pricePerCmVal}"`);
+    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}"`);
     let length = lengthVal ? parseInt(lengthVal, 10) : 0;
     if (length <= 0) {
       console.log(`[CartTransform] Line ${line.id} skipped: length <= 0 (${length})`);
       continue;
     }
-    if (!targetVariantId) {
+    if (!metervareVariantId) {
       console.log(`[CartTransform] Line ${line.id} skipped: Missing _metervare_variant_id attribute`);
       continue;
     }
     const expandedItems = [];
     const componentItem = {
-      merchandiseId: targetVariantId,
+      merchandiseId: metervareVariantId,
       quantity: length * line.quantity
     };
     if (pricePerCmVal) {
@@ -57,7 +57,7 @@ function run(input) {
             }
           }
         };
-        console.log(`[CartTransform] Set unit price for component to: ${pricePerCm.toFixed(2)} kr.`);
+        console.log(`[CartTransform] Set unit price for BTM001 component to: ${pricePerCm.toFixed(2)} kr.`);
       }
     }
     expandedItems.push(componentItem);
@@ -66,7 +66,7 @@ function run(input) {
       titlePrefix = `${product.title}, ${variant.title}`;
     }
     const customizedTitle = `${titlePrefix} - ${widthVal || "140"} x ${length} cm`;
-    console.log(`[CartTransform] Expanding line ${line.id} into metervare bundle. Title: "${customizedTitle}", Component variant: "${targetVariantId}", Qty: ${length * line.quantity}`);
+    console.log(`[CartTransform] Expanding line ${line.id} into metervare bundle. Title: "${customizedTitle}", Component variant: "${metervareVariantId}", Qty: ${length * line.quantity}`);
     operations.push({
       expand: {
         cartLineId: line.id,

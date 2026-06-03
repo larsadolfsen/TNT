@@ -190,8 +190,8 @@
       // Find the pricing variant (the one that is not the 'Tilpasset' variant)
       const pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
       if (pricingVariant) {
-        // Calculate price: (price per cm) * length * quantity
-        const totalClothPrice = pricingVariant.price * state.length * state.quantity;
+        // Calculate price: (price per meter) * (length in meters) * quantity
+        const totalClothPrice = pricingVariant.price * (state.length / 100.0) * state.quantity;
         
         const formattedPrice = totalClothPrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
         
@@ -286,24 +286,34 @@
 
         const width = getVariantWidth(pricingVariant ? pricingVariant.title : customizedVariant.title);
         const refPrice = pricingVariant ? pricingVariant.price : customizedVariant.price;
-        const unitPriceCents = Math.round(refPrice * state.length * 100);
+        // Total price in cents: (refPrice per meter * state.length / 100) * 100 = refPrice * state.length
+        const unitPriceCents = Math.round(refPrice * state.length);
 
         const targetVoksdugVariantId = pricingVariant ? pricingVariant.id : customizedVariant.id;
         const targetVoksdugImage = pricingVariant && pricingVariant.image ? pricingVariant.image : "";
 
         const itemToAdd = {
-          id: metervareVariantIntId,
+          id: customizedVariant.id,
           quantity: state.quantity,
           properties: {
             "_length": state.length.toString(),
             "_width": width.toString(),
             "_shape": "firkantet",
-            "_unit_price": unitPriceCents.toString(),
-            "_metervare_variant_id": "gid://shopify/ProductVariant/" + targetVoksdugVariantId,
-            "_price_per_cm": refPrice.toString(),
-            "_image": targetVoksdugImage
+            "_unit_price": unitPriceCents.toString()
           }
         };
+
+        // Add the product title and image to properties so they can be accessed by the Cart Transform function
+        itemToAdd.properties["_metervare_title"] = pricingVariant ? pricingVariant.title : productTitle;
+        const variantImage = pricingVariant && pricingVariant.image ? pricingVariant.image : (customizedVariant && customizedVariant.image ? customizedVariant.image : "");
+        if (variantImage) {
+          itemToAdd.properties["_image"] = variantImage;
+        }
+
+        if (metervareVariantId) {
+          itemToAdd.properties["_metervare_variant_id"] = metervareVariantId;
+          itemToAdd.properties["_price_per_cm"] = (refPrice / 100.0).toString();
+        }
 
         // Optimistic cart count increment
         const counters = document.querySelectorAll('#cart-counter');

@@ -481,13 +481,6 @@
           assign display_price_cents = product.price
           assign display_original_price_cents = product.compare_at_price
           
-          if product.type == 'Metervare'
-            assign display_price_cents = product.price | multiplied_by: 100
-            if product.compare_at_price != blank and product.compare_at_price > 0
-              assign display_original_price_cents = product.compare_at_price | multiplied_by: 100
-            endif
-          endif
-
           assign price = display_price_cents | money_without_currency | replace: '.', '' | replace: ',', '.' | plus: 0
           assign originalPrice = display_original_price_cents | money_without_currency | replace: '.', '' | replace: ',', '.' | plus: 0
           if originalPrice == 0
@@ -867,17 +860,15 @@
       const isMeterProduct = product.thickness || product.width || product.title.toLowerCase().includes("voksdug") || product.title.toLowerCase().includes("bordbeskytter");
 
       let priceLabel = 'Pris';
-      if (isMetervare) {
+      if (isMetervare || isMeterProduct) {
         priceLabel = 'Pris pr. meter';
-      } else if (isMeterProduct) {
-        priceLabel = 'Pris pr. cm';
       }
 
       const cardHtml = `
         <div class="product-card flex flex-col bg-white border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative">
           
           <!-- Image Zone -->
-          <div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden" style="aspect-ratio: 3/2;">
+          <div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden" style="aspect-ratio: 1/1;">
             <a href="${product.url}" class="block w-full h-full">
               <img 
                 src="${product.image}" 
