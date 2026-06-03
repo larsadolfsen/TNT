@@ -59,8 +59,8 @@
           "type": "product-materials",
           "name": "Materialer & Badges",
           "settings": {
-            "padding_top": 12,
-            "padding_bottom": 12,
+            "padding_top": 4,
+            "padding_bottom": 0,
             "padding_sides": 16
           },
           "blocks": {
