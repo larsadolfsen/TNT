@@ -77,15 +77,31 @@
       </div>
     </div>
     <div class="flex gap-2 w-full">
-      <button type="button" id="btn-shape-firkantet" data-shape="firkantet" class="shape-btn flex-1 h-11 flex items-center justify-center border border-slate-200 rounded-full text-sm font-semibold bg-slate-900 text-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none" onclick="selectShape('firkantet')">
-        Firkantet dug
+
+      <!-- Firkantet dug -->
+      <button type="button" id="btn-shape-firkantet" data-shape="firkantet" class="shape-btn flex-1 flex flex-col items-center justify-center gap-2 aspect-square border-2 border-slate-900 rounded-xl bg-slate-900 text-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none py-3 px-2" onclick="selectShape('firkantet')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8">
+          <rect x="3" y="5" width="18" height="14" rx="1"/>
+        </svg>
+        <span class="text-xs font-semibold leading-tight text-center">Firkantet dug</span>
       </button>
-      <button type="button" id="btn-shape-rund" data-shape="rund" class="shape-btn flex-1 h-11 flex items-center justify-center border border-slate-200 rounded-full text-sm font-semibold text-slate-700 bg-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none" onclick="selectShape('rund')">
-        Rund dug
+
+      <!-- Rund dug -->
+      <button type="button" id="btn-shape-rund" data-shape="rund" class="shape-btn flex-1 flex flex-col items-center justify-center gap-2 aspect-square border-2 border-slate-200 rounded-xl bg-white text-slate-700 shadow-sm transition-all duration-150 cursor-pointer focus:outline-none py-3 px-2" onclick="selectShape('rund')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8">
+          <circle cx="12" cy="12" r="9"/>
+        </svg>
+        <span class="text-xs font-semibold leading-tight text-center">Rund dug</span>
       </button>
-      <button type="button" id="btn-shape-oval" data-shape="oval" class="shape-btn flex-1 h-11 flex items-center justify-center border border-slate-200 rounded-full text-sm font-semibold text-slate-700 bg-white shadow-sm transition-all duration-150 cursor-pointer focus:outline-none" onclick="selectShape('oval')">
-        Oval dug
+
+      <!-- Oval dug -->
+      <button type="button" id="btn-shape-oval" data-shape="oval" class="shape-btn flex-1 flex flex-col items-center justify-center gap-2 aspect-square border-2 border-slate-200 rounded-xl bg-white text-slate-700 shadow-sm transition-all duration-150 cursor-pointer focus:outline-none py-3 px-2" onclick="selectShape('oval')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8">
+          <ellipse cx="12" cy="12" rx="9" ry="6"/>
+        </svg>
+        <span class="text-xs font-semibold leading-tight text-center">Oval dug</span>
       </button>
+
     </div>
 
     <!-- Step 2: Length Selection -->
@@ -167,8 +183,10 @@
       const isActive = btn.dataset.shape === shape;
       btn.classList.toggle('bg-slate-900', isActive);
       btn.classList.toggle('text-white', isActive);
+      btn.classList.toggle('border-slate-900', isActive);
       btn.classList.toggle('bg-white', !isActive);
       btn.classList.toggle('text-slate-700', !isActive);
+      btn.classList.toggle('border-slate-200', !isActive);
     });
   }
 
@@ -466,6 +484,25 @@
       "id": "metervare_product",
       "label": "Metervare Produkt (sku=BTM001)",
       "info": "Vælg det produkt, der repræsenterer rå metervare (SKU BTM001)"
+    },
+    {
+      "type": "header",
+      "content": "Form-knapper"
+    },
+    {
+      "type": "product",
+      "id": "firkantet_product",
+      "label": "Firkantet dug – produkt"
+    },
+    {
+      "type": "product",
+      "id": "rund_product",
+      "label": "Rund dug – produkt"
+    },
+    {
+      "type": "product",
+      "id": "oval_product",
+      "label": "Oval dug – produkt"
     },
     {
       "type": "number",
