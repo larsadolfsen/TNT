@@ -1,0 +1,87 @@
+{%- style -%}
+  #shopify-block-{{ block.id }} {
+    padding-top: {{ block.settings.padding_top }}px !important;
+    padding-bottom: {{ block.settings.padding_bottom }}px !important;
+    padding-left: {{ block.settings.padding_sides }}px !important;
+    padding-right: {{ block.settings.padding_sides }}px !important;
+  }
+
+  /* Override standard block wrapper styles for badges nested inside this container */
+  #shopify-block-{{ block.id }} .product-badges-container .shopify-block-badge {
+    padding: 0 !important;
+    display: inline-flex !important;
+    width: auto !important;
+  }
+
+  #shopify-block-{{ block.id }} .product-badges-container .shopify-block-badge > div {
+    width: auto !important;
+    display: inline-flex !important;
+  }
+{%- endstyle -%}
+
+<div 
+  class="product-badges-container flex flex-wrap gap-2 w-full"
+  style="justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Product Badges",
+  "class": "shopify-block-product-badges",
+  "blocks": [
+    {
+      "type": "@theme"
+    }
+  ],
+  "settings": [
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Justering",
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_sides",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i siderne",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Badges"
+    }
+  ]
+}
+{% endschema %}

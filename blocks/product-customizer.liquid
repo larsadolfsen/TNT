@@ -92,7 +92,7 @@
         </button>
       </div>
       <!-- Dynamic calculation info under length selector -->
-      <div id="length-calculation" class="text-xs text-on-surface-variant mt-1.5 text-center"></div>
+      <div id="length-calculation" class="text-xs text-on-surface-variant mt-1.5 text-left pl-9"></div>
     </div>
 
     <!-- Quantity Selector (Customizer Quantity) -->
@@ -215,12 +215,12 @@
           summaryPris.textContent = "Pris: " + formattedPrice;
         }
 
-        // Update summary dimensions text (e.g. Klar gennemsigtig voksdug 140 x 200 cm)
+        // Update summary dimensions text (e.g. Du er ved at købe: 1 x Klar gennemsigtig voksdug - 140 x 200 cm)
         if (summaryMal) {
           const width = getVariantWidth(pricingVariant.title);
           const rawTitle = pricingVariant.title === "Default Title" ? productTitle : pricingVariant.title;
           const displayTitle = rawTitle.split("-")[0].trim();
-          summaryMal.textContent = `${displayTitle} ${width} x ${state.length} cm`;
+          summaryMal.textContent = `Du er ved at købe: ${state.quantity} x ${displayTitle} - ${width} x ${state.length} cm`;
         }
 
         // Update length calculation display
@@ -239,7 +239,7 @@
             maximumFractionDigits: 2 
           });
           
-          lengthCalculation.textContent = `${formattedTotalLengthPrice} kr. (${formattedPricePerMeter} kr. pr. meter)`;
+          lengthCalculation.textContent = `${formattedTotalLengthPrice} kr.`;
         }
 
         // Set global variable to resolve initial page load race condition
