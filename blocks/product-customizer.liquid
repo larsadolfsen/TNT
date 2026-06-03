@@ -218,7 +218,8 @@
         // Update summary dimensions text (e.g. Klar gennemsigtig voksdug 140 x 200 cm)
         if (summaryMal) {
           const width = getVariantWidth(pricingVariant.title);
-          summaryMal.textContent = `${pricingVariant.title} ${width} x ${state.length} cm`;
+          const displayTitle = pricingVariant.title === "Default Title" ? productTitle : pricingVariant.title;
+          summaryMal.textContent = `${displayTitle} ${width} x ${state.length} cm`;
         }
 
         // Update length calculation display

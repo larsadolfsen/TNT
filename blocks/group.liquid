@@ -18,6 +18,20 @@
     padding-left: {{ block.settings.padding_sides }}px !important;
     padding-right: {{ block.settings.padding_sides }}px !important;
   }
+
+  {%- if block.settings.layout_direction == 'group--horizontal' and block.settings.align_left -%}
+    #shopify-block-{{ block.id }} .group--horizontal {
+      justify-content: flex-start !important;
+      gap: 8px !important;
+    }
+    #shopify-block-{{ block.id }} .group--horizontal > * {
+      width: auto !important;
+      flex: 0 1 auto !important;
+    }
+    #shopify-block-{{ block.id }} .group--horizontal > * > * {
+      width: auto !important;
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
 <div
@@ -82,6 +96,13 @@
         { "value": "center", "label": "t:options.alignment.center" },
         { "value": "flex-end", "label": "t:options.alignment.right" }
       ]
+    },
+    {
+      "visible_if": "{{ block.settings.layout_direction == 'group--horizontal' }}",
+      "type": "checkbox",
+      "id": "align_left",
+      "label": "Stak elementer til venstre (fjern spredning)",
+      "default": false
     },
     {
       "type": "range",
