@@ -228,18 +228,16 @@
           const pricePerMeter = pricingVariant.price * 100;
           const totalLengthPrice = pricingVariant.price * state.length;
           
-          const formattedLength = lengthInMeters.toLocaleString("da-DK", { 
-            minimumFractionDigits: 1, 
+          const formattedPricePerMeter = pricePerMeter.toLocaleString("da-DK", { 
+            minimumFractionDigits: 2, 
             maximumFractionDigits: 2 
           });
-          const formattedPricePerMeter = pricePerMeter % 1 === 0
-            ? pricePerMeter.toLocaleString("da-DK", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
-            : pricePerMeter.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-          const formattedTotalLengthPrice = totalLengthPrice % 1 === 0
-            ? totalLengthPrice.toLocaleString("da-DK", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
-            : totalLengthPrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          const formattedTotalLengthPrice = totalLengthPrice.toLocaleString("da-DK", { 
+            minimumFractionDigits: 2, 
+            maximumFractionDigits: 2 
+          });
           
-          lengthCalculation.textContent = `${formattedLength} m x ${formattedPricePerMeter} kr. = ${formattedTotalLengthPrice} kr.`;
+          lengthCalculation.textContent = `+${formattedTotalLengthPrice} kr. (${formattedPricePerMeter} kr. pr. meter)`;
         }
 
         // Set global variable to resolve initial page load race condition
