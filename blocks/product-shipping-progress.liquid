@@ -84,10 +84,19 @@
     <div class="flex {% if hide_everything_except_text %}justify-center text-center{% else %}justify-between{% endif %} text-xs text-primary font-bold">
       <span id="shipping-status-text">
         <span id="shipping-progress-msg" class="{% if potential_total >= threshold %}hidden{% endif %}">
-          Køb for <span id="shipping-amount-ticker">{{ missing | times: 100 | money }}</span> mere for at få fri fragt
+          {%- assign progress_message = block.settings.free_shipping_message | default: "Du er kun [beløb] fra fri fragt" -%}
+          {%- if progress_message contains '[beløb]' -%}
+            {%- assign message_parts = progress_message | split: '[beløb]' -%}
+            {{ message_parts[0] }}<span id="shipping-amount-ticker">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
+          {%- elsif progress_message contains '[amount]' -%}
+            {%- assign message_parts = progress_message | split: '[amount]' -%}
+            {{ message_parts[0] }}<span id="shipping-amount-ticker">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
+          {%- else -%}
+            {{ progress_message | replace: '[beløb]', '<span id="shipping-amount-ticker"></span>' }}
+          {%- endif -%}
         </span>
         <span id="shipping-success-msg" class="{% if potential_total < threshold %}hidden{% endif %}">
-          Du har opnået fri fragt!
+          {{ block.settings.free_shipping_success_message | default: "Du har opnået fri fragt!" }}
         </span>
       </span>
     </div>
@@ -377,6 +386,19 @@
 {
   "name": "Product Shipping Widget",
   "settings": [
+    {
+      "type": "text",
+      "id": "free_shipping_message",
+      "label": "Fri fragt besked",
+      "default": "Du er kun [beløb] fra fri fragt",
+      "info": "Brug [beløb] til at indsætte det resterende beløb."
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_success_message",
+      "label": "Succesbesked for fri fragt",
+      "default": "Du har opnået fri fragt!"
+    },
     {
       "type": "checkbox",
       "id": "hide_everything_except_text",
