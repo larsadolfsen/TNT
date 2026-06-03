@@ -10,10 +10,22 @@
 {
   "sections": {
     "collection-header": {
-      "type": "page-title",
+      "type": "row",
+      "blocks": {
+        "page_title": {
+          "type": "page-title",
+          "settings": {
+            "title_override": "",
+            "show_description": true
+          }
+        }
+      },
+      "block_order": [
+        "page_title"
+      ],
       "settings": {
-        "title_override": "",
-        "show_description": true
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "collection-subcategories": {
