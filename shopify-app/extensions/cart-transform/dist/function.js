@@ -23,7 +23,7 @@ function run(input) {
     }
     const variant = line.merchandise;
     const product = variant.product;
-    const isMetervare = product.metervare && (product.metervare.value === "true" || product.metervare.value === "Sand" || product.metervare.value === "1") || product.title === "Metervare" || line._metervare_variant_id && line._metervare_variant_id.value;
+    const isMetervare = variant.sku === "BTM001" || product.metervare && (product.metervare.value === "true" || product.metervare.value === "Sand" || product.metervare.value === "1") || product.title === "Metervare" || line._metervare_variant_id && line._metervare_variant_id.value;
     console.log(`[CartTransform] Checking line ${line.id}: Product title = "${product.title}", isMetervare = ${isMetervare}`);
     if (!isMetervare) {
       continue;

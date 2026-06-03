@@ -25,7 +25,8 @@ export function run(input) {
     
     // Check if the product has the metervare metafield set to true (in Danish: "Sand", or string "true"),
     // or if the product is titled "Metervare", or if the _metervare_variant_id property is present.
-    const isMetervare = (product.metervare && (
+    // Detect metervare lines: primary check is SKU "BTM001", fallback to metafield/title/_metervare_variant_id
+    const isMetervare = variant.sku === "BTM001" || (product.metervare && (
       product.metervare.value === "true" || 
       product.metervare.value === "Sand" || 
       product.metervare.value === "1"

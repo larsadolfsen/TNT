@@ -329,7 +329,7 @@
         };
 
         // Add the product title and image to properties so they can be accessed by the Cart Transform function
-        itemToAdd.properties["_metervare_title"] = pricingVariant ? pricingVariant.title : productTitle;
+        itemToAdd.properties["_metervare_title"] = productTitle;
         let variantImage = pricingVariant && pricingVariant.image ? pricingVariant.image : (customizedVariant && customizedVariant.image ? customizedVariant.image : "");
         if (variantImage) {
           if (variantImage.startsWith("//")) {
