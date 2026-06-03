@@ -53,6 +53,8 @@
     --text-3xl--line-height: calc(2.25 / 1.875);
     --text-4xl: 2.25rem;
     --text-4xl--line-height: calc(2.5 / 2.25);
+    --text-5xl: 3rem;
+    --text-5xl--line-height: 1;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
@@ -272,9 +274,6 @@
   .top-2 {
     top: calc(var(--spacing) * 2);
   }
-  .top-4 {
-    top: calc(var(--spacing) * 4);
-  }
   .top-28 {
     top: calc(var(--spacing) * 28);
   }
@@ -332,12 +331,6 @@
   .mx-auto {
     margin-inline: auto;
   }
-  .my-0 {
-    margin-block: calc(var(--spacing) * 0);
-  }
-  .my-4 {
-    margin-block: calc(var(--spacing) * 4);
-  }
   .mt-0 {
     margin-top: calc(var(--spacing) * 0);
   }
@@ -379,9 +372,6 @@
   }
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
-  }
-  .mb-10 {
-    margin-bottom: calc(var(--spacing) * 10);
   }
   .ml-1 {
     margin-left: calc(var(--spacing) * 1);
@@ -455,8 +445,8 @@
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
-  .h-auto {
-    height: auto;
+  .h-20 {
+    height: calc(var(--spacing) * 20);
   }
   .h-full {
     height: 100%;
@@ -496,6 +486,9 @@
   }
   .w-16 {
     width: calc(var(--spacing) * 16);
+  }
+  .w-20 {
+    width: calc(var(--spacing) * 20);
   }
   .w-44 {
     width: calc(var(--spacing) * 44);
@@ -538,6 +531,9 @@
   }
   .flex-\[0_0_150px\] {
     flex: 0 0 150px;
+  }
+  .flex-shrink {
+    flex-shrink: 1;
   }
   .flex-shrink-0 {
     flex-shrink: 0;
@@ -593,6 +589,9 @@
   .cursor-pointer {
     cursor: pointer;
   }
+  .resize {
+    resize: both;
+  }
   .snap-x {
     scroll-snap-type: x var(--tw-scroll-snap-strictness);
   }
@@ -604,9 +603,6 @@
   }
   .list-none {
     list-style-type: none;
-  }
-  .grid-cols-1 {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -625,9 +621,6 @@
   }
   .items-center {
     align-items: center;
-  }
-  .items-end {
-    align-items: flex-end;
   }
   .items-start {
     align-items: flex-start;
@@ -670,9 +663,6 @@
   }
   .gap-8 {
     gap: calc(var(--spacing) * 8);
-  }
-  .gap-12 {
-    gap: calc(var(--spacing) * 12);
   }
   .space-y-1 {
     :where(& > :not(:last-child)) {
@@ -802,6 +792,10 @@
     border-style: var(--tw-border-style);
     border-width: 0px;
   }
+  .border-4 {
+    border-style: var(--tw-border-style);
+    border-width: 4px;
+  }
   .border-y {
     border-block-style: var(--tw-border-style);
     border-block-width: 1px;
@@ -835,23 +829,8 @@
   .border-brand-yellow {
     border-color: var(--color-brand-yellow);
   }
-  .border-brand-yellow\/30 {
-    border-color: var(--color-brand-yellow);
-    @supports (color: color-mix(in lab, red, red)) {
-      border-color: color-mix(in oklab, var(--color-brand-yellow) 30%, transparent);
-    }
-  }
-  .border-current {
-    border-color: currentcolor;
-  }
   .border-outline-variant {
     border-color: var(--color-outline-variant);
-  }
-  .border-outline-variant\/30 {
-    border-color: color-mix(in srgb, #e2e2e2 30%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      border-color: color-mix(in oklab, var(--color-outline-variant) 30%, transparent);
-    }
   }
   .border-outline-variant\/40 {
     border-color: color-mix(in srgb, #e2e2e2 40%, transparent);
@@ -913,17 +892,8 @@
   .border-transparent {
     border-color: transparent;
   }
-  .border-white\/10 {
-    border-color: color-mix(in srgb, #fff 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      border-color: color-mix(in oklab, var(--color-white) 10%, transparent);
-    }
-  }
-  .border-white\/20 {
-    border-color: color-mix(in srgb, #fff 20%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      border-color: color-mix(in oklab, var(--color-white) 20%, transparent);
-    }
+  .border-white {
+    border-color: var(--color-white);
   }
   .bg-\[\#0e1a28\] {
     background-color: #0e1a28;
@@ -940,6 +910,18 @@
   .bg-background-shade {
     background-color: var(--color-background-shade);
   }
+  .bg-black\/10 {
+    background-color: color-mix(in srgb, #000 10%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-black) 10%, transparent);
+    }
+  }
+  .bg-black\/20 {
+    background-color: color-mix(in srgb, #000 20%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-black) 20%, transparent);
+    }
+  }
   .bg-black\/50 {
     background-color: color-mix(in srgb, #000 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -948,12 +930,6 @@
   }
   .bg-brand-yellow {
     background-color: var(--color-brand-yellow);
-  }
-  .bg-brand-yellow\/15 {
-    background-color: var(--color-brand-yellow);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-brand-yellow) 15%, transparent);
-    }
   }
   .bg-emerald-50 {
     background-color: var(--color-emerald-50);
@@ -1015,24 +991,6 @@
   .bg-white {
     background-color: var(--color-white);
   }
-  .bg-white\/5 {
-    background-color: color-mix(in srgb, #fff 5%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-white) 5%, transparent);
-    }
-  }
-  .bg-white\/10 {
-    background-color: color-mix(in srgb, #fff 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
-    }
-  }
-  .bg-white\/90 {
-    background-color: color-mix(in srgb, #fff 90%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-white) 90%, transparent);
-    }
-  }
   .object-cover {
     object-fit: cover;
   }
@@ -1056,6 +1014,9 @@
   }
   .p-8 {
     padding: calc(var(--spacing) * 8);
+  }
+  .px-0 {
+    padding-inline: calc(var(--spacing) * 0);
   }
   .px-1\.5 {
     padding-inline: calc(var(--spacing) * 1.5);
@@ -1087,9 +1048,6 @@
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
   }
-  .py-1\.5 {
-    padding-block: calc(var(--spacing) * 1.5);
-  }
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
   }
@@ -1117,14 +1075,8 @@
   .py-12 {
     padding-block: calc(var(--spacing) * 12);
   }
-  .pt-0 {
-    padding-top: calc(var(--spacing) * 0);
-  }
   .pt-1 {
     padding-top: calc(var(--spacing) * 1);
-  }
-  .pt-2 {
-    padding-top: calc(var(--spacing) * 2);
   }
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
@@ -1150,14 +1102,8 @@
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
   }
-  .pb-3 {
-    padding-bottom: calc(var(--spacing) * 3);
-  }
   .pb-4 {
     padding-bottom: calc(var(--spacing) * 4);
-  }
-  .pb-6 {
-    padding-bottom: calc(var(--spacing) * 6);
   }
   .pl-0 {
     padding-left: calc(var(--spacing) * 0);
@@ -1180,9 +1126,6 @@
   .text-left {
     text-align: left;
   }
-  .text-right {
-    text-align: right;
-  }
   .font-mono {
     font-family: var(--font-mono);
   }
@@ -1203,6 +1146,10 @@
   .text-4xl {
     font-size: var(--text-4xl);
     line-height: var(--tw-leading, var(--text-4xl--line-height));
+  }
+  .text-5xl {
+    font-size: var(--text-5xl);
+    line-height: var(--tw-leading, var(--text-5xl--line-height));
   }
   .text-base {
     font-size: var(--text-base);
@@ -1261,10 +1208,6 @@
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
-  }
-  .font-extrabold {
-    --tw-font-weight: var(--font-weight-extrabold);
-    font-weight: var(--font-weight-extrabold);
   }
   .font-medium {
     --tw-font-weight: var(--font-weight-medium);
@@ -1407,12 +1350,6 @@
   .opacity-50 {
     opacity: 50%;
   }
-  .opacity-80 {
-    opacity: 80%;
-  }
-  .opacity-90 {
-    opacity: 90%;
-  }
   .opacity-100 {
     opacity: 100%;
   }
@@ -1438,11 +1375,6 @@
   }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .backdrop-blur {
-    --tw-backdrop-blur: blur(8px);
-    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
-    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
   }
   .transition {
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
@@ -1525,42 +1457,6 @@
       color: #1a1c1c;
     }
   }
-  .hover\:-translate-y-0\.5 {
-    &:hover {
-      @media (hover: hover) {
-        --tw-translate-y: calc(var(--spacing) * -0.5);
-        translate: var(--tw-translate-x) var(--tw-translate-y);
-      }
-    }
-  }
-  .hover\:-translate-y-1\.5 {
-    &:hover {
-      @media (hover: hover) {
-        --tw-translate-y: calc(var(--spacing) * -1.5);
-        translate: var(--tw-translate-x) var(--tw-translate-y);
-      }
-    }
-  }
-  .hover\:scale-102 {
-    &:hover {
-      @media (hover: hover) {
-        --tw-scale-x: 102%;
-        --tw-scale-y: 102%;
-        --tw-scale-z: 102%;
-        scale: var(--tw-scale-x) var(--tw-scale-y);
-      }
-    }
-  }
-  .hover\:scale-105 {
-    &:hover {
-      @media (hover: hover) {
-        --tw-scale-x: 105%;
-        --tw-scale-y: 105%;
-        --tw-scale-z: 105%;
-        scale: var(--tw-scale-x) var(--tw-scale-y);
-      }
-    }
-  }
   .hover\:scale-\[1\.01\] {
     &:hover {
       @media (hover: hover) {
@@ -1572,16 +1468,6 @@
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-brand-yellow);
-      }
-    }
-  }
-  .hover\:border-primary\/20 {
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-primary);
-        @supports (color: color-mix(in lab, red, red)) {
-          border-color: color-mix(in oklab, var(--color-primary) 20%, transparent);
-        }
       }
     }
   }
@@ -1605,49 +1491,12 @@
       }
     }
   }
-  .hover\:border-white\/20 {
-    &:hover {
-      @media (hover: hover) {
-        border-color: color-mix(in srgb, #fff 20%, transparent);
-        @supports (color: color-mix(in lab, red, red)) {
-          border-color: color-mix(in oklab, var(--color-white) 20%, transparent);
-        }
-      }
-    }
-  }
   .hover\:bg-outline-variant\/40 {
     &:hover {
       @media (hover: hover) {
         background-color: color-mix(in srgb, #e2e2e2 40%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
           background-color: color-mix(in oklab, var(--color-outline-variant) 40%, transparent);
-        }
-      }
-    }
-  }
-  .hover\:bg-slate-50 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-slate-50);
-      }
-    }
-  }
-  .hover\:bg-white\/10 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in srgb, #fff 10%, transparent);
-        @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
-        }
-      }
-    }
-  }
-  .hover\:bg-white\/15 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in srgb, #fff 15%, transparent);
-        @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-white) 15%, transparent);
         }
       }
     }
@@ -1771,14 +1620,6 @@
       scale: var(--tw-scale-x) var(--tw-scale-y);
     }
   }
-  .active\:scale-98 {
-    &:active {
-      --tw-scale-x: 98%;
-      --tw-scale-y: 98%;
-      --tw-scale-z: 98%;
-      scale: var(--tw-scale-x) var(--tw-scale-y);
-    }
-  }
   .active\:scale-\[0\.99\] {
     &:active {
       scale: 0.99;
@@ -1851,19 +1692,14 @@
       margin-inline: calc(var(--spacing) * 0);
     }
   }
-  .md\:mb-16 {
-    @media (width >= 48rem) {
-      margin-bottom: calc(var(--spacing) * 16);
-    }
-  }
   .md\:grid {
     @media (width >= 48rem) {
       display: grid;
     }
   }
-  .md\:h-auto {
+  .md\:hidden {
     @media (width >= 48rem) {
-      height: auto;
+      display: none;
     }
   }
   .md\:w-96 {
@@ -1876,16 +1712,6 @@
       flex: 0 auto;
     }
   }
-  .md\:grid-cols-1 {
-    @media (width >= 48rem) {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-  }
-  .md\:grid-cols-2 {
-    @media (width >= 48rem) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
   .md\:grid-cols-3 {
     @media (width >= 48rem) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1894,16 +1720,6 @@
   .md\:grid-cols-4 {
     @media (width >= 48rem) {
       grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-  .md\:grid-cols-5 {
-    @media (width >= 48rem) {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-    }
-  }
-  .md\:grid-cols-6 {
-    @media (width >= 48rem) {
-      grid-template-columns: repeat(6, minmax(0, 1fr));
     }
   }
   .md\:flex-wrap {
@@ -1956,36 +1772,21 @@
       padding-inline: calc(var(--spacing) * 12);
     }
   }
-  .md\:py-1 {
-    @media (width >= 48rem) {
-      padding-block: calc(var(--spacing) * 1);
-    }
-  }
   .md\:py-16 {
     @media (width >= 48rem) {
       padding-block: calc(var(--spacing) * 16);
     }
   }
-  .md\:pt-3 {
+  .md\:text-2xl {
     @media (width >= 48rem) {
-      padding-top: calc(var(--spacing) * 3);
-    }
-  }
-  .md\:pb-1 {
-    @media (width >= 48rem) {
-      padding-bottom: calc(var(--spacing) * 1);
+      font-size: var(--text-2xl);
+      line-height: var(--tw-leading, var(--text-2xl--line-height));
     }
   }
   .md\:text-3xl {
     @media (width >= 48rem) {
       font-size: var(--text-3xl);
       line-height: var(--tw-leading, var(--text-3xl--line-height));
-    }
-  }
-  .md\:text-4xl {
-    @media (width >= 48rem) {
-      font-size: var(--text-4xl);
-      line-height: var(--tw-leading, var(--text-4xl--line-height));
     }
   }
   .md\:text-base {
@@ -2043,6 +1844,9 @@
       gap: calc(var(--spacing) * 8);
     }
   }
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
 }
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -2118,43 +1922,36 @@
     color: var(--color-primary);
   }
 }
-
-/* Product Page Mobile Breakout Layout */
 @media (max-width: 767px) {
-  /* Prevent clipping of full width mobile media gallery */
-  .template-product .group:has(.shopify-block-product-media),
-  .template-product .group:has(.product-media),
-  .template-product .shopify-block:has(.shopify-block-product-media),
-  .template-product .shopify-block:has(.product-media) {
+  .template-product .group:has(.shopify-block-product-media), .template-product .group:has(.product-media), .template-product .shopify-block:has(.shopify-block-product-media), .template-product .shopify-block:has(.product-media) {
     overflow: visible !important;
   }
-
-  .template-product .shopify-block-product-media > section,
-  .template-product .product-media > section {
+  .template-product .shopify-block-product-media > section, .template-product .product-media > section {
     margin-left: -1rem !important;
     margin-right: -1rem !important;
     width: calc(100% + 2rem) !important;
     max-width: none !important;
   }
-
   .template-product .product-media-gallery {
     border-radius: 1rem !important;
   }
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group, .template-product .row-content > .group ~ .group, .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group {
+    padding-top: 12px !important;
+  }
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > section, .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > div, .template-product .row-content > .group ~ .group > *:first-child > section, .template-product .row-content > .group ~ .group > *:first-child > div, .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > section, .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > div {
+    padding-top: 4px !important;
+  }
 }
-
-/* Make all child blocks inside columns stretch to full column width on both mobile and desktop */
-.template-product .row-content .group > *,
-.template-product .row-content .shopify-block-group > *,
-.template-product .row-content .shopify-block:has(.group) .shopify-block {
+.template-product .row-content .group > *, .template-product .row-content .shopify-block-group > *, .template-product .row-content .shopify-block:has(.group) .shopify-block {
   display: block;
   width: 100%;
 }
-
 @media (min-width: 768px) {
   .template-product #MainContent {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
   }
   .template-product .row-content {
     display: grid;
@@ -2163,24 +1960,24 @@
     row-gap: 0;
     align-items: start;
     width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
   }
   .template-product .row-content > * {
     grid-column: 2;
     width: 100%;
   }
-  .template-product .row-content > .shopify-block-page-title {
+  .template-product .row-content > .shopify-block-page-title, .template-product .row-content > .shopify-block:has(.shopify-block-page-title), .template-product .row-content > .shopify-block:has(.page-title) {
     grid-column: 1 / -1;
     grid-row: 1;
     margin-bottom: 0.25rem;
   }
-  .template-product .row-content > .shopify-block-product-media,
-  .template-product .row-content > .shopify-block:has(> .shopify-block-product-media),
-  .template-product .row-content > .shopify-block:has(> .product-media) {
+  .template-product .row-content > .shopify-block-product-media, .template-product .row-content > .shopify-block:has(> .shopify-block-product-media), .template-product .row-content > .shopify-block:has(> .product-media) {
     grid-column: 1;
     grid-row: 2 / span 25;
   }
-  .template-product .row-content .shopify-block-product-media,
-  .template-product .row-content .product-media {
+  .template-product .row-content .shopify-block-product-media, .template-product .row-content .product-media {
     position: sticky;
     top: 2rem;
     z-index: 10;
@@ -2188,37 +1985,21 @@
   .template-product .product-media-gallery {
     border-radius: 1.5rem !important;
   }
-  .template-product .row-content > .shopify-block-group,
-  .template-product .row-content > .group,
-  .template-product .row-content > .shopify-block:has(.group),
-  .template-product .row-content > .shopify-block:has(.shopify-block-group) {
+  .template-product .row-content > .shopify-block-group, .template-product .row-content > .group, .template-product .row-content > .shopify-block:has(.group), .template-product .row-content > .shopify-block:has(.shopify-block-group) {
     grid-column: 1;
     align-self: stretch;
     width: 100%;
   }
-  .template-product .row-content > .shopify-block-group ~ .shopify-block-group,
-  .template-product .row-content > .group ~ .group,
-  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group),
-  .template-product .row-content > .shopify-block:has(.shopify-block-group) ~ .shopify-block:has(.shopify-block-group) {
+  .template-product .row-content > .shopify-block-group ~ .shopify-block-group, .template-product .row-content > .group ~ .group, .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group), .template-product .row-content > .shopify-block:has(.shopify-block-group) ~ .shopify-block:has(.shopify-block-group) {
     grid-column: 2;
   }
-
-  .template-product .row-content > .group--sticky,
-  .template-product .row-content > .shopify-block:has(.group--sticky) {
+  .template-product .row-content > .group--sticky, .template-product .row-content > .shopify-block:has(.group--sticky) {
     position: sticky;
     top: 2rem;
     z-index: 10;
     align-self: start;
   }
-  .template-product .row-content > .shopify-block-product-cross-sell,
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell),
-  .template-product .row-content > .shopify-block:has(.product-cross-sell),
-  .template-product .row-content > .shopify-block-product-banner-text,
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text),
-  .template-product .row-content > .shopify-block:has(.product-banner-text),
-  .template-product .row-content > .shopify-block-product-testimonial,
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial),
-  .template-product .row-content > .shopify-block:has(.product-testimonial) {
+  .template-product .row-content > .shopify-block-product-cross-sell, .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell), .template-product .row-content > .shopify-block:has(.product-cross-sell), .template-product .row-content > .shopify-block-product-banner-text, .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text), .template-product .row-content > .shopify-block:has(.product-banner-text), .template-product .row-content > .shopify-block-product-testimonial, .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial), .template-product .row-content > .shopify-block:has(.product-testimonial) {
     grid-column: 1 / -1;
     margin-top: 1.5rem;
   }
@@ -2239,10 +2020,127 @@
 }
 @media (min-width: 1024px) {
   .template-product #MainContent {
-    padding: 2.5rem 2rem;
+    padding: 0;
   }
   .template-product .row-content {
     column-gap: 3.5rem;
+    padding: 2.5rem 2rem;
+  }
+}
+html, body {
+  overflow-x: hidden;
+}
+@media (min-width: 768px) {
+  .row-section--full-width {
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    max-width: none !important;
+  }
+  .row-section--full-width .shopify-block-product-testimonial > section, .row-section--full-width .product-testimonial > section {
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    max-width: none !important;
+  }
+}
+@media (max-width: 767px) {
+  .row-section--full-width {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    max-width: none !important;
+  }
+  .row-section--full-width .shopify-block-product-testimonial > section, .row-section--full-width .product-testimonial > section {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    max-width: none !important;
+  }
+}
+.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions) {
+  display: block;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.shopify-block-page-title {
+  padding-top: 12px;
+  padding-bottom: 0px;
+}
+.shopify-block-page-title header {
+  margin-bottom: 4px;
+}
+.shopify-block-product-trust {
+  padding-top: 0px;
+  padding-bottom: 8px;
+}
+.shopify-block-product-buy-buttons, .shopify-block-product-customizer {
+  display: block;
+  width: 100%;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.shopify-block-trust-checkmark, .shopify-block-trust-countdown, .shopify-block-accordion-panel, .shopify-block-material-badge {
+  display: block;
+  padding: 0 !important;
+}
+.shopify-block-product-accordions {
+  display: block;
+  width: 100%;
+}
+.row-section--full-width .shopify-block-product-accordions {
+  @media (max-width: 767px) {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+  }
+}
+.row-section:not(.row-section--full-width) .shopify-block-product-accordions {
+  margin-left: -1.5rem !important;
+  margin-right: -1.5rem !important;
+  width: calc(100% + 3rem) !important;
+  @media (min-width: 768px) {
+    margin-left: -3rem !important;
+    margin-right: -3rem !important;
+    width: calc(100% + 6rem) !important;
+  }
+}
+.accordion-trigger, .accordion-content {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (min-width: 768px) {
+  .accordion-trigger, .accordion-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+.row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-trigger, .row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-content {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  @media (min-width: 768px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+@media (max-width: 767px) {
+  .row-section--full-width .shopify-block-product-accordions .accordion-trigger, .row-section--full-width .shopify-block-product-accordions .accordion-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+@media (min-width: 768px) {
+  .row-section--full-width .shopify-block-product-accordions .accordion-trigger, .row-section--full-width .shopify-block-product-accordions .accordion-content {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 @property --tw-translate-x {
@@ -2445,42 +2343,6 @@
   syntax: "*";
   inherits: false;
 }
-@property --tw-backdrop-blur {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-brightness {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-contrast {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-grayscale {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-hue-rotate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-invert {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-opacity {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-saturate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-backdrop-sepia {
-  syntax: "*";
-  inherits: false;
-}
 @property --tw-duration {
   syntax: "*";
   inherits: false;
@@ -2533,236 +2395,7 @@
       --tw-drop-shadow-color: initial;
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
-      --tw-backdrop-blur: initial;
-      --tw-backdrop-brightness: initial;
-      --tw-backdrop-contrast: initial;
-      --tw-backdrop-grayscale: initial;
-      --tw-backdrop-hue-rotate: initial;
-      --tw-backdrop-invert: initial;
-      --tw-backdrop-opacity: initial;
-      --tw-backdrop-saturate: initial;
-      --tw-backdrop-sepia: initial;
       --tw-duration: initial;
     }
   }
 }
-
-/* --- CUSTOM LAYOUT AND BREAKOUT OVERRIDES --- */
-@media (min-width: 768px) {
-  .template-product #MainContent {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .template-product .row-content {
-    max-width: 1280px !important;
-    margin: 0 auto !important;
-    padding: 1.5rem 1rem !important;
-  }
-}
-
-@media (min-width: 1024px) {
-  .template-product #MainContent {
-    padding: 0 !important;
-  }
-  .template-product .row-content {
-    padding: 2.5rem 2rem !important;
-  }
-}
-
-/* Ensure no horizontal scrolling when using 100vw breakout layouts */
-html, body {
-  overflow-x: hidden;
-}
-
-/* Breakout styles for truly full-width row sections and testimonials */
-@media (min-width: 768px) {
-  .row-section--full-width {
-    width: 100vw !important;
-    position: relative !important;
-    left: 50% !important;
-    right: 50% !important;
-    margin-left: -50vw !important;
-    margin-right: -50vw !important;
-    max-width: none !important;
-  }
-
-  .row-section--full-width .shopify-block-product-testimonial > section,
-  .row-section--full-width .product-testimonial > section {
-    width: 100vw !important;
-    position: relative !important;
-    left: 50% !important;
-    right: 50% !important;
-    margin-left: -50vw !important;
-    margin-right: -50vw !important;
-    max-width: none !important;
-  }
-}
-
-@media (max-width: 767px) {
-  .row-section--full-width {
-    margin-left: -1rem !important;
-    margin-right: -1rem !important;
-    width: calc(100% + 2rem) !important;
-    max-width: none !important;
-  }
-
-  .row-section--full-width .shopify-block-product-testimonial > section,
-  .row-section--full-width .product-testimonial > section {
-    margin-left: -1rem !important;
-    margin-right: -1rem !important;
-    width: calc(100% + 2rem) !important;
-    max-width: none !important;
-  }
-}
-
-/* Standard internal padding of blocks to 16px top/bottom, 0 left/right */
-.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > section,
-.row-content > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > div,
-.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > section,
-.row-content > .shopify-block-group > .group > .shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-page-title):not(.shopify-block-product-trust):not(.shopify-block-product-customizer):not(.shopify-block-product-price) > div {
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-/* Standard horizontal padding on the block level */
-.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions) {
-  display: block;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-/* Custom spacing for page title and trust blocks to bring them closer */
-.shopify-block-page-title > div {
-  padding-top: 12px;
-  padding-bottom: 0px;
-}
-.shopify-block-page-title header {
-  margin-bottom: 4px;
-}
-.shopify-block-product-trust > section {
-  padding-top: 0px;
-  padding-bottom: 8px;
-}
-
-/* Buy buttons and customizer blocks should have 0 horizontal padding to span full-width */
-.shopify-block-product-buy-buttons,
-.shopify-block-product-customizer {
-  display: block;
-  width: 100%;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-.template-product .row-content .shopify-block-product-buy-buttons > section {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-
-/* Nested sub-blocks inside galleries, accordions, and trust checkmarks should have 0 padding */
-.shopify-block-trust-checkmark,
-.shopify-block-trust-countdown,
-.shopify-block-accordion-panel,
-.shopify-block-material-badge {
-  display: block;
-  padding: 0 !important;
-}
-
-/* Reduce space between mobile media gallery (dots) and the product content details on mobile */
-@media (max-width: 767px) {
-  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group,
-  .template-product .row-content > .group ~ .group,
-  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group {
-    padding-top: 12px !important;
-  }
-
-  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > section,
-  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > div,
-  .template-product .row-content > .group ~ .group > *:first-child > section,
-  .template-product .row-content > .group ~ .group > *:first-child > div,
-  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > section,
-  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > div {
-    padding-top: 4px !important;
-  }
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-}
-
-/* Product Accordions Edge-to-Edge Alignment */
-.shopify-block-product-accordions {
-  display: block;
-  width: 100%;
-}
-
-/* 1. Full-width row alignment (pull to page margin on mobile, standard page width on desktop) */
-.row-section--full-width .shopify-block-product-accordions {
-  @media (max-width: 767px) {
-    margin-left: -1rem !important;
-    margin-right: -1rem !important;
-    width: calc(100% + 2rem) !important;
-  }
-}
-
-/* 2. Boxed row alignment (pull to card margin on both mobile and desktop) */
-.row-section:not(.row-section--full-width) .shopify-block-product-accordions {
-  margin-left: -1.5rem !important;
-  margin-right: -1.5rem !important;
-  width: calc(100% + 3rem) !important;
-
-  @media (min-width: 768px) {
-    margin-left: -3rem !important;
-    margin-right: -3rem !important;
-    width: calc(100% + 6rem) !important;
-  }
-}
-
-/* 3. Default Accordion Padding (fallback for full-width) */
-.accordion-trigger,
-.accordion-content {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-@media (min-width: 768px) {
-  .accordion-trigger,
-  .accordion-content {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
-/* 4. Layout-aware Accordion Padding (boxed row alignment) */
-.row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-trigger,
-.row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-content {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-
-  @media (min-width: 768px) {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
-}
-
-/* 5. Layout-aware Accordion Padding (full-width alignment overrides) */
-@media (max-width: 767px) {
-  .row-section--full-width .shopify-block-product-accordions .accordion-trigger,
-  .row-section--full-width .shopify-block-product-accordions .accordion-content {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-}
-@media (min-width: 768px) {
-  .row-section--full-width .shopify-block-product-accordions .accordion-trigger,
-  .row-section--full-width .shopify-block-product-accordions .accordion-content {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
-
-
