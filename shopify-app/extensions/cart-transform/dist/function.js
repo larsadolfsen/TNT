@@ -82,8 +82,12 @@ function run(input) {
       }
     };
     if (imageVal) {
+      let imageUrl = imageVal;
+      if (imageUrl.startsWith("//")) {
+        imageUrl = "https:" + imageUrl;
+      }
       operation.expand.image = {
-        url: imageVal
+        url: imageUrl
       };
     }
     operations.push(operation);
