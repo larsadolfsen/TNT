@@ -26,7 +26,7 @@
         {%- for block in section.blocks -%}
           {%- liquid
             assign block_title = block.settings.title
-            assign block_type = block.settings.type
+            assign block_type = block.settings.filter_type
             assign block_key = block.settings.key | strip | downcase
             assign block_mapping = block.settings.display_mapping
             
@@ -256,7 +256,7 @@
         {%- for block in section.blocks -%}
           {%- liquid
             assign block_title = block.settings.title
-            assign block_type = block.settings.type
+            assign block_type = block.settings.filter_type
             assign block_key = block.settings.key | strip | downcase
             assign block_mapping = block.settings.display_mapping
             
@@ -1054,7 +1054,7 @@
         },
         {
           "type": "select",
-          "id": "type",
+          "id": "filter_type",
           "label": "Filter kildetype",
           "options": [
             { "value": "tag", "label": "Produkt Tag (f.eks. tykkelse:X)" },
@@ -1092,7 +1092,7 @@
           "type": "filter",
           "settings": {
             "title": "Tykkelse",
-            "type": "tag",
+            "filter_type": "tag",
             "key": "tykkelse"
           }
         },
@@ -1100,7 +1100,7 @@
           "type": "filter",
           "settings": {
             "title": "Størrelse / Bredde",
-            "type": "option",
+            "filter_type": "option",
             "key": "bredde",
             "display_mapping": "width"
           }
@@ -1109,7 +1109,7 @@
           "type": "filter",
           "settings": {
             "title": "Type / Form",
-            "type": "option",
+            "filter_type": "option",
             "key": "form",
             "display_mapping": "form"
           }
@@ -1118,7 +1118,7 @@
           "type": "filter",
           "settings": {
             "title": "Pris",
-            "type": "price"
+            "filter_type": "price"
           }
         }
       ]
