@@ -232,8 +232,6 @@
                 "countdown_4gXjVB": {
                   "type": "trust-countdown",
                   "settings": {
-                    "text_before_cutoff": "Bestil inden {cutoff}. Så sender vi {shipping_day}.",
-                    "text_after_cutoff": "Bestil i dag. Så sender vi {shipping_day}.",
                     "text": "",
                     "suffix": ""
                   },
