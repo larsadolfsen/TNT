@@ -83,34 +83,43 @@
     <div class="flex gap-4">
 
       <!-- Firkantet dug -->
-      <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
-        class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border-2 bg-white text-slate-900 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none"
-        style="width:72px;height:72px;border-color:#f5c518" onclick="selectShape('firkantet')">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
-          <rect x="3" y="6" width="18" height="12" rx="1.5"/>
-        </svg>
-        <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Firkantet</span>
-      </button>
+      <div class="flex flex-col items-center gap-1">
+        <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
+          class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border-2 bg-white text-slate-900 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none"
+          style="width:72px;height:72px;border-color:#f5c518" onclick="selectShape('firkantet')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
+            <rect x="3" y="6" width="18" height="12" rx="1.5"/>
+          </svg>
+          <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Firkantet</span>
+        </button>
+        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ shape_firkantet.price | default: 0 | money }}</span>
+      </div>
 
       <!-- Rund dug -->
-      <button type="button" id="btn-shape-rund" data-shape="rund"
-        class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none"
-        style="width:72px;height:72px" onclick="selectShape('rund')">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
-          <circle cx="12" cy="12" r="8.5"/>
-        </svg>
-        <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Rund</span>
-      </button>
+      <div class="flex flex-col items-center gap-1">
+        <button type="button" id="btn-shape-rund" data-shape="rund"
+          class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none"
+          style="width:72px;height:72px" onclick="selectShape('rund')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
+            <circle cx="12" cy="12" r="8.5"/>
+          </svg>
+          <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Rund</span>
+        </button>
+        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ shape_rund.price | default: 0 | money }}</span>
+      </div>
 
       <!-- Oval dug -->
-      <button type="button" id="btn-shape-oval" data-shape="oval"
-        class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none"
-        style="width:72px;height:72px" onclick="selectShape('oval')">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
-          <rect x="3" y="8" width="18" height="8" rx="4"/>
-        </svg>
-        <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Oval</span>
-      </button>
+      <div class="flex flex-col items-center gap-1">
+        <button type="button" id="btn-shape-oval" data-shape="oval"
+          class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none"
+          style="width:72px;height:72px" onclick="selectShape('oval')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+            <rect x="3" y="8" width="18" height="8" rx="4"/>
+          </svg>
+          <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Oval</span>
+        </button>
+        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ shape_oval.price | default: 0 | money }}</span>
+      </div>
 
     </div>
 
@@ -323,9 +332,8 @@
         const shapePriceUnderButton = document.getElementById("shape-price-under-button");
         if (shapePriceUnderButton) {
           if (shapeInfo) {
-            const displayShapeName = selectedShape === 'rund' ? 'Rund' : selectedShape === 'oval' ? 'Oval' : 'Firkantet';
             const priceText = shapeInfo.price > 0 ? `${shapeInfo.price_formatted}` : '0,00 kr.';
-            shapePriceUnderButton.textContent = `Pris for form (${displayShapeName}): ${priceText}`;
+            shapePriceUnderButton.textContent = priceText;
             shapePriceUnderButton.style.display = "block";
           } else {
             shapePriceUnderButton.style.display = "none";

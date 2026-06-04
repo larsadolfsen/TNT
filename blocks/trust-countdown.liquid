@@ -1,7 +1,5 @@
 <div class="flex items-center gap-2.5 text-primary font-medium" 
      id="trust-countdown-{{ block.id }}"
-     data-text-before-cutoff="{{ block.settings.text_before_cutoff | escape }}"
-     data-text-after-cutoff="{{ block.settings.text_after_cutoff | escape }}"
      data-legacy-text="{{ block.settings.text | escape }}"
      data-legacy-suffix="{{ block.settings.suffix | escape }}"
      data-shipping-sunday-active="{{ settings.shipping_sunday_active | default: false }}"
@@ -28,13 +26,7 @@
      {{ block.shopify_attributes }}>
   <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
   <span id="countdown-content-{{ block.id }}">
-    {%- if block.settings.text_before_cutoff != blank -%}
-      {%- assign cutoff_target = '{cutoff}' -%}
-      {%- assign shipping_day_target = '{shipping_day}' -%}
-      {{ block.settings.text_before_cutoff | replace: cutoff_target, '12.00' | replace: shipping_day_target, 'i dag' }}
-    {%- else -%}
-      {{ block.settings.text }} <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">12.00</span>{{ block.settings.suffix }}
-    {%- endif -%}
+    {{ block.settings.text }} <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">12.00</span>{{ block.settings.suffix }}
   </span>
 </div>
 
@@ -43,20 +35,8 @@
     const container = document.getElementById("trust-countdown-{{ block.id }}");
     if (!container) return;
     
-    let textBeforeCutoff = container.getAttribute("data-text-before-cutoff");
-    let textAfterCutoff = container.getAttribute("data-text-after-cutoff");
-    
-    // Provide defaults if the block settings are empty
-    if (!textBeforeCutoff) {
-      textBeforeCutoff = "Bestil inden {cutoff}. Så sender vi {shipping_day}.";
-    }
-    if (!textAfterCutoff) {
-      textAfterCutoff = "Bestil i dag. Så sender vi {shipping_day}.";
-    }
-    
-    const legacyText = container.getAttribute("data-legacy-text") || "";
-    const legacySuffix = container.getAttribute("data-legacy-suffix") || "";
-    const hasLegacySettings = legacyText !== "" || legacySuffix !== "";
+    const legacyText = (container.getAttribute("data-legacy-text") || "").trim();
+    const legacySuffix = (container.getAttribute("data-legacy-suffix") || "").trim();
     
     // Parse shipping config from data attributes
     const shippingConfig = [];
@@ -144,7 +124,7 @@
         config = { active: true, cutoff: '12:00', delivery: '1-2 hverdage' };
       }
       
-      // Clean up cutoff string format (e.g. replace ':' with '.') to match Danish style if desired
+      // Clean up cutoff string format (e.g. replace ':' with '.') to match Danish style
       const formattedCutoff = config.cutoff.replace(':', '.');
       const cutoffHtml = `<span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">${formattedCutoff}</span>`;
       
@@ -160,35 +140,53 @@
       
       const deliveryDayText = config.delivery || '1-2 hverdage';
       
-      // Render text using templates
-      if (container.getAttribute("data-text-before-cutoff") || container.getAttribute("data-text-after-cutoff")) {
-        // Use custom templates
-        const activeTemplate = isBeforeCutoff ? textBeforeCutoff : textAfterCutoff;
-        let htmlContent = activeTemplate
-          .replace('{cutoff}', cutoffHtml)
-          .replace('{shipping_day}', shippingDayText)
-          .replace('{delivery_day}', deliveryDayText);
+      // Detect punctuation requirements based on the Suffix's capitalization
+      const firstChar = legacySuffix.charAt(0);
+      const isCapitalized = firstChar === firstChar.toUpperCase() && firstChar !== firstChar.toLowerCase();
+      const separator = isCapitalized ? ". " : " ";
+      
+      let finalHtml = "";
+      
+      if (isBeforeCutoff) {
+        // Replace dynamic keywords if they are used in legacySuffix
+        let updatedSuffix = legacySuffix
+          .replace(/{shipping_day}/gi, shippingDayText)
+          .replace(/{delivery_day}/gi, deliveryDayText);
         
-        contentEl.innerHTML = htmlContent;
-      } else if (hasLegacySettings) {
-        // Fallback for legacy blocks
-        if (isBeforeCutoff) {
-          let suffixText = legacySuffix;
-          suffixText = suffixText.replace(/timer\.\s*/gi, "");
-          contentEl.innerHTML = `${legacyText} ${cutoffHtml}. ${suffixText}`;
-        } else {
-          contentEl.innerHTML = `Bestil i dag. Så sender vi ${shippingDayText}.`;
+        // If the suffix doesn't contain shipping_day or delivery_day, append automatically
+        if (!legacySuffix.includes("{shipping_day}") && !legacySuffix.includes("{delivery_day}")) {
+          if (legacySuffix.toLowerCase().includes("levering")) {
+            updatedSuffix = updatedSuffix + " " + deliveryDayText;
+          } else {
+            updatedSuffix = updatedSuffix + " " + shippingDayText;
+          }
         }
-      } else {
-        // Default text
-        const activeTemplate = isBeforeCutoff ? textBeforeCutoff : textAfterCutoff;
-        let htmlContent = activeTemplate
-          .replace('{cutoff}', cutoffHtml)
-          .replace('{shipping_day}', shippingDayText)
-          .replace('{delivery_day}', deliveryDayText);
         
-        contentEl.innerHTML = htmlContent;
+        finalHtml = `${legacyText} ${cutoffHtml}${separator}${updatedSuffix}.`;
+      } else {
+        let updatedSuffix = legacySuffix
+          .replace(/{shipping_day}/gi, shippingDayText)
+          .replace(/{delivery_day}/gi, deliveryDayText);
+        
+        if (!legacySuffix.includes("{shipping_day}") && !legacySuffix.includes("{delivery_day}")) {
+          if (legacySuffix.toLowerCase().includes("levering")) {
+            updatedSuffix = updatedSuffix + " " + deliveryDayText;
+          } else {
+            updatedSuffix = updatedSuffix + " " + shippingDayText;
+          }
+        }
+        
+        finalHtml = `Bestil i dag${separator}${updatedSuffix}.`;
       }
+      
+      // Clean up double spaces or double periods
+      finalHtml = finalHtml
+        .replace(/\s+/g, " ")
+        .replace(/\.\.+/g, ".")
+        .replace(/\s+\./g, ".")
+        .trim();
+        
+      contentEl.innerHTML = finalHtml;
     }
     
     updateUI();
@@ -202,33 +200,15 @@
   "settings": [
     {
       "type": "text",
-      "id": "text_before_cutoff",
-      "label": "Skabelon før cut-off",
-      "default": "Bestil inden {cutoff}. Så sender vi {shipping_day}.",
-      "info": "Brug {cutoff} for tidsfristen, {shipping_day} for afsendelsesdagen, og {delivery_day} for leveringsdagen."
-    },
-    {
-      "type": "text",
-      "id": "text_after_cutoff",
-      "label": "Skabelon efter cut-off",
-      "default": "Bestil i dag. Så sender vi {shipping_day}.",
-      "info": "Brug {shipping_day} for afsendelsesdagen, og {delivery_day} for leveringsdagen."
-    },
-    {
-      "type": "header",
-      "content": "Bagudkompatibilitet (Legacy)"
-    },
-    {
-      "type": "text",
       "id": "text",
       "label": "Prefix Text",
-      "default": "Afsendes i dag – Bestil inden"
+      "default": "Bestil inden"
     },
     {
       "type": "text",
       "id": "suffix",
       "label": "Suffix Text",
-      "default": " timer"
+      "default": "Så sender vi"
     }
   ],
   "presets": [
