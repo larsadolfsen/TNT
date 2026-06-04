@@ -369,6 +369,14 @@ shopify-block,
   padding-bottom: var(--block-padding-bottom, 8px);
 }
 
+/* Ensure badges are always sized to their content and lay out inline/inline-flex */
+.shopify-block-badge,
+.shopify-block-material-badge {
+  display: inline-flex !important;
+  width: max-content !important;
+  max-width: 100% !important;
+}
+
 /* Custom spacing for page title and trust blocks to bring them closer */
 .shopify-block-page-title {
   padding-top: 12px;

@@ -2135,6 +2135,11 @@ html, body {
   padding-top: var(--block-padding-top, 8px);
   padding-bottom: var(--block-padding-bottom, 8px);
 }
+.shopify-block-badge, .shopify-block-material-badge {
+  display: inline-flex !important;
+  width: max-content !important;
+  max-width: 100% !important;
+}
 .shopify-block-page-title {
   padding-top: 12px;
   padding-bottom: 0px;

@@ -7,15 +7,16 @@
   }
 
   /* Override standard block wrapper styles for badges nested inside this container */
-  #shopify-block-{{ block.id }} .product-badges-container .shopify-block-badge {
-    padding: 0;
-    display: inline-flex;
-    width: auto;
+  #shopify-block-{{ block.id }} .product-badges-container > * {
+    padding: 0 !important;
+    display: inline-flex !important;
+    width: max-content !important;
+    max-width: 100% !important;
   }
 
-  #shopify-block-{{ block.id }} .product-badges-container .shopify-block-badge > div {
-    width: auto;
-    display: inline-flex;
+  #shopify-block-{{ block.id }} .product-badges-container > * > div {
+    width: max-content !important;
+    display: inline-flex !important;
   }
 {%- endstyle -%}
 

@@ -67,13 +67,13 @@
       padding-bottom: 0;
       padding-left: 0;
       padding-right: 0;
-      width: auto;
-      display: inline-block;
+      width: auto !important;
+      display: inline-block !important;
       max-width: 100%;
     }
 
     .row-content--single > * > div {
-      width: auto;
+      width: auto !important;
     }
   {%- endif -%}
 {%- endstyle -%}
@@ -94,7 +94,7 @@
     assign outer_class = 'row-section max-w-[var(--page-width)] mx-auto px-4 md:px-8 section-' | append: section.id | append: '-padding'
     assign inner_class = 'w-full ' | append: bg_class | append: ' rounded-3xl py-10 md:py-16 shadow-md section-' | append: section.id | append: '-inner-padding'
   endif
--%-}
+-%}
 
 <div class="{{ outer_class }}">
   <div class="{{ inner_class }}">
@@ -145,7 +145,7 @@
       "id": "padding_top",
       "min": 0,
       "max": 100,
-      "step": 2,
+      "step": 4,
       "unit": "px",
       "label": "Afstand i toppen",
       "default": 12
@@ -155,7 +155,7 @@
       "id": "padding_bottom",
       "min": 0,
       "max": 100,
-      "step": 2,
+      "step": 4,
       "unit": "px",
       "label": "Afstand i bunden",
       "default": 12
@@ -165,10 +165,10 @@
       "id": "padding_sides",
       "min": 0,
       "max": 100,
-      "step": 2,
+      "step": 4,
       "unit": "px",
       "label": "Afstand i siderne",
-      "default": 16
+      "default": 24
     },
     {
       "type": "header",
@@ -179,7 +179,7 @@
       "id": "block_spacing",
       "min": 0,
       "max": 64,
-      "step": 2,
+      "step": 4,
       "unit": "px",
       "label": "Afstand mellem blokke",
       "default": 8

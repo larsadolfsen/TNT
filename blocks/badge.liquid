@@ -4,6 +4,7 @@
     --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
     --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
     --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
+    text-align: {{ block.settings.alignment | default: 'left' }};
   }
 {%- endstyle -%}
 
@@ -15,19 +16,14 @@
   {%- endif -%}
 {%- endif -%}
 
-<div 
+<span 
   id="badge-container-{{ block.id }}"
-  class="w-full flex" 
-  style="justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};{% unless show_badge %} display: none;{% endunless %}" 
+  class="inline-block text-[10px] font-bold px-2 py-1 rounded-md tracking-widest border uppercase"
+  style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; border-color: {{ block.settings.background_color }};{% unless show_badge %} display: none;{% endunless %}" 
   {{ block.shopify_attributes }}
 >
-  <span 
-    class="inline-block text-[10px] font-bold px-2 py-1 rounded-md tracking-widest border uppercase"
-    style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; border-color: {{ block.settings.background_color }};"
-  >
-    {{ block.settings.text | default: "BESTSELLER" }}
-  </span>
-</div>
+  {{ block.settings.text | default: "BESTSELLER" }}
+</span>
 
 {%- if block.settings.only_if_in_stock and product -%}
 <script id="product-badge-variant-data-{{ block.id }}" type="application/json">
@@ -74,6 +70,10 @@
   });
 </script>
 {%- endif -%}
+
+<script>
+  console.log("Antigravity: Badge block rendered (ID: {{ block.id }})");
+</script>
 
 {% schema %}
 {
