@@ -285,11 +285,17 @@
     }
 
     const productTitle = {{ product.title | json }};
-    // Helper: Parse width from variant title or product title (e.g. "140 cm bred" -> 140)
+    // Helper: Parse width from variant title or product title.
+    // Produkttitel slutter altid med ", xxx cm" - søg efter det mønster først.
     function getVariantWidth(variantTitle) {
-      let match = variantTitle.match(/(\d+)/);
+      // Prefer "xxx cm" pattern (e.g. ", 140 cm" at end of title)
+      let match = variantTitle.match(/(\d+)\s*cm/i);
       if (!match && productTitle) {
-        match = productTitle.match(/(\d+)/);
+        match = productTitle.match(/(\d+)\s*cm/i);
+      }
+      // Fallback: first number anywhere
+      if (!match) {
+        match = variantTitle.match(/(\d+)/);
       }
       return match ? parseInt(match[1]) : 140;
     }

@@ -85,8 +85,11 @@ function run(input) {
     const shapeNames = { firkantet: "Firkantet", rund: "Rund", oval: "Oval" };
     const shapeName = shapeNames[shapeVal] || (shapeVal ? shapeVal.charAt(0).toUpperCase() + shapeVal.slice(1) : "Firkantet");
     const fabricTitle = customTitleVal || product.title;
-    const sizeStr = shapeVal === "rund" ? `Rund ${widthVal || "140"} cm` : `${shapeName} ${widthVal || "140"}x${length} cm`;
-    const customizedTitle = `${fabricTitle} | ${sizeStr}`;
+    const titleWidthMatch = fabricTitle.match(/,\s*(\d+)\s*cm\s*$/i);
+    const width = parseInt(widthVal) > 0 ? parseInt(widthVal) : titleWidthMatch ? parseInt(titleWidthMatch[1]) : 140;
+    const cleanFabricTitle = fabricTitle.replace(/,\s*\d+\s*cm\s*$/i, "").trim();
+    const sizeStr = shapeVal === "rund" ? `Rund ${width} cm` : `${shapeName} ${width}x${length} cm`;
+    const customizedTitle = `${cleanFabricTitle} (${sizeStr})`;
     console.log(`[CartTransform] Expanding line ${line.id} into metervare bundle. Title: "${customizedTitle}", Component variant: "${metervareVariantId}", Qty: ${length * line.quantity}`);
     const operation = {
       expand: {

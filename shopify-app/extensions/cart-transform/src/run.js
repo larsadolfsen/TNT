@@ -102,16 +102,25 @@ export function run(input) {
       console.log(`[CartTransform] Added shape component ${shapeVariantId} with price: ${shapeSurcharge.toFixed(4)} kr.`);
     }
 
-    // Build the parent bundle title for checkout:
-    // Format: "{stofnavn} ({Form} {bredde}x{længde} cm)"
-    // e.g. "Klar gennemsigtig voksdug - 140 cm bred - 0,2 mm tyk (Rund 140x140 cm)"
+    // Build the parent bundle title for checkout.
+    // Product title always ends with ", xxx cm" (the fabric width).
+    // Strip that suffix for display, and use it as fallback if _width is 0.
     const shapeNames = { firkantet: 'Firkantet', rund: 'Rund', oval: 'Oval' };
     const shapeName = shapeNames[shapeVal] || (shapeVal ? shapeVal.charAt(0).toUpperCase() + shapeVal.slice(1) : 'Firkantet');
     const fabricTitle = customTitleVal || product.title;
+
+    // Extract width from end of title if _width attribute is missing or 0
+    const titleWidthMatch = fabricTitle.match(/,\s*(\d+)\s*cm\s*$/i);
+    const width = (parseInt(widthVal) > 0) ? parseInt(widthVal) : (titleWidthMatch ? parseInt(titleWidthMatch[1]) : 140);
+
+    // Strip ", xxx cm" suffix from fabric title for cleaner display
+    const cleanFabricTitle = fabricTitle.replace(/,\s*\d+\s*cm\s*$/i, '').trim();
+
+    // Format: "{stofnavn} ({Form} {b}x{l} cm)" or "{stofnavn} (Rund {d} cm)"
     const sizeStr = (shapeVal === 'rund')
-      ? `Rund ${widthVal || '140'} cm`
-      : `${shapeName} ${widthVal || '140'}x${length} cm`;
-    const customizedTitle = `${fabricTitle} | ${sizeStr}`;
+      ? `Rund ${width} cm`
+      : `${shapeName} ${width}x${length} cm`;
+    const customizedTitle = `${cleanFabricTitle} (${sizeStr})`;
 
     console.log(`[CartTransform] Expanding line ${line.id} into metervare bundle. Title: "${customizedTitle}", Component variant: "${metervareVariantId}", Qty: ${length * line.quantity}`);
 
