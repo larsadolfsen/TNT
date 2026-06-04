@@ -45,8 +45,9 @@ export function run(input) {
     const shapeSurchargeVal = line._shape_surcharge?.value;
     const imageVal = line._image?.value;
     const customTitleVal = line._metervare_title?.value;
+    const shapeVariantId = line._shape_variant_id?.value;
 
-    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}", shapeSurcharge="${shapeSurchargeVal}", image="${imageVal}", customTitle="${customTitleVal}"`);
+    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}", shapeSurcharge="${shapeSurchargeVal}", image="${imageVal}", customTitle="${customTitleVal}", shapeVariantId="${shapeVariantId}"`);
 
     let length = lengthVal ? parseInt(lengthVal, 10) : 0;
     if (length <= 0) {
@@ -63,7 +64,7 @@ export function run(input) {
 
     const expandedItems = [];
     const componentItem = {
-      merchandiseId: metervareVariantId,
+      merchandiseId: line.merchandise.id,
       quantity: length * line.quantity,
     };
 
@@ -71,22 +72,34 @@ export function run(input) {
     if (pricePerCmVal) {
       const pricePerCm = parseFloat(pricePerCmVal);
       if (!isNaN(pricePerCm) && pricePerCm >= 0) {
-        let adjustedPricePerCm = pricePerCm;
-        if (length > 0 && shapeSurcharge > 0) {
-          adjustedPricePerCm += shapeSurcharge / length;
-        }
         componentItem.price = {
           adjustment: {
             fixedPricePerUnit: {
-              amount: adjustedPricePerCm.toFixed(4)
+              amount: pricePerCm.toFixed(4)
             }
           }
         };
-        console.log(`[CartTransform] Set unit price for BTM001 component to: ${adjustedPricePerCm.toFixed(4)} kr (includes distributed shape surcharge of ${shapeSurcharge} kr).`);
+        console.log(`[CartTransform] Set unit price for raw metervare component to: ${pricePerCm.toFixed(4)} kr.`);
       }
     }
 
     expandedItems.push(componentItem);
+
+    if (shapeVariantId && shapeSurcharge > 0) {
+      const shapeComponentItem = {
+        merchandiseId: shapeVariantId,
+        quantity: 1 * line.quantity,
+        price: {
+          adjustment: {
+            fixedPricePerUnit: {
+              amount: shapeSurcharge.toFixed(4)
+            }
+          }
+        }
+      };
+      expandedItems.push(shapeComponentItem);
+      console.log(`[CartTransform] Added shape component ${shapeVariantId} with price: ${shapeSurcharge.toFixed(4)} kr.`);
+    }
 
     // Build the customized title matching the requested format:
     let customizedTitle;

@@ -310,7 +310,6 @@
     const btnQtyPlus = document.getElementById("btn-qty-plus");
 
     const addToCartBtn = document.getElementById("btn-add-to-cart");
-    const summaryMal = document.getElementById("summary-mål");
 
     // Recalculate price display
     function updateUI() {
@@ -343,32 +342,72 @@
           addToCartBtn.textContent = prefix + formattedPrice;
         }
 
-        // Update shape price under the button
-        const shapePriceUnderButton = document.getElementById("shape-price-under-button");
-        if (shapePriceUnderButton) {
-          if (shapeInfo) {
-            const priceText = shapeInfo.price > 0 ? `${shapeInfo.price_formatted}` : '0,00 kr.';
-            shapePriceUnderButton.textContent = priceText;
-            shapePriceUnderButton.style.display = "block";
-          } else {
-            shapePriceUnderButton.style.display = "none";
-          }
-        }
-
         // Update the summary section if it exists
         const summaryPris = document.getElementById("summary-pris");
         if (summaryPris) {
           summaryPris.textContent = "Pris: " + formattedPrice;
         }
 
-        // Update summary dimensions text (e.g. Du er ved at købe: 1 x Klar gennemsigtig voksdug - 140 x 200 cm)
-        if (summaryMal) {
-          const width = getVariantWidth(pricingVariant.title);
+        // Helper to format price in Danish format: "Dkr X,-" or with decimals
+        function formatDanishPrice(priceInKr) {
+          const rounded = Math.round(priceInKr * 100) / 100;
+          if (rounded % 1 === 0) {
+            return `Dkr ${rounded},-`;
+          } else {
+            return `Dkr ${rounded.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+          }
+        }
+
+        // Update the calculation table elements if they exist
+        const calcTitle = document.getElementById("calc-title");
+        const calcMetervareLabel = document.getElementById("calc-metervare-label");
+        const calcMetervarePrice = document.getElementById("calc-metervare-price");
+        const calcShapeRow = document.getElementById("calc-shape-row");
+        const calcShapeLabel = document.getElementById("calc-shape-label");
+        const calcShapePrice = document.getElementById("calc-shape-price");
+        const calcTotalPrice = document.getElementById("calc-total-price");
+
+        if (calcTitle) {
           const rawTitle = pricingVariant.title === "Default Title" ? productTitle : pricingVariant.title;
-          const displayTitle = rawTitle.split("-")[0].trim();
-          const shapeLabels = { firkantet: 'Firkantet', rund: 'Rund', oval: 'Oval' };
-          const shapeLabel = shapeLabels[selectedShape] || '';
-          summaryMal.textContent = `Du er ved at købe: ${state.quantity} x ${shapeLabel} ${displayTitle} - ${width} x ${state.length} cm`;
+          const parts = rawTitle.split(/\s*-\s*/);
+          let displayTitle = parts[0];
+          if (parts.length >= 3) {
+            displayTitle = `${parts[0]} - ${parts[1]} - ${parts[2]}`;
+          } else if (parts.length === 2) {
+            displayTitle = `${parts[0]} - ${parts[1]}`;
+          }
+          calcTitle.textContent = displayTitle;
+        }
+
+        const width = getVariantWidth(pricingVariant.title);
+        if (calcMetervareLabel) {
+          calcMetervareLabel.textContent = `Metervare, (${width}x${state.length} cm)`;
+        }
+        
+        const singleClothPrice = pricingVariant.price * state.length;
+        if (calcMetervarePrice) {
+          calcMetervarePrice.textContent = formatDanishPrice(singleClothPrice);
+        }
+
+        if (calcShapeRow) {
+          if (shapeInfo) {
+            calcShapeRow.style.display = "flex";
+            const shapeLabels = { firkantet: 'Firkantet dug', rund: 'Rund dug', oval: 'Oval dug' };
+            if (calcShapeLabel) {
+              calcShapeLabel.textContent = shapeLabels[selectedShape] || `${selectedShape} dug`;
+            }
+            if (calcShapePrice) {
+              calcShapePrice.textContent = formatDanishPrice(shapeInfo.price);
+            }
+          } else {
+            calcShapeRow.style.display = "none";
+          }
+        }
+
+        if (calcTotalPrice) {
+          const singleShapePrice = shapeInfo ? shapeInfo.price : 0;
+          const singleTotalPrice = singleClothPrice + singleShapePrice;
+          calcTotalPrice.textContent = formatDanishPrice(singleTotalPrice);
         }
 
         // Update length calculation display
@@ -472,6 +511,9 @@
         const targetVoksdugVariantId = pricingVariant ? pricingVariant.id : customizedVariant.id;
         const targetVoksdugImage = pricingVariant && pricingVariant.image ? pricingVariant.image : "";
 
+        const shapeInfo = shapeData[selectedShape];
+        const shapeVariantId = shapeInfo ? shapeInfo.id : null;
+
         const itemToAdd = {
           id: metervareVariantIntId,
           quantity: state.quantity,
@@ -485,6 +527,10 @@
             "_unit_price": unitPriceCents.toString()
           }
         };
+
+        if (shapeVariantId) {
+          itemToAdd.properties["_shape_variant_id"] = `gid://shopify/ProductVariant/${shapeVariantId}`;
+        }
 
         // Add the product title and image to properties so they can be accessed by the Cart Transform function
         itemToAdd.properties["_metervare_title"] = productTitle;

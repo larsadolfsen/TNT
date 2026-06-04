@@ -34,6 +34,9 @@ query Input {
       _image: attribute(key: "_image") {
         value
       }
+      _shape_variant_id: attribute(key: "_shape_variant_id") {
+        value
+      }
       _metervare_title: attribute(key: "_metervare_title") {
         value
       }

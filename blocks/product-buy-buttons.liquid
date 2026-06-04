@@ -36,16 +36,29 @@
 {%- endstyle -%}
 
 <div class="flex flex-col gap-4" {{ block.shopify_attributes }}>
-    <!-- Left: Selected Specs & Price -->
-    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full pl-4">
-      {%- assign display_title = base_variant.title -%}
-      {%- if display_title == 'Default Title' -%}
-        {%- assign display_title = product.title -%}
-      {%- endif -%}
-      {%- if display_title contains '-' -%}
-        {%- assign display_title = display_title | split: '-' | first | strip -%}
-      {%- endif -%}
-      <div id="summary-mål" class="text-xs text-on-surface-variant mt-1.5">Du er ved at købe: 1 x {{ display_title }} - {{ width }} x 200 cm</div>
+    <!-- Left: Selected Specs & Price (Calculation Table) -->
+    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full pl-4 mb-2" style="display: none;">
+      <!-- Title -->
+      <div id="calc-title" class="font-semibold text-slate-900 text-sm mb-1.5"></div>
+      
+      <!-- Lines -->
+      <div class="flex flex-col gap-1 text-xs text-slate-500 w-full pr-4">
+        <div class="flex justify-between items-center">
+          <span id="calc-metervare-label">Metervare</span>
+          <span id="calc-metervare-price" class="font-semibold text-slate-900"></span>
+        </div>
+        <div class="flex justify-between items-center" id="calc-shape-row">
+          <span id="calc-shape-label">Form</span>
+          <span id="calc-shape-price" class="font-semibold text-slate-900"></span>
+        </div>
+        
+        <div class="border-t border-slate-200 my-1.5"></div>
+        
+        <div class="flex justify-between items-center text-sm font-bold text-slate-900">
+          <span>Pris pr. stk.</span>
+          <span id="calc-total-price"></span>
+        </div>
+      </div>
     </div>
     
     <!-- Right: Button and Payment Badges -->
@@ -66,8 +79,7 @@
         <span id="btn-price-display" class="ml-1.5">{{ product.selected_or_first_available_variant.price | money }}</span>
       </button>
       
-      <!-- Shape price display under Add to Cart button -->
-      <div id="shape-price-under-button" class="text-xs text-on-surface-variant text-center mt-1.5" style="display: none;"></div>
+
       
       <!-- Payment Badges -->
       <div class="flex justify-center items-center gap-2 text-on-surface-variant font-medium text-xs mt-1">
@@ -95,12 +107,14 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const hasCustomizer = !!document.getElementById("shape-selector");
-    const summaryMal = document.getElementById("summary-mål");
-    
-    // 1. If no customizer is present, hide the dimensions summary container (since it's a simple product)
+    // 1. If customizer is present, show the calculation summary card; otherwise hide it
     const summaryContainer = document.getElementById("buy-buttons-summary-container");
-    if (!hasCustomizer && summaryContainer) {
-      summaryContainer.style.display = "none";
+    if (summaryContainer) {
+      if (hasCustomizer) {
+        summaryContainer.style.display = "flex";
+      } else {
+        summaryContainer.style.display = "none";
+      }
     }
 
     // Parse simple variant data
