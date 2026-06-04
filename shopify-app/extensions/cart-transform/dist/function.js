@@ -36,6 +36,7 @@ function run(input) {
     const imageVal = line._image?.value;
     const customTitleVal = line._metervare_title?.value;
     const shapeVariantId = line._shape_variant_id?.value;
+    const shapeVal = line._shape?.value;
     console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}", shapeSurcharge="${shapeSurchargeVal}", image="${imageVal}", customTitle="${customTitleVal}", shapeVariantId="${shapeVariantId}"`);
     let length = lengthVal ? parseInt(lengthVal, 10) : 0;
     if (length <= 0) {
@@ -49,7 +50,7 @@ function run(input) {
     const shapeSurcharge = shapeSurchargeVal ? parseFloat(shapeSurchargeVal) / 100 : 0;
     const expandedItems = [];
     const componentItem = {
-      merchandiseId: line.merchandise.id,
+      merchandiseId: metervareVariantId,
       quantity: length * line.quantity
     };
     if (pricePerCmVal) {
@@ -66,7 +67,7 @@ function run(input) {
       }
     }
     expandedItems.push(componentItem);
-    if (shapeVariantId && shapeSurcharge > 0) {
+    if (shapeVariantId && shapeSurcharge >= 0) {
       const shapeComponentItem = {
         merchandiseId: shapeVariantId,
         quantity: 1 * line.quantity,
@@ -81,16 +82,11 @@ function run(input) {
       expandedItems.push(shapeComponentItem);
       console.log(`[CartTransform] Added shape component ${shapeVariantId} with price: ${shapeSurcharge.toFixed(4)} kr.`);
     }
-    let customizedTitle;
-    if (customTitleVal) {
-      customizedTitle = `${customTitleVal} - ${widthVal || "140"} x ${length} cm`;
-    } else {
-      let titlePrefix = product.title;
-      if (variant.title && variant.title.toLowerCase() !== "default title") {
-        titlePrefix = `${product.title}, ${variant.title}`;
-      }
-      customizedTitle = `${titlePrefix} - ${widthVal || "140"} x ${length} cm`;
-    }
+    const shapeNames = { firkantet: "Firkantet", rund: "Rund", oval: "Oval" };
+    const shapeName = shapeNames[shapeVal] || (shapeVal ? shapeVal.charAt(0).toUpperCase() + shapeVal.slice(1) : "Firkantet");
+    const fabricTitle = customTitleVal || product.title;
+    const sizeStr = shapeVal === "rund" ? `Rund ${widthVal || "140"} cm` : `${shapeName} ${widthVal || "140"}x${length} cm`;
+    const customizedTitle = `${fabricTitle} | ${sizeStr}`;
     console.log(`[CartTransform] Expanding line ${line.id} into metervare bundle. Title: "${customizedTitle}", Component variant: "${metervareVariantId}", Qty: ${length * line.quantity}`);
     const operation = {
       expand: {
