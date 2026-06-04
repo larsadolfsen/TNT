@@ -66,8 +66,11 @@
         <span id="btn-price-display" class="ml-1.5">{{ product.selected_or_first_available_variant.price | money }}</span>
       </button>
       
+      <!-- Shape price display under Add to Cart button -->
+      <div id="shape-price-under-button" class="text-xs text-on-surface-variant text-center font-semibold mt-1.5" style="display: none;"></div>
+      
       <!-- Payment Badges -->
-      <div class="flex justify-center items-center gap-2 text-on-surface-variant font-medium text-xs">
+      <div class="flex justify-center items-center gap-2 text-on-surface-variant font-medium text-xs mt-1">
         <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">VISA</span>
         <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">MASTERCARD</span>
         <span class="border border-outline-variant rounded px-1.5 py-0.5 text-[9px] bg-white font-bold tracking-wider">MOBILEPAY</span>

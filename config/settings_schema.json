@@ -109,5 +109,164 @@
         "default": 4
       }
     ]
+  },
+  {
+    "name": "Forsendelse",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Mandag"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_monday_active",
+        "label": "Send pakker om mandagen",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "shipping_monday_cutoff",
+        "label": "Cut-off tidspunkt (f.eks. 12:00)",
+        "default": "12:00"
+      },
+      {
+        "type": "text",
+        "id": "shipping_monday_delivery",
+        "label": "Forventet leveringsdag",
+        "default": "onsdag"
+      },
+      {
+        "type": "header",
+        "content": "Tirsdag"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_tuesday_active",
+        "label": "Send pakker om tirsdagen",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "shipping_tuesday_cutoff",
+        "label": "Cut-off tidspunkt (f.eks. 12:00)",
+        "default": "12:00"
+      },
+      {
+        "type": "text",
+        "id": "shipping_tuesday_delivery",
+        "label": "Forventet leveringsdag",
+        "default": "torsdag"
+      },
+      {
+        "type": "header",
+        "content": "Onsdag"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_wednesday_active",
+        "label": "Send pakker om onsdagen",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "shipping_wednesday_cutoff",
+        "label": "Cut-off tidspunkt (f.eks. 12:00)",
+        "default": "12:00"
+      },
+      {
+        "type": "text",
+        "id": "shipping_wednesday_delivery",
+        "label": "Forventet leveringsdag",
+        "default": "fredag"
+      },
+      {
+        "type": "header",
+        "content": "Torsdag"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_thursday_active",
+        "label": "Send pakker om torsdagen",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "shipping_thursday_cutoff",
+        "label": "Cut-off tidspunkt (f.eks. 12:00)",
+        "default": "12:00"
+      },
+      {
+        "type": "text",
+        "id": "shipping_thursday_delivery",
+        "label": "Forventet leveringsdag",
+        "default": "fredag"
+      },
+      {
+        "type": "header",
+        "content": "Fredag"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_friday_active",
+        "label": "Send pakker om fredagen",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "shipping_friday_cutoff",
+        "label": "Cut-off tidspunkt (f.eks. 12:00)",
+        "default": "12:00"
+      },
+      {
+        "type": "text",
+        "id": "shipping_friday_delivery",
+        "label": "Forventet leveringsdag",
+        "default": "mandag"
+      },
+      {
+        "type": "header",
+        "content": "Lørdag"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_saturday_active",
+        "label": "Send pakker om lørdagen",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "shipping_saturday_cutoff",
+        "label": "Cut-off tidspunkt (f.eks. 12:00)",
+        "default": "12:00"
+      },
+      {
+        "type": "text",
+        "id": "shipping_saturday_delivery",
+        "label": "Forventet leveringsdag",
+        "default": "tirsdag"
+      },
+      {
+        "type": "header",
+        "content": "Søndag"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_sunday_active",
+        "label": "Send pakker om søndagen",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "shipping_sunday_cutoff",
+        "label": "Cut-off tidspunkt (f.eks. 12:00)",
+        "default": "12:00"
+      },
+      {
+        "type": "text",
+        "id": "shipping_sunday_delivery",
+        "label": "Forventet leveringsdag",
+        "default": "tirsdag"
+      }
+    ]
   }
 ]

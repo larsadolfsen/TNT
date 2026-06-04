@@ -9,6 +9,10 @@
   assign min_length = block.settings.min_length | default: 50
   assign step_size = block.settings.step_size | default: 10
 
+  assign shape_firkantet = all_products[block.settings.firkantet_product]
+  assign shape_rund = all_products[block.settings.rund_product]
+  assign shape_oval = all_products[block.settings.oval_product]
+
   # 1. Try to resolve the configured product from settings and verify it has SKU BTM001
   assign metervare_product = all_products[block.settings.metervare_product]
   assign metervare_variant = nil
@@ -115,7 +119,7 @@
     <div class="flex items-start gap-3">
       <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full mt-0.5 shrink-0">2</span>
       <div class="flex flex-col">
-        <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Vælg længde</span>
+        <span id="label-length" class="font-bold text-sm uppercase tracking-wider text-slate-800">Vælg længde</span>
         <p class="text-xs text-on-surface-variant mt-1">Vi anbefaler ca. 20 cm til nedhæng i hver ende.</p>
       </div>
     </div>
@@ -181,6 +185,27 @@
   ]
 </script>
 
+<!-- Shape Data JSON -->
+<script id="shape-data" type="application/json">
+  {
+    "firkantet": {
+      "id": {{ shape_firkantet.first_available_variant.id | default: shape_firkantet.variants.first.id | json }},
+      "price": {{ shape_firkantet.price | default: 0 | divided_by: 100.0 }},
+      "price_formatted": {{ shape_firkantet.price | default: 0 | money | json }}
+    },
+    "rund": {
+      "id": {{ shape_rund.first_available_variant.id | default: shape_rund.variants.first.id | json }},
+      "price": {{ shape_rund.price | default: 0 | divided_by: 100.0 }},
+      "price_formatted": {{ shape_rund.price | default: 0 | money | json }}
+    },
+    "oval": {
+      "id": {{ shape_oval.first_available_variant.id | default: shape_oval.variants.first.id | json }},
+      "price": {{ shape_oval.price | default: 0 | divided_by: 100.0 }},
+      "price_formatted": {{ shape_oval.price | default: 0 | money | json }}
+    }
+  }
+</script>
+
 <script>
   // Shape selector (global so onclick= attributes can call it)
   let selectedShape = 'firkantet';
@@ -188,6 +213,10 @@
     selectedShape = shape;
     document.querySelectorAll('.shape-btn').forEach(btn => {
       const isActive = btn.dataset.shape === shape;
+      const lengthLabel = document.getElementById('label-length');
+      if (lengthLabel) {
+        lengthLabel.textContent = (shape === 'rund') ? 'Vælg diameter' : 'Vælg længde';
+      }
       if (isActive) {
         btn.style.borderColor = '#f5c518';
         btn.style.borderWidth = '2px';
@@ -200,11 +229,15 @@
         btn.classList.add('border', 'border-slate-200', 'text-slate-600');
       }
     });
+    
+    if (typeof window.updateCustomizerUI === "function") {
+      window.updateCustomizerUI();
+    }
   }
 
 
   document.addEventListener("DOMContentLoaded", () => {
-    console.log("Voksdug Customizer - Version: swap-voksdug-metervare (Release 26)");
+    console.log("Voksdug Customizer - Version: swap-voksdug-metervare (Release 27)");
     // 1. Config variables from Liquid settings
     const minLength = {{ min_length | json }};
     const stepSize = {{ step_size | json }};
@@ -217,6 +250,14 @@
       variants = JSON.parse(document.getElementById('variant-data').textContent);
     } catch (e) {
       console.error("Failed to parse variants", e);
+    }
+
+    // Parse shape data
+    let shapeData = {};
+    try {
+      shapeData = JSON.parse(document.getElementById('shape-data').textContent);
+    } catch (e) {
+      console.error("Failed to parse shape data", e);
     }
 
     const productTitle = {{ product.title | json }};
@@ -259,10 +300,15 @@
       // Find the pricing variant (the one that is not the 'Tilpasset' variant)
       const pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
       if (pricingVariant) {
+        // Calculate shape price
+        const shapeInfo = shapeData[selectedShape];
+        const shapePrice = (shapeInfo ? shapeInfo.price : 0) * state.quantity;
+
         // Calculate price: (price per cm) * length * quantity
         const totalClothPrice = pricingVariant.price * state.length * state.quantity;
+        const totalClothAndShapePrice = totalClothPrice + shapePrice;
         
-        const formattedPrice = totalClothPrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
+        const formattedPrice = totalClothAndShapePrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
         
         // Update price display on buy button
         const priceDisplay = document.getElementById("btn-price-display");
@@ -271,6 +317,19 @@
         } else if (addToCartBtn) {
           const prefix = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv – ";
           addToCartBtn.textContent = prefix + formattedPrice;
+        }
+
+        // Update shape price under the button
+        const shapePriceUnderButton = document.getElementById("shape-price-under-button");
+        if (shapePriceUnderButton) {
+          if (shapeInfo) {
+            const displayShapeName = selectedShape === 'rund' ? 'Rund' : selectedShape === 'oval' ? 'Oval' : 'Firkantet';
+            const priceText = shapeInfo.price > 0 ? `${shapeInfo.price_formatted}` : '0,00 kr.';
+            shapePriceUnderButton.textContent = `Pris for form (${displayShapeName}): ${priceText}`;
+            shapePriceUnderButton.style.display = "block";
+          } else {
+            shapePriceUnderButton.style.display = "none";
+          }
         }
 
         // Update the summary section if it exists
@@ -309,14 +368,17 @@
         }
 
         // Set global variable to resolve initial page load race condition
-        window.currentPageProductPrice = totalClothPrice;
+        window.currentPageProductPrice = totalClothAndShapePrice;
 
         // Dispatch custom event to notify other scripts about product price update
         document.dispatchEvent(new CustomEvent("product-price-updated", {
-          detail: { price: totalClothPrice }
+          detail: { price: totalClothAndShapePrice }
         }));
       }
     }
+
+    // Expose updateUI globally so that selectShape can trigger it
+    window.updateCustomizerUI = updateUI;
 
     // Steppers listeners
     if (btnLengthMinus && displayLength) {
@@ -378,7 +440,11 @@
 
         const width = getVariantWidth(pricingVariant ? pricingVariant.title : customizedVariant.title);
         const refPrice = pricingVariant ? pricingVariant.price : customizedVariant.price;
-        const unitPriceCents = Math.round(refPrice * state.length * 100);
+        
+        const basePriceCents = Math.round(refPrice * state.length * 100);
+        const shapeInfo = shapeData[selectedShape];
+        const shapeSurchargeCents = Math.round((shapeInfo ? shapeInfo.price : 0) * 100);
+        const unitPriceCents = basePriceCents + shapeSurchargeCents;
 
         const targetVoksdugVariantId = pricingVariant ? pricingVariant.id : customizedVariant.id;
         const targetVoksdugImage = pricingVariant && pricingVariant.image ? pricingVariant.image : "";
@@ -390,6 +456,9 @@
             "_length": state.length.toString(),
             "_width": width.toString(),
             "_shape": selectedShape,
+            "_base_price": basePriceCents.toString(),
+            "_shape_surcharge": shapeSurchargeCents.toString(),
+            "_width_surcharge": "0",
             "_unit_price": unitPriceCents.toString()
           }
         };
@@ -485,6 +554,7 @@
     });
 
     // Initial load
+    selectShape('firkantet');
     updateUI();
   });
 </script>

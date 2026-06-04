@@ -28,6 +28,9 @@ query Input {
       _price_per_cm: attribute(key: "_price_per_cm") {
         value
       }
+      _shape_surcharge: attribute(key: "_shape_surcharge") {
+        value
+      }
       _image: attribute(key: "_image") {
         value
       }

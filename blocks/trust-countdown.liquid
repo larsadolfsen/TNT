@@ -1,36 +1,145 @@
-<div class="flex items-center gap-2.5 text-primary font-medium" {{ block.shopify_attributes }}>
+<div class="flex items-center gap-2.5 text-primary font-medium" 
+     id="trust-countdown-{{ block.id }}"
+     data-text-template="{{ block.settings.text_template | escape }}"
+     data-legacy-text="{{ block.settings.text | escape }}"
+     data-legacy-suffix="{{ block.settings.suffix | escape }}"
+     data-shipping-sunday-active="{{ settings.shipping_sunday_active | default: false }}"
+     data-shipping-sunday-cutoff="{{ settings.shipping_sunday_cutoff | default: '12:00' }}"
+     data-shipping-sunday-delivery="{{ settings.shipping_sunday_delivery | default: 'tirsdag' }}"
+     data-shipping-monday-active="{{ settings.shipping_monday_active | default: true }}"
+     data-shipping-monday-cutoff="{{ settings.shipping_monday_cutoff | default: '12:00' }}"
+     data-shipping-monday-delivery="{{ settings.shipping_monday_delivery | default: 'onsdag' }}"
+     data-shipping-tuesday-active="{{ settings.shipping_tuesday_active | default: true }}"
+     data-shipping-tuesday-cutoff="{{ settings.shipping_tuesday_cutoff | default: '12:00' }}"
+     data-shipping-tuesday-delivery="{{ settings.shipping_tuesday_delivery | default: 'torsdag' }}"
+     data-shipping-wednesday-active="{{ settings.shipping_wednesday_active | default: true }}"
+     data-shipping-wednesday-cutoff="{{ settings.shipping_wednesday_cutoff | default: '12:00' }}"
+     data-shipping-wednesday-delivery="{{ settings.shipping_wednesday_delivery | default: 'fredag' }}"
+     data-shipping-thursday-active="{{ settings.shipping_thursday_active | default: true }}"
+     data-shipping-thursday-cutoff="{{ settings.shipping_thursday_cutoff | default: '12:00' }}"
+     data-shipping-thursday-delivery="{{ settings.shipping_thursday_delivery | default: 'fredag' }}"
+     data-shipping-friday-active="{{ settings.shipping_friday_active | default: true }}"
+     data-shipping-friday-cutoff="{{ settings.shipping_friday_cutoff | default: '12:00' }}"
+     data-shipping-friday-delivery="{{ settings.shipping_friday_delivery | default: 'mandag' }}"
+     data-shipping-saturday-active="{{ settings.shipping_saturday_active | default: false }}"
+     data-shipping-saturday-cutoff="{{ settings.shipping_saturday_cutoff | default: '12:00' }}"
+     data-shipping-saturday-delivery="{{ settings.shipping_saturday_delivery | default: 'tirsdag' }}"
+     {{ block.shopify_attributes }}>
   <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-  <span>{{ block.settings.text }} <span id="countdown-timer-{{ block.id }}" class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">00:00:00</span>{{ block.settings.suffix }}</span>
+  <span id="countdown-content-{{ block.id }}">
+    {%- if block.settings.text_template != blank -%}
+      {{ block.settings.text_template | replace: '{timer}', '<span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">00:00:00</span>' | replace: '{delivery_day}', '...' }}
+    {%- else -%}
+      {{ block.settings.text }} <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">00:00:00</span>{{ block.settings.suffix }}
+    {%- endif -%}
+  </span>
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const countdownTimer = document.getElementById("countdown-timer-{{ block.id }}");
-    if (!countdownTimer) return;
+  (function() {
+    const container = document.getElementById("trust-countdown-{{ block.id }}");
+    if (!container) return;
+    
+    const textTemplate = container.getAttribute("data-text-template");
+    const legacyText = container.getAttribute("data-legacy-text") || "";
+    const legacySuffix = container.getAttribute("data-legacy-suffix") || "";
+    
+    // Parse shipping config from data attributes
+    const shippingConfig = [];
+    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    days.forEach((day, index) => {
+      const activeAttr = container.getAttribute(`data-shipping-${day}-active`);
+      const cutoffAttr = container.getAttribute(`data-shipping-${day}-cutoff`);
+      const deliveryAttr = container.getAttribute(`data-shipping-${day}-delivery`);
+      
+      shippingConfig.push({
+        active: activeAttr === 'true',
+        cutoff: cutoffAttr || '12:00',
+        delivery: deliveryAttr || ''
+      });
+    });
+    
+    const contentEl = document.getElementById("countdown-content-{{ block.id }}");
+    const danishDays = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
+    
+    function getCopenhagenTime() {
+      const options = { timeZone: 'Europe/Copenhagen', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+      const formatter = new Intl.DateTimeFormat('en-US', options);
+      const parts = formatter.formatToParts(new Date());
+      const partValues = {};
+      parts.forEach(p => partValues[p.type] = p.value);
+      return new Date(partValues.year, partValues.month - 1, partValues.day, partValues.hour, partValues.minute, partValues.second);
+    }
     
     function updateTimer() {
-      const now = new Date();
-      const target = new Date();
-      target.setHours(12, 0, 0, 0);
+      const now = getCopenhagenTime();
+      let targetDate = null;
+      let shippingDayOffset = 0;
+      let config = null;
       
-      if (now >= target) {
-        target.setDate(target.getDate() + 1);
+      for (let i = 0; i < 8; i++) {
+        const checkDate = new Date(now);
+        checkDate.setDate(now.getDate() + i);
+        const dayOfWeek = checkDate.getDay();
+        const currentConfig = shippingConfig[dayOfWeek];
+        
+        if (currentConfig && currentConfig.active) {
+          const [hoursStr, minutesStr] = currentConfig.cutoff.split(':');
+          const targetHours = parseInt(hoursStr, 10) || 12;
+          const targetMinutes = parseInt(minutesStr, 10) || 0;
+          
+          checkDate.setHours(targetHours, targetMinutes, 0, 0);
+          
+          if (i === 0 && now >= checkDate) {
+            continue; // Cutoff passed for today, check subsequent days
+          }
+          
+          targetDate = checkDate;
+          shippingDayOffset = i;
+          config = currentConfig;
+          break;
+        }
       }
       
-      const diff = target - now;
+      if (!targetDate) {
+        // Fallback: if no days are active, just use standard next-day 12:00
+        targetDate = new Date(now);
+        targetDate.setDate(now.getDate() + 1);
+        targetDate.setHours(12, 0, 0, 0);
+        shippingDayOffset = 1;
+        config = { active: true, cutoff: '12:00', delivery: '1-2 hverdage' };
+      }
+      
+      const diff = targetDate - now;
       const hours = Math.floor(diff / (1000 * 60 * 60));
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
       
-      countdownTimer.textContent = 
-        String(hours).padStart(2, '0') + ":" + 
-        String(minutes).padStart(2, '0') + ":" + 
-        String(seconds).padStart(2, '0');
+      const timerHtml = `<span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}</span>`;
+      const deliveryDay = config.delivery || '1-2 hverdage';
+      
+      if (textTemplate) {
+        let htmlContent = textTemplate
+          .replace('{timer}', timerHtml)
+          .replace('{delivery_day}', deliveryDay);
+        
+        contentEl.innerHTML = htmlContent;
+      } else {
+        let suffixText = legacySuffix;
+        if (shippingDayOffset === 1) {
+          suffixText = legacySuffix.replace(/i\s*dag/gi, "i morgen");
+        } else if (shippingDayOffset > 1) {
+          const dayName = danishDays[targetDate.getDay()];
+          suffixText = legacySuffix.replace(/i\s*dag/gi, "på " + dayName);
+        }
+        
+        contentEl.innerHTML = `${legacyText} ${timerHtml}${suffixText}`;
+      }
     }
     
     updateTimer();
     setInterval(updateTimer, 1000);
-  });
+  })();
 </script>
 
 {% schema %}
@@ -38,6 +147,17 @@
   "name": "Trust Countdown",
   "class": "shopify-block-trust-countdown",
   "settings": [
+    {
+      "type": "text",
+      "id": "text_template",
+      "label": "Tekst skabelon (ny)",
+      "default": "Bestil inden {timer} og med forventet levering {delivery_day}.",
+      "info": "Brug {timer} for nedtællingen og {delivery_day} for leveringsdagen."
+    },
+    {
+      "type": "header",
+      "content": "Bagudkompatibilitet (Legacy)"
+    },
     {
       "type": "text",
       "id": "text",
