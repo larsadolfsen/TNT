@@ -436,16 +436,20 @@
           },
           "blocks": {}
         },
-        "product_accordions_mJ9kkN": {
-          "type": "product-accordions",
-          "name": "Product Accordions",
+        "group_HkqQUa": {
+          "type": "group",
+          "name": "t:general.row",
           "settings": {
-            "padding_top": 12,
-            "padding_bottom": 12,
+            "sticky": false,
+            "layout_direction": "group--horizontal",
+            "alignment": "flex-start",
+            "align_left": false,
+            "padding_top": 0,
+            "padding_bottom": 0,
             "padding_sides": 0
           },
           "blocks": {
-            "accordion_panel_CgnXLJ": {
+            "accordion_panel_9JHXgj": {
               "type": "accordion-panel",
               "name": "Accordion Panel",
               "settings": {
@@ -455,7 +459,7 @@
               },
               "blocks": {}
             },
-            "accordion_panel_yLPnV7": {
+            "accordion_panel_Tdcnze": {
               "type": "accordion-panel",
               "name": "Accordion Panel",
               "settings": {
@@ -465,7 +469,7 @@
               },
               "blocks": {}
             },
-            "accordion_panel_qagbQk": {
+            "accordion_panel_7A4NTE": {
               "type": "accordion-panel",
               "name": "Accordion Panel",
               "settings": {
@@ -475,7 +479,7 @@
               },
               "blocks": {}
             },
-            "accordion_panel_yy4PP4": {
+            "accordion_panel_daXQXc": {
               "type": "accordion-panel",
               "name": "Accordion Panel",
               "settings": {
@@ -485,7 +489,7 @@
               },
               "blocks": {}
             },
-            "accordion_panel_7MPHi4": {
+            "accordion_panel_RENQrT": {
               "type": "accordion-panel",
               "name": "Accordion Panel",
               "settings": {
@@ -495,7 +499,7 @@
               },
               "blocks": {}
             },
-            "accordion_panel_pCLQgX": {
+            "accordion_panel_LzLNmQ": {
               "type": "accordion-panel",
               "name": "Accordion Panel",
               "settings": {
@@ -507,19 +511,30 @@
             }
           },
           "block_order": [
-            "accordion_panel_CgnXLJ",
-            "accordion_panel_yLPnV7",
-            "accordion_panel_qagbQk",
-            "accordion_panel_yy4PP4",
-            "accordion_panel_7MPHi4",
-            "accordion_panel_pCLQgX"
+            "accordion_panel_9JHXgj",
+            "accordion_panel_Tdcnze",
+            "accordion_panel_7A4NTE",
+            "accordion_panel_daXQXc",
+            "accordion_panel_RENQrT",
+            "accordion_panel_LzLNmQ"
           ]
+        },
+        "product_accordions_mJ9kkN": {
+          "type": "product-accordions",
+          "name": "Product Accordions",
+          "settings": {
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "product_accordions_xFiWe3",
         "product_banner_text_ecegUE",
         "product_cross_sell_VAGeAJ",
+        "group_HkqQUa",
         "product_accordions_mJ9kkN"
       ],
       "name": "Row",
@@ -533,20 +548,6 @@
         "disable_block_padding_vertical_mobile": false,
         "disable_block_padding_horizontal_mobile": false
       }
-    },
-    "row_CwnDNG": {
-      "type": "row",
-      "name": "Row",
-      "settings": {
-        "disable_columns_layout": false,
-        "background_color": "light",
-        "layout_style": "full_width_bg",
-        "padding_top": 48,
-        "padding_bottom": 48,
-        "padding_sides": 0,
-        "disable_block_padding_vertical_mobile": false,
-        "disable_block_padding_horizontal_mobile": false
-      }
     }
   },
   "order": [
@@ -554,7 +555,6 @@
     "row_UzrqP8",
     "product_content",
     "row_CQqaPe",
-    "row_VY7RVT",
-    "row_CwnDNG"
+    "row_VY7RVT"
   ]
 }
