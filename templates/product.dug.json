@@ -457,6 +457,16 @@
     "row_CwnDNG": {
       "type": "row",
       "blocks": {
+        "accordion_panel_gHHykm": {
+          "type": "accordion-panel",
+          "name": "Accordion Panel",
+          "settings": {
+            "title": "Hvordan undgår jeg folder i voksdugen?",
+            "content": "<p>Lad dugen akklimatisere et par dage, og opbevar den rullet på et paprør, når den ikke er i brug.st indhold her.</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
         "accordion_panel_t3wBGq": {
           "type": "accordion-panel",
           "name": "Accordion Panel",
@@ -499,6 +509,7 @@
         }
       },
       "block_order": [
+        "accordion_panel_gHHykm",
         "accordion_panel_t3wBGq",
         "accordion_panel_QKMMYW",
         "accordion_panel_KDcGqL",
