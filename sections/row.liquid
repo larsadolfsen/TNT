@@ -37,70 +37,44 @@
   }
 
   {%- if is_single_column -%}
-    {%- if section.settings.alignment == 'left' or section.settings.alignment == 'center' or section.settings.alignment == 'right' -%}
-      #shopify-section-{{ section.id }} .row-content--single {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: wrap !important;
-        width: 100% !important;
-        gap: {{ section.settings.block_spacing | default: 8 }}px !important;
-      }
+    .row-content--single {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+      gap: {{ section.settings.block_spacing | default: 8 }}px;
+    }
 
-      #shopify-section-{{ section.id }} .row-content--left {
-        justify-content: flex-start !important;
-        text-align: left !important;
-      }
+    .row-content--left {
+      justify-content: flex-start;
+      text-align: left;
+    }
 
-      #shopify-section-{{ section.id }} .row-content--center {
-        justify-content: center !important;
-        text-align: center !important;
-      }
+    .row-content--center {
+      justify-content: center;
+      text-align: center;
+    }
 
-      #shopify-section-{{ section.id }} .row-content--right {
-        justify-content: flex-end !important;
-        text-align: right !important;
-      }
+    .row-content--right {
+      justify-content: flex-end;
+      text-align: right;
+    }
 
-      #shopify-section-{{ section.id }} .row-content--single > .shopify-block,
-      #shopify-section-{{ section.id }} .row-content--single > shopify-block,
-      #shopify-section-{{ section.id }} .row-content--single > [class*="shopify-block-"] {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        width: auto !important;
-        display: inline-block !important;
-        max-width: 100% !important;
-      }
-    {%- else -%}
-      #shopify-section-{{ section.id }} .row-content--single {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-        width: 100% !important;
-        gap: {{ section.settings.block_spacing | default: 8 }}px !important;
-      }
+    .row-content--single > .shopify-block,
+    .row-content--single > shopify-block,
+    .row-content--single > [class*="shopify-block-"] {
+      padding-top: 0;
+      padding-bottom: 0;
+      padding-left: 0;
+      padding-right: 0;
+      width: auto;
+      display: inline-block;
+      max-width: 100%;
+    }
 
-      #shopify-section-{{ section.id }} .row-content--single > .shopify-block,
-      #shopify-section-{{ section.id }} .row-content--single > shopify-block,
-      #shopify-section-{{ section.id }} .row-content--single > [class*="shopify-block-"] {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        width: 100% !important;
-        display: block !important;
-      }
-      #shopify-section-{{ section.id }} .row-content--left {
-        text-align: left !important;
-      }
-
-      #shopify-section-{{ section.id }} .row-content--center {
-        text-align: center !important;
-      }
-
-      #shopify-section-{{ section.id }} .row-content--right {
-        text-align: right !important;
-      }
-    {%- endif -%}
+    .row-content--single > * > div {
+      width: auto;
+    }
   {%- endif -%}
 {%- endstyle -%}
 

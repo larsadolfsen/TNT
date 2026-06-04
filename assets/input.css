@@ -334,14 +334,39 @@ html, body {
   }
 }
 
-.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions):not(.shopify-block-trust-checkmark):not(.shopify-block-trust-countdown):not(.shopify-block-product-trust-checkmarks):not(.shopify-block-accordion),
-shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions):not(.shopify-block-trust-checkmark):not(.shopify-block-trust-countdown):not(.shopify-block-product-trust-checkmarks):not(.shopify-block-accordion),
-[class*="shopify-block-"]:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions):not(.shopify-block-trust-checkmark):not(.shopify-block-trust-countdown):not(.shopify-block-product-trust-checkmarks):not(.shopify-block-accordion) {
+/* Global shopify-block default spacing using CSS variables and low specificity */
+.shopify-block,
+shopify-block,
+[class*="shopify-block-"] {
   display: block;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-left: var(--block-padding-left, 16px);
+  padding-right: var(--block-padding-right, 16px);
+  padding-top: var(--block-padding-top, 12px);
+  padding-bottom: var(--block-padding-bottom, 12px);
+}
+
+/* Structural and special layout blocks that should default to 0 padding */
+.shopify-block-group,
+.shopify-block-product-media,
+.shopify-block-product-customizer,
+.shopify-block-product-buy-buttons,
+.shopify-block-product-accordions,
+.shopify-block-product-trust-checkmarks,
+.shopify-block-accordion,
+.shopify-block-badge,
+.shopify-block-material-badge {
+  padding-left: var(--block-padding-left, 0px);
+  padding-right: var(--block-padding-right, 0px);
+  padding-top: var(--block-padding-top, 0px);
+  padding-bottom: var(--block-padding-bottom, 0px);
+}
+
+.shopify-block-trust-checkmark,
+.shopify-block-trust-countdown {
+  padding-left: var(--block-padding-left, 0px);
+  padding-right: var(--block-padding-right, 0px);
+  padding-top: var(--block-padding-top, 8px);
+  padding-bottom: var(--block-padding-bottom, 8px);
 }
 
 /* Custom spacing for page title and trust blocks to bring them closer */
@@ -362,19 +387,15 @@ shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.s
 .shopify-block-product-customizer {
   display: block;
   width: 100%;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
 }
 
 /* Nested sub-blocks inside galleries, accordions, and trust checkmarks should have 0 padding */
-.shopify-block-trust-checkmark,
-.shopify-block-trust-countdown,
 .shopify-block-accordion,
 .shopify-block-material-badge,
 .product-trust-checkmarks-list .shopify-block,
 .product-trust-checkmarks-list > * {
   display: block;
-  padding: 0 !important;
+  padding: 0;
 }
 
 /* Product Accordions Edge-to-Edge Alignment */
@@ -386,22 +407,22 @@ shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.s
 /* 1. Full-width row alignment (pull to page margin on mobile, standard page width on desktop) */
 .row-section--full-width .shopify-block-product-accordions {
   @media (max-width: 767px) {
-    margin-left: -1rem !important;
-    margin-right: -1rem !important;
-    width: calc(100% + 2rem) !important;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    width: calc(100% + 2rem);
   }
 }
 
 /* 2. Boxed row alignment (pull to card margin on both mobile and desktop) */
 .row-section:not(.row-section--full-width) .shopify-block-product-accordions {
-  margin-left: -1.5rem !important;
-  margin-right: -1.5rem !important;
-  width: calc(100% + 3rem) !important;
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+  width: calc(100% + 3rem);
 
   @media (min-width: 768px) {
-    margin-left: -3rem !important;
-    margin-right: -3rem !important;
-    width: calc(100% + 6rem) !important;
+    margin-left: -3rem;
+    margin-right: -3rem;
+    width: calc(100% + 6rem);
   }
 }
 

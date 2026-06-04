@@ -7,11 +7,11 @@
 {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 
 {%- style -%}
-  #shopify-block-{{ block.id }} {
-    padding-top: {{ block.settings.padding_top }}px !important;
-    padding-bottom: {{ block.settings.padding_bottom }}px !important;
-    padding-left: {{ block.settings.padding_sides }}px !important;
-    padding-right: {{ block.settings.padding_sides }}px !important;
+  #shopify-block-{{ block.id }}.shopify-block {
+    --block-padding-top: {{ block.settings.padding_top | default: 0 }}px;
+    --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
+    --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
+    --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
   }
 {%- endstyle -%}
 
@@ -135,7 +135,7 @@
   }
 
   .thumbnail-btn.border-primary {
-    border-color: var(--color-primary) !important;
+    border-color: var(--color-primary);
     opacity: 1;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -151,7 +151,7 @@
   }
 
   .video-thumbnail-overlay span {
-    font-size: 24px !important;
+    font-size: 24px;
   }
 
   .video-thumbnail-label {

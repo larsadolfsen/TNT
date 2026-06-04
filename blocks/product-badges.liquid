@@ -1,21 +1,21 @@
 {%- style -%}
-  #shopify-block-{{ block.id }} {
-    padding-top: {{ block.settings.padding_top }}px !important;
-    padding-bottom: {{ block.settings.padding_bottom }}px !important;
-    padding-left: {{ block.settings.padding_sides }}px !important;
-    padding-right: {{ block.settings.padding_sides }}px !important;
+  #shopify-block-{{ block.id }}.shopify-block {
+    --block-padding-top: {{ block.settings.padding_top | default: 0 }}px;
+    --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
+    --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
+    --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
   }
 
   /* Override standard block wrapper styles for badges nested inside this container */
   #shopify-block-{{ block.id }} .product-badges-container .shopify-block-badge {
-    padding: 0 !important;
-    display: inline-flex !important;
-    width: auto !important;
+    padding: 0;
+    display: inline-flex;
+    width: auto;
   }
 
   #shopify-block-{{ block.id }} .product-badges-container .shopify-block-badge > div {
-    width: auto !important;
-    display: inline-flex !important;
+    width: auto;
+    display: inline-flex;
   }
 {%- endstyle -%}
 

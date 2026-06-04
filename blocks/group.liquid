@@ -12,24 +12,24 @@
 {% enddoc %}
 
 {%- style -%}
-  #shopify-block-{{ block.id }} .group {
-    padding-top: {{ block.settings.padding_top }}px !important;
-    padding-bottom: {{ block.settings.padding_bottom }}px !important;
-    padding-left: {{ block.settings.padding_sides }}px !important;
-    padding-right: {{ block.settings.padding_sides }}px !important;
+  #shopify-block-{{ block.id }} > .group {
+    padding-top: {{ block.settings.padding_top | default: 0 }}px;
+    padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
+    padding-left: {{ block.settings.padding_sides | default: 0 }}px;
+    padding-right: {{ block.settings.padding_sides | default: 0 }}px;
   }
 
   {%- if block.settings.layout_direction == 'group--horizontal' and block.settings.align_left -%}
-    #shopify-block-{{ block.id }} .group--horizontal {
-      justify-content: flex-start !important;
-      gap: 8px !important;
+    #shopify-block-{{ block.id }} > .group--horizontal {
+      justify-content: flex-start;
+      gap: 8px;
     }
-    #shopify-block-{{ block.id }} .group--horizontal > * {
-      width: auto !important;
-      flex: 0 1 auto !important;
+    #shopify-block-{{ block.id }} > .group--horizontal > * {
+      width: auto;
+      flex: 0 1 auto;
     }
-    #shopify-block-{{ block.id }} .group--horizontal > * > * {
-      width: auto !important;
+    #shopify-block-{{ block.id }} > .group--horizontal > * > * {
+      width: auto;
     }
   {%- endif -%}
 {%- endstyle -%}

@@ -1,9 +1,9 @@
 {%- style -%}
-  #shopify-block-{{ block.id }} {
-    padding-top: {{ block.settings.padding_top }}px !important;
-    padding-bottom: {{ block.settings.padding_bottom }}px !important;
-    padding-left: {{ block.settings.padding_sides }}px !important;
-    padding-right: {{ block.settings.padding_sides }}px !important;
+  #shopify-block-{{ block.id }}.shopify-block {
+    --block-padding-top: {{ block.settings.padding_top | default: 0 }}px;
+    --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
+    --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
+    --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
   }
 
   #shopify-section-accordions-{{ block.id }} > *:first-child {
@@ -15,22 +15,22 @@
   }
 
   @media screen and (max-width: 767px) {
-    .row-section:not(.row-section--full-width) #shopify-block-{{ block.id }} {
-      margin-left: -2.5rem !important;
-      margin-right: -2.5rem !important;
-      width: calc(100% + 5rem) !important;
+    .row-section:not(.row-section--full-width) #shopify-block-{{ block.id }}.shopify-block {
+      margin-left: -2.5rem;
+      margin-right: -2.5rem;
+      width: calc(100% + 5rem);
     }
 
-    .row-section--full-width #shopify-block-{{ block.id }} {
-      margin-left: -1rem !important;
-      margin-right: -1rem !important;
-      width: calc(100% + 2rem) !important;
+    .row-section--full-width #shopify-block-{{ block.id }}.shopify-block {
+      margin-left: -1rem;
+      margin-right: -1rem;
+      width: calc(100% + 2rem);
     }
 
     #shopify-section-accordions-{{ block.id }} .accordion-trigger,
     #shopify-section-accordions-{{ block.id }} .accordion-content {
-      padding-left: 24px !important;
-      padding-right: 24px !important;
+      padding-left: 24px;
+      padding-right: 24px;
     }
   }
 {%- endstyle -%}
