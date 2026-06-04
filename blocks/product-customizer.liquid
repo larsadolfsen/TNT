@@ -15,20 +15,11 @@
   assign shape_rund = all_products[block.settings.rund_product]
   assign shape_oval = all_products[block.settings.oval_product]
 
-  assign firkantet_price_formatted = shape_firkantet.price | default: 0 | money
-  unless firkantet_price_formatted contains 'kr.'
-    assign firkantet_price_formatted = firkantet_price_formatted | replace: 'kr', 'kr.'
-  endunless
+  assign firkantet_price_formatted = shape_firkantet.price | default: 0 | money | replace: 'kr.', '' | replace: 'kr', '' | replace: 'Kr.', '' | replace: 'Kr', '' | strip | append: ' Kr.'
 
-  assign rund_price_formatted = shape_rund.price | default: 0 | money
-  unless rund_price_formatted contains 'kr.'
-    assign rund_price_formatted = rund_price_formatted | replace: 'kr', 'kr.'
-  endunless
+  assign rund_price_formatted = shape_rund.price | default: 0 | money | replace: 'kr.', '' | replace: 'kr', '' | replace: 'Kr.', '' | replace: 'Kr', '' | strip | append: ' Kr.'
 
-  assign oval_price_formatted = shape_oval.price | default: 0 | money
-  unless oval_price_formatted contains 'kr.'
-    assign oval_price_formatted = oval_price_formatted | replace: 'kr', 'kr.'
-  endunless
+  assign oval_price_formatted = shape_oval.price | default: 0 | money | replace: 'kr.', '' | replace: 'kr', '' | replace: 'Kr.', '' | replace: 'Kr', '' | strip | append: ' Kr.'
 
   # 1. Try to resolve the configured product from settings and verify it has SKU BTM001
   assign metervare_product = all_products[block.settings.metervare_product]
@@ -320,13 +311,13 @@
 
     const addToCartBtn = document.getElementById("btn-add-to-cart");
 
-    // Helper to format price in Danish format: "Dkr X,-" or with decimals
+    // Helper to format price in Danish format: "X,- Kr." or with decimals
     function formatDanishPrice(priceInKr) {
       const rounded = Math.round(priceInKr * 100) / 100;
       if (rounded % 1 === 0) {
-        return `Dkr ${rounded},-`;
+        return `${rounded},- Kr.`;
       } else {
-        return `Dkr ${rounded.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        return `${rounded.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kr.`;
       }
     }
 
@@ -430,7 +421,7 @@
           const totalClothPrice = pricingVariant.price * state.length * state.quantity;
           const totalClothAndShapePrice = totalClothPrice + shapePrice;
           
-          const formattedPrice = totalClothAndShapePrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
+          const formattedPrice = totalClothAndShapePrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Kr.";
           
           // Update price display on buy button
           const priceDisplay = document.getElementById("btn-price-display");
@@ -470,7 +461,7 @@
 
           const width = getVariantWidth(pricingVariant.title);
           if (calcMetervareLabel) {
-            calcMetervareLabel.textContent = `Metervare, (${width}x${state.length} cm)`;
+            calcMetervareLabel.textContent = `Metervare (${width}x${state.length} cm)`;
           }
           
           const singleClothPrice = pricingVariant.price * state.length;
@@ -515,7 +506,7 @@
               maximumFractionDigits: 2 
             });
             
-            lengthCalculation.textContent = `${formattedTotalLengthPrice} kr.`;
+            lengthCalculation.textContent = `${formattedTotalLengthPrice} Kr.`;
           }
 
           // Set global variable to resolve initial page load race condition

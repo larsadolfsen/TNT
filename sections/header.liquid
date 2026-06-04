@@ -141,7 +141,7 @@
     <div class="pt-6 border-t border-outline-variant space-y-4">
       <div class="flex justify-between items-center text-sm">
         <span class="text-on-surface-variant">Subtotal</span>
-        <span id="cart-subtotal" class="font-bold text-primary text-lg">Dkr 0,-</span>
+        <span id="cart-subtotal" class="font-bold text-primary text-lg">0,- Kr.</span>
       </div>
       <p class="text-[10px] text-on-surface-variant">Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr.</p>
       <div class="flex flex-col gap-2">
@@ -157,9 +157,9 @@
   function formatMoney(cents) {
     const kr = cents / 100;
     if (kr % 1 === 0) {
-      return 'Dkr ' + kr + ',-';
+      return kr + ',- Kr.';
     } else {
-      return 'Dkr ' + kr.toFixed(2).replace('.', ',') + '';
+      return kr.toFixed(2).replace('.', ',') + ' Kr.';
     }
   }
 
@@ -247,7 +247,7 @@
           <p class="text-sm font-semibold">Din indkøbskurv er tom.</p>
         </div>
       `;
-      cartSubtotal.innerText = "Dkr 0,-";
+      cartSubtotal.innerText = "0,- Kr.";
       return;
     }
 
@@ -296,7 +296,7 @@
         const widthSurchargeCents = parseInt(item.properties._width_surcharge || "0", 10);
         const unitPriceCents = basePriceCents + shapeSurchargeCents + widthSurchargeCents;
 
-        let shapeName = "Rektangulær dug";
+        let shapeName = "Firkantet dug";
         if (item.properties._shape === "rund") {
           shapeName = "Rund dug";
         } else if (item.properties._shape === "oval") {
@@ -307,12 +307,12 @@
         const length = item.properties._length || "";
         let variantText = "";
         if (item.variant_title && item.variant_title.toLowerCase() !== "default title") {
-          variantText = `, ${item.variant_title}`;
+          variantText = ` ${item.variant_title}`;
         } else {
-          variantText = `, (${width}x${length} cm)`;
+          variantText = ` (${width}x${length} cm)`;
         }
 
-        const shapeLine = shapeSurchargeCents > 0 ? `
+        const shapeLine = item.properties._shape ? `
             <div class="flex justify-between gap-2">
               <span>${shapeName}</span>
               <span class="text-primary font-medium flex-shrink-0">${formatMoney(shapeSurchargeCents)}</span>

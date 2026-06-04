@@ -28,7 +28,7 @@
               assign width_surcharge_cents = item.properties._width_surcharge | default: "0" | plus: 0
               assign unit_price_cents = base_price_cents | plus: shape_surcharge_cents | plus: width_surcharge_cents
               
-              assign shape_name = "Rektangulær dug"
+              assign shape_name = "Firkantet dug"
               if item.properties._shape == "rund"
                 assign shape_name = "Rund dug"
               elsif item.properties._shape == "oval"
@@ -42,14 +42,14 @@
                 <span>
                   {{- item.product.title -}}
                   {%- if item.variant.title != blank and item.variant.title != 'Default Title' -%}
-                    , {{ item.variant.title }}
+                    &nbsp;{{ item.variant.title }}
                   {%- else -%}
-                    , ({{ item.properties._width }}x{{ item.properties._length }} cm)
+                    &nbsp;({{ item.properties._width }}x{{ item.properties._length }} cm)
                   {%- endif -%}
                 </span>
                 <span class="text-primary font-medium flex-shrink-0">{{ base_price_cents | money }}</span>
               </div>
-              {%- if shape_surcharge_cents > 0 -%}
+              {%- if item.properties._shape != blank -%}
                 <div class="flex justify-between gap-2">
                   <span>{{ shape_name }}</span>
                   <span class="text-primary font-medium flex-shrink-0">{{ shape_surcharge_cents | money }}</span>
