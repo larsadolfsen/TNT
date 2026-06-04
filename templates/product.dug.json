@@ -436,6 +436,45 @@
           },
           "blocks": {}
         },
+        "group_GdAbPY": {
+          "type": "group",
+          "name": "t:general.column",
+          "settings": {
+            "sticky": false,
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "align_left": false,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {
+            "accordion_panel_EcURpR": {
+              "type": "accordion-panel",
+              "name": "Accordion Panel",
+              "settings": {
+                "title": "Hvordan rengør jeg en voksdug?",
+                "content": "<p><br/>Tør den af med en fugtig klud eller varmt vand med lidt opvaskemiddel. Den skal ikke vaskes i maskine.</p>",
+                "open_by_default": false
+              },
+              "blocks": {}
+            },
+            "accordion_panel_wUiPXP": {
+              "type": "accordion-panel",
+              "name": "Accordion Panel",
+              "settings": {
+                "title": "Hvordan undgår jeg folder i voksdugen?",
+                "content": "<p>Lad dugen akklimatisere et par dage, og opbevar den rullet på et paprør, når den ikke er i brug.st indhold her.</p>",
+                "open_by_default": true
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "accordion_panel_EcURpR",
+            "accordion_panel_wUiPXP"
+          ]
+        },
         "group_HkqQUa": {
           "type": "group",
           "name": "t:general.row",
@@ -449,26 +488,6 @@
             "padding_sides": 0
           },
           "blocks": {
-            "accordion_panel_9JHXgj": {
-              "type": "accordion-panel",
-              "name": "Accordion Panel",
-              "settings": {
-                "title": "Hvordan undgår jeg folder i voksdugen?",
-                "content": "<p>Lad dugen akklimatisere et par dage, og opbevar den rullet på et paprør, når den ikke er i brug.st indhold her.</p>",
-                "open_by_default": true
-              },
-              "blocks": {}
-            },
-            "accordion_panel_Tdcnze": {
-              "type": "accordion-panel",
-              "name": "Accordion Panel",
-              "settings": {
-                "title": "Hvordan rengør jeg en voksdug?",
-                "content": "<p><br/>Tør den af med en fugtig klud eller varmt vand med lidt opvaskemiddel. Den skal ikke vaskes i maskine.</p>",
-                "open_by_default": false
-              },
-              "blocks": {}
-            },
             "accordion_panel_7A4NTE": {
               "type": "accordion-panel",
               "name": "Accordion Panel",
@@ -511,8 +530,6 @@
             }
           },
           "block_order": [
-            "accordion_panel_9JHXgj",
-            "accordion_panel_Tdcnze",
             "accordion_panel_7A4NTE",
             "accordion_panel_daXQXc",
             "accordion_panel_RENQrT",
@@ -534,6 +551,7 @@
         "product_accordions_xFiWe3",
         "product_banner_text_ecegUE",
         "product_cross_sell_VAGeAJ",
+        "group_GdAbPY",
         "group_HkqQUa",
         "product_accordions_mJ9kkN"
       ],
