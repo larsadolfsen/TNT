@@ -15,7 +15,7 @@
         "page_title_BFEyAw": {
           "type": "page-title",
           "settings": {
-            "title_override": "{{ product.title }}",
+            "title_override": "{{ product.title }}{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}",
             "show_description": true,
             "padding_top": 0,
             "padding_bottom": 0,
