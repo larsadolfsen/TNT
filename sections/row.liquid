@@ -1,3 +1,10 @@
+{%- liquid
+  assign is_single_column = false
+  if section.settings.alignment != 'columns'
+    assign is_single_column = true
+  endif
+-%}
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
@@ -15,33 +22,44 @@
     }
   }
 
-  {%- if section.settings.disable_block_padding_vertical_mobile -%}
-    @media screen and (max-width: 767px) {
-      #shopify-section-{{ section.id }} .shopify-block {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-      }
+  {%- if is_single_column -%}
+    #shopify-section-{{ section.id }} .row-content--single {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: {{ section.settings.block_spacing }}px !important;
     }
-  {%- endif -%}
 
-  {%- if section.settings.disable_block_padding_horizontal_mobile -%}
-    @media screen and (max-width: 767px) {
-      #shopify-section-{{ section.id }} .shopify-block {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-      }
+    #shopify-section-{{ section.id }} .row-content--single > .shopify-block {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    #shopify-section-{{ section.id }} .row-content--left {
+      align-items: flex-start !important;
+      text-align: left !important;
+    }
+
+    #shopify-section-{{ section.id }} .row-content--center {
+      align-items: center !important;
+      text-align: center !important;
+    }
+
+    #shopify-section-{{ section.id }} .row-content--right {
+      align-items: flex-end !important;
+      text-align: right !important;
+    }
+
+    #shopify-section-{{ section.id }} .row-content--full {
+      align-items: stretch !important;
     }
   {%- endif -%}
 {%- endstyle -%}
 
 {%- capture bg_class -%}
   {%- case section.settings.background_color -%}
-    {%- when 'light' -%}
-      bg-background text-primary
-    {%- when 'dark' -%}
-      bg-background-dark text-white
-    {%- when 'shade' -%}
-      bg-background-shade text-primary
+    {%- when 'light' -%}bg-background text-primary
+    {%- when 'dark' -%}bg-background-dark text-white
+    {%- when 'shade' -%}bg-background-shade text-primary
   {%- endcase -%}
 {%- endcapture -%}
 
@@ -57,7 +75,7 @@
 
 <div class="{{ outer_class }}">
   <div class="{{ inner_class }}">
-    <div class="row-content{% if section.settings.disable_columns_layout %} row-content--no-columns{% endif %}">
+    <div class="row-content{% if is_single_column %} row-content--no-columns row-content--single row-content--{{ section.settings.alignment }}{% endif %}">
       {% content_for 'blocks' %}
     </div>
   </div>
@@ -68,50 +86,45 @@
   "name": "Row",
   "settings": [
     {
-      "type": "checkbox",
-      "id": "disable_columns_layout",
-      "label": "Deaktiver 2-kolonne layout på desktop",
-      "default": false
+      "type": "header",
+      "content": "Layout"
     },
     {
       "type": "select",
       "id": "background_color",
       "label": "Baggrundsfarve",
       "options": [
-        {
-          "value": "light",
-          "label": "Lys"
-        },
-        {
-          "value": "dark",
-          "label": "Mørk"
-        },
-        {
-          "value": "shade",
-          "label": "Grå / Tonet"
-        }
+        { "value": "light", "label": "Lys" },
+        { "value": "dark",  "label": "Mørk" },
+        { "value": "shade", "label": "Grå / Tonet" }
       ],
       "default": "light"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Justering",
+      "options": [
+        { "value": "columns", "label": "Kolonner" },
+        { "value": "full",    "label": "Fuld bredde" },
+        { "value": "left",    "label": "Venstre" },
+        { "value": "center",  "label": "Centreret" },
+        { "value": "right",   "label": "Højre" }
+      ],
+      "default": "columns"
     },
     {
       "type": "select",
       "id": "layout_style",
       "label": "Layoutbredde",
       "options": [
-        {
-          "value": "full_width_bg",
-          "label": "Fuld bredde"
-        },
-        {
-          "value": "boxed",
-          "label": "Boks (begrænset bredde)"
-        }
+        { "value": "full_width_bg", "label": "Fuld bredde" }
       ],
       "default": "full_width_bg"
     },
     {
       "type": "header",
-      "content": "Padding"
+      "content": "Afstand (Section Padding)"
     },
     {
       "type": "range",
@@ -121,7 +134,7 @@
       "step": 4,
       "unit": "px",
       "label": "Afstand i toppen",
-      "default": 48
+      "default": 12
     },
     {
       "type": "range",
@@ -131,7 +144,7 @@
       "step": 4,
       "unit": "px",
       "label": "Afstand i bunden",
-      "default": 48
+      "default": 12
     },
     {
       "type": "range",
@@ -144,30 +157,26 @@
       "default": 0
     },
     {
-      "type": "checkbox",
-      "id": "disable_block_padding_vertical_mobile",
-      "label": "Fjern 12px top/bund-afstand på blokke på mobil",
-      "default": false
+      "type": "header",
+      "content": "Blokafstand (kun for enkeltkolonne / single column)"
     },
     {
-      "type": "checkbox",
-      "id": "disable_block_padding_horizontal_mobile",
-      "label": "Fjern 16px sideafstand på blokke på mobil",
-      "default": false
+      "type": "range",
+      "id": "block_spacing",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand mellem blokke",
+      "default": 8
     }
   ],
   "blocks": [
-    {
-      "type": "@theme"
-    },
-    {
-      "type": "@app"
-    }
+    { "type": "@theme" },
+    { "type": "@app" }
   ],
   "presets": [
-    {
-      "name": "Row"
-    }
+    { "name": "Row" }
   ]
 }
 {% endschema %}
