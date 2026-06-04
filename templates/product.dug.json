@@ -44,7 +44,6 @@
       "settings": {
         "background_color": "light",
         "alignment": "columns",
-        "layout_style": "full_width_bg",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
@@ -108,7 +107,6 @@
       "settings": {
         "background_color": "light",
         "alignment": "columns",
-        "layout_style": "full_width_bg",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
@@ -315,7 +313,6 @@
       "settings": {
         "background_color": "light",
         "alignment": "columns",
-        "layout_style": "full_width_bg",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
@@ -355,7 +352,6 @@
       "settings": {
         "background_color": "shade",
         "alignment": "columns",
-        "layout_style": "full_width_bg",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
@@ -407,7 +403,36 @@
             "accordion_ECACmL"
           ]
         },
-        "product_banner_text_ecegUE": {
+        "product_cross_sell_VAGeAJ": {
+          "type": "product-cross-sell",
+          "settings": {
+            "cross_sell_1": "",
+            "cross_sell_2": "",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_accordions_xFiWe3",
+        "product_cross_sell_VAGeAJ"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "light",
+        "alignment": "columns",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 0,
+        "block_spacing": 8
+      }
+    },
+    "row_Rg3kFD": {
+      "type": "row",
+      "blocks": {
+        "product_banner_text_eaMntU": {
           "type": "product-banner-text",
           "settings": {
             "image": "{{ product.featured_image }}",
@@ -421,97 +446,33 @@
           },
           "blocks": {}
         },
-        "product_cross_sell_VAGeAJ": {
-          "type": "product-cross-sell",
+        "badge_UHNxFM": {
+          "type": "badge",
+          "name": "Badge",
           "settings": {
-            "cross_sell_1": "",
-            "cross_sell_2": "",
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "group_GdAbPY": {
-          "type": "group",
-          "name": "t:general.column",
-          "settings": {
-            "sticky": false,
-            "layout_direction": "group--vertical",
-            "alignment": "flex-start",
-            "align_left": false,
+            "text": "BESTSELLER",
+            "only_if_in_stock": false,
+            "alignment": "left",
+            "background_color": "#000000",
+            "text_color": "#ffffff",
             "padding_top": 0,
             "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {
-            "accordion_panel_EcURpR": {
-              "type": "accordion",
-              "name": "Accordion Panel",
-              "settings": {
-                "title": "Hvordan rengør jeg en voksdug?",
-                "content": "<p><br/>Tør den af med en fugtig klud eller varmt vand med lidt opvaskemiddel. Den skal ikke vaskes i maskine.</p>",
-                "open_by_default": false
-              },
-              "blocks": {}
-            },
-            "accordion_panel_wUiPXP": {
-              "type": "accordion",
-              "name": "Accordion Panel",
-              "settings": {
-                "title": "Hvordan undgår jeg folder i voksdugen?",
-                "content": "<p>Lad dugen akklimatisere et par dage, og opbevar den rullet på et paprør, når den ikke er i brug.st indhold her.</p>",
-                "open_by_default": true
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "accordion_panel_EcURpR",
-            "accordion_panel_wUiPXP"
-          ]
-        },
-        "group_HkqQUa": {
-          "type": "group",
-          "name": "t:general.row",
-          "settings": {
-            "sticky": false,
-            "layout_direction": "group--horizontal",
-            "alignment": "flex-start",
-            "align_left": false,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "product_accordions_mJ9kkN": {
-          "type": "product-accordions",
-          "name": "Product Accordions",
-          "settings": {
-            "padding_top": 12,
-            "padding_bottom": 12,
             "padding_sides": 0
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "product_accordions_xFiWe3",
-        "product_banner_text_ecegUE",
-        "product_cross_sell_VAGeAJ",
-        "group_GdAbPY",
-        "group_HkqQUa",
-        "product_accordions_mJ9kkN"
+        "product_banner_text_eaMntU",
+        "badge_UHNxFM"
       ],
       "name": "Row",
       "settings": {
         "background_color": "light",
-        "alignment": "columns",
-        "layout_style": "boxed",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_sides": 0,
+        "alignment": "left",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_sides": 16,
         "block_spacing": 8
       }
     },
@@ -565,11 +526,10 @@
         "accordion_panel_f9FFhh",
         "accordion_panel_3P7eLh"
       ],
-      "name": "Row",
+      "name": "FAQ",
       "settings": {
         "background_color": "light",
         "alignment": "left",
-        "layout_style": "full_width_bg",
         "padding_top": 48,
         "padding_bottom": 48,
         "padding_sides": 0,
@@ -583,6 +543,7 @@
     "product_content",
     "row_CQqaPe",
     "row_VY7RVT",
+    "row_Rg3kFD",
     "row_GqmzkT"
   ]
 }
