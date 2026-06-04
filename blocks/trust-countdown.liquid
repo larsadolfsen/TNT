@@ -29,7 +29,9 @@
   <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
   <span id="countdown-content-{{ block.id }}">
     {%- if block.settings.text_before_cutoff != blank -%}
-      {{ block.settings.text_before_cutoff | replace: '{cutoff}', '12.00' | replace: '{shipping_day}', 'i dag' }}
+      {%- assign cutoff_target = '{cutoff}' -%}
+      {%- assign shipping_day_target = '{shipping_day}' -%}
+      {{ block.settings.text_before_cutoff | replace: cutoff_target, '12.00' | replace: shipping_day_target, 'i dag' }}
     {%- else -%}
       {{ block.settings.text }} <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">12.00</span>{{ block.settings.suffix }}
     {%- endif -%}
