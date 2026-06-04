@@ -115,7 +115,7 @@
       "block_order": [
         "product_media_LUPhce"
       ],
-      "name": "Row",
+      "name": "Product image",
       "settings": {
         "background_color": "light",
         "alignment": "columns",
