@@ -91,7 +91,7 @@
       "name": "Badges",
       "settings": {
         "background_color": "light",
-        "alignment": "left",
+        "alignment": "right",
         "padding_top": 8,
         "padding_bottom": 0,
         "padding_sides": 24,
