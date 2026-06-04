@@ -465,77 +465,80 @@
             "padding_bottom": 12,
             "padding_sides": 0
           },
-          "blocks": {}
-        },
-        "accordion_panel_BxCe3n": {
-          "type": "accordion-panel",
-          "name": "Accordion Panel",
-          "settings": {
-            "title": "Kan en ny voksdug lugte?",
-            "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt og forsvinder typisk efter 1-2 uger</p>",
-            "open_by_default": false
+          "blocks": {
+            "accordion_panel_CgnXLJ": {
+              "type": "accordion-panel",
+              "name": "Accordion Panel",
+              "settings": {
+                "title": "Hvordan undgår jeg folder i voksdugen?",
+                "content": "<p>Lad dugen akklimatisere et par dage, og opbevar den rullet på et paprør, når den ikke er i brug.st indhold her.</p>",
+                "open_by_default": true
+              },
+              "blocks": {}
+            },
+            "accordion_panel_yLPnV7": {
+              "type": "accordion-panel",
+              "name": "Accordion Panel",
+              "settings": {
+                "title": "Hvordan rengør jeg en voksdug?",
+                "content": "<p><br/>Tør den af med en fugtig klud eller varmt vand med lidt opvaskemiddel. Den skal ikke vaskes i maskine.</p>",
+                "open_by_default": false
+              },
+              "blocks": {}
+            },
+            "accordion_panel_qagbQk": {
+              "type": "accordion-panel",
+              "name": "Accordion Panel",
+              "settings": {
+                "title": "Kan jeg lægge klar voksdug direkte på et træbord?",
+                "content": "<p>Ja, men hvis bordet er af træ, bør dugen tages af mindst én gang om ugen i nogle timer, så træet kan ånde. </p>",
+                "open_by_default": false
+              },
+              "blocks": {}
+            },
+            "accordion_panel_yy4PP4": {
+              "type": "accordion-panel",
+              "name": "Accordion Panel",
+              "settings": {
+                "title": "Er klar voksdug varmefast?",
+                "content": "<p>Nej. Brug altid bordskånere under varme tallerkner, gryder og fade. </p>",
+                "open_by_default": false
+              },
+              "blocks": {}
+            },
+            "accordion_panel_7MPHi4": {
+              "type": "accordion-panel",
+              "name": "Accordion Panel",
+              "settings": {
+                "title": "Kan en klar voksdug bruges oven på en stofdug?",
+                "content": "<p>Ja, den kan lægges oven på en stofdug for at beskytte mod spild, pletter og daglig brug.</p>",
+                "open_by_default": false
+              },
+              "blocks": {}
+            },
+            "accordion_panel_pCLQgX": {
+              "type": "accordion-panel",
+              "name": "Accordion Panel",
+              "settings": {
+                "title": "Kan en ny voksdug lugte?",
+                "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt og forsvinder typisk efter 1-2 uger</p>",
+                "open_by_default": false
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
-        },
-        "accordion_panel_gHHykm": {
-          "type": "accordion-panel",
-          "name": "Accordion Panel",
-          "settings": {
-            "title": "Hvordan undgår jeg folder i voksdugen?",
-            "content": "<p>Lad dugen akklimatisere et par dage, og opbevar den rullet på et paprør, når den ikke er i brug.st indhold her.</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
-        },
-        "accordion_panel_t3wBGq": {
-          "type": "accordion-panel",
-          "name": "Accordion Panel",
-          "settings": {
-            "title": "Er klar voksdug varmefast?",
-            "content": "<p>Nej. Brug altid bordskånere under varme tallerkner, gryder og fade. </p>",
-            "open_by_default": false
-          },
-          "blocks": {}
-        },
-        "accordion_panel_QKMMYW": {
-          "type": "accordion-panel",
-          "name": "Accordion Panel",
-          "settings": {
-            "title": "Kan jeg lægge klar voksdug direkte på et træbord?",
-            "content": "<p>Ja, men hvis bordet er af træ, bør dugen tages af mindst én gang om ugen i nogle timer, så træet kan ånde. </p>",
-            "open_by_default": false
-          },
-          "blocks": {}
-        },
-        "accordion_panel_KDcGqL": {
-          "type": "accordion-panel",
-          "name": "Accordion Panel",
-          "settings": {
-            "title": "Kan en klar voksdug bruges oven på en stofdug?",
-            "content": "<p>Ja, den kan lægges oven på en stofdug for at beskytte mod spild, pletter og daglig brug.</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
-        },
-        "accordion_panel_YRznnz": {
-          "type": "accordion-panel",
-          "name": "Accordion Panel",
-          "settings": {
-            "title": "Hvordan rengør jeg en voksdug?",
-            "content": "<p><br/>Tør den af med en fugtig klud eller varmt vand med lidt opvaskemiddel. Den skal ikke vaskes i maskine.</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
+          "block_order": [
+            "accordion_panel_CgnXLJ",
+            "accordion_panel_yLPnV7",
+            "accordion_panel_qagbQk",
+            "accordion_panel_yy4PP4",
+            "accordion_panel_7MPHi4",
+            "accordion_panel_pCLQgX"
+          ]
         }
       },
       "block_order": [
-        "product_accordions_CAKyaA",
-        "accordion_panel_BxCe3n",
-        "accordion_panel_gHHykm",
-        "accordion_panel_t3wBGq",
-        "accordion_panel_QKMMYW",
-        "accordion_panel_KDcGqL",
-        "accordion_panel_YRznnz"
+        "product_accordions_CAKyaA"
       ],
       "name": "Row",
       "settings": {
