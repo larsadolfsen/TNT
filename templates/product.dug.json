@@ -232,8 +232,8 @@
                 "countdown_4gXjVB": {
                   "type": "trust-countdown",
                   "settings": {
-                    "text": "",
-                    "suffix": ""
+                    "text": "Bestil inden",
+                    "suffix": "Så sender vi"
                   },
                   "blocks": {}
                 },
