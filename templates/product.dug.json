@@ -110,10 +110,10 @@
         "block_spacing": 8
       }
     },
-    "product_content": {
+    "row_j9gpQV": {
       "type": "row",
       "blocks": {
-        "product_media_CAximD": {
+        "product_media_LUPhce": {
           "type": "product-media",
           "settings": {
             "image_badge": "",
@@ -122,76 +122,17 @@
             "padding_sides": 0
           },
           "blocks": {}
-        },
-        "group_jbctmY": {
-          "type": "group",
-          "name": "Buy",
-          "settings": {
-            "sticky": false,
-            "layout_direction": "group--vertical",
-            "alignment": "flex-start",
-            "align_left": false,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {
-            "product_materials_dmN3Ub": {
-              "type": "product-materials",
-              "settings": {
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0,
-                "gap": 8
-              },
-              "blocks": {
-                "badge_qNRGJX": {
-                  "type": "material-badge",
-                  "settings": {
-                    "icon": "eco",
-                    "title": "100% Phthalatfri"
-                  },
-                  "blocks": {}
-                },
-                "material_badge_GqmRKH": {
-                  "type": "material-badge",
-                  "settings": {
-                    "icon": "local_shipping",
-                    "title": "Sendes på rulle"
-                  },
-                  "blocks": {}
-                },
-                "badge_NPwiJF": {
-                  "type": "material-badge",
-                  "settings": {
-                    "icon": "verified",
-                    "title": "Oeko-Tex 100"
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "badge_qNRGJX",
-                "material_badge_GqmRKH",
-                "badge_NPwiJF"
-              ]
-            }
-          },
-          "block_order": [
-            "product_materials_dmN3Ub"
-          ]
         }
       },
       "block_order": [
-        "product_media_CAximD",
-        "group_jbctmY"
+        "product_media_LUPhce"
       ],
-      "name": "Media",
+      "name": "Row",
       "settings": {
         "background_color": "light",
-        "alignment": "full",
-        "padding_top": 0,
-        "padding_bottom": 0,
+        "alignment": "columns",
+        "padding_top": 12,
+        "padding_bottom": 12,
         "padding_sides": 16,
         "block_spacing": 8
       }
@@ -279,6 +220,52 @@
         "trust_checkmark_kxYDhD",
         "trust_countdown_6aERmE",
         "trust_checkmark_chXifW"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "light",
+        "alignment": "columns",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_sides": 16,
+        "block_spacing": 8
+      }
+    },
+    "row_p6nNCG": {
+      "type": "row",
+      "blocks": {
+        "material_badge_rNa3gL": {
+          "type": "material-badge",
+          "name": "Material Badge",
+          "settings": {
+            "icon": "eco",
+            "title": "100% Phthalatfri"
+          },
+          "blocks": {}
+        },
+        "material_badge_Q7YUhx": {
+          "type": "material-badge",
+          "name": "Material Badge",
+          "settings": {
+            "icon": "eco",
+            "title": "100% Phthalatfri"
+          },
+          "blocks": {}
+        },
+        "material_badge_CJB9GW": {
+          "type": "material-badge",
+          "name": "Material Badge",
+          "settings": {
+            "icon": "eco",
+            "title": "100% Phthalatfri"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "material_badge_rNa3gL",
+        "material_badge_Q7YUhx",
+        "material_badge_CJB9GW"
       ],
       "name": "Row",
       "settings": {
@@ -492,8 +479,9 @@
   "order": [
     "row_VRkqnV",
     "row_UzrqP8",
-    "product_content",
+    "row_j9gpQV",
     "row_dF89D3",
+    "row_p6nNCG",
     "row_CQqaPe",
     "row_VY7RVT",
     "row_Rg3kFD",
