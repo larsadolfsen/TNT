@@ -435,29 +435,8 @@
             "padding_sides": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_accordions_xFiWe3",
-        "product_banner_text_ecegUE",
-        "product_cross_sell_VAGeAJ"
-      ],
-      "name": "Row",
-      "settings": {
-        "disable_columns_layout": false,
-        "background_color": "light",
-        "layout_style": "boxed",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_sides": 0,
-        "disable_block_padding_vertical_mobile": false,
-        "disable_block_padding_horizontal_mobile": false
-      }
-    },
-    "row_CwnDNG": {
-      "type": "row",
-      "blocks": {
-        "product_accordions_CAKyaA": {
+        },
+        "product_accordions_mJ9kkN": {
           "type": "product-accordions",
           "name": "Product Accordions",
           "settings": {
@@ -538,8 +517,25 @@
         }
       },
       "block_order": [
-        "product_accordions_CAKyaA"
+        "product_accordions_xFiWe3",
+        "product_banner_text_ecegUE",
+        "product_cross_sell_VAGeAJ",
+        "product_accordions_mJ9kkN"
       ],
+      "name": "Row",
+      "settings": {
+        "disable_columns_layout": false,
+        "background_color": "light",
+        "layout_style": "boxed",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 0,
+        "disable_block_padding_vertical_mobile": false,
+        "disable_block_padding_horizontal_mobile": false
+      }
+    },
+    "row_CwnDNG": {
+      "type": "row",
       "name": "Row",
       "settings": {
         "disable_columns_layout": false,
