@@ -165,7 +165,7 @@
               "type": "product-price",
               "settings": {
                 "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "Vi skærer din dug efter mål, så du kun betaler for det, du har brug for. Vi sender din dug på en rulle, så den er helt glat og klar til brug, når den ankommer.",
+                "price_subtext": "Vi skærer din dug og sender den på en rulle, så den er helt glat og klar til brug, når den ankommer.",
                 "padding_top": 0,
                 "padding_bottom": 0,
                 "padding_sides": 0
