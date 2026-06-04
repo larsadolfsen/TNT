@@ -168,6 +168,12 @@
       <div id="length-calculation" class="text-xs text-on-surface-variant mt-1.5 text-center w-full"></div>
     </div>
 
+    <!-- Validation Warning Message -->
+    <div id="customizer-warning" class="hidden w-full p-3 bg-rose-50 border border-rose-200 rounded-2xl text-xs text-rose-600 flex items-center gap-2 mt-1">
+      <span class="material-symbols-outlined text-rose-500 text-sm">warning</span>
+      <span id="customizer-warning-text"></span>
+    </div>
+
     <!-- Step 3: Quantity Selector -->
     <div class="flex flex-col gap-2 mt-2 w-full">
       <div class="flex items-center gap-3">
@@ -267,6 +273,7 @@
     // 1. Config variables from Liquid settings
     const minLength = {{ min_length | json }};
     const stepSize = {{ step_size | json }};
+    const maxWidthLimit = {{ product_width_limit | json }};
     const metervareVariantId = {% if metervare_variant %}"gid://shopify/ProductVariant/{{ metervare_variant.id }}"{% else %}null{% endif %};
     const metervareVariantIntId = {% if metervare_variant %}{{ metervare_variant.id }}{% else %}null{% endif %};
     
@@ -333,9 +340,88 @@
           activeVariantId = parseInt(variantInput.value);
         }
         
-        // Find the pricing variant (the one that is not the 'Tilpasset' variant)
-        const pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-        if (pricingVariant) {
+        // Find the selected variant or fall back to the first non-tilpasset pricing variant
+        let pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0);
+        if (!pricingVariant) {
+          pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+        }
+
+        // Cap length (diameter) if shape is 'rund'
+        if (selectedShape === 'rund' && state.length > maxWidthLimit) {
+          state.length = maxWidthLimit;
+          if (displayLength) {
+            displayLength.textContent = state.length + " cm";
+          }
+        }
+
+        // Enable or disable the length stepper plus button based on shape and limit
+        if (btnLengthPlus) {
+          const maxAllowed = (selectedShape === 'rund') ? maxWidthLimit : 9999;
+          if (state.length >= maxAllowed) {
+            btnLengthPlus.disabled = true;
+            btnLengthPlus.classList.add("opacity-30", "pointer-events-none");
+          } else {
+            btnLengthPlus.disabled = false;
+            btnLengthPlus.classList.remove("opacity-30", "pointer-events-none");
+          }
+        }
+
+        // Enable or disable the length stepper minus button based on minLength
+        if (btnLengthMinus) {
+          if (state.length <= minLength) {
+            btnLengthMinus.disabled = true;
+            btnLengthMinus.classList.add("opacity-30", "pointer-events-none");
+          } else {
+            btnLengthMinus.disabled = false;
+            btnLengthMinus.classList.remove("opacity-30", "pointer-events-none");
+          }
+        }
+
+        // Width validation for firkantet / oval
+        const width = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        let isTooWide = false;
+        if ((selectedShape === 'firkantet' || selectedShape === 'oval') && width > maxWidthLimit) {
+          isTooWide = true;
+        }
+
+        // Warning and buy button state handling
+        const warningEl = document.getElementById("customizer-warning");
+        const warningTextEl = document.getElementById("customizer-warning-text");
+        const btnTextSpan = addToCartBtn ? addToCartBtn.querySelector('span:not(#btn-price-display)') : null;
+        const btnPriceSpan = document.getElementById("btn-price-display");
+
+        if (isTooWide) {
+          if (warningEl && warningTextEl) {
+            warningTextEl.textContent = `Dugens bredde (${width} cm) må ikke være bredere end ${maxWidthLimit} cm.`;
+            warningEl.classList.remove("hidden");
+          }
+          if (addToCartBtn) {
+            addToCartBtn.disabled = true;
+            addToCartBtn.classList.add("bg-slate-200", "text-slate-400", "cursor-not-allowed");
+            addToCartBtn.classList.remove("bg-brand-yellow", "hover:brightness-95");
+            if (btnTextSpan) {
+              btnTextSpan.textContent = `Bredde overskrider maks bredde (${maxWidthLimit} cm)`;
+              if (btnPriceSpan) btnPriceSpan.style.display = "none";
+            } else {
+              addToCartBtn.textContent = `Bredde overskrider maks bredde (${maxWidthLimit} cm)`;
+            }
+          }
+        } else {
+          if (warningEl) {
+            warningEl.classList.add("hidden");
+          }
+          if (addToCartBtn) {
+            addToCartBtn.disabled = false;
+            addToCartBtn.classList.remove("bg-slate-200", "text-slate-400", "cursor-not-allowed");
+            addToCartBtn.classList.add("bg-brand-yellow", "hover:brightness-95");
+            if (btnTextSpan) {
+              btnTextSpan.textContent = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv";
+              if (btnPriceSpan) btnPriceSpan.style.display = "";
+            }
+          }
+        }
+
+        if (pricingVariant && !isTooWide) {
           // Calculate shape price
           const shapeInfo = shapeData[selectedShape];
           const shapePrice = (shapeInfo ? shapeInfo.price : 0) * state.quantity;
@@ -461,9 +547,16 @@
 
     if (btnLengthPlus && displayLength) {
       btnLengthPlus.addEventListener("click", () => {
-        state.length += stepSize;
-        displayLength.textContent = state.length + " cm";
-        updateUI();
+        const maxAllowed = (selectedShape === 'rund') ? maxWidthLimit : 9999;
+        if (state.length + stepSize <= maxAllowed) {
+          state.length += stepSize;
+          displayLength.textContent = state.length + " cm";
+          updateUI();
+        } else if (state.length < maxAllowed) {
+          state.length = maxAllowed;
+          displayLength.textContent = state.length + " cm";
+          updateUI();
+        }
       });
     }
 
