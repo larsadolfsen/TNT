@@ -34,31 +34,28 @@
     #shopify-section-{{ section.id }} .row-content--single {
       display: flex !important;
       flex-direction: column !important;
+      align-items: stretch !important;
+      width: 100% !important;
       gap: {{ section.settings.block_spacing }}px !important;
     }
 
     #shopify-section-{{ section.id }} .row-content--single > .shopify-block {
       padding-top: 0 !important;
       padding-bottom: 0 !important;
+      width: 100% !important;
+      display: block !important;
     }
 
     #shopify-section-{{ section.id }} .row-content--left {
-      align-items: flex-start !important;
       text-align: left !important;
     }
 
     #shopify-section-{{ section.id }} .row-content--center {
-      align-items: center !important;
       text-align: center !important;
     }
 
     #shopify-section-{{ section.id }} .row-content--right {
-      align-items: flex-end !important;
       text-align: right !important;
-    }
-
-    #shopify-section-{{ section.id }} .row-content--full {
-      align-items: stretch !important;
     }
   {%- endif -%}
 {%- endstyle -%}
