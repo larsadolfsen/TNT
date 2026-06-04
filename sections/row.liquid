@@ -69,7 +69,8 @@
 {%- endcapture -%}
 
 {%- liquid
-  if section.settings.layout_style == 'full_width_bg'
+  assign layout_style = section.settings.layout_style | default: 'full_width_bg'
+  if layout_style == 'full_width_bg'
     assign outer_class = 'row-section w-full ' | append: bg_class | append: ' section-' | append: section.id | append: '-padding row-section--full-width'
     assign inner_class = 'max-w-[var(--page-width)] mx-auto section-' | append: section.id | append: '-inner-padding'
   else
@@ -118,15 +119,7 @@
       ],
       "default": "columns"
     },
-    {
-      "type": "select",
-      "id": "layout_style",
-      "label": "Layoutbredde",
-      "options": [
-        { "value": "full_width_bg", "label": "Fuld bredde" }
-      ],
-      "default": "full_width_bg"
-    },
+
     {
       "type": "header",
       "content": "Padding"
