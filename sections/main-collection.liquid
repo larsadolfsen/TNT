@@ -540,9 +540,9 @@
       id: 1,
       title: "Pure Shield Gennemsigtig Voksdug 2,0 mm",
       price: 199,
-      price_formatted: "199,- Kr.",
+      price_formatted: "199,00 Kr.",
       originalPrice: 249,
-      originalPrice_formatted: "249,- Kr.",
+      originalPrice_formatted: "249,00 Kr.",
       image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80",
       thickness: "2,0 mm",
       width: "140 cm",
@@ -557,7 +557,7 @@
       id: 2,
       title: "Soft Transparens Gennemsigtig Voksdug 0,8 mm",
       price: 99,
-      price_formatted: "99,- Kr.",
+      price_formatted: "99,00 Kr.",
       originalPrice: null,
       originalPrice_formatted: null,
       image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80",
@@ -574,9 +574,9 @@
       id: 3,
       title: "Cirkel Shield Rund Klar Voksdug 2,0 mm",
       price: 249,
-      price_formatted: "249,- Kr.",
+      price_formatted: "249,00 Kr.",
       originalPrice: 299,
-      originalPrice_formatted: "299,- Kr.",
+      originalPrice_formatted: "299,00 Kr.",
       image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80",
       thickness: "2,0 mm",
       width: "100 cm",
@@ -591,7 +591,7 @@
       id: 4,
       title: "Organic Raw Dækkeserviet i Recycled Læder",
       price: 49,
-      price_formatted: "49,- Kr.",
+      price_formatted: "49,00 Kr.",
       originalPrice: null,
       originalPrice_formatted: null,
       image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80",
@@ -608,7 +608,7 @@
       id: 5,
       title: "Klar Voksdug Smal Rulle 2,0 mm",
       price: 159,
-      price_formatted: "159,- Kr.",
+      price_formatted: "159,00 Kr.",
       originalPrice: null,
       originalPrice_formatted: null,
       image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80",
@@ -625,9 +625,9 @@
       id: 6,
       title: "Medium Protector Gennemsigtig Voksdug 1,2 mm",
       price: 129,
-      price_formatted: "129,- Kr.",
+      price_formatted: "129,00 Kr.",
       originalPrice: 159,
-      originalPrice_formatted: "159,- Kr.",
+      originalPrice_formatted: "159,00 Kr.",
       image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80",
       thickness: "1,2 mm",
       width: "90 cm",
@@ -642,7 +642,7 @@
       id: 7,
       title: "Soft Circle Rund Klar Voksdug 0,8 mm",
       price: 119,
-      price_formatted: "119,- Kr.",
+      price_formatted: "119,00 Kr.",
       originalPrice: null,
       originalPrice_formatted: null,
       image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80",
@@ -659,7 +659,7 @@
       id: 8,
       title: "Bred Bordbeskyttelse Klar Voksdug 1,2 mm",
       price: 139,
-      price_formatted: "139,- Kr.",
+      price_formatted: "139,00 Kr.",
       originalPrice: null,
       originalPrice_formatted: null,
       image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80",
@@ -846,7 +846,7 @@
     items.forEach(product => {
       let originalPriceHtml = "";
       if (product.originalPrice && product.originalPrice > product.price) {
-        const displayOrig = product.originalPrice_formatted ? product.originalPrice_formatted : `${product.originalPrice},- Kr.`;
+        const displayOrig = product.originalPrice_formatted ? product.originalPrice_formatted : `${product.originalPrice.toFixed(2).replace('.', ',')} Kr.`;
         originalPriceHtml = `<span class="text-[8px] sm:text-[9px] text-on-surface-variant line-through leading-none">${displayOrig}</span>`;
       }
 
@@ -858,7 +858,7 @@
         badgeHtml = `<span class="absolute top-2 left-2 bg-secondary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">Spar ${savings}%</span>`;
       }
 
-      const displayPrice = product.price_formatted ? product.price_formatted : `${product.price},- Kr.`;
+      const displayPrice = product.price_formatted ? product.price_formatted : `${product.price.toFixed(2).replace('.', ',')} Kr.`;
 
       // Determine if it is a Metervare product (priced per meter)
       const isMetervare = product.type === "Metervare";

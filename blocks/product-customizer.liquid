@@ -311,14 +311,9 @@
 
     const addToCartBtn = document.getElementById("btn-add-to-cart");
 
-    // Helper to format price in Danish format: "X,- Kr." or with decimals
+    // Helper to format price in Danish format: "X,00 Kr."
     function formatDanishPrice(priceInKr) {
-      const rounded = Math.round(priceInKr * 100) / 100;
-      if (rounded % 1 === 0) {
-        return `${rounded},- Kr.`;
-      } else {
-        return `${rounded.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kr.`;
-      }
+      return priceInKr.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Kr.";
     }
 
     // Recalculate price display
