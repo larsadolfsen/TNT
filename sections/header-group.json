@@ -37,7 +37,10 @@
     "breadcrumbs_7wx37P": {
       "type": "breadcrumbs",
       "name": "Brødkrummer",
-      "settings": {}
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     }
   },
   "order": [
