@@ -300,7 +300,7 @@
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
-        "padding_sides": 0,
+        "padding_sides": 24,
         "block_spacing": 8
       }
     },
