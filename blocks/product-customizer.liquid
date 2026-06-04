@@ -8,6 +8,8 @@
 {%- liquid
   assign min_length = block.settings.min_length | default: 50
   assign step_size = block.settings.step_size | default: 10
+  assign product_width_limit = product.metafields.custom.bredde.value | default: product.metafields.custom.bredde | default: 140
+
 
   assign shape_firkantet = all_products[block.settings.firkantet_product]
   assign shape_rund = all_products[block.settings.rund_product]
@@ -311,131 +313,135 @@
 
     const addToCartBtn = document.getElementById("btn-add-to-cart");
 
+    // Helper to format price in Danish format: "Dkr X,-" or with decimals
+    function formatDanishPrice(priceInKr) {
+      const rounded = Math.round(priceInKr * 100) / 100;
+      if (rounded % 1 === 0) {
+        return `Dkr ${rounded},-`;
+      } else {
+        return `Dkr ${rounded.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      }
+    }
+
     // Recalculate price display
     function updateUI() {
-      // Find currently selected variant ID on the page (variant picker sets this)
-      let activeVariantId = null;
-      const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-      if (variantInput) {
-        activeVariantId = parseInt(variantInput.value);
-      }
-      
-      // Find the pricing variant (the one that is not the 'Tilpasset' variant)
-      const pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-      if (pricingVariant) {
-        // Calculate shape price
-        const shapeInfo = shapeData[selectedShape];
-        const shapePrice = (shapeInfo ? shapeInfo.price : 0) * state.quantity;
-
-        // Calculate price: (price per cm) * length * quantity
-        const totalClothPrice = pricingVariant.price * state.length * state.quantity;
-        const totalClothAndShapePrice = totalClothPrice + shapePrice;
-        
-        const formattedPrice = totalClothAndShapePrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
-        
-        // Update price display on buy button
-        const priceDisplay = document.getElementById("btn-price-display");
-        if (priceDisplay) {
-          priceDisplay.textContent = formattedPrice;
-        } else if (addToCartBtn) {
-          const prefix = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv – ";
-          addToCartBtn.textContent = prefix + formattedPrice;
-        }
-
-        // Update the summary section if it exists
-        const summaryPris = document.getElementById("summary-pris");
-        if (summaryPris) {
-          summaryPris.textContent = "Pris: " + formattedPrice;
-        }
-
-        // Helper to format price in Danish format: "Dkr X,-" or with decimals
-        function formatDanishPrice(priceInKr) {
-          const rounded = Math.round(priceInKr * 100) / 100;
-          if (rounded % 1 === 0) {
-            return `Dkr ${rounded},-`;
-          } else {
-            return `Dkr ${rounded.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-          }
-        }
-
-        // Update the calculation table elements if they exist
-        const calcTitle = document.getElementById("calc-title");
-        const calcMetervareLabel = document.getElementById("calc-metervare-label");
-        const calcMetervarePrice = document.getElementById("calc-metervare-price");
-        const calcShapeRow = document.getElementById("calc-shape-row");
-        const calcShapeLabel = document.getElementById("calc-shape-label");
-        const calcShapePrice = document.getElementById("calc-shape-price");
-        const calcTotalPrice = document.getElementById("calc-total-price");
-
-        if (calcTitle) {
-          const rawTitle = pricingVariant.title === "Default Title" ? productTitle : pricingVariant.title;
-          const parts = rawTitle.split(/\s*-\s*/);
-          let displayTitle = parts[0];
-          if (parts.length >= 3) {
-            displayTitle = `${parts[0]} - ${parts[1]} - ${parts[2]}`;
-          } else if (parts.length === 2) {
-            displayTitle = `${parts[0]} - ${parts[1]}`;
-          }
-          calcTitle.textContent = displayTitle;
-        }
-
-        const width = getVariantWidth(pricingVariant.title);
-        if (calcMetervareLabel) {
-          calcMetervareLabel.textContent = `Metervare, (${width}x${state.length} cm)`;
+      try {
+        // Find currently selected variant ID on the page (variant picker sets this)
+        let activeVariantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) {
+          activeVariantId = parseInt(variantInput.value);
         }
         
-        const singleClothPrice = pricingVariant.price * state.length;
-        if (calcMetervarePrice) {
-          calcMetervarePrice.textContent = formatDanishPrice(singleClothPrice);
-        }
+        // Find the pricing variant (the one that is not the 'Tilpasset' variant)
+        const pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+        if (pricingVariant) {
+          // Calculate shape price
+          const shapeInfo = shapeData[selectedShape];
+          const shapePrice = (shapeInfo ? shapeInfo.price : 0) * state.quantity;
 
-        if (calcShapeRow) {
-          if (shapeInfo) {
-            calcShapeRow.style.display = "flex";
-            const shapeLabels = { firkantet: 'Firkantet dug', rund: 'Rund dug', oval: 'Oval dug' };
-            if (calcShapeLabel) {
-              calcShapeLabel.textContent = shapeLabels[selectedShape] || `${selectedShape} dug`;
-            }
-            if (calcShapePrice) {
-              calcShapePrice.textContent = formatDanishPrice(shapeInfo.price);
-            }
-          } else {
-            calcShapeRow.style.display = "none";
-          }
-        }
-
-        if (calcTotalPrice) {
-          const singleShapePrice = shapeInfo ? shapeInfo.price : 0;
-          const singleTotalPrice = singleClothPrice + singleShapePrice;
-          calcTotalPrice.textContent = formatDanishPrice(singleTotalPrice);
-        }
-
-        // Update length calculation display
-        const lengthCalculation = document.getElementById("length-calculation");
-        if (lengthCalculation) {
-          const lengthInMeters = state.length / 100;
-          const pricePerMeter = pricingVariant.price * 100;
-          const totalLengthPrice = pricingVariant.price * state.length;
+          // Calculate price: (price per cm) * length * quantity
+          const totalClothPrice = pricingVariant.price * state.length * state.quantity;
+          const totalClothAndShapePrice = totalClothPrice + shapePrice;
           
-          const formattedPricePerMeter = pricePerMeter.toLocaleString("da-DK", { 
-            minimumFractionDigits: 2, 
-            maximumFractionDigits: 2 
-          });
-          const formattedTotalLengthPrice = totalLengthPrice.toLocaleString("da-DK", { 
-            minimumFractionDigits: 2, 
-            maximumFractionDigits: 2 
-          });
+          const formattedPrice = totalClothAndShapePrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
           
-          lengthCalculation.textContent = `${formattedTotalLengthPrice} kr.`;
+          // Update price display on buy button
+          const priceDisplay = document.getElementById("btn-price-display");
+          if (priceDisplay) {
+            priceDisplay.textContent = formattedPrice;
+          } else if (addToCartBtn) {
+            const prefix = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv – ";
+            addToCartBtn.textContent = prefix + formattedPrice;
+          }
+
+          // Update the summary section if it exists
+          const summaryPris = document.getElementById("summary-pris");
+          if (summaryPris) {
+            summaryPris.textContent = "Pris: " + formattedPrice;
+          }
+
+          // Update the calculation table elements if they exist
+          const calcTitle = document.getElementById("calc-title");
+          const calcMetervareLabel = document.getElementById("calc-metervare-label");
+          const calcMetervarePrice = document.getElementById("calc-metervare-price");
+          const calcShapeRow = document.getElementById("calc-shape-row");
+          const calcShapeLabel = document.getElementById("calc-shape-label");
+          const calcShapePrice = document.getElementById("calc-shape-price");
+          const calcTotalPrice = document.getElementById("calc-total-price");
+
+          if (calcTitle) {
+            const rawTitle = pricingVariant.title === "Default Title" ? productTitle : pricingVariant.title;
+            const parts = rawTitle.split(/\s*-\s*/);
+            let displayTitle = parts[0];
+            if (parts.length >= 3) {
+              displayTitle = `${parts[0]} - ${parts[1]} - ${parts[2]}`;
+            } else if (parts.length === 2) {
+              displayTitle = `${parts[0]} - ${parts[1]}`;
+            }
+            calcTitle.textContent = displayTitle;
+          }
+
+          const width = getVariantWidth(pricingVariant.title);
+          if (calcMetervareLabel) {
+            calcMetervareLabel.textContent = `Metervare, (${width}x${state.length} cm)`;
+          }
+          
+          const singleClothPrice = pricingVariant.price * state.length;
+          if (calcMetervarePrice) {
+            calcMetervarePrice.textContent = formatDanishPrice(singleClothPrice);
+          }
+
+          if (calcShapeRow) {
+            if (shapeInfo) {
+              calcShapeRow.style.display = "flex";
+              const shapeLabels = { firkantet: 'Firkantet dug', rund: 'Rund dug', oval: 'Oval dug' };
+              if (calcShapeLabel) {
+                calcShapeLabel.textContent = shapeLabels[selectedShape] || `${selectedShape} dug`;
+              }
+              if (calcShapePrice) {
+                calcShapePrice.textContent = formatDanishPrice(shapeInfo.price);
+              }
+            } else {
+              calcShapeRow.style.display = "none";
+            }
+          }
+
+          if (calcTotalPrice) {
+            const singleShapePrice = shapeInfo ? shapeInfo.price : 0;
+            const singleTotalPrice = singleClothPrice + singleShapePrice;
+            calcTotalPrice.textContent = formatDanishPrice(singleTotalPrice);
+          }
+
+          // Update length calculation display
+          const lengthCalculation = document.getElementById("length-calculation");
+          if (lengthCalculation) {
+            const lengthInMeters = state.length / 100;
+            const pricePerMeter = pricingVariant.price * 100;
+            const totalLengthPrice = pricingVariant.price * state.length;
+            
+            const formattedPricePerMeter = pricePerMeter.toLocaleString("da-DK", { 
+              minimumFractionDigits: 2, 
+              maximumFractionDigits: 2 
+            });
+            const formattedTotalLengthPrice = totalLengthPrice.toLocaleString("da-DK", { 
+              minimumFractionDigits: 2, 
+              maximumFractionDigits: 2 
+            });
+            
+            lengthCalculation.textContent = `${formattedTotalLengthPrice} kr.`;
+          }
+
+          // Set global variable to resolve initial page load race condition
+          window.currentPageProductPrice = totalClothAndShapePrice;
+
+          // Dispatch custom event to notify other scripts about product price update
+          document.dispatchEvent(new CustomEvent("product-price-updated", {
+            detail: { price: totalClothAndShapePrice }
+          }));
         }
-
-        // Set global variable to resolve initial page load race condition
-        window.currentPageProductPrice = totalClothAndShapePrice;
-
-        // Dispatch custom event to notify other scripts about product price update
-        document.dispatchEvent(new CustomEvent("product-price-updated", {
-          detail: { price: totalClothAndShapePrice }
-        }));
+      } catch (err) {
+        console.error("Error in updateUI:", err);
       }
     }
 
