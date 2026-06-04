@@ -457,6 +457,16 @@
     "row_CwnDNG": {
       "type": "row",
       "blocks": {
+        "accordion_panel_QKMMYW": {
+          "type": "accordion-panel",
+          "name": "Accordion Panel",
+          "settings": {
+            "title": "Kan jeg lægge klar voksdug direkte på et træbord?",
+            "content": "<p>Ja, men hvis bordet er af træ, bør dugen tages af mindst én gang om ugen i nogle timer, så træet kan ånde. </p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
         "accordion_panel_KDcGqL": {
           "type": "accordion-panel",
           "name": "Accordion Panel",
@@ -479,6 +489,7 @@
         }
       },
       "block_order": [
+        "accordion_panel_QKMMYW",
         "accordion_panel_KDcGqL",
         "accordion_panel_YRznnz"
       ],
