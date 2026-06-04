@@ -136,103 +136,6 @@
             "padding_sides": 0
           },
           "blocks": {
-            "product_price_XNeEn4": {
-              "type": "product-price",
-              "settings": {
-                "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "Vi skærer din dug og sender den på en rulle, så den er helt glat og klar til brug, når den ankommer.",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_urgency_73fwVj": {
-              "type": "product-urgency",
-              "settings": {
-                "show_urgency": true,
-                "urgency_text": "Kun få på lager – bestil snart",
-                "hide_under_limit": 5,
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_customizer_6ahfJi": {
-              "type": "product-customizer",
-              "settings": {
-                "metervare_product": "firkantet-dug",
-                "firkantet_product": "firkantet-dug-1",
-                "rund_product": "afrunding",
-                "oval_product": "oval-dug",
-                "step_size": 10,
-                "min_length": 50,
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_buy_buttons_jHXRAz": {
-              "type": "product-buy-buttons",
-              "settings": {
-                "text_before_price": "Læg i kurv",
-                "padding_top": 12,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_shipping_progress_QWXqtB": {
-              "type": "product-shipping-progress",
-              "settings": {
-                "free_shipping_message": "Du er kun [beløb] fra fri fragt",
-                "free_shipping_success_message": "Du har opnået fri fragt!",
-                "hide_everything_except_text": true,
-                "padding_top": 8,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_trust_checkmarks_y8UfaW": {
-              "type": "product-trust-checkmarks",
-              "settings": {
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {
-                "countdown_4gXjVB": {
-                  "type": "trust-countdown",
-                  "settings": {
-                    "text": "Bestil inden",
-                    "suffix": "Så sender vi"
-                  },
-                  "blocks": {}
-                },
-                "checkmark_7inAb8": {
-                  "type": "trust-checkmark",
-                  "settings": {
-                    "text": "Vælg mellem GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
-                  },
-                  "blocks": {}
-                },
-                "checkmark_XTeX48": {
-                  "type": "trust-checkmark",
-                  "settings": {
-                    "text": "30 dages fuld returret på tilpassede duge."
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "countdown_4gXjVB",
-                "checkmark_7inAb8",
-                "checkmark_XTeX48"
-              ]
-            },
             "product_materials_dmN3Ub": {
               "type": "product-materials",
               "settings": {
@@ -250,6 +153,14 @@
                   },
                   "blocks": {}
                 },
+                "material_badge_GqmRKH": {
+                  "type": "material-badge",
+                  "settings": {
+                    "icon": "local_shipping",
+                    "title": "Sendes på rulle"
+                  },
+                  "blocks": {}
+                },
                 "badge_NPwiJF": {
                   "type": "material-badge",
                   "settings": {
@@ -257,30 +168,16 @@
                     "title": "Oeko-Tex 100"
                   },
                   "blocks": {}
-                },
-                "badge_QGPn7b": {
-                  "type": "material-badge",
-                  "settings": {
-                    "icon": "local_shipping",
-                    "title": "Sendes på rulle"
-                  },
-                  "blocks": {}
                 }
               },
               "block_order": [
                 "badge_qNRGJX",
-                "badge_NPwiJF",
-                "badge_QGPn7b"
+                "material_badge_GqmRKH",
+                "badge_NPwiJF"
               ]
             }
           },
           "block_order": [
-            "product_price_XNeEn4",
-            "product_urgency_73fwVj",
-            "product_customizer_6ahfJi",
-            "product_buy_buttons_jHXRAz",
-            "product_shipping_progress_QWXqtB",
-            "product_trust_checkmarks_y8UfaW",
             "product_materials_dmN3Ub"
           ]
         }
@@ -289,11 +186,106 @@
         "product_media_CAximD",
         "group_jbctmY"
       ],
+      "name": "Media",
       "settings": {
         "background_color": "light",
         "alignment": "full",
         "padding_top": 0,
         "padding_bottom": 0,
+        "padding_sides": 16,
+        "block_spacing": 8
+      }
+    },
+    "row_dF89D3": {
+      "type": "row",
+      "blocks": {
+        "product_price_dGeEHb": {
+          "type": "product-price",
+          "name": "Product Price",
+          "settings": {
+            "price_suffix": "pr. meter inkl. moms",
+            "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger.",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "product_customizer_fVqVK6": {
+          "type": "product-customizer",
+          "settings": {
+            "metervare_product": "firkantet-dug",
+            "firkantet_product": "firkantet-dug-1",
+            "rund_product": "afrunding",
+            "oval_product": "oval-dug",
+            "step_size": 10,
+            "min_length": 50,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "product_buy_buttons_886FGA": {
+          "type": "product-buy-buttons",
+          "settings": {
+            "text_before_price": "Læg i kurv",
+            "padding_top": 12,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "product_shipping_progress_LNK79f": {
+          "type": "product-shipping-progress",
+          "settings": {
+            "free_shipping_message": "Du er kun [beløb] fra fri fragt",
+            "free_shipping_success_message": "Du har opnået fri fragt!",
+            "hide_everything_except_text": true,
+            "padding_top": 8,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "trust_checkmark_kxYDhD": {
+          "type": "trust-checkmark",
+          "settings": {
+            "text": "Vælg mellem GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+          },
+          "blocks": {}
+        },
+        "trust_countdown_6aERmE": {
+          "type": "trust-countdown",
+          "settings": {
+            "text": "Bestil inden",
+            "suffix": "Så sender vi"
+          },
+          "blocks": {}
+        },
+        "trust_checkmark_chXifW": {
+          "type": "trust-checkmark",
+          "settings": {
+            "text": "30 dages fuld returret på tilpassede duge."
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_price_dGeEHb",
+        "product_customizer_fVqVK6",
+        "product_buy_buttons_886FGA",
+        "product_shipping_progress_LNK79f",
+        "trust_checkmark_kxYDhD",
+        "trust_countdown_6aERmE",
+        "trust_checkmark_chXifW"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "light",
+        "alignment": "columns",
+        "padding_top": 12,
+        "padding_bottom": 12,
         "padding_sides": 16,
         "block_spacing": 8
       }
@@ -327,7 +319,7 @@
       "block_order": [
         "product_testimonial_gzGpa4"
       ],
-      "name": "Row",
+      "name": "Reviews",
       "settings": {
         "background_color": "shade",
         "alignment": "columns",
@@ -383,7 +375,7 @@
         "accordion_6WF8D8",
         "product_accordions_xFiWe3"
       ],
-      "name": "Row",
+      "name": "Productspecifications",
       "settings": {
         "background_color": "light",
         "alignment": "columns",
@@ -426,7 +418,7 @@
         "product_cross_sell_fm46Qc",
         "product_banner_text_eaMntU"
       ],
-      "name": "Row",
+      "name": "Mersalg",
       "settings": {
         "background_color": "light",
         "alignment": "left",
@@ -501,6 +493,7 @@
     "row_VRkqnV",
     "row_UzrqP8",
     "product_content",
+    "row_dF89D3",
     "row_CQqaPe",
     "row_VY7RVT",
     "row_Rg3kFD",
