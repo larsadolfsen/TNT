@@ -13,6 +13,21 @@
   assign shape_rund = all_products[block.settings.rund_product]
   assign shape_oval = all_products[block.settings.oval_product]
 
+  assign firkantet_price_formatted = shape_firkantet.price | default: 0 | money
+  unless firkantet_price_formatted contains 'kr.'
+    assign firkantet_price_formatted = firkantet_price_formatted | replace: 'kr', 'kr.'
+  endunless
+
+  assign rund_price_formatted = shape_rund.price | default: 0 | money
+  unless rund_price_formatted contains 'kr.'
+    assign rund_price_formatted = rund_price_formatted | replace: 'kr', 'kr.'
+  endunless
+
+  assign oval_price_formatted = shape_oval.price | default: 0 | money
+  unless oval_price_formatted contains 'kr.'
+    assign oval_price_formatted = oval_price_formatted | replace: 'kr', 'kr.'
+  endunless
+
   # 1. Try to resolve the configured product from settings and verify it has SKU BTM001
   assign metervare_product = all_products[block.settings.metervare_product]
   assign metervare_variant = nil
@@ -92,7 +107,7 @@
           </svg>
           <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Firkantet</span>
         </button>
-        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ shape_firkantet.price | default: 0 | money }}</span>
+        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ firkantet_price_formatted }}</span>
       </div>
 
       <!-- Rund dug -->
@@ -105,7 +120,7 @@
           </svg>
           <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Rund</span>
         </button>
-        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ shape_rund.price | default: 0 | money }}</span>
+        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ rund_price_formatted }}</span>
       </div>
 
       <!-- Oval dug -->
@@ -118,7 +133,7 @@
           </svg>
           <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Oval</span>
         </button>
-        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ shape_oval.price | default: 0 | money }}</span>
+        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ oval_price_formatted }}</span>
       </div>
 
     </div>
@@ -200,17 +215,17 @@
     "firkantet": {
       "id": {{ shape_firkantet.first_available_variant.id | default: shape_firkantet.variants.first.id | json }},
       "price": {{ shape_firkantet.price | default: 0 | divided_by: 100.0 }},
-      "price_formatted": {{ shape_firkantet.price | default: 0 | money | json }}
+      "price_formatted": {{ firkantet_price_formatted | json }}
     },
     "rund": {
       "id": {{ shape_rund.first_available_variant.id | default: shape_rund.variants.first.id | json }},
       "price": {{ shape_rund.price | default: 0 | divided_by: 100.0 }},
-      "price_formatted": {{ shape_rund.price | default: 0 | money | json }}
+      "price_formatted": {{ rund_price_formatted | json }}
     },
     "oval": {
       "id": {{ shape_oval.first_available_variant.id | default: shape_oval.variants.first.id | json }},
       "price": {{ shape_oval.price | default: 0 | divided_by: 100.0 }},
-      "price_formatted": {{ shape_oval.price | default: 0 | money | json }}
+      "price_formatted": {{ oval_price_formatted | json }}
     }
   }
 </script>
