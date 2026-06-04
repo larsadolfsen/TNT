@@ -369,6 +369,16 @@
     "row_VY7RVT": {
       "type": "row",
       "blocks": {
+        "accordion_panel_RVYTiM": {
+          "type": "accordion-panel",
+          "name": "Accordion Panel",
+          "settings": {
+            "title": "Kan en ny voksdug lugte?",
+            "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt og forsvinder typisk efter 1-2 uger</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
         "product_accordions_xFiWe3": {
           "type": "product-accordions",
           "settings": {
@@ -438,6 +448,7 @@
         }
       },
       "block_order": [
+        "accordion_panel_RVYTiM",
         "product_accordions_xFiWe3",
         "product_banner_text_ecegUE",
         "product_cross_sell_VAGeAJ"
