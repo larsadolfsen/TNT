@@ -34,7 +34,8 @@
               elsif item.properties._shape == "oval"
                 assign shape_name = "Oval dug"
               endif
-            -%}
+            {%- assign customized_title = item.properties._metervare_title | default: item.product.title -%}
+            <p class="text-xs font-semibold text-primary truncate mb-1.5" title="{{ customized_title }}">{{ customized_title }}</p>
             <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal max-w-sm mt-1">
               <div class="flex justify-between gap-2">
                 <span>

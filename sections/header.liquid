@@ -326,17 +326,22 @@
             </div>
         ` : '';
 
+        const customProductTitle = (item.properties && item.properties._metervare_title) ? item.properties._metervare_title : item.product_title;
+
         detailsHtml = `
-          <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal">
-            <div class="flex justify-between gap-2">
-              <span class="font-sans" style="font-family: ui-sans-serif, system-ui, sans-serif;">${item.product_title}${variantText}</span>
-              <span class="text-primary font-medium flex-shrink-0">${formatMoney(basePriceCents)}</span>
-            </div>
-            ${shapeLine}
-            ${widthLine}
-            <div class="flex justify-between border-t border-outline-variant/60 pt-1 mt-1">
-              <span>Pris pr. stk.</span>
-              <span class="flex-shrink-0">${formatMoney(unitPriceCents)}</span>
+          <div>
+            <h4 class="font-sans text-xs font-semibold text-primary mb-1.5" style="font-family: ui-sans-serif, system-ui, sans-serif; white-space: normal; overflow: visible;" title="${customProductTitle}">${customProductTitle}</h4>
+            <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal">
+              <div class="flex justify-between gap-2">
+                <span class="font-sans" style="font-family: ui-sans-serif, system-ui, sans-serif;">${item.product_title}${variantText}</span>
+                <span class="text-primary font-medium flex-shrink-0">${formatMoney(basePriceCents)}</span>
+              </div>
+              ${shapeLine}
+              ${widthLine}
+              <div class="flex justify-between border-t border-outline-variant/60 pt-1 mt-1">
+                <span>Pris pr. stk.</span>
+                <span class="flex-shrink-0">${formatMoney(unitPriceCents)}</span>
+              </div>
             </div>
           </div>
         `;
