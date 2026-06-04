@@ -524,7 +524,7 @@
           "settings": {
             "title": "Kan jeg lægge klar voksdug direkte på et træbord?",
             "content": "<p>Ja, men hvis bordet er af træ, bør dugen tages af mindst én gang om ugen i nogle timer, så træet kan ånde. </p>",
-            "open_by_default": false
+            "open_by_default": true
           },
           "blocks": {}
         },
