@@ -566,6 +566,20 @@
         "disable_block_padding_vertical_mobile": false,
         "disable_block_padding_horizontal_mobile": false
       }
+    },
+    "row_GqmzkT": {
+      "type": "row",
+      "name": "Row",
+      "settings": {
+        "disable_columns_layout": false,
+        "background_color": "light",
+        "layout_style": "full_width_bg",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "padding_sides": 0,
+        "disable_block_padding_vertical_mobile": false,
+        "disable_block_padding_horizontal_mobile": false
+      }
     }
   },
   "order": [
@@ -573,6 +587,7 @@
     "row_UzrqP8",
     "product_content",
     "row_CQqaPe",
-    "row_VY7RVT"
+    "row_VY7RVT",
+    "row_GqmzkT"
   ]
 }
