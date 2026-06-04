@@ -42,14 +42,13 @@
       ],
       "name": "Row",
       "settings": {
-        "disable_columns_layout": false,
         "background_color": "light",
+        "alignment": "columns",
         "layout_style": "full_width_bg",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
-        "disable_block_padding_vertical_mobile": false,
-        "disable_block_padding_horizontal_mobile": false
+        "block_spacing": 8
       }
     },
     "row_UzrqP8": {
@@ -107,14 +106,13 @@
       ],
       "name": "Row",
       "settings": {
-        "disable_columns_layout": false,
         "background_color": "light",
+        "alignment": "columns",
         "layout_style": "full_width_bg",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
-        "disable_block_padding_vertical_mobile": false,
-        "disable_block_padding_horizontal_mobile": false
+        "block_spacing": 8
       }
     },
     "product_content": {
@@ -315,14 +313,13 @@
         "group_jbctmY"
       ],
       "settings": {
-        "disable_columns_layout": false,
         "background_color": "light",
+        "alignment": "columns",
         "layout_style": "full_width_bg",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
-        "disable_block_padding_vertical_mobile": false,
-        "disable_block_padding_horizontal_mobile": false
+        "block_spacing": 8
       }
     },
     "row_CQqaPe": {
@@ -356,14 +353,13 @@
       ],
       "name": "Row",
       "settings": {
-        "disable_columns_layout": false,
         "background_color": "shade",
+        "alignment": "columns",
         "layout_style": "full_width_bg",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
-        "disable_block_padding_vertical_mobile": false,
-        "disable_block_padding_horizontal_mobile": false
+        "block_spacing": 8
       }
     },
     "row_VY7RVT": {
@@ -487,54 +483,7 @@
             "padding_bottom": 0,
             "padding_sides": 0
           },
-          "blocks": {
-            "accordion_panel_7A4NTE": {
-              "type": "accordion-panel",
-              "name": "Accordion Panel",
-              "settings": {
-                "title": "Kan jeg lægge klar voksdug direkte på et træbord?",
-                "content": "<p>Ja, men hvis bordet er af træ, bør dugen tages af mindst én gang om ugen i nogle timer, så træet kan ånde. </p>",
-                "open_by_default": false
-              },
-              "blocks": {}
-            },
-            "accordion_panel_daXQXc": {
-              "type": "accordion-panel",
-              "name": "Accordion Panel",
-              "settings": {
-                "title": "Er klar voksdug varmefast?",
-                "content": "<p>Nej. Brug altid bordskånere under varme tallerkner, gryder og fade. </p>",
-                "open_by_default": false
-              },
-              "blocks": {}
-            },
-            "accordion_panel_RENQrT": {
-              "type": "accordion-panel",
-              "name": "Accordion Panel",
-              "settings": {
-                "title": "Kan en klar voksdug bruges oven på en stofdug?",
-                "content": "<p>Ja, den kan lægges oven på en stofdug for at beskytte mod spild, pletter og daglig brug.</p>",
-                "open_by_default": false
-              },
-              "blocks": {}
-            },
-            "accordion_panel_LzLNmQ": {
-              "type": "accordion-panel",
-              "name": "Accordion Panel",
-              "settings": {
-                "title": "Kan en ny voksdug lugte?",
-                "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt og forsvinder typisk efter 1-2 uger</p>",
-                "open_by_default": false
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "accordion_panel_7A4NTE",
-            "accordion_panel_daXQXc",
-            "accordion_panel_RENQrT",
-            "accordion_panel_LzLNmQ"
-          ]
+          "blocks": {}
         },
         "product_accordions_mJ9kkN": {
           "type": "product-accordions",
@@ -557,28 +506,74 @@
       ],
       "name": "Row",
       "settings": {
-        "disable_columns_layout": false,
         "background_color": "light",
+        "alignment": "columns",
         "layout_style": "boxed",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
-        "disable_block_padding_vertical_mobile": false,
-        "disable_block_padding_horizontal_mobile": false
+        "block_spacing": 8
       }
     },
     "row_GqmzkT": {
       "type": "row",
+      "blocks": {
+        "accordion_panel_Matyga": {
+          "type": "accordion-panel",
+          "name": "Accordion Panel",
+          "settings": {
+            "title": "Kan jeg lægge klar voksdug direkte på et træbord?",
+            "content": "<p>Ja, men hvis bordet er af træ, bør dugen tages af mindst én gang om ugen i nogle timer, så træet kan ånde. </p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
+        "accordion_panel_HD73KJ": {
+          "type": "accordion-panel",
+          "name": "Accordion Panel",
+          "settings": {
+            "title": "Er klar voksdug varmefast?",
+            "content": "<p>Nej. Brug altid bordskånere under varme tallerkner, gryder og fade. </p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
+        "accordion_panel_f9FFhh": {
+          "type": "accordion-panel",
+          "name": "Accordion Panel",
+          "settings": {
+            "title": "Kan en klar voksdug bruges oven på en stofdug?",
+            "content": "<p>Ja, den kan lægges oven på en stofdug for at beskytte mod spild, pletter og daglig brug.</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
+        "accordion_panel_3P7eLh": {
+          "type": "accordion-panel",
+          "name": "Accordion Panel",
+          "settings": {
+            "title": "Kan en ny voksdug lugte?",
+            "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt og forsvinder typisk efter 1-2 uger</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "accordion_panel_Matyga",
+        "accordion_panel_HD73KJ",
+        "accordion_panel_f9FFhh",
+        "accordion_panel_3P7eLh"
+      ],
       "name": "Row",
       "settings": {
-        "disable_columns_layout": false,
         "background_color": "light",
+        "alignment": "left",
         "layout_style": "full_width_bg",
         "padding_top": 48,
         "padding_bottom": 48,
         "padding_sides": 0,
-        "disable_block_padding_vertical_mobile": false,
-        "disable_block_padding_horizontal_mobile": false
+        "block_spacing": 8
       }
     }
   },
