@@ -369,16 +369,6 @@
     "row_VY7RVT": {
       "type": "row",
       "blocks": {
-        "accordion_panel_RVYTiM": {
-          "type": "accordion-panel",
-          "name": "Accordion Panel",
-          "settings": {
-            "title": "Kan en ny voksdug lugte?",
-            "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt og forsvinder typisk efter 1-2 uger</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
-        },
         "product_accordions_xFiWe3": {
           "type": "product-accordions",
           "settings": {
@@ -448,7 +438,6 @@
         }
       },
       "block_order": [
-        "accordion_panel_RVYTiM",
         "product_accordions_xFiWe3",
         "product_banner_text_ecegUE",
         "product_cross_sell_VAGeAJ"
@@ -468,6 +457,26 @@
     "row_CwnDNG": {
       "type": "row",
       "blocks": {
+        "product_accordions_CAKyaA": {
+          "type": "product-accordions",
+          "name": "Product Accordions",
+          "settings": {
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "accordion_panel_BxCe3n": {
+          "type": "accordion-panel",
+          "name": "Accordion Panel",
+          "settings": {
+            "title": "Kan en ny voksdug lugte?",
+            "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt og forsvinder typisk efter 1-2 uger</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
         "accordion_panel_gHHykm": {
           "type": "accordion-panel",
           "name": "Accordion Panel",
@@ -520,6 +529,8 @@
         }
       },
       "block_order": [
+        "product_accordions_CAKyaA",
+        "accordion_panel_BxCe3n",
         "accordion_panel_gHHykm",
         "accordion_panel_t3wBGq",
         "accordion_panel_QKMMYW",
