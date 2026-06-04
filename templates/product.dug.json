@@ -82,23 +82,11 @@
             "padding_sides": 4
           },
           "blocks": {}
-        },
-        "product_materials_TzDY9r": {
-          "type": "product-materials",
-          "name": "Materialer & Badges",
-          "settings": {
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 16,
-            "gap": 8
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "badge_yNtXfc",
-        "badge_dkTTa8",
-        "product_materials_TzDY9r"
+        "badge_dkTTa8"
       ],
       "name": "Row",
       "settings": {
