@@ -19,7 +19,7 @@
             "show_description": false,
             "padding_top": 0,
             "padding_bottom": 0,
-            "padding_sides": 16
+            "padding_sides": 0
           },
           "blocks": {}
         },
@@ -31,7 +31,7 @@
             "badge_text": "300+ købt den seneste måned",
             "padding_top": 0,
             "padding_bottom": 0,
-            "padding_sides": 16
+            "padding_sides": 0
           },
           "blocks": {}
         }
@@ -91,7 +91,7 @@
       "name": "Badges",
       "settings": {
         "background_color": "light",
-        "alignment": "right",
+        "alignment": "left",
         "padding_top": 8,
         "padding_bottom": 0,
         "padding_sides": 24,
@@ -134,7 +134,7 @@
           "settings": {
             "price_suffix": "pr. meter inkl. moms",
             "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger.",
-            "padding_top": 12,
+            "padding_top": 0,
             "padding_bottom": 12,
             "padding_sides": 0
           },
