@@ -457,6 +457,16 @@
     "row_CwnDNG": {
       "type": "row",
       "blocks": {
+        "accordion_panel_t3wBGq": {
+          "type": "accordion-panel",
+          "name": "Accordion Panel",
+          "settings": {
+            "title": "Er klar voksdug varmefast?",
+            "content": "<p>Nej. Brug altid bordskånere under varme tallerkner, gryder og fade. </p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
         "accordion_panel_QKMMYW": {
           "type": "accordion-panel",
           "name": "Accordion Panel",
@@ -489,6 +499,7 @@
         }
       },
       "block_order": [
+        "accordion_panel_t3wBGq",
         "accordion_panel_QKMMYW",
         "accordion_panel_KDcGqL",
         "accordion_panel_YRznnz"
