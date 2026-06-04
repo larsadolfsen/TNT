@@ -353,7 +353,7 @@
       "name": "Productspecifications",
       "settings": {
         "background_color": "light",
-        "alignment": "columns",
+        "alignment": "full",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
