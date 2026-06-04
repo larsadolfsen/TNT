@@ -1,4 +1,4 @@
-// extensions/cart-transform/node_modules/@shopify/shopify_function/run.ts
+// node_modules/@shopify/shopify_function/run.ts
 function run_default(userfunction) {
   try {
     ShopifyFunction;
@@ -12,7 +12,7 @@ function run_default(userfunction) {
   ShopifyFunction.writeOutput(output_obj);
 }
 
-// extensions/cart-transform/src/run.js
+// src/run.js
 function run(input) {
   const operations = [];
   console.log(`[CartTransform] Started. Total lines in cart: ${input.cart.lines.length}`);
@@ -32,9 +32,10 @@ function run(input) {
     const widthVal = line._width?.value;
     const metervareVariantId = line._metervare_variant_id?.value;
     const pricePerCmVal = line._price_per_cm?.value;
+    const shapeSurchargeVal = line._shape_surcharge?.value;
     const imageVal = line._image?.value;
     const customTitleVal = line._metervare_title?.value;
-    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}", image="${imageVal}", customTitle="${customTitleVal}"`);
+    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}", shapeSurcharge="${shapeSurchargeVal}", image="${imageVal}", customTitle="${customTitleVal}"`);
     let length = lengthVal ? parseInt(lengthVal, 10) : 0;
     if (length <= 0) {
       console.log(`[CartTransform] Line ${line.id} skipped: length <= 0 (${length})`);
@@ -44,6 +45,7 @@ function run(input) {
       console.log(`[CartTransform] Line ${line.id} skipped: Missing _metervare_variant_id attribute`);
       continue;
     }
+    const shapeSurcharge = shapeSurchargeVal ? parseFloat(shapeSurchargeVal) / 100 : 0;
     const expandedItems = [];
     const componentItem = {
       merchandiseId: metervareVariantId,
@@ -52,14 +54,18 @@ function run(input) {
     if (pricePerCmVal) {
       const pricePerCm = parseFloat(pricePerCmVal);
       if (!isNaN(pricePerCm) && pricePerCm >= 0) {
+        let adjustedPricePerCm = pricePerCm;
+        if (length > 0 && shapeSurcharge > 0) {
+          adjustedPricePerCm += shapeSurcharge / length;
+        }
         componentItem.price = {
           adjustment: {
             fixedPricePerUnit: {
-              amount: pricePerCm.toFixed(2)
+              amount: adjustedPricePerCm.toFixed(4)
             }
           }
         };
-        console.log(`[CartTransform] Set unit price for BTM001 component to: ${pricePerCm.toFixed(2)} kr.`);
+        console.log(`[CartTransform] Set unit price for BTM001 component to: ${adjustedPricePerCm.toFixed(4)} kr (includes distributed shape surcharge of ${shapeSurcharge} kr).`);
       }
     }
     expandedItems.push(componentItem);
