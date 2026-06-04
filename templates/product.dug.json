@@ -361,6 +361,33 @@
     "row_VY7RVT": {
       "type": "row",
       "blocks": {
+        "accordion_NzD7JY": {
+          "type": "accordion",
+          "settings": {
+            "title": "Produktspecifikationer",
+            "content": "<p><strong>Form: </strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}<strong><br/>Certificeringer: </strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}<br/><strong>Kemi:</strong> {{ closest.product.metafields.custom.kemi.value }}<strong><br/>Bredde:  </strong>{{ closest.product.metafields.custom.bredde_cm | metafield_text }} cm<br/><strong>Tykkelse:</strong> {{ closest.product.metafields.custom.tykkelse.value }} mm</p><p></p><p></p><p></p>",
+            "open_by_default": true
+          },
+          "blocks": {}
+        },
+        "accordion_6kXXUF": {
+          "type": "accordion",
+          "settings": {
+            "title": "Om brandet",
+            "content": "<p>Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
+        "accordion_6WF8D8": {
+          "type": "accordion",
+          "settings": {
+            "title": "Vedligeholdelse",
+            "content": "<p><strong>Daglig rengøring:</strong> Tør blot overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
         "product_accordions_xFiWe3": {
           "type": "product-accordions",
           "settings": {
@@ -368,56 +395,14 @@
             "padding_bottom": 0,
             "padding_sides": 0
           },
-          "blocks": {
-            "accordion_Bqa6TC": {
-              "type": "accordion",
-              "settings": {
-                "title": "Produktspecifikationer",
-                "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>",
-                "open_by_default": true
-              },
-              "blocks": {}
-            },
-            "accordion_QJ83Ua": {
-              "type": "accordion",
-              "settings": {
-                "title": "Om brandet",
-                "content": "<p>Textil &amp; Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
-                "open_by_default": false
-              },
-              "blocks": {}
-            },
-            "accordion_ECACmL": {
-              "type": "accordion",
-              "settings": {
-                "title": "Vedligeholdelse",
-                "content": "<p><strong>Daglig rengøring:</strong> Tør blot overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>",
-                "open_by_default": false
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "accordion_Bqa6TC",
-            "accordion_QJ83Ua",
-            "accordion_ECACmL"
-          ]
-        },
-        "product_cross_sell_VAGeAJ": {
-          "type": "product-cross-sell",
-          "settings": {
-            "cross_sell_1": "",
-            "cross_sell_2": "",
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
           "blocks": {}
         }
       },
       "block_order": [
-        "product_accordions_xFiWe3",
-        "product_cross_sell_VAGeAJ"
+        "accordion_NzD7JY",
+        "accordion_6kXXUF",
+        "accordion_6WF8D8",
+        "product_accordions_xFiWe3"
       ],
       "name": "Row",
       "settings": {
@@ -432,6 +417,17 @@
     "row_Rg3kFD": {
       "type": "row",
       "blocks": {
+        "product_cross_sell_fm46Qc": {
+          "type": "product-cross-sell",
+          "settings": {
+            "cross_sell_1": "",
+            "cross_sell_2": "",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "product_banner_text_eaMntU": {
           "type": "product-banner-text",
           "settings": {
@@ -445,26 +441,11 @@
             "padding_sides": 0
           },
           "blocks": {}
-        },
-        "badge_UHNxFM": {
-          "type": "badge",
-          "name": "Badge",
-          "settings": {
-            "text": "BESTSELLER",
-            "only_if_in_stock": false,
-            "alignment": "left",
-            "background_color": "#000000",
-            "text_color": "#ffffff",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "product_banner_text_eaMntU",
-        "badge_UHNxFM"
+        "product_cross_sell_fm46Qc",
+        "product_banner_text_eaMntU"
       ],
       "name": "Row",
       "settings": {
