@@ -235,7 +235,6 @@ h1, h2, h3, h4, h5, h6 {
     align-self: start;
   }
 
-  /* Full-width elements below the two-column grid */
   .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-cross-sell,
   .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-cross-sell),
   .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-cross-sell),
@@ -246,6 +245,17 @@ h1, h2, h3, h4, h5, h6 {
   .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-testimonial),
   .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-testimonial) {
     grid-column: 1 / -1;
+  }
+
+  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-cross-sell:not(:first-child),
+  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-cross-sell):not(:first-child),
+  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-cross-sell):not(:first-child),
+  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-banner-text:not(:first-child),
+  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-banner-text):not(:first-child),
+  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-banner-text):not(:first-child),
+  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-testimonial:not(:first-child),
+  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-testimonial):not(:first-child),
+  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-testimonial):not(:first-child) {
     margin-top: 1.5rem;
   }
 
@@ -324,8 +334,9 @@ html, body {
   }
 }
 
-/* Standard padding on all blocks: 16px left/right, 12px top/bottom */
-.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions):not(.shopify-block-trust-checkmark):not(.shopify-block-trust-countdown):not(.shopify-block-product-trust-checkmarks):not(.shopify-block-accordion) {
+.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions):not(.shopify-block-trust-checkmark):not(.shopify-block-trust-countdown):not(.shopify-block-product-trust-checkmarks):not(.shopify-block-accordion),
+shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions):not(.shopify-block-trust-checkmark):not(.shopify-block-trust-countdown):not(.shopify-block-product-trust-checkmarks):not(.shopify-block-accordion),
+[class*="shopify-block-"]:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions):not(.shopify-block-trust-checkmark):not(.shopify-block-trust-countdown):not(.shopify-block-product-trust-checkmarks):not(.shopify-block-accordion) {
   display: block;
   padding-left: 16px;
   padding-right: 16px;

@@ -311,7 +311,7 @@
           "type": "accordion",
           "settings": {
             "title": "Produktspecifikationer",
-            "content": "<p><strong>Form: </strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}<strong><br/>Certificeringer: </strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}<br/><strong>Kemi:</strong> {{ closest.product.metafields.custom.kemi.value }}<strong><br/>Bredde:  </strong>{{ closest.product.metafields.custom.bredde_cm | metafield_text }} cm<br/><strong>Tykkelse:</strong> {{ closest.product.metafields.custom.tykkelse.value }} mm</p><p></p><p></p><p></p>",
+            "content": "<p><strong>Form: </strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}<strong><br/>Certificeringer: </strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}<br/><strong>Kemi:</strong> {{ closest.product.metafields.custom.kemi.value }}<strong><br/>Bredde:  </strong>{{ closest.product.metafields.custom.bredde_cm | metafield_text }} cm<br/><strong>Tykkelse:</strong> {{ closest.product.metafields.custom.tykkelse.value }} mm</p>",
             "open_by_default": true
           },
           "blocks": {}
