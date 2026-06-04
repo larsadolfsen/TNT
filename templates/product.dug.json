@@ -176,38 +176,13 @@
             "padding_sides": 0
           },
           "blocks": {}
-        },
-        "trust_checkmark_kxYDhD": {
-          "type": "trust-checkmark",
-          "settings": {
-            "text": "Vælg mellem GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
-          },
-          "blocks": {}
-        },
-        "trust_countdown_6aERmE": {
-          "type": "trust-countdown",
-          "settings": {
-            "text": "Bestil inden",
-            "suffix": "Så sender vi"
-          },
-          "blocks": {}
-        },
-        "trust_checkmark_chXifW": {
-          "type": "trust-checkmark",
-          "settings": {
-            "text": "30 dages fuld returret på tilpassede duge."
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "product_price_dGeEHb",
         "product_customizer_fVqVK6",
         "product_buy_buttons_886FGA",
-        "product_shipping_progress_LNK79f",
-        "trust_checkmark_kxYDhD",
-        "trust_countdown_6aERmE",
-        "trust_checkmark_chXifW"
+        "product_shipping_progress_LNK79f"
       ],
       "name": "Buy",
       "settings": {
@@ -216,6 +191,47 @@
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 16,
+        "block_spacing": 8
+      }
+    },
+    "row_ewadkg": {
+      "type": "row",
+      "blocks": {
+        "trust_checkmark_kJfi7B": {
+          "type": "trust-checkmark",
+          "settings": {
+            "text": "Vælg mellem GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+          },
+          "blocks": {}
+        },
+        "trust_countdown_ezWzWE": {
+          "type": "trust-countdown",
+          "settings": {
+            "text": "Bestil inden",
+            "suffix": "Så sender vi"
+          },
+          "blocks": {}
+        },
+        "trust_checkmark_BCQRPN": {
+          "type": "trust-checkmark",
+          "settings": {
+            "text": "30 dages fuld returret på tilpassede duge."
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "trust_checkmark_kJfi7B",
+        "trust_countdown_ezWzWE",
+        "trust_checkmark_BCQRPN"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "shade",
+        "alignment": "columns",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_sides": 24,
         "block_spacing": 8
       }
     },
@@ -469,6 +485,7 @@
     "row_UzrqP8",
     "row_j9gpQV",
     "row_dF89D3",
+    "row_ewadkg",
     "row_p6nNCG",
     "row_CQqaPe",
     "row_VY7RVT",
