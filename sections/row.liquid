@@ -21,18 +21,18 @@
 
   .section-{{ section.id }}-inner-padding {
     {%- if layout_style == 'full_width_bg' -%}
-      padding-left: calc({{ section.settings.padding_sides | default: 0 }}px + 1rem) !important;
-      padding-right: calc({{ section.settings.padding_sides | default: 0 }}px + 1rem) !important;
+      padding-left: calc({{ section.settings.padding_sides | default: 0 }}px + 1rem);
+      padding-right: calc({{ section.settings.padding_sides | default: 0 }}px + 1rem);
     {%- else -%}
-      padding-left: {{ section.settings.padding_sides | default: 0 }}px !important;
-      padding-right: {{ section.settings.padding_sides | default: 0 }}px !important;
+      padding-left: {{ section.settings.padding_sides | default: 0 }}px;
+      padding-right: {{ section.settings.padding_sides | default: 0 }}px;
     {%- endif -%}
   }
 
   @media screen and (min-width: 768px) {
     .section-{{ section.id }}-inner-padding {
-      padding-left: {{ section.settings.padding_sides | default: 0 }}px !important;
-      padding-right: {{ section.settings.padding_sides | default: 0 }}px !important;
+      padding-left: {{ section.settings.padding_sides | default: 0 }}px;
+      padding-right: {{ section.settings.padding_sides | default: 0 }}px;
     }
   }
 
