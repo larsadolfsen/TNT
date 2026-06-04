@@ -113,33 +113,15 @@
     "product_content": {
       "type": "row",
       "blocks": {
-        "group_beq9Py": {
-          "type": "group",
-          "name": "Media",
+        "product_media_CAximD": {
+          "type": "product-media",
           "settings": {
-            "sticky": true,
-            "layout_direction": "group--vertical",
-            "alignment": "flex-start",
-            "align_left": false,
+            "image_badge": "",
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0
           },
-          "blocks": {
-            "product_media_Rq68bn": {
-              "type": "product-media",
-              "settings": {
-                "image_badge": "",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_media_Rq68bn"
-          ]
+          "blocks": {}
         },
         "group_jbctmY": {
           "type": "group",
@@ -304,7 +286,7 @@
         }
       },
       "block_order": [
-        "group_beq9Py",
+        "product_media_CAximD",
         "group_jbctmY"
       ],
       "settings": {
@@ -312,7 +294,7 @@
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
-        "padding_sides": 0,
+        "padding_sides": 16,
         "block_spacing": 8
       }
     },
