@@ -1,9 +1,9 @@
-<div class="accordion-item py-4" {{ block.shopify_attributes }}>
+<div class="accordion-item py-2" {{ block.shopify_attributes }}>
   <button class="accordion-trigger flex items-center justify-between w-full text-left font-bold text-primary focus:outline-none">
     <span class="text-sm">{{ block.settings.title }}</span>
     <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200{% if block.settings.open_by_default %} rotate-180{% endif %}">expand_more</span>
   </button>
-  <div class="rte accordion-content{% unless block.settings.open_by_default %} hidden{% endunless %} mt-3 text-sm text-on-surface-variant">
+  <div class="rte accordion-content{% unless block.settings.open_by_default %} hidden{% endunless %} mt-1 text-sm text-on-surface-variant">
     {{ block.settings.content }}
   </div>
 </div>
