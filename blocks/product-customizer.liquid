@@ -528,6 +528,10 @@
         }
       } catch (err) {
         console.error("Error in updateUI:", err);
+        const calcTitle = document.getElementById("calc-title");
+        if (calcTitle) {
+          calcTitle.innerHTML = `<span style="color:red; font-size:11px;">FEJL: ${err.message}</span>`;
+        }
       }
     }
 
