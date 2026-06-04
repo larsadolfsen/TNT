@@ -145,7 +145,7 @@
       "type": "row",
       "blocks": {
         "accordion_panel_NpBHBB": {
-          "type": "accordion-panel",
+          "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
             "title": "Produktspecifikationer",
@@ -154,7 +154,7 @@
           "blocks": {}
         },
         "accordion_panel_8xCVjP": {
-          "type": "accordion-panel",
+          "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
             "title": "Produktspecifikationer",
@@ -163,7 +163,7 @@
           "blocks": {}
         },
         "accordion_panel_ekxJbf": {
-          "type": "accordion-panel",
+          "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
             "title": "Produktspecifikationer",

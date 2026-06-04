@@ -374,7 +374,7 @@
           },
           "blocks": {
             "accordion_Bqa6TC": {
-              "type": "accordion-panel",
+              "type": "accordion",
               "settings": {
                 "title": "Produktspecifikationer",
                 "content": "<p>{{ product.metafields.custom.om_produktet | metafield_tag }}</p>",
@@ -383,7 +383,7 @@
               "blocks": {}
             },
             "accordion_QJ83Ua": {
-              "type": "accordion-panel",
+              "type": "accordion",
               "settings": {
                 "title": "Om brandet",
                 "content": "<p>Textil &amp; Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
@@ -392,7 +392,7 @@
               "blocks": {}
             },
             "accordion_ECACmL": {
-              "type": "accordion-panel",
+              "type": "accordion",
               "settings": {
                 "title": "Vedligeholdelse",
                 "content": "<p><strong>Daglig rengøring:</strong> Tør blot overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>",
@@ -446,7 +446,7 @@
           },
           "blocks": {
             "accordion_panel_EcURpR": {
-              "type": "accordion-panel",
+              "type": "accordion",
               "name": "Accordion Panel",
               "settings": {
                 "title": "Hvordan rengør jeg en voksdug?",
@@ -456,7 +456,7 @@
               "blocks": {}
             },
             "accordion_panel_wUiPXP": {
-              "type": "accordion-panel",
+              "type": "accordion",
               "name": "Accordion Panel",
               "settings": {
                 "title": "Hvordan undgår jeg folder i voksdugen?",
@@ -519,7 +519,7 @@
       "type": "row",
       "blocks": {
         "accordion_panel_Matyga": {
-          "type": "accordion-panel",
+          "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
             "title": "Kan jeg lægge klar voksdug direkte på et træbord?",
@@ -529,7 +529,7 @@
           "blocks": {}
         },
         "accordion_panel_HD73KJ": {
-          "type": "accordion-panel",
+          "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
             "title": "Er klar voksdug varmefast?",
@@ -539,7 +539,7 @@
           "blocks": {}
         },
         "accordion_panel_f9FFhh": {
-          "type": "accordion-panel",
+          "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
             "title": "Kan en klar voksdug bruges oven på en stofdug?",
@@ -549,7 +549,7 @@
           "blocks": {}
         },
         "accordion_panel_3P7eLh": {
-          "type": "accordion-panel",
+          "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
             "title": "Kan en ny voksdug lugte?",

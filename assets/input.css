@@ -325,7 +325,7 @@ html, body {
 }
 
 /* Standard padding on all blocks: 16px left/right, 12px top/bottom */
-.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions):not(.shopify-block-trust-checkmark):not(.shopify-block-trust-countdown):not(.shopify-block-product-trust-checkmarks) {
+.shopify-block:not(.shopify-block-group):not(.shopify-block-product-media):not(.shopify-block-product-customizer):not(.shopify-block-product-buy-buttons):not(.shopify-block-product-accordions):not(.shopify-block-trust-checkmark):not(.shopify-block-trust-countdown):not(.shopify-block-product-trust-checkmarks):not(.shopify-block-accordion) {
   display: block;
   padding-left: 16px;
   padding-right: 16px;
@@ -358,7 +358,7 @@ html, body {
 /* Nested sub-blocks inside galleries, accordions, and trust checkmarks should have 0 padding */
 .shopify-block-trust-checkmark,
 .shopify-block-trust-countdown,
-.shopify-block-accordion-panel,
+.shopify-block-accordion,
 .shopify-block-material-badge,
 .product-trust-checkmarks-list .shopify-block,
 .product-trust-checkmarks-list > * {
