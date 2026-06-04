@@ -165,7 +165,7 @@
               "type": "product-price",
               "settings": {
                 "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger.",
+                "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger. Alle duge sendes på rulle, så du undgår krylder på dugn.",
                 "padding_top": 0,
                 "padding_bottom": 0,
                 "padding_sides": 0
@@ -232,15 +232,15 @@
                 "countdown_4gXjVB": {
                   "type": "trust-countdown",
                   "settings": {
-                    "text": "",
-                    "suffix": ""
+                    "text": "Bestil inden",
+                    "suffix": "Så sender vi"
                   },
                   "blocks": {}
                 },
                 "checkmark_7inAb8": {
                   "type": "trust-checkmark",
                   "settings": {
-                    "text": "Forventet levering fredag - GLS Pakkeshop 59 kr."
+                    "text": "Vælg mellem GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
                   },
                   "blocks": {}
                 },
