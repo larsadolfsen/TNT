@@ -173,62 +173,82 @@
     "row_p6nNCG": {
       "type": "row",
       "blocks": {
-        "card_DmALbG": {
+        "card_aQzAUL": {
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "card_design": "regular",
-            "width_cols": "1",
+            "card_design": "outlined",
+            "width_cols": "2",
             "background_color": "surface",
             "border_color": "outline_variant",
-            "border_thickness": "thin",
+            "border_thickness": "none",
             "corner_radius": "medium",
-            "title": "Overskrift",
-            "content": "<p>100% Phthalatfri</p>",
+            "title": "",
+            "content": "",
             "card_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
             "image_overlay_opacity": 30,
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "padding_sides": 24
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
           },
-          "blocks": {}
+          "blocks": {
+            "material_badge_64nnHX": {
+              "type": "material-badge",
+              "name": "Material Badge",
+              "settings": {
+                "icon": "eco",
+                "title": "100% Phthalatfri"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "material_badge_64nnHX"
+          ]
         },
-        "material_badge_rNa3gL": {
-          "type": "material-badge",
-          "name": "Material Badge",
+        "card_DmALbG": {
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
-            "icon": "eco",
-            "title": "100% Phthalatfri"
+            "card_design": "outlined",
+            "width_cols": "2",
+            "background_color": "surface",
+            "border_color": "outline_variant",
+            "border_thickness": "none",
+            "corner_radius": "medium",
+            "title": "",
+            "content": "",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
           },
-          "blocks": {}
-        },
-        "material_badge_Q7YUhx": {
-          "type": "material-badge",
-          "name": "Material Badge",
-          "settings": {
-            "icon": "eco",
-            "title": "100% Phthalatfri"
+          "blocks": {
+            "material_badge_8qMbQe": {
+              "type": "material-badge",
+              "name": "Material Badge",
+              "settings": {
+                "icon": "eco",
+                "title": "100% Phthalatfri"
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
-        },
-        "material_badge_CJB9GW": {
-          "type": "material-badge",
-          "name": "Material Badge",
-          "settings": {
-            "icon": "eco",
-            "title": "100% Phthalatfri"
-          },
-          "blocks": {}
+          "block_order": [
+            "material_badge_8qMbQe"
+          ]
         }
       },
       "block_order": [
-        "card_DmALbG",
-        "material_badge_rNa3gL",
-        "material_badge_Q7YUhx",
-        "material_badge_CJB9GW"
+        "card_aQzAUL",
+        "card_DmALbG"
       ],
       "name": "Row",
       "settings": {
@@ -328,7 +348,7 @@
       "name": "Productspecifications",
       "settings": {
         "background_color": "light",
-        "alignment": "columns",
+        "alignment": "full_width",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
