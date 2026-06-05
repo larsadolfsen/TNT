@@ -145,13 +145,17 @@
 
       <!-- Pill-shaped Stepper -->
       <div class="w-full">
-        <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm select-none">
+        <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm">
           <!-- Minus button -->
           <button type="button" id="btn-length-minus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
             &mdash;
           </button>
-          <!-- Value display -->
-          <span id="display-length" class="text-center font-bold text-slate-900 text-xl">200 cm</span>
+          <!-- Value input -->
+          <input id="display-length" type="number" inputmode="numeric" pattern="[0-9]*"
+            value="200"
+            class="text-center font-bold text-slate-900 text-xl bg-transparent border-none outline-none w-24 p-0 m-0"
+            style="-moz-appearance:textfield;appearance:textfield;"
+          />
           <!-- Plus button -->
           <button type="button" id="btn-length-plus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
             &#43;
@@ -174,13 +178,18 @@
         <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full">3</span>
         <span class="font-bold text-base uppercase tracking-wider text-slate-800">Antal</span>
       </div>
-      <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm select-none">
+      <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm">
         <!-- Minus button -->
         <button type="button" id="btn-qty-minus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &mdash;
         </button>
-        <!-- Value display -->
-        <span id="display-qty" class="text-center font-bold text-slate-900 text-xl">1</span>
+        <!-- Value input -->
+        <input id="display-qty" type="number" inputmode="numeric" pattern="[0-9]*"
+          value="1"
+          min="1"
+          class="text-center font-bold text-slate-900 text-xl bg-transparent border-none outline-none w-16 p-0 m-0"
+          style="-moz-appearance:textfield;appearance:textfield;"
+        />
         <!-- Plus button -->
         <button type="button" id="btn-qty-plus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &#43;
@@ -318,6 +327,11 @@
     const btnQtyMinus = document.getElementById("btn-qty-minus");
     const btnQtyPlus = document.getElementById("btn-qty-plus");
 
+    // Hide browser spinner arrows on number inputs
+    const inputStyle = document.createElement('style');
+    inputStyle.textContent = '#display-length::-webkit-inner-spin-button,#display-length::-webkit-outer-spin-button,#display-qty::-webkit-inner-spin-button,#display-qty::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}';
+    document.head.appendChild(inputStyle);
+
     const addToCartBtn = document.getElementById("btn-add-to-cart");
 
     // Helper to format price in Danish format: "X,00 Kr."
@@ -345,7 +359,7 @@
         if (selectedShape === 'rund' && state.length > maxWidthLimit) {
           state.length = maxWidthLimit;
           if (displayLength) {
-            displayLength.textContent = state.length + " cm";
+            displayLength.value = state.length;
           }
         }
 
@@ -534,12 +548,19 @@
     // Expose updateUI globally so that selectShape can trigger it
     window.updateCustomizerUI = updateUI;
 
+    // Helper: snap length to nearest valid step within bounds
+    function clampLength(val) {
+      const maxAllowed = (selectedShape === 'rund') ? maxWidthLimit : 9999;
+      val = Math.round(val / stepSize) * stepSize;
+      return Math.min(maxAllowed, Math.max(minLength, val));
+    }
+
     // Steppers listeners
     if (btnLengthMinus && displayLength) {
       btnLengthMinus.addEventListener("click", () => {
         if (state.length > minLength) {
-          state.length -= stepSize;
-          displayLength.textContent = state.length + " cm";
+          state.length = clampLength(state.length - stepSize);
+          displayLength.value = state.length;
           updateUI();
         }
       });
@@ -548,23 +569,41 @@
     if (btnLengthPlus && displayLength) {
       btnLengthPlus.addEventListener("click", () => {
         const maxAllowed = (selectedShape === 'rund') ? maxWidthLimit : 9999;
-        if (state.length + stepSize <= maxAllowed) {
-          state.length += stepSize;
-          displayLength.textContent = state.length + " cm";
-          updateUI();
-        } else if (state.length < maxAllowed) {
-          state.length = maxAllowed;
-          displayLength.textContent = state.length + " cm";
+        if (state.length < maxAllowed) {
+          state.length = clampLength(state.length + stepSize);
+          displayLength.value = state.length;
           updateUI();
         }
       });
+    }
+
+    // Direct keyboard input – length
+    if (displayLength) {
+      displayLength.addEventListener("change", () => {
+        const raw = parseInt(displayLength.value, 10);
+        if (!isNaN(raw)) {
+          state.length = clampLength(raw);
+          displayLength.value = state.length;
+          updateUI();
+        } else {
+          displayLength.value = state.length;
+        }
+      });
+      displayLength.addEventListener("blur", () => {
+        const raw = parseInt(displayLength.value, 10);
+        state.length = isNaN(raw) ? state.length : clampLength(raw);
+        displayLength.value = state.length;
+        updateUI();
+      });
+      // Select all text on focus for easy overtyping
+      displayLength.addEventListener("focus", () => displayLength.select());
     }
 
     if (btnQtyMinus && displayQty) {
       btnQtyMinus.addEventListener("click", () => {
         if (state.quantity > 1) {
           state.quantity -= 1;
-          displayQty.textContent = state.quantity;
+          displayQty.value = state.quantity;
           updateUI();
         }
       });
@@ -573,9 +612,30 @@
     if (btnQtyPlus && displayQty) {
       btnQtyPlus.addEventListener("click", () => {
         state.quantity += 1;
-        displayQty.textContent = state.quantity;
+        displayQty.value = state.quantity;
         updateUI();
       });
+    }
+
+    // Direct keyboard input – quantity
+    if (displayQty) {
+      displayQty.addEventListener("change", () => {
+        const raw = parseInt(displayQty.value, 10);
+        if (!isNaN(raw) && raw >= 1) {
+          state.quantity = raw;
+          displayQty.value = state.quantity;
+          updateUI();
+        } else {
+          displayQty.value = state.quantity;
+        }
+      });
+      displayQty.addEventListener("blur", () => {
+        const raw = parseInt(displayQty.value, 10);
+        state.quantity = (!isNaN(raw) && raw >= 1) ? raw : state.quantity;
+        displayQty.value = state.quantity;
+        updateUI();
+      });
+      displayQty.addEventListener("focus", () => displayQty.select());
     }
 
     // Add to cart click handler
