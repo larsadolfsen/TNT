@@ -471,7 +471,7 @@
           "name": "Accordion Panel",
           "settings": {
             "title": "Kan en ny voksdug lugte?",
-            "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt og forsvinder typisk efter 1-2 uger</p>",
+            "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt, uskadeligt og forsvinder typisk efter 1-2 uger</p>",
             "open_by_default": false
           },
           "blocks": {}
