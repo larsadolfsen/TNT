@@ -94,8 +94,26 @@
             "padding_sides": 0
           },
           "blocks": {}
-        },
-        "product_customizer_fVqVK6": {
+        }
+      },
+      "block_order": [
+        "product_price_dGeEHb",
+        "product_urgency_9qdhhc"
+      ],
+      "name": "Row - Customizer",
+      "settings": {
+        "background_color": "light",
+        "alignment": "full_width",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_sides": 16,
+        "block_spacing": 8
+      }
+    },
+    "row_YA9kap": {
+      "type": "row",
+      "blocks": {
+        "product_customizer_iUnHDp": {
           "type": "product-customizer",
           "settings": {
             "metervare_product": "firkantet-dug",
@@ -112,7 +130,7 @@
           },
           "blocks": {}
         },
-        "product_buy_buttons_886FGA": {
+        "product_buy_buttons_nP4bCi": {
           "type": "product-buy-buttons",
           "settings": {
             "text_before_price": "Læg i kurv",
@@ -122,7 +140,7 @@
           },
           "blocks": {}
         },
-        "product_shipping_progress_WnwWxm": {
+        "product_shipping_progress_dN7aBd": {
           "type": "product-shipping-progress",
           "settings": {
             "free_shipping_message": "Du er kun [beløb] fra fri fragt",
@@ -136,11 +154,9 @@
         }
       },
       "block_order": [
-        "product_price_dGeEHb",
-        "product_urgency_9qdhhc",
-        "product_customizer_fVqVK6",
-        "product_buy_buttons_886FGA",
-        "product_shipping_progress_WnwWxm"
+        "product_customizer_iUnHDp",
+        "product_buy_buttons_nP4bCi",
+        "product_shipping_progress_dN7aBd"
       ],
       "name": "Row - Customizer",
       "settings": {
@@ -525,6 +541,7 @@
   "order": [
     "row_Y793QP",
     "row_dF89D3",
+    "row_YA9kap",
     "row_eTcPKr",
     "row_p6nNCG",
     "row_VY7RVT",
