@@ -400,7 +400,8 @@ shopify-block,
 .shopify-block-accordion,
 .shopify-block-badge,
 .shopify-block-card,
-.shopify-block-material-badge {
+.shopify-block-material-badge,
+.shopify-block-product-cross-sell {
   padding-left: var(--block-padding-left, 0px);
   padding-right: var(--block-padding-right, 0px);
   padding-top: var(--block-padding-top, 0px);
@@ -411,8 +412,8 @@ shopify-block,
 .shopify-block-trust-countdown {
   padding-left: var(--block-padding-left, 0px);
   padding-right: var(--block-padding-right, 0px);
-  padding-top: var(--block-padding-top, 8px);
-  padding-bottom: var(--block-padding-bottom, 8px);
+  padding-top: var(--block-padding-top, 4px);
+  padding-bottom: var(--block-padding-bottom, 4px);
 }
 
 /* Ensure badges are always sized to their content and lay out inline/inline-flex */
@@ -448,7 +449,8 @@ shopify-block,
 .shopify-block-accordion,
 .shopify-block-material-badge,
 .product-trust-checkmarks-list .shopify-block,
-.product-trust-checkmarks-list > * {
+.product-trust-checkmarks-list > *,
+.shopify-block:has(> .accordion-item) {
   display: block;
   padding: 0;
 }
