@@ -523,6 +523,10 @@ shopify-block,
   margin-bottom: 1rem;
 }
 
+.grid-layout > .row-section__heading {
+  grid-column: 1 / -1;
+}
+
 h2.row-section__heading {
   font-size: var(--text-xl);
 }

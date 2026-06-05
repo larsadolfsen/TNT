@@ -139,10 +139,10 @@
 
 <div class="{{ outer_class }}"{% if section.settings.border_top or section.settings.border_bottom %} style="{% if section.settings.border_top %}border-top:1px solid #e2e8f0;{% endif %}{% if section.settings.border_bottom %}border-bottom:1px solid #e2e8f0;{% endif %}"{% endif %}>
   <div class="{{ inner_class }}">
-    {%- if section.settings.heading != blank -%}
-      <{{ section.settings.heading_tag }} class="row-section__heading">{{ section.settings.heading }}</{{ section.settings.heading_tag }}>
-    {%- endif -%}
     <div class="{{ row_classes }}">
+      {%- if section.settings.heading != blank -%}
+        <{{ section.settings.heading_tag }} class="row-section__heading">{{ section.settings.heading }}</{{ section.settings.heading_tag }}>
+      {%- endif -%}
       {% content_for 'blocks' %}
     </div>
   </div>
