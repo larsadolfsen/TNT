@@ -544,7 +544,7 @@
         "background_color": "light",
         "alignment": "full_width",
         "padding_top": 12,
-        "padding_bottom": 12,
+        "padding_bottom": 48,
         "padding_sides": 16,
         "block_spacing": 0,
         "border_top": false,
