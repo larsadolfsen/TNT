@@ -456,26 +456,10 @@
             "padding_sides": 0
           },
           "blocks": {}
-        },
-        "product_banner_text_eaMntU": {
-          "type": "product-banner-text",
-          "disabled": true,
-          "settings": {
-            "image": "{{ product.featured_image }}",
-            "heading": "",
-            "content": "{{ product.description }}",
-            "border_top": true,
-            "border_bottom": true,
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "product_cross_sell_fm46Qc",
-        "product_banner_text_eaMntU"
+        "product_cross_sell_fm46Qc"
       ],
       "name": "Row - Mersalg",
       "settings": {
