@@ -467,7 +467,7 @@
       "name": "FAQ",
       "settings": {
         "background_color": "light",
-        "alignment": "columns",
+        "alignment": "full_width",
         "padding_top": 12,
         "padding_bottom": 24,
         "padding_sides": 0,
