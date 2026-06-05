@@ -58,8 +58,12 @@ main {
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h5, h6 {
   font-family: var(--font-serif);
+}
+
+h4 {
+  font-family: var(--font-sans);
 }
 
 .material-symbols-outlined {
@@ -90,8 +94,16 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* Headings */
-  & h1, & h2, & h3, & h4, & h5, & h6 {
+  & h1, & h2, & h3, & h5, & h6 {
     font-family: var(--font-serif);
+    color: var(--color-primary);
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  & h4 {
+    font-family: var(--font-sans);
     color: var(--color-primary);
     font-weight: 700;
     line-height: var(--leading-tight);
@@ -408,12 +420,24 @@ shopify-block,
   padding-bottom: var(--block-padding-bottom, 0px);
 }
 
+/* Cross-sell mobile breakout to allow edge-to-edge sliding without clipping */
+@media (width < --theme(--breakpoint-md)) {
+  .shopify-block-product-cross-sell {
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    display: block !important;
+  }
+}
+
 .shopify-block-trust-checkmark,
 .shopify-block-trust-countdown {
   padding-left: var(--block-padding-left, 0px);
   padding-right: var(--block-padding-right, 0px);
   padding-top: var(--block-padding-top, 4px);
   padding-bottom: var(--block-padding-bottom, 4px);
+  font-size: 14px;
 }
 
 /* Ensure badges are always sized to their content and lay out inline/inline-flex */
