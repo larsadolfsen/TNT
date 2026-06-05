@@ -396,8 +396,8 @@
         "padding_bottom": 24,
         "padding_sides": 0,
         "block_spacing": 0,
-        "border_top": false,
-        "border_bottom": false
+        "border_top": true,
+        "border_bottom": true
       }
     },
     "row_CQqaPe": {
@@ -477,7 +477,7 @@
         "product_cross_sell_fm46Qc",
         "product_banner_text_eaMntU"
       ],
-      "name": "Mersalg",
+      "name": "Row - Mersalg",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
