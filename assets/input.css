@@ -552,31 +552,6 @@ shopify-block,
   padding-right: 0;
 }
 
-/* 1. Boxed row alignment heading padding */
-.row-section:not(.row-section--full-width) .row-section__heading {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-
-  @media (min-width: --theme(--breakpoint-md)) {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
-}
-
-/* 2. Full-width row alignment heading padding (matches accordion margins) */
-@media (width < --theme(--breakpoint-md)) {
-  .row-section--full-width .row-section__heading {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-}
-@media (min-width: --theme(--breakpoint-md)) {
-  .row-section--full-width .row-section__heading {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
 
 .grid-layout > .row-section__heading {
   grid-column: 1 / -1;
