@@ -100,13 +100,13 @@
   # Aspect ratio style mapping
   case block.settings.image_aspect_ratio
     when 'square'
-      assign aspect_ratio_style = '1/1'
+      assign aspect_ratio_style = 'aspect-ratio: 1/1'
     when 'portrait'
-      assign aspect_ratio_style = '3/4'
+      assign aspect_ratio_style = 'aspect-ratio: 3/4'
     when 'landscape'
-      assign aspect_ratio_style = '16/9'
+      assign aspect_ratio_style = 'aspect-ratio: 16/9'
     else
-      assign aspect_ratio_style = 'auto'
+      assign aspect_ratio_style = 'aspect-ratio: auto'
   endcase
 -%}
 
@@ -164,7 +164,7 @@
     <div class="w-full overflow-hidden border-b border-inherit z-10">
       {{ block.settings.image | image_url: width: 800 | image_tag: 
         class: 'w-full object-cover',
-        style: 'aspect-ratio: ' | append: aspect_ratio_style,
+        style: aspect_ratio_style,
         loading: 'lazy'
       }}
     </div>
@@ -190,7 +190,7 @@
     <div class="w-full overflow-hidden border-t border-inherit mt-auto z-10">
       {{ block.settings.image | image_url: width: 800 | image_tag: 
         class: 'w-full object-cover',
-        style: 'aspect-ratio: ' | append: aspect_ratio_style,
+        style: aspect_ratio_style,
         loading: 'lazy'
       }}
     </div>
