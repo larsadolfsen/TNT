@@ -37,19 +37,19 @@
 
 <div class="flex flex-col gap-4" {{ block.shopify_attributes }}>
     <!-- Left: Selected Specs & Price (Calculation Table) -->
-    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-slate-200 rounded-2xl pt-5 pb-4 px-4 mt-4 mb-3 text-sm text-primary/90" style="display: none;">
+    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-slate-200 rounded-2xl pt-5 pb-4 px-4 mt-1 mb-3 text-sm text-primary/90" style="display: none;">
       <!-- Title -->
       <div id="calc-title" class="mb-2 font-semibold text-primary"></div>
       
       <!-- Lines -->
       <div class="flex flex-col gap-1 w-full">
-        <div class="flex justify-between items-center">
-          <span id="calc-metervare-label">Metervare</span>
-          <span id="calc-metervare-price"></span>
-        </div>
         <div class="flex justify-between items-center" id="calc-shape-row">
           <span id="calc-shape-label">Form</span>
           <span id="calc-shape-price"></span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span id="calc-metervare-label">Metervare</span>
+          <span id="calc-metervare-price"></span>
         </div>
         
         <div class="border-t border-slate-200 my-2"></div>
