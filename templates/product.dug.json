@@ -181,7 +181,7 @@
             "width_cols": "4",
             "background_color": "surface",
             "border_color": "outline_variant",
-            "border_thickness": "thin",
+            "border_thickness": "none",
             "corner_radius": "medium",
             "title": "Klar voksdug 140 cm — til borde der gerne må ses",
             "content": "<p>Du har valgt et bord du kan lide. Den klare voksdug lader det være det — træstrukturen, farven, overfladen — mens den beskytter mod det der uundgåeligt sker: kaffe, saft, modellervoks, morgenmad.</p><p>0,2 mm tynd. OEKO-TEX certificeret, phthalatfri. Skæres efter mål og sendes på rulle, klar til brug.</p><p>Tørres af med en fugtig klud. Holder i årevis med normal brug.</p>",
@@ -249,7 +249,7 @@
       ],
       "name": "Row",
       "settings": {
-        "background_color": "light",
+        "background_color": "dark",
         "alignment": "columns",
         "padding_top": 12,
         "padding_bottom": 12,
