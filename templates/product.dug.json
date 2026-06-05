@@ -110,7 +110,7 @@
           "name": "Product Price",
           "settings": {
             "price_suffix": "pr. meter inkl. moms",
-            "price_subtext": "Skæres efter mål og sendes på rulle, så dugen er klar til brug når den ankommer. Der er 30 dages fuld returret, også på din dig.",
+            "price_subtext": "Skæres efter mål og sendes på rulle, så dugen er klar til brug når den ankommer. Der er 30 dages fuld returret, også på din dug.",
             "padding_top": 0,
             "padding_bottom": 12,
             "padding_sides": 0
@@ -220,12 +220,20 @@
             "text": "30 dages fuld returret på din dug."
           },
           "blocks": {}
+        },
+        "trust_checkmark_KcRXQx": {
+          "type": "trust-checkmark",
+          "settings": {
+            "text": "Sendes på rulle, så den ikke bliver krøllet."
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "trust_checkmark_xhq8A9",
         "trust_countdown_GMJdXK",
-        "trust_checkmark_9AbQBF"
+        "trust_checkmark_9AbQBF",
+        "trust_checkmark_KcRXQx"
       ],
       "name": "Row - Trust",
       "settings": {
