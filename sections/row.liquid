@@ -98,7 +98,7 @@
 
 <div class="{{ outer_class }}">
   <div class="{{ inner_class }}">
-    <div class="row-content{% if is_single_column %} row-content--no-columns row-content--single row-content--{{ section.settings.alignment }}{% endif %}">
+    <div class="row-content{% if is_single_column %} row-content--no-columns row-content--single row-content--{{ section.settings.alignment }}{% else %}{% unless template.name == 'product' %} grid-layout{% endunless %}{% endif %}">
       {% content_for 'blocks' %}
     </div>
   </div>
