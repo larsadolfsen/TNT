@@ -441,7 +441,7 @@
           "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
-            "title": "Kan en klar voksdug bruges oven på en stofdug?",
+            "title": "Kan klar voksdug bruges oven på en stofdug?",
             "content": "<p>Ja. Den ligger stabilt oven på stof og beskytter tekstilet mod spild ved fødselsdage, konfirmationer og hverdagsmiddage.</p>",
             "open_by_default": false
           },
