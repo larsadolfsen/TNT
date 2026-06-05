@@ -76,9 +76,11 @@
 {%- endstyle -%}
 
 <style>
-  .stepper-pill:focus-within {
-    border-color: #f5c518 !important;
-    box-shadow: 0 0 0 2px rgba(245,197,24,0.25);
+  #display-length:focus,
+  #display-qty:focus {
+    outline: 2px solid #f5c518;
+    outline-offset: 0px;
+    border-radius: 4px;
   }
 </style>
 
@@ -152,7 +154,7 @@
 
       <!-- Pill-shaped Stepper -->
       <div class="w-full">
-        <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;transition:border-color 0.15s,box-shadow 0.15s;">
+        <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;">
           <!-- Minus button -->
           <button type="button" id="btn-length-minus" class="w-14 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &mdash;
