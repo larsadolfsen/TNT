@@ -469,9 +469,9 @@
         "background_color": "light",
         "alignment": "full_width",
         "padding_top": 12,
-        "padding_bottom": 24,
+        "padding_bottom": 12,
         "padding_sides": 0,
-        "block_spacing": 0
+        "block_spacing": 16
       }
     }
   },
