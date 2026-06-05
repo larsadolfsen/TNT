@@ -9,10 +9,10 @@
  */
 {
   "sections": {
-    "row_dF89D3": {
+    "row_Y793QP": {
       "type": "row",
       "blocks": {
-        "page_title_G9KwCN": {
+        "page_title_UACQEU": {
           "type": "page-title",
           "settings": {
             "title_override": "{{ product.title }}",
@@ -23,7 +23,7 @@
           },
           "blocks": {}
         },
-        "product_trust_tDtrTL": {
+        "product_trust_XEbrEN": {
           "type": "product-trust",
           "settings": {
             "rating_score": "4,8",
@@ -35,7 +35,7 @@
           },
           "blocks": {}
         },
-        "badge_JahkGB": {
+        "badge_kthV3T": {
           "type": "badge",
           "name": "Badge",
           "settings": {
@@ -46,10 +46,29 @@
             "text_color": "#ffffff",
             "padding_top": 4,
             "padding_bottom": 4,
-            "padding_sides": 4
+            "padding_sides": 0
           },
           "blocks": {}
-        },
+        }
+      },
+      "block_order": [
+        "page_title_UACQEU",
+        "product_trust_XEbrEN",
+        "badge_kthV3T"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "light",
+        "alignment": "columns",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_sides": 24,
+        "block_spacing": 0
+      }
+    },
+    "row_dF89D3": {
+      "type": "row",
+      "blocks": {
         "product_media_dVEFYL": {
           "type": "product-media",
           "settings": {
@@ -147,9 +166,6 @@
         }
       },
       "block_order": [
-        "page_title_G9KwCN",
-        "product_trust_tDtrTL",
-        "badge_JahkGB",
         "product_media_dVEFYL",
         "product_price_dGeEHb",
         "product_urgency_9qdhhc",
@@ -500,6 +516,7 @@
     }
   },
   "order": [
+    "row_Y793QP",
     "row_dF89D3",
     "row_p6nNCG",
     "row_VY7RVT",
