@@ -224,7 +224,7 @@
         "trust_checkmark_KcRXQx": {
           "type": "trust-checkmark",
           "settings": {
-            "text": "Sendes på rulle, så den ikke bliver krøllet."
+            "text": "Sendes på rulle, for at undgå folder."
           },
           "blocks": {}
         }
