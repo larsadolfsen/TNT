@@ -395,7 +395,7 @@
         "padding_top": 24,
         "padding_bottom": 24,
         "padding_sides": 0,
-        "block_spacing": 0,
+        "block_spacing": 8,
         "border_top": true,
         "border_bottom": false
       }
