@@ -78,7 +78,7 @@
 <!-- Hidden element to signal to product-buy-buttons that customizer is active -->
 <div id="shape-selector" style="display: none;"></div>
 
-<div class="w-full border-t border-slate-100 pt-7 pb-3" {{ block.shopify_attributes }}>
+<div class="w-full pt-7 pb-3{% if block.settings.border_top %} border-t border-slate-200{% endif %}{% if block.settings.border_bottom %} border-b border-slate-200{% endif %}" {{ block.shopify_attributes }}>
   <div class="flex flex-col">
 
     <!-- Step 1: Shape Selector -->
@@ -145,9 +145,9 @@
 
       <!-- Pill-shaped Stepper -->
       <div class="w-full">
-        <div class="flex w-full justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm" style="height:56px;">
+        <div class="flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;">
           <!-- Minus button -->
-          <button type="button" id="btn-length-minus" class="w-14 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none" style="border-right:1px solid #e2e8f0;min-width:48px;min-height:48px;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-length-minus" class="w-14 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="border-right:1px solid #e2e8f0;min-width:48px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &mdash;
           </button>
           <!-- Value input -->
@@ -157,7 +157,7 @@
             style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
           />
           <!-- Plus button -->
-          <button type="button" id="btn-length-plus" class="w-14 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none" style="border-left:1px solid #e2e8f0;min-width:48px;min-height:48px;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-length-plus" class="w-14 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="border-left:1px solid #e2e8f0;min-width:48px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &#43;
           </button>
         </div>
@@ -178,9 +178,9 @@
         <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full">3</span>
         <span class="font-bold text-base uppercase tracking-wider text-slate-800">Antal</span>
       </div>
-      <div class="flex w-full justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm" style="height:56px;">
+      <div class="flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;">
         <!-- Minus button -->
-        <button type="button" id="btn-qty-minus" class="w-14 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none" style="border-right:1px solid #e2e8f0;min-width:48px;min-height:48px;display:flex;align-items:center;justify-content:center;">
+        <button type="button" id="btn-qty-minus" class="w-14 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="border-right:1px solid #e2e8f0;min-width:48px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
           &mdash;
         </button>
         <!-- Value input -->
@@ -191,7 +191,7 @@
           style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
         />
         <!-- Plus button -->
-        <button type="button" id="btn-qty-plus" class="w-14 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none" style="border-left:1px solid #e2e8f0;min-width:48px;min-height:48px;display:flex;align-items:center;justify-content:center;">
+        <button type="button" id="btn-qty-plus" class="w-14 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="border-left:1px solid #e2e8f0;min-width:48px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
           &#43;
         </button>
       </div>
@@ -827,6 +827,22 @@
       "id": "min_length",
       "label": "Minimum længde (cm)",
       "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Kanter"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_top",
+      "label": "Kant i toppen",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "border_bottom",
+      "label": "Kant i bunden",
+      "default": false
     },
     {
       "type": "range",
