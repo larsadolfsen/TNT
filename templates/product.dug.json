@@ -451,8 +451,8 @@
           "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
-            "title": "Kan en ny voksdug lugte?",
-            "content": "<p>Ja, en ny voksdug kan lugte lidt i starten. Det er helt normalt, uskadeligt og forsvinder typisk efter 1-2 uger</p>",
+            "title": "Hvordan opbevarer jeg den?",
+            "content": "<p>Rul den på et paprør med overfladebehandlingen udad. Undgå at folde den — folder forsvinder ikke.</p>",
             "open_by_default": false
           },
           "blocks": {}
