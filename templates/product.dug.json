@@ -194,31 +194,17 @@
             "padding_bottom": 24,
             "padding_sides": 24
           },
-          "blocks": {}
-        },
-        "card_aQzAUL": {
-          "type": "card",
-          "name": "t:general.card",
-          "settings": {
-            "card_design": "outlined",
-            "width_cols": "2",
-            "background_color": "surface",
-            "border_color": "outline_variant",
-            "border_thickness": "none",
-            "corner_radius": "medium",
-            "title": "",
-            "content": "",
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
           "blocks": {
-            "material_badge_64nnHX": {
+            "material_badge_YHDCLC": {
+              "type": "material-badge",
+              "name": "Material Badge",
+              "settings": {
+                "icon": "eco",
+                "title": "OEKO-TEX Standard 100"
+              },
+              "blocks": {}
+            },
+            "material_badge_9VUW8Y": {
               "type": "material-badge",
               "name": "Material Badge",
               "settings": {
@@ -229,7 +215,8 @@
             }
           },
           "block_order": [
-            "material_badge_64nnHX"
+            "material_badge_YHDCLC",
+            "material_badge_9VUW8Y"
           ]
         },
         "card_DmALbG": {
@@ -253,25 +240,11 @@
             "padding_bottom": 0,
             "padding_sides": 0
           },
-          "blocks": {
-            "material_badge_8qMbQe": {
-              "type": "material-badge",
-              "name": "Material Badge",
-              "settings": {
-                "icon": "eco",
-                "title": "OEKO-TEX Standard 100"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "material_badge_8qMbQe"
-          ]
+          "blocks": {}
         }
       },
       "block_order": [
         "card_RYHhb3",
-        "card_aQzAUL",
         "card_DmALbG"
       ],
       "name": "Row",
