@@ -208,8 +208,8 @@
         "padding_bottom": 12,
         "padding_sides": 16,
         "block_spacing": 8,
-        "border_top": false,
-        "border_bottom": false
+        "border_top": true,
+        "border_bottom": true
       }
     },
     "row_eTcPKr": {
