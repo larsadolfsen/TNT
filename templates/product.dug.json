@@ -133,7 +133,20 @@
           "name": "Product Price",
           "settings": {
             "price_suffix": "pr. meter inkl. moms",
-            "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger.",
+            "price_subtext": "Skæres efter mål og sendes på rulle, så den er klar til brug når den ankommer.",
+            "padding_top": 0,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "product_urgency_9qdhhc": {
+          "type": "product-urgency",
+          "name": "Product Stock Urgency",
+          "settings": {
+            "show_urgency": true,
+            "urgency_text": "Kun få på lager – bestil snart",
+            "hide_under_limit": 100000,
             "padding_top": 0,
             "padding_bottom": 12,
             "padding_sides": 0
@@ -180,6 +193,7 @@
       },
       "block_order": [
         "product_price_dGeEHb",
+        "product_urgency_9qdhhc",
         "product_customizer_fVqVK6",
         "product_buy_buttons_886FGA",
         "product_shipping_progress_LNK79f"
