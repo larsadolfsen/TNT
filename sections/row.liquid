@@ -65,6 +65,10 @@
     }
   }
 
+  .section-{{ section.id }}-inner-padding .grid-layout {
+    gap: {{ section.settings.block_spacing | default: 8 }}px;
+  }
+
   {%- if is_single_column -%}
     .row-content--single {
       display: flex;
@@ -210,7 +214,7 @@
     },
     {
       "type": "header",
-      "content": "Blokafstand (kun enkeltkolonne)"
+      "content": "Blokafstand / Grid-gap"
     },
     {
       "type": "range",
