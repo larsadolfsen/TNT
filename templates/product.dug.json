@@ -249,7 +249,7 @@
       ],
       "name": "Row",
       "settings": {
-        "background_color": "dark",
+        "background_color": "shade",
         "alignment": "columns",
         "padding_top": 12,
         "padding_bottom": 12,
