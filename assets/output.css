@@ -1654,6 +1654,13 @@
       }
     }
   }
+  .hover\:bg-slate-800 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-slate-800);
+      }
+    }
+  }
   .hover\:text-accent {
     &:hover {
       @media (hover: hover) {
