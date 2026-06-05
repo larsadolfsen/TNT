@@ -181,7 +181,7 @@
             "width_cols": "1",
             "background_color": "transparent",
             "border_color": "outline_variant",
-            "border_thickness": "none",
+            "border_thickness": "thin",
             "corner_radius": "medium",
             "title": "Kort Overskrift",
             "content": "<p>Dette er et kortelement med tilpasset design.</p>",
