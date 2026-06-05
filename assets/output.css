@@ -2390,6 +2390,28 @@ html, body {
   font-weight: 700;
   color: var(--color-primary);
   margin-bottom: 1rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+.row-section:not(.row-section--full-width) .row-section__heading {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  @media (min-width: 840px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+@media (width < 840px) {
+  .row-section--full-width .row-section__heading {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+@media (min-width: 840px) {
+  .row-section--full-width .row-section__heading {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 .grid-layout > .row-section__heading {
   grid-column: 1 / -1;
