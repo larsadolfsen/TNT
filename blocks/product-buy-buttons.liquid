@@ -388,6 +388,166 @@
   });
 </script>
 
+<!-- Mobile Sticky Buy Bar -->
+{%- if block.settings.enable_sticky_buy_button -%}
+<div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-200/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 translate-y-full rounded-t-[24px]">
+  <div class="max-w-[var(--page-width)] mx-auto flex items-center justify-between gap-4">
+    <!-- Left: Configuration Info -->
+    <div class="flex flex-col text-left overflow-hidden min-w-0">
+      <span id="sticky-title" class="font-bold text-slate-900 text-sm truncate leading-tight">{{ product.title }}</span>
+      <div id="sticky-config-summary" class="text-[11px] text-slate-500 truncate mt-0.5 leading-normal"></div>
+      <span id="sticky-price" class="font-extrabold text-[#0e1a28] text-[15px] mt-0.5 leading-tight"></span>
+    </div>
+    <!-- Right: Purchase Button -->
+    <button id="btn-sticky-buy" class="bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center min-w-[100px]">
+      {{ block.settings.sticky_buy_button_text | default: "Køb" }}
+    </button>
+  </div>
+</div>
+
+<style>
+  #mobile-sticky-buy-bar {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const stickyBar = document.getElementById("mobile-sticky-buy-bar");
+    if (!stickyBar) return;
+
+    const stickyConfigSummary = document.getElementById("sticky-config-summary");
+    const stickyPrice = document.getElementById("sticky-price");
+    const stickyBuyBtn = document.getElementById("btn-sticky-buy");
+    const mainBuyBtn = document.getElementById("btn-add-to-cart");
+
+    // 1. Function to update sticky bar content
+    function updateStickyBar() {
+      // Get the price display from the page
+      const mainPriceDisplay = document.getElementById("btn-price-display");
+      if (mainPriceDisplay && stickyPrice) {
+        let priceText = mainPriceDisplay.textContent.trim();
+        stickyPrice.textContent = priceText;
+      }
+
+      // Check if customizer is present
+      const hasCustomizer = !!document.getElementById("shape-selector");
+      let summaryText = "";
+
+      if (hasCustomizer) {
+        const shapeLabel = document.getElementById("calc-shape-label");
+        const lengthLabel = document.getElementById("calc-metervare-label");
+        if (shapeLabel && lengthLabel) {
+          const shapeText = shapeLabel.textContent.replace("Form:", "").replace("Form: ", "").trim();
+          const lengthText = lengthLabel.textContent.replace("Længde:", "").replace("Længde: ", "").replace("Diameter:", "").replace("Diameter: ", "").trim();
+          summaryText = `${shapeText} • ${lengthText}`;
+        }
+      } else {
+        // Simple variant selection
+        const variantSelect = document.querySelector('select[name="id"]');
+        if (variantSelect) {
+          const selectedOption = variantSelect.options[variantSelect.selectedIndex];
+          if (selectedOption) {
+            summaryText = selectedOption.textContent.split(" - ")[0].trim();
+          }
+        }
+      }
+
+      if (stickyConfigSummary) {
+        stickyConfigSummary.textContent = summaryText || "Standard";
+      }
+    }
+
+    // 2. Initial update and listen to price updates/changes
+    updateStickyBar();
+
+    // Listen to custom price update event
+    document.addEventListener("product-price-updated", () => {
+      setTimeout(updateStickyBar, 20);
+    });
+
+    // Listen to document changes (for shape buttons etc.)
+    document.addEventListener("click", (e) => {
+      if (e.target.closest('.shape-btn') || e.target.closest('#btn-length-minus') || e.target.closest('#btn-length-plus') || e.target.closest('#btn-qty-minus') || e.target.closest('#btn-qty-plus')) {
+        setTimeout(updateStickyBar, 50);
+      }
+    });
+
+    // Listen to input changes (direct text changes on length/qty)
+    const displayLength = document.getElementById("display-length");
+    if (displayLength) {
+      displayLength.addEventListener("input", () => setTimeout(updateStickyBar, 50));
+      displayLength.addEventListener("change", () => setTimeout(updateStickyBar, 50));
+    }
+
+    // Watch for variant change select dropdowns
+    const variantInputs = document.querySelectorAll('select[name="id"], .single-option-selector');
+    variantInputs.forEach(input => {
+      input.addEventListener("change", () => {
+        setTimeout(updateStickyBar, 50);
+      });
+    });
+
+    // 3. Link sticky buy click to main buy button click
+    if (stickyBuyBtn && mainBuyBtn) {
+      stickyBuyBtn.addEventListener("click", () => {
+        mainBuyBtn.click();
+      });
+    }
+
+    // 4. Synchronize states (disabled/loading) from main button to sticky button
+    if (mainBuyBtn && stickyBuyBtn) {
+      const observer = new MutationObserver(() => {
+        stickyBuyBtn.disabled = mainBuyBtn.disabled;
+        if (mainBuyBtn.disabled) {
+          stickyBuyBtn.classList.add("opacity-50", "cursor-not-allowed");
+          stickyBuyBtn.classList.remove("bg-accent");
+          stickyBuyBtn.classList.add("bg-slate-200");
+          const mainTextSpan = mainBuyBtn.querySelector('span:not(#btn-price-display)');
+          if (mainTextSpan && mainTextSpan.textContent.includes("Bredde")) {
+            stickyBuyBtn.textContent = "Over maks bredde";
+          } else {
+            stickyBuyBtn.textContent = "Vent...";
+          }
+        } else {
+          stickyBuyBtn.classList.remove("opacity-50", "cursor-not-allowed");
+          stickyBuyBtn.classList.remove("bg-slate-200");
+          stickyBuyBtn.classList.add("bg-accent");
+          stickyBuyBtn.textContent = "{{ block.settings.sticky_buy_button_text | default: 'Køb' }}";
+        }
+      });
+      observer.observe(mainBuyBtn, { attributes: true, attributeFilter: ["disabled", "class"] });
+    }
+
+    // 5. Scroll Visibility tracking with IntersectionObserver
+    if (mainBuyBtn) {
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) {
+            const rect = mainBuyBtn.getBoundingClientRect();
+            if (rect.top < 0) {
+              stickyBar.classList.remove("translate-y-full");
+            } else {
+              stickyBar.classList.add("translate-y-full");
+            }
+          } else {
+            stickyBar.classList.add("translate-y-full");
+          }
+        });
+      }, observerOptions);
+
+      observer.observe(mainBuyBtn);
+    }
+  });
+</script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Product Buy Buttons",
@@ -447,6 +607,22 @@
       "unit": "px",
       "label": "Højde på betalingsbillede",
       "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Sticky købsknap på mobil"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_buy_button",
+      "label": "Aktiver sticky købsknap på mobil",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sticky_buy_button_text",
+      "label": "Tekst på sticky købsknap",
+      "default": "Køb"
     }
   ],
   "presets": [
