@@ -444,6 +444,7 @@ shopify-block,
 }
 
 /* Nested sub-blocks inside galleries, accordions, and trust checkmarks should have 0 padding */
+.shopify-block-product-accordions .shopify-block,
 .shopify-block-accordion,
 .shopify-block-material-badge,
 .product-trust-checkmarks-list .shopify-block,

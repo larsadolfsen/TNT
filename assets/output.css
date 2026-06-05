@@ -2333,7 +2333,7 @@ html, body {
   display: block;
   width: 100%;
 }
-.shopify-block-accordion, .shopify-block-material-badge, .product-trust-checkmarks-list .shopify-block, .product-trust-checkmarks-list > * {
+.shopify-block-product-accordions .shopify-block, .shopify-block-accordion, .shopify-block-material-badge, .product-trust-checkmarks-list .shopify-block, .product-trust-checkmarks-list > * {
   display: block;
   padding: 0;
 }
