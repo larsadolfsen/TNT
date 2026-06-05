@@ -474,7 +474,7 @@
           "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
-            "title": "Kan jeg lægge klar voksdug direkte på et træbord?",
+            "title": "Kan jeg lægge min voksdug direkte på et træbord?",
             "content": "<p>Ja. Læg den direkte på bordet. Hvis bordet er massivt træ, bør dugen tages af et par timer om ugen, så træet kan trække vejret og regulere fugt.</p>",
             "open_by_default": true
           },
@@ -484,7 +484,7 @@
           "type": "accordion",
           "name": "Accordion Panel",
           "settings": {
-            "title": "Er klar voksdug varmefast?",
+            "title": "Er voksduge varmefast?",
             "content": "<p>Nej. Undgå varme fade og tallerkener direkte på dugen — brug en bordskåner. Overfladen tåler normal stuetemperatur uden problemer.</p>",
             "open_by_default": false
           },
