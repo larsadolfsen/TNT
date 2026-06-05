@@ -1,3 +1,26 @@
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    {%- case block.settings.width_cols -%}
+      {%- when '1' -%}
+        --span-mobile: 1;
+        --span-expanded: 2;
+        --span-large: 3;
+      {%- when '2' -%}
+        --span-mobile: 2;
+        --span-expanded: 4;
+        --span-large: 6;
+      {%- when '3' -%}
+        --span-mobile: 3;
+        --span-expanded: 6;
+        --span-large: 9;
+      {%- else -%}
+        --span-mobile: 4;
+        --span-expanded: 8;
+        --span-large: 12;
+    {%- endcase -%}
+  }
+{%- endstyle -%}
+
 <div class="flex flex-col items-center text-center space-y-2" {{ block.shopify_attributes }}>
   {%- if block.settings.icon != blank -%}
     <span class="material-symbols-outlined text-2xl text-slate-600">{{ block.settings.icon }}</span>
@@ -11,6 +34,18 @@
 {
   "name": "Material Badge",
   "settings": [
+    {
+      "type": "select",
+      "id": "width_cols",
+      "label": "t:labels.width_cols",
+      "options": [
+        { "value": "1", "label": "t:options.width_cols.1" },
+        { "value": "2", "label": "t:options.width_cols.2" },
+        { "value": "3", "label": "t:options.width_cols.3" },
+        { "value": "4", "label": "t:options.width_cols.4" }
+      ],
+      "default": "4"
+    },
     {
       "type": "text",
       "id": "icon",

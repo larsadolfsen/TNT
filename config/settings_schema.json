@@ -268,5 +268,122 @@
         "default": "tirsdag"
       }
     ]
+  },
+  {
+    "name": "Google Schema Indstillinger",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Forsendelse Schema"
+      },
+      {
+        "type": "text",
+        "id": "schema_shipping_country",
+        "label": "Forsendelse Land (Landekode, f.eks. DK)",
+        "default": "DK"
+      },
+      {
+        "type": "text",
+        "id": "schema_shipping_price",
+        "label": "Standard fragtpris i schema (f.eks. 39)",
+        "default": "39"
+      },
+      {
+        "type": "number",
+        "id": "schema_handling_min",
+        "label": "Minimum håndteringstid (dage)",
+        "default": 0
+      },
+      {
+        "type": "number",
+        "id": "schema_handling_max",
+        "label": "Maximum håndteringstid (dage)",
+        "default": 1
+      },
+      {
+        "type": "number",
+        "id": "schema_transit_min",
+        "label": "Minimum transporttid (dage)",
+        "default": 1
+      },
+      {
+        "type": "number",
+        "id": "schema_transit_max",
+        "label": "Maximum transporttid (dage)",
+        "default": 3
+      },
+      {
+        "type": "header",
+        "content": "Returret Schema"
+      },
+      {
+        "type": "text",
+        "id": "schema_return_country",
+        "label": "Returret Land (Landekode, f.eks. DK)",
+        "default": "DK"
+      },
+      {
+        "type": "number",
+        "id": "schema_return_days",
+        "label": "Returret dage (f.eks. 14)",
+        "default": 14
+      },
+      {
+        "type": "select",
+        "id": "schema_return_policy_category",
+        "label": "Kategori af returpolitik",
+        "options": [
+          {
+            "value": "MerchantReturnFiniteReturnWindow",
+            "label": "Tidsbegrænset returret (f.eks. 14 dage)"
+          },
+          {
+            "value": "MerchantReturnNotPermitted",
+            "label": "Ingen returret"
+          },
+          {
+            "value": "MerchantReturnUnlimitedWindow",
+            "label": "Ubegrænset returret"
+          }
+        ],
+        "default": "MerchantReturnFiniteReturnWindow"
+      },
+      {
+        "type": "select",
+        "id": "schema_return_method",
+        "label": "Returmetode",
+        "options": [
+          {
+            "value": "ReturnByMail",
+            "label": "Send med post"
+          },
+          {
+            "value": "ReturnInStore",
+            "label": "Aflever i butik"
+          },
+          {
+            "value": "ReturnAtKiosk",
+            "label": "Aflever i kiosk / pakkeshop"
+          }
+        ],
+        "default": "ReturnByMail"
+      },
+      {
+        "type": "select",
+        "id": "schema_return_fees",
+        "label": "Returgebyr",
+        "options": [
+          {
+            "value": "FreeReturn",
+            "label": "Gratis returret"
+          },
+          {
+            "value": "CustomerPays",
+            "label": "Kunden betaler fragt"
+          }
+        ],
+        "default": "CustomerPays"
+      }
+    ]
   }
 ]
