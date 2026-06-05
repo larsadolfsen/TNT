@@ -390,7 +390,7 @@
 
 <!-- Mobile Sticky Buy Bar -->
 {%- if block.settings.enable_sticky_buy_button -%}
-<div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-200/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 translate-y-full rounded-t-[24px]">
+<div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-200/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[24px]">
   <div class="max-w-[var(--page-width)] mx-auto flex items-center justify-between gap-4">
     <!-- Left: Configuration Info -->
     <div class="flex flex-col text-left overflow-hidden min-w-0">
@@ -517,32 +517,6 @@
         }
       });
       observer.observe(mainBuyBtn, { attributes: true, attributeFilter: ["disabled", "class"] });
-    }
-
-    // 5. Scroll Visibility tracking with IntersectionObserver
-    if (mainBuyBtn) {
-      const observerOptions = {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) {
-            const rect = mainBuyBtn.getBoundingClientRect();
-            if (rect.top < 0) {
-              stickyBar.classList.remove("translate-y-full");
-            } else {
-              stickyBar.classList.add("translate-y-full");
-            }
-          } else {
-            stickyBar.classList.add("translate-y-full");
-          }
-        });
-      }, observerOptions);
-
-      observer.observe(mainBuyBtn);
     }
   });
 </script>

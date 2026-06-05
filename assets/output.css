@@ -618,10 +618,6 @@
     --tw-translate-y: calc(var(--spacing) * 20);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
-  .translate-y-full {
-    --tw-translate-y: 100%;
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
   .scale-0 {
     --tw-scale-x: 0%;
     --tw-scale-y: 0%;
