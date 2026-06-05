@@ -145,7 +145,7 @@
           "name": "Product Stock Urgency",
           "settings": {
             "show_urgency": true,
-            "urgency_text": "Kun få på lager – bestil snart",
+            "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
             "hide_under_limit": 100000,
             "padding_top": 0,
             "padding_bottom": 12,
