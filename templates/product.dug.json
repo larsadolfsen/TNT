@@ -176,7 +176,8 @@
             "text_before_price": "Læg i kurv",
             "padding_top": 0,
             "padding_bottom": 0,
-            "padding_sides": 0
+            "padding_sides": 0,
+            "payment_icons_height": 24
           },
           "blocks": {}
         },
@@ -585,12 +586,12 @@
         "heading": "",
         "heading_tag": "h3",
         "background_color": "light",
-        "alignment": "columns",
+        "alignment": "full_width",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 24,
         "block_spacing": 8,
-        "border_top": false,
+        "border_top": true,
         "border_bottom": false
       }
     }
