@@ -16,15 +16,24 @@
 {%- assign show_urgency = block.settings.show_urgency -%}
 {%- assign hide_under_limit = block.settings.hide_under_limit | default: 5 -%}
 
-{%- if current_variant and current_variant.inventory_management != blank -%}
-  {%- if current_variant.inventory_quantity <= 0 or current_variant.inventory_quantity >= hide_under_limit -%}
-    {%- assign show_urgency = false -%}
+{%- assign urgency_state = 'in-stock' -%}
+{%- if current_variant -%}
+  {%- if current_variant.inventory_management != blank -%}
+    {%- if current_variant.inventory_quantity <= 0 -%}
+      {%- assign show_urgency = false -%}
+    {%- elsif current_variant.inventory_quantity < hide_under_limit -%}
+      {%- assign urgency_state = 'low-stock' -%}
+    {%- endif -%}
   {%- endif -%}
 {%- endif -%}
 
 <div id="product-urgency-section-{{ block.id }}" style="{% unless show_urgency %}display: none;{% endunless %}" {{ block.shopify_attributes }}>
-  <p class="text-xs font-medium text-amber-700">
-    {{ block.settings.urgency_text | default: "Kun få på lager – bestil snart" }}
+  <p id="product-urgency-text-{{ block.id }}" class="text-xs font-medium {% if urgency_state == 'low-stock' %}text-red-700{% else %}text-emerald-600{% endif %}">
+    {%- if urgency_state == 'low-stock' -%}
+      {{ block.settings.urgency_text | default: "Kun få på lager. Fri fragt på ordrer over 599 kr." }}
+    {%- else -%}
+      {{ block.settings.in_stock_text | default: "På lager. Fri fragt på ordrer over 599 kr." }}
+    {%- endif -%}
   </p>
 </div>
 
@@ -40,7 +49,9 @@
         }{%- unless forloop.last -%},{%- endunless -%}
       {%- endfor -%}
     ],
-    "hideUnderLimit": {{ hide_under_limit }}
+    "hideUnderLimit": {{ hide_under_limit }},
+    "urgencyText": {{ block.settings.urgency_text | default: "Kun få på lager. Fri fragt på ordrer over 599 kr." | json }},
+    "inStockText": {{ block.settings.in_stock_text | default: "På lager. Fri fragt på ordrer over 599 kr." | json }}
   }
 </script>
 
@@ -48,9 +59,10 @@
   document.addEventListener("DOMContentLoaded", () => {
     const dataEl = document.getElementById("product-urgency-variant-data-{{ block.id }}");
     const sectionEl = document.getElementById("product-urgency-section-{{ block.id }}");
-    if (!dataEl || !sectionEl) return;
+    const textEl = document.getElementById("product-urgency-text-{{ block.id }}");
+    if (!dataEl || !sectionEl || !textEl) return;
 
-    let urgencyData = { variants: [], hideUnderLimit: 5 };
+    let urgencyData = { variants: [], hideUnderLimit: 5, urgencyText: "", inStockText: "" };
     try {
       urgencyData = JSON.parse(dataEl.textContent);
     } catch (e) {
@@ -67,14 +79,25 @@
       if (!variant) return;
 
       let show = true;
+      let state = 'in-stock';
+
       if (variant.inventory_management) {
-        if (variant.inventory_quantity <= 0 || variant.inventory_quantity >= urgencyData.hideUnderLimit) {
+        if (variant.inventory_quantity <= 0) {
           show = false;
+        } else if (variant.inventory_quantity < urgencyData.hideUnderLimit) {
+          state = 'low-stock';
         }
       }
 
       if (show) {
         sectionEl.style.display = "";
+        if (state === 'low-stock') {
+          textEl.textContent = urgencyData.urgencyText;
+          textEl.className = "text-xs font-medium text-red-700";
+        } else {
+          textEl.textContent = urgencyData.inStockText;
+          textEl.className = "text-xs font-medium text-emerald-600";
+        }
       } else {
         sectionEl.style.display = "none";
       }
@@ -102,15 +125,21 @@
     {
       "type": "text",
       "id": "urgency_text",
-      "label": "Urgency Warning Text",
-      "default": "Kun få på lager – bestil snart"
+      "label": "Urgency Warning Text (Red)",
+      "default": "Kun få på lager. Fri fragt på ordrer over 599 kr."
+    },
+    {
+      "type": "text",
+      "id": "in_stock_text",
+      "label": "In Stock Text (Green)",
+      "default": "På lager. Fri fragt på ordrer over 599 kr."
     },
     {
       "type": "number",
       "id": "hide_under_limit",
-      "label": "Vis kun hvis under X enheder",
+      "label": "Tærskel for lavt lager",
       "default": 5,
-      "info": "Vis kun stock urgency hvis der er under dette antal enheder tilbage. Banneret skjules også, hvis varen er helt udsolgt."
+      "info": "Viser rød tekst (kun få på lager) hvis der er under dette antal enheder tilbage. Viser grøn tekst (på lager) hvis der er over eller lig med dette antal enheder tilbage. Banneret skjules hvis varen er helt udsolgt."
     },
     {
       "type": "range",

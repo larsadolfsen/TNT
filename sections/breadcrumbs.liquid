@@ -9,7 +9,7 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
   }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 840px) {
     #shopify-section-{{ section.id }} {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
@@ -211,14 +211,14 @@
       {%- assign parent_title = blog.title -%}
   {%- endcase -%}
 
-  <div class="mobile-breadcrumb md:hidden flex items-center h-12">
+  <div class="mobile-breadcrumb expanded:hidden flex items-center h-12">
     <a href="{{ parent_url }}" class="flex items-center gap-1 hover:underline text-on-surface-variant no-underline text-xs">
       <span class="material-symbols-outlined text-[16px] select-none">chevron_left</span>
       <span>{{ parent_title }}</span>
     </a>
   </div>
 
-  <div class="breadcrumbs-wrapper hidden md:block">
+  <div class="breadcrumbs-wrapper hidden expanded:block">
     <div class="breadcrumbs-fade-left opacity-0"></div>
     <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs text-on-surface-variant flex items-center gap-0.5 overflow-x-auto whitespace-nowrap h-12 hide-scrollbar" aria-label="Brødkrummer">
         

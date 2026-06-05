@@ -80,8 +80,8 @@
     {%- if show_menu and section.settings.menu != blank -%}
       {%- assign header_menu = linklists[section.settings.menu] -%}
       {%- if header_menu.links.size > 0 -%}
-        <nav class="w-full overflow-x-auto hide-scrollbar py-1 -mx-4 px-4 md:mx-0 md:px-0" aria-label="Kategori menu">
-          <ul class="flex items-center gap-5 whitespace-nowrap md:justify-center md:flex-wrap list-none p-0 m-0">
+        <nav class="w-full overflow-x-auto hide-scrollbar py-1 -mx-4 px-4 expanded:mx-0 expanded:px-0" aria-label="Kategori menu">
+          <ul class="flex items-center gap-5 whitespace-nowrap expanded:justify-center expanded:flex-wrap list-none p-0 m-0">
             {%- for link in header_menu.links -%}
               <li>
                 <a 
@@ -366,7 +366,7 @@
                   <span class="w-6 text-center text-[11px] text-primary font-bold">${item.quantity}</span>
                   <button onclick="changeQuantity('${item.key}', 1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">+</button>
                 </div>
-                <button onclick="removeItem('${item.key}')" class="w-8 h-8 flex items-center justify-center text-black hover:text-red-600 bg-transparent border-0 cursor-pointer transition-opacity duration-200 md:opacity-0 md:group-hover:opacity-100 opacity-100" aria-label="Fjern vare">
+                <button onclick="removeItem('${item.key}')" class="w-8 h-8 flex items-center justify-center text-black hover:text-red-600 bg-transparent border-0 cursor-pointer transition-opacity duration-200 expanded:opacity-0 expanded:group-hover:opacity-100 opacity-100" aria-label="Fjern vare">
                   <span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
                 </button>
               </div>
