@@ -61,7 +61,7 @@
         "heading": "",
         "heading_tag": "h3",
         "background_color": "light",
-        "alignment": "columns",
+        "alignment": "full_width",
         "padding_top": 0,
         "padding_bottom": 12,
         "padding_sides": 16,
