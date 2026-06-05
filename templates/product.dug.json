@@ -155,7 +155,8 @@
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0,
-            "payment_icons_height": 24
+            "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
+            "payment_icons_height": 16
           },
           "blocks": {}
         },
