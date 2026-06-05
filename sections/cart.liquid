@@ -37,7 +37,7 @@
             -%}
             {%- assign customized_title = item.properties._metervare_title | default: item.product.title -%}
             <p class="text-sm sm:text-base font-semibold text-primary truncate mb-1.5" title="{{ customized_title }}">{{ customized_title }}</p>
-            <div class="space-y-1 text-xs sm:text-sm text-on-surface-variant font-normal leading-normal max-w-sm mt-1">
+            <div class="space-y-1 text-xs sm:text-sm text-primary/85 font-normal leading-normal max-w-sm mt-1">
               <div class="flex justify-between gap-2">
                 <span>
                   {%- if item.properties._shape == "rund" -%}
@@ -80,7 +80,7 @@
             {%- else -%}
               <p class="text-sm sm:text-base font-semibold text-primary truncate" title="{{ item.product_title }}">{{ item.product_title }}</p>
               {%- if item.variant.title != 'Default Title' -%}
-                <p class="text-xs sm:text-sm text-on-surface-variant truncate">{{ item.variant.title }}</p>
+                <p class="text-xs sm:text-sm text-primary/85 truncate">{{ item.variant.title }}</p>
               {%- endif -%}
             {%- endif -%}
             <div class="mt-2 text-sm">

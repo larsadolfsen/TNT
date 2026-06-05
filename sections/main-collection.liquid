@@ -40,7 +40,7 @@
               <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
               <div class="flex items-center gap-2">
                 <input type="number" id="price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-                <span class="text-xs text-on-surface-variant">-</span>
+                <span class="text-xs text-primary/85">-</span>
                 <input type="number" id="price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
               </div>
             </div>
@@ -194,7 +194,7 @@
                       endif
                     endif
                   -%}
-                  <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                  <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer">
                     <input type="checkbox" name="{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
                     <span>{{ display_val }}</span>
                   </label>
@@ -212,7 +212,7 @@
       <!-- Mobile Controls & Info -->
       <div class="flex flex-col gap-4 mb-6">
         <div class="flex items-center justify-between">
-          <div class="text-xs text-on-surface-variant">
+          <div class="text-xs text-primary/85">
             Viser <span id="product-count-display" class="font-semibold text-primary">0</span> produkter
           </div>
           
@@ -270,7 +270,7 @@
               <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
               <div class="flex items-center gap-2">
                 <input type="number" id="mobile-price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-                <span class="text-xs text-on-surface-variant">-</span>
+                <span class="text-xs text-primary/85">-</span>
                 <input type="number" id="mobile-price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
               </div>
             </div>
@@ -424,7 +424,7 @@
                       endif
                     endif
                   -%}
-                  <label class="flex items-center gap-2 text-sm text-on-surface-variant cursor-pointer">
+                  <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer">
                     <input type="checkbox" name="mobile-{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
                     <span>{{ display_val }}</span>
                   </label>
@@ -835,7 +835,7 @@
     if (items.length === 0) {
       productGrid.innerHTML = `
         <div class="col-span-full py-12 text-center">
-          <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2">sentiment_dissatisfied</span>
+          <span class="material-symbols-outlined text-4xl text-primary/85 mb-2">sentiment_dissatisfied</span>
           <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
           <button onclick="clearAllFilters()" class="mt-4 text-xs text-secondary underline bg-transparent border-0 cursor-pointer">Ryd filtre</button>
         </div>
@@ -847,7 +847,7 @@
       let originalPriceHtml = "";
       if (product.originalPrice && product.originalPrice > product.price) {
         const displayOrig = product.originalPrice_formatted ? product.originalPrice_formatted : `${product.originalPrice.toFixed(2).replace('.', ',')} Kr.`;
-        originalPriceHtml = `<span class="text-[8px] sm:text-[9px] text-on-surface-variant line-through leading-none">${displayOrig}</span>`;
+        originalPriceHtml = `<span class="text-[8px] sm:text-[9px] text-primary/70 line-through leading-none">${displayOrig}</span>`;
       }
 
       let badgeHtml = "";
@@ -923,14 +923,14 @@
                   })()}
                 </div>
                 <span class="font-bold text-primary ml-1">${product.rating}</span>
-                <span class="text-on-surface-variant">(${product.reviews})</span>
+                <span class="text-primary/85">(${product.reviews})</span>
               </div>
             </div>
 
             <!-- Price & Buy Button (No divider border) -->
             <div class="mt-3 space-y-3">
               <div class="flex flex-col items-start gap-1">
-                <span class="text-[10px] sm:text-xs text-on-surface-variant leading-none">
+                <span class="text-[10px] sm:text-xs text-primary/85 leading-none">
                   ${priceLabel}
                 </span>
                 <div class="flex items-baseline gap-1.5 flex-wrap">

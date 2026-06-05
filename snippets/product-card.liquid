@@ -68,7 +68,7 @@
             loading="lazy"
           />
         {%- else -%}
-          <div class="w-full h-full flex items-center justify-center bg-outline-variant text-on-surface-variant">
+          <div class="w-full h-full flex items-center justify-center bg-outline-variant text-primary/85">
             <span class="material-symbols-outlined text-4xl">image</span>
           </div>
         {%- endif -%}
@@ -111,14 +111,14 @@
             {%- endfor -%}
           </div>
           <span class="font-bold text-primary ml-1">{{ rating }}</span>
-          <span class="text-on-surface-variant">({{ reviews_count }})</span>
+          <span class="text-primary/85">({{ reviews_count }})</span>
         </div>
       </div>
 
       <!-- Price & Buy Button (No divider border) -->
       <div class="mt-3 space-y-3">
         <div class="flex flex-col items-start gap-1">
-          <span class="text-xs sm:text-sm text-on-surface-variant leading-none">
+          <span class="text-xs sm:text-sm text-primary/85 leading-none">
             {%- if is_meter_product -%}
               Pris pr. meter
             {%- else -%}
@@ -130,7 +130,7 @@
               {%- if product.price_varies or is_meter_product -%}Fra {%- endif -%}{{ price | money }}
             </span>
             {%- if original_price > price -%}
-              <span class="text-xs text-on-surface-variant line-through leading-none">{{ original_price | money }}</span>
+              <span class="text-xs text-primary/70 line-through leading-none">{{ original_price | money }}</span>
             {%- endif -%}
           </div>
         </div>

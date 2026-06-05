@@ -35,11 +35,11 @@
       {{ display_price | money }}
     </span>
     {%- if suffix != blank -%}
-      <span class="text-sm text-on-surface-variant font-medium whitespace-nowrap">{{ suffix }}</span>
+      <span class="text-sm text-primary/85 font-medium whitespace-nowrap">{{ suffix }}</span>
     {%- endif -%}
   </div>
   {%- if block.settings.price_subtext != blank -%}
-    <p class="text-sm text-on-surface-variant mt-1.5">{{ block.settings.price_subtext }}</p>
+    <p class="text-sm text-primary/85 mt-1.5">{{ block.settings.price_subtext }}</p>
   {%- endif -%}
 </div>
 

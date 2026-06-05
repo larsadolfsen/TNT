@@ -73,7 +73,7 @@
         class="w-full h-10 pl-10 pr-4 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container focus:outline-none" 
         placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
       />
-      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">search</span>
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary/85 text-xl">search</span>
     </form>
 
     <!-- Menu under search bar -->
@@ -117,7 +117,7 @@
         {%- endif -%}
       </nav>
     </div>
-    <div class="pt-6 border-t border-outline-variant text-xs text-on-surface-variant space-y-2">
+    <div class="pt-6 border-t border-outline-variant text-xs text-primary/85 space-y-2">
       <p class="font-semibold text-primary">Brug for hjælp?</p>
       <p>Ring til os: +45 70 20 10 30</p>
       <p>E-mail: support@textilogvoksdug.dk</p>
@@ -140,10 +140,10 @@
     </div>
     <div class="pt-6 border-t border-outline-variant space-y-4">
       <div class="flex justify-between items-center text-sm">
-        <span class="text-on-surface-variant">Subtotal</span>
+        <span class="text-primary/85">Subtotal</span>
         <span id="cart-subtotal" class="font-bold text-primary text-lg">0,00 Kr.</span>
       </div>
-      <p class="text-xs text-on-surface-variant">Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr.</p>
+      <p class="text-xs text-primary/85">Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr.</p>
       <div class="flex flex-col gap-2">
         <a href="/checkout" class="w-full py-3 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all no-underline block">Gå til betaling</a>
         <button onclick="toggleCartDrawer(false)" class="w-full py-2 text-sm text-primary font-semibold hover:underline bg-transparent border-0 cursor-pointer">Fortsæt med at handle</button>
@@ -238,8 +238,8 @@
 
     if (cart.item_count === 0) {
       cartItemsContainer.innerHTML = `
-        <div class="py-12 text-center text-on-surface-variant flex flex-col items-center justify-center">
-          <span class="material-symbols-outlined text-4xl mb-2 text-on-surface-variant/40">shopping_basket</span>
+        <div class="py-12 text-center text-primary/85 flex flex-col items-center justify-center">
+          <span class="material-symbols-outlined text-4xl mb-2 text-primary/40">shopping_basket</span>
           <p class="text-sm font-semibold">Din indkøbskurv er tom.</p>
         </div>
       `;
@@ -322,7 +322,7 @@
         detailsHtml = `
           <div>
             <h4 class="text-sm sm:text-base font-semibold text-primary mb-1.5" style="white-space: normal; overflow: visible;" title="${customProductTitle}">${customProductTitle}</h4>
-            <div class="space-y-1 text-xs sm:text-sm text-on-surface-variant font-normal leading-normal">
+            <div class="space-y-1 text-xs sm:text-sm text-primary/85 font-normal leading-normal">
               <div class="flex justify-between gap-2">
                 <span>${labelText}: ${length} cm</span>
                 <span class="text-primary font-medium flex-shrink-0">${formatMoney(basePriceCents)}</span>
@@ -344,7 +344,7 @@
         detailsHtml = `
           <div>
             <h4 class="text-sm sm:text-base font-semibold text-primary" style="white-space: normal; overflow: visible;" title="${displayName}">${displayName}</h4>
-            ${displaySubtitle ? `<p class="text-xs sm:text-sm text-on-surface-variant truncate">${displaySubtitle}</p>` : ''}
+            ${displaySubtitle ? `<p class="text-xs sm:text-sm text-primary/85 truncate">${displaySubtitle}</p>` : ''}
           </div>
         `;
       }
