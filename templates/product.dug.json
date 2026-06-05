@@ -110,7 +110,7 @@
           "name": "Product Price",
           "settings": {
             "price_suffix": "pr. meter inkl. moms",
-            "price_subtext": "Skæres efter mål og sendes på rulle, så dugen er klar til brug når den ankommer.",
+            "price_subtext": "Skæres efter mål og sendes på rulle, så dugen er klar til brug når den ankommer. Der er 30 dages fuld returret, også på din dig.",
             "padding_top": 0,
             "padding_bottom": 12,
             "padding_sides": 0
@@ -156,7 +156,9 @@
             "padding_bottom": 0,
             "padding_sides": 0,
             "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
-            "payment_icons_height": 16
+            "payment_icons_height": 16,
+            "enable_sticky_buy_button": true,
+            "sticky_buy_button_text": "Køb"
           },
           "blocks": {}
         },
