@@ -2409,7 +2409,7 @@ html, body {
   font-family: var(--font-serif);
   font-weight: 700;
   color: var(--color-primary);
-  margin-bottom: 0;
+  margin-bottom: 12px;
   padding-left: 0;
   padding-right: 0;
 }
@@ -2424,7 +2424,7 @@ h3.row-section__heading {
 }
 @media (min-width: 840px) {
   .row-section__heading {
-    margin-bottom: 0;
+    margin-bottom: 16px;
   }
   h2.row-section__heading {
     font-size: var(--text-2xl);
