@@ -243,13 +243,13 @@
         "trust_countdown_GMJdXK",
         "trust_checkmark_9AbQBF"
       ],
-      "name": "Buy",
+      "name": "Row - Trust",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
-        "padding_top": 12,
+        "padding_top": 24,
         "padding_bottom": 12,
         "padding_sides": 32,
         "block_spacing": 8,
