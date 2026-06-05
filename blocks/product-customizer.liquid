@@ -88,10 +88,10 @@
         <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Vælg form</span>
       </div>
     </div>
-    <div class="grid grid-cols-3 gap-4 w-full">
+    <div class="grid grid-cols-4 gap-4 w-full">
 
       <!-- Firkantet dug -->
-      <div class="flex flex-col items-center gap-1 w-full">
+      <div class="flex flex-col items-center gap-1 w-full col-span-1">
         <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
           class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border-2 bg-white text-slate-900 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
           style="border-color:#f5c518" onclick="selectShape('firkantet')">
@@ -104,7 +104,7 @@
       </div>
 
       <!-- Rund dug -->
-      <div class="flex flex-col items-center gap-1 w-full">
+      <div class="flex flex-col items-center gap-1 w-full col-span-1">
         <button type="button" id="btn-shape-rund" data-shape="rund"
           class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
           onclick="selectShape('rund')">
@@ -117,7 +117,7 @@
       </div>
 
       <!-- Oval dug -->
-      <div class="flex flex-col items-center gap-1 w-full">
+      <div class="flex flex-col items-center gap-1 w-full col-span-1">
         <button type="button" id="btn-shape-oval" data-shape="oval"
           class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
           onclick="selectShape('oval')">
@@ -462,7 +462,8 @@
 
           const width = getVariantWidth(pricingVariant.title);
           if (calcMetervareLabel) {
-            calcMetervareLabel.textContent = `Metervare (${width}x${state.length} cm)`;
+            const labelText = (selectedShape === 'rund') ? 'Diameter' : 'Længde';
+            calcMetervareLabel.textContent = `${labelText}: ${state.length} cm`;
           }
           
           const singleClothPrice = pricingVariant.price * state.length;
@@ -473,9 +474,9 @@
           if (calcShapeRow) {
             if (shapeInfo) {
               calcShapeRow.style.display = "flex";
-              const shapeLabels = { firkantet: 'Firkantet dug', rund: 'Rund dug', oval: 'Oval dug' };
+              const shapeLabels = { firkantet: 'Form: Firkantet', rund: 'Form: Rund', oval: 'Form: Oval' };
               if (calcShapeLabel) {
-                calcShapeLabel.textContent = shapeLabels[selectedShape] || `${selectedShape} dug`;
+                calcShapeLabel.textContent = shapeLabels[selectedShape] || `Form: ${selectedShape.charAt(0).toUpperCase() + selectedShape.slice(1)}`;
               }
               if (calcShapePrice) {
                 calcShapePrice.textContent = formatDanishPrice(shapeInfo.price);

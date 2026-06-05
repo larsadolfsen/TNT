@@ -367,6 +367,11 @@ html, body {
   }
 }
 
+/* Make all direct children of full-width rows span the entire grid layout */
+.row-content--full-width > * {
+  grid-column: 1 / -1 !important;
+}
+
 /* Global shopify-block default spacing using CSS variables and low specificity */
 .shopify-block,
 shopify-block,

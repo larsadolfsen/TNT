@@ -29,6 +29,10 @@
       assign row_classes = row_classes | append: ' grid-layout row-content--no-columns'
     endif
   endif
+
+  if section.settings.alignment == 'full_width'
+    assign row_classes = row_classes | append: ' row-content--full-width'
+  endif
 -%}
 
 {%- style -%}

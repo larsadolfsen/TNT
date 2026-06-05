@@ -28,11 +28,11 @@
               assign width_surcharge_cents = item.properties._width_surcharge | default: "0" | plus: 0
               assign unit_price_cents = base_price_cents | plus: shape_surcharge_cents | plus: width_surcharge_cents
               
-              assign shape_name = "Firkantet dug"
+              assign shape_name = "Form: Firkantet"
               if item.properties._shape == "rund"
-                assign shape_name = "Rund dug"
+                assign shape_name = "Form: Rund"
               elsif item.properties._shape == "oval"
-                assign shape_name = "Oval dug"
+                assign shape_name = "Form: Oval"
               endif
             -%}
             {%- assign customized_title = item.properties._metervare_title | default: item.product.title -%}
@@ -40,11 +40,10 @@
             <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal max-w-sm mt-1">
               <div class="flex justify-between gap-2">
                 <span>
-                  Metervare
-                  {%- if item.variant.title != blank and item.variant.title != 'Default Title' -%}
-                    &nbsp;{{ item.variant.title }}
+                  {%- if item.properties._shape == "rund" -%}
+                    Diameter: {{ item.properties._length }} cm
                   {%- else -%}
-                    &nbsp;({{ item.properties._width }}x{{ item.properties._length }} cm)
+                    Længde: {{ item.properties._length }} cm
                   {%- endif -%}
                 </span>
                 <span class="text-primary font-medium flex-shrink-0">{{ base_price_cents | money }}</span>
