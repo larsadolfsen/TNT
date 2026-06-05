@@ -348,30 +348,6 @@
     "row_Rg3kFD": {
       "type": "row",
       "blocks": {
-        "card_ViAmkd": {
-          "type": "card",
-          "name": "t:general.card",
-          "settings": {
-            "card_design": "regular",
-            "width_cols": "4",
-            "background_color": "surface",
-            "border_color": "outline_variant",
-            "border_thickness": "thin",
-            "corner_radius": "medium",
-            "title": "",
-            "content": "<p>{{ closest.product.description }}</p>",
-            "card_link": "",
-            "alignment": "left",
-            "image": "{{ closest.product.featured_image }}",
-            "image_placement": "top",
-            "image_aspect_ratio": "square",
-            "image_overlay_opacity": 30,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
         "product_cross_sell_fm46Qc": {
           "type": "product-cross-sell",
           "settings": {
@@ -400,7 +376,6 @@
         }
       },
       "block_order": [
-        "card_ViAmkd",
         "product_cross_sell_fm46Qc",
         "product_banner_text_eaMntU"
       ],
@@ -484,6 +459,47 @@
         "padding_sides": 0,
         "block_spacing": 0
       }
+    },
+    "row_j7wR4H": {
+      "type": "row",
+      "blocks": {
+        "card_bNBzDD": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "card_design": "regular",
+            "width_cols": "4",
+            "background_color": "surface",
+            "border_color": "outline_variant",
+            "border_thickness": "thin",
+            "corner_radius": "medium",
+            "title": "",
+            "content": "<p>{{ closest.product.description }}</p>",
+            "card_link": "",
+            "alignment": "left",
+            "image": "{{ closest.product.featured_image }}",
+            "image_placement": "top",
+            "image_aspect_ratio": "square",
+            "image_overlay_opacity": 30,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "card_bNBzDD"
+      ],
+      "name": "Row",
+      "settings": {
+        "background_color": "light",
+        "alignment": "columns",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_sides": 24,
+        "block_spacing": 8
+      }
     }
   },
   "order": [
@@ -492,6 +508,7 @@
     "row_CQqaPe",
     "row_VY7RVT",
     "row_Rg3kFD",
-    "row_GqmzkT"
+    "row_GqmzkT",
+    "row_j7wR4H"
   ]
 }
