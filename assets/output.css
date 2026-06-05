@@ -1627,6 +1627,16 @@
       }
     }
   }
+  .hover\:bg-black\/5 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, #000 5%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-black) 5%, transparent);
+        }
+      }
+    }
+  }
   .hover\:bg-outline-variant\/40 {
     &:hover {
       @media (hover: hover) {
@@ -2330,14 +2340,8 @@ html, body {
   }
 }
 .accordion-trigger, .accordion-content {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-@media (min-width: 840px) {
-  .accordion-trigger, .accordion-content {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  padding-left: 0;
+  padding-right: 0;
 }
 .row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-trigger, .row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-content {
   padding-left: 1.5rem;
