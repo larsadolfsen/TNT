@@ -397,7 +397,7 @@
         "padding_sides": 0,
         "block_spacing": 0,
         "border_top": true,
-        "border_bottom": true
+        "border_bottom": false
       }
     },
     "row_CQqaPe": {
@@ -439,8 +439,8 @@
         "padding_bottom": 0,
         "padding_sides": 24,
         "block_spacing": 8,
-        "border_top": false,
-        "border_bottom": false
+        "border_top": true,
+        "border_bottom": true
       }
     },
     "row_Rg3kFD": {
