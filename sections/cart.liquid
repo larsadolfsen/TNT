@@ -36,8 +36,8 @@
               endif
             -%}
             {%- assign customized_title = item.properties._metervare_title | default: item.product.title -%}
-            <p class="text-xs font-semibold text-primary truncate mb-1.5" title="{{ customized_title }}">{{ customized_title }}</p>
-            <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal max-w-sm mt-1">
+            <p class="text-sm sm:text-base font-semibold text-primary truncate mb-1.5" title="{{ customized_title }}">{{ customized_title }}</p>
+            <div class="space-y-1 text-xs sm:text-sm text-on-surface-variant font-normal leading-normal max-w-sm mt-1">
               <div class="flex justify-between gap-2">
                 <span>
                   {%- if item.properties._shape == "rund" -%}
@@ -65,25 +65,25 @@
                 <span class="flex-shrink-0">{{ unit_price_cents | money }}</span>
               </div>
               {%- if item.quantity > 1 -%}
-                <div class="flex justify-between border-t border-outline-variant/40 pt-1 text-primary text-xs font-semibold">
+                <div class="flex justify-between border-t border-outline-variant/40 pt-1 text-primary text-sm sm:text-base font-semibold">
                   <span>I alt ({{ item.quantity }} stk.)</span>
                   <span class="flex-shrink-0">{{ item.final_line_price | money }}</span>
                 </div>
               {%- endif -%}
             </div>
-            <div class="mt-2 text-xs">
+            <div class="mt-2 text-sm">
               {{ 'cart.remove' | t | link_to: item.url_to_remove, class: 'text-red-600 hover:underline font-medium' }}
             </div>
           {%- else -%}
             {%- if item.properties._length != blank -%}
-              <p class="text-xs font-semibold text-primary truncate" title="{{ item.title }}">{{ item.title }}</p>
+              <p class="text-sm sm:text-base font-semibold text-primary truncate" title="{{ item.title }}">{{ item.title }}</p>
             {%- else -%}
-              <p class="text-xs font-semibold text-primary truncate" title="{{ item.product_title }}">{{ item.product_title }}</p>
+              <p class="text-sm sm:text-base font-semibold text-primary truncate" title="{{ item.product_title }}">{{ item.product_title }}</p>
               {%- if item.variant.title != 'Default Title' -%}
-                <p class="text-[10px] text-on-surface-variant truncate">{{ item.variant.title }}</p>
+                <p class="text-xs sm:text-sm text-on-surface-variant truncate">{{ item.variant.title }}</p>
               {%- endif -%}
             {%- endif -%}
-            <div class="mt-2 text-xs">
+            <div class="mt-2 text-sm">
               {{ 'cart.remove' | t | link_to: item.url_to_remove, class: 'text-red-600 hover:underline font-medium' }}
             </div>
           {%- endif -%}

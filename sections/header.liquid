@@ -53,7 +53,7 @@
         {%- endunless -%}
         <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); toggleCartDrawer(true);" class="relative cursor-pointer text-primary no-underline flex items-center justify-center">
           <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
-          <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
+          <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
             {{ cart.item_count }}
           </span>
         </a>
@@ -86,7 +86,7 @@
               <li>
                 <a 
                   href="{{ link.url }}" 
-                  class="text-sm font-medium text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}"
+                  class="text-sm sm:text-base font-medium text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}"
                   {% if link.active %}aria-current="page"{% endif %}
                 >
                   {{ link.title }}
@@ -109,10 +109,10 @@
         <button onclick="toggleMobileMenu(false)" class="material-symbols-outlined text-2xl text-primary bg-transparent border-0 cursor-pointer" aria-label="Luk menu">close</button>
       </div>
       <nav class="space-y-4 flex flex-col">
-        <a href="{{ routes.root_url }}" class="block text-sm font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">Forside</a>
+        <a href="{{ routes.root_url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">Forside</a>
         {%- if section.settings.menu != blank -%}
           {%- for link in linklists[section.settings.menu].links -%}
-            <a href="{{ link.url }}" class="block text-sm font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">{{ link.title }}</a>
+            <a href="{{ link.url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">{{ link.title }}</a>
           {%- endfor -%}
         {%- endif -%}
       </nav>
@@ -143,10 +143,10 @@
         <span class="text-on-surface-variant">Subtotal</span>
         <span id="cart-subtotal" class="font-bold text-primary text-lg">0,00 Kr.</span>
       </div>
-      <p class="text-[10px] text-on-surface-variant">Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr.</p>
+      <p class="text-xs text-on-surface-variant">Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr.</p>
       <div class="flex flex-col gap-2">
         <a href="/checkout" class="w-full py-3 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all no-underline block">Gå til betaling</a>
-        <button onclick="toggleCartDrawer(false)" class="w-full py-2 text-xs text-primary font-semibold hover:underline bg-transparent border-0 cursor-pointer">Fortsæt med at handle</button>
+        <button onclick="toggleCartDrawer(false)" class="w-full py-2 text-sm text-primary font-semibold hover:underline bg-transparent border-0 cursor-pointer">Fortsæt med at handle</button>
       </div>
     </div>
   </div>
@@ -321,10 +321,10 @@
 
         detailsHtml = `
           <div>
-            <h4 class="font-sans text-xs font-semibold text-primary mb-1.5" style="font-family: ui-sans-serif, system-ui, sans-serif; white-space: normal; overflow: visible;" title="${customProductTitle}">${customProductTitle}</h4>
-            <div class="space-y-1 text-[11px] text-on-surface-variant font-normal leading-normal">
+            <h4 class="text-sm sm:text-base font-semibold text-primary mb-1.5" style="white-space: normal; overflow: visible;" title="${customProductTitle}">${customProductTitle}</h4>
+            <div class="space-y-1 text-xs sm:text-sm text-on-surface-variant font-normal leading-normal">
               <div class="flex justify-between gap-2">
-                <span class="font-sans" style="font-family: ui-sans-serif, system-ui, sans-serif;">${labelText}: ${length} cm</span>
+                <span>${labelText}: ${length} cm</span>
                 <span class="text-primary font-medium flex-shrink-0">${formatMoney(basePriceCents)}</span>
               </div>
               ${shapeLine}
@@ -343,8 +343,8 @@
 
         detailsHtml = `
           <div>
-            <h4 class="font-sans text-xs font-semibold text-primary" style="font-family: ui-sans-serif, system-ui, sans-serif; white-space: normal; overflow: visible;" title="${displayName}">${displayName}</h4>
-            ${displaySubtitle ? `<p class="text-[10px] text-on-surface-variant truncate">${displaySubtitle}</p>` : ''}
+            <h4 class="text-sm sm:text-base font-semibold text-primary" style="white-space: normal; overflow: visible;" title="${displayName}">${displayName}</h4>
+            ${displaySubtitle ? `<p class="text-xs sm:text-sm text-on-surface-variant truncate">${displaySubtitle}</p>` : ''}
           </div>
         `;
       }
@@ -358,14 +358,14 @@
               <div class="flex items-center gap-2">
                 <div class="flex items-center border border-outline-variant rounded-full bg-surface-container overflow-hidden">
                   <button onclick="changeQuantity('${item.key}', -1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">-</button>
-                  <span class="w-6 text-center text-[11px] text-primary font-bold">${item.quantity}</span>
+                  <span class="w-6 text-center text-xs sm:text-sm text-primary font-bold">${item.quantity}</span>
                   <button onclick="changeQuantity('${item.key}', 1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">+</button>
                 </div>
                 <button onclick="removeItem('${item.key}')" class="w-8 h-8 flex items-center justify-center text-black hover:text-red-600 bg-transparent border-0 cursor-pointer transition-opacity duration-200 md:opacity-0 md:group-hover:opacity-100 opacity-100" aria-label="Fjern vare">
                   <span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
                 </button>
               </div>
-              <span class="text-xs font-bold text-primary">${formatMoney(linePrice)}</span>
+              <span class="text-sm sm:text-base font-bold text-primary">${formatMoney(linePrice)}</span>
             </div>
           </div>
         </div>

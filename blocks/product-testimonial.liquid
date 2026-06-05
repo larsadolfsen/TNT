@@ -114,14 +114,14 @@
       <div class="bg-white p-6 rounded-2xl shadow-sm space-y-3 italic text-center max-w-lg testimonial-single-card-{{ block.id }}">
         <div class="flex justify-center text-amber-500 mb-2">
           {%- for i in (1..block.settings.stars) -%}
-            <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1; font-size: 14px;">star</span>
           {%- endfor -%}
         </div>
         {%- if block.settings.quote != blank -%}
-          <p class="text-sm text-primary">"{{ block.settings.quote }}"</p>
+          <p class="text-base text-primary">"{{ block.settings.quote }}"</p>
         {%- endif -%}
         {%- if block.settings.author != blank -%}
-          <p class="text-xs font-bold text-on-surface-variant not-italic">— {{ block.settings.author }}</p>
+          <p class="text-sm font-semibold text-primary/80 not-italic">— {{ block.settings.author }}</p>
         {%- endif -%}
       </div>
     {%- elsif testimonial_count > 1 -%}
@@ -137,13 +137,13 @@
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars) -%}
-                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1; font-size: 14px;">star</span>
                   {%- endfor -%}
                 </div>
-                <p class="text-sm text-primary">"{{ block.settings.quote }}"</p>
+                <p class="text-base text-primary">"{{ block.settings.quote }}"</p>
               </div>
               {%- if block.settings.author != blank -%}
-                <p class="text-xs font-bold text-on-surface-variant not-italic mt-2">— {{ block.settings.author }}</p>
+                <p class="text-sm font-semibold text-primary/80 not-italic mt-2">— {{ block.settings.author }}</p>
               {%- endif -%}
             </div>
           {%- endif -%}
@@ -154,13 +154,13 @@
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars_2) -%}
-                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1; font-size: 14px;">star</span>
                   {%- endfor -%}
                 </div>
-                <p class="text-sm text-primary">"{{ block.settings.quote_2 }}"</p>
+                <p class="text-base text-primary">"{{ block.settings.quote_2 }}"</p>
               </div>
               {%- if block.settings.author_2 != blank -%}
-                <p class="text-xs font-bold text-on-surface-variant not-italic mt-2">— {{ block.settings.author_2 }}</p>
+                <p class="text-sm font-semibold text-primary/80 not-italic mt-2">— {{ block.settings.author_2 }}</p>
               {%- endif -%}
             </div>
           {%- endif -%}
@@ -171,13 +171,13 @@
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars_3) -%}
-                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1; font-size: 14px;">star</span>
                   {%- endfor -%}
                 </div>
-                <p class="text-sm text-primary">"{{ block.settings.quote_3 }}"</p>
+                <p class="text-base text-primary">"{{ block.settings.quote_3 }}"</p>
               </div>
               {%- if block.settings.author_3 != blank -%}
-                <p class="text-xs font-bold text-on-surface-variant not-italic mt-2">— {{ block.settings.author_3 }}</p>
+                <p class="text-sm font-semibold text-primary/80 not-italic mt-2">— {{ block.settings.author_3 }}</p>
               {%- endif -%}
             </div>
           {%- endif -%}
@@ -188,13 +188,13 @@
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars_4) -%}
-                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px;">star</span>
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1; font-size: 14px;">star</span>
                   {%- endfor -%}
                 </div>
-                <p class="text-sm text-primary">"{{ block.settings.quote_4 }}"</p>
+                <p class="text-base text-primary">"{{ block.settings.quote_4 }}"</p>
               </div>
               {%- if block.settings.author_4 != blank -%}
-                <p class="text-xs font-bold text-on-surface-variant not-italic mt-2">— {{ block.settings.author_4 }}</p>
+                <p class="text-sm font-semibold text-primary/80 not-italic mt-2">— {{ block.settings.author_4 }}</p>
               {%- endif -%}
             </div>
           {%- endif -%}

@@ -78,98 +78,101 @@
 <!-- Hidden element to signal to product-buy-buttons that customizer is active -->
 <div id="shape-selector" style="display: none;"></div>
 
-<div class="w-full border-y border-slate-100" {{ block.shopify_attributes }}>
-  <div class="flex flex-col gap-4">
+<div class="w-full border-y border-slate-100 pt-7 pb-3" {{ block.shopify_attributes }}>
+  <div class="flex flex-col">
 
     <!-- Step 1: Shape Selector -->
-    <div class="flex items-start gap-3">
-      <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full mt-0.5 shrink-0">1</span>
-      <div class="flex flex-col w-full">
-        <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Vælg form</span>
+    <div class="flex flex-col gap-3">
+      <div class="flex items-start gap-3">
+        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">1</span>
+        <div class="flex flex-col w-full">
+          <span class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg form</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-4 gap-4 w-full">
+
+        <!-- Firkantet dug -->
+        <div class="flex flex-col items-center gap-1 w-full col-span-1">
+          <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
+            class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border-2 bg-white text-slate-900 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
+            style="border-color:#f5c518" onclick="selectShape('firkantet')">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
+              <rect x="3" y="6" width="18" height="12" rx="1.5"/>
+            </svg>
+            <span style="font-size:13px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Firkantet</span>
+          </button>
+          <span class="text-sm text-on-surface-variant text-center w-full mt-1">{{ firkantet_price_formatted }}</span>
+        </div>
+
+        <!-- Rund dug -->
+        <div class="flex flex-col items-center gap-1 w-full col-span-1">
+          <button type="button" id="btn-shape-rund" data-shape="rund"
+            class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
+            onclick="selectShape('rund')">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
+              <circle cx="12" cy="12" r="8.5"/>
+            </svg>
+            <span style="font-size:13px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Rund</span>
+          </button>
+          <span class="text-sm text-on-surface-variant text-center w-full mt-1">{{ rund_price_formatted }}</span>
+        </div>
+
+        <!-- Oval dug -->
+        <div class="flex flex-col items-center gap-1 w-full col-span-1">
+          <button type="button" id="btn-shape-oval" data-shape="oval"
+            class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
+            onclick="selectShape('oval')">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+              <rect x="3" y="8" width="18" height="8" rx="4"/>
+            </svg>
+            <span style="font-size:13px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Oval</span>
+          </button>
+          <span class="text-sm text-on-surface-variant text-center w-full mt-1">{{ oval_price_formatted }}</span>
+        </div>
+
       </div>
     </div>
-    <div class="grid grid-cols-4 gap-4 w-full">
-
-      <!-- Firkantet dug -->
-      <div class="flex flex-col items-center gap-1 w-full col-span-1">
-        <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
-          class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border-2 bg-white text-slate-900 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
-          style="border-color:#f5c518" onclick="selectShape('firkantet')">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
-            <rect x="3" y="6" width="18" height="12" rx="1.5"/>
-          </svg>
-          <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Firkantet</span>
-        </button>
-        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ firkantet_price_formatted }}</span>
-      </div>
-
-      <!-- Rund dug -->
-      <div class="flex flex-col items-center gap-1 w-full col-span-1">
-        <button type="button" id="btn-shape-rund" data-shape="rund"
-          class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
-          onclick="selectShape('rund')">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
-            <circle cx="12" cy="12" r="8.5"/>
-          </svg>
-          <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Rund</span>
-        </button>
-        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ rund_price_formatted }}</span>
-      </div>
-
-      <!-- Oval dug -->
-      <div class="flex flex-col items-center gap-1 w-full col-span-1">
-        <button type="button" id="btn-shape-oval" data-shape="oval"
-          class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
-          onclick="selectShape('oval')">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
-            <rect x="3" y="8" width="18" height="8" rx="4"/>
-          </svg>
-          <span style="font-size:10px;font-weight:600;letter-spacing:0.02em;line-height:1.2;text-align:center">Oval</span>
-        </button>
-        <span class="text-xs text-on-surface-variant text-center w-full mt-1">{{ oval_price_formatted }}</span>
-      </div>
-
-    </div>
-
 
     <!-- Step 2: Length Selection -->
-    <div class="flex items-start gap-3">
-      <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full mt-0.5 shrink-0">2</span>
-      <div class="flex flex-col">
-        <span id="label-length" class="font-bold text-sm uppercase tracking-wider text-slate-800">Vælg længde</span>
-        <p class="text-xs text-on-surface-variant mt-1">Vi anbefaler ca. 20 cm til nedhæng i hver ende.</p>
+    <div class="flex flex-col gap-3 mt-6">
+      <div class="flex items-start gap-3">
+        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
+        <div class="flex flex-col">
+          <span id="label-length" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg længde</span>
+          <p class="text-sm text-on-surface-variant mt-1">Vi anbefaler ca. 20 cm til nedhæng i hver ende.</p>
+        </div>
       </div>
-    </div>
 
-    <!-- Pill-shaped Stepper -->
-    <div class="w-full">
-      <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm select-none">
-        <!-- Minus button -->
-        <button type="button" id="btn-length-minus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
-          &mdash;
-        </button>
-        <!-- Value display -->
-        <span id="display-length" class="text-center font-bold text-slate-900 text-base">200 cm</span>
-        <!-- Plus button -->
-        <button type="button" id="btn-length-plus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
-          &#43;
-        </button>
+      <!-- Pill-shaped Stepper -->
+      <div class="w-full">
+        <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm select-none">
+          <!-- Minus button -->
+          <button type="button" id="btn-length-minus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+            &mdash;
+          </button>
+          <!-- Value display -->
+          <span id="display-length" class="text-center font-bold text-slate-900 text-xl">200 cm</span>
+          <!-- Plus button -->
+          <button type="button" id="btn-length-plus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
+            &#43;
+          </button>
+        </div>
+        <!-- Dynamic calculation info under length selector -->
+        <div id="length-calculation" class="text-sm text-on-surface-variant mt-1.5 text-center w-full"></div>
       </div>
-      <!-- Dynamic calculation info under length selector -->
-      <div id="length-calculation" class="text-xs text-on-surface-variant mt-1.5 text-center w-full"></div>
-    </div>
 
-    <!-- Validation Warning Message -->
-    <div id="customizer-warning" class="hidden w-full p-3 bg-rose-50 border border-rose-200 rounded-2xl text-xs text-rose-600 flex items-center gap-2 mt-1">
-      <span class="material-symbols-outlined text-rose-500 text-sm">warning</span>
-      <span id="customizer-warning-text"></span>
+      <!-- Validation Warning Message -->
+      <div id="customizer-warning" class="hidden w-full p-3 bg-rose-50 border border-rose-200 rounded-2xl text-sm text-rose-600 flex items-center gap-2 mt-1">
+        <span class="material-symbols-outlined text-rose-500 text-sm">warning</span>
+        <span id="customizer-warning-text"></span>
+      </div>
     </div>
 
     <!-- Step 3: Quantity Selector -->
-    <div class="flex flex-col gap-2 mt-2 w-full">
+    <div class="flex flex-col gap-2 mt-3 w-full">
       <div class="flex items-center gap-3">
-        <span class="w-6 h-6 flex items-center justify-center bg-slate-900 text-white text-xs font-bold rounded-full">3</span>
-        <span class="font-bold text-sm uppercase tracking-wider text-slate-800">Antal</span>
+        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full">3</span>
+        <span class="font-bold text-base uppercase tracking-wider text-slate-800">Antal</span>
       </div>
       <div class="flex w-full h-12 justify-between items-center bg-white border border-slate-200 rounded-full px-4 shadow-sm select-none">
         <!-- Minus button -->
@@ -177,7 +180,7 @@
           &mdash;
         </button>
         <!-- Value display -->
-        <span id="display-qty" class="text-center font-bold text-slate-900 text-base">1</span>
+        <span id="display-qty" class="text-center font-bold text-slate-900 text-xl">1</span>
         <!-- Plus button -->
         <button type="button" id="btn-qty-plus" class="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-955 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none">
           &#43;

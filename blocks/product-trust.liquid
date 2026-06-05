@@ -16,18 +16,18 @@
   <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1" {{ block.shopify_attributes }}>
     <div class="flex items-center gap-1">
       <div class="flex text-amber-500">
-        <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px; line-height: 1;">star</span>
-        <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px; line-height: 1;">star</span>
-        <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px; line-height: 1;">star</span>
-        <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px; line-height: 1;">star</span>
-        <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1; font-size: 12px; line-height: 1;">star</span>
+        <span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1; font-size: 15px; line-height: 1;">star</span>
+        <span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1; font-size: 15px; line-height: 1;">star</span>
+        <span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1; font-size: 15px; line-height: 1;">star</span>
+        <span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1; font-size: 15px; line-height: 1;">star</span>
+        <span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1; font-size: 15px; line-height: 1;">star</span>
       </div>
-      <span class="text-xs font-medium text-primary">
+      <span class="text-sm font-semibold text-primary">
         {{ block.settings.rating_score | default: "4,8" }} ({{ block.settings.rating_count | default: "163" }})
       </span>
     </div>
     {%- if block.settings.badge_text != blank -%}
-      <span class="text-xs text-on-surface-variant">
+      <span class="text-sm text-on-surface-variant">
         {{ block.settings.badge_text }}
       </span>
     {%- endif -%}

@@ -74,39 +74,39 @@
         {%- endif -%}
       </a>
       {%- if badge != blank -%}
-        <span class="absolute top-2 left-2 bg-primary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">{{ badge }}</span>
+        <span class="absolute top-2 left-2 bg-primary text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">{{ badge }}</span>
       {%- elsif original_price > price -%}
         {%- assign savings = original_price | minus: price | times: 100 | divided_by: original_price -%}
-        <span class="absolute top-2 left-2 bg-secondary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">Spar {{ savings }}%</span>
+        <span class="absolute top-2 left-2 bg-secondary text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">Spar {{ savings }}%</span>
       {%- endif -%}
     </div>
 
     <!-- Info Zone -->
     <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
       <div class="space-y-1">
-        <h3 class="font-sans text-xs sm:text-sm font-bold text-primary leading-tight hover:text-secondary mb-1">
+        <h3 class="text-sm sm:text-base font-bold text-primary leading-tight hover:text-secondary mb-1">
           <a href="{{ product.url }}" class="text-primary no-underline hover:text-secondary line-clamp-2">{{ product.title }}</a>
         </h3>
         
         <!-- Rating: 5 Stars -->
-        <div class="flex items-center gap-1 text-[10px] text-secondary mt-1">
+        <div class="flex items-center gap-1 text-xs sm:text-sm text-secondary mt-1">
           <div class="flex text-[#FFB800] gap-0.5">
             {%- assign rating_floor = rating | floor -%}
             {%- assign decimal = rating | minus: rating_floor -%}
             {%- assign rating_floor_plus_1 = rating_floor | plus: 1 -%}
             {%- for i in (1..5) -%}
               {%- if i <= rating_floor -%}
-                <span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>
+                <span class="material-symbols-outlined text-[14px] filled-star select-none" style="font-size: 14px; line-height: 1;">star</span>
               {%- elsif i == rating_floor_plus_1 -%}
                 {%- if decimal >= 0.75 -%}
-                  <span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>
+                  <span class="material-symbols-outlined text-[14px] filled-star select-none" style="font-size: 14px; line-height: 1;">star</span>
                 {%- elsif decimal >= 0.25 -%}
-                  <span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star_half</span>
+                  <span class="material-symbols-outlined text-[14px] filled-star select-none" style="font-size: 14px; line-height: 1;">star_half</span>
                 {%- else -%}
-                  <span class="material-symbols-outlined text-[12px] text-outline-variant select-none" style="font-size: 12px; line-height: 1;">star</span>
+                  <span class="material-symbols-outlined text-[14px] text-outline-variant select-none" style="font-size: 14px; line-height: 1;">star</span>
                 {%- endif -%}
               {%- else -%}
-                <span class="material-symbols-outlined text-[12px] text-outline-variant select-none" style="font-size: 12px; line-height: 1;">star</span>
+                <span class="material-symbols-outlined text-[14px] text-outline-variant select-none" style="font-size: 14px; line-height: 1;">star</span>
               {%- endif -%}
             {%- endfor -%}
           </div>
@@ -118,7 +118,7 @@
       <!-- Price & Buy Button (No divider border) -->
       <div class="mt-3 space-y-3">
         <div class="flex flex-col items-start gap-1">
-          <span class="text-[10px] sm:text-xs text-on-surface-variant leading-none">
+          <span class="text-xs sm:text-sm text-on-surface-variant leading-none">
             {%- if is_meter_product -%}
               Pris pr. meter
             {%- else -%}
@@ -126,18 +126,18 @@
             {%- endif -%}
           </span>
           <div class="flex items-baseline gap-1.5 flex-wrap">
-            <span class="text-xs sm:text-sm md:text-base font-bold text-primary leading-none">
+            <span class="text-sm sm:text-base md:text-lg font-bold text-primary leading-none">
               {%- if product.price_varies or is_meter_product -%}Fra {%- endif -%}{{ price | money }}
             </span>
             {%- if original_price > price -%}
-              <span class="text-[8px] sm:text-[9px] text-on-surface-variant line-through leading-none">{{ original_price | money }}</span>
+              <span class="text-xs text-on-surface-variant line-through leading-none">{{ original_price | money }}</span>
             {%- endif -%}
           </div>
         </div>
 
         <button 
           onclick="window.addToCart('{{ variant.id }}')" 
-          class="w-full bg-accent hover:brightness-95 text-primary py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors focus:outline-none text-[11px] sm:text-xs font-bold border-0 cursor-pointer" 
+          class="w-full bg-accent hover:brightness-95 text-primary py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors focus:outline-none text-xs sm:text-sm font-bold border-0 cursor-pointer" 
           aria-label="Køb {{ product.title | escape }}"
         >
           <span>Køb</span>

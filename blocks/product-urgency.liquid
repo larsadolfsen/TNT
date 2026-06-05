@@ -28,7 +28,7 @@
 {%- endif -%}
 
 <div id="product-urgency-section-{{ block.id }}" style="{% unless show_urgency %}display: none;{% endunless %}" {{ block.shopify_attributes }}>
-  <p id="product-urgency-text-{{ block.id }}" class="text-xs font-medium {% if urgency_state == 'low-stock' %}text-red-700{% else %}text-emerald-600{% endif %}">
+  <p id="product-urgency-text-{{ block.id }}" class="text-sm font-semibold {% if urgency_state == 'low-stock' %}text-red-700{% else %}text-emerald-600{% endif %}">
     {%- if urgency_state == 'low-stock' -%}
       {{ block.settings.urgency_text | default: "Kun få på lager. Fri fragt på ordrer over 599 kr." }}
     {%- else -%}
@@ -93,10 +93,10 @@
         sectionEl.style.display = "";
         if (state === 'low-stock') {
           textEl.textContent = urgencyData.urgencyText;
-          textEl.className = "text-xs font-medium text-red-700";
+          textEl.className = "text-sm font-semibold text-red-700";
         } else {
           textEl.textContent = urgencyData.inStockText;
-          textEl.className = "text-xs font-medium text-emerald-600";
+          textEl.className = "text-sm font-semibold text-emerald-600";
         }
       } else {
         sectionEl.style.display = "none";
