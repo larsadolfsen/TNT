@@ -578,4 +578,9 @@ h3.row-section__heading {
   }
 }
 
+/* Ensure heading elements with .font-sans class respect the sans-serif font family */
+h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sans {
+  font-family: var(--font-sans);
+}
+
 
