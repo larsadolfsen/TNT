@@ -247,10 +247,10 @@
       "settings": {
         "heading": "",
         "heading_tag": "h3",
-        "background_color": "light",
+        "background_color": "shade",
         "alignment": "columns",
         "padding_top": 24,
-        "padding_bottom": 24,
+        "padding_bottom": 0,
         "padding_sides": 32,
         "block_spacing": 8,
         "border_top": false,
@@ -340,7 +340,7 @@
       "settings": {
         "heading": "",
         "heading_tag": "h3",
-        "background_color": "light",
+        "background_color": "shade",
         "alignment": "columns",
         "padding_top": 48,
         "padding_bottom": 48,
