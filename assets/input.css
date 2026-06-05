@@ -156,6 +156,11 @@ h4 {
   }
 }
 
+/* Card Rich Text Images */
+.card-rte img {
+  border-radius: 1rem;
+}
+
 /* Product Page Mobile Breakout Layout */
 @media (width < --theme(--breakpoint-md)) {
   /* Prevent clipping of full width mobile media gallery */
