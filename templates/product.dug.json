@@ -58,12 +58,16 @@
       ],
       "name": "Row",
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 12,
         "padding_sides": 16,
-        "block_spacing": 0
+        "block_spacing": 0,
+        "border_top": true,
+        "border_bottom": true
       }
     },
     "row_PUJcnW": {
@@ -86,12 +90,16 @@
       ],
       "name": "Row - Product image",
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 12,
         "padding_sides": 16,
-        "block_spacing": 0
+        "block_spacing": 0,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_dF89D3": {
@@ -130,12 +138,16 @@
       ],
       "name": "Row - Pris",
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "full_width",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 16,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_YA9kap": {
@@ -188,12 +200,16 @@
       ],
       "name": "Row - Customizer",
       "settings": {
+        "heading": "Overskrift",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "full_width",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 16,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_eTcPKr": {
@@ -229,12 +245,16 @@
       ],
       "name": "Buy",
       "settings": {
+        "heading": "Overskrift",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 16,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_p6nNCG": {
@@ -266,6 +286,7 @@
               "type": "material-badge",
               "name": "Material Badge",
               "settings": {
+                "width_cols": "4",
                 "icon": "filter_vintage",
                 "title": "OEKO-TEX® Standard 100"
               },
@@ -275,6 +296,7 @@
               "type": "material-badge",
               "name": "Material Badge",
               "settings": {
+                "width_cols": "4",
                 "icon": "eco",
                 "title": "100% Phthalatfri"
               },
@@ -316,12 +338,16 @@
       ],
       "name": "Row",
       "settings": {
+        "heading": "Overskrift",
+        "heading_tag": "h3",
         "background_color": "shade",
         "alignment": "columns",
         "padding_top": 48,
         "padding_bottom": 48,
         "padding_sides": 16,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_VY7RVT": {
@@ -362,12 +388,16 @@
       ],
       "name": "Productspecifications",
       "settings": {
+        "heading": "Overskrift",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "full_width",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
-        "block_spacing": 0
+        "block_spacing": 0,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_CQqaPe": {
@@ -401,12 +431,16 @@
       ],
       "name": "Reviews",
       "settings": {
+        "heading": "Overskrift",
+        "heading_tag": "h3",
         "background_color": "shade",
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 24,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_Rg3kFD": {
@@ -445,12 +479,16 @@
       ],
       "name": "Mersalg",
       "settings": {
+        "heading": "Overskrift",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "left",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 24,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_GqmzkT": {
@@ -516,12 +554,16 @@
       ],
       "name": "FAQ",
       "settings": {
+        "heading": "Overskrift",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "full_width",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 0,
-        "block_spacing": 0
+        "block_spacing": 0,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_j7wR4H": {
@@ -557,12 +599,16 @@
       ],
       "name": "Row",
       "settings": {
+        "heading": "Overskrift",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 24,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     }
   },
