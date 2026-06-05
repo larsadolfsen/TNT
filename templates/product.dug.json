@@ -328,22 +328,12 @@
             "open_by_default": false
           },
           "blocks": {}
-        },
-        "product_accordions_xFiWe3": {
-          "type": "product-accordions",
-          "settings": {
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "accordion_NzD7JY",
         "accordion_6kXXUF",
-        "accordion_6WF8D8",
-        "product_accordions_xFiWe3"
+        "accordion_6WF8D8"
       ],
       "name": "Productspecifications",
       "settings": {
@@ -395,6 +385,7 @@
         },
         "product_banner_text_eaMntU": {
           "type": "product-banner-text",
+          "disabled": true,
           "settings": {
             "image": "{{ product.featured_image }}",
             "heading": "",
