@@ -147,12 +147,7 @@
       <div class="flex items-start gap-3">
         <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
-          <div class="flex items-center justify-between gap-2 w-full">
-            <span id="label-length" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg længde</span>
-            <button type="button" id="btn-add-40cm" class="text-xs bg-slate-900 text-white px-2.5 py-1 rounded-full font-medium cursor-pointer hover:bg-slate-800 transition-colors shrink-0 focus:outline-none">
-              Tilføj nedhæng
-            </button>
-          </div>
+          <span id="label-length" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg længde</span>
           <p class="text-sm text-primary/85 mt-1">Vi anbefaler ca. 20 cm til nedhæng i hver ende.</p>
         </div>
       </div>
@@ -591,17 +586,7 @@
       });
     }
 
-    const btnAdd40cm = document.getElementById("btn-add-40cm");
-    if (btnAdd40cm && displayLength) {
-      btnAdd40cm.addEventListener("click", () => {
-        const maxAllowed = (selectedShape === 'rund') ? maxWidthLimit : 9999;
-        if (state.length < maxAllowed) {
-          state.length = clampLength(state.length + 40);
-          displayLength.value = state.length;
-          updateUI();
-        }
-      });
-    }
+
 
     // Direct keyboard input – length
     if (displayLength) {

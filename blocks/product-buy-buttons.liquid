@@ -82,12 +82,24 @@
 
       
       <!-- Payment Badges -->
-      <div class="flex justify-center items-center gap-2 text-primary/85 font-medium text-xs mt-1">
-        <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">VISA</span>
-        <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">MASTERCARD</span>
-        <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">MOBILEPAY</span>
-        <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">APPLE PAY</span>
-      </div>
+      {%- if block.settings.custom_payment_icons_image != blank -%}
+        <div class="flex justify-center items-center mt-1 w-full">
+          <img src="{{ block.settings.custom_payment_icons_image | image_url: width: 400 }}"
+               alt="{{ block.settings.custom_payment_icons_image.alt | escape | default: 'Betalingsmetoder' }}"
+               loading="lazy"
+               style="height: {{ block.settings.payment_icons_height }}px; width: auto; object-fit: contain;"
+               width="{{ block.settings.custom_payment_icons_image.width }}"
+               height="{{ block.settings.custom_payment_icons_image.height }}"
+               class="max-w-full">
+        </div>
+      {%- else -%}
+        <div class="flex justify-center items-center gap-2 text-primary/85 font-medium text-xs mt-1">
+          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">VISA</span>
+          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">MASTERCARD</span>
+          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">MOBILEPAY</span>
+          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">APPLE PAY</span>
+        </div>
+      {%- endif -%}
   </div>
 </div>
 
@@ -415,6 +427,26 @@
       "unit": "px",
       "label": "Afstand i siderne",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Betalingsikoner"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_payment_icons_image",
+      "label": "Brugerdefineret betalingsbillede",
+      "info": "Upload et billede med betalingsikoner (f.eks. MobilePay, Visa, Mastercard, Apple Pay) for at erstatte standardteksten."
+    },
+    {
+      "type": "range",
+      "id": "payment_icons_height",
+      "min": 12,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Højde på betalingsbillede",
+      "default": 24
     }
   ],
   "presets": [
