@@ -279,6 +279,7 @@
       "type": "select",
       "id": "border_color",
       "label": "Border farve",
+      "visible_if": "block.settings.card_design == 'outlined'",
       "options": [
         { "value": "outline_variant", "label": "Outline Variant" },
         { "value": "primary", "label": "Primary" },
@@ -292,6 +293,7 @@
       "type": "select",
       "id": "border_thickness",
       "label": "t:labels.border_thickness",
+      "visible_if": "block.settings.card_design == 'outlined'",
       "options": [
         { "value": "none", "label": "None" },
         { "value": "thin", "label": "t:options.border_thickness.thin" },
@@ -364,6 +366,7 @@
       "type": "select",
       "id": "image_aspect_ratio",
       "label": "Billedformat",
+      "visible_if": "block.settings.image_placement != 'background'",
       "options": [
         { "value": "adapt", "label": "Tilpas" },
         { "value": "square", "label": "Firkantet (1:1)" },
@@ -375,6 +378,7 @@
     {
       "type": "range",
       "id": "image_overlay_opacity",
+      "visible_if": "block.settings.image_placement == 'background'",
       "min": 0,
       "max": 90,
       "step": 5,
