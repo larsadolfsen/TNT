@@ -173,6 +173,30 @@
     "row_p6nNCG": {
       "type": "row",
       "blocks": {
+        "card_GFBhiy": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "card_design": "outlined",
+            "width_cols": "1",
+            "background_color": "transparent",
+            "border_color": "outline_variant",
+            "border_thickness": "none",
+            "corner_radius": "medium",
+            "title": "Kort Overskrift",
+            "content": "<p>Dette er et kortelement med tilpasset design.</p>",
+            "card_link": "",
+            "alignment": "left",
+            "image": "{{ closest.product.featured_image }}",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 16,
+            "padding_bottom": 16,
+            "padding_sides": 16
+          },
+          "blocks": {}
+        },
         "material_badge_rNa3gL": {
           "type": "material-badge",
           "name": "Material Badge",
@@ -202,6 +226,7 @@
         }
       },
       "block_order": [
+        "card_GFBhiy",
         "material_badge_rNa3gL",
         "material_badge_Q7YUhx",
         "material_badge_CJB9GW"
