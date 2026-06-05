@@ -137,7 +137,7 @@
   endif
 -%}
 
-<div class="{{ outer_class }}">
+<div class="{{ outer_class }}"{% if section.settings.border_top or section.settings.border_bottom %} style="{% if section.settings.border_top %}border-top:1px solid #e2e8f0;{% endif %}{% if section.settings.border_bottom %}border-bottom:1px solid #e2e8f0;{% endif %}"{% endif %}>
   <div class="{{ inner_class }}">
     {%- if section.settings.heading != blank -%}
       <{{ section.settings.heading_tag }} class="row-section__heading">{{ section.settings.heading }}</{{ section.settings.heading_tag }}>
@@ -248,6 +248,22 @@
       "unit": "px",
       "label": "Afstand mellem blokke",
       "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Kanter"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_top",
+      "label": "Kant i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "border_bottom",
+      "label": "Kant i bunden",
+      "default": false
     }
   ],
   "blocks": [
