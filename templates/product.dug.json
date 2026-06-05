@@ -79,7 +79,7 @@
             "show_urgency": true,
             "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
             "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
-            "hide_under_limit": 100000,
+            "hide_under_limit": 50,
             "padding_top": 0,
             "padding_bottom": 12,
             "padding_sides": 0
@@ -358,6 +358,30 @@
     "row_Rg3kFD": {
       "type": "row",
       "blocks": {
+        "card_ViAmkd": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "card_design": "regular",
+            "width_cols": "4",
+            "background_color": "surface",
+            "border_color": "outline_variant",
+            "border_thickness": "thin",
+            "corner_radius": "medium",
+            "title": "",
+            "content": "{{ closest.product.description }}",
+            "card_link": "",
+            "alignment": "left",
+            "image": "{{ closest.product.featured_image }}",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "product_cross_sell_fm46Qc": {
           "type": "product-cross-sell",
           "settings": {
@@ -374,7 +398,7 @@
           "settings": {
             "image": "{{ product.featured_image }}",
             "heading": "",
-            "content": "<p>{{ product.description }}</p>",
+            "content": "{{ product.description }}",
             "border_top": true,
             "border_bottom": true,
             "padding_top": 12,
@@ -385,6 +409,7 @@
         }
       },
       "block_order": [
+        "card_ViAmkd",
         "product_cross_sell_fm46Qc",
         "product_banner_text_eaMntU"
       ],
