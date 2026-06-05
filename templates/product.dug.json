@@ -432,7 +432,7 @@
           "name": "Accordion Panel",
           "settings": {
             "title": "Er klar voksdug varmefast?",
-            "content": "<p>Nej. Brug altid bordskånere under varme tallerkner, gryder og fade. </p>",
+            "content": "<p>Nej. Undgå varme fade og tallerkener direkte på dugen — brug en bordskåner. Overfladen tåler normal stuetemperatur uden problemer.</p>",
             "open_by_default": false
           },
           "blocks": {}
@@ -442,7 +442,7 @@
           "name": "Accordion Panel",
           "settings": {
             "title": "Kan en klar voksdug bruges oven på en stofdug?",
-            "content": "<p>Ja, den kan lægges oven på en stofdug for at beskytte mod spild, pletter og daglig brug.</p>",
+            "content": "<p>Ja. Den ligger stabilt oven på stof og beskytter tekstilet mod spild ved fødselsdage, konfirmationer og hverdagsmiddage.</p>",
             "open_by_default": false
           },
           "blocks": {}
