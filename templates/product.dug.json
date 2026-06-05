@@ -422,7 +422,7 @@
           "name": "Accordion Panel",
           "settings": {
             "title": "Kan jeg lægge klar voksdug direkte på et træbord?",
-            "content": "<p>Ja, men hvis bordet er af træ, bør dugen tages af mindst én gang om ugen i nogle timer, så træet kan ånde. </p>",
+            "content": "<p>Ja. Læg den direkte på bordet. Hvis bordet er massivt træ, bør dugen tages af et par timer om ugen, så træet kan trække vejret og regulere fugt.</p>",
             "open_by_default": true
           },
           "blocks": {}
@@ -471,7 +471,7 @@
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 0,
-        "block_spacing": 16
+        "block_spacing": 0
       }
     }
   },
