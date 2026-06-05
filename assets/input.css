@@ -515,3 +515,32 @@ shopify-block,
   }
 }
 
+/* Row Section Headings */
+.row-section__heading {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+h2.row-section__heading {
+  font-size: var(--text-xl);
+}
+
+h3.row-section__heading {
+  font-size: var(--text-lg);
+}
+
+@media (min-width: 840px) {
+  .row-section__heading {
+    margin-bottom: 1.5rem;
+  }
+  h2.row-section__heading {
+    font-size: var(--text-2xl);
+  }
+  h3.row-section__heading {
+    font-size: var(--text-xl);
+  }
+}
+
+
