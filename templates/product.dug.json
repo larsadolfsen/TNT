@@ -257,45 +257,6 @@
         "block_spacing": 8
       }
     },
-    "row_CQqaPe": {
-      "type": "row",
-      "blocks": {
-        "product_testimonial_gzGpa4": {
-          "type": "product-testimonial",
-          "settings": {
-            "heading": "Det siger kunderne",
-            "stars": 5,
-            "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
-            "author": "Mette S., Verificeret køber",
-            "stars_2": 5,
-            "quote_2": "Super hurtig levering og rigtig flot dug. Målene passede perfekt.",
-            "author_2": "Thomas K., Verificeret køber",
-            "stars_3": 5,
-            "quote_3": "Rigtig god service. Dugen er nem at tørre af og ser virkelig eksklusiv ud.",
-            "author_3": "Sofia L., Verificeret køber",
-            "stars_4": 5,
-            "quote_4": "Perfekt beskyttelse til vores spisebord. Dugen ligger stabilt og glider ikke.",
-            "author_4": "Jonas M., Verificeret køber",
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_testimonial_gzGpa4"
-      ],
-      "name": "Reviews",
-      "settings": {
-        "background_color": "shade",
-        "alignment": "columns",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_sides": 24,
-        "block_spacing": 8
-      }
-    },
     "row_VY7RVT": {
       "type": "row",
       "blocks": {
@@ -340,6 +301,45 @@
         "padding_bottom": 0,
         "padding_sides": 0,
         "block_spacing": 0
+      }
+    },
+    "row_CQqaPe": {
+      "type": "row",
+      "blocks": {
+        "product_testimonial_gzGpa4": {
+          "type": "product-testimonial",
+          "settings": {
+            "heading": "Det siger kunderne",
+            "stars": 5,
+            "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
+            "author": "Mette S., Verificeret køber",
+            "stars_2": 5,
+            "quote_2": "Super hurtig levering og rigtig flot dug. Målene passede perfekt.",
+            "author_2": "Thomas K., Verificeret køber",
+            "stars_3": 5,
+            "quote_3": "Rigtig god service. Dugen er nem at tørre af og ser virkelig eksklusiv ud.",
+            "author_3": "Sofia L., Verificeret køber",
+            "stars_4": 5,
+            "quote_4": "Perfekt beskyttelse til vores spisebord. Dugen ligger stabilt og glider ikke.",
+            "author_4": "Jonas M., Verificeret køber",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_testimonial_gzGpa4"
+      ],
+      "name": "Reviews",
+      "settings": {
+        "background_color": "shade",
+        "alignment": "columns",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_sides": 24,
+        "block_spacing": 8
       }
     },
     "row_Rg3kFD": {
@@ -502,8 +502,8 @@
   "order": [
     "row_dF89D3",
     "row_p6nNCG",
-    "row_CQqaPe",
     "row_VY7RVT",
+    "row_CQqaPe",
     "row_Rg3kFD",
     "row_GqmzkT",
     "row_j7wR4H"
