@@ -199,7 +199,7 @@
               "type": "material-badge",
               "name": "Material Badge",
               "settings": {
-                "icon": "eco",
+                "icon": "filter_vintage",
                 "title": "OEKO-TEX® Standard 100"
               },
               "blocks": {}
