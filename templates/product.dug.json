@@ -456,13 +456,24 @@
             "open_by_default": false
           },
           "blocks": {}
+        },
+        "accordion_k9fNpn": {
+          "type": "accordion",
+          "name": "Accordion",
+          "settings": {
+            "title": "Kan en ny voksdug lugte?",
+            "content": "<p>En svag plasticlugt de første dage er normalt. Den forsvinder af sig selv når dugen har ligget fremme et par dage.</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "accordion_panel_Matyga",
         "accordion_panel_HD73KJ",
         "accordion_panel_f9FFhh",
-        "accordion_panel_3P7eLh"
+        "accordion_panel_3P7eLh",
+        "accordion_k9fNpn"
       ],
       "name": "FAQ",
       "settings": {
