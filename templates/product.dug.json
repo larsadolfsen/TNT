@@ -286,7 +286,7 @@
               "type": "material-badge",
               "name": "Material Badge",
               "settings": {
-                "width_cols": "4",
+                "width_cols": "2",
                 "icon": "filter_vintage",
                 "title": "OEKO-TEX® Standard 100"
               },
@@ -296,7 +296,7 @@
               "type": "material-badge",
               "name": "Material Badge",
               "settings": {
-                "width_cols": "4",
+                "width_cols": "2",
                 "icon": "eco",
                 "title": "100% Phthalatfri"
               },
