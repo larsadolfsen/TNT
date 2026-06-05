@@ -752,20 +752,6 @@
   .gap-y-3 {
     row-gap: calc(var(--spacing) * 3);
   }
-  .divide-y {
-    :where(& > :not(:last-child)) {
-      --tw-divide-y-reverse: 0;
-      border-bottom-style: var(--tw-border-style);
-      border-top-style: var(--tw-border-style);
-      border-top-width: calc(1px * var(--tw-divide-y-reverse));
-      border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
-    }
-  }
-  .divide-outline-variant {
-    :where(& > :not(:last-child)) {
-      border-color: var(--color-outline-variant);
-    }
-  }
   .self-start {
     align-self: flex-start;
   }
@@ -2117,7 +2103,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
   }
   & strong, & b {
-    font-weight: 700;
+    font-weight: 600;
   }
   & em, & i {
     font-style: italic;
@@ -2490,11 +2476,6 @@ h3.row-section__heading {
   inherits: false;
   initial-value: 0;
 }
-@property --tw-divide-y-reverse {
-  syntax: "*";
-  inherits: false;
-  initial-value: 0;
-}
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
@@ -2655,7 +2636,6 @@ h3.row-section__heading {
       --tw-skew-y: initial;
       --tw-scroll-snap-strictness: proximity;
       --tw-space-y-reverse: 0;
-      --tw-divide-y-reverse: 0;
       --tw-border-style: solid;
       --tw-leading: initial;
       --tw-font-weight: initial;
