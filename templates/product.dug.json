@@ -9,10 +9,10 @@
  */
 {
   "sections": {
-    "row_VRkqnV": {
+    "row_dF89D3": {
       "type": "row",
       "blocks": {
-        "page_title_BFEyAw": {
+        "page_title_G9KwCN": {
           "type": "page-title",
           "settings": {
             "title_override": "{{ product.title }}",
@@ -23,7 +23,7 @@
           },
           "blocks": {}
         },
-        "product_trust_UAAjJ7": {
+        "product_trust_tDtrTL": {
           "type": "product-trust",
           "settings": {
             "rating_score": "4,8",
@@ -34,41 +34,8 @@
             "padding_sides": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "page_title_BFEyAw",
-        "product_trust_UAAjJ7"
-      ],
-      "name": "Row",
-      "settings": {
-        "background_color": "light",
-        "alignment": "columns",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_sides": 16,
-        "block_spacing": 8
-      }
-    },
-    "row_UzrqP8": {
-      "type": "row",
-      "blocks": {
-        "badge_yNtXfc": {
-          "type": "badge",
-          "name": "Badge",
-          "settings": {
-            "text": "På lager",
-            "only_if_in_stock": true,
-            "alignment": "left",
-            "background_color": "#e6f4ea",
-            "text_color": "#137333",
-            "padding_top": 4,
-            "padding_bottom": 4,
-            "padding_sides": 0
-          },
-          "blocks": {}
         },
-        "badge_dkTTa8": {
+        "badge_JahkGB": {
           "type": "badge",
           "name": "Badge",
           "settings": {
@@ -82,26 +49,8 @@
             "padding_sides": 4
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "badge_yNtXfc",
-        "badge_dkTTa8"
-      ],
-      "name": "Badges",
-      "settings": {
-        "background_color": "light",
-        "alignment": "left",
-        "padding_top": 0,
-        "padding_bottom": 8,
-        "padding_sides": 16,
-        "block_spacing": 8
-      }
-    },
-    "row_j9gpQV": {
-      "type": "row",
-      "blocks": {
-        "product_media_LUPhce": {
+        },
+        "product_media_dVEFYL": {
           "type": "product-media",
           "settings": {
             "image_badge": "",
@@ -110,24 +59,7 @@
             "padding_sides": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_media_LUPhce"
-      ],
-      "name": "Product image",
-      "settings": {
-        "background_color": "light",
-        "alignment": "columns",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_sides": 16,
-        "block_spacing": 8
-      }
-    },
-    "row_dF89D3": {
-      "type": "row",
-      "blocks": {
+        },
         "product_price_dGeEHb": {
           "type": "product-price",
           "name": "Product Price",
@@ -190,36 +122,15 @@
             "padding_sides": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_price_dGeEHb",
-        "product_urgency_9qdhhc",
-        "product_customizer_fVqVK6",
-        "product_buy_buttons_886FGA",
-        "product_shipping_progress_LNK79f"
-      ],
-      "name": "Buy",
-      "settings": {
-        "background_color": "light",
-        "alignment": "columns",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_sides": 16,
-        "block_spacing": 8
-      }
-    },
-    "row_ewadkg": {
-      "type": "row",
-      "blocks": {
-        "trust_checkmark_kJfi7B": {
+        },
+        "trust_checkmark_KEtfw3": {
           "type": "trust-checkmark",
           "settings": {
             "text": "Vælg mellem GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
           },
           "blocks": {}
         },
-        "trust_countdown_ezWzWE": {
+        "trust_countdown_h8efqB": {
           "type": "trust-countdown",
           "settings": {
             "text": "Bestil inden",
@@ -227,7 +138,7 @@
           },
           "blocks": {}
         },
-        "trust_checkmark_BCQRPN": {
+        "trust_checkmark_bMcqrV": {
           "type": "trust-checkmark",
           "settings": {
             "text": "30 dages fuld returret på tilpassede duge."
@@ -236,17 +147,26 @@
         }
       },
       "block_order": [
-        "trust_checkmark_kJfi7B",
-        "trust_countdown_ezWzWE",
-        "trust_checkmark_BCQRPN"
+        "page_title_G9KwCN",
+        "product_trust_tDtrTL",
+        "badge_JahkGB",
+        "product_media_dVEFYL",
+        "product_price_dGeEHb",
+        "product_urgency_9qdhhc",
+        "product_customizer_fVqVK6",
+        "product_buy_buttons_886FGA",
+        "product_shipping_progress_LNK79f",
+        "trust_checkmark_KEtfw3",
+        "trust_countdown_h8efqB",
+        "trust_checkmark_bMcqrV"
       ],
-      "name": "Row",
+      "name": "Buy",
       "settings": {
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 12,
         "padding_bottom": 12,
-        "padding_sides": 24,
+        "padding_sides": 16,
         "block_spacing": 8
       }
     },
@@ -496,11 +416,7 @@
     }
   },
   "order": [
-    "row_VRkqnV",
-    "row_UzrqP8",
-    "row_j9gpQV",
     "row_dF89D3",
-    "row_ewadkg",
     "row_p6nNCG",
     "row_CQqaPe",
     "row_VY7RVT",
