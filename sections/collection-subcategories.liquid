@@ -13,7 +13,7 @@
 {%- endstyle -%}
 
 <section aria-label="Underkategorier" class="relative">
-    <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 pb-4 -mx-4 px-4 medium:mx-0 medium:px-0 medium:grid medium:grid-cols-4 medium:gap-4 medium:overflow-visible expanded:grid-cols-8 large:grid-cols-12 large:gap-6">
+    <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-4 sm:gap-4 sm:overflow-visible md:grid-cols-8 lg:grid-cols-12 lg:gap-6">
       
       {%- if section.blocks.size > 0 -%}
         {%- for block in section.blocks -%}
@@ -39,7 +39,7 @@
           {%- if block.settings.filter_type != 'none' and block.settings.filter_value != blank -%}
             <button 
               onclick="applyQuickFilter('{{ block.settings.filter_type }}', '{{ block.settings.filter_value | escape }}')" 
-              class="flex-[0_0_150px] medium:flex-[0_0_180px] expanded:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer"
+              class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer"
               {{ block.shopify_attributes }}
             >
               <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
@@ -62,7 +62,7 @@
           {%- else -%}
             <a 
               href="{{ sub_url }}" 
-              class="flex-[0_0_150px] medium:flex-[0_0_180px] expanded:flex-initial snap-start text-left group focus:outline-none no-underline block"
+              class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none no-underline block"
               {{ block.shopify_attributes }}
             >
               <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
@@ -88,7 +88,7 @@
         <!-- Fallback Mockup Data (Exactly matches client's draft HTML layout) -->
         
         <!-- Underkategori 1 -->
-        <button onclick="applyQuickFilter('tykkelse', '0,8 mm')" class="flex-[0_0_150px] medium:flex-[0_0_180px] expanded:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
+        <button onclick="applyQuickFilter('tykkelse', '0,8 mm')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
           <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
             <img 
               src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80" 
@@ -101,7 +101,7 @@
         </button>
 
         <!-- Underkategori 2 -->
-        <button onclick="applyQuickFilter('tykkelse', '2,0 mm')" class="flex-[0_0_150px] medium:flex-[0_0_180px] expanded:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
+        <button onclick="applyQuickFilter('tykkelse', '2,0 mm')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
           <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
             <img 
               src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80" 
@@ -114,7 +114,7 @@
         </button>
 
         <!-- Underkategori 3 -->
-        <button onclick="applyQuickFilter('form', 'Rund')" class="flex-[0_0_150px] medium:flex-[0_0_180px] expanded:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
+        <button onclick="applyQuickFilter('form', 'Rund')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
           <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
             <img 
               src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80" 
@@ -127,7 +127,7 @@
         </button>
 
         <!-- Underkategori 4 -->
-        <button onclick="applyQuickFilter('form', 'Dækkeserviet')" class="flex-[0_0_150px] medium:flex-[0_0_180px] expanded:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
+        <button onclick="applyQuickFilter('form', 'Dækkeserviet')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
           <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
             <img 
               src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80" 

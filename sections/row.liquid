@@ -91,8 +91,8 @@
     assign outer_class = 'row-section w-full ' | append: bg_class | append: ' section-' | append: section.id | append: '-padding row-section--full-width'
     assign inner_class = 'max-w-[var(--page-width)] mx-auto section-' | append: section.id | append: '-inner-padding'
   else
-    assign outer_class = 'row-section max-w-[var(--page-width)] mx-auto px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
-    assign inner_class = 'w-full ' | append: bg_class | append: ' rounded-3xl py-10 expanded:py-16 shadow-md section-' | append: section.id | append: '-inner-padding'
+    assign outer_class = 'row-section max-w-[var(--page-width)] mx-auto px-4 md:px-8 section-' | append: section.id | append: '-padding'
+    assign inner_class = 'w-full ' | append: bg_class | append: ' rounded-3xl py-10 md:py-16 shadow-md section-' | append: section.id | append: '-inner-padding'
   endif
 -%}
 

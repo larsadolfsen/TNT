@@ -17,10 +17,11 @@
   --font-sans: var(--font-body-family), sans-serif;
   --font-serif: var(--font-header-family), serif;
 
-  --breakpoint-medium: 600px;
-  --breakpoint-expanded: 840px;
-  --breakpoint-large: 1200px;
-  --breakpoint-xlarge: 1600px;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 840px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1600px;
+  --breakpoint-2xl: false;
 }
 
 .grid-layout {
@@ -28,13 +29,25 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 
-  @media (min-width: 840px) {
+  @media (min-width: --theme(--breakpoint-md)) {
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: --theme(--breakpoint-lg)) {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 24px;
+  }
+}
+
+.grid-layout > * {
+  grid-column: span var(--span-mobile, 4) / span var(--span-mobile, 4);
+
+  @media (min-width: --theme(--breakpoint-md)) {
+    grid-column: span var(--span-expanded, var(--span-mobile, 4)) / span var(--span-expanded, var(--span-mobile, 4));
+  }
+
+  @media (min-width: --theme(--breakpoint-lg)) {
+    grid-column: span var(--span-large, var(--span-expanded, 4)) / span var(--span-large, var(--span-expanded, 4));
   }
 }
 
@@ -125,7 +138,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Product Page Mobile Breakout Layout */
-@media (width < --theme(--breakpoint-expanded)) {
+@media (width < --theme(--breakpoint-md)) {
   /* Prevent clipping of full width mobile media gallery */
   .template-product .group:has(.shopify-block-product-media),
   .template-product .group:has(.product-media),
@@ -172,7 +185,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Product Page Desktop Grid Layout */
-@media (min-width: --theme(--breakpoint-expanded)) {
+@media (min-width: --theme(--breakpoint-md)) {
   .template-product #MainContent {
     width: 100%;
     max-width: none;
@@ -298,7 +311,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@media (min-width: --theme(--breakpoint-large)) {
+@media (min-width: --theme(--breakpoint-lg)) {
   .template-product #MainContent {
     padding: 0;
   }
@@ -314,7 +327,7 @@ html, body {
 }
 
 /* Breakout styles for truly full-width row sections and testimonials */
-@media (min-width: --theme(--breakpoint-expanded)) {
+@media (min-width: --theme(--breakpoint-md)) {
   .row-section--full-width {
     width: 100vw !important;
     position: relative !important;
@@ -337,7 +350,7 @@ html, body {
   }
 }
 
-@media (width < --theme(--breakpoint-expanded)) {
+@media (width < --theme(--breakpoint-md)) {
   .row-section--full-width {
     margin-left: -1rem !important;
     margin-right: -1rem !important;
@@ -434,7 +447,7 @@ shopify-block,
 
 /* 1. Full-width row alignment (pull to page margin on mobile, standard page width on desktop) */
 .row-section--full-width .shopify-block-product-accordions {
-  @media (width < --theme(--breakpoint-expanded)) {
+  @media (width < --theme(--breakpoint-md)) {
     margin-left: -1rem;
     margin-right: -1rem;
     width: calc(100% + 2rem);
@@ -447,7 +460,7 @@ shopify-block,
   margin-right: -1.5rem;
   width: calc(100% + 3rem);
 
-  @media (min-width: --theme(--breakpoint-expanded)) {
+  @media (min-width: --theme(--breakpoint-md)) {
     margin-left: -3rem;
     margin-right: -3rem;
     width: calc(100% + 6rem);
@@ -461,7 +474,7 @@ shopify-block,
   padding-right: 1rem;
 }
 
-@media (min-width: --theme(--breakpoint-expanded)) {
+@media (min-width: --theme(--breakpoint-md)) {
   .accordion-trigger,
   .accordion-content {
     padding-left: 0;
@@ -475,21 +488,21 @@ shopify-block,
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 
-  @media (min-width: --theme(--breakpoint-expanded)) {
+  @media (min-width: --theme(--breakpoint-md)) {
     padding-left: 3rem;
     padding-right: 3rem;
   }
 }
 
 /* 5. Layout-aware Accordion Padding (full-width alignment overrides) */
-@media (width < --theme(--breakpoint-expanded)) {
+@media (width < --theme(--breakpoint-md)) {
   .row-section--full-width .shopify-block-product-accordions .accordion-trigger,
   .row-section--full-width .shopify-block-product-accordions .accordion-content {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 }
-@media (min-width: --theme(--breakpoint-expanded)) {
+@media (min-width: --theme(--breakpoint-md)) {
   .row-section--full-width .shopify-block-product-accordions .accordion-trigger,
   .row-section--full-width .shopify-block-product-accordions .accordion-content {
     padding-left: 0;

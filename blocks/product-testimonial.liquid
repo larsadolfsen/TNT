@@ -105,9 +105,9 @@
 {%- endif -%}
 
 <section class="py-8 bg-surface-container" {{ block.shopify_attributes }}>
-  <div class="max-w-[var(--page-width)] mx-auto px-0 expanded:px-8">
+  <div class="max-w-[var(--page-width)] mx-auto px-0 md:px-8">
     {%- if block.settings.heading != blank -%}
-      <h3 class="text-center font-bold text-primary mb-6 text-xl expanded:text-2xl testimonial-heading-{{ block.id }}">{{ block.settings.heading }}</h3>
+      <h3 class="text-center font-bold text-primary mb-6 text-xl md:text-2xl testimonial-heading-{{ block.id }}">{{ block.settings.heading }}</h3>
     {%- endif -%}
 
     {%- if testimonial_count == 1 -%}
@@ -129,7 +129,7 @@
         <!-- Slider / Grid wrapper -->
         <div 
           id="testimonial-slider-{{ block.id }}" 
-          class="testimonial-slider-{{ block.id }} {% if testimonial_count == 2 %}testimonial-grid-2-{{ block.id }}{% elsif testimonial_count == 3 %}testimonial-grid-3-{{ block.id }}{% else %}testimonial-grid-4-{{ block.id }}{% endif %} expanded:px-0"
+          class="testimonial-slider-{{ block.id }} {% if testimonial_count == 2 %}testimonial-grid-2-{{ block.id }}{% elsif testimonial_count == 3 %}testimonial-grid-3-{{ block.id }}{% else %}testimonial-grid-4-{{ block.id }}{% endif %} md:px-0"
         >
           <!-- Review 1 -->
           {%- if block.settings.quote != blank -%}
@@ -201,7 +201,7 @@
         </div>
 
         <!-- Slider Dots (Mobile only) -->
-        <div class="flex justify-center gap-2 mt-4 expanded:hidden">
+        <div class="flex justify-center gap-2 mt-4 md:hidden">
           {%- for i in (1..testimonial_count) -%}
             <button 
               type="button" 
