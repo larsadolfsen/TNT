@@ -133,7 +133,7 @@
           "name": "Product Price",
           "settings": {
             "price_suffix": "pr. meter inkl. moms",
-            "price_subtext": "Skæres efter mål og sendes på rulle, så den er klar til brug når den ankommer.",
+            "price_subtext": "Skæres efter mål og sendes på rulle, så dugen er klar til brug når den ankommer.",
             "padding_top": 0,
             "padding_bottom": 12,
             "padding_sides": 0
