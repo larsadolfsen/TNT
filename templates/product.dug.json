@@ -157,13 +157,26 @@
             "padding_sides": 0
           },
           "blocks": {}
+        },
+        "product_shipping_progress_WnwWxm": {
+          "type": "product-shipping-progress",
+          "settings": {
+            "free_shipping_message": "Du er kun [beløb] fra fri fragt",
+            "free_shipping_success_message": "Du har opnået fri fragt!",
+            "hide_everything_except_text": true,
+            "padding_top": 8,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "product_price_dGeEHb",
         "product_urgency_9qdhhc",
         "product_customizer_fVqVK6",
-        "product_buy_buttons_886FGA"
+        "product_buy_buttons_886FGA",
+        "product_shipping_progress_WnwWxm"
       ],
       "name": "Row - Customizer",
       "settings": {
@@ -178,69 +191,6 @@
     "row_eTcPKr": {
       "type": "row",
       "blocks": {
-        "product_price_WLVDkD": {
-          "type": "product-price",
-          "name": "Product Price",
-          "settings": {
-            "price_suffix": "pr. meter inkl. moms",
-            "price_subtext": "Skæres efter mål og sendes på rulle, så dugen er klar til brug når den ankommer.",
-            "padding_top": 0,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "product_urgency_zGeXDU": {
-          "type": "product-urgency",
-          "name": "Product Stock Urgency",
-          "settings": {
-            "show_urgency": true,
-            "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
-            "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
-            "hide_under_limit": 50,
-            "padding_top": 0,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "product_customizer_TxYLbN": {
-          "type": "product-customizer",
-          "settings": {
-            "metervare_product": "firkantet-dug",
-            "firkantet_product": "firkantet-dug-1",
-            "rund_product": "afrunding",
-            "oval_product": "oval-dug",
-            "step_size": 10,
-            "min_length": 50,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "product_buy_buttons_3wg8pw": {
-          "type": "product-buy-buttons",
-          "settings": {
-            "text_before_price": "Læg i kurv",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "product_shipping_progress_MVMpjE": {
-          "type": "product-shipping-progress",
-          "settings": {
-            "free_shipping_message": "Du er kun [beløb] fra fri fragt",
-            "free_shipping_success_message": "Du har opnået fri fragt!",
-            "hide_everything_except_text": true,
-            "padding_top": 8,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
         "trust_checkmark_xhq8A9": {
           "type": "trust-checkmark",
           "settings": {
@@ -265,11 +215,6 @@
         }
       },
       "block_order": [
-        "product_price_WLVDkD",
-        "product_urgency_zGeXDU",
-        "product_customizer_TxYLbN",
-        "product_buy_buttons_3wg8pw",
-        "product_shipping_progress_MVMpjE",
         "trust_checkmark_xhq8A9",
         "trust_countdown_GMJdXK",
         "trust_checkmark_9AbQBF"
