@@ -66,44 +66,6 @@
         "block_spacing": 0
       }
     },
-    "row_bh6Fpe": {
-      "type": "row",
-      "blocks": {
-        "product_media_hiwgcw": {
-          "type": "product-media",
-          "settings": {
-            "image_badge": "",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "accordion_trnnGp": {
-          "type": "accordion",
-          "name": "Accordion",
-          "settings": {
-            "title": "Produktspecifikationer",
-            "content": "<p>Indtast indhold her.</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_media_hiwgcw",
-        "accordion_trnnGp"
-      ],
-      "name": "Row",
-      "settings": {
-        "background_color": "light",
-        "alignment": "columns",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_sides": 24,
-        "block_spacing": 8
-      }
-    },
     "row_dF89D3": {
       "type": "row",
       "blocks": {
@@ -142,6 +104,8 @@
             "oval_product": "oval-dug",
             "step_size": 10,
             "min_length": 50,
+            "border_top": true,
+            "border_bottom": false,
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0
@@ -181,7 +145,7 @@
       "name": "Row - Customizer",
       "settings": {
         "background_color": "light",
-        "alignment": "columns",
+        "alignment": "full_width",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 16,
@@ -560,7 +524,6 @@
   },
   "order": [
     "row_Y793QP",
-    "row_bh6Fpe",
     "row_dF89D3",
     "row_eTcPKr",
     "row_p6nNCG",
