@@ -19,15 +19,10 @@
   if is_single_column
     assign row_classes = row_classes | append: ' row-content--no-columns row-content--single row-content--' | append: section.settings.alignment
   else
-    if has_group_block
-      # Product details page uses custom columns grid - keep default
-      if template.name != 'product'
-        assign row_classes = row_classes | append: ' grid-layout'
-      endif
-    else
-      # Content blocks (like Cards) should always layout as a responsive grid
-      assign row_classes = row_classes | append: ' grid-layout row-content--no-columns'
-    endif
+    assign row_classes = row_classes | append: ' grid-layout'
+    unless has_group_block
+      assign row_classes = row_classes | append: ' row-content--no-columns'
+    endunless
   endif
 
   if section.settings.alignment == 'full_width'

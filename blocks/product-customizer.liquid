@@ -98,10 +98,10 @@
           <span class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg form</span>
         </div>
       </div>
-      <div class="grid-layout w-full">
+      <div class="flex gap-3 w-full">
 
         <!-- Firkantet dug -->
-        <div class="flex flex-col items-center gap-1 w-full" style="--span-mobile:1;">
+        <div class="flex flex-col items-center gap-1 flex-1">
           <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
             class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border-2 bg-white text-slate-900 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             style="border-color:#f5c518;" onclick="selectShape('firkantet')">
@@ -114,7 +114,7 @@
         </div>
 
         <!-- Rund dug -->
-        <div class="flex flex-col items-center gap-1 w-full" style="--span-mobile:1;">
+        <div class="flex flex-col items-center gap-1 flex-1">
           <button type="button" id="btn-shape-rund" data-shape="rund"
             class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             onclick="selectShape('rund')">
@@ -127,7 +127,7 @@
         </div>
 
         <!-- Oval dug -->
-        <div class="flex flex-col items-center gap-1 w-full" style="--span-mobile:1;">
+        <div class="flex flex-col items-center gap-1 flex-1">
           <button type="button" id="btn-shape-oval" data-shape="oval"
             class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             onclick="selectShape('oval')">
@@ -847,7 +847,7 @@
       "type": "checkbox",
       "id": "border_top",
       "label": "Kant i toppen",
-      "default": false
+      "default": true
     },
     {
       "type": "checkbox",

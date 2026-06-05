@@ -81,7 +81,10 @@
             "align_left": false,
             "padding_top": 0,
             "padding_bottom": 0,
-            "padding_sides": 0
+            "padding_sides": 0,
+            "span_mobile": "4",
+            "span_tablet": "4",
+            "span_desktop": "7"
           },
           "blocks": {
             "product_media_NERnUf": {
@@ -110,7 +113,10 @@
             "align_left": false,
             "padding_top": 0,
             "padding_bottom": 0,
-            "padding_sides": 0
+            "padding_sides": 0,
+            "span_mobile": "4",
+            "span_tablet": "4",
+            "span_desktop": "5"
           },
           "blocks": {
             "product_customizer_Jzqkbn": {
@@ -123,6 +129,7 @@
                 "oval_product": "",
                 "step_size": 10,
                 "min_length": 50,
+                "border_top": true,
                 "padding_top": 12,
                 "padding_bottom": 12,
                 "padding_sides": 0

@@ -12,6 +12,12 @@
 {% enddoc %}
 
 {%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    --span-mobile: {{ block.settings.span_mobile | default: 4 }};
+    --span-expanded: {{ block.settings.span_tablet | default: 4 }};
+    --span-large: {{ block.settings.span_desktop | default: 6 }};
+  }
+
   #shopify-block-{{ block.id }} > .group {
     padding-top: {{ block.settings.padding_top | default: 0 }}px;
     padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
@@ -69,6 +75,54 @@
   "name": "t:general.group",
   "blocks": [{ "type": "@theme" }],
   "settings": [
+    {
+      "type": "select",
+      "id": "span_mobile",
+      "label": "Antal kolonner på mobil (4-kolonne grid)",
+      "options": [
+        { "value": "1", "label": "1 ud af 4" },
+        { "value": "2", "label": "2 ud af 4" },
+        { "value": "3", "label": "3 ud af 4" },
+        { "value": "4", "label": "4 ud af 4 (Fuld bredde)" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "span_tablet",
+      "label": "Antal kolonner på tablet (8-kolonne grid)",
+      "options": [
+        { "value": "1", "label": "1 ud af 8" },
+        { "value": "2", "label": "2 ud af 8" },
+        { "value": "3", "label": "3 ud af 8" },
+        { "value": "4", "label": "4 ud af 8 (Halv bredde)" },
+        { "value": "5", "label": "5 ud af 8" },
+        { "value": "6", "label": "6 ud af 8" },
+        { "value": "7", "label": "7 ud af 8" },
+        { "value": "8", "label": "8 ud af 8 (Fuld bredde)" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "span_desktop",
+      "label": "Antal kolonner på desktop (12-kolonne grid)",
+      "options": [
+        { "value": "1", "label": "1 ud af 12" },
+        { "value": "2", "label": "2 ud af 12" },
+        { "value": "3", "label": "3 ud af 12" },
+        { "value": "4", "label": "4 ud af 12" },
+        { "value": "5", "label": "5 ud af 12" },
+        { "value": "6", "label": "6 ud af 12 (Halv bredde)" },
+        { "value": "7", "label": "7 ud af 12" },
+        { "value": "8", "label": "8 ud af 12" },
+        { "value": "9", "label": "9 ud af 12" },
+        { "value": "10", "label": "10 ud af 12" },
+        { "value": "11", "label": "11 ud af 12" },
+        { "value": "12", "label": "12 ud af 12 (Fuld bredde)" }
+      ],
+      "default": "6"
+    },
     {
       "type": "checkbox",
       "id": "sticky",

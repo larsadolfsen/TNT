@@ -217,45 +217,17 @@ h4 {
     padding: 0;
   }
 
-  /* Make the row content wrapper be the two-column grid */
-  .template-product .row-content:not(.row-content--no-columns) {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    column-gap: 2rem;
-    row-gap: 0;
+  /* Make the row content wrapper respect the page width and margin */
+  .template-product .row-content {
     align-items: start;
     width: 100%;
-    max-width: 1280px;
+    max-width: var(--page-width, 1440px);
     margin: 0 auto;
-    padding: 1.5rem 1rem;
-  }
-
-  /* Reset default full-width styling on individual columns */
-  .template-product .row-content:not(.row-content--no-columns) > * {
-    grid-column: 2; /* All default sections flow into the right column */
-    width: 100%;
-  }
-
-  /* Make Breadcrumbs / Page Title span both columns */
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-page-title,
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-page-title),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.page-title) {
-    grid-column: 1 / -1;
-    grid-row: 1;
-    margin-bottom: 0.25rem;
-  }
-
-  /* Product Media (Gallery) in Left Column (Column 1) spanning from row 2 when direct child */
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-media,
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(> .shopify-block-product-media),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(> .product-media) {
-    grid-column: 1;
-    grid-row: 2 / span 25; /* Allow it to span many rows corresponding to the right column fields */
   }
 
   /* Sticky positioning for the gallery, whether direct child or nested */
-  .template-product .row-content:not(.row-content--no-columns) .shopify-block-product-media,
-  .template-product .row-content:not(.row-content--no-columns) .product-media {
+  .template-product .row-content .shopify-block-product-media,
+  .template-product .row-content .product-media {
     position: sticky;
     top: 2rem;
     z-index: 10;
@@ -265,66 +237,48 @@ h4 {
     border-radius: 1.5rem !important;
   }
 
-  /* Support for Column (Group) blocks layout inside the Row section */
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-group,
-  .template-product .row-content:not(.row-content--no-columns) > .group,
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.group),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-group) {
-    grid-column: 1;
-    align-self: stretch;
-    width: 100%;
-  }
-
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-group ~ .shopify-block-group,
-  .template-product .row-content:not(.row-content--no-columns) > .group ~ .group,
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.group) ~ .shopify-block:has(.group),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-group) ~ .shopify-block:has(.shopify-block-group) {
-    grid-column: 2;
-  }
-
-
   /* Sticky column behavior overrides align-self: stretch to align-self: start and enables position: sticky */
-  .template-product .row-content:not(.row-content--no-columns) > .group--sticky,
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.group--sticky) {
+  .template-product .row-content > .group--sticky,
+  .template-product .row-content > .shopify-block:has(.group--sticky) {
     position: sticky;
     top: 2rem;
     z-index: 10;
     align-self: start;
   }
 
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-cross-sell,
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-cross-sell),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-cross-sell),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-banner-text,
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-banner-text),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-banner-text),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-testimonial,
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-testimonial),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-testimonial) {
-    grid-column: 1 / -1;
+  .template-product .row-content > .shopify-block-product-cross-sell,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell),
+  .template-product .row-content > .shopify-block:has(.product-cross-sell),
+  .template-product .row-content > .shopify-block-product-banner-text,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text),
+  .template-product .row-content > .shopify-block:has(.product-banner-text),
+  .template-product .row-content > .shopify-block-product-testimonial,
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial),
+  .template-product .row-content > .shopify-block:has(.product-testimonial) {
+    grid-column: 1 / -1 !important;
   }
 
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-cross-sell:not(:first-child),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-cross-sell):not(:first-child),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-cross-sell):not(:first-child),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-banner-text:not(:first-child),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-banner-text):not(:first-child),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-banner-text):not(:first-child),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-testimonial:not(:first-child),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-testimonial):not(:first-child),
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-testimonial):not(:first-child) {
+  .template-product .row-content > .shopify-block-product-cross-sell:not(:first-child),
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell):not(:first-child),
+  .template-product .row-content > .shopify-block:has(.product-cross-sell):not(:first-child),
+  .template-product .row-content > .shopify-block-product-banner-text:not(:first-child),
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text):not(:first-child),
+  .template-product .row-content > .shopify-block:has(.product-banner-text):not(:first-child),
+  .template-product .row-content > .shopify-block-product-testimonial:not(:first-child),
+  .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial):not(:first-child),
+  .template-product .row-content > .shopify-block:has(.product-testimonial):not(:first-child) {
     margin-top: 1.5rem;
   }
 
   /* Adjust section layout styles for individual sections when in product column layout */
-  .template-product .row-content:not(.row-content--no-columns) > * > section {
+  .template-product .row-content > * > section {
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
   }
 
   /* Make sure customizer has proper spacing in right column and standard padding of 16px */
-  .template-product .row-content:not(.row-content--no-columns) .shopify-block-product-customizer > div {
+  .template-product .row-content .shopify-block-product-customizer > div {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     padding: 16px;

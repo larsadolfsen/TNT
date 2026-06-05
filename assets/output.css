@@ -2190,31 +2190,13 @@ h4 {
     margin: 0;
     padding: 0;
   }
-  .template-product .row-content:not(.row-content--no-columns) {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    column-gap: 2rem;
-    row-gap: 0;
+  .template-product .row-content {
     align-items: start;
     width: 100%;
-    max-width: 1280px;
+    max-width: var(--page-width, 1440px);
     margin: 0 auto;
-    padding: 1.5rem 1rem;
   }
-  .template-product .row-content:not(.row-content--no-columns) > * {
-    grid-column: 2;
-    width: 100%;
-  }
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-page-title, .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-page-title), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.page-title) {
-    grid-column: 1 / -1;
-    grid-row: 1;
-    margin-bottom: 0.25rem;
-  }
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-media, .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(> .shopify-block-product-media), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(> .product-media) {
-    grid-column: 1;
-    grid-row: 2 / span 25;
-  }
-  .template-product .row-content:not(.row-content--no-columns) .shopify-block-product-media, .template-product .row-content:not(.row-content--no-columns) .product-media {
+  .template-product .row-content .shopify-block-product-media, .template-product .row-content .product-media {
     position: sticky;
     top: 2rem;
     z-index: 10;
@@ -2222,32 +2204,24 @@ h4 {
   .template-product .product-media-gallery {
     border-radius: 1.5rem !important;
   }
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-group, .template-product .row-content:not(.row-content--no-columns) > .group, .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.group), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-group) {
-    grid-column: 1;
-    align-self: stretch;
-    width: 100%;
-  }
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-group ~ .shopify-block-group, .template-product .row-content:not(.row-content--no-columns) > .group ~ .group, .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.group) ~ .shopify-block:has(.group), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-group) ~ .shopify-block:has(.shopify-block-group) {
-    grid-column: 2;
-  }
-  .template-product .row-content:not(.row-content--no-columns) > .group--sticky, .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.group--sticky) {
+  .template-product .row-content > .group--sticky, .template-product .row-content > .shopify-block:has(.group--sticky) {
     position: sticky;
     top: 2rem;
     z-index: 10;
     align-self: start;
   }
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-cross-sell, .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-cross-sell), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-cross-sell), .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-banner-text, .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-banner-text), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-banner-text), .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-testimonial, .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-testimonial), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-testimonial) {
-    grid-column: 1 / -1;
+  .template-product .row-content > .shopify-block-product-cross-sell, .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell), .template-product .row-content > .shopify-block:has(.product-cross-sell), .template-product .row-content > .shopify-block-product-banner-text, .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text), .template-product .row-content > .shopify-block:has(.product-banner-text), .template-product .row-content > .shopify-block-product-testimonial, .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial), .template-product .row-content > .shopify-block:has(.product-testimonial) {
+    grid-column: 1 / -1 !important;
   }
-  .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-cross-sell:not(:first-child), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-cross-sell):not(:first-child), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-cross-sell):not(:first-child), .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-banner-text:not(:first-child), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-banner-text):not(:first-child), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-banner-text):not(:first-child), .template-product .row-content:not(.row-content--no-columns) > .shopify-block-product-testimonial:not(:first-child), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.shopify-block-product-testimonial):not(:first-child), .template-product .row-content:not(.row-content--no-columns) > .shopify-block:has(.product-testimonial):not(:first-child) {
+  .template-product .row-content > .shopify-block-product-cross-sell:not(:first-child), .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell):not(:first-child), .template-product .row-content > .shopify-block:has(.product-cross-sell):not(:first-child), .template-product .row-content > .shopify-block-product-banner-text:not(:first-child), .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text):not(:first-child), .template-product .row-content > .shopify-block:has(.product-banner-text):not(:first-child), .template-product .row-content > .shopify-block-product-testimonial:not(:first-child), .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial):not(:first-child), .template-product .row-content > .shopify-block:has(.product-testimonial):not(:first-child) {
     margin-top: 1.5rem;
   }
-  .template-product .row-content:not(.row-content--no-columns) > * > section {
+  .template-product .row-content > * > section {
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
   }
-  .template-product .row-content:not(.row-content--no-columns) .shopify-block-product-customizer > div {
+  .template-product .row-content .shopify-block-product-customizer > div {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     padding: 16px;
