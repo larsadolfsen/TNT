@@ -177,7 +177,7 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "card_design": "outlined",
+            "card_design": "raised",
             "width_cols": "4",
             "background_color": "surface",
             "border_color": "outline_variant",
