@@ -3,6 +3,7 @@
     "404": "Not found",
     "article": "Article",
     "block": "Block",
+    "card": "Card",
     "blog": "Blog",
     "cart": "Cart",
     "collection": "Collection",
@@ -48,7 +49,12 @@
     "page_width": "Page width",
     "show_payment_icons": "Show payment icons",
     "text_style": "Text style",
-    "text": "Text"
+    "text": "Text",
+    "card_design": "Card design",
+    "border_thickness": "Border thickness",
+    "corner_radius": "Corner radius",
+    "width_cols": "Width (columns)",
+    "card_link": "Card link"
   },
   "options": {
     "alignment": {
@@ -73,5 +79,27 @@
       "subtitle": "Subtitle",
       "normal": "Normal text"
     },
+    "card_design": {
+      "regular": "Regular",
+      "outlined": "Outlined"
+    },
+    "border_thickness": {
+      "thin": "Thin (1px)",
+      "medium": "Medium (2px)",
+      "thick": "Thick (4px)"
+    },
+    "corner_radius": {
+      "none": "None",
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large",
+      "full": "Full"
+    },
+    "width_cols": {
+      "1": "1 column",
+      "2": "2 columns",
+      "3": "3 columns",
+      "4": "4 columns"
+    }
   }
 }

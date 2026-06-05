@@ -88,6 +88,7 @@
     --color-background-shade: var(--color-background-shade);
     --color-secondary: #8a5100;
     --color-brand-yellow: var(--color-primary-brand);
+    --color-surface: #ffffff;
     --color-surface-container: #f9f9f9;
     --color-outline-variant: #e2e2e2;
     --color-on-surface-variant: #666666;
@@ -299,8 +300,14 @@
   .left-4 {
     left: calc(var(--spacing) * 4);
   }
+  .z-0 {
+    z-index: 0;
+  }
   .z-10 {
     z-index: 10;
+  }
+  .z-20 {
+    z-index: 20;
   }
   .z-50 {
     z-index: 50;
@@ -364,6 +371,9 @@
   }
   .mt-8 {
     margin-top: calc(var(--spacing) * 8);
+  }
+  .mt-auto {
+    margin-top: auto;
   }
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
@@ -635,8 +645,14 @@
   .items-center {
     align-items: center;
   }
+  .items-end {
+    align-items: flex-end;
+  }
   .items-start {
     align-items: flex-start;
+  }
+  .items-stretch {
+    align-items: stretch;
   }
   .justify-between {
     justify-content: space-between;
@@ -771,6 +787,9 @@
   .rounded-3xl {
     border-radius: var(--radius-3xl);
   }
+  .rounded-\[2rem\] {
+    border-radius: 2rem;
+  }
   .rounded-full {
     border-radius: calc(infinity * 1px);
   }
@@ -779,6 +798,9 @@
   }
   .rounded-md {
     border-radius: var(--radius-md);
+  }
+  .rounded-none {
+    border-radius: 0;
   }
   .rounded-sm {
     border-radius: var(--radius-sm);
@@ -838,6 +860,9 @@
     --tw-border-style: none;
     border-style: none;
   }
+  .border-background-dark {
+    border-color: var(--color-background-dark);
+  }
   .border-black\/10 {
     border-color: color-mix(in srgb, #000 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -846,6 +871,9 @@
   }
   .border-brand-yellow {
     border-color: var(--color-brand-yellow);
+  }
+  .border-inherit {
+    border-color: inherit;
   }
   .border-outline-variant {
     border-color: var(--color-outline-variant);
@@ -870,6 +898,9 @@
   }
   .border-rose-200 {
     border-color: var(--color-rose-200);
+  }
+  .border-secondary {
+    border-color: var(--color-secondary);
   }
   .border-slate-100 {
     border-color: var(--color-slate-100);
@@ -943,6 +974,12 @@
       background-color: color-mix(in oklab, var(--color-black) 20%, transparent);
     }
   }
+  .bg-black\/40 {
+    background-color: color-mix(in srgb, #000 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-black) 40%, transparent);
+    }
+  }
   .bg-black\/50 {
     background-color: color-mix(in srgb, #000 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1008,6 +1045,9 @@
   }
   .bg-slate-900 {
     background-color: var(--color-slate-900);
+  }
+  .bg-surface {
+    background-color: var(--color-surface);
   }
   .bg-surface-container {
     background-color: var(--color-surface-container);
@@ -1153,8 +1193,14 @@
   .text-center {
     text-align: center;
   }
+  .text-justify {
+    text-align: justify;
+  }
   .text-left {
     text-align: left;
+  }
+  .text-right {
+    text-align: right;
   }
   .font-mono {
     font-family: var(--font-mono);
@@ -1299,6 +1345,9 @@
   }
   .text-emerald-600 {
     color: var(--color-emerald-600);
+  }
+  .text-inherit {
+    color: inherit;
   }
   .text-on-surface-variant {
     color: var(--color-on-surface-variant);
@@ -1851,6 +1900,12 @@
       line-height: var(--tw-leading, var(--text-base--line-height));
     }
   }
+  .md\:text-xl {
+    @media (width >= 840px) {
+      font-size: var(--text-xl);
+      line-height: var(--tw-leading, var(--text-xl--line-height));
+    }
+  }
   .md\:opacity-0 {
     @media (width >= 840px) {
       opacity: 0%;
@@ -2160,7 +2215,7 @@ html, body {
   padding-top: var(--block-padding-top, 12px);
   padding-bottom: var(--block-padding-bottom, 12px);
 }
-.shopify-block-group, .shopify-block-product-media, .shopify-block-product-customizer, .shopify-block-product-buy-buttons, .shopify-block-product-accordions, .shopify-block-product-trust-checkmarks, .shopify-block-accordion, .shopify-block-badge, .shopify-block-material-badge {
+.shopify-block-group, .shopify-block-product-media, .shopify-block-product-customizer, .shopify-block-product-buy-buttons, .shopify-block-product-accordions, .shopify-block-product-trust-checkmarks, .shopify-block-accordion, .shopify-block-badge, .shopify-block-card, .shopify-block-material-badge {
   padding-left: var(--block-padding-left, 0px);
   padding-right: var(--block-padding-right, 0px);
   padding-top: var(--block-padding-top, 0px);

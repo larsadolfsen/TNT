@@ -387,6 +387,7 @@ shopify-block,
 .shopify-block-product-trust-checkmarks,
 .shopify-block-accordion,
 .shopify-block-badge,
+.shopify-block-card,
 .shopify-block-material-badge {
   padding-left: var(--block-padding-left, 0px);
   padding-right: var(--block-padding-right, 0px);

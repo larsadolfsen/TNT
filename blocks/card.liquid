@@ -1,0 +1,412 @@
+{% doc %}
+  Renders a customizable card block.
+
+  @example
+  {% content_for 'block', type: 'card', id: 'card' %}
+{% enddoc %}
+
+{%- liquid
+  assign card_classes = 'card-block flex flex-col relative overflow-hidden transition-all duration-300 w-full h-full'
+  
+  # Corner Radius mapping
+  case block.settings.corner_radius
+    when 'none'
+      assign card_classes = card_classes | append: ' rounded-none'
+    when 'small'
+      assign card_classes = card_classes | append: ' rounded-lg'
+    when 'medium'
+      assign card_classes = card_classes | append: ' rounded-2xl'
+    when 'large'
+      assign card_classes = card_classes | append: ' rounded-[2rem]'
+    when 'full'
+      assign card_classes = card_classes | append: ' rounded-full'
+  endcase
+
+  # Background color mapping
+  case block.settings.background_color
+    when 'surface'
+      assign card_classes = card_classes | append: ' bg-surface text-primary'
+    when 'shade'
+      assign card_classes = card_classes | append: ' bg-background-shade text-primary'
+    when 'primary'
+      assign card_classes = card_classes | append: ' bg-primary text-white'
+    when 'secondary'
+      assign card_classes = card_classes | append: ' bg-secondary text-white'
+    when 'dark'
+      assign card_classes = card_classes | append: ' bg-background-dark text-white'
+    when 'transparent'
+      assign card_classes = card_classes | append: ' bg-transparent'
+  endcase
+
+  # Border thickness mapping
+  case block.settings.border_thickness
+    when 'thin'
+      assign border_width = 'border'
+    when 'medium'
+      assign border_width = 'border-2'
+    when 'thick'
+      assign border_width = 'border-4'
+    else
+      assign border_width = 'border-0'
+  endcase
+
+  # Border color mapping
+  case block.settings.border_color
+    when 'outline_variant'
+      assign border_color_class = 'border-outline-variant'
+    when 'primary'
+      assign border_color_class = 'border-primary'
+    when 'secondary'
+      assign border_color_class = 'border-secondary'
+    when 'dark'
+      assign border_color_class = 'border-background-dark'
+    when 'transparent'
+      assign border_color_class = 'border-transparent'
+  endcase
+
+  # Apply border classes based on design style
+  if block.settings.card_design == 'outlined'
+    assign card_classes = card_classes | append: ' ' | append: border_width | append: ' ' | append: border_color_class
+  elsif block.settings.card_design == 'regular'
+    assign card_classes = card_classes | append: ' shadow-sm hover:shadow-md'
+    if block.settings.border_thickness != 'none'
+      assign card_classes = card_classes | append: ' ' | append: border_width | append: ' ' | append: border_color_class
+    endif
+  endif
+
+  # Text Alignment
+  case block.settings.alignment
+    when 'center'
+      assign card_classes = card_classes | append: ' text-center items-center'
+      assign content_align_class = 'items-center text-center'
+    when 'right'
+      assign card_classes = card_classes | append: ' text-right items-end'
+      assign content_align_class = 'items-end text-right'
+    when 'justify'
+      assign card_classes = card_classes | append: ' text-justify'
+      assign content_align_class = 'items-stretch text-justify'
+    else
+      assign card_classes = card_classes | append: ' text-left items-start'
+      assign content_align_class = 'items-start text-left'
+  endcase
+
+  # Background image handling
+  assign has_bg_image = false
+  if block.settings.image != blank and block.settings.image_placement == 'background'
+    assign has_bg_image = true
+    assign card_classes = card_classes | append: ' text-white'
+  endif
+
+  # Aspect ratio style mapping
+  case block.settings.image_aspect_ratio
+    when 'square'
+      assign aspect_ratio_style = '1/1'
+    when 'portrait'
+      assign aspect_ratio_style = '3/4'
+    when 'landscape'
+      assign aspect_ratio_style = '16/9'
+    else
+      assign aspect_ratio_style = 'auto'
+  endcase
+-%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }} > .card-block > .card-content {
+    padding-top: {{ block.settings.padding_top | default: 24 }}px;
+    padding-bottom: {{ block.settings.padding_bottom | default: 24 }}px;
+    padding-left: {{ block.settings.padding_sides | default: 24 }}px;
+    padding-right: {{ block.settings.padding_sides | default: 24 }}px;
+  }
+
+  /* Support Grid Column Spanning based on 1-4 input cols */
+  #shopify-block-{{ block.id }}.shopify-block {
+    {%- case block.settings.width_cols -%}
+      {%- when '1' -%}
+        --span-mobile: 1;
+        --span-expanded: 2;
+        --span-large: 3;
+      {%- when '2' -%}
+        --span-mobile: 2;
+        --span-expanded: 4;
+        --span-large: 6;
+      {%- when '3' -%}
+        --span-mobile: 3;
+        --span-expanded: 6;
+        --span-large: 9;
+      {%- else -%}
+        --span-mobile: 4;
+        --span-expanded: 8;
+        --span-large: 12;
+    {%- endcase -%}
+  }
+
+  /* Force headers and links to inherit color on dark background cards */
+  {%- if block.settings.background_color == 'primary' or block.settings.background_color == 'secondary' or block.settings.background_color == 'dark' or has_bg_image -%}
+    #shopify-block-{{ block.id }} .rte h1,
+    #shopify-block-{{ block.id }} .rte h2,
+    #shopify-block-{{ block.id }} .rte h3,
+    #shopify-block-{{ block.id }} .rte h4,
+    #shopify-block-{{ block.id }} .rte h5,
+    #shopify-block-{{ block.id }} .rte h6,
+    #shopify-block-{{ block.id }} .card-title {
+      color: currentColor !important;
+    }
+    #shopify-block-{{ block.id }} .rte a {
+      color: currentColor !important;
+      text-decoration-color: currentColor !important;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<div class="{{ card_classes }}" {{ block.shopify_attributes }}>
+  
+  {%- if block.settings.image != blank and block.settings.image_placement == 'top' -%}
+    <div class="w-full overflow-hidden border-b border-inherit z-10">
+      {{ block.settings.image | image_url: width: 800 | image_tag: 
+        class: 'w-full object-cover',
+        style: 'aspect-ratio: ' | append: aspect_ratio_style,
+        loading: 'lazy'
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="card-content flex flex-col flex-1 w-full z-10 {{ content_align_class }}">
+    {%- if block.settings.title != blank -%}
+      <h3 class="card-title font-serif font-bold text-lg md:text-xl mb-2 text-inherit">{{ block.settings.title }}</h3>
+    {%- endif -%}
+    
+    {%- if block.settings.content != blank -%}
+      <div class="card-rte rte text-sm mb-4 text-inherit w-full">
+        {{ block.settings.content }}
+      </div>
+    {%- endif -%}
+
+    <div class="card-nested-blocks w-full flex flex-col gap-3">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+
+  {%- if block.settings.image != blank and block.settings.image_placement == 'bottom' -%}
+    <div class="w-full overflow-hidden border-t border-inherit mt-auto z-10">
+      {{ block.settings.image | image_url: width: 800 | image_tag: 
+        class: 'w-full object-cover',
+        style: 'aspect-ratio: ' | append: aspect_ratio_style,
+        loading: 'lazy'
+      }}
+    </div>
+  {%- endif -%}
+
+  {%- if has_bg_image -%}
+    <div class="absolute inset-0 z-0 pointer-events-none">
+      {{ block.settings.image | image_url: width: 1200 | image_tag: 
+        class: 'w-full h-full object-cover',
+        loading: 'lazy'
+      }}
+      <div class="absolute inset-0 bg-black/40" style="opacity: {{ block.settings.image_overlay_opacity | divided_by: 100.0 }};"></div>
+    </div>
+  {%- endif -%}
+
+  {%- if block.settings.card_link != blank -%}
+    <a href="{{ block.settings.card_link }}" class="absolute inset-0 z-20 cursor-pointer" aria-label="{{ block.settings.title | default: 'Card link' }}"></a>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:general.card",
+  "class": "shopify-block-card",
+  "blocks": [{ "type": "@theme" }],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "select",
+      "id": "card_design",
+      "label": "t:labels.card_design",
+      "options": [
+        { "value": "regular", "label": "t:options.card_design.regular" },
+        { "value": "outlined", "label": "t:options.card_design.outlined" }
+      ],
+      "default": "regular"
+    },
+    {
+      "type": "select",
+      "id": "width_cols",
+      "label": "t:labels.width_cols",
+      "options": [
+        { "value": "1", "label": "t:options.width_cols.1" },
+        { "value": "2", "label": "t:options.width_cols.2" },
+        { "value": "3", "label": "t:options.width_cols.3" },
+        { "value": "4", "label": "t:options.width_cols.4" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "t:labels.background",
+      "options": [
+        { "value": "surface", "label": "Surface" },
+        { "value": "shade", "label": "Shade" },
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "dark", "label": "Dark" },
+        { "value": "transparent", "label": "Transparent" }
+      ],
+      "default": "surface"
+    },
+    {
+      "type": "select",
+      "id": "border_color",
+      "label": "Border farve",
+      "options": [
+        { "value": "outline_variant", "label": "Outline Variant" },
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "dark", "label": "Dark" },
+        { "value": "transparent", "label": "Transparent" }
+      ],
+      "default": "outline_variant"
+    },
+    {
+      "type": "select",
+      "id": "border_thickness",
+      "label": "t:labels.border_thickness",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "thin", "label": "t:options.border_thickness.thin" },
+        { "value": "medium", "label": "t:options.border_thickness.medium" },
+        { "value": "thick", "label": "t:options.border_thickness.thick" }
+      ],
+      "default": "thin"
+    },
+    {
+      "type": "select",
+      "id": "corner_radius",
+      "label": "t:labels.corner_radius",
+      "options": [
+        { "value": "none", "label": "t:options.corner_radius.none" },
+        { "value": "small", "label": "t:options.corner_radius.small" },
+        { "value": "medium", "label": "t:options.corner_radius.medium" },
+        { "value": "large", "label": "t:options.corner_radius.large" },
+        { "value": "full", "label": "t:options.corner_radius.full" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "header",
+      "content": "Indhold"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Overskrift",
+      "default": "Kort Overskrift"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Tekstindhold",
+      "default": "<p>Dette er et kortelement med tilpasset design.</p>"
+    },
+    {
+      "type": "url",
+      "id": "card_link",
+      "label": "t:labels.card_link"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:labels.alignment",
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Billede"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Billede"
+    },
+    {
+      "type": "select",
+      "id": "image_placement",
+      "label": "Billedplacering",
+      "options": [
+        { "value": "top", "label": "I toppen" },
+        { "value": "bottom", "label": "I bunden" },
+        { "value": "background", "label": "Som baggrund" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Billedformat",
+      "options": [
+        { "value": "adapt", "label": "Tilpas" },
+        { "value": "square", "label": "Firkantet (1:1)" },
+        { "value": "portrait", "label": "Portræt (3:4)" },
+        { "value": "landscape", "label": "Landskab (16:9)" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Mørk overlay (kun baggrund)",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Indre Afstand (Padding)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_sides",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i siderne",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.card",
+      "settings": {
+        "card_design": "regular",
+        "width_cols": "4"
+      }
+    }
+  ]
+}
+{% endschema %}
