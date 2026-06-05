@@ -90,6 +90,7 @@
     },
     "card_design": {
       "regular": "Regular",
+      "raised": "Raised",
       "outlined": "Outlined"
     },
     "border_thickness": {

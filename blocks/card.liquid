@@ -9,18 +9,20 @@
   assign card_classes = 'card-block flex flex-col relative overflow-hidden transition-all duration-300 w-full h-full'
   
   # Corner Radius mapping
+  assign radius_class = 'rounded-none'
   case block.settings.corner_radius
     when 'none'
-      assign card_classes = card_classes | append: ' rounded-none'
+      assign radius_class = 'rounded-none'
     when 'small'
-      assign card_classes = card_classes | append: ' rounded-lg'
+      assign radius_class = 'rounded-lg'
     when 'medium'
-      assign card_classes = card_classes | append: ' rounded-2xl'
+      assign radius_class = 'rounded-2xl'
     when 'large'
-      assign card_classes = card_classes | append: ' rounded-[2rem]'
+      assign radius_class = 'rounded-[2rem]'
     when 'full'
-      assign card_classes = card_classes | append: ' rounded-full'
+      assign radius_class = 'rounded-full'
   endcase
+  assign card_classes = card_classes | append: ' ' | append: radius_class
 
   # Background color mapping
   case block.settings.background_color
@@ -64,14 +66,13 @@
       assign border_color_class = 'border-transparent'
   endcase
 
-  # Apply border classes based on design style
+  # Apply border / shadow classes based on design style
   if block.settings.card_design == 'outlined'
     assign card_classes = card_classes | append: ' ' | append: border_width | append: ' ' | append: border_color_class
-  elsif block.settings.card_design == 'regular'
+  elsif block.settings.card_design == 'raised'
     assign card_classes = card_classes | append: ' shadow-sm hover:shadow-md'
-    if block.settings.border_thickness != 'none'
-      assign card_classes = card_classes | append: ' ' | append: border_width | append: ' ' | append: border_color_class
-    endif
+  elsif block.settings.card_design == 'regular'
+    # Regular design: flat (no border, not raised)
   endif
 
   # Text Alignment
@@ -161,7 +162,15 @@
 <div class="{{ card_classes }}" {{ block.shopify_attributes }}>
   
   {%- if block.settings.image != blank and block.settings.image_placement == 'top' -%}
-    <div class="w-full overflow-hidden border-b border-inherit z-10">
+    {%- liquid
+      assign image_wrapper_classes = "w-full overflow-hidden z-10"
+      if block.settings.card_design == 'regular'
+        assign image_wrapper_classes = image_wrapper_classes | append: " " | append: radius_class
+      else
+        assign image_wrapper_classes = image_wrapper_classes | append: " border-b border-inherit"
+      endif
+    -%}
+    <div class="{{ image_wrapper_classes }}">
       {{ block.settings.image | image_url: width: 800 | image_tag: 
         class: 'w-full object-cover',
         style: aspect_ratio_style,
@@ -187,7 +196,15 @@
   </div>
 
   {%- if block.settings.image != blank and block.settings.image_placement == 'bottom' -%}
-    <div class="w-full overflow-hidden border-t border-inherit mt-auto z-10">
+    {%- liquid
+      assign image_wrapper_classes = "w-full overflow-hidden mt-auto z-10"
+      if block.settings.card_design == 'regular'
+        assign image_wrapper_classes = image_wrapper_classes | append: " " | append: radius_class
+      else
+        assign image_wrapper_classes = image_wrapper_classes | append: " border-t border-inherit"
+      endif
+    -%}
+    <div class="{{ image_wrapper_classes }}">
       {{ block.settings.image | image_url: width: 800 | image_tag: 
         class: 'w-full object-cover',
         style: aspect_ratio_style,
@@ -227,6 +244,7 @@
       "label": "t:labels.card_design",
       "options": [
         { "value": "regular", "label": "t:options.card_design.regular" },
+        { "value": "raised", "label": "t:options.card_design.raised" },
         { "value": "outlined", "label": "t:options.card_design.outlined" }
       ],
       "default": "regular"
