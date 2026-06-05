@@ -74,7 +74,7 @@
         </button>
       </div>
 
-      <button id="btn-add-to-cart" data-text-before-price="{{ text_before_price }}" class="w-full bg-brand-yellow hover:brightness-95 text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+      <button id="btn-add-to-cart" data-text-before-price="{{ text_before_price }}" class="w-full bg-accent hover:brightness-95 text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
         <span>{{ text_before_price }}</span>
         <span id="btn-price-display" class="ml-1.5">{{ product.selected_or_first_available_variant.price | money }}</span>
       </button>

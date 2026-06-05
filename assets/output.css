@@ -86,8 +86,8 @@
     --color-background: var(--color-background);
     --color-background-dark: var(--color-background-dark);
     --color-background-shade: var(--color-background-shade);
-    --color-secondary: #8a5100;
-    --color-brand-yellow: var(--color-primary-brand);
+    --color-accent: var(--color-accent);
+    --color-secondary: var(--color-accent);
     --color-surface: #ffffff;
     --color-surface-container: #f9f9f9;
     --color-outline-variant: #e2e2e2;
@@ -866,6 +866,9 @@
     --tw-border-style: none;
     border-style: none;
   }
+  .border-accent {
+    border-color: var(--color-accent);
+  }
   .border-background-dark {
     border-color: var(--color-background-dark);
   }
@@ -874,9 +877,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-black) 10%, transparent);
     }
-  }
-  .border-brand-yellow {
-    border-color: var(--color-brand-yellow);
   }
   .border-inherit {
     border-color: inherit;
@@ -959,6 +959,9 @@
   .bg-\[\#f9f9f9\] {
     background-color: #f9f9f9;
   }
+  .bg-accent {
+    background-color: var(--color-accent);
+  }
   .bg-background {
     background-color: var(--color-background);
   }
@@ -994,9 +997,6 @@
   }
   .bg-blue-50 {
     background-color: var(--color-blue-50);
-  }
-  .bg-brand-yellow {
-    background-color: var(--color-brand-yellow);
   }
   .bg-emerald-50 {
     background-color: var(--color-emerald-50);
@@ -1334,6 +1334,9 @@
   .text-\[\#FFB800\] {
     color: #FFB800;
   }
+  .text-accent {
+    color: var(--color-accent);
+  }
   .text-amber-500 {
     color: var(--color-amber-500);
   }
@@ -1342,9 +1345,6 @@
   }
   .text-blue-600 {
     color: var(--color-blue-600);
-  }
-  .text-brand-yellow {
-    color: var(--color-brand-yellow);
   }
   .text-emerald-400 {
     color: var(--color-emerald-400);
@@ -1542,12 +1542,12 @@
       }
     }
   }
-  .selection\:bg-brand-yellow {
+  .selection\:bg-accent {
     & *::selection {
-      background-color: var(--color-brand-yellow);
+      background-color: var(--color-accent);
     }
     &::selection {
-      background-color: var(--color-brand-yellow);
+      background-color: var(--color-accent);
     }
   }
   .selection\:text-\[\#1a1c1c\] {
@@ -1565,10 +1565,10 @@
       }
     }
   }
-  .hover\:border-brand-yellow {
+  .hover\:border-accent {
     &:hover {
       @media (hover: hover) {
-        border-color: var(--color-brand-yellow);
+        border-color: var(--color-accent);
       }
     }
   }
@@ -1602,10 +1602,10 @@
       }
     }
   }
-  .hover\:text-brand-yellow {
+  .hover\:text-accent {
     &:hover {
       @media (hover: hover) {
-        color: var(--color-brand-yellow);
+        color: var(--color-accent);
       }
     }
   }

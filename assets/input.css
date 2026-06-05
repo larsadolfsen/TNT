@@ -5,9 +5,9 @@
   --color-background: var(--color-background);
   --color-background-dark: var(--color-background-dark);
   --color-background-shade: var(--color-background-shade);
-  --color-secondary: #8a5100;
-  --color-secondary-container: var(--color-primary-brand);
-  --color-brand-yellow: var(--color-primary-brand);
+  --color-accent: var(--color-accent);
+  --color-secondary: var(--color-accent);
+  --color-secondary-container: var(--color-accent);
   --color-on-secondary-container: #1a1c1c;
   --color-surface: #ffffff;
   --color-surface-container: #f9f9f9;

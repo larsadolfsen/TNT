@@ -390,7 +390,7 @@
           if (addToCartBtn) {
             addToCartBtn.disabled = true;
             addToCartBtn.classList.add("bg-slate-200", "text-slate-400", "cursor-not-allowed");
-            addToCartBtn.classList.remove("bg-brand-yellow", "hover:brightness-95");
+            addToCartBtn.classList.remove("bg-accent", "hover:brightness-95");
             if (btnTextSpan) {
               btnTextSpan.textContent = `Bredde overskrider maks bredde (${maxWidthLimit} cm)`;
               if (btnPriceSpan) btnPriceSpan.style.display = "none";
@@ -405,7 +405,7 @@
           if (addToCartBtn) {
             addToCartBtn.disabled = false;
             addToCartBtn.classList.remove("bg-slate-200", "text-slate-400", "cursor-not-allowed");
-            addToCartBtn.classList.add("bg-brand-yellow", "hover:brightness-95");
+            addToCartBtn.classList.add("bg-accent", "hover:brightness-95");
             if (btnTextSpan) {
               btnTextSpan.textContent = addToCartBtn.getAttribute("data-text-before-price") || "Læg i kurv";
               if (btnPriceSpan) btnPriceSpan.style.display = "";
