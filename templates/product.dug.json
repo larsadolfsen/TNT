@@ -369,7 +369,7 @@
             "border_thickness": "thin",
             "corner_radius": "medium",
             "title": "",
-            "content": "{{ closest.product.description }}",
+            "content": "<p>dd</p>{{ closest.product.description }}",
             "card_link": "",
             "alignment": "left",
             "image": "{{ closest.product.featured_image }}",
