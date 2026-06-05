@@ -162,7 +162,7 @@
       ],
       "name": "Buy",
       "settings": {
-        "background_color": "light",
+        "background_color": "shade",
         "alignment": "columns",
         "padding_top": 12,
         "padding_bottom": 12,
