@@ -163,7 +163,7 @@
             "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
             "payment_icons_height": 16,
             "enable_sticky_buy_button": true,
-            "sticky_buy_button_text": "Køb"
+            "sticky_buy_button_text": "Læg i kurv"
           },
           "blocks": {}
         },
