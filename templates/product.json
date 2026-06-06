@@ -179,11 +179,12 @@
           },
           "blocks": {}
         },
-        "trust_checkmark_JTnQTa": {
-          "type": "trust-checkmark",
-          "name": "Trust Checkmark",
+        "trust_countdown_LpPcP3": {
+          "type": "trust-countdown",
+          "name": "Trust Countdown",
           "settings": {
-            "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+            "text": "Bestil inden",
+            "suffix": "Så sender vi"
           },
           "blocks": {}
         },
@@ -194,19 +195,43 @@
             "text": "30 dages fuld returret"
           },
           "blocks": {}
+        },
+        "card_tymWUQ": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "card_design": "regular",
+            "width_cols": "4",
+            "background_color": "surface",
+            "border_color": "outline_variant",
+            "border_thickness": "thin",
+            "corner_radius": "medium",
+            "title": "",
+            "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "padding_sides": 24
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "trust_checkmark_nzpaFa",
-        "trust_checkmark_JTnQTa",
-        "trust_checkmark_HBeQne"
+        "trust_countdown_LpPcP3",
+        "trust_checkmark_HBeQne",
+        "card_tymWUQ"
       ],
       "name": "Row",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
-        "background_color": "light",
-        "alignment": "columns",
+        "background_color": "shade",
+        "alignment": "full_width",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 24,
