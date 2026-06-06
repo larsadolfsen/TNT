@@ -32,7 +32,7 @@
             "rating_count": "163",
             "badge_text": "300+ købt den seneste måned",
             "padding_top": 12,
-            "padding_bottom": 12,
+            "padding_bottom": 0,
             "padding_sides": 0
           },
           "blocks": {}
@@ -46,8 +46,8 @@
             "alignment": "left",
             "background_color": "#0e1a28",
             "text_color": "#fefefe",
-            "padding_top": 4,
-            "padding_bottom": 0,
+            "padding_top": 0,
+            "padding_bottom": 8,
             "padding_sides": 0
           },
           "blocks": {}
