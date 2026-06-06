@@ -37,6 +37,20 @@
           },
           "blocks": {}
         },
+        "product_urgency_3erMwf": {
+          "type": "product-urgency",
+          "name": "Product Stock Urgency",
+          "settings": {
+            "show_urgency": true,
+            "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
+            "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
+            "hide_under_limit": 5,
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "badge_stock": {
           "type": "badge",
           "name": "Badge",
@@ -56,6 +70,7 @@
       "block_order": [
         "page_title_Lq47YW",
         "product_trust_wtyTtH",
+        "product_urgency_3erMwf",
         "badge_stock"
       ],
       "name": "Row",
