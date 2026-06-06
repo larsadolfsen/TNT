@@ -127,7 +127,7 @@
               "type": "product-price",
               "name": "Product Price",
               "settings": {
-                "price_suffix": "pr. meter inkl. moms",
+                "price_suffix": "pr. stk. inkl. moms",
                 "price_subtext": "",
                 "padding_top": 12,
                 "padding_bottom": 12,
