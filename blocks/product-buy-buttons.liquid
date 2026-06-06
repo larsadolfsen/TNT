@@ -51,6 +51,10 @@
           <span id="calc-metervare-label">Metervare</span>
           <span id="calc-metervare-price"></span>
         </div>
+        <div class="flex justify-between items-center" id="calc-width-row" style="display: none;">
+          <span id="calc-width-label">Bredde</span>
+          <span id="calc-width-price"></span>
+        </div>
         
         <div class="border-t border-slate-200 my-2"></div>
         
@@ -437,10 +441,17 @@
       if (hasCustomizer) {
         const shapeLabel = document.getElementById("calc-shape-label");
         const lengthLabel = document.getElementById("calc-metervare-label");
+        const widthLabel = document.getElementById("calc-width-label");
+        const widthRow = document.getElementById("calc-width-row");
         if (shapeLabel && lengthLabel) {
           const shapeText = shapeLabel.textContent.replace("Form:", "").replace("Form: ", "").trim();
           const lengthText = lengthLabel.textContent.replace("Længde:", "").replace("Længde: ", "").replace("Diameter:", "").replace("Diameter: ", "").trim();
-          summaryText = `${shapeText} • ${lengthText}`;
+          let summary = `${shapeText} • ${lengthText}`;
+          if (widthRow && widthRow.style.display !== "none" && widthLabel) {
+            const widthText = widthLabel.textContent.trim();
+            summary += ` • ${widthText}`;
+          }
+          summaryText = summary;
         }
       } else {
         // Simple variant selection
@@ -466,18 +477,24 @@
       setTimeout(updateStickyBar, 20);
     });
 
-    // Listen to document changes (for shape buttons etc.)
+    // Listen to document changes (for shape buttons, checkbox, etc.)
     document.addEventListener("click", (e) => {
-      if (e.target.closest('.shape-btn') || e.target.closest('#btn-length-minus') || e.target.closest('#btn-length-plus') || e.target.closest('#btn-qty-minus') || e.target.closest('#btn-qty-plus')) {
+      if (e.target.closest('.shape-btn') || e.target.closest('#btn-length-minus') || e.target.closest('#btn-length-plus') || e.target.closest('#btn-qty-minus') || e.target.closest('#btn-qty-plus') || e.target.closest('#checkbox-customize-width') || e.target.closest('#btn-width-minus') || e.target.closest('#btn-width-plus')) {
         setTimeout(updateStickyBar, 50);
       }
     });
 
-    // Listen to input changes (direct text changes on length/qty)
+    // Listen to input changes (direct text changes on length/qty/width)
     const displayLength = document.getElementById("display-length");
     if (displayLength) {
       displayLength.addEventListener("input", () => setTimeout(updateStickyBar, 50));
       displayLength.addEventListener("change", () => setTimeout(updateStickyBar, 50));
+    }
+
+    const displayWidth = document.getElementById("display-width");
+    if (displayWidth) {
+      displayWidth.addEventListener("input", () => setTimeout(updateStickyBar, 50));
+      displayWidth.addEventListener("change", () => setTimeout(updateStickyBar, 50));
     }
 
     // Watch for variant change select dropdowns

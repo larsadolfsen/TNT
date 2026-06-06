@@ -40,6 +40,12 @@ query Input {
       _shape_variant_id: attribute(key: "_shape_variant_id") {
         value
       }
+      _width_surcharge: attribute(key: "_width_surcharge") {
+        value
+      }
+      _width_variant_id: attribute(key: "_width_variant_id") {
+        value
+      }
       _metervare_title: attribute(key: "_metervare_title") {
         value
       }

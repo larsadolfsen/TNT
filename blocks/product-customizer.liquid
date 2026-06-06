@@ -64,6 +64,22 @@
   if metervare_variant == nil and metervare_product != nil
     assign metervare_variant = metervare_product.selected_or_first_available_variant
   endif
+
+  # Resolve width customization surcharge product (SKU BTM005)
+  assign width_surcharge_variant = nil
+  for prod in collections.all.products
+    for variant in prod.variants
+      if variant.sku == 'BTM005'
+        assign width_surcharge_variant = variant
+        break
+      endif
+    endfor
+    if width_surcharge_variant != nil
+      break
+    endif
+  endfor
+
+  assign width_surcharge_price_formatted = width_surcharge_variant.price | default: 0 | money | replace: 'kr.', '' | replace: 'kr', '' | replace: 'Kr.', '' | replace: 'Kr', '' | strip | append: ' Kr.'
 -%}
 
 {%- style -%}
@@ -88,10 +104,10 @@
 <div id="shape-selector" style="display: none;"></div>
 
 <div class="w-full pt-7 pb-3{% if block.settings.border_top %} border-t border-slate-200{% endif %}{% if block.settings.border_bottom %} border-b border-slate-200{% endif %}" {{ block.shopify_attributes }}>
-  <div class="flex flex-col">
+  <div class="grid-layout">
 
     <!-- Step 1: Shape Selector -->
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-3" style="--span-mobile: 4; --span-expanded: 8; --span-large: 12;">
       <div class="flex items-center gap-3">
         <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full shrink-0">1</span>
         <div class="flex flex-col w-full">
@@ -143,7 +159,7 @@
     </div>
 
     <!-- Step 2: Length Selection -->
-    <div class="flex flex-col gap-3 mt-6">
+    <div class="flex flex-col gap-3" style="--span-mobile: 4; --span-expanded: 4; --span-large: 6;">
       <div class="flex items-start gap-3">
         <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
@@ -174,6 +190,17 @@
         <div id="length-calculation" class="text-sm text-primary/85 mt-1.5 text-center w-full"></div>
       </div>
 
+      <!-- Checkbox: Tilpas bredde -->
+      <div class="flex items-center gap-2.5 mt-1">
+        <input type="checkbox" id="checkbox-customize-width" class="w-4 h-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500 cursor-pointer" />
+        <label for="checkbox-customize-width" class="text-sm font-medium text-slate-700 cursor-pointer select-none">
+          Tilpas bredde
+          {% if width_surcharge_variant %}
+            (+{{ width_surcharge_price_formatted }})
+          {% endif %}
+        </label>
+      </div>
+
       <!-- Validation Warning Message -->
       <div id="customizer-warning" class="hidden w-full p-3 bg-rose-50 border border-rose-200 rounded-2xl text-sm text-rose-600 flex items-center gap-2 mt-1">
         <span class="material-symbols-outlined text-rose-500 text-sm">warning</span>
@@ -181,8 +208,38 @@
       </div>
     </div>
 
+    <!-- Step 2b: Width Selection -->
+    <div id="container-width-selection" class="flex flex-col gap-3" style="--span-mobile: 4; --span-expanded: 4; --span-large: 6; display: none;">
+      <div class="flex items-start gap-3">
+        <div class="flex flex-col w-full">
+          <span id="label-width" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg bredde</span>
+          <p class="text-sm text-primary/85 mt-1">Dugen skæres på dine mål. Max bredde er <span id="max-width-display">140</span> cm.</p>
+        </div>
+      </div>
+
+      <!-- Pill-shaped Stepper -->
+      <div class="w-full">
+        <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;">
+          <!-- Minus button -->
+          <button type="button" id="btn-width-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+            &mdash;
+          </button>
+          <!-- Value input -->
+          <input id="display-width" type="number" inputmode="numeric" pattern="[0-9]*"
+            value="140"
+            class="text-center font-bold text-slate-900 text-xl bg-transparent border-none outline-none p-0 m-0"
+            style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
+          />
+          <!-- Plus button -->
+          <button type="button" id="btn-width-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+            &#43;
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Step 3: Quantity Selector -->
-    <div class="flex flex-col gap-2 mt-3 w-full">
+    <div class="flex flex-col gap-2 w-full" style="--span-mobile: 3; --span-expanded: 3; --span-large: 3; grid-column-start: 1;">
       <div class="flex items-center gap-3">
         <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full">3</span>
         <span class="font-bold text-base uppercase tracking-wider text-slate-800">Antal</span>
@@ -205,6 +262,7 @@
         </button>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -247,6 +305,15 @@
       "price": {{ shape_oval.price | default: 0 | divided_by: 100.0 }},
       "price_formatted": {{ oval_price_formatted | json }}
     }
+  }
+</script>
+
+<!-- Width Surcharge Data JSON -->
+<script id="width-surcharge-data" type="application/json">
+  {
+    "id": {{ width_surcharge_variant.id | json }},
+    "price": {{ width_surcharge_variant.price | default: 0 | divided_by: 100.0 }},
+    "price_formatted": {{ width_surcharge_price_formatted | json }}
   }
 </script>
 
@@ -305,6 +372,14 @@
       console.error("Failed to parse shape data", e);
     }
 
+    // Parse width surcharge data
+    let widthSurchargeData = {};
+    try {
+      widthSurchargeData = JSON.parse(document.getElementById('width-surcharge-data').textContent);
+    } catch (e) {
+      console.error("Failed to parse width surcharge data", e);
+    }
+
     const productTitle = {{ product.title | json }};
     // Helper: Parse width from variant title or product title.
     // Produkttitel slutter altid med ", xxx cm" - søg efter det mønster først.
@@ -324,6 +399,8 @@
     // State
     let state = {
       length: 200,
+      width: 140,
+      customizeWidth: false,
       quantity: 1
     };
 
@@ -395,8 +472,66 @@
           }
         }
 
-        // Width validation for firkantet / oval
+        // Width validation / setup
         const width = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        
+        // If shape is round, width customization is not possible
+        const checkboxEl = document.getElementById("checkbox-customize-width");
+        const checkboxContainer = checkboxEl ? checkboxEl.parentElement : null;
+        const widthSelectionContainer = document.getElementById("container-width-selection");
+        
+        if (selectedShape === 'rund') {
+          state.customizeWidth = false;
+          if (checkboxContainer) checkboxContainer.style.display = "none";
+          if (widthSelectionContainer) widthSelectionContainer.style.display = "none";
+          if (checkboxEl) checkboxEl.checked = false;
+        } else {
+          if (checkboxContainer) checkboxContainer.style.display = "flex";
+          if (checkboxEl) checkboxEl.checked = state.customizeWidth;
+          if (widthSelectionContainer) {
+            widthSelectionContainer.style.display = state.customizeWidth ? "flex" : "none";
+          }
+        }
+
+        const maxWidth = width;
+        const maxWidthDisplay = document.getElementById("max-width-display");
+        if (maxWidthDisplay) {
+          maxWidthDisplay.textContent = maxWidth;
+        }
+
+        // Clamp state width
+        if (state.width > maxWidth) {
+          state.width = maxWidth;
+        }
+        const displayWidth = document.getElementById("display-width");
+        if (displayWidth && parseInt(displayWidth.value) !== state.width) {
+          displayWidth.value = state.width;
+        }
+
+        // Width stepper plus / minus state
+        const btnWidthPlus = document.getElementById("btn-width-plus");
+        if (btnWidthPlus) {
+          if (state.width >= maxWidth) {
+            btnWidthPlus.disabled = true;
+            btnWidthPlus.classList.add("opacity-30", "pointer-events-none");
+          } else {
+            btnWidthPlus.disabled = false;
+            btnWidthPlus.classList.remove("opacity-30", "pointer-events-none");
+          }
+        }
+
+        const btnWidthMinus = document.getElementById("btn-width-minus");
+        const minWidth = 50;
+        if (btnWidthMinus) {
+          if (state.width <= minWidth) {
+            btnWidthMinus.disabled = true;
+            btnWidthMinus.classList.add("opacity-30", "pointer-events-none");
+          } else {
+            btnWidthMinus.disabled = false;
+            btnWidthMinus.classList.remove("opacity-30", "pointer-events-none");
+          }
+        }
+
         let isTooWide = false;
         if ((selectedShape === 'firkantet' || selectedShape === 'oval') && width > maxWidthLimit) {
           isTooWide = true;
@@ -444,9 +579,12 @@
           const shapeInfo = shapeData[selectedShape];
           const shapePrice = (shapeInfo ? shapeInfo.price : 0) * state.quantity;
 
+          // Calculate width surcharge
+          const widthSurcharge = state.customizeWidth ? (widthSurchargeData.price || 0) * state.quantity : 0;
+
           // Calculate price: (price per cm) * length * quantity
           const totalClothPrice = pricingVariant.price * state.length * state.quantity;
-          const totalClothAndShapePrice = totalClothPrice + shapePrice;
+          const totalClothAndShapePrice = totalClothPrice + shapePrice + widthSurcharge;
           
           const formattedPrice = totalClothAndShapePrice.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Kr.";
           
@@ -472,6 +610,9 @@
           const calcShapeRow = document.getElementById("calc-shape-row");
           const calcShapeLabel = document.getElementById("calc-shape-label");
           const calcShapePrice = document.getElementById("calc-shape-price");
+          const calcWidthRow = document.getElementById("calc-width-row");
+          const calcWidthLabel = document.getElementById("calc-width-label");
+          const calcWidthPrice = document.getElementById("calc-width-price");
           const calcTotalPrice = document.getElementById("calc-total-price");
 
           if (calcTitle) {
@@ -486,7 +627,6 @@
             calcTitle.textContent = displayTitle;
           }
 
-          const width = getVariantWidth(pricingVariant.title);
           if (calcMetervareLabel) {
             const labelText = (selectedShape === 'rund') ? 'Diameter' : 'Længde';
             calcMetervareLabel.textContent = `${labelText}: ${state.length} cm`;
@@ -512,28 +652,35 @@
             }
           }
 
+          if (calcWidthRow) {
+            if (state.customizeWidth) {
+              calcWidthRow.style.display = "flex";
+              if (calcWidthLabel) {
+                calcWidthLabel.textContent = `Bredde: ${state.width} cm`;
+              }
+              if (calcWidthPrice) {
+                calcWidthPrice.textContent = formatDanishPrice(widthSurchargeData.price || 0);
+              }
+            } else {
+              calcWidthRow.style.display = "none";
+            }
+          }
+
           if (calcTotalPrice) {
             const singleShapePrice = shapeInfo ? shapeInfo.price : 0;
-            const singleTotalPrice = singleClothPrice + singleShapePrice;
+            const singleWidthSurcharge = state.customizeWidth ? (widthSurchargeData.price || 0) : 0;
+            const singleTotalPrice = singleClothPrice + singleShapePrice + singleWidthSurcharge;
             calcTotalPrice.textContent = formatDanishPrice(singleTotalPrice);
           }
 
           // Update length calculation display
           const lengthCalculation = document.getElementById("length-calculation");
           if (lengthCalculation) {
-            const lengthInMeters = state.length / 100;
-            const pricePerMeter = pricingVariant.price * 100;
             const totalLengthPrice = pricingVariant.price * state.length;
-            
-            const formattedPricePerMeter = pricePerMeter.toLocaleString("da-DK", { 
-              minimumFractionDigits: 2, 
-              maximumFractionDigits: 2 
-            });
             const formattedTotalLengthPrice = totalLengthPrice.toLocaleString("da-DK", { 
               minimumFractionDigits: 2, 
               maximumFractionDigits: 2 
             });
-            
             lengthCalculation.textContent = `${formattedTotalLengthPrice} Kr.`;
           }
 
@@ -610,6 +757,102 @@
       displayLength.addEventListener("focus", () => displayLength.select());
     }
 
+    // Checkbox custom width listener
+    const checkboxCustomizeWidth = document.getElementById("checkbox-customize-width");
+    if (checkboxCustomizeWidth) {
+      checkboxCustomizeWidth.addEventListener("change", (e) => {
+        state.customizeWidth = e.target.checked;
+        if (state.customizeWidth) {
+          // Default to variant width
+          let activeVariantId = null;
+          const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+          if (variantInput) {
+            activeVariantId = parseInt(variantInput.value);
+          }
+          let pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0);
+          if (!pricingVariant) {
+            pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+          }
+          state.width = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        }
+        updateUI();
+      });
+    }
+
+    // Width stepper buttons listeners
+    const btnWidthMinus = document.getElementById("btn-width-minus");
+    const btnWidthPlus = document.getElementById("btn-width-plus");
+    const displayWidth = document.getElementById("display-width");
+
+    function clampWidth(val, maxVal) {
+      val = Math.round(val / stepSize) * stepSize;
+      return Math.min(maxVal, Math.max(50, val));
+    }
+
+    if (btnWidthMinus && displayWidth) {
+      btnWidthMinus.addEventListener("click", () => {
+        let activeVariantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) activeVariantId = parseInt(variantInput.value);
+        let pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+        const maxWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        
+        if (state.width > 50) {
+          state.width = clampWidth(state.width - stepSize, maxWidth);
+          displayWidth.value = state.width;
+          updateUI();
+        }
+      });
+    }
+
+    if (btnWidthPlus && displayWidth) {
+      btnWidthPlus.addEventListener("click", () => {
+        let activeVariantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) activeVariantId = parseInt(variantInput.value);
+        let pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+        const maxWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        
+        if (state.width < maxWidth) {
+          state.width = clampWidth(state.width + stepSize, maxWidth);
+          displayWidth.value = state.width;
+          updateUI();
+        }
+      });
+    }
+
+    if (displayWidth) {
+      displayWidth.addEventListener("change", () => {
+        let activeVariantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) activeVariantId = parseInt(variantInput.value);
+        let pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+        const maxWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+
+        const raw = parseInt(displayWidth.value, 10);
+        if (!isNaN(raw)) {
+          state.width = clampWidth(raw, maxWidth);
+          displayWidth.value = state.width;
+          updateUI();
+        } else {
+          displayWidth.value = state.width;
+        }
+      });
+      displayWidth.addEventListener("blur", () => {
+        let activeVariantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) activeVariantId = parseInt(variantInput.value);
+        let pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+        const maxWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+
+        const raw = parseInt(displayWidth.value, 10);
+        state.width = isNaN(raw) ? state.width : clampWidth(raw, maxWidth);
+        displayWidth.value = state.width;
+        updateUI();
+      });
+      displayWidth.addEventListener("focus", () => displayWidth.select());
+    }
+
     if (btnQtyMinus && displayQty) {
       btnQtyMinus.addEventListener("click", () => {
         if (state.quantity > 1) {
@@ -676,7 +919,11 @@
         const basePriceCents = Math.round(refPrice * state.length * 100);
         const shapeInfo = shapeData[selectedShape];
         const shapeSurchargeCents = Math.round((shapeInfo ? shapeInfo.price : 0) * 100);
-        const unitPriceCents = basePriceCents + shapeSurchargeCents;
+        
+        const finalWidth = state.customizeWidth ? state.width : width;
+        const widthSurchargeCents = state.customizeWidth ? Math.round((widthSurchargeData.price || 0) * 100) : 0;
+        
+        const unitPriceCents = basePriceCents + shapeSurchargeCents + widthSurchargeCents;
 
         const targetVoksdugVariantId = pricingVariant ? pricingVariant.id : customizedVariant.id;
         const targetVoksdugImage = pricingVariant && pricingVariant.image ? pricingVariant.image : "";
@@ -688,17 +935,21 @@
           quantity: state.quantity,
           properties: {
             "_length": state.length.toString(),
-            "_width": width.toString(),
+            "_width": finalWidth.toString(),
             "_shape": selectedShape,
             "_base_price": basePriceCents.toString(),
             "_shape_surcharge": shapeSurchargeCents.toString(),
-            "_width_surcharge": "0",
+            "_width_surcharge": widthSurchargeCents.toString(),
             "_unit_price": unitPriceCents.toString()
           }
         };
 
         if (shapeVariantId) {
           itemToAdd.properties["_shape_variant_id"] = `gid://shopify/ProductVariant/${shapeVariantId}`;
+        }
+        
+        if (state.customizeWidth && widthSurchargeData && widthSurchargeData.id) {
+          itemToAdd.properties["_width_variant_id"] = `gid://shopify/ProductVariant/${widthSurchargeData.id}`;
         }
 
         // Add the product title and image to properties so they can be accessed by the Cart Transform function

@@ -1,4 +1,4 @@
-// extensions/cart-transform/node_modules/@shopify/shopify_function/run.ts
+// node_modules/@shopify/shopify_function/run.ts
 function run_default(userfunction) {
   try {
     ShopifyFunction;
@@ -12,7 +12,7 @@ function run_default(userfunction) {
   ShopifyFunction.writeOutput(output_obj);
 }
 
-// extensions/cart-transform/src/run.js
+// src/run.js
 function run(input) {
   const operations = [];
   console.log(`[CartTransform] Started. Total lines in cart: ${input.cart.lines.length}`);
@@ -33,11 +33,13 @@ function run(input) {
     const metervareVariantId = line._metervare_variant_id?.value;
     const pricePerCmVal = line._price_per_cm?.value;
     const shapeSurchargeVal = line._shape_surcharge?.value;
+    const widthSurchargeVal = line._width_surcharge?.value;
     const imageVal = line._image?.value;
     const customTitleVal = line._metervare_title?.value;
     const shapeVariantId = line._shape_variant_id?.value;
+    const widthVariantId = line._width_variant_id?.value;
     const shapeVal = line._shape?.value;
-    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}", shapeSurcharge="${shapeSurchargeVal}", image="${imageVal}", customTitle="${customTitleVal}", shapeVariantId="${shapeVariantId}"`);
+    console.log(`[CartTransform] Attributes: length="${lengthVal}", width="${widthVal}", metervareVariantId="${metervareVariantId}", pricePerCm="${pricePerCmVal}", shapeSurcharge="${shapeSurchargeVal}", widthSurcharge="${widthSurchargeVal}", image="${imageVal}", customTitle="${customTitleVal}", shapeVariantId="${shapeVariantId}", widthVariantId="${widthVariantId}"`);
     let length = lengthVal ? parseInt(lengthVal, 10) : 0;
     if (length <= 0) {
       console.log(`[CartTransform] Line ${line.id} skipped: length <= 0 (${length})`);
@@ -48,6 +50,7 @@ function run(input) {
       continue;
     }
     const shapeSurcharge = shapeSurchargeVal ? parseFloat(shapeSurchargeVal) / 100 : 0;
+    const widthSurcharge = widthSurchargeVal ? parseFloat(widthSurchargeVal) / 100 : 0;
     const expandedItems = [];
     const componentItem = {
       merchandiseId: metervareVariantId,
@@ -81,6 +84,21 @@ function run(input) {
       };
       expandedItems.push(shapeComponentItem);
       console.log(`[CartTransform] Added shape component ${shapeVariantId} with price: ${shapeSurcharge.toFixed(4)} kr.`);
+    }
+    if (widthVariantId && widthSurcharge >= 0) {
+      const widthComponentItem = {
+        merchandiseId: widthVariantId,
+        quantity: 1 * line.quantity,
+        price: {
+          adjustment: {
+            fixedPricePerUnit: {
+              amount: widthSurcharge.toFixed(4)
+            }
+          }
+        }
+      };
+      expandedItems.push(widthComponentItem);
+      console.log(`[CartTransform] Added width surcharge component ${widthVariantId} with price: ${widthSurcharge.toFixed(4)} kr.`);
     }
     const shapeNames = { firkantet: "Firkantet", rund: "Rund", oval: "Oval" };
     const shapeName = shapeNames[shapeVal] || (shapeVal ? shapeVal.charAt(0).toUpperCase() + shapeVal.slice(1) : "Firkantet");
