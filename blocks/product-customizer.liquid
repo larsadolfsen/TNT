@@ -123,10 +123,13 @@
 
     <!-- Step 1: Shape Selector -->
     <div class="flex flex-col gap-3 py-2" style="--span-mobile: 4; --span-expanded: 8; --span-large: 12;">
-      <div class="flex items-center gap-3">
-        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full shrink-0">1</span>
+      <div class="flex items-start gap-3">
+        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">1</span>
         <div class="flex flex-col w-full">
           <span class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg form</span>
+          {% if block.settings.shape_description != blank %}
+            <p class="text-sm text-primary/85 mt-1">{{ block.settings.shape_description }}</p>
+          {% endif %}
         </div>
       </div>
       <div class="grid-layout w-full">
@@ -240,7 +243,10 @@
       </button>
       
       <div id="content-width-accordion" class="flex flex-col gap-3 hidden w-full">
-        <p class="text-sm text-primary/85 pl-10">Dugen skæres på dine mål. Max bredde er <span id="max-width-display">140</span> cm.</p>
+        {%- assign width_desc = block.settings.width_description | default: 'Dugen skæres på dine mål. Max bredde er [max_width] cm.' -%}
+        <p class="text-sm text-primary/85 pl-10">
+          {{ width_desc | replace: '[max_width]', '<span id="max-width-display">140</span>' }}
+        </p>
         
         <!-- Pill-shaped Stepper -->
         <div class="w-full">
@@ -266,9 +272,14 @@
 
     <!-- Step 4: Quantity Selector -->
     <div class="flex flex-col gap-2 w-full pt-6 pb-3" style="--span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
-      <div class="flex items-center gap-3">
-        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full">4</span>
-        <span class="font-bold text-base uppercase tracking-wider text-slate-800">Antal</span>
+      <div class="flex items-start gap-3">
+        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">4</span>
+        <div class="flex flex-col w-full">
+          <span class="font-bold text-base uppercase tracking-wider text-slate-800">Antal</span>
+          {% if block.settings.qty_description != blank %}
+            <p class="text-sm text-primary/85 mt-1">{{ block.settings.qty_description }}</p>
+          {% endif %}
+        </div>
       </div>
       <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;transition:border-color 0.15s,box-shadow 0.15s;">
         <!-- Minus button -->
@@ -1090,44 +1101,47 @@
     {
       "type": "product",
       "id": "metervare_product",
-      "label": "Metervare Produkt (sku=BTM001)",
-      "info": "Vælg det produkt, der repræsenterer rå metervare (SKU BTM001)"
+      "label": "Metervare"
     },
     {
       "type": "header",
-      "content": "Form-knapper"
+      "content": "Trin 1: Form"
     },
     {
       "type": "product",
       "id": "firkantet_product",
-      "label": "Firkantet dug – produkt"
+      "label": "Firkantet"
     },
     {
       "type": "product",
       "id": "rund_product",
-      "label": "Rund dug – produkt"
+      "label": "Rund"
     },
     {
       "type": "product",
       "id": "oval_product",
-      "label": "Oval dug – produkt"
+      "label": "Oval"
     },
     {
-      "type": "product",
-      "id": "width_surcharge_product",
-      "label": "Tilpas bredde dug – produkt (surcharge sku=BTM005)",
-      "info": "Vælg produktet for tilpasning af bredde (surcharge BTM005)"
+      "type": "text",
+      "id": "shape_description",
+      "label": "Vælg form - beskrivelse",
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Trin 2: Længde"
     },
     {
       "type": "number",
       "id": "step_size",
-      "label": "Længde trin (cm)",
+      "label": "Længde trin",
       "default": 10
     },
     {
       "type": "number",
       "id": "min_length",
-      "label": "Minimum længde (cm)",
+      "label": "Minimum længde",
       "default": 50
     },
     {
@@ -1138,7 +1152,32 @@
     },
     {
       "type": "header",
-      "content": "Kanter"
+      "content": "Trin 3: Tilpas bredde"
+    },
+    {
+      "type": "product",
+      "id": "width_surcharge_product",
+      "label": "Tilpas bredde"
+    },
+    {
+      "type": "text",
+      "id": "width_description",
+      "label": "Tilpas bredde - beskrivelse",
+      "default": "Dugen skæres på dine mål. Max bredde er [max_width] cm."
+    },
+    {
+      "type": "header",
+      "content": "Trin 4: Antal"
+    },
+    {
+      "type": "text",
+      "id": "qty_description",
+      "label": "Antal - beskrivelse",
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Kanter & Layout"
     },
     {
       "type": "checkbox",
