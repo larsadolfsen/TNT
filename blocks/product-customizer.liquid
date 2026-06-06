@@ -706,7 +706,6 @@
             }
           }
 
-          const isWidthAdjusted = state.customizeWidth && (state.width < maxWidth);
           if (calcWidthRow) {
             if (isWidthAdjusted) {
               calcWidthRow.style.display = "flex";
@@ -742,7 +741,6 @@
           // Update width calculation display
           const widthCalculation = document.getElementById("width-calculation");
           if (widthCalculation) {
-            const isWidthAdjusted = state.customizeWidth && (state.width < maxWidth);
             if (isWidthAdjusted) {
               const totalWidthPrice = widthSurchargeData.price || 0;
               const formattedTotalWidthPrice = totalWidthPrice.toLocaleString("da-DK", { 
