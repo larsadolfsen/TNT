@@ -232,7 +232,7 @@
             Tilpas bredde
             {% if width_surcharge_variant %}
               <span class="text-base font-normal text-slate-800 normal-case">
-                +{{ width_surcharge_price_formatted }}
+                (+{{ width_surcharge_price_formatted | replace: 'Kr.', 'kr.' | replace: 'Kr', 'kr.' | strip }})
               </span>
             {% endif %}
           </span>
@@ -266,6 +266,8 @@
               &#43;
             </button>
           </div>
+          <!-- Dynamic calculation info under width selector -->
+          <div id="width-calculation" class="text-sm text-primary/85 mt-1.5 text-center w-full"></div>
         </div>
       </div>
     </div>
@@ -733,6 +735,17 @@
               maximumFractionDigits: 2 
             });
             lengthCalculation.textContent = `${formattedTotalLengthPrice} Kr.`;
+          }
+
+          // Update width calculation display
+          const widthCalculation = document.getElementById("width-calculation");
+          if (widthCalculation) {
+            const totalWidthPrice = state.customizeWidth ? (widthSurchargeData.price || 0) : 0;
+            const formattedTotalWidthPrice = totalWidthPrice.toLocaleString("da-DK", { 
+              minimumFractionDigits: 2, 
+              maximumFractionDigits: 2 
+            });
+            widthCalculation.textContent = `${formattedTotalWidthPrice} Kr.`;
           }
 
           // Set global variable to resolve initial page load race condition
