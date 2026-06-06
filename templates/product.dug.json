@@ -138,7 +138,7 @@
             "firkantet_product": "firkantet-dug-1",
             "rund_product": "afrunding",
             "oval_product": "oval-dug",
-            "shape_description": "Vælg den form, du ønsker din dug i.",
+            "shape_description": "",
             "step_size": 10,
             "min_length": 50,
             "length_description": "Vi anbefaler ca. 20 cm til nedhæng i hver ende.",
