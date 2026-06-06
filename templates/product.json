@@ -297,7 +297,7 @@
           "name": "Accordion Panel",
           "settings": {
             "title": "Produktspecifikationer",
-            "content": "<p>{{ closest.product.metafields.custom.om_produktet | metafield_tag }}</p>",
+            "content": "",
             "open_by_default": false
           },
           "blocks": {}
