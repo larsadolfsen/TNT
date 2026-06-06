@@ -66,18 +66,33 @@
   endif
 
   # Resolve width customization surcharge product (SKU BTM005)
+  assign width_surcharge_product = all_products[block.settings.width_surcharge_product]
   assign width_surcharge_variant = nil
-  for prod in collections.all.products
-    for variant in prod.variants
+  if width_surcharge_product != nil
+    for variant in width_surcharge_product.variants
       if variant.sku == 'BTM005'
         assign width_surcharge_variant = variant
         break
       endif
     endfor
-    if width_surcharge_variant != nil
-      break
+    if width_surcharge_variant == nil
+      assign width_surcharge_variant = width_surcharge_product.variants.first
     endif
-  endfor
+  endif
+
+  if width_surcharge_variant == nil
+    for prod in collections.all.products
+      for variant in prod.variants
+        if variant.sku == 'BTM005'
+          assign width_surcharge_variant = variant
+          break
+        endif
+      endfor
+      if width_surcharge_variant != nil
+        break
+      endif
+    endfor
+  endif
 
   assign width_surcharge_price_formatted = width_surcharge_variant.price | default: 0 | money | replace: 'kr.', '' | replace: 'kr', '' | replace: 'Kr.', '' | replace: 'Kr', '' | strip | append: ' Kr.'
 -%}
@@ -1096,6 +1111,12 @@
       "type": "product",
       "id": "oval_product",
       "label": "Oval dug – produkt"
+    },
+    {
+      "type": "product",
+      "id": "width_surcharge_product",
+      "label": "Tilpas bredde dug – produkt (surcharge sku=BTM005)",
+      "info": "Vælg produktet for tilpasning af bredde (surcharge BTM005)"
     },
     {
       "type": "number",
