@@ -60,12 +60,16 @@
       ],
       "name": "Row",
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 24,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_nmPTLb": {
@@ -75,16 +79,16 @@
           "type": "group",
           "name": "t:general.column",
           "settings": {
+            "span_mobile": "4",
+            "span_tablet": "4",
+            "span_desktop": "7",
             "sticky": false,
             "layout_direction": "group--vertical",
             "alignment": "flex-start",
             "align_left": false,
             "padding_top": 0,
             "padding_bottom": 0,
-            "padding_sides": 0,
-            "span_mobile": "4",
-            "span_tablet": "4",
-            "span_desktop": "7"
+            "padding_sides": 0
           },
           "blocks": {
             "product_media_NERnUf": {
@@ -107,41 +111,24 @@
           "type": "group",
           "name": "t:general.column",
           "settings": {
+            "span_mobile": "4",
+            "span_tablet": "4",
+            "span_desktop": "5",
             "sticky": false,
             "layout_direction": "group--vertical",
             "alignment": "flex-start",
             "align_left": false,
             "padding_top": 0,
             "padding_bottom": 0,
-            "padding_sides": 0,
-            "span_mobile": "4",
-            "span_tablet": "4",
-            "span_desktop": "5"
+            "padding_sides": 0
           },
           "blocks": {
-            "product_customizer_Jzqkbn": {
-              "type": "product-customizer",
-              "name": "Product Customizer",
-              "settings": {
-                "metervare_product": "firkantet-dug",
-                "firkantet_product": "",
-                "rund_product": "",
-                "oval_product": "",
-                "step_size": 10,
-                "min_length": 50,
-                "border_top": true,
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
             "product_price_xaFt46": {
               "type": "product-price",
               "name": "Product Price",
               "settings": {
                 "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger.",
+                "price_subtext": "",
                 "padding_top": 12,
                 "padding_bottom": 12,
                 "padding_sides": 0
@@ -155,13 +142,15 @@
                 "text_before_price": "Læg i kurv",
                 "padding_top": 12,
                 "padding_bottom": 12,
-                "padding_sides": 0
+                "padding_sides": 0,
+                "payment_icons_height": 24,
+                "enable_sticky_buy_button": true,
+                "sticky_buy_button_text": "Køb"
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "product_customizer_Jzqkbn",
             "product_price_xaFt46",
             "product_buy_buttons_7C6Jp6"
           ]
@@ -173,12 +162,16 @@
       ],
       "name": "Row",
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 24,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_WcWUGA": {
@@ -222,12 +215,16 @@
       ],
       "name": "Row",
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     }
   },
