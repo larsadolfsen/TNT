@@ -24,6 +24,29 @@
           },
           "blocks": {}
         },
+        "card_CkrhFH": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "card_design": "regular",
+            "width_cols": "4",
+            "background_color": "surface",
+            "border_color": "outline_variant",
+            "border_thickness": "none",
+            "corner_radius": "medium",
+            "title": "",
+            "content": "<p>Dette er et kortelement med tilpasset design.</p>",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "product_trust_wtyTtH": {
           "type": "product-trust",
           "name": "Product Trust",
@@ -31,8 +54,8 @@
             "rating_score": "4,8",
             "rating_count": "163",
             "badge_text": "300+ købt den seneste måned",
-            "padding_top": 12,
-            "padding_bottom": 12,
+            "padding_top": 0,
+            "padding_bottom": 0,
             "padding_sides": 0
           },
           "blocks": {}
@@ -41,144 +64,229 @@
           "type": "badge",
           "name": "Badge",
           "settings": {
-            "text": "På lager",
+            "text": "",
             "only_if_in_stock": true,
             "alignment": "left",
-            "background_color": "#e6f4ea",
-            "text_color": "#137333",
-            "padding_top": 4,
-            "padding_bottom": 0,
-            "padding_sides": 16
+            "background_color": "#0e1a28",
+            "text_color": "#fefefe",
+            "padding_top": 0,
+            "padding_bottom": 8,
+            "padding_sides": 0
           },
           "blocks": {}
         }
       },
       "block_order": [
         "page_title_Lq47YW",
+        "card_CkrhFH",
         "product_trust_wtyTtH",
         "badge_stock"
       ],
       "name": "Row",
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 24,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "row_eqmCNB": {
+      "type": "row",
+      "blocks": {
+        "product_media_rdzkqV": {
+          "type": "product-media",
+          "name": "Product Media Gallery",
+          "settings": {
+            "image_badge": "BESTSELLER",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_media_rdzkqV"
+      ],
+      "name": "Row",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h3",
+        "background_color": "light",
+        "alignment": "columns",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_sides": 24,
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_nmPTLb": {
       "type": "row",
       "blocks": {
-        "group_hEdHPg": {
-          "type": "group",
-          "name": "t:general.column",
+        "product_price_M99xTk": {
+          "type": "product-price",
+          "name": "Product Price",
           "settings": {
-            "sticky": false,
-            "layout_direction": "group--vertical",
-            "alignment": "flex-start",
-            "align_left": false,
-            "padding_top": 0,
+            "price_suffix": "pr. stk. inkl. moms",
+            "price_subtext": "",
+            "padding_top": 12,
             "padding_bottom": 0,
-            "padding_sides": 0,
-            "span_mobile": "4",
-            "span_tablet": "4",
-            "span_desktop": "7"
+            "padding_sides": 0
           },
-          "blocks": {
-            "product_media_NERnUf": {
-              "type": "product-media",
-              "name": "Product Media Gallery",
-              "settings": {
-                "image_badge": "BESTSELLER",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_media_NERnUf"
-          ]
+          "blocks": {}
         },
-        "group_d8Bkjn": {
-          "type": "group",
-          "name": "t:general.column",
+        "product_urgency_RJBkVR": {
+          "type": "product-urgency",
+          "name": "Product Stock Urgency",
           "settings": {
-            "sticky": false,
-            "layout_direction": "group--vertical",
-            "alignment": "flex-start",
-            "align_left": false,
+            "show_urgency": true,
+            "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
+            "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
+            "hide_under_limit": 5,
             "padding_top": 0,
-            "padding_bottom": 0,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "product_buy_buttons_4etL33": {
+          "type": "product-buy-buttons",
+          "name": "Product Buy Buttons",
+          "settings": {
+            "text_before_price": "Læg i kurv",
+            "padding_top": 12,
+            "padding_bottom": 12,
             "padding_sides": 0,
-            "span_mobile": "4",
-            "span_tablet": "4",
-            "span_desktop": "5"
+            "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
+            "payment_icons_height": 16,
+            "enable_sticky_buy_button": true,
+            "sticky_buy_button_text": "Læg i kurv"
           },
-          "blocks": {
-            "product_customizer_Jzqkbn": {
-              "type": "product-customizer",
-              "name": "Product Customizer",
-              "settings": {
-                "metervare_product": "firkantet-dug",
-                "firkantet_product": "",
-                "rund_product": "",
-                "oval_product": "",
-                "step_size": 10,
-                "min_length": 50,
-                "border_top": true,
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_price_xaFt46": {
-              "type": "product-price",
-              "name": "Product Price",
-              "settings": {
-                "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "Skæres efter mål, så du kun betaler for den længde, du vælger.",
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_buy_buttons_7C6Jp6": {
-              "type": "product-buy-buttons",
-              "name": "Product Buy Buttons",
-              "settings": {
-                "text_before_price": "Læg i kurv",
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_customizer_Jzqkbn",
-            "product_price_xaFt46",
-            "product_buy_buttons_7C6Jp6"
-          ]
+          "blocks": {}
         }
       },
       "block_order": [
-        "group_hEdHPg",
-        "group_d8Bkjn"
+        "product_price_M99xTk",
+        "product_urgency_RJBkVR",
+        "product_buy_buttons_4etL33"
       ],
       "name": "Row",
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
+        "padding_sides": 16,
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "row_mHwx6E": {
+      "type": "row",
+      "blocks": {
+        "trust_checkmark_nzpaFa": {
+          "type": "trust-checkmark",
+          "name": "Trust Checkmark",
+          "settings": {
+            "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+          },
+          "blocks": {}
+        },
+        "trust_countdown_LpPcP3": {
+          "type": "trust-countdown",
+          "name": "Trust Countdown",
+          "settings": {
+            "text": "Bestil inden",
+            "suffix": "Så sender vi"
+          },
+          "blocks": {}
+        },
+        "trust_checkmark_HBeQne": {
+          "type": "trust-checkmark",
+          "name": "Trust Checkmark",
+          "settings": {
+            "text": "30 dages fuld returret"
+          },
+          "blocks": {}
+        },
+        "card_tymWUQ": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "card_design": "raised",
+            "width_cols": "4",
+            "background_color": "surface",
+            "border_color": "outline_variant",
+            "border_thickness": "thin",
+            "corner_radius": "medium",
+            "title": "",
+            "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "padding_sides": 24
+          },
+          "blocks": {
+            "material_badge_bRWLTf": {
+              "type": "material-badge",
+              "name": "Material Badge",
+              "settings": {
+                "width_cols": "2",
+                "icon": "cycle",
+                "title": "Genanvendt læder"
+              },
+              "blocks": {}
+            },
+            "material_badge_Uy6wfE": {
+              "type": "material-badge",
+              "name": "Material Badge",
+              "settings": {
+                "width_cols": "2",
+                "icon": "eco",
+                "title": "100% Phthalatfri"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "material_badge_bRWLTf",
+            "material_badge_Uy6wfE"
+          ]
+        }
+      },
+      "block_order": [
+        "trust_checkmark_nzpaFa",
+        "trust_countdown_LpPcP3",
+        "trust_checkmark_HBeQne",
+        "card_tymWUQ"
+      ],
+      "name": "Row",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h3",
+        "background_color": "shade",
+        "alignment": "full_width",
+        "padding_top": 24,
+        "padding_bottom": 24,
         "padding_sides": 24,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_WcWUGA": {
@@ -222,18 +330,24 @@
       ],
       "name": "Row",
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
-        "block_spacing": 8
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
       }
     }
   },
   "order": [
     "row_t6riLp",
+    "row_eqmCNB",
     "row_nmPTLb",
+    "row_mHwx6E",
     "row_WcWUGA"
   ]
 }

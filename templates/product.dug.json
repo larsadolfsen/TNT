@@ -12,6 +12,18 @@
     "row_Y793QP": {
       "type": "row",
       "blocks": {
+        "product_trust_XEbrEN": {
+          "type": "product-trust",
+          "settings": {
+            "rating_score": "4,8",
+            "rating_count": "1.000+ anmeldelser",
+            "badge_text": "",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "page_title_UACQEU": {
           "type": "page-title",
           "settings": {
@@ -23,12 +35,23 @@
           },
           "blocks": {}
         },
-        "product_trust_XEbrEN": {
-          "type": "product-trust",
+        "card_MENFqx": {
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
-            "rating_score": "4,8",
-            "rating_count": "163",
-            "badge_text": "300+ købt den seneste måned",
+            "card_design": "regular",
+            "width_cols": "4",
+            "background_color": "surface",
+            "border_color": "outline_variant",
+            "border_thickness": "thin",
+            "corner_radius": "medium",
+            "title": "",
+            "content": "<p>Skæres efter mål og sendes på rulle.</p>",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0
@@ -52,8 +75,9 @@
         }
       },
       "block_order": [
-        "page_title_UACQEU",
         "product_trust_XEbrEN",
+        "page_title_UACQEU",
+        "card_MENFqx",
         "badge_kthV3T"
       ],
       "name": "Row",
@@ -138,13 +162,13 @@
             "firkantet_product": "firkantet-dug-1",
             "rund_product": "afrunding",
             "oval_product": "oval-dug",
-            "shape_description": "Vælg den form, du ønsker din dug i.",
+            "shape_description": "",
             "step_size": 10,
             "min_length": 50,
             "length_description": "Vi anbefaler ca. 20 cm til nedhæng i hver ende.",
             "width_surcharge_product": "tilpasset-bredde",
             "width_description": "Vi anbefaler ca. 20 cm til nedhæng i hver side. Max bredde er [max_width] cm.",
-            "qty_description": "Vælg det ønskede antal duge.",
+            "qty_description": "",
             "border_top": true,
             "border_bottom": false,
             "padding_top": 0,
