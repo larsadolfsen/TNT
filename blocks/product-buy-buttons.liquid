@@ -395,17 +395,27 @@
 <!-- Mobile Sticky Buy Bar -->
 {%- if block.settings.enable_sticky_buy_button -%}
 <div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-200/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[24px]">
-  <div class="max-w-[var(--page-width)] mx-auto flex items-center justify-between gap-4">
-    <!-- Left: Configuration Info -->
-    <div class="flex flex-col text-left overflow-hidden min-w-0">
-      <span id="sticky-title" class="font-bold text-slate-900 text-sm truncate leading-tight">{{ product.title }}</span>
-      <div id="sticky-config-summary" class="text-[11px] text-slate-500 truncate mt-0.5 leading-normal"></div>
-      <span id="sticky-price" class="font-extrabold text-[#0e1a28] text-[15px] mt-0.5 leading-tight"></span>
+  <div class="max-w-[var(--page-width)] mx-auto w-full">
+    <!-- Standard Buy Sheet Content -->
+    <div id="sticky-bar-standard-content" class="flex items-center justify-between gap-4 w-full">
+      <!-- Left: Configuration Info -->
+      <div class="flex flex-col text-left overflow-hidden min-w-0">
+        <span id="sticky-title" class="font-bold text-slate-900 text-sm leading-tight block">{{ product.title }}</span>
+        <div id="sticky-config-summary" class="text-[11px] text-slate-500 truncate mt-0.5 leading-normal"></div>
+        <span id="sticky-price" class="font-extrabold text-[#0e1a28] text-[15px] mt-0.5 leading-tight"></span>
+      </div>
+      <!-- Right: Purchase Button -->
+      <button id="btn-sticky-buy" class="bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center min-w-[100px]">
+        {{ block.settings.sticky_buy_button_text | default: "Køb" }}
+      </button>
     </div>
-    <!-- Right: Purchase Button -->
-    <button id="btn-sticky-buy" class="bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center min-w-[100px]">
-      {{ block.settings.sticky_buy_button_text | default: "Køb" }}
-    </button>
+
+    <!-- Customize Tablecloth Button Content -->
+    <div id="sticky-bar-customize-content" class="w-full hidden">
+      <button id="btn-sticky-customize" class="w-full bg-accent hover:brightness-95 text-primary font-bold h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+        Tilpas dugen
+      </button>
+    </div>
   </div>
 </div>
 
@@ -440,18 +450,17 @@
 
       if (hasCustomizer) {
         const shapeLabel = document.getElementById("calc-shape-label");
-        const lengthLabel = document.getElementById("calc-metervare-label");
-        const widthLabel = document.getElementById("calc-width-label");
-        const widthRow = document.getElementById("calc-width-row");
-        if (shapeLabel && lengthLabel) {
+        const displayLength = document.getElementById("display-length");
+        const displayWidth = document.getElementById("display-width");
+        if (shapeLabel && displayLength && displayWidth) {
           const shapeText = shapeLabel.textContent.replace("Form:", "").replace("Form: ", "").trim();
-          const lengthText = lengthLabel.textContent.replace("Længde:", "").replace("Længde: ", "").replace("Diameter:", "").replace("Diameter: ", "").trim();
-          let summary = `${shapeText} • ${lengthText}`;
-          if (widthRow && widthRow.style.display !== "none" && widthLabel) {
-            const widthText = widthLabel.textContent.trim();
-            summary += ` • ${widthText}`;
+          const lengthVal = displayLength.value.trim();
+          const widthVal = displayWidth.value.trim();
+          if (shapeText.toLowerCase() === 'rund') {
+            summaryText = `${shapeText} ${lengthVal} cm`;
+          } else {
+            summaryText = `${shapeText} ${widthVal}x${lengthVal} cm`;
           }
-          summaryText = summary;
         }
       } else {
         // Simple variant selection
@@ -534,6 +543,56 @@
         }
       });
       observer.observe(mainBuyBtn, { attributes: true, attributeFilter: ["disabled", "class"] });
+    }
+
+    // 5. Scroll and state handling for sticky buy bar when customizer is present
+    const customizerEl = document.getElementById("voksdug-customizer-container");
+    const standardContent = document.getElementById("sticky-bar-standard-content");
+    const customizeContent = document.getElementById("sticky-bar-customize-content");
+    const btnStickyCustomize = document.getElementById("btn-sticky-customize");
+
+    if (customizerEl && standardContent && customizeContent) {
+      function handleScroll() {
+        const rect = customizerEl.getBoundingClientRect();
+        
+        // 1. Above Customizer (top of customizer is below screen viewport bottom)
+        if (rect.top >= window.innerHeight) {
+          standardContent.classList.add("hidden");
+          customizeContent.classList.remove("hidden");
+          stickyBar.style.transform = "translateY(0)";
+          stickyBar.style.opacity = "1";
+          stickyBar.style.pointerEvents = "auto";
+        } 
+        // 2. Customizer is visible in viewport
+        else if (rect.top < window.innerHeight && rect.bottom > 0) {
+          // Slide down and hide
+          stickyBar.style.transform = "translateY(100%)";
+          stickyBar.style.opacity = "0";
+          stickyBar.style.pointerEvents = "none";
+        } 
+        // 3. Below Customizer (bottom of customizer is above viewport top)
+        else {
+          customizeContent.classList.add("hidden");
+          standardContent.classList.remove("hidden");
+          stickyBar.style.transform = "translateY(0)";
+          stickyBar.style.opacity = "1";
+          stickyBar.style.pointerEvents = "auto";
+        }
+      }
+
+      // Initial call
+      handleScroll();
+
+      // Listen on scroll and resize
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      window.addEventListener("resize", handleScroll, { passive: true });
+
+      // Click on "Tilpas dugen" scrolls smoothly to customizer
+      if (btnStickyCustomize) {
+        btnStickyCustomize.addEventListener("click", () => {
+          customizerEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
     }
   });
 </script>
