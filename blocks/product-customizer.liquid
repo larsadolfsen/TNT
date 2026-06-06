@@ -189,16 +189,7 @@
         <!-- Dynamic calculation info under length selector -->
         <div id="length-calculation" class="text-sm text-primary/85 mt-1.5 text-center w-full"></div>
 
-        <!-- Checkbox: Tilpas bredde -->
-        <div class="flex items-center gap-2.5 mt-2.5">
-          <input type="checkbox" id="checkbox-customize-width" class="w-4 h-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500 cursor-pointer" />
-          <label for="checkbox-customize-width" class="text-sm font-medium text-slate-700 cursor-pointer select-none">
-            Tilpas bredde
-            {% if width_surcharge_variant %}
-              (+{{ width_surcharge_price_formatted }})
-            {% endif %}
-          </label>
-        </div>
+        <!-- Checkbox has been replaced by the accordion step below -->
       </div>
 
       <!-- Validation Warning Message -->
@@ -208,40 +199,54 @@
       </div>
     </div>
 
-    <!-- Step 2b: Width Selection -->
-    <div id="container-width-selection" class="flex flex-col gap-3" style="--span-mobile: 4; --span-expanded: 4; --span-large: 6; display: none;">
-      <div class="flex items-start gap-3">
-        <div class="flex flex-col w-full">
-          <span id="label-width" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg bredde</span>
-          <p class="text-sm text-primary/85 mt-1">Dugen skæres på dine mål. Max bredde er <span id="max-width-display">140</span> cm.</p>
+    <!-- Step 3: Tilpas bredde Accordion -->
+    <div id="container-width-selection" class="flex flex-col border-t border-slate-200 pt-4" style="--span-mobile: 4; --span-expanded: 4; --span-large: 6;">
+      <button type="button" id="btn-width-accordion-trigger" class="flex items-center justify-between w-full text-left focus:outline-none cursor-pointer">
+        <div class="flex items-center gap-3">
+          <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full shrink-0">3</span>
+          <span class="font-bold text-base uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+            Tilpas bredde
+            {% if width_surcharge_variant %}
+              <span class="text-xs font-normal text-slate-500 normal-case">
+                (+{{ width_surcharge_price_formatted }})
+              </span>
+            {% endif %}
+          </span>
         </div>
-      </div>
-
-      <!-- Pill-shaped Stepper -->
-      <div class="w-full">
-        <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;">
-          <!-- Minus button -->
-          <button type="button" id="btn-width-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
-            &mdash;
-          </button>
-          <!-- Value input -->
-          <input id="display-width" type="number" inputmode="numeric" pattern="[0-9]*"
-            value="140"
-            class="text-center font-bold text-slate-900 text-xl bg-transparent border-none outline-none p-0 m-0"
-            style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
-          />
-          <!-- Plus button -->
-          <button type="button" id="btn-width-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
-            &#43;
-          </button>
+        <span class="w-8 h-8 flex items-center justify-center flex-shrink-0 text-slate-800 rounded-full hover:bg-black/5 transition-colors">
+          <span id="icon-width-accordion" class="material-symbols-outlined transition-transform duration-200">expand_more</span>
+        </span>
+      </button>
+      
+      <div id="content-width-accordion" class="flex flex-col gap-3 hidden pt-4 w-full">
+        <p class="text-sm text-primary/85">Dugen skæres på dine mål. Max bredde er <span id="max-width-display">140</span> cm.</p>
+        
+        <!-- Pill-shaped Stepper -->
+        <div class="w-full">
+          <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;">
+            <!-- Minus button -->
+            <button type="button" id="btn-width-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+              &mdash;
+            </button>
+            <!-- Value input -->
+            <input id="display-width" type="number" inputmode="numeric" pattern="[0-9]*"
+              value="140"
+              class="text-center font-bold text-slate-900 text-xl bg-transparent border-none outline-none p-0 m-0"
+              style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
+            />
+            <!-- Plus button -->
+            <button type="button" id="btn-width-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+              &#43;
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Step 3: Quantity Selector -->
+    <!-- Step 4: Quantity Selector -->
     <div class="flex flex-col gap-2 w-full" style="--span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
       <div class="flex items-center gap-3">
-        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full">3</span>
+        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full">4</span>
         <span class="font-bold text-base uppercase tracking-wider text-slate-800">Antal</span>
       </div>
       <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;transition:border-color 0.15s,box-shadow 0.15s;">
@@ -476,20 +481,28 @@
         const width = getVariantWidth(pricingVariant ? pricingVariant.title : "");
         
         // If shape is round, width customization is not possible
-        const checkboxEl = document.getElementById("checkbox-customize-width");
-        const checkboxContainer = checkboxEl ? checkboxEl.parentElement : null;
         const widthSelectionContainer = document.getElementById("container-width-selection");
+        const contentWidthAccordion = document.getElementById("content-width-accordion");
+        const iconWidthAccordion = document.getElementById("icon-width-accordion");
         
         if (selectedShape === 'rund') {
           state.customizeWidth = false;
-          if (checkboxContainer) checkboxContainer.style.display = "none";
           if (widthSelectionContainer) widthSelectionContainer.style.display = "none";
-          if (checkboxEl) checkboxEl.checked = false;
         } else {
-          if (checkboxContainer) checkboxContainer.style.display = "flex";
-          if (checkboxEl) checkboxEl.checked = state.customizeWidth;
-          if (widthSelectionContainer) {
-            widthSelectionContainer.style.display = state.customizeWidth ? "flex" : "none";
+          if (widthSelectionContainer) widthSelectionContainer.style.display = "flex";
+          if (contentWidthAccordion) {
+            if (state.customizeWidth) {
+              contentWidthAccordion.classList.remove("hidden");
+            } else {
+              contentWidthAccordion.classList.add("hidden");
+            }
+          }
+          if (iconWidthAccordion) {
+            if (state.customizeWidth) {
+              iconWidthAccordion.classList.add("rotate-180");
+            } else {
+              iconWidthAccordion.classList.remove("rotate-180");
+            }
           }
         }
 
@@ -757,11 +770,11 @@
       displayLength.addEventListener("focus", () => displayLength.select());
     }
 
-    // Checkbox custom width listener
-    const checkboxCustomizeWidth = document.getElementById("checkbox-customize-width");
-    if (checkboxCustomizeWidth) {
-      checkboxCustomizeWidth.addEventListener("change", (e) => {
-        state.customizeWidth = e.target.checked;
+    // Accordion custom width trigger click listener
+    const btnWidthAccordionTrigger = document.getElementById("btn-width-accordion-trigger");
+    if (btnWidthAccordionTrigger) {
+      btnWidthAccordionTrigger.addEventListener("click", () => {
+        state.customizeWidth = !state.customizeWidth;
         if (state.customizeWidth) {
           // Default to variant width
           let activeVariantId = null;

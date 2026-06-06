@@ -479,7 +479,7 @@
 
     // Listen to document changes (for shape buttons, checkbox, etc.)
     document.addEventListener("click", (e) => {
-      if (e.target.closest('.shape-btn') || e.target.closest('#btn-length-minus') || e.target.closest('#btn-length-plus') || e.target.closest('#btn-qty-minus') || e.target.closest('#btn-qty-plus') || e.target.closest('#checkbox-customize-width') || e.target.closest('#btn-width-minus') || e.target.closest('#btn-width-plus')) {
+      if (e.target.closest('.shape-btn') || e.target.closest('#btn-length-minus') || e.target.closest('#btn-length-plus') || e.target.closest('#btn-qty-minus') || e.target.closest('#btn-qty-plus') || e.target.closest('#btn-width-accordion-trigger') || e.target.closest('#btn-width-minus') || e.target.closest('#btn-width-plus')) {
         setTimeout(updateStickyBar, 50);
       }
     });
