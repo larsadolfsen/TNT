@@ -188,7 +188,9 @@
         <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
           <span id="label-length" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg længde</span>
-          <p class="text-sm text-primary/85 mt-1">{{ block.settings.length_description | default: 'Vi anbefaler ca. 20 cm til nedhæng i hver ende.' }}</p>
+          {% if block.settings.length_description != blank %}
+            <p class="text-sm text-primary/85 mt-1">{{ block.settings.length_description }}</p>
+          {% endif %}
         </div>
       </div>
 
@@ -230,11 +232,6 @@
           <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full shrink-0">3</span>
           <span class="font-bold text-base uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
             Tilpas bredde
-            {% if width_surcharge_variant %}
-              <span class="text-base font-normal text-slate-800 normal-case">
-                (+{{ width_surcharge_price_formatted | replace: 'Kr.', 'kr.' | replace: 'Kr', 'kr.' | strip }})
-              </span>
-            {% endif %}
           </span>
         </div>
         <span class="w-8 h-8 flex items-center justify-center flex-shrink-0 text-slate-800 rounded-full hover:bg-black/5 transition-colors">
@@ -246,6 +243,9 @@
         {%- assign width_desc = block.settings.width_description | default: 'Dugen skæres på dine mål. Max bredde er [max_width] cm.' -%}
         <p class="text-sm text-primary/85 pl-10">
           {{ width_desc | replace: '[max_width]', '<span id="max-width-display">140</span>' }}
+          {% if width_surcharge_variant %}
+             (+{{ width_surcharge_price_formatted | replace: 'Kr.', 'kr.' | replace: 'Kr', 'kr.' | strip }})
+          {% endif %}
         </p>
         
         <!-- Pill-shaped Stepper -->
@@ -633,7 +633,8 @@
           const shapePrice = (shapeInfo ? shapeInfo.price : 0) * state.quantity;
 
           // Calculate width surcharge
-          const widthSurcharge = state.customizeWidth ? (widthSurchargeData.price || 0) * state.quantity : 0;
+          const isWidthAdjusted = state.customizeWidth && (state.width < maxWidth);
+          const widthSurcharge = isWidthAdjusted ? (widthSurchargeData.price || 0) * state.quantity : 0;
 
           // Calculate price: (price per cm) * length * quantity
           const totalClothPrice = pricingVariant.price * state.length * state.quantity;
@@ -705,8 +706,9 @@
             }
           }
 
+          const isWidthAdjusted = state.customizeWidth && (state.width < maxWidth);
           if (calcWidthRow) {
-            if (state.customizeWidth) {
+            if (isWidthAdjusted) {
               calcWidthRow.style.display = "flex";
               if (calcWidthLabel) {
                 calcWidthLabel.textContent = `Bredde: ${state.width} cm`;
@@ -721,7 +723,7 @@
 
           if (calcTotalPrice) {
             const singleShapePrice = shapeInfo ? shapeInfo.price : 0;
-            const singleWidthSurcharge = state.customizeWidth ? (widthSurchargeData.price || 0) : 0;
+            const singleWidthSurcharge = isWidthAdjusted ? (widthSurchargeData.price || 0) : 0;
             const singleTotalPrice = singleClothPrice + singleShapePrice + singleWidthSurcharge;
             calcTotalPrice.textContent = formatDanishPrice(singleTotalPrice);
           }
@@ -740,12 +742,18 @@
           // Update width calculation display
           const widthCalculation = document.getElementById("width-calculation");
           if (widthCalculation) {
-            const totalWidthPrice = state.customizeWidth ? (widthSurchargeData.price || 0) : 0;
-            const formattedTotalWidthPrice = totalWidthPrice.toLocaleString("da-DK", { 
-              minimumFractionDigits: 2, 
-              maximumFractionDigits: 2 
-            });
-            widthCalculation.textContent = `${formattedTotalWidthPrice} Kr.`;
+            const isWidthAdjusted = state.customizeWidth && (state.width < maxWidth);
+            if (isWidthAdjusted) {
+              const totalWidthPrice = widthSurchargeData.price || 0;
+              const formattedTotalWidthPrice = totalWidthPrice.toLocaleString("da-DK", { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+              });
+              widthCalculation.textContent = `${formattedTotalWidthPrice} Kr.`;
+              widthCalculation.style.display = "block";
+            } else {
+              widthCalculation.style.display = "none";
+            }
           }
 
           // Set global variable to resolve initial page load race condition
@@ -984,8 +992,9 @@
         const shapeInfo = shapeData[selectedShape];
         const shapeSurchargeCents = Math.round((shapeInfo ? shapeInfo.price : 0) * 100);
         
+        const isWidthAdjusted = state.customizeWidth && (state.width < width);
         const finalWidth = state.customizeWidth ? state.width : width;
-        const widthSurchargeCents = state.customizeWidth ? Math.round((widthSurchargeData.price || 0) * 100) : 0;
+        const widthSurchargeCents = isWidthAdjusted ? Math.round((widthSurchargeData.price || 0) * 100) : 0;
         
         const unitPriceCents = basePriceCents + shapeSurchargeCents + widthSurchargeCents;
 
@@ -1023,7 +1032,7 @@
           itemToAdd.properties["_shape_variant_id"] = `gid://shopify/ProductVariant/${shapeVariantId}`;
         }
         
-        if (state.customizeWidth && widthSurchargeData && widthSurchargeData.id) {
+        if (isWidthAdjusted && widthSurchargeData && widthSurchargeData.id) {
           itemToAdd.properties["_width_variant_id"] = `gid://shopify/ProductVariant/${widthSurchargeData.id}`;
         }
 
