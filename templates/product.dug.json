@@ -23,6 +23,29 @@
           },
           "blocks": {}
         },
+        "card_MENFqx": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "card_design": "regular",
+            "width_cols": "4",
+            "background_color": "surface",
+            "border_color": "outline_variant",
+            "border_thickness": "thin",
+            "corner_radius": "medium",
+            "title": "",
+            "content": "<p>Skæres efter mål og sendes på rulle.</p>",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "product_trust_XEbrEN": {
           "type": "product-trust",
           "settings": {
@@ -53,6 +76,7 @@
       },
       "block_order": [
         "page_title_UACQEU",
+        "card_MENFqx",
         "product_trust_XEbrEN",
         "badge_kthV3T"
       ],
