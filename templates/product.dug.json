@@ -12,18 +12,6 @@
     "row_Y793QP": {
       "type": "row",
       "blocks": {
-        "product_trust_XEbrEN": {
-          "type": "product-trust",
-          "settings": {
-            "rating_score": "4,8",
-            "rating_count": "1.000+ anmeldelser",
-            "badge_text": "",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
         "page_title_UACQEU": {
           "type": "page-title",
           "settings": {
@@ -58,6 +46,18 @@
           },
           "blocks": {}
         },
+        "product_trust_XEbrEN": {
+          "type": "product-trust",
+          "settings": {
+            "rating_score": "4,8",
+            "rating_count": "1.000+ anmeldelser",
+            "badge_text": "",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "badge_kthV3T": {
           "type": "badge",
           "name": "Badge",
@@ -75,9 +75,9 @@
         }
       },
       "block_order": [
-        "product_trust_XEbrEN",
         "page_title_UACQEU",
         "card_MENFqx",
+        "product_trust_XEbrEN",
         "badge_kthV3T"
       ],
       "name": "Row",
@@ -378,7 +378,7 @@
           "type": "accordion",
           "settings": {
             "title": "Produktspecifikationer",
-            "content": "<p><strong>Form: </strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}<strong><br/>Certificeringer: </strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}<br/><strong>Kemi:</strong> {{ closest.product.metafields.custom.kemi.value }}<strong><br/>Bredde:  </strong>{{ closest.product.metafields.custom.bredde_cm | metafield_text }} cm<br/><strong>Tykkelse:</strong> {{ closest.product.metafields.custom.tykkelse.value }} mm</p>",
+            "content": "<p><strong>Form: </strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}<strong><br/>Certificeringer: </strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}<br/><strong>Kemi:</strong> {{ closest.product.metafields.custom.kemi.value }}<strong><br/>Bredde:  </strong>cm<br/><strong>Tykkelse:</strong> {{ closest.product.metafields.custom.tykkelse.value }} mm</p>",
             "open_by_default": true
           },
           "blocks": {}
