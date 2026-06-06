@@ -162,7 +162,7 @@
         "alignment": "columns",
         "padding_top": 0,
         "padding_bottom": 0,
-        "padding_sides": 0,
+        "padding_sides": 16,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
