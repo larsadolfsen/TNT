@@ -168,6 +168,53 @@
         "border_bottom": false
       }
     },
+    "row_mHwx6E": {
+      "type": "row",
+      "blocks": {
+        "trust_checkmark_nzpaFa": {
+          "type": "trust-checkmark",
+          "name": "Trust Checkmark",
+          "settings": {
+            "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+          },
+          "blocks": {}
+        },
+        "trust_checkmark_JTnQTa": {
+          "type": "trust-checkmark",
+          "name": "Trust Checkmark",
+          "settings": {
+            "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+          },
+          "blocks": {}
+        },
+        "trust_checkmark_HBeQne": {
+          "type": "trust-checkmark",
+          "name": "Trust Checkmark",
+          "settings": {
+            "text": "30 dages fuld returret"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "trust_checkmark_nzpaFa",
+        "trust_checkmark_JTnQTa",
+        "trust_checkmark_HBeQne"
+      ],
+      "name": "Row",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h3",
+        "background_color": "light",
+        "alignment": "columns",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_sides": 24,
+        "block_spacing": 8,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
     "row_WcWUGA": {
       "type": "row",
       "blocks": {
@@ -226,6 +273,7 @@
     "row_t6riLp",
     "row_eqmCNB",
     "row_nmPTLb",
+    "row_mHwx6E",
     "row_WcWUGA"
   ]
 }
