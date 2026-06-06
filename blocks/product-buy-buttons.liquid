@@ -83,6 +83,10 @@
         <span id="btn-price-display" class="ml-1.5">{{ product.selected_or_first_available_variant.price | money }}</span>
       </button>
       
+      <p class="text-xs text-primary/80 text-center mt-3 font-medium leading-relaxed max-w-[90%]">
+        Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug.
+      </p>
+      
 
       
       <!-- Payment Badges -->
@@ -411,8 +415,15 @@
     </div>
 
     <!-- Customize Tablecloth Button Content -->
-    <div id="sticky-bar-customize-content" class="w-full hidden">
-      <button id="btn-sticky-customize" class="w-full bg-accent hover:brightness-95 text-primary font-bold h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+    <div id="sticky-bar-customize-content" class="flex items-center justify-between gap-4 w-full hidden">
+      <!-- Left: Configuration Info -->
+      <div class="flex flex-col text-left overflow-hidden min-w-0">
+        <span id="sticky-title-customize" class="font-bold text-slate-900 text-sm leading-tight block">{{ product.title }}</span>
+        <div id="sticky-config-summary-customize" class="text-[11px] text-slate-500 truncate mt-0.5 leading-normal"></div>
+        <span id="sticky-price-customize" class="font-extrabold text-[#0e1a28] text-[15px] mt-0.5 leading-tight"></span>
+      </div>
+      <!-- Right: Customize Button -->
+      <button id="btn-sticky-customize" class="bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center min-w-[100px]">
         Tilpas dugen
       </button>
     </div>
@@ -439,9 +450,17 @@
     function updateStickyBar() {
       // Get the price display from the page
       const mainPriceDisplay = document.getElementById("btn-price-display");
-      if (mainPriceDisplay && stickyPrice) {
-        let priceText = mainPriceDisplay.textContent.trim();
+      let priceText = "";
+      if (mainPriceDisplay) {
+        priceText = mainPriceDisplay.textContent.trim();
+      }
+
+      if (stickyPrice) {
         stickyPrice.textContent = priceText;
+      }
+      const stickyPriceCustomize = document.getElementById("sticky-price-customize");
+      if (stickyPriceCustomize) {
+        stickyPriceCustomize.textContent = priceText;
       }
 
       // Check if customizer is present
@@ -475,6 +494,10 @@
 
       if (stickyConfigSummary) {
         stickyConfigSummary.textContent = summaryText || "Standard";
+      }
+      const stickyConfigSummaryCustomize = document.getElementById("sticky-config-summary-customize");
+      if (stickyConfigSummaryCustomize) {
+        stickyConfigSummaryCustomize.textContent = summaryText || "Standard";
       }
     }
 

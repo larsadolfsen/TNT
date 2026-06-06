@@ -549,6 +549,9 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
+  .max-w-\[90\%\] {
+    max-width: 90%;
+  }
   .max-w-\[calc\(1280px-2rem\)\] {
     max-width: calc(1280px - 2rem);
   }
