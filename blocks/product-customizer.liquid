@@ -273,7 +273,7 @@
     <!-- Step 4: Quantity Selector -->
     <div class="flex flex-col gap-2 w-full pt-6 pb-3" style="--span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
       <div class="flex items-start gap-3">
-        <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">4</span>
+        <span id="step-number-qty" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">4</span>
         <div class="flex flex-col w-full">
           <span class="font-bold text-base uppercase tracking-wider text-slate-800">Antal</span>
           {% if block.settings.qty_description != blank %}
@@ -517,11 +517,14 @@
         const contentWidthAccordion = document.getElementById("content-width-accordion");
         const iconWidthAccordion = document.getElementById("icon-width-accordion");
         
+        const stepNumberQty = document.getElementById("step-number-qty");
         if (selectedShape === 'rund') {
           state.customizeWidth = false;
           if (widthSelectionContainer) widthSelectionContainer.style.display = "none";
+          if (stepNumberQty) stepNumberQty.textContent = "3";
         } else {
           if (widthSelectionContainer) widthSelectionContainer.style.display = "flex";
+          if (stepNumberQty) stepNumberQty.textContent = "4";
           if (contentWidthAccordion) {
             if (state.customizeWidth) {
               contentWidthAccordion.classList.remove("hidden");
