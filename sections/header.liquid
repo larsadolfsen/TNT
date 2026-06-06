@@ -310,9 +310,9 @@
             </div>
         ` : '';
 
-        const widthLine = widthSurchargeCents > 0 ? `
+        const widthLine = item.properties._shape !== "rund" ? `
             <div class="flex justify-between gap-2">
-              <span>Tilpasset i bredden</span>
+              <span>Bredde: ${width} cm</span>
               <span class="text-primary font-medium flex-shrink-0">${formatMoney(widthSurchargeCents)}</span>
             </div>
         ` : '';

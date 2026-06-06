@@ -978,6 +978,9 @@
 
         const shapeVariantId = shapeInfo ? shapeInfo.id : null;
 
+        const shapeNames = { firkantet: 'Firkantet', rund: 'Rund', oval: 'Oval' };
+        const displayShape = shapeNames[selectedShape] || (selectedShape.charAt(0).toUpperCase() + selectedShape.slice(1));
+
         const itemToAdd = {
           id: metervareVariantIntId,
           quantity: state.quantity,
@@ -988,9 +991,17 @@
             "_base_price": basePriceCents.toString(),
             "_shape_surcharge": shapeSurchargeCents.toString(),
             "_width_surcharge": widthSurchargeCents.toString(),
-            "_unit_price": unitPriceCents.toString()
+            "_unit_price": unitPriceCents.toString(),
+            "Form": displayShape
           }
         };
+
+        if (selectedShape === 'rund') {
+          itemToAdd.properties["Diameter"] = `${state.length} cm`;
+        } else {
+          itemToAdd.properties["Længde"] = `${state.length} cm`;
+          itemToAdd.properties["Bredde"] = `${finalWidth} cm`;
+        }
 
         if (shapeVariantId) {
           itemToAdd.properties["_shape_variant_id"] = `gid://shopify/ProductVariant/${shapeVariantId}`;

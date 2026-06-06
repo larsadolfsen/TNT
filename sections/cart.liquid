@@ -54,9 +54,9 @@
                   <span class="text-primary font-medium flex-shrink-0">{{ shape_surcharge_cents | money }}</span>
                 </div>
               {%- endif -%}
-              {%- if width_surcharge_cents > 0 -%}
+              {%- if item.properties._shape != "rund" and item.properties._width != blank -%}
                 <div class="flex justify-between gap-2">
-                  <span>Tilpasset i bredden</span>
+                  <span>Bredde: {{ item.properties._width }} cm</span>
                   <span class="text-primary font-medium flex-shrink-0">{{ width_surcharge_cents | money }}</span>
                 </div>
               {%- endif -%}
