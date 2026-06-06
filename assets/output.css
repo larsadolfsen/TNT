@@ -1319,6 +1319,10 @@
   .text-\[18px\] {
     font-size: 18px;
   }
+  .leading-\[1\.2\] {
+    --tw-leading: 1.2;
+    line-height: 1.2;
+  }
   .leading-none {
     --tw-leading: 1;
     line-height: 1;
@@ -1354,6 +1358,10 @@
   .font-semibold {
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
+  }
+  .tracking-\[0\.02em\] {
+    --tw-tracking: 0.02em;
+    letter-spacing: 0.02em;
   }
   .tracking-tight {
     --tw-tracking: var(--tracking-tight);
@@ -1516,6 +1524,9 @@
   }
   .opacity-50 {
     opacity: 50%;
+  }
+  .opacity-75 {
+    opacity: 75%;
   }
   .opacity-100 {
     opacity: 100%;
