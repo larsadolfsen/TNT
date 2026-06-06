@@ -143,6 +143,7 @@
                 "padding_top": 12,
                 "padding_bottom": 12,
                 "padding_sides": 0,
+                "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
                 "payment_icons_height": 24,
                 "enable_sticky_buy_button": true,
                 "sticky_buy_button_text": "Køb"
