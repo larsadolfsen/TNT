@@ -188,17 +188,17 @@
         </div>
         <!-- Dynamic calculation info under length selector -->
         <div id="length-calculation" class="text-sm text-primary/85 mt-1.5 text-center w-full"></div>
-      </div>
 
-      <!-- Checkbox: Tilpas bredde -->
-      <div class="flex items-center gap-2.5 mt-1">
-        <input type="checkbox" id="checkbox-customize-width" class="w-4 h-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500 cursor-pointer" />
-        <label for="checkbox-customize-width" class="text-sm font-medium text-slate-700 cursor-pointer select-none">
-          Tilpas bredde
-          {% if width_surcharge_variant %}
-            (+{{ width_surcharge_price_formatted }})
-          {% endif %}
-        </label>
+        <!-- Checkbox: Tilpas bredde -->
+        <div class="flex items-center gap-2.5 mt-2.5">
+          <input type="checkbox" id="checkbox-customize-width" class="w-4 h-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500 cursor-pointer" />
+          <label for="checkbox-customize-width" class="text-sm font-medium text-slate-700 cursor-pointer select-none">
+            Tilpas bredde
+            {% if width_surcharge_variant %}
+              (+{{ width_surcharge_price_formatted }})
+            {% endif %}
+          </label>
+        </div>
       </div>
 
       <!-- Validation Warning Message -->
