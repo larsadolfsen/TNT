@@ -164,7 +164,7 @@
         <span class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
           <span id="label-length" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg længde</span>
-          <p class="text-sm text-primary/85 mt-1">Vi anbefaler ca. 20 cm til nedhæng i hver ende.</p>
+          <p class="text-sm text-primary/85 mt-1">{{ block.settings.length_description | default: 'Vi anbefaler ca. 20 cm til nedhæng i hver ende.' }}</p>
         </div>
       </div>
 
@@ -1089,6 +1089,12 @@
       "id": "min_length",
       "label": "Minimum længde (cm)",
       "default": 50
+    },
+    {
+      "type": "text",
+      "id": "length_description",
+      "label": "Vælg længde - beskrivelse",
+      "default": "Vi anbefaler ca. 20 cm til nedhæng i hver ende."
     },
     {
       "type": "header",
