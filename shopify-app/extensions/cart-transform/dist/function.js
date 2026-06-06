@@ -1,4 +1,4 @@
-// node_modules/@shopify/shopify_function/run.ts
+// extensions/cart-transform/node_modules/@shopify/shopify_function/run.ts
 function run_default(userfunction) {
   try {
     ShopifyFunction;
@@ -12,7 +12,7 @@ function run_default(userfunction) {
   ShopifyFunction.writeOutput(output_obj);
 }
 
-// src/run.js
+// extensions/cart-transform/src/run.js
 function run(input) {
   const operations = [];
   console.log(`[CartTransform] Started. Total lines in cart: ${input.cart.lines.length}`);
