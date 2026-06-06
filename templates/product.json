@@ -41,14 +41,14 @@
           "type": "badge",
           "name": "Badge",
           "settings": {
-            "text": "På lager",
+            "text": "",
             "only_if_in_stock": true,
             "alignment": "left",
-            "background_color": "#e6f4ea",
-            "text_color": "#137333",
+            "background_color": "#0e1a28",
+            "text_color": "#fefefe",
             "padding_top": 4,
             "padding_bottom": 0,
-            "padding_sides": 16
+            "padding_sides": 0
           },
           "blocks": {}
         }
@@ -75,15 +75,11 @@
     "row_eqmCNB": {
       "type": "row",
       "blocks": {
-        "badge_jrfqgh": {
-          "type": "badge",
-          "name": "Badge",
+        "product_media_rdzkqV": {
+          "type": "product-media",
+          "name": "Product Media Gallery",
           "settings": {
-            "text": "BESTSELLER",
-            "only_if_in_stock": false,
-            "alignment": "left",
-            "background_color": "#000000",
-            "text_color": "#ffffff",
+            "image_badge": "BESTSELLER",
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0
@@ -92,7 +88,7 @@
         }
       },
       "block_order": [
-        "badge_jrfqgh"
+        "product_media_rdzkqV"
       ],
       "name": "Row",
       "settings": {
@@ -111,106 +107,52 @@
     "row_nmPTLb": {
       "type": "row",
       "blocks": {
-        "group_hEdHPg": {
-          "type": "group",
-          "name": "t:general.column",
+        "product_price_M99xTk": {
+          "type": "product-price",
+          "name": "Product Price",
           "settings": {
-            "span_mobile": "4",
-            "span_tablet": "4",
-            "span_desktop": "7",
-            "sticky": false,
-            "layout_direction": "group--vertical",
-            "alignment": "flex-start",
-            "align_left": false,
-            "padding_top": 0,
-            "padding_bottom": 0,
+            "price_suffix": "pr. stk. inkl. moms",
+            "price_subtext": "",
+            "padding_top": 12,
+            "padding_bottom": 12,
             "padding_sides": 0
           },
-          "blocks": {
-            "product_media_NERnUf": {
-              "type": "product-media",
-              "name": "Product Media Gallery",
-              "settings": {
-                "image_badge": "BESTSELLER",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_media_NERnUf"
-          ]
+          "blocks": {}
         },
-        "group_d8Bkjn": {
-          "type": "group",
-          "name": "t:general.column",
+        "product_urgency_RJBkVR": {
+          "type": "product-urgency",
+          "name": "Product Stock Urgency",
           "settings": {
-            "span_mobile": "4",
-            "span_tablet": "4",
-            "span_desktop": "5",
-            "sticky": false,
-            "layout_direction": "group--vertical",
-            "alignment": "flex-start",
-            "align_left": false,
-            "padding_top": 0,
-            "padding_bottom": 0,
+            "show_urgency": true,
+            "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
+            "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
+            "hide_under_limit": 5,
+            "padding_top": 12,
+            "padding_bottom": 12,
             "padding_sides": 0
           },
-          "blocks": {
-            "product_price_xaFt46": {
-              "type": "product-price",
-              "name": "Product Price",
-              "settings": {
-                "price_suffix": "pr. stk. inkl. moms",
-                "price_subtext": "",
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_urgency_KPLXcq": {
-              "type": "product-urgency",
-              "name": "Product Stock Urgency",
-              "settings": {
-                "show_urgency": true,
-                "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
-                "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
-                "hide_under_limit": 5,
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_buy_buttons_7C6Jp6": {
-              "type": "product-buy-buttons",
-              "name": "Product Buy Buttons",
-              "settings": {
-                "text_before_price": "Læg i kurv",
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0,
-                "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
-                "payment_icons_height": 24,
-                "enable_sticky_buy_button": true,
-                "sticky_buy_button_text": "Læg i kurv"
-              },
-              "blocks": {}
-            }
+          "blocks": {}
+        },
+        "product_buy_buttons_4etL33": {
+          "type": "product-buy-buttons",
+          "name": "Product Buy Buttons",
+          "settings": {
+            "text_before_price": "Læg i kurv",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0,
+            "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
+            "payment_icons_height": 24,
+            "enable_sticky_buy_button": true,
+            "sticky_buy_button_text": "Læg i kurv"
           },
-          "block_order": [
-            "product_price_xaFt46",
-            "product_urgency_KPLXcq",
-            "product_buy_buttons_7C6Jp6"
-          ]
+          "blocks": {}
         }
       },
       "block_order": [
-        "group_hEdHPg",
-        "group_d8Bkjn"
+        "product_price_M99xTk",
+        "product_urgency_RJBkVR",
+        "product_buy_buttons_4etL33"
       ],
       "name": "Row",
       "settings": {
