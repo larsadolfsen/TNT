@@ -386,9 +386,9 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     console.log("Voksdug Customizer - Version: swap-voksdug-metervare (Release 29)");
-    console.log("Debug - Width surcharge setting handle:", {{ block.settings.width_surcharge_product | json }});
-    console.log("Debug - Width surcharge variant ID:", {% if width_surcharge_variant %}{{ width_surcharge_variant.id | json }}{% else %}null{% endif %});
-    console.log("Debug - Width surcharge variant price:", {% if width_surcharge_variant %}{{ width_surcharge_variant.price | json }}{% else %}null{% endif %});
+    console.log("Debug - Width surcharge setting handle:", "{{ block.settings.width_surcharge_product }}");
+    console.log("Debug - Width surcharge variant ID:", "{{ width_surcharge_variant.id }}");
+    console.log("Debug - Width surcharge variant price:", "{{ width_surcharge_variant.price }}");
     // 1. Config variables from Liquid settings
     const minLength = {{ min_length | json }};
     const stepSize = {{ step_size | json }};
