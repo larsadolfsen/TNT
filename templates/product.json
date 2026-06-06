@@ -202,7 +202,7 @@
           "settings": {
             "card_design": "raised",
             "width_cols": "4",
-            "background_color": "primary",
+            "background_color": "surface",
             "border_color": "outline_variant",
             "border_thickness": "thin",
             "corner_radius": "medium",
