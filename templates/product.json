@@ -19,7 +19,7 @@
             "title_override": "{{ closest.product.title }}",
             "show_description": true,
             "padding_top": 12,
-            "padding_bottom": 12,
+            "padding_bottom": 0,
             "padding_sides": 0
           },
           "blocks": {}
