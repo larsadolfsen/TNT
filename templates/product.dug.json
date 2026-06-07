@@ -470,8 +470,8 @@
         "product_cross_sell_fm46Qc": {
           "type": "product-cross-sell",
           "settings": {
-            "cross_sell_1": "",
-            "cross_sell_2": "",
+            "cross_sell_1": "daekkeserviet-laeder-raw-organic-curve-sort",
+            "cross_sell_2": "{{ closest.product }}",
             "padding_top": 12,
             "padding_bottom": 12,
             "padding_sides": 0
@@ -484,7 +484,7 @@
       ],
       "name": "Row - Mersalg",
       "settings": {
-        "heading": "",
+        "heading": "Passer til din dug",
         "heading_tag": "h3",
         "background_color": "light",
         "alignment": "left",
