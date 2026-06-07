@@ -12,7 +12,7 @@
     "row_t6riLp": {
       "type": "row",
       "blocks": {
-        "page_title_Lq47YW": {
+        "page_title_PMp6pd": {
           "type": "page-title",
           "name": "Page Title",
           "settings": {
@@ -45,20 +45,24 @@
             "padding_bottom": 0,
             "padding_sides": 0
           },
-          "blocks": {}
-        },
-        "product_trust_wtyTtH": {
-          "type": "product-trust",
-          "name": "Product Trust",
-          "settings": {
-            "rating_score": "4,8",
-            "rating_count": "163",
-            "badge_text": "300+ købt den seneste måned",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
+          "blocks": {
+            "product_trust_N7XyGw": {
+              "type": "product-trust",
+              "name": "Product Trust",
+              "settings": {
+                "rating_score": "4,8",
+                "rating_count": "163",
+                "badge_text": "300+ købt den seneste måned",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
+          "block_order": [
+            "product_trust_N7XyGw"
+          ]
         },
         "badge_stock": {
           "type": "badge",
@@ -77,9 +81,8 @@
         }
       },
       "block_order": [
-        "page_title_Lq47YW",
+        "page_title_PMp6pd",
         "card_CkrhFH",
-        "product_trust_wtyTtH",
         "badge_stock"
       ],
       "name": "Row",
