@@ -97,29 +97,6 @@
     "row_PUJcnW": {
       "type": "row",
       "blocks": {
-        "card_43NwCN": {
-          "type": "card",
-          "name": "t:general.card",
-          "settings": {
-            "card_design": "raised",
-            "width_cols": "4",
-            "background_color": "surface",
-            "border_color": "dark",
-            "border_thickness": "thin",
-            "corner_radius": "medium",
-            "title": "Kort Overskrift",
-            "content": "<p>Dette er et kortelement med tilpasset design.</p>",
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "padding_sides": 24
-          },
-          "blocks": {}
-        },
         "product_media_d7ULhk": {
           "type": "product-media",
           "name": "Product Media Gallery",
@@ -133,7 +110,6 @@
         }
       },
       "block_order": [
-        "card_43NwCN",
         "product_media_d7ULhk"
       ],
       "name": "Row - Product image",
