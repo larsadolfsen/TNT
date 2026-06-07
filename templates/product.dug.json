@@ -101,10 +101,10 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "card_design": "regular",
+            "card_design": "raised",
             "width_cols": "4",
             "background_color": "surface",
-            "border_color": "outline_variant",
+            "border_color": "dark",
             "border_thickness": "thin",
             "corner_radius": "medium",
             "title": "Kort Overskrift",
