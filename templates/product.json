@@ -33,7 +33,7 @@
             "background_color": "surface",
             "border_color": "outline_variant",
             "border_thickness": "none",
-            "corner_radius": "medium",
+            "corner_radius": "none",
             "title": "",
             "content": "<p>Dette er et kortelement med tilpasset design.</p>",
             "card_link": "",
