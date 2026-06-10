@@ -234,7 +234,7 @@
           <p class="text-sm text-primary/85 mt-1">Vælg en standardbredde eller tilpas på dine mål.</p>
         </div>
       </div>
-      <div class="flex overflow-x-auto pb-2 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
+      <div class="flex overflow-x-auto pb-1 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
         {%- if width_option_values != blank -%}
           {%- for value in width_option_values -%}
             {%- assign value_down = value | downcase -%}
@@ -245,11 +245,11 @@
             {%- assign numeric_width = value | replace: 'cm', '' | replace: 'CM', '' | strip -%}
             
             <button type="button" 
-              class="width-btn width-btn-slider-item flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none aspect-square"
+              class="width-btn width-btn-slider-item flex flex-col items-center justify-center gap-0.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none aspect-square"
               data-width-value="{{ value | escape }}"
               data-numeric-width="{{ numeric_width }}"
               onclick="selectWidthValue('{{ value | escape }}', {{ numeric_width }})">
-              <span class="text-base font-bold text-center leading-[1.2]">{{ value | replace: 'cm', '' | replace: 'CM', '' | strip | append: ' cm' }}</span>
+              <span class="text-base font-bold text-center leading-[1.2]">{{ value | replace: 'cm', '' | replace: 'CM', '' | strip }}<span class="text-[11px] font-normal ml-0.5 lowercase text-slate-500">cm</span></span>
               <div class="flex flex-col items-center gap-0.5 w-full">
                 <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">pr. meter</span>
                 <span class="text-[11px] font-normal leading-[1.2] text-center" data-width-value-price="{{ value | escape }}">-- Kr.</span>
@@ -260,7 +260,7 @@
       </div>
       
       <!-- Tilpas bredde Accordion Content (displayed inline below buttons) -->
-      <div id="content-width-accordion" class="flex flex-col gap-3 w-full mt-2 pl-10">
+      <div id="content-width-accordion" class="flex flex-col gap-2 w-full mt-0.5 pl-10">
         {%- assign width_desc = block.settings.width_description | default: 'Dugen skæres på dine mål. Max bredde er [max_width] cm.' -%}
         <p class="text-sm text-primary/85 pl-1">
           {{ width_desc | replace: '[max_width]', '<span id="max-width-display">140</span>' }}
