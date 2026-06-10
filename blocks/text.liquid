@@ -15,7 +15,7 @@
 {%- endstyle -%}
 
 <div
-  class="text {{ block.settings.text_style }}"
+  class="text rte {{ block.settings.text_style }}"
   style="--text-align: {{ block.settings.alignment }}"
   {{ block.shopify_attributes }}
 >
@@ -40,10 +40,10 @@
   "name": "t:general.text",
   "settings": [
     {
-      "type": "text",
+      "type": "richtext",
       "id": "text",
       "label": "t:labels.text",
-      "default": "Text"
+      "default": "<p>Text</p>"
     },
     {
       "type": "select",

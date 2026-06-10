@@ -302,6 +302,35 @@
       </div>
     </div>
 
+    <!-- Selected Specs & Price (Calculation Table Summary) -->
+    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-slate-200 rounded-2xl pt-5 pb-4 px-4 mt-2 mb-3 text-sm text-primary/90" style="display: none; --span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
+      <!-- Title -->
+      <div id="calc-title" class="mb-2 font-semibold text-primary"></div>
+      
+      <!-- Lines -->
+      <div class="flex flex-col gap-1 w-full">
+        <div class="flex justify-between items-center" id="calc-shape-row">
+          <span id="calc-shape-label">Form</span>
+          <span id="calc-shape-price"></span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span id="calc-metervare-label">Metervare</span>
+          <span id="calc-metervare-price"></span>
+        </div>
+        <div class="flex justify-between items-center" id="calc-width-row" style="display: none;">
+          <span id="calc-width-label">Bredde</span>
+          <span id="calc-width-price"></span>
+        </div>
+        
+        <div class="border-t border-slate-200 my-2"></div>
+        
+        <div class="flex justify-between items-center">
+          <span>Pris pr. dug.</span>
+          <span id="calc-total-price"></span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -658,6 +687,11 @@
           }
 
           // Update the calculation table elements if they exist
+          const summaryContainer = document.getElementById("buy-buttons-summary-container");
+          if (summaryContainer) {
+            summaryContainer.style.display = "flex";
+          }
+
           const calcTitle = document.getElementById("calc-title");
           const calcMetervareLabel = document.getElementById("calc-metervare-label");
           const calcMetervarePrice = document.getElementById("calc-metervare-price");

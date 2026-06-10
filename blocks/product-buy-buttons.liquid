@@ -36,34 +36,7 @@
 {%- endstyle -%}
 
 <div class="flex flex-col gap-4" {{ block.shopify_attributes }}>
-    <!-- Left: Selected Specs & Price (Calculation Table) -->
-    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-slate-200 rounded-2xl pt-5 pb-4 px-4 mt-1 mb-3 text-sm text-primary/90" style="display: none;">
-      <!-- Title -->
-      <div id="calc-title" class="mb-2 font-semibold text-primary"></div>
-      
-      <!-- Lines -->
-      <div class="flex flex-col gap-1 w-full">
-        <div class="flex justify-between items-center" id="calc-shape-row">
-          <span id="calc-shape-label">Form</span>
-          <span id="calc-shape-price"></span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span id="calc-metervare-label">Metervare</span>
-          <span id="calc-metervare-price"></span>
-        </div>
-        <div class="flex justify-between items-center" id="calc-width-row" style="display: none;">
-          <span id="calc-width-label">Bredde</span>
-          <span id="calc-width-price"></span>
-        </div>
-        
-        <div class="border-t border-slate-200 my-2"></div>
-        
-        <div class="flex justify-between items-center">
-          <span>Pris pr. dug.</span>
-          <span id="calc-total-price"></span>
-        </div>
-      </div>
-    </div>
+
     
     <!-- Right: Button and Payment Badges -->
     <div class="flex flex-col items-center gap-3 w-full">
@@ -84,7 +57,7 @@
       </button>
       
       <p class="text-xs text-primary/80 text-center mt-3 font-medium leading-relaxed max-w-[90%]">
-        Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug.
+        {{ block.settings.sticky_info_text | default: "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug." }}
       </p>
       
 
@@ -400,15 +373,15 @@
 {%- if block.settings.enable_sticky_buy_button -%}
 <div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-200/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[24px]">
   <div class="max-w-[var(--page-width)] mx-auto w-full">
-    <!-- Standard Buy Sheet Content -->
-    <div id="sticky-bar-standard-content" class="flex items-end justify-between gap-4 w-full">
+    <!-- Standard Buy Sheet Content (State 2: Below Customizer / "nederst") -->
+    <div id="sticky-bar-standard-content" class="flex items-center justify-between gap-4 w-full">
       <!-- Left: Configuration Info -->
       <div class="flex flex-col text-left overflow-hidden min-w-0">
         <span id="sticky-title" class="font-bold text-slate-900 text-sm leading-tight block">{{ product.title }}</span>
         <div id="sticky-config-summary" class="text-[11px] text-slate-500 truncate mt-0.5 leading-normal"></div>
         <span id="sticky-price" class="font-extrabold text-[#0e1a28] text-[15px] mt-0.5 leading-tight"></span>
         <p class="text-[10px] text-slate-500 mt-1 leading-normal font-medium">
-          Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug.
+          {{ block.settings.sticky_info_text | default: "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug." }}
         </p>
       </div>
       <!-- Right: Purchase Button -->
@@ -417,20 +390,18 @@
       </button>
     </div>
 
-    <!-- Customize Tablecloth Button Content -->
-    <div id="sticky-bar-customize-content" class="flex items-end justify-between gap-4 w-full hidden">
-      <!-- Left: Configuration Info -->
+    <!-- Customize Tablecloth Button Content (State 1: Above Customizer / "Øverst") -->
+    <div id="sticky-bar-customize-content" class="flex items-center justify-between gap-4 w-full hidden">
+      <!-- Left: Product info and description -->
       <div class="flex flex-col text-left overflow-hidden min-w-0">
         <span id="sticky-title-customize" class="font-bold text-slate-900 text-sm leading-tight block">{{ product.title }}</span>
-        <div id="sticky-config-summary-customize" class="text-[11px] text-slate-500 truncate mt-0.5 leading-normal"></div>
-        <span id="sticky-price-customize" class="font-extrabold text-[#0e1a28] text-[15px] mt-0.5 leading-tight"></span>
         <p class="text-[10px] text-slate-500 mt-1 leading-normal font-medium">
-          Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug.
+          {{ block.settings.sticky_info_text | default: "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug." }}
         </p>
       </div>
       <!-- Right: Customize Button -->
       <button id="btn-sticky-customize" class="bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center min-w-[100px]">
-        Tilpas dugen
+        {{ block.settings.sticky_customize_button_text | default: "Tilpas" }}
       </button>
     </div>
   </div>
@@ -702,6 +673,18 @@
       "id": "sticky_buy_button_text",
       "label": "Tekst på sticky købsknap",
       "default": "Læg i kurv"
+    },
+    {
+      "type": "text",
+      "id": "sticky_customize_button_text",
+      "label": "Tekst på sticky tilpasningsknap",
+      "default": "Tilpas"
+    },
+    {
+      "type": "textarea",
+      "id": "sticky_info_text",
+      "label": "Info tekst på sticky bar / produktknap",
+      "default": "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug."
     }
   ],
   "presets": [
