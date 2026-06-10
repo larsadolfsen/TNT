@@ -62,7 +62,8 @@
               {%- else -%}
                 <button 
                   type="button"
-                  class="px-4 py-2 text-sm rounded-2xl border-2 bg-white shadow-sm cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}"
+                  class="px-4 py-2 text-sm rounded-2xl bg-white shadow-sm cursor-pointer transition-all {% if is_selected %}border-2 text-slate-900 font-bold{% else %}border border-slate-200 text-slate-600{% endif %}"
+                  style="{% if is_selected %}border-color: #f5c518;{% endif %}"
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                 >
@@ -120,8 +121,10 @@
             b.classList.remove('border-[var(--color-accent)]', 'ring-4', 'ring-[var(--color-accent)]/10');
             b.classList.add('border-outline-variant', 'hover:border-[var(--color-accent)]/60');
           } else {
-            b.classList.remove('border-[var(--color-accent)]', 'bg-[var(--color-accent)]/5', 'text-primary', 'font-bold');
-            b.classList.add('border-outline-variant', 'hover:border-[var(--color-accent)]/60', 'text-primary/80');
+            b.classList.remove('border-2', 'text-slate-900', 'font-bold');
+            b.classList.add('border', 'border-slate-200', 'text-slate-600');
+            b.style.borderColor = '';
+            b.style.borderWidth = '';
           }
         });
 
@@ -131,8 +134,10 @@
           clickedBtn.classList.remove('border-outline-variant', 'hover:border-[var(--color-accent)]/60');
           clickedBtn.classList.add('border-[var(--color-accent)]', 'ring-4', 'ring-[var(--color-accent)]/10');
         } else {
-          clickedBtn.classList.remove('border-outline-variant', 'hover:border-[var(--color-accent)]/60', 'text-primary/80');
-          clickedBtn.classList.add('border-[var(--color-accent)]', 'bg-[var(--color-accent)]/5', 'text-primary', 'font-bold');
+          clickedBtn.classList.remove('border', 'border-slate-200', 'text-slate-600');
+          clickedBtn.classList.add('border-2', 'text-slate-900', 'font-bold');
+          clickedBtn.style.borderColor = '#f5c518';
+          clickedBtn.style.borderWidth = '2px';
         }
 
         // Update the visual text label
@@ -149,7 +154,7 @@
           const idx = parseInt(container.dataset.optionIndex);
           const activeBtn = Array.from(container.querySelectorAll('button')).find(b => {
             const isBColor = !!b.querySelector('img');
-            return isBColor ? b.classList.contains('border-[var(--color-accent)]') : b.classList.contains('bg-[var(--color-accent)]/5');
+            return isBColor ? b.classList.contains('border-[var(--color-accent)]') : b.classList.contains('font-bold');
           });
           if (activeBtn) {
             selectedValues[idx] = activeBtn.dataset.optionValue;

@@ -66,6 +66,29 @@
     }
   {%- endunless -%}
 
+  .section-{{ section.id }}-inner-padding .row-content {
+    --span-mobile: {{ section.settings.span_mobile | default: 4 }};
+    --span-expanded: {{ section.settings.span_tablet | default: 8 }};
+    --span-large: {{ section.settings.span_desktop | default: 12 }};
+
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: calc((var(--span-mobile) / 4) * 100%);
+  }
+
+  @media screen and (min-width: 840px) {
+    .section-{{ section.id }}-inner-padding .row-content {
+      max-width: min(calc((var(--span-expanded) / 8) * var(--page-width, 1440px)), 100%);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .section-{{ section.id }}-inner-padding .row-content {
+      max-width: min(calc((var(--span-large) / 12) * var(--page-width, 1440px)), 100%);
+    }
+  }
+
   {%- if is_single_column -%}
     .row-content--single {
       display: flex;
@@ -201,6 +224,58 @@
         { "value": "right",   "label": "Højre" }
       ],
       "default": "columns"
+    },
+    {
+      "type": "header",
+      "content": "Bredde i grid-kolonner (Spand)"
+    },
+    {
+      "type": "select",
+      "id": "span_mobile",
+      "label": "Grid bredde på mobil (af 4)",
+      "options": [
+        { "value": "1", "label": "1 kolonne (25%)" },
+        { "value": "2", "label": "2 kolonner (50%)" },
+        { "value": "3", "label": "3 kolonner (75%)" },
+        { "value": "4", "label": "4 kolonner (100%)" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "span_tablet",
+      "label": "Grid bredde på tablet (af 8)",
+      "options": [
+        { "value": "1", "label": "1 ud af 8" },
+        { "value": "2", "label": "2 ud af 8" },
+        { "value": "3", "label": "3 ud af 8" },
+        { "value": "4", "label": "4 ud af 8 (50%)" },
+        { "value": "5", "label": "5 ud af 8" },
+        { "value": "6", "label": "6 ud af 8" },
+        { "value": "7", "label": "7 ud af 8" },
+        { "value": "8", "label": "8 ud af 8 (100%)" }
+      ],
+      "default": "8"
+    },
+    {
+      "type": "select",
+      "id": "span_desktop",
+      "label": "Grid bredde på desktop (af 12)",
+      "options": [
+        { "value": "1", "label": "1 ud af 12" },
+        { "value": "2", "label": "2 ud af 12" },
+        { "value": "3", "label": "3 ud af 12" },
+        { "value": "4", "label": "4 ud af 12" },
+        { "value": "5", "label": "5 ud af 12" },
+        { "value": "6", "label": "6 ud af 12 (50%)" },
+        { "value": "7", "label": "7 ud af 12" },
+        { "value": "8", "label": "8 ud af 12" },
+        { "value": "9", "label": "9 ud af 12" },
+        { "value": "10", "label": "10 ud af 12" },
+        { "value": "11", "label": "11 ud af 12" },
+        { "value": "12", "label": "12 ud af 12 (100%)" }
+      ],
+      "default": "12"
     },
 
     {
