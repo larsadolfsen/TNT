@@ -171,6 +171,7 @@
           "type": "product-customizer",
           "settings": {
             "metervare_product": "firkantet-dug",
+            "heading": "Tilpas dugen",
             "firkantet_product": "firkantet-dug-1",
             "rund_product": "afrunding",
             "oval_product": "oval-dug",

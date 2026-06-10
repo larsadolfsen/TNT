@@ -119,6 +119,9 @@
 <div id="shape-selector" style="display: none;"></div>
 
 <div id="voksdug-customizer-container" class="w-full pb-3{% if block.settings.border_top %} border-t border-slate-200{% endif %}{% if block.settings.border_bottom %} border-b border-slate-200{% endif %}" {{ block.shopify_attributes }}>
+  {%- if block.settings.heading != blank -%}
+    <h2 class="text-xl md:text-2xl font-bold text-slate-800 mb-5 leading-tight">{{ block.settings.heading }}</h2>
+  {%- endif -%}
   <div class="grid-layout">
 
     <!-- Step 1: Shape Selector -->
@@ -1175,6 +1178,12 @@
       "type": "product",
       "id": "metervare_product",
       "label": "Metervare"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Overskrift",
+      "default": "Tilpas dugen"
     },
     {
       "type": "header",
