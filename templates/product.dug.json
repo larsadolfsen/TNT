@@ -44,7 +44,23 @@
             "padding_bottom": 0,
             "padding_sides": 0
           },
-          "blocks": {}
+          "blocks": {
+            "text_MrzDdi": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "<p>Skæres efter mål og sendes på rulle.</p>",
+                "alignment": "left",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_MrzDdi"
+          ]
         },
         "product_trust_XEbrEN": {
           "type": "product-trust",
