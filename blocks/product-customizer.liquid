@@ -103,6 +103,18 @@
     --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
     --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
     --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
+    
+    padding-top: var(--block-padding-top);
+    padding-bottom: var(--block-padding-bottom);
+    padding-left: var(--block-padding-left);
+    padding-right: var(--block-padding-right);
+
+    {%- if block.settings.border_top -%}
+      border-top: 1px solid #e2e8f0;
+    {%- endif -%}
+    {%- if block.settings.border_bottom -%}
+      border-bottom: 1px solid #e2e8f0;
+    {%- endif -%}
   }
 {%- endstyle -%}
 
@@ -118,7 +130,7 @@
 <!-- Hidden element to signal to product-buy-buttons that customizer is active -->
 <div id="shape-selector" style="display: none;"></div>
 
-<div id="voksdug-customizer-container" class="w-full pb-3{% if block.settings.border_top %} border-t border-slate-200{% endif %}{% if block.settings.border_bottom %} border-b border-slate-200{% endif %}" {{ block.shopify_attributes }}>
+<div id="voksdug-customizer-container" class="w-full pb-3" {{ block.shopify_attributes }}>
   {%- if block.settings.heading != blank -%}
     <h2 class="text-xl md:text-2xl font-bold text-slate-800 mb-8 leading-tight">{{ block.settings.heading }}</h2>
   {%- endif -%}
