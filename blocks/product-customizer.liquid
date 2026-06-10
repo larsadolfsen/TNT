@@ -249,9 +249,9 @@
               data-width-value="{{ value | escape }}"
               data-numeric-width="{{ numeric_width }}"
               onclick="selectWidthValue('{{ value | escape }}', {{ numeric_width }})">
-              <span class="text-base font-bold text-center leading-[1.2]">{{ value | replace: 'cm', '' | replace: 'CM', '' | strip }}<span class="text-[11px] font-normal ml-0.5 lowercase text-slate-500">cm</span></span>
+              <span class="text-base font-bold text-center leading-[1.2]">{{ value | replace: 'cm', '' | replace: 'CM', '' | strip }}<span class="text-[11px] font-bold ml-0.5 lowercase">cm</span></span>
               <span class="text-[11px] font-normal leading-[1.2] text-center" data-width-value-price="{{ value | escape }}">-- kr.</span>
-              <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">pr. meter</span>
+              <span class="text-[11px] font-normal leading-[1.2] text-center">pr. meter</span>
             </button>
           {%- endfor -%}
         {%- endif -%}
