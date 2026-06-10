@@ -161,7 +161,7 @@
           {% endif %}
         </div>
       </div>
-      <div class="grid-layout w-full">
+      <div class="grid-layout w-full pl-10">
 
         <!-- Firkantet dug -->
         <div class="flex flex-col items-center gap-1" style="--span-mobile: 1; --span-expanded: 1; --span-large: 1;">
@@ -216,11 +216,11 @@
       <div class="flex items-start gap-3">
         <span id="step-number-width" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
-          <span class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg bredde</span>
+          <span id="label-width" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg bredde</span>
           <p class="text-sm text-primary/85 mt-1">Vælg en standardbredde eller tilpas på dine mål.</p>
         </div>
       </div>
-      <div class="grid-layout w-full">
+      <div class="flex gap-3 overflow-x-auto pb-2 hide-scrollbar w-full pl-10">
         {%- if width_option_values != blank -%}
           {%- for value in width_option_values -%}
             {%- assign value_down = value | downcase -%}
@@ -230,26 +230,23 @@
             
             {%- assign numeric_width = value | replace: 'cm', '' | replace: 'CM', '' | strip -%}
             
-            <div class="flex flex-col items-center gap-1" style="--span-mobile: 1; --span-expanded: 1; --span-large: 1;">
-              <button type="button" 
-                class="width-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
-                data-width-value="{{ value | escape }}"
-                data-numeric-width="{{ numeric_width }}"
-                onclick="selectWidthValue('{{ value | escape }}', {{ numeric_width }})">
-                <span class="text-base font-bold text-center leading-[1.2]">{{ value | replace: 'cm', '' | replace: 'CM', '' | strip | append: ' cm' }}</span>
-                <div class="flex flex-col items-center gap-0.5 w-full">
-                  <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">pr. meter</span>
-                  <span class="text-[11px] font-normal leading-[1.2] text-center" data-width-value-price="{{ value | escape }}">-- Kr.</span>
-                </div>
-              </button>
-            </div>
+            <button type="button" 
+              class="width-btn flex-shrink-0 flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-28 aspect-square"
+              data-width-value="{{ value | escape }}"
+              data-numeric-width="{{ numeric_width }}"
+              onclick="selectWidthValue('{{ value | escape }}', {{ numeric_width }})">
+              <span class="text-base font-bold text-center leading-[1.2]">{{ value | replace: 'cm', '' | replace: 'CM', '' | strip | append: ' cm' }}</span>
+              <div class="flex flex-col items-center gap-0.5 w-full">
+                <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">pr. meter</span>
+                <span class="text-[11px] font-normal leading-[1.2] text-center" data-width-value-price="{{ value | escape }}">-- Kr.</span>
+              </div>
+            </button>
           {%- endfor -%}
         {%- endif -%}
-        
       </div>
       
       <!-- Tilpas bredde Accordion Content (displayed inline below buttons) -->
-      <div id="content-width-accordion" class="flex flex-col gap-3 w-full mt-2 pl-0">
+      <div id="content-width-accordion" class="flex flex-col gap-3 w-full mt-2 pl-10">
         {%- assign width_desc = block.settings.width_description | default: 'Dugen skæres på dine mål. Max bredde er [max_width] cm.' -%}
         <p class="text-sm text-primary/85 pl-1">
           {{ width_desc | replace: '[max_width]', '<span id="max-width-display">140</span>' }}
@@ -295,7 +292,7 @@
       </div>
 
       <!-- Pill-shaped Stepper -->
-      <div class="w-full">
+      <div class="w-full pl-10">
         <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;">
           <!-- Minus button -->
           <button type="button" id="btn-length-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
@@ -334,22 +331,24 @@
           {% endif %}
         </div>
       </div>
-      <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;transition:border-color 0.15s,box-shadow 0.15s;">
-        <!-- Minus button -->
-        <button type="button" id="btn-qty-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
-          &mdash;
-        </button>
-        <!-- Value input -->
-        <input id="display-qty" type="number" inputmode="numeric" pattern="[0-9]*"
-          value="1"
-          min="1"
-          class="text-center font-bold text-slate-900 text-xl bg-transparent border-none outline-none p-0 m-0"
-          style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
-        />
-        <!-- Plus button -->
-        <button type="button" id="btn-qty-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
-          &#43;
-        </button>
+      <div class="w-full pl-10">
+        <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;transition:border-color 0.15s,box-shadow 0.15s;">
+          <!-- Minus button -->
+          <button type="button" id="btn-qty-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+            &mdash;
+          </button>
+          <!-- Value input -->
+          <input id="display-qty" type="number" inputmode="numeric" pattern="[0-9]*"
+            value="1"
+            min="1"
+            class="text-center font-bold text-slate-900 text-xl bg-transparent border-none outline-none p-0 m-0"
+            style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
+          />
+          <!-- Plus button -->
+          <button type="button" id="btn-qty-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+            &#43;
+          </button>
+        </div>
       </div>
     </div>
 
@@ -443,12 +442,18 @@
   let selectedShape = 'firkantet';
   function selectShape(shape) {
     selectedShape = shape;
+    
+    const widthLabel = document.getElementById('label-width');
+    if (widthLabel) {
+      widthLabel.textContent = (shape === 'rund') ? 'Vælg diameter' : 'Vælg bredde';
+    }
+    const lengthLabel = document.getElementById('label-length');
+    if (lengthLabel) {
+      lengthLabel.textContent = (shape === 'rund') ? 'Vælg diameter' : 'Vælg længde';
+    }
+
     document.querySelectorAll('.shape-btn').forEach(btn => {
       const isActive = btn.dataset.shape === shape;
-      const lengthLabel = document.getElementById('label-length');
-      if (lengthLabel) {
-        lengthLabel.textContent = (shape === 'rund') ? 'Vælg diameter' : 'Vælg længde';
-      }
       if (isActive) {
         btn.style.borderColor = '#f5c518';
         btn.style.borderWidth = '2px';
