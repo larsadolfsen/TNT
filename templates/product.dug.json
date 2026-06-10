@@ -34,7 +34,7 @@
             "border_thickness": "thin",
             "corner_radius": "none",
             "title": "",
-            "content": "<p>Skæres efter mål og sendes på rulle.</p>",
+            "content": "",
             "card_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -52,7 +52,7 @@
                 "text": "<p>Skæres efter mål og sendes på rulle.</p>",
                 "alignment": "left",
                 "padding_top": 0,
-                "padding_bottom": 0,
+                "padding_bottom": 12,
                 "padding_sides": 0
               },
               "blocks": {}
