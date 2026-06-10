@@ -28,7 +28,6 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "design": "none",
             "width_cols": "4",
             "background_color": "transparent",
             "title": "",
@@ -48,7 +47,6 @@
               "name": "t:general.text",
               "settings": {
                 "text": "<p>Text</p>",
-                "text_style": "text--title",
                 "alignment": "left",
                 "padding_top": 12,
                 "padding_bottom": 12,
@@ -238,7 +236,6 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "design": "raised",
             "width_cols": "4",
             "background_color": "light",
             "title": "",

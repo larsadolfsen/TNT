@@ -314,7 +314,7 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "design": "raised",
+            "design": "border",
             "width_cols": "4",
             "background_color": "light",
             "title": "",
@@ -601,7 +601,7 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "design": "none",
+            "design": "border",
             "width_cols": "4",
             "background_color": "transparent",
             "title": "",
