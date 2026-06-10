@@ -204,6 +204,7 @@
             "length_description": "Vi anbefaler ca. 20 cm til nedhæng i hver ende.",
             "width_surcharge_product": "tilpasset-bredde",
             "width_description": "Vi anbefaler ca. 20 cm til nedhæng i hver side. Max bredde er [max_width] cm.",
+            "custom_width_checkbox_label": "Tilpas bredden",
             "qty_description": "",
             "border_top": true,
             "border_bottom": true,
