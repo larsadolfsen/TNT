@@ -261,7 +261,7 @@
       <div class="w-full pl-10 mt-2 flex items-center gap-2.5">
         <input type="checkbox" id="checkbox-custom-width" class="w-5 h-5 rounded border-slate-300 text-slate-900 focus:ring-slate-900 accent-slate-900 cursor-pointer" />
         <label for="checkbox-custom-width" class="text-sm font-semibold text-slate-800 cursor-pointer select-none">
-          Tilpas på dine mål
+          {{ block.settings.custom_width_checkbox_label | default: "Tilpas på dine mål" }}
         </label>
       </div>
       
@@ -1496,6 +1496,12 @@
       "id": "width_description",
       "label": "Tilpas bredde - beskrivelse",
       "default": "Dugen skæres på dine mål. Max bredde er [max_width] cm."
+    },
+    {
+      "type": "text",
+      "id": "custom_width_checkbox_label",
+      "label": "Checkbox label til tilpasning",
+      "default": "Tilpas på dine mål"
     },
     {
       "type": "header",
