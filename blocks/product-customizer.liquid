@@ -274,6 +274,19 @@
               <span class="text-[11px] font-normal leading-[1.2] text-center">pr. meter</span>
             </button>
           {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Fallback: no width variant option — show product's fixed width from metafield as a single pre-selected button {%- endcomment -%}
+          {%- assign fallback_width = product_width_limit | default: 140 -%}
+          <button type="button"
+            class="width-btn width-btn-slider-item flex flex-col items-center justify-center gap-0.5 rounded-2xl border-2 bg-white text-slate-900 shadow-sm focus:outline-none aspect-square"
+            data-width-value="{{ fallback_width }} cm"
+            data-numeric-width="{{ fallback_width }}"
+            style="border-color: #f5c518; pointer-events: none; cursor: default;"
+            aria-pressed="true">
+            <span class="text-base font-bold text-center leading-[1.2]">{{ fallback_width }}<span class="text-[11px] font-bold ml-0.5 lowercase">cm</span></span>
+            <span class="text-[11px] font-normal leading-[1.2] text-center" data-width-value-price="{{ fallback_width }} cm">-- kr.</span>
+            <span class="text-[11px] font-normal leading-[1.2] text-center">pr. meter</span>
+          </button>
         {%- endif -%}
       </div>
       
@@ -625,10 +638,13 @@
       quantity: 1
     };
 
-    // Initialize initial width state from active variant on load
+    // Initialize initial width state from active variant on load (or from metafield limit when no width option)
     let initVariant = getCurrentVariant();
     if (initVariant && widthOptionIndex !== null) {
       state.width = getVariantWidth(initVariant.title);
+    } else {
+      // No width option on this product — use the metafield width limit as the fixed width
+      state.width = maxWidthLimit;
     }
 
     // DOM cache
