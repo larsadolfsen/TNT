@@ -114,7 +114,7 @@
 
     let threshold = parseFloat(widget.getAttribute("data-threshold")) || 590.00;
     let cartTotal = {{ cart.total_price }} / 100.0;
-    let productPrice = window.currentPageProductPrice !== undefined ? window.currentPageProductPrice : ({% if product %}{% if is_customizable %}{{ base_variant.price | times: 200 }}{% else %}{{ product.selected_or_first_available_variant.price }}{% endif %}{% else %}0{% endif %} / 100.0);
+    let productPrice = window.currentPageProductPrice !== undefined ? window.currentPageProductPrice : ({% if product %}{% if is_customizable %}{{ base_variant.price | default: 0 | times: 200 }}{% else %}{{ product.selected_or_first_available_variant.price | default: 0 }}{% endif %}{% else %}0{% endif %} / 100.0);
 
     function formatPrice(value) {
       return value.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr.";
