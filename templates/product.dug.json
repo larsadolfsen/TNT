@@ -56,45 +56,45 @@
                 "padding_sides": 0
               },
               "blocks": {}
+            },
+            "product_trust_LLkidj": {
+              "type": "product-trust",
+              "settings": {
+                "rating_score": "4,8",
+                "rating_count": "1.000+ anmeldelser",
+                "badge_text": "",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "badge_nDm9GX": {
+              "type": "badge",
+              "name": "Badge",
+              "settings": {
+                "text": "BESTSELLER",
+                "only_if_in_stock": false,
+                "alignment": "left",
+                "background_color": "#000000",
+                "text_color": "#ffffff",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
             }
           },
           "block_order": [
-            "text_MrzDdi"
+            "text_MrzDdi",
+            "product_trust_LLkidj",
+            "badge_nDm9GX"
           ]
-        },
-        "product_trust_XEbrEN": {
-          "type": "product-trust",
-          "settings": {
-            "rating_score": "4,8",
-            "rating_count": "1.000+ anmeldelser",
-            "badge_text": "",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "badge_kthV3T": {
-          "type": "badge",
-          "name": "Badge",
-          "settings": {
-            "text": "BESTSELLER",
-            "only_if_in_stock": false,
-            "alignment": "left",
-            "background_color": "#000000",
-            "text_color": "#ffffff",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "page_title_UACQEU",
-        "card_MENFqx",
-        "product_trust_XEbrEN",
-        "badge_kthV3T"
+        "card_MENFqx"
       ],
       "name": "Row",
       "settings": {
