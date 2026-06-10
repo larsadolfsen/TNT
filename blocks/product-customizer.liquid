@@ -258,10 +258,20 @@
       </div>
       
       <!-- Custom Width Checkbox Trigger -->
-      <div class="w-full pl-10 mt-2 flex items-center gap-2.5">
-        <input type="checkbox" id="checkbox-custom-width" class="w-5 h-5 rounded border-slate-300 text-slate-900 focus:ring-slate-900 accent-slate-900 cursor-pointer" />
-        <label for="checkbox-custom-width" class="text-sm font-semibold text-slate-800 cursor-pointer select-none">
-          {{ block.settings.custom_width_checkbox_label | default: "Tilpas på dine mål" }}
+      <div class="w-full pl-10 mt-2 flex items-center">
+        <label for="checkbox-custom-width" class="flex items-center gap-3 cursor-pointer select-none group">
+          <div class="relative flex items-center justify-center">
+            <input type="checkbox" id="checkbox-custom-width" class="sr-only peer" />
+            <!-- Styled custom checkbox box -->
+            <div class="w-6 h-6 rounded-md border-2 border-slate-300 bg-white transition-all duration-200 flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary group-hover:border-slate-400 peer-focus-visible:ring-2 peer-focus-visible:ring-primary/20">
+              <svg class="w-3.5 h-3.5 text-white scale-0 transition-transform duration-200 peer-checked:scale-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          </div>
+          <span class="text-sm font-semibold text-slate-800 group-hover:text-slate-900 transition-colors duration-150">
+            {{ block.settings.custom_width_checkbox_label | default: "Tilpas på dine mål" }}
+          </span>
         </label>
       </div>
       
@@ -847,14 +857,17 @@
         updateStepNumbers();
 
         const maxWidth = width;
+        const customWidthCheckbox = document.getElementById("checkbox-custom-width");
+        const maxAllowedWidth = (customWidthCheckbox && customWidthCheckbox.checked) ? (maxWidth - 5) : maxWidth;
+
         const maxWidthDisplay = document.getElementById("max-width-display");
         if (maxWidthDisplay) {
-          maxWidthDisplay.textContent = maxWidth;
+          maxWidthDisplay.textContent = maxAllowedWidth;
         }
 
         // Clamp state width
-        if (state.width > maxWidth) {
-          state.width = maxWidth;
+        if (state.width > maxAllowedWidth) {
+          state.width = maxAllowedWidth;
         }
         const displayWidth = document.getElementById("display-width");
         if (displayWidth && parseInt(displayWidth.value) !== state.width) {
@@ -864,7 +877,7 @@
         // Width stepper plus / minus state
         const btnWidthPlus = document.getElementById("btn-width-plus");
         if (btnWidthPlus) {
-          if (state.width >= maxWidth) {
+          if (state.width >= maxAllowedWidth) {
             btnWidthPlus.disabled = true;
             btnWidthPlus.classList.add("opacity-30", "pointer-events-none");
           } else {
@@ -1132,14 +1145,28 @@
     const displayWidth = document.getElementById("display-width");
 
     function clampWidth(val, maxVal) {
-      val = Math.round(val / stepSize) * stepSize;
+      val = Math.round(val / 5) * 5;
       return Math.min(maxVal, Math.max(50, val));
     }
 
     if (btnWidthMinus && displayWidth) {
       btnWidthMinus.addEventListener("click", () => {
         if (state.width > 50) {
-          state.width = clampWidth(state.width - stepSize, absoluteMaxWidth);
+          // Resolve standard width first to get maxAllowedWidth
+          let activeVariantId = null;
+          const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+          if (variantInput) {
+            activeVariantId = parseInt(variantInput.value);
+          }
+          let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+          let pricingVariant = currentVariant;
+          if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
+            pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+          }
+          const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+          const maxAllowedWidth = stdWidth - 5;
+
+          state.width = clampWidth(state.width - 5, maxAllowedWidth);
           displayWidth.value = state.width;
           updateUI();
         }
@@ -1148,8 +1175,22 @@
 
     if (btnWidthPlus && displayWidth) {
       btnWidthPlus.addEventListener("click", () => {
-        if (state.width < absoluteMaxWidth) {
-          state.width = clampWidth(state.width + stepSize, absoluteMaxWidth);
+        // Resolve standard width first to get maxAllowedWidth
+        let activeVariantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) {
+          activeVariantId = parseInt(variantInput.value);
+        }
+        let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+        let pricingVariant = currentVariant;
+        if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
+          pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+        }
+        const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        const maxAllowedWidth = stdWidth - 5;
+
+        if (state.width < maxAllowedWidth) {
+          state.width = clampWidth(state.width + 5, maxAllowedWidth);
           displayWidth.value = state.width;
           updateUI();
         }
@@ -1158,9 +1199,23 @@
 
     if (displayWidth) {
       displayWidth.addEventListener("change", () => {
+        // Resolve standard width first to get maxAllowedWidth
+        let activeVariantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) {
+          activeVariantId = parseInt(variantInput.value);
+        }
+        let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+        let pricingVariant = currentVariant;
+        if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
+          pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+        }
+        const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        const maxAllowedWidth = stdWidth - 5;
+
         const raw = parseInt(displayWidth.value, 10);
         if (!isNaN(raw)) {
-          state.width = clampWidth(raw, absoluteMaxWidth);
+          state.width = clampWidth(raw, maxAllowedWidth);
           displayWidth.value = state.width;
           updateUI();
         } else {
@@ -1168,8 +1223,22 @@
         }
       });
       displayWidth.addEventListener("blur", () => {
+        // Resolve standard width first to get maxAllowedWidth
+        let activeVariantId = null;
+        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+        if (variantInput) {
+          activeVariantId = parseInt(variantInput.value);
+        }
+        let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+        let pricingVariant = currentVariant;
+        if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
+          pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+        }
+        const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        const maxAllowedWidth = stdWidth - 5;
+
         const raw = parseInt(displayWidth.value, 10);
-        state.width = isNaN(raw) ? state.width : clampWidth(raw, absoluteMaxWidth);
+        state.width = isNaN(raw) ? state.width : clampWidth(raw, maxAllowedWidth);
         displayWidth.value = state.width;
         updateUI();
       });
@@ -1194,6 +1263,20 @@
           }
           const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
           state.width = stdWidth;
+        } else {
+          // If checked, set width to standard active variant width minus 5
+          let activeVariantId = null;
+          const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+          if (variantInput) {
+            activeVariantId = parseInt(variantInput.value);
+          }
+          let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+          let pricingVariant = currentVariant;
+          if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
+            pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+          }
+          const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+          state.width = stdWidth - 5;
         }
         updateUI();
       });
