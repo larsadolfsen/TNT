@@ -12,16 +12,29 @@
   Renders the stock warning message with an warning icon.
 {% endcomment %}
 
-{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign btm_variant = nil -%}
+{%- for variant in product.variants -%}
+  {%- if variant.sku == 'BTM001' -%}
+    {%- assign btm_variant = variant -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if btm_variant != nil -%}
+  {%- assign target_variant = btm_variant -%}
+{%- else -%}
+  {%- assign target_variant = product.selected_or_first_available_variant -%}
+{%- endif -%}
+
 {%- assign show_urgency = block.settings.show_urgency -%}
 {%- assign hide_under_limit = block.settings.hide_under_limit | default: 5 -%}
 
 {%- assign urgency_state = 'in-stock' -%}
-{%- if current_variant -%}
-  {%- if current_variant.inventory_management != blank -%}
-    {%- if current_variant.inventory_quantity <= 0 -%}
+{%- if target_variant -%}
+  {%- if target_variant.inventory_management != blank -%}
+    {%- if target_variant.inventory_quantity <= 0 -%}
       {%- assign show_urgency = false -%}
-    {%- elsif current_variant.inventory_quantity < hide_under_limit -%}
+    {%- elsif target_variant.inventory_quantity < hide_under_limit -%}
       {%- assign urgency_state = 'low-stock' -%}
     {%- endif -%}
   {%- endif -%}
@@ -45,7 +58,8 @@
         {
           "id": {{ variant.id }},
           "inventory_quantity": {{ variant.inventory_quantity | default: 0 }},
-          "inventory_management": {{ variant.inventory_management | json }}
+          "inventory_management": {{ variant.inventory_management | json }},
+          "sku": {{ variant.sku | json }}
         }{%- unless forloop.last -%},{%- endunless -%}
       {%- endfor -%}
     ],
@@ -75,16 +89,17 @@
         return;
       {%- endunless -%}
 
-      const variant = urgencyData.variants.find(v => v.id === parseInt(variantId));
-      if (!variant) return;
+      const btmVariant = urgencyData.variants.find(v => v.sku === 'BTM001');
+      const targetVariant = btmVariant || urgencyData.variants.find(v => v.id === parseInt(variantId));
+      if (!targetVariant) return;
 
       let show = true;
       let state = 'in-stock';
 
-      if (variant.inventory_management) {
-        if (variant.inventory_quantity <= 0) {
+      if (targetVariant.inventory_management) {
+        if (targetVariant.inventory_quantity <= 0) {
           show = false;
-        } else if (variant.inventory_quantity < urgencyData.hideUnderLimit) {
+        } else if (targetVariant.inventory_quantity < urgencyData.hideUnderLimit) {
           state = 'low-stock';
         }
       }
@@ -101,6 +116,12 @@
       } else {
         sectionEl.style.display = "none";
       }
+    }
+
+    const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+    const initialVariantId = variantInput ? variantInput.value : (urgencyData.variants[0] ? urgencyData.variants[0].id : null);
+    if (initialVariantId) {
+      updateUrgency(initialVariantId);
     }
 
     document.addEventListener("variant-changed", (e) => {
