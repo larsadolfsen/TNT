@@ -250,10 +250,8 @@
               data-numeric-width="{{ numeric_width }}"
               onclick="selectWidthValue('{{ value | escape }}', {{ numeric_width }})">
               <span class="text-base font-bold text-center leading-[1.2]">{{ value | replace: 'cm', '' | replace: 'CM', '' | strip }}<span class="text-[11px] font-normal ml-0.5 lowercase text-slate-500">cm</span></span>
-              <div class="flex flex-col items-center gap-0.5 w-full">
-                <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">pr. meter</span>
-                <span class="text-[11px] font-normal leading-[1.2] text-center" data-width-value-price="{{ value | escape }}">-- Kr.</span>
-              </div>
+              <span class="text-[11px] font-normal leading-[1.2] text-center" data-width-value-price="{{ value | escape }}">-- kr.</span>
+              <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">pr. meter</span>
             </button>
           {%- endfor -%}
         {%- endif -%}
@@ -804,7 +802,7 @@
             const priceSpan = btn.querySelector('[data-width-value-price]');
             if (priceSpan && match) {
               const pricePerMeter = match.price * 100;
-              priceSpan.textContent = formatDanishPrice(pricePerMeter);
+              priceSpan.textContent = formatDanishPrice(pricePerMeter).replace("Kr.", "kr.");
             }
           });
         }
