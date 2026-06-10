@@ -251,7 +251,7 @@
         <span id="step-number-width" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
           <span id="label-width" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg bredde</span>
-          <p class="text-sm text-primary/85 mt-1">Vælg en standardbredde eller tilpas på dine mål.</p>
+          <p class="text-sm text-primary/85 mt-1">{{ block.settings.width_step_description | default: "Vælg en standardbredde eller tilpas på dine mål." }}</p>
         </div>
       </div>
       <div class="flex overflow-x-auto pb-1 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
@@ -1562,6 +1562,12 @@
     {
       "type": "header",
       "content": "Trin 3: Tilpas bredde"
+    },
+    {
+      "type": "text",
+      "id": "width_step_description",
+      "label": "Vælg bredde - beskrivelse",
+      "default": "Vælg en standardbredde eller tilpas på dine mål."
     },
     {
       "type": "product",
