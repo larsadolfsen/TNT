@@ -146,19 +146,19 @@
                       
                       <button 
                         type="button"
-                        class="w-10 h-10 rounded-lg overflow-hidden border bg-white p-0.5 cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30{% else %}border-outline-variant hover:border-[var(--color-accent)]/60{% endif %}"
+                        class="w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30{% else %}border-outline-variant hover:border-[var(--color-accent)]/60{% endif %}"
                         data-product-id="{{ product.id }}"
                         data-option-name="{{ option.name }}"
                         data-option-value="{{ value | escape }}"
                         onclick="onCardVariantClick(this)"
                         title="{{ value | escape }}"
                       >
-                        <img src="{{ swatch_img | image_url: width: 100 }}" alt="{{ value | escape }}" class="w-full h-full object-cover rounded-md" />
+                        <img src="{{ swatch_img | image_url: width: 100 }}" alt="{{ value | escape }}" class="w-full h-full object-cover rounded-[10px]" />
                       </button>
                     {%- else -%}
                       <button 
                         type="button"
-                        class="px-2.5 py-1 text-[11px] rounded-lg border bg-white cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}"
+                        class="px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}"
                         data-product-id="{{ product.id }}"
                         data-option-name="{{ option.name }}"
                         data-option-value="{{ value | escape }}"
@@ -286,15 +286,15 @@
             
             if (isColor) {
               if (isSelected) {
-                btn.className = "w-10 h-10 rounded-lg overflow-hidden border bg-white p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+                btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
               } else {
-                btn.className = "w-10 h-10 rounded-lg overflow-hidden border bg-white p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+                btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
               }
             } else {
               if (isSelected) {
-                btn.className = "px-2.5 py-1 text-[11px] rounded-lg border bg-white cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+                btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
               } else {
-                btn.className = "px-2.5 py-1 text-[11px] rounded-lg border bg-white cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+                btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
               }
             }
           });
@@ -354,15 +354,15 @@
                   
                   if (isColor) {
                     if (isSelected) {
-                      btn.className = "w-10 h-10 rounded-lg overflow-hidden border bg-white p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+                      btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
                     } else {
-                      btn.className = "w-10 h-10 rounded-lg overflow-hidden border bg-white p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+                      btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
                     }
                   } else {
                     if (isSelected) {
-                      btn.className = "px-2.5 py-1 text-[11px] rounded-lg border bg-white cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+                      btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
                     } else {
-                      btn.className = "px-2.5 py-1 text-[11px] rounded-lg border bg-white cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+                      btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
                     }
                   }
                 }); });

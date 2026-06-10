@@ -52,17 +52,17 @@
                 
                 <button 
                   type="button"
-                  class="w-12 h-12 rounded-xl overflow-hidden border-2 bg-white p-0.5 cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] ring-4 ring-[var(--color-accent)]/10{% else %}border-outline-variant hover:border-[var(--color-accent)]/60{% endif %}"
+                  class="w-12 h-12 rounded-2xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] ring-4 ring-[var(--color-accent)]/10{% else %}border-outline-variant hover:border-[var(--color-accent)]/60{% endif %}"
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                   title="{{ value | escape }}"
                 >
-                  <img src="{{ swatch_img | image_url: width: 120 }}" alt="{{ value | escape }}" class="w-full h-full object-cover rounded-[10px]" />
+                  <img src="{{ swatch_img | image_url: width: 120 }}" alt="{{ value | escape }}" class="w-full h-full object-cover rounded-[14px]" />
                 </button>
               {%- else -%}
                 <button 
                   type="button"
-                  class="px-4 py-2 text-sm rounded-xl border bg-white cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}"
+                  class="px-4 py-2 text-sm rounded-2xl border-2 bg-white shadow-sm cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}"
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                 >
