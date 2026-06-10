@@ -480,6 +480,10 @@
       }
     });
     
+    if (shape === 'rund' && typeof window.syncRoundVariantWidth === "function") {
+      window.syncRoundVariantWidth();
+    }
+    
     if (typeof window.updateCustomizerUI === "function") {
       window.updateCustomizerUI();
     }
@@ -506,6 +510,24 @@
       variants = JSON.parse(document.getElementById('variant-data').textContent);
     } catch (e) {
       console.error("Failed to parse variants", e);
+    }
+
+    // Determine the absolute max width limit from variants or metafield limit
+    let absoluteMaxWidth = maxWidthLimit;
+    if (widthOptionIndex !== null && variants.length > 0) {
+      variants.forEach(v => {
+        if (v.title.toLowerCase().includes("tilpasset")) return;
+        const wVal = v.options[widthOptionIndex];
+        if (wVal) {
+          const match = wVal.match(/\d+/);
+          if (match) {
+            const w = parseInt(match[0]);
+            if (w > absoluteMaxWidth) {
+              absoluteMaxWidth = w;
+            }
+          }
+        }
+      });
     }
 
     // Parse shape data
@@ -781,7 +803,9 @@
         
         // Find the selected variant or fall back to the first non-tilpasset pricing variant
         let pricingVariant = null;
-        if (state.customizeWidth) {
+        if (selectedShape === 'rund') {
+          pricingVariant = findPricingVariantForWidth(state.length, currentVariant);
+        } else if (state.customizeWidth) {
           pricingVariant = findPricingVariantForWidth(state.width, currentVariant);
         } else {
           pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0);
@@ -791,8 +815,8 @@
         }
 
         // Cap length (diameter) if shape is 'rund'
-        if (selectedShape === 'rund' && state.length > maxWidthLimit) {
-          state.length = maxWidthLimit;
+        if (selectedShape === 'rund' && state.length > absoluteMaxWidth) {
+          state.length = absoluteMaxWidth;
           if (displayLength) {
             displayLength.value = state.length;
           }
@@ -800,7 +824,7 @@
 
         // Enable or disable the length stepper plus button based on shape and limit
         if (btnLengthPlus) {
-          const maxAllowed = (selectedShape === 'rund') ? maxWidthLimit : 9999;
+          const maxAllowed = (selectedShape === 'rund') ? absoluteMaxWidth : 9999;
           if (state.length >= maxAllowed) {
             btnLengthPlus.disabled = true;
             btnLengthPlus.classList.add("opacity-30", "pointer-events-none");
@@ -874,12 +898,12 @@
         const maxWidth = width;
         const maxWidthDisplay = document.getElementById("max-width-display");
         if (maxWidthDisplay) {
-          maxWidthDisplay.textContent = state.customizeWidth ? maxWidthLimit : maxWidth;
+          maxWidthDisplay.textContent = state.customizeWidth ? absoluteMaxWidth : maxWidth;
         }
 
         // Clamp state width
-        if (state.width > (state.customizeWidth ? maxWidthLimit : maxWidth)) {
-          state.width = (state.customizeWidth ? maxWidthLimit : maxWidth);
+        if (state.width > (state.customizeWidth ? absoluteMaxWidth : maxWidth)) {
+          state.width = (state.customizeWidth ? absoluteMaxWidth : maxWidth);
         }
         const displayWidth = document.getElementById("display-width");
         if (displayWidth && parseInt(displayWidth.value) !== state.width) {
@@ -889,7 +913,8 @@
         // Width stepper plus / minus state
         const btnWidthPlus = document.getElementById("btn-width-plus");
         if (btnWidthPlus) {
-          if (state.width >= maxWidth) {
+          const maxW = state.customizeWidth ? absoluteMaxWidth : maxWidth;
+          if (state.width >= maxW) {
             btnWidthPlus.disabled = true;
             btnWidthPlus.classList.add("opacity-30", "pointer-events-none");
           } else {
@@ -911,7 +936,7 @@
         }
 
         let isTooWide = false;
-        if ((selectedShape === 'firkantet' || selectedShape === 'oval') && width > maxWidthLimit) {
+        if ((selectedShape === 'firkantet' || selectedShape === 'oval') && width > absoluteMaxWidth) {
           isTooWide = true;
         }
 
@@ -923,7 +948,7 @@
 
         if (isTooWide) {
           if (warningEl && warningTextEl) {
-            warningTextEl.textContent = `Dugens bredde (${width} cm) må ikke være bredere end ${maxWidthLimit} cm.`;
+            warningTextEl.textContent = `Dugens bredde (${width} cm) må ikke være bredere end ${absoluteMaxWidth} cm.`;
             warningEl.classList.remove("hidden");
           }
           if (addToCartBtn) {
@@ -931,10 +956,10 @@
             addToCartBtn.classList.add("bg-slate-200", "text-slate-400", "cursor-not-allowed");
             addToCartBtn.classList.remove("bg-accent", "hover:brightness-95");
             if (btnTextSpan) {
-              btnTextSpan.textContent = `Bredde overskrider maks bredde (${maxWidthLimit} cm)`;
+              btnTextSpan.textContent = `Bredde overskrider maks bredde (${absoluteMaxWidth} cm)`;
               if (btnPriceSpan) btnPriceSpan.style.display = "none";
             } else {
-              addToCartBtn.textContent = `Bredde overskrider maks bredde (${maxWidthLimit} cm)`;
+              addToCartBtn.textContent = `Bredde overskrider maks bredde (${absoluteMaxWidth} cm)`;
             }
           }
         } else {
@@ -1000,15 +1025,7 @@
           const calcTotalPrice = document.getElementById("calc-total-price");
 
           if (calcTitle) {
-            const rawTitle = pricingVariant.title === "Default Title" ? productTitle : pricingVariant.title;
-            const parts = rawTitle.split(/\s*-\s*/);
-            let displayTitle = parts[0];
-            if (parts.length >= 3) {
-              displayTitle = `${parts[0]} - ${parts[1]} - ${parts[2]}`;
-            } else if (parts.length === 2) {
-              displayTitle = `${parts[0]} - ${parts[1]}`;
-            }
-            calcTitle.textContent = displayTitle;
+            calcTitle.textContent = productTitle;
           }
 
           if (calcMetervareLabel) {
@@ -1106,9 +1123,24 @@
     // Expose updateUI globally so that selectShape can trigger it
     window.updateCustomizerUI = updateUI;
 
+    window.syncRoundVariantWidth = function() {
+      if (widthOptionIndex === null || widthOptionIndex === undefined) return;
+      let activeVariantId = null;
+      const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+      if (variantInput) {
+        activeVariantId = parseInt(variantInput.value);
+      }
+      let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+      const targetVariant = findPricingVariantForWidth(state.length, currentVariant);
+      if (targetVariant) {
+        const widthVal = targetVariant.options[widthOptionIndex];
+        selectWidthOptionInShopify(widthVal);
+      }
+    };
+
     // Helper: snap length to nearest valid step within bounds
     function clampLength(val) {
-      const maxAllowed = (selectedShape === 'rund') ? maxWidthLimit : 9999;
+      const maxAllowed = (selectedShape === 'rund') ? absoluteMaxWidth : 9999;
       val = Math.round(val / stepSize) * stepSize;
       return Math.min(maxAllowed, Math.max(minLength, val));
     }
@@ -1119,6 +1151,9 @@
         if (state.length > minLength) {
           state.length = clampLength(state.length - stepSize);
           displayLength.value = state.length;
+          if (selectedShape === 'rund') {
+            window.syncRoundVariantWidth();
+          }
           updateUI();
         }
       });
@@ -1126,10 +1161,13 @@
 
     if (btnLengthPlus && displayLength) {
       btnLengthPlus.addEventListener("click", () => {
-        const maxAllowed = (selectedShape === 'rund') ? maxWidthLimit : 9999;
+        const maxAllowed = (selectedShape === 'rund') ? absoluteMaxWidth : 9999;
         if (state.length < maxAllowed) {
           state.length = clampLength(state.length + stepSize);
           displayLength.value = state.length;
+          if (selectedShape === 'rund') {
+            window.syncRoundVariantWidth();
+          }
           updateUI();
         }
       });
@@ -1144,6 +1182,9 @@
         if (!isNaN(raw)) {
           state.length = clampLength(raw);
           displayLength.value = state.length;
+          if (selectedShape === 'rund') {
+            window.syncRoundVariantWidth();
+          }
           updateUI();
         } else {
           displayLength.value = state.length;
@@ -1153,6 +1194,9 @@
         const raw = parseInt(displayLength.value, 10);
         state.length = isNaN(raw) ? state.length : clampLength(raw);
         displayLength.value = state.length;
+        if (selectedShape === 'rund') {
+          window.syncRoundVariantWidth();
+        }
         updateUI();
       });
       // Select all text on focus for easy overtyping
@@ -1172,7 +1216,7 @@
     if (btnWidthMinus && displayWidth) {
       btnWidthMinus.addEventListener("click", () => {
         if (state.width > 50) {
-          state.width = clampWidth(state.width - stepSize, maxWidthLimit);
+          state.width = clampWidth(state.width - stepSize, absoluteMaxWidth);
           displayWidth.value = state.width;
           updateUI();
         }
@@ -1181,8 +1225,8 @@
 
     if (btnWidthPlus && displayWidth) {
       btnWidthPlus.addEventListener("click", () => {
-        if (state.width < maxWidthLimit) {
-          state.width = clampWidth(state.width + stepSize, maxWidthLimit);
+        if (state.width < absoluteMaxWidth) {
+          state.width = clampWidth(state.width + stepSize, absoluteMaxWidth);
           displayWidth.value = state.width;
           updateUI();
         }
@@ -1193,7 +1237,7 @@
       displayWidth.addEventListener("change", () => {
         const raw = parseInt(displayWidth.value, 10);
         if (!isNaN(raw)) {
-          state.width = clampWidth(raw, maxWidthLimit);
+          state.width = clampWidth(raw, absoluteMaxWidth);
           displayWidth.value = state.width;
           updateUI();
         } else {
@@ -1202,7 +1246,7 @@
       });
       displayWidth.addEventListener("blur", () => {
         const raw = parseInt(displayWidth.value, 10);
-        state.width = isNaN(raw) ? state.width : clampWidth(raw, maxWidthLimit);
+        state.width = isNaN(raw) ? state.width : clampWidth(raw, absoluteMaxWidth);
         displayWidth.value = state.width;
         updateUI();
       });
@@ -1272,7 +1316,9 @@
 
         // Find variant to use for pricing/width reference (non-tilpasset matching the selected width under the hood)
         let pricingVariant = null;
-        if (state.customizeWidth) {
+        if (selectedShape === 'rund') {
+          pricingVariant = findPricingVariantForWidth(state.length, currentVariant);
+        } else if (state.customizeWidth) {
           pricingVariant = findPricingVariantForWidth(state.width, currentVariant);
         } else {
           pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0);
