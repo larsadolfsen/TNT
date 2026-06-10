@@ -156,7 +156,7 @@
   
   /* Custom styled checkbox styling */
   .custom-checkbox-container:hover .custom-checkbox-box {
-    border-color: #94a3b8 !important; /* slate-400 */
+    border-color: var(--color-primary) !important;
   }
   #checkbox-custom-width:checked ~ .custom-checkbox-box {
     background-color: var(--color-primary, #0e1a28) !important;
@@ -581,6 +581,7 @@
     // Helper: Parse width from variant title or product title.
     // Produkttitel slutter altid med ", xxx cm" - søg efter det mønster først.
     function getVariantWidth(variantTitle) {
+      if (!variantTitle) return 140;
       // Prefer "xxx cm" pattern (e.g. ", 140 cm" at end of title)
       let match = variantTitle.match(/(\d+)\s*cm/i);
       if (!match && productTitle) {
@@ -593,6 +594,29 @@
       return match ? parseInt(match[1]) : 140;
     }
 
+    // Safety fallback for empty/missing variants
+    const fallbackVariant = { id: null, title: "", options: [], price: 0 };
+
+    function getCurrentVariant() {
+      if (!variants || variants.length === 0) return fallbackVariant;
+      let activeVariantId = null;
+      const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+      if (variantInput) {
+        activeVariantId = parseInt(variantInput.value);
+      }
+      return variants.find(v => v.id === activeVariantId) || variants[0] || fallbackVariant;
+    }
+
+    function getPricingVariant(currentVariant) {
+      if (!variants || variants.length === 0) return fallbackVariant;
+      if (!currentVariant) currentVariant = getCurrentVariant();
+      let pricingVariant = currentVariant;
+      if (pricingVariant && pricingVariant.title && pricingVariant.title.toLowerCase().includes("tilpasset")) {
+        pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0] || fallbackVariant;
+      }
+      return pricingVariant || fallbackVariant;
+    }
+
     // State
     let state = {
       length: 200,
@@ -602,12 +626,7 @@
     };
 
     // Initialize initial width state from active variant on load
-    let initVariantId = null;
-    const initVariantInput = document.querySelector('select[name="id"], input[name="id"]');
-    if (initVariantInput) {
-      initVariantId = parseInt(initVariantInput.value);
-    }
-    let initVariant = variants.find(v => v.id === initVariantId) || variants[0];
+    let initVariant = getCurrentVariant();
     if (initVariant && widthOptionIndex !== null) {
       state.width = getVariantWidth(initVariant.title);
     }
@@ -636,6 +655,7 @@
     // Helper to find standard variant for width matching other option values
     function findVariantForWidthAndOtherOptions(widthVal, currentVariant) {
       if (widthOptionIndex === null || widthOptionIndex === undefined) return null;
+      if (!currentVariant || !currentVariant.options) return null;
       
       const targetValNormalized = widthVal.toLowerCase();
       
@@ -647,6 +667,7 @@
         }
         
         // 2. Match width value
+        if (!v.options || !v.options[widthOptionIndex]) return false;
         const vWidthVal = v.options[widthOptionIndex].toLowerCase();
         if (targetValNormalized === 'tilpasset') {
           return vWidthVal.includes('tilpasset') || vWidthVal.includes('tilpas');
@@ -659,9 +680,10 @@
     // Helper to find the smallest standard variant width that is >= targetWidth
     function findPricingVariantForWidth(targetWidth, currentVariant) {
       if (widthOptionIndex === null || widthOptionIndex === undefined) return currentVariant;
+      if (!currentVariant || !currentVariant.options) return currentVariant;
       
       const matchingStandardVariants = variants.filter(v => {
-        if (v.title.toLowerCase().includes("tilpasset")) return false;
+        if (!v || !v.title || v.title.toLowerCase().includes("tilpasset")) return false;
         for (let i = 0; i < v.options.length; i++) {
           if (i === widthOptionIndex) continue;
           if (v.options[i] !== currentVariant.options[i]) return false;
@@ -744,13 +766,7 @@
       if (btn) {
         btn.click();
       } else {
-        // Fallback if picker block is not present
-        let activeVariantId = null;
-        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-        if (variantInput) {
-          activeVariantId = parseInt(variantInput.value);
-        }
-        let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+        let currentVariant = getCurrentVariant();
         
         const targetVariant = findVariantForWidthAndOtherOptions(value, currentVariant);
         if (targetVariant) {
@@ -790,18 +806,8 @@
     function updateUI() {
       try {
         // Find currently selected variant ID on the page (variant picker sets this)
-        let activeVariantId = null;
-        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-        if (variantInput) {
-          activeVariantId = parseInt(variantInput.value);
-        }
-        let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-        
-        // Find the selected variant or fall back to the first non-tilpasset pricing variant
-        let pricingVariant = currentVariant;
-        if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
-          pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-        }
+        let currentVariant = getCurrentVariant();
+        let pricingVariant = getPricingVariant(currentVariant);
 
         // Cap length (diameter) if shape is 'rund'
         if (selectedShape === 'rund') {
@@ -1170,16 +1176,8 @@
       btnWidthMinus.addEventListener("click", () => {
         if (state.width > 50) {
           // Resolve standard width first to get maxAllowedWidth
-          let activeVariantId = null;
-          const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-          if (variantInput) {
-            activeVariantId = parseInt(variantInput.value);
-          }
-          let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-          let pricingVariant = currentVariant;
-          if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
-            pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-          }
+          const currentVariant = getCurrentVariant();
+          const pricingVariant = getPricingVariant(currentVariant);
           const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
           const maxAllowedWidth = stdWidth - 5;
 
@@ -1193,16 +1191,8 @@
     if (btnWidthPlus && displayWidth) {
       btnWidthPlus.addEventListener("click", () => {
         // Resolve standard width first to get maxAllowedWidth
-        let activeVariantId = null;
-        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-        if (variantInput) {
-          activeVariantId = parseInt(variantInput.value);
-        }
-        let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-        let pricingVariant = currentVariant;
-        if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
-          pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-        }
+        const currentVariant = getCurrentVariant();
+        const pricingVariant = getPricingVariant(currentVariant);
         const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
         const maxAllowedWidth = stdWidth - 5;
 
@@ -1217,16 +1207,8 @@
     if (displayWidth) {
       displayWidth.addEventListener("change", () => {
         // Resolve standard width first to get maxAllowedWidth
-        let activeVariantId = null;
-        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-        if (variantInput) {
-          activeVariantId = parseInt(variantInput.value);
-        }
-        let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-        let pricingVariant = currentVariant;
-        if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
-          pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-        }
+        const currentVariant = getCurrentVariant();
+        const pricingVariant = getPricingVariant(currentVariant);
         const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
         const maxAllowedWidth = stdWidth - 5;
 
@@ -1241,16 +1223,8 @@
       });
       displayWidth.addEventListener("blur", () => {
         // Resolve standard width first to get maxAllowedWidth
-        let activeVariantId = null;
-        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-        if (variantInput) {
-          activeVariantId = parseInt(variantInput.value);
-        }
-        let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-        let pricingVariant = currentVariant;
-        if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
-          pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-        }
+        const currentVariant = getCurrentVariant();
+        const pricingVariant = getPricingVariant(currentVariant);
         const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
         const maxAllowedWidth = stdWidth - 5;
 
@@ -1268,30 +1242,14 @@
       customWidthCheckbox.addEventListener("change", () => {
         if (!customWidthCheckbox.checked) {
           // Reset width to standard active variant width when unchecked
-          let activeVariantId = null;
-          const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-          if (variantInput) {
-            activeVariantId = parseInt(variantInput.value);
-          }
-          let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-          let pricingVariant = currentVariant;
-          if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
-            pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-          }
+          const currentVariant = getCurrentVariant();
+          const pricingVariant = getPricingVariant(currentVariant);
           const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
           state.width = stdWidth;
         } else {
           // If checked, set width to standard active variant width minus 5
-          let activeVariantId = null;
-          const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-          if (variantInput) {
-            activeVariantId = parseInt(variantInput.value);
-          }
-          let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-          let pricingVariant = currentVariant;
-          if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
-            pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-          }
+          const currentVariant = getCurrentVariant();
+          const pricingVariant = getPricingVariant(currentVariant);
           const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
           state.width = stdWidth - 5;
         }
@@ -1351,19 +1309,9 @@
           state.length = state.width;
         }
 
-        // Find active variant ID from the input
-        let activeVariantId = null;
-        const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-        if (variantInput) {
-          activeVariantId = parseInt(variantInput.value);
-        }
-        let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
-
-        // Find variant to use for pricing/width reference (non-tilpasset matching the selected width under the hood)
-        let pricingVariant = currentVariant;
-        if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
-          pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-        }
+        // Find active variant ID and pricing variant
+        const currentVariant = getCurrentVariant();
+        const pricingVariant = getPricingVariant(currentVariant);
 
         if (!metervareVariantIntId) {
           showToast("Fejl: Kunne ikke finde rå metervare-variant (SKU BTM001).");
