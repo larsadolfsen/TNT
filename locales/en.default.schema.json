@@ -59,9 +59,7 @@
     "show_payment_icons": "Show payment icons",
     "text_style": "Text style",
     "text": "Text",
-    "card_design": "Card design",
-    "border_thickness": "Border thickness",
-    "corner_radius": "Corner radius",
+    "design": "Design",
     "width_cols": "Width (columns)",
     "card_link": "Card link"
   },
@@ -88,22 +86,10 @@
       "subtitle": "Subtitle",
       "normal": "Normal text"
     },
-    "card_design": {
-      "regular": "Regular",
-      "raised": "Raised",
-      "outlined": "Outlined"
-    },
-    "border_thickness": {
-      "thin": "Thin (1px)",
-      "medium": "Medium (2px)",
-      "thick": "Thick (4px)"
-    },
-    "corner_radius": {
+    "design": {
       "none": "None",
-      "small": "Small",
-      "medium": "Medium",
-      "large": "Large",
-      "full": "Full"
+      "border": "Border",
+      "raised": "Raised"
     },
     "width_cols": {
       "1": "1 column",

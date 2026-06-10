@@ -8,71 +8,32 @@
 {%- liquid
   assign card_classes = 'card-block flex flex-col relative overflow-hidden transition-all duration-300 w-full h-full'
   
-  # Corner Radius mapping
+  # Design mapping
   assign radius_class = 'rounded-none'
-  case block.settings.corner_radius
-    when 'none'
-      assign radius_class = 'rounded-none'
-    when 'small'
-      assign radius_class = 'rounded-lg'
-    when 'medium'
-      assign radius_class = 'rounded-2xl'
-    when 'large'
-      assign radius_class = 'rounded-[2rem]'
-    when 'full'
-      assign radius_class = 'rounded-full'
-  endcase
+  if block.settings.design == 'border' or block.settings.design == 'raised'
+    assign radius_class = 'rounded-2xl'
+  endif
   assign card_classes = card_classes | append: ' ' | append: radius_class
 
   # Background color mapping
-  case block.settings.background_color
-    when 'surface'
-      assign card_classes = card_classes | append: ' bg-surface text-primary'
-    when 'shade'
-      assign card_classes = card_classes | append: ' bg-background-shade text-primary'
-    when 'primary'
-      assign card_classes = card_classes | append: ' bg-primary text-white'
-    when 'secondary'
-      assign card_classes = card_classes | append: ' bg-secondary text-white'
-    when 'dark'
-      assign card_classes = card_classes | append: ' bg-background-dark text-white'
-    when 'transparent'
-      assign card_classes = card_classes | append: ' bg-transparent'
-  endcase
-
-  # Border thickness mapping
-  case block.settings.border_thickness
-    when 'thin'
-      assign border_width = 'border'
-    when 'medium'
-      assign border_width = 'border-2'
-    when 'thick'
-      assign border_width = 'border-4'
-    else
-      assign border_width = 'border-0'
-  endcase
-
-  # Border color mapping
-  case block.settings.border_color
-    when 'outline_variant'
-      assign border_color_class = 'border-outline-variant'
-    when 'primary'
-      assign border_color_class = 'border-primary'
-    when 'secondary'
-      assign border_color_class = 'border-secondary'
-    when 'dark'
-      assign border_color_class = 'border-background-dark'
-    when 'transparent'
-      assign border_color_class = 'border-transparent'
-  endcase
+  if block.settings.design != 'none'
+    case block.settings.background_color
+      when 'light'
+        assign card_classes = card_classes | append: ' bg-background text-primary'
+      when 'dark'
+        assign card_classes = card_classes | append: ' bg-background-dark text-white'
+      when 'transparent'
+        assign card_classes = card_classes | append: ' bg-transparent'
+    endcase
+  else
+    assign card_classes = card_classes | append: ' bg-transparent'
+  endif
 
   # Apply border / shadow classes based on design style
-  if block.settings.card_design == 'outlined'
-    assign card_classes = card_classes | append: ' ' | append: border_width | append: ' ' | append: border_color_class
-  elsif block.settings.card_design == 'raised'
+  if block.settings.design == 'border'
+    assign card_classes = card_classes | append: ' border border-outline-variant'
+  elsif block.settings.design == 'raised'
     assign card_classes = card_classes | append: ' shadow-sm hover:shadow-md'
-  elsif block.settings.card_design == 'regular'
-    # Regular design: flat (no border, not raised)
   endif
 
   # Text Alignment
@@ -113,10 +74,17 @@
 
 {%- style -%}
   #shopify-block-{{ block.id }} > .card-block > .card-content {
-    padding-top: {{ block.settings.padding_top | default: 24 }}px;
-    padding-bottom: {{ block.settings.padding_bottom | default: 24 }}px;
-    padding-left: {{ block.settings.padding_sides | default: 24 }}px;
-    padding-right: {{ block.settings.padding_sides | default: 24 }}px;
+    {%- if block.settings.design != 'none' -%}
+      padding-top: {{ block.settings.padding_top | default: 24 }}px;
+      padding-bottom: {{ block.settings.padding_bottom | default: 24 }}px;
+      padding-left: {{ block.settings.padding_sides | default: 24 }}px;
+      padding-right: {{ block.settings.padding_sides | default: 24 }}px;
+    {%- else -%}
+      padding-top: 0px;
+      padding-bottom: 0px;
+      padding-left: 0px;
+      padding-right: 0px;
+    {%- endif -%}
   }
 
   #shopify-block-{{ block.id }} > .card-block > .card-content > .card-nested-blocks.grid-layout {
@@ -146,7 +114,16 @@
   }
 
   /* Force headers and links to inherit color on dark background cards */
-  {%- if block.settings.background_color == 'primary' or block.settings.background_color == 'secondary' or block.settings.background_color == 'dark' or has_bg_image -%}
+  {%- liquid
+    assign force_inherit_color = false
+    if block.settings.design != 'none' and block.settings.background_color == 'dark'
+      assign force_inherit_color = true
+    endif
+    if has_bg_image
+      assign force_inherit_color = true
+    endif
+  -%}
+  {%- if force_inherit_color -%}
     #shopify-block-{{ block.id }} .rte h1,
     #shopify-block-{{ block.id }} .rte h2,
     #shopify-block-{{ block.id }} .rte h3,
@@ -168,9 +145,7 @@
   {%- if block.settings.image != blank and block.settings.image_placement == 'top' -%}
     {%- liquid
       assign image_wrapper_classes = "w-full overflow-hidden z-10"
-      if block.settings.card_design == 'regular'
-        assign image_wrapper_classes = image_wrapper_classes | append: " " | append: radius_class
-      else
+      if block.settings.design == 'border'
         assign image_wrapper_classes = image_wrapper_classes | append: " border-b border-inherit"
       endif
     -%}
@@ -202,9 +177,7 @@
   {%- if block.settings.image != blank and block.settings.image_placement == 'bottom' -%}
     {%- liquid
       assign image_wrapper_classes = "w-full overflow-hidden mt-auto z-10"
-      if block.settings.card_design == 'regular'
-        assign image_wrapper_classes = image_wrapper_classes | append: " " | append: radius_class
-      else
+      if block.settings.design == 'border'
         assign image_wrapper_classes = image_wrapper_classes | append: " border-t border-inherit"
       endif
     -%}
@@ -244,14 +217,14 @@
     },
     {
       "type": "select",
-      "id": "card_design",
-      "label": "t:labels.card_design",
+      "id": "design",
+      "label": "t:labels.design",
       "options": [
-        { "value": "regular", "label": "t:options.card_design.regular" },
-        { "value": "raised", "label": "t:options.card_design.raised" },
-        { "value": "outlined", "label": "t:options.card_design.outlined" }
+        { "value": "none", "label": "t:options.design.none" },
+        { "value": "border", "label": "t:options.design.border" },
+        { "value": "raised", "label": "t:options.design.raised" }
       ],
-      "default": "regular"
+      "default": "border"
     },
     {
       "type": "select",
@@ -270,52 +243,11 @@
       "id": "background_color",
       "label": "t:labels.background",
       "options": [
-        { "value": "surface", "label": "Surface" },
-        { "value": "shade", "label": "Shade" },
-        { "value": "primary", "label": "Primary" },
-        { "value": "secondary", "label": "Secondary" },
-        { "value": "dark", "label": "Dark" },
-        { "value": "transparent", "label": "Transparent" }
+        { "value": "transparent", "label": "Transparent" },
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
       ],
-      "default": "surface"
-    },
-    {
-      "type": "select",
-      "id": "border_color",
-      "label": "Border farve",
-      "options": [
-        { "value": "outline_variant", "label": "Outline Variant" },
-        { "value": "primary", "label": "Primary" },
-        { "value": "secondary", "label": "Secondary" },
-        { "value": "dark", "label": "Dark" },
-        { "value": "transparent", "label": "Transparent" }
-      ],
-      "default": "outline_variant"
-    },
-    {
-      "type": "select",
-      "id": "border_thickness",
-      "label": "t:labels.border_thickness",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "thin", "label": "t:options.border_thickness.thin" },
-        { "value": "medium", "label": "t:options.border_thickness.medium" },
-        { "value": "thick", "label": "t:options.border_thickness.thick" }
-      ],
-      "default": "thin"
-    },
-    {
-      "type": "select",
-      "id": "corner_radius",
-      "label": "t:labels.corner_radius",
-      "options": [
-        { "value": "none", "label": "t:options.corner_radius.none" },
-        { "value": "small", "label": "t:options.corner_radius.small" },
-        { "value": "medium", "label": "t:options.corner_radius.medium" },
-        { "value": "large", "label": "t:options.corner_radius.large" },
-        { "value": "full", "label": "t:options.corner_radius.full" }
-      ],
-      "default": "medium"
+      "default": "light"
     },
     {
       "type": "header",
@@ -425,7 +357,7 @@
     {
       "name": "t:general.card",
       "settings": {
-        "card_design": "regular",
+        "design": "border",
         "width_cols": "4"
       }
     }
