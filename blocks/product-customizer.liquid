@@ -741,13 +741,15 @@
           }
 
           if (calcWidthRow) {
-            if (isWidthAdjusted) {
+            if (selectedShape === 'firkantet' || selectedShape === 'oval') {
               calcWidthRow.style.display = "flex";
+              const tableclothWidth = state.customizeWidth ? state.width : maxWidth;
               if (calcWidthLabel) {
-                calcWidthLabel.textContent = `Bredde: ${state.width} cm`;
+                calcWidthLabel.textContent = `Bredde: ${tableclothWidth} cm`;
               }
               if (calcWidthPrice) {
-                calcWidthPrice.textContent = formatDanishPrice(widthSurchargeData.price || 0);
+                const surchargePrice = isWidthAdjusted ? (widthSurchargeData.price || 0) : 0;
+                calcWidthPrice.textContent = formatDanishPrice(surchargePrice);
               }
             } else {
               calcWidthRow.style.display = "none";

@@ -15,7 +15,7 @@
 {%- endstyle -%}
 
 <div
-  class="text rte {{ block.settings.text_style }}"
+  class="text rte"
   style="--text-align: {{ block.settings.alignment }}"
   {{ block.shopify_attributes }}
 >
@@ -25,13 +25,6 @@
 {% stylesheet %}
   .text {
     text-align: var(--text-align);
-  }
-  .text--title {
-    font-size: 2rem;
-    font-weight: 700;
-  }
-  .text--subtitle {
-    font-size: 1.5rem;
   }
 {% endstylesheet %}
 
@@ -44,17 +37,6 @@
       "id": "text",
       "label": "t:labels.text",
       "default": "<p>Text</p>"
-    },
-    {
-      "type": "select",
-      "id": "text_style",
-      "label": "t:labels.text_style",
-      "options": [
-        { "value": "text--title", "label": "t:options.text_style.title" },
-        { "value": "text--subtitle", "label": "t:options.text_style.subtitle" },
-        { "value": "text--normal", "label": "t:options.text_style.normal" }
-      ],
-      "default": "text--title"
     },
     {
       "type": "text_alignment",
@@ -70,7 +52,7 @@
       "step": 2,
       "unit": "px",
       "label": "Afstand i toppen",
-      "default": 12
+      "default": 0
     },
     {
       "type": "range",
@@ -80,7 +62,7 @@
       "step": 2,
       "unit": "px",
       "label": "Afstand i bunden",
-      "default": 12
+      "default": 0
     },
     {
       "type": "range",
