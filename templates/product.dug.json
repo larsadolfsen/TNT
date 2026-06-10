@@ -32,7 +32,7 @@
             "background_color": "surface",
             "border_color": "outline_variant",
             "border_thickness": "thin",
-            "corner_radius": "medium",
+            "corner_radius": "none",
             "title": "",
             "content": "<p>Skæres efter mål og sendes på rulle.</p>",
             "card_link": "",
