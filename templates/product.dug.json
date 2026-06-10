@@ -30,6 +30,8 @@
             "design": "none",
             "width_cols": "4",
             "background_color": "transparent",
+            "use_global_gap": true,
+            "block_gap": 12,
             "title": "",
             "content": "",
             "card_link": "",
@@ -102,6 +104,7 @@
         "padding_top": 0,
         "padding_bottom": 12,
         "padding_sides": 16,
+        "use_global_gap": true,
         "block_spacing": 0,
         "border_top": false,
         "border_bottom": false
@@ -134,6 +137,7 @@
         "padding_top": 0,
         "padding_bottom": 12,
         "padding_sides": 16,
+        "use_global_gap": true,
         "block_spacing": 0,
         "border_top": false,
         "border_bottom": false
@@ -197,7 +201,7 @@
             "qty_description": "",
             "border_top": true,
             "border_bottom": true,
-            "padding_top": 8,
+            "padding_top": 100,
             "padding_bottom": 0,
             "padding_sides": 0
           },
@@ -249,6 +253,7 @@
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 16,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
@@ -302,6 +307,7 @@
         "padding_top": 24,
         "padding_bottom": 0,
         "padding_sides": 32,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
@@ -317,6 +323,8 @@
             "design": "border",
             "width_cols": "4",
             "background_color": "light",
+            "use_global_gap": true,
+            "block_gap": 12,
             "title": "",
             "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
             "card_link": "",
@@ -362,6 +370,8 @@
             "design": "border",
             "width_cols": "2",
             "background_color": "light",
+            "use_global_gap": true,
+            "block_gap": 12,
             "title": "",
             "content": "",
             "card_link": "",
@@ -389,6 +399,7 @@
         "padding_top": 24,
         "padding_bottom": 48,
         "padding_sides": 16,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
@@ -439,6 +450,7 @@
         "padding_top": 24,
         "padding_bottom": 24,
         "padding_sides": 16,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": true,
         "border_bottom": false
@@ -482,6 +494,7 @@
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 24,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": true,
         "border_bottom": true
@@ -514,6 +527,7 @@
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 24,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
@@ -589,6 +603,7 @@
         "padding_top": 12,
         "padding_bottom": 48,
         "padding_sides": 16,
+        "use_global_gap": true,
         "block_spacing": 0,
         "border_top": false,
         "border_bottom": false
@@ -604,6 +619,8 @@
             "design": "border",
             "width_cols": "4",
             "background_color": "transparent",
+            "use_global_gap": true,
+            "block_gap": 12,
             "title": "",
             "content": "{{ closest.product.description }}",
             "card_link": "",
@@ -630,6 +647,7 @@
         "padding_top": 48,
         "padding_bottom": 48,
         "padding_sides": 24,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": true,
         "border_bottom": false
