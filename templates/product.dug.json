@@ -207,7 +207,7 @@
             "custom_width_checkbox_label": "Tilpas bredden",
             "qty_description": "",
             "border_top": true,
-            "border_bottom": true,
+            "border_bottom": false,
             "padding_top": 24,
             "padding_bottom": 0,
             "padding_sides": 0
