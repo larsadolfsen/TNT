@@ -169,6 +169,15 @@
           },
           "blocks": {}
         },
+        "product_variant_picker": {
+          "type": "product-variant-picker",
+          "settings": {
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "product_buy_buttons_4etL33": {
           "type": "product-buy-buttons",
           "name": "Product Buy Buttons",
@@ -188,6 +197,7 @@
       "block_order": [
         "product_price_M99xTk",
         "product_urgency_RJBkVR",
+        "product_variant_picker",
         "product_buy_buttons_4etL33"
       ],
       "name": "Row",

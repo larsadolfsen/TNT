@@ -184,6 +184,15 @@
           },
           "blocks": {}
         },
+        "product_variant_picker": {
+          "type": "product-variant-picker",
+          "settings": {
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "product_customizer_RtGFwh": {
           "type": "product-customizer",
           "settings": {
@@ -240,6 +249,7 @@
         "product_price_dGeEHb",
         "product_urgency_9qdhhc",
         "text_i3jfYU",
+        "product_variant_picker",
         "product_customizer_RtGFwh",
         "product_buy_buttons_nb9Ct6",
         "product_shipping_progress_naRxMV"
