@@ -104,16 +104,23 @@
     --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
     --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
     
-    padding-top: var(--block-padding-top);
-    padding-bottom: var(--block-padding-bottom);
     padding-left: var(--block-padding-left);
     padding-right: var(--block-padding-right);
 
     {%- if block.settings.border_top -%}
+      margin-top: var(--block-padding-top);
+      padding-top: 12px;
       border-top: 1px solid #e2e8f0;
+    {%- else -%}
+      padding-top: var(--block-padding-top);
     {%- endif -%}
+
     {%- if block.settings.border_bottom -%}
+      margin-bottom: var(--block-padding-bottom);
+      padding-bottom: 12px;
       border-bottom: 1px solid #e2e8f0;
+    {%- else -%}
+      padding-bottom: var(--block-padding-bottom);
     {%- endif -%}
   }
 {%- endstyle -%}

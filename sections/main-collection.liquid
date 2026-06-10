@@ -1243,7 +1243,7 @@
     if (!product) return;
 
     // Update styling for all buttons of this option to reflect active state
-    const optionButtons = cardEl.querySelectorAll(`[data-option-name="${optionName}"]`);
+    const optionButtons = Array.from(cardEl.querySelectorAll('button[data-option-name]')).filter(btn => btn.dataset.optionName === optionName);
     optionButtons.forEach(btn => {
       const isColor = btn.querySelector('img') !== null;
       const val = btn.dataset.optionValue;
@@ -1265,20 +1265,21 @@
     });
 
     // Update label text showing selected value
-    const labelSpan = cardEl.querySelector(`[data-selected-option-label="${productId}-${optionName}"]`);
+    const labelSpan = Array.from(cardEl.querySelectorAll('[data-selected-option-label]')).find(span => span.dataset.selectedOptionLabel === `${productId}-${optionName}`);
     if (labelSpan) {
       labelSpan.textContent = optionValue;
     }
 
     // Now gather all currently selected options on this card
     const activeOptions = {};
+    const selectedButtons = Array.from(cardEl.querySelectorAll('.product-variant-swatches button')).filter(btn => btn.classList.contains('border-primary'));
+    selectedButtons.forEach(btn => {
+      activeOptions[btn.dataset.optionName] = btn.dataset.optionValue;
+    });
+
+    // Fallback for options that don't have selected buttons yet
     product.options_with_values.forEach(opt => {
-      // Find the button for this option name that has the active border/styling class
-      const selectedBtn = cardEl.querySelector(`[data-option-name="${opt.name}"].border-primary`);
-      if (selectedBtn) {
-        activeOptions[opt.name] = selectedBtn.dataset.optionValue;
-      } else {
-        // Fallback to product default options
+      if (!activeOptions[opt.name]) {
         activeOptions[opt.name] = product.options[opt.name];
       }
     });
@@ -1298,12 +1299,12 @@
       if (matchingVariant) {
         product.options_with_values.forEach(opt => {
           const matchingVal = matchingVariant.options[opt.name];
-          const labelSpanToUpdate = cardEl.querySelector(`[data-selected-option-label="${productId}-${opt.name}"]`);
+          const labelSpanToUpdate = Array.from(cardEl.querySelectorAll('[data-selected-option-label]')).find(span => span.dataset.selectedOptionLabel === `${productId}-${opt.name}`);
           if (labelSpanToUpdate) {
             labelSpanToUpdate.textContent = matchingVal;
           }
           
-          const optBtns = cardEl.querySelectorAll(`[data-option-name="${opt.name}"]`);
+          const optBtns = Array.from(cardEl.querySelectorAll('button[data-option-name]')).filter(btn => btn.dataset.optionName === opt.name);
           optBtns.forEach(btn => {
             const isColor = btn.querySelector('img') !== null;
             const val = btn.dataset.optionValue;
