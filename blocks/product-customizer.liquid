@@ -139,6 +139,20 @@
     outline-offset: 0px;
     border-radius: 4px;
   }
+  .width-btn-slider-item {
+    width: calc((100% - 3 * var(--grid-gap, 8px)) / 4);
+    flex-shrink: 0;
+  }
+  @media (min-width: 840px) {
+    .width-btn-slider-item {
+      width: calc((100% - 7 * var(--grid-gap, 16px)) / 8);
+    }
+  }
+  @media (min-width: 1200px) {
+    .width-btn-slider-item {
+      width: calc((100% - 11 * var(--grid-gap, 24px)) / 12);
+    }
+  }
 </style>
 
 <!-- Hidden element to signal to product-buy-buttons that customizer is active -->
@@ -220,7 +234,7 @@
           <p class="text-sm text-primary/85 mt-1">Vælg en standardbredde eller tilpas på dine mål.</p>
         </div>
       </div>
-      <div class="flex gap-3 overflow-x-auto pb-2 hide-scrollbar w-full pl-10">
+      <div class="flex overflow-x-auto pb-2 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
         {%- if width_option_values != blank -%}
           {%- for value in width_option_values -%}
             {%- assign value_down = value | downcase -%}
@@ -231,7 +245,7 @@
             {%- assign numeric_width = value | replace: 'cm', '' | replace: 'CM', '' | strip -%}
             
             <button type="button" 
-              class="width-btn flex-shrink-0 flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-28 aspect-square"
+              class="width-btn width-btn-slider-item flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none aspect-square"
               data-width-value="{{ value | escape }}"
               data-numeric-width="{{ numeric_width }}"
               onclick="selectWidthValue('{{ value | escape }}', {{ numeric_width }})">
