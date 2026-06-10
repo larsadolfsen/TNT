@@ -185,28 +185,10 @@
           {%- endfor -%}
         {%- endif -%}
         
-        <!-- Tilpas Button -->
-        <div class="flex flex-col items-center gap-1" style="--span-mobile: 1; --span-expanded: 1; --span-large: 1;">
-          <button type="button" id="btn-width-tilpas"
-            class="width-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
-            onclick="selectWidthTilpas()">
-            <span class="text-base font-bold text-center leading-[1.2]">Tilpas</span>
-            <div class="flex flex-col items-center gap-0.5 w-full">
-              <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">specialmål</span>
-              <span class="text-[11px] font-normal leading-[1.2] text-center">
-                {%- if width_surcharge_variant -%}
-                  +{{ width_surcharge_price_formatted | replace: 'Kr.', 'kr.' | replace: 'Kr', 'kr.' | strip }}
-                {%- else -%}
-                  valgfri
-                {%- endif -%}
-              </span>
-            </div>
-          </button>
-        </div>
       </div>
       
-      <!-- Tilpas bredde Accordion Content (displayed inline below buttons if Tilpas is selected) -->
-      <div id="content-width-accordion" class="flex flex-col gap-3 hidden w-full mt-2 pl-0">
+      <!-- Tilpas bredde Accordion Content (displayed inline below buttons) -->
+      <div id="content-width-accordion" class="flex flex-col gap-3 w-full mt-2 pl-0">
         {%- assign width_desc = block.settings.width_description | default: 'Dugen skæres på dine mål. Max bredde er [max_width] cm.' -%}
         <p class="text-sm text-primary/85 pl-1">
           {{ width_desc | replace: '[max_width]', '<span id="max-width-display">140</span>' }}
@@ -570,7 +552,7 @@
       quantity: 1
     };
 
-    // Initialize initial width and customizeWidth state from active variant on load
+    // Initialize initial width state from active variant on load
     let initVariantId = null;
     const initVariantInput = document.querySelector('select[name="id"], input[name="id"]');
     if (initVariantInput) {
@@ -578,15 +560,7 @@
     }
     let initVariant = variants.find(v => v.id === initVariantId) || variants[0];
     if (initVariant && widthOptionIndex !== null) {
-      const isCustomVal = initVariant.title.toLowerCase().includes("tilpasset") || initVariant.options[widthOptionIndex].toLowerCase().includes("tilpas");
-      if (isCustomVal) {
-        state.customizeWidth = true;
-        let pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-        state.width = getVariantWidth(pricingVariant ? pricingVariant.title : "");
-      } else {
-        state.customizeWidth = false;
-        state.width = getVariantWidth(initVariant.title);
-      }
+      state.width = getVariantWidth(initVariant.title);
     }
 
     // DOM cache
@@ -677,12 +651,7 @@
 
     function updateWidthButtonsUI(selectedValue) {
       document.querySelectorAll('.width-btn').forEach(btn => {
-        let isBtnActive = false;
-        if (selectedValue === "Tilpas") {
-          isBtnActive = btn.id === "btn-width-tilpas";
-        } else {
-          isBtnActive = btn.dataset.widthValue === selectedValue;
-        }
+        const isBtnActive = btn.dataset.widthValue === selectedValue;
         
         if (isBtnActive) {
           btn.style.borderColor = '#f5c518';
@@ -696,15 +665,6 @@
           btn.classList.add('border-slate-200', 'text-slate-600');
         }
       });
-      
-      const contentWidthAccordion = document.getElementById("content-width-accordion");
-      if (contentWidthAccordion) {
-        if (selectedValue === "Tilpas") {
-          contentWidthAccordion.classList.remove("hidden");
-        } else {
-          contentWidthAccordion.classList.add("hidden");
-        }
-      }
     }
 
     function updateStepNumbers() {
@@ -751,28 +711,11 @@
     }
 
     window.selectWidthValue = function(value, numericWidth) {
-      state.customizeWidth = false;
       state.width = numericWidth;
       
       selectWidthOptionInShopify(value);
       
       updateWidthButtonsUI(value);
-      updateUI();
-    };
-
-    window.selectWidthTilpas = function() {
-      state.customizeWidth = true;
-      
-      selectWidthOptionInShopify("Tilpasset");
-      
-      let pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
-      state.width = getVariantWidth(pricingVariant ? pricingVariant.title : "");
-      const displayWidth = document.getElementById("display-width");
-      if (displayWidth) {
-        displayWidth.value = state.width;
-      }
-      
-      updateWidthButtonsUI("Tilpas");
       updateUI();
     };
 
@@ -805,11 +748,9 @@
         let pricingVariant = null;
         if (selectedShape === 'rund') {
           pricingVariant = findPricingVariantForWidth(state.length, currentVariant);
-        } else if (state.customizeWidth) {
-          pricingVariant = findPricingVariantForWidth(state.width, currentVariant);
         } else {
-          pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0);
-          if (!pricingVariant) {
+          pricingVariant = currentVariant;
+          if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
             pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
           }
         }
@@ -863,33 +804,17 @@
 
         // Sync active state of width buttons
         if (widthOptionIndex !== null) {
-          const isCustomVal = currentVariant.title.toLowerCase().includes("tilpasset") || currentVariant.options[widthOptionIndex].toLowerCase().includes("tilpas");
-          if (isCustomVal) {
-            state.customizeWidth = true;
-            updateWidthButtonsUI("Tilpas");
-          } else {
-            state.customizeWidth = false;
-            const activeWidthVal = currentVariant.options[widthOptionIndex];
-            updateWidthButtonsUI(activeWidthVal);
-          }
+          const activeWidthVal = currentVariant.options[widthOptionIndex];
+          updateWidthButtonsUI(activeWidthVal);
         }
 
         // If shape is round, width selection is not possible
         const widthSelectionContainer = document.getElementById("step-container-width");
-        const contentWidthAccordion = document.getElementById("content-width-accordion");
         
         if (selectedShape === 'rund') {
-          state.customizeWidth = false;
           if (widthSelectionContainer) widthSelectionContainer.style.display = "none";
         } else {
           if (widthSelectionContainer) widthSelectionContainer.style.display = "flex";
-          if (contentWidthAccordion) {
-            if (state.customizeWidth) {
-              contentWidthAccordion.classList.remove("hidden");
-            } else {
-              contentWidthAccordion.classList.add("hidden");
-            }
-          }
         }
 
         // Dynamically update all step numbers based on visibility
@@ -898,12 +823,12 @@
         const maxWidth = width;
         const maxWidthDisplay = document.getElementById("max-width-display");
         if (maxWidthDisplay) {
-          maxWidthDisplay.textContent = state.customizeWidth ? absoluteMaxWidth : maxWidth;
+          maxWidthDisplay.textContent = maxWidth;
         }
 
         // Clamp state width
-        if (state.width > (state.customizeWidth ? absoluteMaxWidth : maxWidth)) {
-          state.width = (state.customizeWidth ? absoluteMaxWidth : maxWidth);
+        if (state.width > maxWidth) {
+          state.width = maxWidth;
         }
         const displayWidth = document.getElementById("display-width");
         if (displayWidth && parseInt(displayWidth.value) !== state.width) {
@@ -913,8 +838,7 @@
         // Width stepper plus / minus state
         const btnWidthPlus = document.getElementById("btn-width-plus");
         if (btnWidthPlus) {
-          const maxW = state.customizeWidth ? absoluteMaxWidth : maxWidth;
-          if (state.width >= maxW) {
+          if (state.width >= maxWidth) {
             btnWidthPlus.disabled = true;
             btnWidthPlus.classList.add("opacity-30", "pointer-events-none");
           } else {
@@ -983,7 +907,7 @@
           const shapePrice = (shapeInfo ? shapeInfo.price : 0) * state.quantity;
 
           // Calculate width surcharge
-          const isWidthAdjusted = state.customizeWidth && (state.width < maxWidth);
+          const isWidthAdjusted = state.width < maxWidth;
           const widthSurcharge = isWidthAdjusted ? (widthSurchargeData.price || 0) * state.quantity : 0;
 
           // Calculate price: (price per cm) * length * quantity
@@ -1056,7 +980,7 @@
           if (calcWidthRow) {
             if (selectedShape === 'firkantet' || selectedShape === 'oval') {
               calcWidthRow.style.display = "flex";
-              const tableclothWidth = state.customizeWidth ? state.width : maxWidth;
+              const tableclothWidth = state.width;
               if (calcWidthLabel) {
                 calcWidthLabel.textContent = `Bredde: ${tableclothWidth} cm`;
               }
@@ -1309,20 +1233,13 @@
         }
         let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
 
-        // Find the customized variant matching current options
-        const customizedVariant = findVariantForWidthAndOtherOptions("Tilpasset", currentVariant) || 
-                                  variants.find(v => v.title.toLowerCase().includes("tilpasset")) || 
-                                  variants[0];
-
         // Find variant to use for pricing/width reference (non-tilpasset matching the selected width under the hood)
         let pricingVariant = null;
         if (selectedShape === 'rund') {
           pricingVariant = findPricingVariantForWidth(state.length, currentVariant);
-        } else if (state.customizeWidth) {
-          pricingVariant = findPricingVariantForWidth(state.width, currentVariant);
         } else {
-          pricingVariant = variants.find(v => v.id === activeVariantId && !v.title.toLowerCase().includes("tilpasset") && v.price > 0);
-          if (!pricingVariant) {
+          pricingVariant = currentVariant;
+          if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
             pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
           }
         }
@@ -1334,20 +1251,20 @@
           return;
         }
 
-        const width = getVariantWidth(pricingVariant ? pricingVariant.title : customizedVariant.title);
-        const refPrice = pricingVariant ? pricingVariant.price : customizedVariant.price;
+        const width = getVariantWidth(pricingVariant ? pricingVariant.title : currentVariant.title);
+        const refPrice = pricingVariant ? pricingVariant.price : currentVariant.price;
         
         const basePriceCents = Math.round(refPrice * state.length * 100);
         const shapeInfo = shapeData[selectedShape];
         const shapeSurchargeCents = Math.round((shapeInfo ? shapeInfo.price : 0) * 100);
         
-        const isWidthAdjusted = state.customizeWidth && (state.width < width);
-        const finalWidth = state.customizeWidth ? state.width : width;
+        const isWidthAdjusted = state.width < width;
+        const finalWidth = state.width;
         const widthSurchargeCents = isWidthAdjusted ? Math.round((widthSurchargeData.price || 0) * 100) : 0;
         
         const unitPriceCents = basePriceCents + shapeSurchargeCents + widthSurchargeCents;
 
-        const targetVoksdugVariantId = pricingVariant ? pricingVariant.id : customizedVariant.id;
+        const targetVoksdugVariantId = pricingVariant ? pricingVariant.id : currentVariant.id;
         const targetVoksdugImage = pricingVariant && pricingVariant.image ? pricingVariant.image : "";
 
         const shapeVariantId = shapeInfo ? shapeInfo.id : null;
@@ -1387,7 +1304,7 @@
 
         // Add the product title and image to properties so they can be accessed by the Cart Transform function
         itemToAdd.properties["_metervare_title"] = productTitle;
-        let variantImage = pricingVariant && pricingVariant.image ? pricingVariant.image : (customizedVariant && customizedVariant.image ? customizedVariant.image : "");
+        let variantImage = pricingVariant && pricingVariant.image ? pricingVariant.image : (currentVariant && currentVariant.image ? currentVariant.image : "");
         if (variantImage) {
           if (variantImage.startsWith("//")) {
             variantImage = "https:" + variantImage;
