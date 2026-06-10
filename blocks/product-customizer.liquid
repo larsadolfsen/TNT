@@ -257,8 +257,16 @@
         {%- endif -%}
       </div>
       
+      <!-- Custom Width Checkbox Trigger -->
+      <div class="w-full pl-10 mt-2 flex items-center gap-2.5">
+        <input type="checkbox" id="checkbox-custom-width" class="w-5 h-5 rounded border-slate-300 text-slate-900 focus:ring-slate-900 accent-slate-900 cursor-pointer" />
+        <label for="checkbox-custom-width" class="text-sm font-semibold text-slate-800 cursor-pointer select-none">
+          Tilpas på dine mål
+        </label>
+      </div>
+      
       <!-- Tilpas bredde Accordion Content (displayed inline below buttons) -->
-      <div id="content-width-accordion" class="flex flex-col gap-2 w-full mt-0.5 pl-10">
+      <div id="content-width-accordion" class="flex flex-col gap-2 w-full mt-0.5 pl-10" style="display: none;">
         {%- assign width_desc = block.settings.width_description | default: 'Dugen skæres på dine mål. Max bredde er [max_width] cm.' -%}
         <p class="text-sm text-primary/85 pl-1">
           {{ width_desc | replace: '[max_width]', '<span id="max-width-display">140</span>' }}
@@ -724,6 +732,10 @@
     }
 
     window.selectWidthValue = function(value, numericWidth) {
+      const customWidthCheckbox = document.getElementById("checkbox-custom-width");
+      if (customWidthCheckbox) {
+        customWidthCheckbox.checked = false;
+      }
       state.width = numericWidth;
       
       selectWidthOptionInShopify(value);
@@ -823,6 +835,12 @@
         } else {
           if (widthSelectionContainer) widthSelectionContainer.style.display = "flex";
           if (lengthSelectionContainer) lengthSelectionContainer.style.display = "flex";
+        }
+
+        const widthAccordion = document.getElementById("content-width-accordion");
+        const customWidthCheckbox = document.getElementById("checkbox-custom-width");
+        if (widthAccordion && customWidthCheckbox) {
+          widthAccordion.style.display = customWidthCheckbox.checked ? "flex" : "none";
         }
 
         // Dynamically update all step numbers based on visibility
@@ -1156,6 +1174,29 @@
         updateUI();
       });
       displayWidth.addEventListener("focus", () => displayWidth.select());
+    }
+
+    // Custom Width Checkbox listener
+    const customWidthCheckbox = document.getElementById("checkbox-custom-width");
+    if (customWidthCheckbox) {
+      customWidthCheckbox.addEventListener("change", () => {
+        if (!customWidthCheckbox.checked) {
+          // Reset width to standard active variant width when unchecked
+          let activeVariantId = null;
+          const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+          if (variantInput) {
+            activeVariantId = parseInt(variantInput.value);
+          }
+          let currentVariant = variants.find(v => v.id === activeVariantId) || variants[0];
+          let pricingVariant = currentVariant;
+          if (pricingVariant.title.toLowerCase().includes("tilpasset")) {
+            pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0];
+          }
+          const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+          state.width = stdWidth;
+        }
+        updateUI();
+      });
     }
 
     if (btnQtyMinus && displayQty) {
