@@ -87,9 +87,11 @@
     {%- endif -%}
   }
 
-  #shopify-block-{{ block.id }} > .card-block > .card-content > .card-nested-blocks.grid-layout {
-    gap: 12px;
-  }
+  {%- unless block.settings.use_global_gap -%}
+    #shopify-block-{{ block.id }} > .card-block > .card-content > .card-nested-blocks.grid-layout {
+      --grid-gap: {{ block.settings.block_gap | default: 12 }}px;
+    }
+  {%- endunless -%}
 
   /* Support Grid Column Spanning based on 1-4 input cols */
   #shopify-block-{{ block.id }}.shopify-block {
@@ -248,6 +250,22 @@
         { "value": "dark", "label": "Dark" }
       ],
       "default": "light"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_global_gap",
+      "label": "Brug global afstand (Gap)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "block_gap",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Brugerdefineret afstand (Gap)",
+      "default": 12
     },
     {
       "type": "header",

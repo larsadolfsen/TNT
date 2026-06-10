@@ -89,7 +89,6 @@
     --color-background-shade: var(--color-background-shade);
     --color-accent: var(--color-accent);
     --color-secondary: var(--color-accent);
-    --color-surface: #ffffff;
     --color-surface-container: #f9f9f9;
     --color-outline-variant: #e2e2e2;
   }
@@ -2071,6 +2070,15 @@
     }
   }
 }
+:root {
+  --grid-gap: 8px;
+  @media (min-width: 840px) {
+    --grid-gap: 16px;
+  }
+  @media (min-width: 1200px) {
+    --grid-gap: 24px;
+  }
+}
 main {
   font-size: 16px;
   font-family: var(--font-sans);
@@ -2080,13 +2088,12 @@ main {
 .grid-layout {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--grid-gap);
   @media (min-width: 840px) {
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
   @media (min-width: 1200px) {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 24px;
   }
 }
 .grid-layout > * {

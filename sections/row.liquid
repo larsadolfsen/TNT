@@ -60,9 +60,11 @@
     }
   }
 
-  .section-{{ section.id }}-inner-padding .grid-layout {
-    gap: {{ section.settings.block_spacing | default: 8 }}px;
-  }
+  {%- unless section.settings.use_global_gap -%}
+    .section-{{ section.id }}-inner-padding .grid-layout {
+      --grid-gap: {{ section.settings.block_spacing | default: 8 }}px;
+    }
+  {%- endunless -%}
 
   {%- if is_single_column -%}
     .row-content--single {
@@ -70,8 +72,14 @@
       flex-direction: row;
       flex-wrap: wrap;
       width: 100%;
-      gap: {{ section.settings.block_spacing | default: 8 }}px;
+      gap: var(--grid-gap);
     }
+
+    {%- unless section.settings.use_global_gap -%}
+      .row-content--single {
+        --grid-gap: {{ section.settings.block_spacing | default: 8 }}px;
+      }
+    {%- endunless -%}
 
     .row-content--left {
       justify-content: flex-start;
@@ -234,14 +242,20 @@
       "content": "Blokafstand / Grid-gap"
     },
     {
+      "type": "checkbox",
+      "id": "use_global_gap",
+      "label": "Brug global afstand (Gap)",
+      "default": true
+    },
+    {
       "type": "range",
       "id": "block_spacing",
       "min": 0,
       "max": 64,
       "step": 4,
       "unit": "px",
-      "label": "Afstand mellem blokke",
-      "default": 8
+      "label": "Brugerdefineret afstand",
+      "default": 16
     },
     {
       "type": "header",
