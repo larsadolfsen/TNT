@@ -201,7 +201,7 @@
             "qty_description": "",
             "border_top": true,
             "border_bottom": true,
-            "padding_top": 12,
+            "padding_top": 24,
             "padding_bottom": 0,
             "padding_sides": 0
           },
