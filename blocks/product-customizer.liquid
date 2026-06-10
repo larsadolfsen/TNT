@@ -867,6 +867,13 @@
               priceSpan.textContent = formatDanishPrice(pricePerMeter).replace("Kr.", "kr.");
             }
           });
+        } else if (pricingVariant && pricingVariant.price > 0) {
+          // Fallback: no width option — update the single fixed-width button price
+          const fallbackPriceSpan = document.querySelector('.width-btn [data-width-value-price]');
+          if (fallbackPriceSpan) {
+            const pricePerMeter = pricingVariant.price * 100;
+            fallbackPriceSpan.textContent = formatDanishPrice(pricePerMeter).replace("Kr.", "kr.");
+          }
         }
 
         // Sync active state of width buttons
