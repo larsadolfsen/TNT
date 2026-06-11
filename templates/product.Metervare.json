@@ -377,7 +377,7 @@
       "settings": {
         "heading": "",
         "heading_tag": "h3",
-        "background_color": "shade",
+        "background_color": "transparent",
         "full_width": false,
         "alignment": "columns",
         "column_span_mobile": "4",
