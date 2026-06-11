@@ -31,7 +31,7 @@
             "width_cols": "4",
             "background_color": "dark",
             "use_global_gap": true,
-            "block_gap": 0,
+            "block_gap": 16,
             "title": "",
             "content": "",
             "card_link": "",
