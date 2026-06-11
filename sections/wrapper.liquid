@@ -100,30 +100,29 @@
   /* Support Grid container logic on wrappers */
   #shopify-section-{{ section.id }} {
     --col-span: {{ section.settings.column_span_mobile | default: 4 }};
-    --col-start: {{ section.settings.column_start_mobile | default: 'auto' }};
-    --row-span: {{ section.settings.row_span_mobile | default: 'auto' }};
-    --row-start: {{ section.settings.row_start_mobile | default: 'auto' }};
-
     grid-column-end: span var(--col-span);
-    grid-column-start: var(--col-start);
+
+    {%- if section.settings.column_start_mobile != 'auto' and section.settings.column_start_mobile != blank -%}
+      --col-start: {{ section.settings.column_start_mobile }};
+      grid-column-start: var(--col-start);
+    {%- endif -%}
     
     {%- if section.settings.row_span_mobile != 'auto' and section.settings.row_span_mobile != blank -%}
+      --row-span: {{ section.settings.row_span_mobile }};
       grid-row-end: span var(--row-span);
-    {%- else -%}
-      grid-row-end: auto;
     {%- endif -%}
-    grid-row-start: var(--row-start);
+
+    {%- if section.settings.row_start_mobile != 'auto' and section.settings.row_start_mobile != blank -%}
+      --row-start: {{ section.settings.row_start_mobile }};
+      grid-row-start: var(--row-start);
+    {%- endif -%}
 
     {%- if section.settings.justify_self != 'auto' and section.settings.justify_self != blank -%}
       justify-self: {{ section.settings.justify_self }};
-    {%- else -%}
-      justify-self: auto;
     {%- endif -%}
 
     {%- if section.settings.align_self != 'auto' and section.settings.align_self != blank -%}
       align-self: {{ section.settings.align_self }};
-    {%- else -%}
-      align-self: auto;
     {%- endif -%}
 
     {%- if section.settings.hide_on_mobile -%}
@@ -134,24 +133,41 @@
   @media screen and (min-width: 840px) {
     #shopify-section-{{ section.id }} {
       --col-span: {{ section.settings.column_span_tablet | default: 8 }};
-      --col-start: {{ section.settings.column_start_tablet | default: 'auto' }};
-      --row-span: {{ section.settings.row_span_tablet | default: 'auto' }};
-      --row-start: {{ section.settings.row_start_tablet | default: 'auto' }};
-
       grid-column-end: span var(--col-span);
-      grid-column-start: var(--col-start);
+
+      {%- if section.settings.column_start_tablet != 'auto' and section.settings.column_start_tablet != blank -%}
+        --col-start: {{ section.settings.column_start_tablet }};
+        grid-column-start: var(--col-start);
+      {%- else -%}
+        {%- if section.settings.column_start_mobile != 'auto' and section.settings.column_start_mobile != blank -%}
+          grid-column-start: auto;
+        {%- endif -%}
+      {%- endif -%}
 
       {%- if section.settings.row_span_tablet != 'auto' and section.settings.row_span_tablet != blank -%}
+        --row-span: {{ section.settings.row_span_tablet }};
         grid-row-end: span var(--row-span);
       {%- else -%}
-        grid-row-end: auto;
+        {%- if section.settings.row_span_mobile != 'auto' and section.settings.row_span_mobile != blank -%}
+          grid-row-end: auto;
+        {%- endif -%}
       {%- endif -%}
-      grid-row-start: var(--row-start);
+
+      {%- if section.settings.row_start_tablet != 'auto' and section.settings.row_start_tablet != blank -%}
+        --row-start: {{ section.settings.row_start_tablet }};
+        grid-row-start: var(--row-start);
+      {%- else -%}
+        {%- if section.settings.row_start_mobile != 'auto' and section.settings.row_start_mobile != blank -%}
+          grid-row-start: auto;
+        {%- endif -%}
+      {%- endif -%}
 
       {%- if section.settings.hide_on_tablet -%}
         display: none !important;
       {%- else -%}
-        display: block !important;
+        {%- if section.settings.hide_on_mobile -%}
+          display: block !important;
+        {%- endif -%}
       {%- endif -%}
     }
   }
@@ -159,24 +175,41 @@
   @media screen and (min-width: 1200px) {
     #shopify-section-{{ section.id }} {
       --col-span: {{ section.settings.column_span_desktop | default: 12 }};
-      --col-start: {{ section.settings.column_start_desktop | default: 'auto' }};
-      --row-span: {{ section.settings.row_span_desktop | default: 'auto' }};
-      --row-start: {{ section.settings.row_start_desktop | default: 'auto' }};
-
       grid-column-end: span var(--col-span);
-      grid-column-start: var(--col-start);
+
+      {%- if section.settings.column_start_desktop != 'auto' and section.settings.column_start_desktop != blank -%}
+        --col-start: {{ section.settings.column_start_desktop }};
+        grid-column-start: var(--col-start);
+      {%- else -%}
+        {%- if section.settings.column_start_tablet != 'auto' and section.settings.column_start_tablet != blank or section.settings.column_start_mobile != 'auto' and section.settings.column_start_mobile != blank -%}
+          grid-column-start: auto;
+        {%- endif -%}
+      {%- endif -%}
 
       {%- if section.settings.row_span_desktop != 'auto' and section.settings.row_span_desktop != blank -%}
+        --row-span: {{ section.settings.row_span_desktop }};
         grid-row-end: span var(--row-span);
       {%- else -%}
-        grid-row-end: auto;
+        {%- if section.settings.row_span_tablet != 'auto' and section.settings.row_span_tablet != blank or section.settings.row_span_mobile != 'auto' and section.settings.row_span_mobile != blank -%}
+          grid-row-end: auto;
+        {%- endif -%}
       {%- endif -%}
-      grid-row-start: var(--row-start);
+
+      {%- if section.settings.row_start_desktop != 'auto' and section.settings.row_start_desktop != blank -%}
+        --row-start: {{ section.settings.row_start_desktop }};
+        grid-row-start: var(--row-start);
+      {%- else -%}
+        {%- if section.settings.row_start_tablet != 'auto' and section.settings.row_start_tablet != blank or section.settings.row_start_mobile != 'auto' and section.settings.row_start_mobile != blank -%}
+          grid-row-start: auto;
+        {%- endif -%}
+      {%- endif -%}
 
       {%- if section.settings.hide_on_desktop -%}
         display: none !important;
       {%- else -%}
-        display: block !important;
+        {%- if section.settings.hide_on_tablet or section.settings.hide_on_mobile -%}
+          display: block !important;
+        {%- endif -%}
       {%- endif -%}
     }
   }
