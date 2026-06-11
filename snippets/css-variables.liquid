@@ -50,7 +50,7 @@
       --font-primary--weight: 400;
     {% endif %}
 
-    --page-width: {{ settings.max_page_width }};
+    --page-width: {{ settings.max_page_width | default: 1440 }}px;
     --page-margin: {{ settings.min_page_margin }}px;
     --color-primary: {{ settings.primary_dark_color | default: '#0e1a28' }};
     --color-accent: {{ settings.primary_color | default: '#FFD814' }};
