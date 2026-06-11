@@ -117,7 +117,7 @@
     --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
     --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
     --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
-    --color-warning: {{ block.settings.color_warning | default: '#e11d48' }};
+    --color-important: {{ block.settings.color_important | default: '#e11d48' }};
     
     padding-top: var(--block-padding-top);
     padding-bottom: var(--block-padding-bottom);
@@ -909,7 +909,7 @@
               if (!soldOutIndicator) {
                 const badge = document.createElement('span');
                 badge.className = 'sold-out-badge text-[9px] font-bold uppercase mt-0.5 tracking-wider';
-                badge.style.color = 'var(--color-warning)';
+                badge.style.color = 'var(--color-important)';
                 badge.innerText = 'Udsolgt';
                 // Find "pr. meter" span and replace/insert before it
                 const prMeterText = btn.lastElementChild;
@@ -1714,8 +1714,8 @@
     },
     {
       "type": "color",
-      "id": "color_warning",
-      "label": "Advarselsfarve (f.eks. Udsolgt)",
+      "id": "color_important",
+      "label": "Important farve (f.eks. Udsolgt)",
       "default": "#e11d48"
     }
   ],
