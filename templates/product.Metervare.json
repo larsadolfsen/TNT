@@ -95,7 +95,7 @@
         "page_title_UACQEU",
         "card_MENFqx"
       ],
-      "name": "Wrapper",
+      "name": "Wrapper - Product Title",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
@@ -147,7 +147,7 @@
       "block_order": [
         "product_media_d7ULhk"
       ],
-      "name": "Row - Product image",
+      "name": "Wrapper - Product image",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
@@ -177,74 +177,6 @@
         "padding_right": 24,
         "use_global_gap": true,
         "block_spacing": 0,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "wrapper_4x3qqq": {
-      "type": "wrapper",
-      "blocks": {
-        "product_price_dAgUdh": {
-          "type": "product-price",
-          "name": "Product Price",
-          "settings": {
-            "price_suffix": "pr. meter inkl. moms",
-            "price_subtext": "30 dages fuld returret, også på din dug.",
-            "padding_top": 0,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "product_urgency_UYYTfh": {
-          "type": "product-urgency",
-          "name": "Product Stock Urgency",
-          "settings": {
-            "show_urgency": true,
-            "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
-            "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
-            "hide_under_limit": 50,
-            "padding_top": 0,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_price_dAgUdh",
-        "product_urgency_UYYTfh"
-      ],
-      "name": "Row - Pris",
-      "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "light",
-        "full_width": false,
-        "alignment": "full_width",
-        "column_span_mobile": "4",
-        "column_start_mobile": "auto",
-        "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
-        "hide_on_mobile": true,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": true,
-        "column_span_desktop": "4",
-        "column_start_desktop": "9",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
       }
@@ -283,7 +215,7 @@
         "product_price_BnTAKH",
         "product_urgency_nVDPJP"
       ],
-      "name": "Row - Pris",
+      "name": "Wrapper - Price",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
@@ -301,104 +233,7 @@
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
         "column_span_desktop": "4",
-        "column_start_desktop": "9",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": true,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "wrapper_8tcnHG": {
-      "type": "wrapper",
-      "blocks": {
-        "product_customizer_A6a97a": {
-          "type": "product-customizer",
-          "settings": {
-            "metervare_product": "firkantet-dug",
-            "heading": "Tilpas dugen til dit bord",
-            "firkantet_product": "firkantet-dug-1",
-            "rund_product": "afrunding",
-            "oval_product": "oval-dug",
-            "shape_description": "",
-            "width_step_description": "",
-            "width_surcharge_product": "tilpasset-bredde",
-            "width_description": "Vi anbefaler ca. 20 cm til nedhæng i hver side. Max bredde er [max_width] cm.",
-            "custom_width_checkbox_label": "Gør dugen smallere",
-            "step_size": 10,
-            "min_length": 50,
-            "length_description": "Vi anbefaler ca. 20 cm til nedhæng i hver ende.",
-            "qty_description": "",
-            "border_top": true,
-            "border_bottom": false,
-            "padding_top": 24,
-            "padding_bottom": 0,
-            "padding_sides": 0,
-            "sold_out_text": "Ikke på lager"
-          },
-          "blocks": {}
-        },
-        "product_buy_buttons_W9GHKa": {
-          "type": "product-buy-buttons",
-          "settings": {
-            "text_before_price": "Læg i kurv",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0,
-            "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
-            "payment_icons_height": 16,
-            "enable_sticky_buy_button": true,
-            "sticky_buy_button_text": "Læg i kurv",
-            "sticky_customize_button_text": "Tilpas",
-            "sticky_info_text": "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug."
-          },
-          "blocks": {}
-        },
-        "product_shipping_progress_W9gAzw": {
-          "type": "product-shipping-progress",
-          "settings": {
-            "free_shipping_message": "Du er kun [beløb] fra fri fragt",
-            "free_shipping_success_message": "Du har opnået fri fragt!",
-            "hide_everything_except_text": true,
-            "padding_top": 8,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_customizer_A6a97a",
-        "product_buy_buttons_W9GHKa",
-        "product_shipping_progress_W9gAzw"
-      ],
-      "name": "Row - Pris",
-      "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "light",
-        "full_width": false,
-        "alignment": "full_width",
-        "column_span_mobile": "4",
-        "column_start_mobile": "auto",
-        "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "4",
-        "column_start_desktop": "9",
+        "column_start_desktop": "5",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
@@ -453,7 +288,7 @@
         "trust_checkmark_9AbQBF",
         "trust_checkmark_KcRXQx"
       ],
-      "name": "Row - Trust",
+      "name": "Wrapper - Trust",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
@@ -470,7 +305,7 @@
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
-        "column_span_desktop": "4",
+        "column_span_desktop": "12",
         "column_start_desktop": "auto",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
@@ -945,9 +780,7 @@
   "order": [
     "row_Y793QP",
     "row_PUJcnW",
-    "wrapper_4x3qqq",
     "wrapper_YHL3Wm",
-    "wrapper_8tcnHG",
     "row_eTcPKr",
     "row_p6nNCG",
     "row_VY7RVT",
