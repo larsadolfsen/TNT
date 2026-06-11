@@ -217,9 +217,10 @@
 
 {%- capture bg_class -%}
   {%- case section.settings.background_color -%}
-    {%- when 'light' -%}bg-background text-primary
+    {%- when 'transparent' -%}bg-transparent text-primary
+    {%- when 'white', 'light' -%}bg-background text-primary
+    {%- when 'light_grey', 'shade' -%}bg-background-shade text-primary
     {%- when 'dark' -%}bg-background-dark text-white
-    {%- when 'shade' -%}bg-background-shade text-primary
   {%- endcase -%}
 {%- endcapture -%}
 
@@ -284,11 +285,12 @@
       "id": "background_color",
       "label": "Baggrundsfarve",
       "options": [
-        { "value": "light", "label": "Lys" },
-        { "value": "dark",  "label": "Mørk" },
-        { "value": "shade", "label": "Grå / Tonet" }
+        { "value": "transparent", "label": "Transparent" },
+        { "value": "white", "label": "Hvid" },
+        { "value": "light_grey", "label": "Lys grå" },
+        { "value": "dark", "label": "Mørk" }
       ],
-      "default": "light"
+      "default": "white"
     },
     {
       "type": "checkbox",
@@ -314,7 +316,7 @@
     {
       "type": "select",
       "id": "column_span_mobile",
-      "label": "Kolonne bredde (Col Span) på Mobil (af 4)",
+      "label": "Bredde",
       "options": [
         { "value": "1", "label": "1 kolonne (25%)" },
         { "value": "2", "label": "2 kolonner (50%)" },
@@ -326,7 +328,7 @@
     {
       "type": "select",
       "id": "column_start_mobile",
-      "label": "Kolonne start (Col Start) på Mobil",
+      "label": "Kolonne start",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1" },
@@ -339,7 +341,7 @@
     {
       "type": "select",
       "id": "row_span_mobile",
-      "label": "Række højde (Row Span) på Mobil",
+      "label": "Højde",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1 række" },
@@ -360,7 +362,7 @@
     {
       "type": "select",
       "id": "row_start_mobile",
-      "label": "Række start (Row Start) på Mobil",
+      "label": "Række start",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1" },
@@ -391,7 +393,7 @@
     {
       "type": "select",
       "id": "column_span_tablet",
-      "label": "Kolonne bredde (Col Span) på Tablet (af 8)",
+      "label": "Bredde",
       "options": [
         { "value": "1", "label": "1 ud af 8" },
         { "value": "2", "label": "2 ud af 8" },
@@ -407,7 +409,7 @@
     {
       "type": "select",
       "id": "column_start_tablet",
-      "label": "Kolonne start (Col Start) på Tablet",
+      "label": "Kolonne start",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1" },
@@ -424,7 +426,7 @@
     {
       "type": "select",
       "id": "row_span_tablet",
-      "label": "Række højde (Row Span) på Tablet",
+      "label": "Højde",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1 række" },
@@ -445,7 +447,7 @@
     {
       "type": "select",
       "id": "row_start_tablet",
-      "label": "Række start (Row Start) på Tablet",
+      "label": "Række start",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1" },
@@ -476,7 +478,7 @@
     {
       "type": "select",
       "id": "column_span_desktop",
-      "label": "Kolonne bredde (Col Span) på Desktop (af 12)",
+      "label": "Bredde",
       "options": [
         { "value": "1", "label": "1 ud af 12" },
         { "value": "2", "label": "2 ud af 12" },
@@ -496,7 +498,7 @@
     {
       "type": "select",
       "id": "column_start_desktop",
-      "label": "Kolonne start (Col Start) på Desktop",
+      "label": "Kolonne start",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1" },
@@ -517,7 +519,7 @@
     {
       "type": "select",
       "id": "row_span_desktop",
-      "label": "Række højde (Row Span) på Desktop",
+      "label": "Højde",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1 række" },
@@ -538,7 +540,7 @@
     {
       "type": "select",
       "id": "row_start_desktop",
-      "label": "Række start (Row Start) på Desktop",
+      "label": "Række start",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1" },
