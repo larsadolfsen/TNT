@@ -100,7 +100,7 @@
         "heading": "",
         "heading_tag": "h3",
         "background_color": "light",
-        "alignment": "columns",
+        "alignment": "full_width",
         "span_mobile": "4",
         "span_tablet": "8",
         "span_desktop": "12",

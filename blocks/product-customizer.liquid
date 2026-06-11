@@ -142,7 +142,7 @@
   }
   .width-btn,
   .shape-btn {
-    padding: 4px !important;
+    padding: 4px;
   }
   .width-btn-slider-item {
     width: calc((100% - 3 * var(--grid-gap, 8px)) / 4);
@@ -159,107 +159,23 @@
     }
   }
   
-  /* Custom styled checkbox styling */
-  .custom-checkbox-box {
-    position: relative;
-    border-radius: 6px !important;
-    border-width: 2px !important;
-    border-color: var(--color-border, #cbd5e1) !important;
-    background-color: #ffffff !important;
-    width: 26px !important;
-    height: 26px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
-  }
-  .custom-checkbox-container:hover .custom-checkbox-box {
-    border-color: var(--color-primary, #0e1a28) !important;
-  }
-  #checkbox-custom-width:checked ~ .custom-checkbox-box {
-    border-color: var(--color-primary, #0e1a28) !important;
-    background-color: #ffffff !important;
-  }
-  
-  /* State-layer circle for hover/focus (Material design style) */
-  .custom-checkbox-box::before {
-    content: '';
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--color-primary, #0e1a28);
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
-    left: 50%;
-    top: 50%;
-    pointer-events: none;
-    z-index: 0;
-    transition: opacity 0.15s ease, transform 0.15s ease;
-  }
-  .custom-checkbox-container:hover .custom-checkbox-box::before {
-    opacity: 0.06;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  #checkbox-custom-width:focus-visible ~ .custom-checkbox-box::before {
-    opacity: 0.12;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  .custom-checkbox-box svg {
-    position: relative;
-    z-index: 1;
-    width: 0px !important;
-    height: 0px !important;
-    border-radius: 2px !important; /* 2dp corner shape */
-    background-color: var(--color-primary, #0e1a28) !important;
-    color: #ffffff !important;
-    padding: 0px !important;
-    opacity: 0 !important;
-    transform: scale(0.5) !important;
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-  }
-  #checkbox-custom-width:checked ~ .custom-checkbox-box svg {
-    opacity: 1 !important;
-    transform: scale(1) !important;
-    width: 18px !important; /* 18dp container size */
-    height: 18px !important;
-    padding: 3px !important; /* Icon fits inside */
-  }
-  #checkbox-custom-width:focus-visible ~ .custom-checkbox-box {
-    outline: 2px solid var(--color-primary, #0e1a28) !important;
-    outline-offset: 2px !important;
-  }
-  
-  /* Touch target size target and label styling */
-  .custom-checkbox-container {
-    min-height: 48px !important; /* 48dp Target size */
-    padding-top: 4px !important;
-    padding-bottom: 4px !important;
-  }
-  .custom-checkbox-container span {
-    color: var(--color-primary, #0e1a28) !important;
-  }
-  .custom-checkbox-container:hover span {
-    color: var(--color-primary, #0e1a28) !important;
-    opacity: 0.8 !important;
-  }
-  
   /* Variant button shadows: regular buttons get shadow by default, active/inactive on hover get more, disabled gets none */
   .width-btn,
   .shape-btn {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1) !important; /* Tailwind shadow-sm equivalent */
-    transition: box-shadow 0.2s ease, border-color 0.2s ease, border-width 0.2s ease, transform 0.15s ease !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1); /* Tailwind shadow-sm equivalent */
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, border-width 0.2s ease, transform 0.15s ease;
   }
-  .width-btn:hover:not(.opacity-25),
-  .shape-btn:hover:not(.opacity-25) {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -2px rgba(0, 0, 0, 0.15) !important; /* Slightly stronger shadow-md equivalent */
+  .width-btn:hover:not(.opacity-50):not(.opacity-25),
+  .shape-btn:hover:not(.opacity-50):not(.opacity-25) {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -2px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow-md equivalent */
   }
+  .width-btn.opacity-50,
+  .shape-btn.opacity-50,
   .width-btn.opacity-25,
   .shape-btn.opacity-25,
   .width-btn[disabled],
   .shape-btn[disabled] {
-    box-shadow: none !important;
+    box-shadow: none;
   }
 </style>
 
@@ -320,7 +236,7 @@
           <button type="button" id="btn-shape-oval" data-shape="oval"
             class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-outline-variant bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             onclick="selectShape('oval')">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
               <rect x="3" y="8" width="18" height="8" rx="4"/>
             </svg>
             <div class="flex flex-col items-center gap-0.5 w-full">
@@ -344,7 +260,7 @@
           {%- endif -%}
         </div>
       </div>
-      <div class="flex overflow-x-auto pb-1 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
+      <div class="flex overflow-x-auto pb-3 -mb-2 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
         {%- if width_option_values != blank -%}
           {%- for value in width_option_values -%}
             {%- assign value_down = value | downcase -%}
@@ -381,16 +297,16 @@
       </div>
       
       <!-- Custom Width Checkbox Trigger -->
-      <div class="w-full pl-10 mt-2 flex items-center" style="display: flex !important; align-items: center !important; justify-content: flex-start !important;">
-        <label for="checkbox-custom-width" class="custom-checkbox-container" style="display: flex !important; align-items: center !important; justify-content: flex-start !important; width: auto !important; gap: 12px !important; cursor: pointer; user-select: none;">
+      <div class="w-full pl-10 mt-0.5 flex items-center" style="display: flex; align-items: center; justify-content: flex-start;">
+        <label for="checkbox-custom-width" class="custom-checkbox-container">
           <input type="checkbox" id="checkbox-custom-width" class="sr-only" />
           <!-- Styled custom checkbox box -->
-          <div class="custom-checkbox-box" style="flex-shrink: 0 !important;">
+          <div class="custom-checkbox-box">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <span class="text-sm font-semibold transition-colors duration-150" style="width: auto !important; display: inline-block !important; margin: 0 !important; padding: 0 !important;">
+          <span class="text-sm font-semibold transition-colors duration-150">
             {{ block.settings.custom_width_checkbox_label | default: "Tilpas på dine mål" }}
           </span>
         </label>
@@ -920,7 +836,7 @@
         }
         // Both active and not selected should stay text-slate-900 by default,
         // unless they are disabled/deactivated by updateUI check.
-        if (!btn.classList.contains('opacity-25')) {
+        if (!btn.classList.contains('opacity-25') && !btn.classList.contains('opacity-50')) {
           btn.classList.remove('text-slate-600', 'text-slate-400');
           btn.classList.add('text-slate-900');
         }
@@ -1107,9 +1023,9 @@
             
             // Check availability/inventory
             if (match && !match.available) {
-              btn.classList.add("opacity-25", "bg-slate-50/70");
-              btn.classList.remove("text-slate-900");
-              btn.classList.add("text-slate-400");
+              btn.classList.add("opacity-50");
+              btn.classList.remove("opacity-25", "bg-slate-50/70", "text-slate-400");
+              btn.classList.add("text-slate-900");
               btn.style.cursor = "not-allowed";
               btn.style.borderColor = "var(--color-border)";
               
@@ -1133,7 +1049,7 @@
                 soldOutIndicator.innerText = soldOutLabel;
               }
             } else {
-              btn.classList.remove("opacity-25", "bg-slate-50/70", "text-slate-400");
+              btn.classList.remove("opacity-50", "opacity-25", "bg-slate-50/70", "text-slate-400");
               btn.classList.add("text-slate-900");
               btn.style.cursor = "pointer";
               
