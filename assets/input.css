@@ -317,6 +317,7 @@ h4 {
 /* Ensure no horizontal scrolling when using 100vw breakout layouts */
 html, body {
   overflow-x: hidden;
+  background-color: var(--color-background);
 }
 
 /* Breakout styles for truly full-width wrapper sections and testimonials */
