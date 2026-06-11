@@ -300,7 +300,7 @@
         "product_customizer_kNq3L4",
         "product_buy_buttons_NiLmrV"
       ],
-      "name": "Wrapper",
+      "name": "Wrapper - Buy Button",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
@@ -491,7 +491,7 @@
         "accordion_6kXXUF",
         "accordion_6WF8D8"
       ],
-      "name": "Productspecifications",
+      "name": "Wrapper - Accordion",
       "settings": {
         "heading": "Om dugen",
         "heading_tag": "h3",
@@ -508,8 +508,8 @@
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
-        "column_span_desktop": "4",
-        "column_start_desktop": "auto",
+        "column_span_desktop": "6",
+        "column_start_desktop": "7",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
@@ -521,7 +521,7 @@
         "padding_right": 24,
         "use_global_gap": true,
         "block_spacing": 8,
-        "border_top": true,
+        "border_top": false,
         "border_bottom": false
       }
     },
