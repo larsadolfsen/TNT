@@ -993,8 +993,7 @@
         }
 
         // Width validation / setup
-        const resolvedWidthFromVariant = getVariantWidth(pricingVariant ? pricingVariant.title : "");
-        const width = state.width ? state.width : resolvedWidthFromVariant;
+        const width = getVariantWidth(pricingVariant ? pricingVariant.title : "");
         
         // Update prices per meter on the standard width buttons and handle out-of-stock states
         if (widthOptionIndex !== null) {
