@@ -10,7 +10,7 @@
 {
   "sections": {
     "row_Y793QP": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "page_title_UACQEU": {
           "type": "page-title",
@@ -24,8 +24,8 @@
           "blocks": {}
         },
         "card_MENFqx": {
-          "type": "card",
-          "name": "t:general.card",
+          "type": "container",
+          "name": "t:general.container",
           "settings": {
             "design": "none",
             "background_color": "dark",
@@ -33,7 +33,7 @@
             "block_gap": 16,
             "title": "",
             "content": "",
-            "card_link": "",
+            "container_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
@@ -129,7 +129,7 @@
       }
     },
     "row_PUJcnW": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "product_media_d7ULhk": {
           "type": "product-media",
@@ -181,7 +181,7 @@
       }
     },
     "wrapper_YHL3Wm": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "product_price_BnTAKH": {
           "type": "product-price",
@@ -249,7 +249,7 @@
       }
     },
     "wrapper_KDR6Gy": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "product_customizer_kNq3L4": {
           "type": "product-customizer",
@@ -334,7 +334,7 @@
       }
     },
     "row_eTcPKr": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "trust_checkmark_xhq8A9": {
           "type": "trust-checkmark",
@@ -366,8 +366,8 @@
           "blocks": {}
         },
         "card_4cY3dT": {
-          "type": "card",
-          "name": "t:general.card",
+          "type": "container",
+          "name": "t:general.container",
           "settings": {
             "design": "border",
             "background_color": "light",
@@ -375,7 +375,7 @@
             "block_gap": 12,
             "title": "",
             "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
-            "card_link": "",
+            "container_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
@@ -454,11 +454,11 @@
       }
     },
     "row_VY7RVT": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "card_ye8GkF": {
-          "type": "card",
-          "name": "t:general.card",
+          "type": "container",
+          "name": "t:general.container",
           "settings": {
             "design": "border",
             "background_color": "light",
@@ -466,7 +466,7 @@
             "block_gap": 12,
             "title": "Kort Overskrift",
             "content": "<p>Dette er et kortelement med tilpasset design.</p>",
-            "card_link": "",
+            "container_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
@@ -549,7 +549,7 @@
       }
     },
     "row_CQqaPe": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "product_testimonial_gzGpa4": {
           "type": "product-testimonial",
@@ -612,7 +612,7 @@
       }
     },
     "row_Rg3kFD": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "product_cross_sell_fm46Qc": {
           "type": "product-cross-sell",
@@ -664,7 +664,7 @@
       }
     },
     "row_GqmzkT": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "accordion_panel_Matyga": {
           "type": "accordion",
@@ -759,11 +759,11 @@
       }
     },
     "row_j7wR4H": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "card_bNBzDD": {
-          "type": "card",
-          "name": "t:general.card",
+          "type": "container",
+          "name": "t:general.container",
           "settings": {
             "design": "border",
             "background_color": "transparent",
@@ -771,7 +771,7 @@
             "block_gap": 12,
             "title": "",
             "content": "{{ closest.product.description }}",
-            "card_link": "",
+            "container_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "square",

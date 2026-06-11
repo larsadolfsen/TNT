@@ -2,7 +2,7 @@
   assign layout_style = section.settings.layout_style | default: 'full_width_bg'
   assign is_full_width = section.settings.full_width | default: false
 
-  # Detect if the wrapper contains column group blocks
+  # Detect if the section contains column group blocks
   assign has_group_block = false
   for block in section.blocks
     if block.type == 'group'
@@ -12,13 +12,13 @@
   endfor
 
   # Calculate class names dynamically to handle grids and product detail column grids
-  assign wrapper_classes = 'wrapper-content grid-layout'
+  assign section_classes = 'section-content grid-layout'
   unless has_group_block
-    assign wrapper_classes = wrapper_classes | append: ' wrapper-content--no-columns'
+    assign section_classes = section_classes | append: ' section-content--no-columns'
   endunless
 
   if is_full_width
-    assign wrapper_classes = wrapper_classes | append: ' wrapper-content--full-width'
+    assign section_classes = section_classes | append: ' section-content--full-width'
   endif
 -%}
 
@@ -63,20 +63,20 @@
     }
   {%- endunless -%}
 
-  .section-{{ section.id }}-inner-padding .wrapper-content {
-    --wrapper-span-mb: {{ section.settings.column_span_mobile | default: 4 }};
-    --wrapper-span-tb: {{ section.settings.column_span_tablet | default: 8 }};
-    --wrapper-span-lg: {{ section.settings.column_span_desktop | default: 12 }};
-    --span-mb: var(--wrapper-span-mb);
-    --span-tb: var(--wrapper-span-tb);
-    --span-lg: var(--wrapper-span-lg);
+  .section-{{ section.id }}-inner-padding .section-content {
+    --section-span-mb: {{ section.settings.column_span_mobile | default: 4 }};
+    --section-span-tb: {{ section.settings.column_span_tablet | default: 8 }};
+    --section-span-lg: {{ section.settings.column_span_desktop | default: 12 }};
+    --span-mb: var(--section-span-mb);
+    --span-tb: var(--section-span-tb);
+    --span-lg: var(--section-span-lg);
 
-    --wrapper-span-mobile: {{ section.settings.column_span_mobile | default: 4 }};
-    --wrapper-span-expanded: {{ section.settings.column_span_tablet | default: 8 }};
-    --wrapper-span-large: {{ section.settings.column_span_desktop | default: 12 }};
-    --span-mobile: var(--wrapper-span-mobile);
-    --span-expanded: var(--wrapper-span-expanded);
-    --span-large: var(--wrapper-span-large);
+    --section-span-mobile: {{ section.settings.column_span_mobile | default: 4 }};
+    --section-span-expanded: {{ section.settings.column_span_tablet | default: 8 }};
+    --section-span-large: {{ section.settings.column_span_desktop | default: 12 }};
+    --span-mobile: var(--section-span-mobile);
+    --span-expanded: var(--section-span-expanded);
+    --span-large: var(--section-span-large);
 
     width: 100%;
     {%- if section.settings.alignment == 'left' -%}
@@ -93,18 +93,18 @@
   }
 
   @media screen and (min-width: 840px) {
-    .section-{{ section.id }}-inner-padding .wrapper-content {
+    .section-{{ section.id }}-inner-padding .section-content {
       max-width: min(calc((var(--span-tb) / 8) * var(--page-width, 1440px)), 100%);
     }
   }
 
   @media screen and (min-width: 1200px) {
-    .section-{{ section.id }}-inner-padding .wrapper-content {
+    .section-{{ section.id }}-inner-padding .section-content {
       max-width: min(calc((var(--span-lg) / 12) * var(--page-width, 1440px)), 100%);
     }
   }
 
-  /* Support Grid container logic on wrappers */
+  /* Support Grid container logic on sections */
   #shopify-section-{{ section.id }} {
     --col-span: {{ section.settings.column_span_mobile | default: 4 }};
     grid-column-end: span var(--col-span);
@@ -233,7 +233,7 @@
 
 {%- liquid
   if layout_style == 'full_width_bg'
-    assign outer_class = 'wrapper-section w-full ' | append: bg_class | append: ' section-' | append: section.id | append: '-padding wrapper-section--full-width'
+    assign outer_class = 'section-section w-full ' | append: bg_class | append: ' section-' | append: section.id | append: '-padding section-section--full-width'
     if is_full_width
       assign inner_class = 'w-full section-' | append: section.id | append: '-inner-padding'
     else
@@ -241,9 +241,9 @@
     endif
   else
     if is_full_width
-      assign outer_class = 'wrapper-section w-full px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
+      assign outer_class = 'section-section w-full px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
     else
-      assign outer_class = 'wrapper-section max-w-[var(--page-width)] mx-auto px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
+      assign outer_class = 'section-section max-w-[var(--page-width)] mx-auto px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
     endif
     assign inner_class = 'w-full ' | append: bg_class | append: ' rounded-3xl py-10 expanded:py-16 shadow-md section-' | append: section.id | append: '-inner-padding'
   endif
@@ -251,9 +251,9 @@
 
 <div class="{{ outer_class }}"{% if section.settings.border_top or section.settings.border_bottom %} style="{% if section.settings.border_top %}border-top:1px solid var(--color-border);{% endif %}{% if section.settings.border_bottom %}border-bottom:1px solid var(--color-border);{% endif %}"{% endif %}>
   <div class="{{ inner_class }}">
-    <div class="{{ wrapper_classes }}">
+    <div class="{{ section_classes }}">
       {%- if section.settings.heading != blank -%}
-        <{{ section.settings.heading_tag }} class="wrapper-section__heading">{{ section.settings.heading }}</{{ section.settings.heading_tag }}>
+        <{{ section.settings.heading_tag }} class="section-section__heading">{{ section.settings.heading }}</{{ section.settings.heading_tag }}>
       {%- endif -%}
       {% content_for 'blocks' %}
     </div>
@@ -262,7 +262,7 @@
 
 {% schema %}
 {
-  "name": "Wrapper",
+  "name": "Section",
   "settings": [
     {
       "type": "header",
@@ -687,7 +687,7 @@
     { "type": "@app" }
   ],
   "presets": [
-    { "name": "Wrapper" }
+    { "name": "Section" }
   ]
 }
 {% endschema %}

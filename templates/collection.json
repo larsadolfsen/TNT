@@ -10,7 +10,7 @@
 {
   "sections": {
     "collection-header": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "page_title": {
           "type": "page-title",

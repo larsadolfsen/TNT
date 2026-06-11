@@ -10,8 +10,8 @@
 {
   "sections": {
     "wrapper_x73Eia": {
-      "type": "wrapper",
-      "name": "Wrapper",
+      "type": "section",
+      "name": "Section",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
@@ -27,7 +27,7 @@
       }
     },
     "row_t6riLp": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "page_title_PMp6pd": {
           "type": "page-title",
@@ -42,8 +42,8 @@
           "blocks": {}
         },
         "card_CkrhFH": {
-          "type": "card",
-          "name": "t:general.card",
+          "type": "container",
+          "name": "t:general.container",
           "settings": {
             "design": "none",
             "width_cols": "4",
@@ -52,7 +52,7 @@
             "block_gap": 12,
             "title": "",
             "content": "",
-            "card_link": "",
+            "container_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
@@ -117,7 +117,7 @@
       }
     },
     "row_eqmCNB": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "product_media_rdzkqV": {
           "type": "product-media",
@@ -150,7 +150,7 @@
       }
     },
     "row_nmPTLb": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "product_price_M99xTk": {
           "type": "product-price",
@@ -227,7 +227,7 @@
       }
     },
     "row_mHwx6E": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "trust_checkmark_nzpaFa": {
           "type": "trust-checkmark",
@@ -255,8 +255,8 @@
           "blocks": {}
         },
         "card_tymWUQ": {
-          "type": "card",
-          "name": "t:general.card",
+          "type": "container",
+          "name": "t:general.container",
           "settings": {
             "design": "border",
             "width_cols": "4",
@@ -265,7 +265,7 @@
             "block_gap": 12,
             "title": "",
             "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
-            "card_link": "",
+            "container_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
@@ -324,7 +324,7 @@
       }
     },
     "row_WcWUGA": {
-      "type": "wrapper",
+      "type": "section",
       "blocks": {
         "accordion_panel_NpBHBB": {
           "type": "accordion",

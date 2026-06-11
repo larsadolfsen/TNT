@@ -81,15 +81,15 @@ main > .shopify-section {
 
 .grid-layout {
   display: grid;
-  grid-template-columns: repeat(var(--wrapper-span-mobile, 4), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--section-span-mobile, 4), minmax(0, 1fr));
   gap: var(--grid-gap);
 
   @media (min-width: --theme(--breakpoint-md)) {
-    grid-template-columns: repeat(var(--wrapper-span-expanded, 8), minmax(0, 1fr));
+    grid-template-columns: repeat(var(--section-span-expanded, 8), minmax(0, 1fr));
   }
 
   @media (min-width: --theme(--breakpoint-lg)) {
-    grid-template-columns: repeat(var(--wrapper-span-large, 12), minmax(0, 1fr));
+    grid-template-columns: repeat(var(--section-span-large, 12), minmax(0, 1fr));
   }
 }
 
@@ -105,8 +105,8 @@ main > .shopify-section {
   }
 }
 
-/* Wrappers without columns/groups should have their blocks span the full width of the wrapper */
-.wrapper-content--no-columns > * {
+/* Sections without columns/groups should have their blocks span the full width of the section */
+.section-content--no-columns > * {
   grid-column: 1 / -1 !important;
 }
 
@@ -208,8 +208,8 @@ h4 {
   }
 }
 
-/* Card Rich Text Images */
-.card-rte img {
+/* Container Rich Text Images */
+.container-rte img {
   border-radius: 1rem;
 }
 
@@ -242,41 +242,46 @@ h4 {
   }
 
   /* Reduce space between mobile media gallery (dots) and the product content details on mobile */
-  .template-product .wrapper-content > .shopify-block-group ~ .shopify-block-group .group,
-  .template-product .wrapper-content > .group ~ .group,
-  .template-product .wrapper-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group {
+  .template-product .section-content > .shopify-block-group ~ .shopify-block-group .group,
+  .template-product .section-content > .group ~ .group,
+  .template-product .section-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group {
     padding-top: 12px !important;
   }
 
-  .template-product .wrapper-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > section,
-  .template-product .wrapper-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > div,
-  .template-product .wrapper-content > .group ~ .group > *:first-child > section,
-  .template-product .wrapper-content > .group ~ .group > *:first-child > div,
-  .template-product .wrapper-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > section,
-  .template-product .wrapper-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > div {
+  .template-product .section-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > section,
+  .template-product .section-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > div,
+  .template-product .section-content > .group ~ .group > *:first-child > section,
+  .template-product .section-content > .group ~ .group > *:first-child > div,
+  .template-product .section-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > section,
+  .template-product .section-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > div {
     padding-top: 4px !important;
   }
 }
 
 /* Make all child blocks inside columns stretch to full column width on both mobile and desktop */
-.template-product .wrapper-content .group > *,
-.template-product .wrapper-content .shopify-block-group > *,
-.template-product .wrapper-content .shopify-block:has(.group) .shopify-block {
+.template-product .section-content .group > *,
+.template-product .section-content .shopify-block-group > *,
+.template-product .section-content .shopify-block:has(.group) .shopify-block {
   display: block;
   width: 100%;
 }
 
-/* Remove default wrapper padding for side-by-side product detail blocks on all screens */
-.template-product #MainContent .shopify-section:has(.product-media) .wrapper-section,
-.template-product #MainContent .shopify-section:has(.shopify-block-product-media) .wrapper-section,
-.template-product #MainContent .shopify-section:has(.shopify-block-page-title) .wrapper-section,
-.template-product #MainContent .shopify-section:has(.page-title) .wrapper-section,
-.template-product #MainContent .shopify-section:has(.product-price) .wrapper-section,
-.template-product #MainContent .shopify-section:has(.shopify-block-product-price) .wrapper-section,
-.template-product #MainContent .shopify-section:has(.product-customizer) .wrapper-section,
-.template-product #MainContent .shopify-section:has(.shopify-block-product-customizer) .wrapper-section,
-.template-product #MainContent .shopify-section:has(.product-variant-picker) .wrapper-section,
-.template-product #MainContent .shopify-section:has(.shopify-block-product-variant-picker) .wrapper-section {
+/* Remove default section padding for side-by-side product detail blocks on all screens */
+.template-product #MainContent .shopify-section:has(.product-media) .section-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-product-media) .section-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-page-title) .section-section,
+.template-product #MainContent .shopify-section:has(.page-title) .section-section,
+.template-product #MainContent .shopify-section:has(.product-price) .section-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-product-price) .section-section,
+.template-product #MainContent .shopify-section:has(.product-customizer) .section-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-product-customizer) .section-section,
+.template-product #MainContent .shopify-section:has(.product-variant-picker) .section-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-product-variant-picker) .section-section,
+.template-product #MainContent .shopify-section:has(.trust-checkmark) .section-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-trust-checkmark) .section-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-trust-countdown) .section-section,
+.template-product #MainContent .shopify-section:has(.accordion) .section-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-accordion) .section-section {
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -290,7 +295,12 @@ h4 {
 .template-product #MainContent .shopify-section:has(.product-customizer) [class*="-inner-padding"],
 .template-product #MainContent .shopify-section:has(.shopify-block-product-customizer) [class*="-inner-padding"],
 .template-product #MainContent .shopify-section:has(.product-variant-picker) [class*="-inner-padding"],
-.template-product #MainContent .shopify-section:has(.shopify-block-product-variant-picker) [class*="-inner-padding"] {
+.template-product #MainContent .shopify-section:has(.shopify-block-product-variant-picker) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.trust-checkmark) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.shopify-block-trust-checkmark) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.shopify-block-trust-countdown) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.accordion) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.shopify-block-accordion) [class*="-inner-padding"] {
   padding-left: 0;
   padding-right: 0;
 }
@@ -314,17 +324,22 @@ h4 {
       width: 100%;
     }
 
-    /* Make the wrapper content fill the grid cell width for side-by-side columns */
-    .shopify-section:has(.product-media) .wrapper-content,
-    .shopify-section:has(.shopify-block-product-media) .wrapper-content,
-    .shopify-section:has(.shopify-block-page-title) .wrapper-content,
-    .shopify-section:has(.page-title) .wrapper-content,
-    .shopify-section:has(.product-price) .wrapper-content,
-    .shopify-section:has(.shopify-block-product-price) .wrapper-content,
-    .shopify-section:has(.product-customizer) .wrapper-content,
-    .shopify-section:has(.shopify-block-product-customizer) .wrapper-content,
-    .shopify-section:has(.product-variant-picker) .wrapper-content,
-    .shopify-section:has(.shopify-block-product-variant-picker) .wrapper-content {
+    /* Make the section content fill the grid cell width for side-by-side columns */
+    .shopify-section:has(.product-media) .section-content,
+    .shopify-section:has(.shopify-block-product-media) .section-content,
+    .shopify-section:has(.shopify-block-page-title) .section-content,
+    .shopify-section:has(.page-title) .section-content,
+    .shopify-section:has(.product-price) .section-content,
+    .shopify-section:has(.shopify-block-product-price) .section-content,
+    .shopify-section:has(.product-customizer) .section-content,
+    .shopify-section:has(.shopify-block-product-customizer) .section-content,
+    .shopify-section:has(.product-variant-picker) .section-content,
+    .shopify-section:has(.shopify-block-product-variant-picker) .section-content,
+    .shopify-section:has(.trust-checkmark) .section-content,
+    .shopify-section:has(.shopify-block-trust-checkmark) .section-content,
+    .shopify-section:has(.shopify-block-trust-countdown) .section-content,
+    .shopify-section:has(.accordion) .section-content,
+    .shopify-section:has(.shopify-block-accordion) .section-content {
       align-items: start;
       width: 100%;
       max-width: none;
@@ -332,16 +347,21 @@ h4 {
     }
 
     /* Disable 100vw breakout for the side-by-side columns on desktop to let them fit in grid cells */
-    .shopify-section:has(.product-media) .wrapper-section--full-width,
-    .shopify-section:has(.shopify-block-product-media) .wrapper-section--full-width,
-    .shopify-section:has(.shopify-block-page-title) .wrapper-section--full-width,
-    .shopify-section:has(.page-title) .wrapper-section--full-width,
-    .shopify-section:has(.product-price) .wrapper-section--full-width,
-    .shopify-section:has(.shopify-block-product-price) .wrapper-section--full-width,
-    .shopify-section:has(.product-customizer) .wrapper-section--full-width,
-    .shopify-section:has(.shopify-block-product-customizer) .wrapper-section--full-width,
-    .shopify-section:has(.product-variant-picker) .wrapper-section--full-width,
-    .shopify-section:has(.shopify-block-product-variant-picker) .wrapper-section--full-width {
+    .shopify-section:has(.product-media) .section-section--full-width,
+    .shopify-section:has(.shopify-block-product-media) .section-section--full-width,
+    .shopify-section:has(.shopify-block-page-title) .section-section--full-width,
+    .shopify-section:has(.page-title) .section-section--full-width,
+    .shopify-section:has(.product-price) .section-section--full-width,
+    .shopify-section:has(.shopify-block-product-price) .section-section--full-width,
+    .shopify-section:has(.product-customizer) .section-section--full-width,
+    .shopify-section:has(.shopify-block-product-customizer) .section-section--full-width,
+    .shopify-section:has(.product-variant-picker) .section-section--full-width,
+    .shopify-section:has(.shopify-block-product-variant-picker) .section-section--full-width,
+    .shopify-section:has(.trust-checkmark) .section-section--full-width,
+    .shopify-section:has(.shopify-block-trust-checkmark) .section-section--full-width,
+    .shopify-section:has(.shopify-block-trust-countdown) .section-section--full-width,
+    .shopify-section:has(.accordion) .section-section--full-width,
+    .shopify-section:has(.shopify-block-accordion) .section-section--full-width {
       width: 100% !important;
       position: static !important;
       margin-left: 0 !important;
@@ -357,12 +377,12 @@ h4 {
       align-self: stretch;
     }
 
-    .shopify-section:has(.product-media) .wrapper-section,
-    .shopify-section:has(.shopify-block-product-media) .wrapper-section,
+    .shopify-section:has(.product-media) .section-section,
+    .shopify-section:has(.shopify-block-product-media) .section-section,
     .shopify-section:has(.product-media) [class*="-inner-padding"],
     .shopify-section:has(.shopify-block-product-media) [class*="-inner-padding"],
-    .shopify-section:has(.product-media) .wrapper-content,
-    .shopify-section:has(.shopify-block-product-media) .wrapper-content {
+    .shopify-section:has(.product-media) .section-content,
+    .shopify-section:has(.shopify-block-product-media) .section-content {
       height: 100%;
     }
 
@@ -414,18 +434,18 @@ h4 {
   }
 
   /* Adjust section layout styles for individual sections when in product column layout */
-  .template-product .wrapper-content > * > section,
-  #MainContent:has(.product-media) .wrapper-content > * > section,
-  #MainContent:has(.shopify-block-product-media) .wrapper-content > * > section {
+  .template-product .section-content > * > section,
+  #MainContent:has(.product-media) .section-content > * > section,
+  #MainContent:has(.shopify-block-product-media) .section-content > * > section {
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
   }
 
   /* Make sure customizer has proper spacing in right column and standard padding of 16px */
-  .template-product .wrapper-content .shopify-block-product-customizer > div,
-  #MainContent:has(.product-media) .wrapper-content .shopify-block-product-customizer > div,
-  #MainContent:has(.shopify-block-product-media) .wrapper-content .shopify-block-product-customizer > div {
+  .template-product .section-content .shopify-block-product-customizer > div,
+  #MainContent:has(.product-media) .section-content .shopify-block-product-customizer > div,
+  #MainContent:has(.shopify-block-product-media) .section-content .shopify-block-product-customizer > div {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     padding: 16px;
@@ -447,9 +467,9 @@ body {
   background-color: var(--color-background);
 }
 
-/* Breakout styles for truly full-width wrapper sections and testimonials */
+/* Breakout styles for truly full-width section sections and testimonials */
 @media (min-width: --theme(--breakpoint-md)) {
-  .wrapper-section--full-width {
+  .section-section--full-width {
     width: 100vw !important;
     position: relative !important;
     left: 50% !important;
@@ -459,8 +479,8 @@ body {
     max-width: none !important;
   }
 
-  .wrapper-section--full-width .shopify-block-product-testimonial > section,
-  .wrapper-section--full-width .product-testimonial > section {
+  .section-section--full-width .shopify-block-product-testimonial > section,
+  .section-section--full-width .product-testimonial > section {
     width: 100vw !important;
     position: relative !important;
     left: 50% !important;
@@ -472,15 +492,15 @@ body {
 }
 
 @media (width < --theme(--breakpoint-md)) {
-  .wrapper-section--full-width {
+  .section-section--full-width {
     margin-left: -1rem !important;
     margin-right: -1rem !important;
     width: calc(100% + 2rem) !important;
     max-width: none !important;
   }
 
-  .wrapper-section--full-width .shopify-block-product-testimonial > section,
-  .wrapper-section--full-width .product-testimonial > section {
+  .section-section--full-width .shopify-block-product-testimonial > section,
+  .section-section--full-width .product-testimonial > section {
     margin-left: -1rem !important;
     margin-right: -1rem !important;
     width: calc(100% + 2rem) !important;
@@ -488,8 +508,8 @@ body {
   }
 }
 
-/* Make all direct children of full-width wrappers span the entire grid layout */
-.wrapper-content--full-width > * {
+/* Make all direct children of full-width sections span the entire grid layout */
+.section-content--full-width > * {
   grid-column: 1 / -1 !important;
 }
 
@@ -513,7 +533,7 @@ shopify-block,
 .shopify-block-product-trust-checkmarks,
 .shopify-block-accordion,
 .shopify-block-badge,
-.shopify-block-card,
+.shopify-block-container,
 .shopify-block-material-badge,
 .shopify-block-product-cross-sell {
   padding-left: var(--block-padding-left, 0px);
@@ -587,8 +607,8 @@ shopify-block,
   width: 100%;
 }
 
-/* 1. Full-width wrapper alignment (pull to page margin on mobile, standard page width on desktop) */
-.wrapper-section--full-width .shopify-block-product-accordions {
+/* 1. Full-width section alignment (pull to page margin on mobile, standard page width on desktop) */
+.section-section--full-width .shopify-block-product-accordions {
   @media (width < --theme(--breakpoint-md)) {
     margin-left: -1rem;
     margin-right: -1rem;
@@ -596,8 +616,8 @@ shopify-block,
   }
 }
 
-/* 2. Boxed wrapper alignment (pull to card margin on both mobile and desktop) */
-.wrapper-section:not(.wrapper-section--full-width) .shopify-block-product-accordions {
+/* 2. Boxed section alignment (pull to card margin on both mobile and desktop) */
+.section-section:not(.section-section--full-width) .shopify-block-product-accordions {
   margin-left: -1.5rem;
   margin-right: -1.5rem;
   width: calc(100% + 3rem);
@@ -616,9 +636,9 @@ shopify-block,
   padding-right: 0;
 }
 
-/* 4. Layout-aware Accordion Padding (boxed wrapper alignment) */
-.wrapper-section:not(.wrapper-section--full-width) .shopify-block-product-accordions .accordion-trigger,
-.wrapper-section:not(.wrapper-section--full-width) .shopify-block-product-accordions .accordion-content {
+/* 4. Layout-aware Accordion Padding (boxed section alignment) */
+.section-section:not(.section-section--full-width) .shopify-block-product-accordions .accordion-trigger,
+.section-section:not(.section-section--full-width) .shopify-block-product-accordions .accordion-content {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 
@@ -630,22 +650,22 @@ shopify-block,
 
 /* 5. Layout-aware Accordion Padding (full-width alignment overrides) */
 @media (width < --theme(--breakpoint-md)) {
-  .wrapper-section--full-width .shopify-block-product-accordions .accordion-trigger,
-  .wrapper-section--full-width .shopify-block-product-accordions .accordion-content {
+  .section-section--full-width .shopify-block-product-accordions .accordion-trigger,
+  .section-section--full-width .shopify-block-product-accordions .accordion-content {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 }
 @media (min-width: --theme(--breakpoint-md)) {
-  .wrapper-section--full-width .shopify-block-product-accordions .accordion-trigger,
-  .wrapper-section--full-width .shopify-block-product-accordions .accordion-content {
+  .section-section--full-width .shopify-block-product-accordions .accordion-trigger,
+  .section-section--full-width .shopify-block-product-accordions .accordion-content {
     padding-left: 0;
     padding-right: 0;
   }
 }
 
-/* Wrapper Section Headings */
-.wrapper-section__heading {
+/* Section Headings */
+.section-section__heading {
   font-family: var(--font-serif);
   font-weight: 700;
   color: var(--color-primary);
@@ -655,26 +675,26 @@ shopify-block,
 }
 
 
-.grid-layout > .wrapper-section__heading {
+.grid-layout > .section-section__heading {
   grid-column: 1 / -1;
 }
 
-h2.wrapper-section__heading {
+h2.section-section__heading {
   font-size: var(--text-xl);
 }
 
-h3.wrapper-section__heading {
+h3.section-section__heading {
   font-size: var(--text-lg);
 }
 
 @media (min-width: 840px) {
-  .wrapper-section__heading {
+  .section-section__heading {
     margin-bottom: 16px;
   }
-  h2.wrapper-section__heading {
+  h2.section-section__heading {
     font-size: var(--text-2xl);
   }
-  h3.wrapper-section__heading {
+  h3.section-section__heading {
     font-size: var(--text-xl);
   }
 }
