@@ -17,8 +17,8 @@
   }
 {%- endstyle -%}
 
-<div class="w-full" {{ block.shopify_attributes }}>
-  <input type="hidden" name="id" id="product-variant-id" value="{{ product.selected_or_first_available_variant.id }}">
+<div class="w-full" id="variant-picker-{{ block.id }}" {{ block.shopify_attributes }}>
+  <input type="hidden" name="id" id="product-variant-id-{{ block.id }}" value="{{ product.selected_or_first_available_variant.id }}">
 
   {%- if product.variants.size > 1 -%}
     <div class="product-variant-selectors flex flex-col gap-4 mb-2">
@@ -78,7 +78,7 @@
   {%- endif -%}
 </div>
 
-<script id="picker-variant-data" type="application/json">
+<script id="picker-variant-data-{{ block.id }}" type="application/json">
   [
     {%- for variant in product.variants -%}
       {
@@ -94,15 +94,18 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    const pickerContainer = document.getElementById('variant-picker-{{ block.id }}');
+    if (!pickerContainer) return;
+
     let pickerVariants = [];
     try {
-      pickerVariants = JSON.parse(document.getElementById('picker-variant-data').textContent);
+      pickerVariants = JSON.parse(document.getElementById('picker-variant-data-{{ block.id }}').textContent);
     } catch (e) {
       console.error("Failed to parse picker variants", e);
     }
 
     // Variant swatch switching logic
-    const optionButtons = document.querySelectorAll('.product-variant-selectors button');
+    const optionButtons = pickerContainer.querySelectorAll('.product-variant-selectors button');
     optionButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         const clickedBtn = e.currentTarget;
@@ -141,7 +144,7 @@
         }
 
         // Update the visual text label
-        const labelEl = Array.from(document.querySelectorAll('[data-selected-option-label]'))
+        const labelEl = Array.from(pickerContainer.querySelectorAll('[data-selected-option-label]'))
           .find(el => el.dataset.selectedOptionLabel === optionName);
         if (labelEl) {
           labelEl.textContent = optionValue;
@@ -149,7 +152,7 @@
 
         // Determine currently selected values across all options in correct index order
         const selectedValues = [];
-        const optionContainers = document.querySelectorAll('.product-variant-selectors [data-option-index]');
+        const optionContainers = pickerContainer.querySelectorAll('.product-variant-selectors [data-option-index]');
         optionContainers.forEach(container => {
           const idx = parseInt(container.dataset.optionIndex);
           const activeBtn = Array.from(container.querySelectorAll('button')).find(b => {
@@ -168,7 +171,7 @@
 
         if (matchedVariant) {
           // Update the hidden input
-          const hiddenInput = document.getElementById('product-variant-id');
+          const hiddenInput = pickerContainer.querySelector('#product-variant-id-{{ block.id }}');
           if (hiddenInput) {
             hiddenInput.value = matchedVariant.id;
             // Dispatch change event to notify other scripts (like tablecloth customizer)
