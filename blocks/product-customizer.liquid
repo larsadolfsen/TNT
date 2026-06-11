@@ -691,11 +691,12 @@
           if (v.options[i] !== currentVariant.options[i]) return false;
         }
         if (!v.options || !v.options[widthOptionIndex]) return false;
-        const vWidthVal = v.options[widthOptionIndex].toLowerCase().trim();
+        const vWidthVal = v.options[widthOptionIndex].toLowerCase().trim().replace('cm', '').replace(/\s+/g, '');
+        const normTarget = targetValNormalized.replace('cm', '').replace(/\s+/g, '');
         if (targetValNormalized === 'tilpasset') {
           return vWidthVal.includes('tilpasset') || vWidthVal.includes('tilpas');
         } else {
-          return vWidthVal === targetValNormalized || vWidthVal.replace(/\s+/g, '') === targetValNormalized.replace(/\s+/g, '');
+          return vWidthVal === normTarget;
         }
       });
 
@@ -703,11 +704,12 @@
       if (!match) {
         match = variants.find(v => {
           if (!v.options || !v.options[widthOptionIndex]) return false;
-          const vWidthVal = v.options[widthOptionIndex].toLowerCase().trim();
+          const vWidthVal = v.options[widthOptionIndex].toLowerCase().trim().replace('cm', '').replace(/\s+/g, '');
+          const normTarget = targetValNormalized.replace('cm', '').replace(/\s+/g, '');
           if (targetValNormalized === 'tilpasset') {
             return vWidthVal.includes('tilpasset') || vWidthVal.includes('tilpas');
           } else {
-            return vWidthVal === targetValNormalized || vWidthVal.replace(/\s+/g, '') === targetValNormalized.replace(/\s+/g, '');
+            return vWidthVal === normTarget;
           }
         });
       }
