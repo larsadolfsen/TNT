@@ -117,7 +117,7 @@
     --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
     --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
     --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
-    --color-important: {{ block.settings.color_important | default: '#e11d48' }};
+    --color-important: {{ block.settings.color_important | default: settings.important_color | default: '#e11d48' }};
     
     padding-top: var(--block-padding-top);
     padding-bottom: var(--block-padding-bottom);
