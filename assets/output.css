@@ -646,12 +646,6 @@
     --tw-scale-z: 0%;
     scale: var(--tw-scale-x) var(--tw-scale-y);
   }
-  .scale-50 {
-    --tw-scale-x: 50%;
-    --tw-scale-y: 50%;
-    --tw-scale-z: 50%;
-    scale: var(--tw-scale-x) var(--tw-scale-y);
-  }
   .scale-100 {
     --tw-scale-x: 100%;
     --tw-scale-y: 100%;
@@ -984,9 +978,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-slate-200) 80%, transparent);
     }
-  }
-  .border-slate-300 {
-    border-color: var(--color-slate-300);
   }
   .border-slate-300\/40 {
     border-color: color-mix(in srgb, oklch(86.9% 0.022 252.894) 40%, transparent);

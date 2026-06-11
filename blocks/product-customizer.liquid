@@ -160,23 +160,53 @@
   }
   
   /* Custom styled checkbox styling */
+  .custom-checkbox-box {
+    border-radius: 8px !important;
+    border-width: 2px !important;
+    border-color: var(--color-border, #cbd5e1) !important;
+    background-color: #ffffff !important;
+    width: 28px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  }
   .custom-checkbox-container:hover .custom-checkbox-box {
-    border-color: var(--color-primary) !important;
+    border-color: var(--color-primary, #0e1a28) !important;
   }
   #checkbox-custom-width:checked ~ .custom-checkbox-box {
-    background-color: var(--color-primary, #0e1a28) !important;
     border-color: var(--color-primary, #0e1a28) !important;
+    background-color: #ffffff !important;
+  }
+  .custom-checkbox-box svg {
+    width: 0px !important;
+    height: 0px !important;
+    border-radius: 4px !important;
+    background-color: var(--color-primary, #0e1a28) !important;
+    color: #ffffff !important;
+    padding: 0px !important;
+    opacity: 0 !important;
+    transform: scale(0.5) !important;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   }
   #checkbox-custom-width:checked ~ .custom-checkbox-box svg {
     opacity: 1 !important;
     transform: scale(1) !important;
+    width: 18px !important;
+    height: 18px !important;
+    padding: 3.5px !important;
   }
   #checkbox-custom-width:focus-visible ~ .custom-checkbox-box {
     outline: 2px solid var(--color-primary, #0e1a28) !important;
     outline-offset: 2px !important;
   }
+  .custom-checkbox-container span {
+    color: var(--color-primary, #0e1a28) !important;
+  }
   .custom-checkbox-container:hover span {
-    color: #0f172a !important; /* slate-900 */
+    color: var(--color-primary, #0e1a28) !important;
+    opacity: 0.8 !important;
   }
   
   /* Variant button shadows: inactive variants should not have shadow, active elements with hover should have a bit more shadow */
@@ -317,12 +347,12 @@
         <label for="checkbox-custom-width" class="custom-checkbox-container" style="display: flex !important; align-items: center !important; justify-content: flex-start !important; width: auto !important; gap: 12px !important; cursor: pointer; user-select: none;">
           <input type="checkbox" id="checkbox-custom-width" class="sr-only" />
           <!-- Styled custom checkbox box -->
-          <div class="custom-checkbox-box rounded-md border-2 border-slate-300 bg-white" style="width: 24px !important; height: 24px !important; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; transition: all 0.2s ease;">
-            <svg style="width: 14px !important; height: 14px !important; display: block !important; transition: all 0.2s ease;" class="text-white opacity-0 scale-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5">
+          <div class="custom-checkbox-box" style="flex-shrink: 0 !important;">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <span class="text-sm font-semibold text-slate-800 transition-colors duration-150" style="width: auto !important; display: inline-block !important; margin: 0 !important; padding: 0 !important;">
+          <span class="text-sm font-semibold transition-colors duration-150" style="width: auto !important; display: inline-block !important; margin: 0 !important; padding: 0 !important;">
             {{ block.settings.custom_width_checkbox_label | default: "Tilpas på dine mål" }}
           </span>
         </label>
