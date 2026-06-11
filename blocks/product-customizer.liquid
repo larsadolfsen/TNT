@@ -836,6 +836,9 @@
         });
       
       if (btn) {
+        btn.removeAttribute('disabled');
+        btn.disabled = false;
+        btn.classList.remove('disabled');
         btn.click();
         if (btn.tagName === 'INPUT') {
           btn.checked = true;
@@ -855,6 +858,8 @@
         if (isWidthSelect) {
           const opt = Array.from(select.options).find(o => o.value === value || o.value.toLowerCase().trim() === value.toLowerCase().trim());
           if (opt) {
+            opt.removeAttribute('disabled');
+            opt.disabled = false;
             select.value = opt.value;
             select.dispatchEvent(new Event('change', { bubbles: true }));
           }
