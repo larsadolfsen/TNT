@@ -5,18 +5,30 @@
         --span-mb: 1;
         --span-tb: 2;
         --span-lg: 3;
+        --span-mobile: 1;
+        --span-expanded: 2;
+        --span-large: 3;
       {%- when '2' -%}
         --span-mb: 2;
         --span-tb: 4;
         --span-lg: 6;
+        --span-mobile: 2;
+        --span-expanded: 4;
+        --span-large: 6;
       {%- when '3' -%}
         --span-mb: 3;
         --span-tb: 6;
         --span-lg: 9;
+        --span-mobile: 3;
+        --span-expanded: 6;
+        --span-large: 9;
       {%- else -%}
         --span-mb: 4;
         --span-tb: 8;
         --span-lg: 12;
+        --span-mobile: 4;
+        --span-expanded: 8;
+        --span-large: 12;
     {%- endcase -%}
   }
 {%- endstyle -%}
