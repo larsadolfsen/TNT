@@ -320,7 +320,7 @@
         "column_span_desktop": "4",
         "column_start_desktop": "9",
         "row_span_desktop": "auto",
-        "row_start_desktop": "1",
+        "row_start_desktop": "auto",
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
