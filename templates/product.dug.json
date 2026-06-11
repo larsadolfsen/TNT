@@ -60,8 +60,8 @@
               "type": "product-trust",
               "settings": {
                 "rating_score": "4,8",
-                "rating_count": "",
-                "badge_text": "1.200+ butiksanmeldelser",
+                "rating_count": "1.200+ butikdanmeldelser",
+                "badge_text": "",
                 "padding_top": 0,
                 "padding_bottom": 0,
                 "padding_sides": 0
