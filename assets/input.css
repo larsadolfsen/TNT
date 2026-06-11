@@ -711,4 +711,22 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   opacity: 0.8;
 }
 
+/* Password card alignment on grid layout */
+.password-card {
+  grid-column: 1 / span 4;
+  align-self: center;
+}
+
+@media (min-width: --theme(--breakpoint-md)) {
+  .password-card {
+    grid-column: 3 / span 4;
+  }
+}
+
+@media (min-width: --theme(--breakpoint-lg)) {
+  .password-card {
+    grid-column: 5 / span 4;
+  }
+}
+
 

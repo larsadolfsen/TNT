@@ -2642,6 +2642,20 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   color: var(--color-primary, #0e1a28);
   opacity: 0.8;
 }
+.password-card {
+  grid-column: 1 / span 4;
+  align-self: center;
+}
+@media (min-width: 840px) {
+  .password-card {
+    grid-column: 3 / span 4;
+  }
+}
+@media (min-width: 1200px) {
+  .password-card {
+    grid-column: 5 / span 4;
+  }
+}
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;
