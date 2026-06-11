@@ -506,6 +506,7 @@
 <script>
   // Shape selector (global so onclick= attributes can call it)
   let selectedShape = 'firkantet';
+  let soldOutLabel = {{ block.settings.sold_out_text | default: "Ikke på lager" | json }};
   function selectShape(shape) {
     selectedShape = shape;
     
@@ -845,7 +846,7 @@
         });
       }
       if (match && !match.available) {
-        showToast(`Bredden ${value} er desværre udsolgt.`);
+        showToast(`Bredden ${value} er desværre ${soldOutLabel.toLowerCase()}.`);
         return;
       }
 
