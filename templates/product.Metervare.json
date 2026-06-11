@@ -28,7 +28,6 @@
           "name": "t:general.card",
           "settings": {
             "design": "none",
-            "width_cols": "1",
             "background_color": "dark",
             "use_global_gap": true,
             "block_gap": 16,
@@ -371,7 +370,6 @@
           "name": "t:general.card",
           "settings": {
             "design": "border",
-            "width_cols": "4",
             "background_color": "light",
             "use_global_gap": true,
             "block_gap": 12,
@@ -458,38 +456,63 @@
     "row_VY7RVT": {
       "type": "wrapper",
       "blocks": {
-        "accordion_NzD7JY": {
-          "type": "accordion",
+        "card_ye8GkF": {
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
-            "title": "Produktspecifikationer",
-            "content": "<p><strong>Form: </strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}<strong><br/>Certificeringer: </strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}<br/><strong>Kemi:</strong> {{ closest.product.metafields.custom.kemi.value }}<strong><br/>Bredde:  </strong>{{ closest.product.metafields.custom.bredde_cm | metafield_text: field: 'label' }}<strong><br/>Tykkelse:</strong> {{ closest.product.metafields.custom.tykkelse.value }} mm</p>",
-            "open_by_default": true
+            "design": "border",
+            "background_color": "light",
+            "use_global_gap": true,
+            "block_gap": 12,
+            "title": "Kort Overskrift",
+            "content": "<p>Dette er et kortelement med tilpasset design.</p>",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "padding_sides": 24
           },
-          "blocks": {}
-        },
-        "accordion_6kXXUF": {
-          "type": "accordion",
-          "settings": {
-            "title": "Om Textil & Voksdug",
-            "content": "<p>Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
-            "open_by_default": false
+          "blocks": {
+            "accordion_N6XxWL": {
+              "type": "accordion",
+              "settings": {
+                "title": "Produktspecifikationer",
+                "content": "<p><strong>Form: </strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}<strong><br/>Certificeringer: </strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}<br/><strong>Kemi:</strong> {{ closest.product.metafields.custom.kemi.value }}<strong><br/>Bredde:  </strong>{{ closest.product.metafields.custom.bredde_cm | metafield_text: field: 'label' }}<strong><br/>Tykkelse:</strong> {{ closest.product.metafields.custom.tykkelse.value }} mm</p>",
+                "open_by_default": true
+              },
+              "blocks": {}
+            },
+            "accordion_GGicbF": {
+              "type": "accordion",
+              "settings": {
+                "title": "Om Textil & Voksdug",
+                "content": "<p>Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
+                "open_by_default": false
+              },
+              "blocks": {}
+            },
+            "accordion_DMx9ax": {
+              "type": "accordion",
+              "settings": {
+                "title": "Vedligeholdelse",
+                "content": "<p><strong>Daglig rengøring:</strong> Tør overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>",
+                "open_by_default": false
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
-        },
-        "accordion_6WF8D8": {
-          "type": "accordion",
-          "settings": {
-            "title": "Vedligeholdelse",
-            "content": "<p><strong>Daglig rengøring:</strong> Tør overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
+          "block_order": [
+            "accordion_N6XxWL",
+            "accordion_GGicbF",
+            "accordion_DMx9ax"
+          ]
         }
       },
       "block_order": [
-        "accordion_NzD7JY",
-        "accordion_6kXXUF",
-        "accordion_6WF8D8"
+        "card_ye8GkF"
       ],
       "name": "Wrapper - Accordion",
       "settings": {
@@ -743,7 +766,6 @@
           "name": "t:general.card",
           "settings": {
             "design": "border",
-            "width_cols": "4",
             "background_color": "transparent",
             "use_global_gap": true,
             "block_gap": 12,
