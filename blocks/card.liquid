@@ -93,13 +93,6 @@
     }
   {%- endunless -%}
 
-  /* Support Grid Column Spanning */
-  #shopify-block-{{ block.id }}.shopify-block {
-    --span-mb: 4;
-    --span-tb: 8;
-    --span-lg: 12;
-  }
-
   /* Force headers and links to inherit color on dark background cards */
   {%- liquid
     assign force_inherit_color = false

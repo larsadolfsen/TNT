@@ -7,6 +7,13 @@
   #shopify-section-{{ section.id }} {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
+    {%- if section.settings.max_width == 'page-width' -%}
+      max-width: var(--page-width, 1440px);
+    {%- elsif section.settings.max_width != 'none' -%}
+      max-width: {{ section.settings.max_width | default: '1280px' }};
+    {%- else -%}
+      max-width: none;
+    {%- endif -%}
   }
 
   @media screen and (min-width: 840px) {
@@ -646,8 +653,36 @@
 {% schema %}
 {
   "name": "Brødkrummer",
-  "class": "shopify-section-breadcrumbs max-w-screen-xl mx-auto px-4",
+  "class": "shopify-section-breadcrumbs mx-auto px-4",
   "settings": [
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Maksimal bredde",
+      "default": "1280px",
+      "options": [
+        {
+          "value": "1024px",
+          "label": "Lille (1024px)"
+        },
+        {
+          "value": "1280px",
+          "label": "Standard (1280px)"
+        },
+        {
+          "value": "1440px",
+          "label": "Stor (1440px)"
+        },
+        {
+          "value": "page-width",
+          "label": "Global sidebredde"
+        },
+        {
+          "value": "none",
+          "label": "Fuld bredde"
+        }
+      ]
+    },
     {
       "type": "range",
       "id": "padding_top",

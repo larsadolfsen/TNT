@@ -2382,6 +2382,7 @@ h4 {
       position: sticky;
       top: 2rem;
       z-index: 10;
+      align-self: start;
     }
     .shopify-section:has(.shopify-block-page-title), .shopify-section:has(.page-title) {
       grid-column-start: var(--col-start, 9);
