@@ -354,6 +354,20 @@ h4 {
     .shopify-section:has(.shopify-block-product-media) {
       grid-column-start: var(--col-start, 1);
       grid-row: var(--row-start, 1) / span var(--row-span, 2);
+      align-self: stretch;
+    }
+
+    .shopify-section:has(.product-media) .wrapper-section,
+    .shopify-section:has(.shopify-block-product-media) .wrapper-section,
+    .shopify-section:has(.product-media) [class*="-inner-padding"],
+    .shopify-section:has(.shopify-block-product-media) [class*="-inner-padding"],
+    .shopify-section:has(.product-media) .wrapper-content,
+    .shopify-section:has(.shopify-block-product-media) .wrapper-content {
+      height: 100%;
+    }
+
+    .shopify-section:has(.product-media) .product-media,
+    .shopify-section:has(.shopify-block-product-media) .shopify-block-product-media {
       position: sticky;
       top: 2rem;
       z-index: 10;

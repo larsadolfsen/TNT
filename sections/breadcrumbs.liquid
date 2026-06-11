@@ -185,6 +185,17 @@
       display: inline-flex !important;
       align-items: center;
     }
+
+    /* Do not abbreviate breadcrumbs on desktop */
+    @media screen and (min-width: 1200px) {
+      .breadcrumbs-nav .breadcrumb-ellipsis {
+        display: none !important;
+      }
+      .breadcrumbs-nav .breadcrumb-collapsed-item {
+        display: inline-flex !important;
+        align-items: center;
+      }
+    }
   </style>
 
   {%- assign parent_url = routes.root_url -%}
