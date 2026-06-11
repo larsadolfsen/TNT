@@ -125,10 +125,10 @@
     padding-right: var(--block-padding-right);
 
     {%- if block.settings.border_top -%}
-      border-top: 1px solid #e2e8f0;
+      border-top: 1px solid var(--color-border);
     {%- endif -%}
     {%- if block.settings.border_bottom -%}
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid var(--color-border);
     {%- endif -%}
   }
 {%- endstyle -%}
@@ -209,19 +209,21 @@
     opacity: 0.8 !important;
   }
   
-  /* Variant button shadows: inactive variants should not have shadow, active elements with hover should have a bit more shadow */
+  /* Variant button shadows: regular buttons get shadow by default, active with hover gets more, disabled gets none */
   .width-btn,
   .shape-btn {
-    box-shadow: none !important;
-    transition: box-shadow 0.2s ease, border-color 0.2s ease, border-width 0.2s ease, transform 0.15s ease !important;
-  }
-  .width-btn.active,
-  .shape-btn.active {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1) !important; /* Tailwind shadow-sm equivalent */
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, border-width 0.2s ease, transform 0.15s ease !important;
   }
   .width-btn.active:hover,
   .shape-btn.active:hover {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -2px rgba(0, 0, 0, 0.15) !important; /* Slightly stronger shadow-md equivalent */
+  }
+  .width-btn.opacity-25,
+  .shape-btn.opacity-25,
+  .width-btn[disabled],
+  .shape-btn[disabled] {
+    box-shadow: none !important;
   }
 </style>
 
@@ -250,7 +252,7 @@
         <!-- Firkantet dug -->
         <div class="flex flex-col items-center gap-1" style="--span-mobile: 1; --span-expanded: 1; --span-large: 1;">
           <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
-            class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
+            class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-outline-variant bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             onclick="selectShape('firkantet')">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
               <rect x="3" y="6" width="18" height="12" rx="1.5"/>
@@ -265,7 +267,7 @@
         <!-- Rund dug -->
         <div class="flex flex-col items-center gap-1" style="--span-mobile: 1; --span-expanded: 1; --span-large: 1;">
           <button type="button" id="btn-shape-rund" data-shape="rund"
-            class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
+            class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-outline-variant bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             onclick="selectShape('rund')">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
               <circle cx="12" cy="12" r="8.5"/>
@@ -280,7 +282,7 @@
         <!-- Oval dug -->
         <div class="flex flex-col items-center gap-1" style="--span-mobile: 1; --span-expanded: 1; --span-large: 1;">
           <button type="button" id="btn-shape-oval" data-shape="oval"
-            class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-slate-200 bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
+            class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-outline-variant bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             onclick="selectShape('oval')">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
               <rect x="3" y="8" width="18" height="8" rx="4"/>
@@ -317,7 +319,7 @@
             {%- assign numeric_width = value | replace: 'cm', '' | replace: 'CM', '' | strip -%}
             
             <button type="button" 
-              class="width-btn width-btn-slider-item flex flex-col items-center justify-center gap-0.5 rounded-2xl border border-slate-200 bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none aspect-square"
+              class="width-btn width-btn-slider-item flex flex-col items-center justify-center gap-0.5 rounded-2xl border border-outline-variant bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none aspect-square"
               data-width-value="{{ value | escape }}"
               data-numeric-width="{{ numeric_width }}"
               onclick="selectWidthValue('{{ value | escape }}', {{ numeric_width }})">
@@ -372,9 +374,9 @@
         
         <!-- Pill-shaped Stepper -->
         <div class="w-full">
-          <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;">
+          <div class="stepper-pill flex w-full justify-between items-center bg-white border border-outline-variant rounded-full shadow-sm" style="height:56px;">
             <!-- Minus button -->
-            <button type="button" id="btn-width-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+            <button type="button" id="btn-width-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
               &mdash;
             </button>
             <!-- Value input -->
@@ -384,7 +386,7 @@
               style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
             />
             <!-- Plus button -->
-            <button type="button" id="btn-width-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+            <button type="button" id="btn-width-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
               &#43;
             </button>
           </div>
@@ -408,9 +410,9 @@
 
       <!-- Pill-shaped Stepper -->
       <div class="w-full pl-10">
-        <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;">
+        <div class="stepper-pill flex w-full justify-between items-center bg-white border border-outline-variant rounded-full shadow-sm" style="height:56px;">
           <!-- Minus button -->
-          <button type="button" id="btn-length-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-length-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &mdash;
           </button>
           <!-- Value input -->
@@ -420,7 +422,7 @@
             style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
           />
           <!-- Plus button -->
-          <button type="button" id="btn-length-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-length-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &#43;
           </button>
         </div>
@@ -447,9 +449,9 @@
         </div>
       </div>
       <div class="w-full pl-10">
-        <div class="stepper-pill flex w-full justify-between items-center bg-white border border-slate-200 rounded-full shadow-sm" style="height:56px;transition:border-color 0.15s,box-shadow 0.15s;">
+        <div class="stepper-pill flex w-full justify-between items-center bg-white border border-outline-variant rounded-full shadow-sm" style="height:56px;transition:border-color 0.15s,box-shadow 0.15s;">
           <!-- Minus button -->
-          <button type="button" id="btn-qty-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-qty-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &mdash;
           </button>
           <!-- Value input -->
@@ -460,7 +462,7 @@
             style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
           />
           <!-- Plus button -->
-          <button type="button" id="btn-qty-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid #e2e8f0;min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-qty-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-slate-900 active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &#43;
           </button>
         </div>
@@ -468,7 +470,7 @@
     </div>
 
     <!-- Selected Specs & Price (Calculation Table Summary) -->
-    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-slate-200 rounded-2xl pt-5 pb-4 px-4 mt-2 mb-3 text-sm text-primary/90" style="display: none; --span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
+    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-outline-variant rounded-2xl pt-5 pb-4 px-4 mt-2 mb-3 text-sm text-primary/90" style="display: none; --span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
       <!-- Title -->
       <div id="calc-title" class="mb-2 font-semibold text-primary"></div>
       
@@ -487,7 +489,7 @@
           <span id="calc-width-price"></span>
         </div>
         
-        <div class="border-t border-slate-200 my-2"></div>
+        <div class="border-t border-outline-variant my-2"></div>
         
         <div class="flex justify-between items-center">
           <span>Pris pr. dug.</span>
@@ -574,14 +576,14 @@
         btn.classList.add('active');
         btn.style.borderColor = '#f5c518';
         btn.style.borderWidth = '2px';
-        btn.classList.remove('border', 'border-slate-200');
+        btn.classList.remove('border', 'border-outline-variant');
         btn.classList.add('border-2');
       } else {
         btn.classList.remove('active');
         btn.style.borderColor = '';
         btn.style.borderWidth = '';
         btn.classList.remove('border-2');
-        btn.classList.add('border', 'border-slate-200');
+        btn.classList.add('border', 'border-outline-variant');
       }
       // Both active and not selected have text-slate-900
       btn.classList.remove('text-slate-600', 'text-slate-400');
@@ -871,14 +873,14 @@
           btn.classList.add('active');
           btn.style.borderColor = '#f5c518';
           btn.style.borderWidth = '2px';
-          btn.classList.remove('border-slate-200');
+          btn.classList.remove('border-outline-variant');
           btn.classList.add('border-2');
         } else {
           btn.classList.remove('active');
           btn.style.borderColor = '';
           btn.style.borderWidth = '';
           btn.classList.remove('border-2');
-          btn.classList.add('border-slate-200');
+          btn.classList.add('border-outline-variant');
         }
         // Both active and not selected should stay text-slate-900 by default,
         // unless they are disabled/deactivated by updateUI check.
@@ -1073,7 +1075,7 @@
               btn.classList.remove("text-slate-900");
               btn.classList.add("text-slate-400");
               btn.style.cursor = "not-allowed";
-              btn.style.borderColor = "#e2e8f0";
+              btn.style.borderColor = "var(--color-border)";
               
               // Hide price per meter details
               if (priceSpan) priceSpan.style.display = "none";

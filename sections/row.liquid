@@ -163,7 +163,7 @@
   endif
 -%}
 
-<div class="{{ outer_class }}"{% if section.settings.border_top or section.settings.border_bottom %} style="{% if section.settings.border_top %}border-top:1px solid #e2e8f0;{% endif %}{% if section.settings.border_bottom %}border-bottom:1px solid #e2e8f0;{% endif %}"{% endif %}>
+<div class="{{ outer_class }}"{% if section.settings.border_top or section.settings.border_bottom %} style="{% if section.settings.border_top %}border-top:1px solid var(--color-border);{% endif %}{% if section.settings.border_bottom %}border-bottom:1px solid var(--color-border);{% endif %}"{% endif %}>
   <div class="{{ inner_class }}">
     <div class="{{ row_classes }}">
       {%- if section.settings.heading != blank -%}
