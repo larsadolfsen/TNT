@@ -597,14 +597,21 @@
       if (!variantTitle) return 140;
       // Prefer "xxx cm" pattern (e.g. ", 140 cm" at end of title)
       let match = variantTitle.match(/(\d+)\s*cm/i);
+      if (match && match[1]) {
+        return parseInt(match[1]);
+      }
       if (!match && productTitle) {
         match = productTitle.match(/(\d+)\s*cm/i);
+        if (match && match[1]) {
+          return parseInt(match[1]);
+        }
       }
       // Fallback: first number anywhere
-      if (!match) {
-        match = variantTitle.match(/(\d+)/);
+      match = variantTitle.match(/(\d+)/);
+      if (match) {
+        return parseInt(match[0]);
       }
-      return match ? parseInt(match[1]) : 140;
+      return 140;
     }
 
     // Safety fallback for empty/missing variants
@@ -671,26 +678,39 @@
     // Helper to find standard variant for width matching other option values
     function findVariantForWidthAndOtherOptions(widthVal, currentVariant) {
       if (widthOptionIndex === null || widthOptionIndex === undefined) return null;
-      if (!currentVariant || !currentVariant.options) return null;
+      if (!variants || variants.length === 0) return null;
       
-      const targetValNormalized = widthVal.toLowerCase();
+      const targetValNormalized = widthVal.toLowerCase().trim();
       
-      return variants.find(v => {
-        // 1. Match all other options
+      // Try exact match on other options first
+      let match = variants.find(v => {
+        if (!currentVariant || !currentVariant.options) return false;
         for (let i = 0; i < v.options.length; i++) {
           if (i === widthOptionIndex) continue;
           if (v.options[i] !== currentVariant.options[i]) return false;
         }
-        
-        // 2. Match width value
         if (!v.options || !v.options[widthOptionIndex]) return false;
-        const vWidthVal = v.options[widthOptionIndex].toLowerCase();
+        const vWidthVal = v.options[widthOptionIndex].toLowerCase().trim();
         if (targetValNormalized === 'tilpasset') {
           return vWidthVal.includes('tilpasset') || vWidthVal.includes('tilpas');
         } else {
-          return vWidthVal === targetValNormalized;
+          return vWidthVal === targetValNormalized || vWidthVal.replace(/\s+/g, '') === targetValNormalized.replace(/\s+/g, '');
         }
       });
+
+      // Fallback: match just the width if options mismatched (e.g. if the product has options that don't match perfectly)
+      if (!match) {
+        match = variants.find(v => {
+          if (!v.options || !v.options[widthOptionIndex]) return false;
+          const vWidthVal = v.options[widthOptionIndex].toLowerCase().trim();
+          if (targetValNormalized === 'tilpasset') {
+            return vWidthVal.includes('tilpasset') || vWidthVal.includes('tilpas');
+          } else {
+            return vWidthVal === targetValNormalized || vWidthVal.replace(/\s+/g, '') === targetValNormalized.replace(/\s+/g, '');
+          }
+        });
+      }
+      return match;
     }
 
     // Helper to find the smallest standard variant width that is >= targetWidth
@@ -737,8 +757,13 @@
     }
 
     function updateWidthButtonsUI(selectedValue) {
+      if (!selectedValue) return;
+      const normalizedSelected = selectedValue.toString().toLowerCase().replace(/\s+/g, '').replace('cm', '');
       document.querySelectorAll('.width-btn').forEach(btn => {
-        const isBtnActive = btn.dataset.widthValue === selectedValue;
+        const val = btn.dataset.widthValue;
+        if (!val) return;
+        const normalizedVal = val.toLowerCase().replace(/\s+/g, '').replace('cm', '');
+        const isBtnActive = normalizedVal === normalizedSelected;
         
         if (isBtnActive) {
           btn.style.borderColor = '#f5c518';
@@ -792,6 +817,13 @@
     }
 
     window.selectWidthValue = function(value, numericWidth) {
+      let currentVariant = getCurrentVariant();
+      const match = findVariantForWidthAndOtherOptions(value, currentVariant);
+      if (match && !match.available) {
+        showToast(`Bredden ${value} er desværre udsolgt.`);
+        return;
+      }
+
       const customWidthCheckbox = document.getElementById("checkbox-custom-width");
       if (customWidthCheckbox) {
         customWidthCheckbox.checked = false;
@@ -856,7 +888,7 @@
         // Width validation / setup
         const width = getVariantWidth(pricingVariant ? pricingVariant.title : "");
         
-        // Update prices per meter on the standard width buttons
+        // Update prices per meter on the standard width buttons and handle out-of-stock states
         if (widthOptionIndex !== null) {
           document.querySelectorAll('.width-btn[data-width-value]').forEach(btn => {
             const val = btn.dataset.widthValue;
@@ -865,6 +897,38 @@
             if (priceSpan && match) {
               const pricePerMeter = match.price * 100;
               priceSpan.textContent = formatDanishPrice(pricePerMeter).replace("Kr.", "kr.");
+            }
+            
+            // Check availability/inventory
+            if (match && !match.available) {
+              btn.classList.add("opacity-40");
+              btn.style.cursor = "not-allowed";
+              // Optional: Add a visual indicator or label like "Udsolgt" or similar
+              const soldOutIndicator = btn.querySelector('.sold-out-badge');
+              if (!soldOutIndicator) {
+                const badge = document.createElement('span');
+                badge.className = 'sold-out-badge text-[9px] font-bold text-rose-600 uppercase mt-0.5 tracking-wider';
+                badge.innerText = 'Udsolgt';
+                // Find "pr. meter" span and replace/insert before it
+                const prMeterText = btn.lastElementChild;
+                if (prMeterText && prMeterText.textContent.includes("meter")) {
+                  btn.insertBefore(badge, prMeterText);
+                  prMeterText.style.display = "none";
+                } else {
+                  btn.appendChild(badge);
+                }
+              }
+            } else {
+              btn.classList.remove("opacity-40");
+              btn.style.cursor = "pointer";
+              const soldOutIndicator = btn.querySelector('.sold-out-badge');
+              if (soldOutIndicator) {
+                soldOutIndicator.remove();
+              }
+              const prMeterText = btn.lastElementChild;
+              if (prMeterText && prMeterText.textContent.includes("meter")) {
+                prMeterText.style.display = "";
+              }
             }
           });
         } else if (pricingVariant && pricingVariant.price > 0) {
@@ -878,8 +942,7 @@
 
         // Sync active state of width buttons
         if (widthOptionIndex !== null) {
-          const activeWidthVal = currentVariant.options[widthOptionIndex];
-          updateWidthButtonsUI(activeWidthVal);
+          updateWidthButtonsUI(state.width);
         }
 
         // If shape is round, length selection is not possible (since diameter is determined by width)
