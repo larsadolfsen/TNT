@@ -136,7 +136,7 @@
         "heading": "",
         "heading_tag": "h3",
         "background_color": "light",
-        "alignment": "columns",
+        "alignment": "left",
         "span_mobile": "4",
         "span_tablet": "4",
         "span_desktop": "8",
