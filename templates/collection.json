@@ -16,40 +16,53 @@
           "type": "page-title",
           "settings": {
             "title_override": "",
-            "show_description": true
-          }
+            "show_description": true,
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "page_title"
       ],
       "settings": {
+        "heading": "",
+        "heading_tag": "h3",
+        "background_color": "light",
+        "alignment": "columns",
+        "span_mobile": "4",
+        "span_tablet": "8",
+        "span_desktop": "12",
         "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
-    "collection-subcategories": {
-      "type": "collection-subcategories",
-      "settings": {}
-    },
-    "collection-subcollections": {
-      "type": "collection-subcollections",
-      "settings": {
-        "title": "SØG UD FRA DIT BEHOV",
-        "mode": "automatic",
-        "main_collection": "{{ collection }}",
-        "show_all_label": "Vis alle"
+        "padding_bottom": 0,
+        "padding_sides": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "main-collection": {
       "type": "main-collection",
-      "settings": {}
+      "settings": {
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "collections_HznyAB": {
+      "type": "collections",
+      "name": "t:general.collections_grid",
+      "settings": {
+        "grid_item_width": "collections--compact",
+        "grid_gap": 10
+      }
     }
   },
   "order": [
     "collection-header",
-    "collection-subcategories",
-    "collection-subcollections",
-    "main-collection"
+    "main-collection",
+    "collections_HznyAB"
   ]
 }
