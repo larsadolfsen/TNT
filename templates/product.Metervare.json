@@ -319,7 +319,7 @@
         "hide_on_tablet": false,
         "column_span_desktop": "4",
         "column_start_desktop": "auto",
-        "row_span_desktop": "auto",
+        "row_span_desktop": "2",
         "row_start_desktop": "1",
         "hide_on_desktop": false,
         "justify_self": "auto",
