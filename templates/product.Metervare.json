@@ -136,7 +136,7 @@
           "type": "product-media",
           "name": "Product Media Gallery",
           "settings": {
-            "image_badge": "BESTSELLER",
+            "image_badge": "",
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0
@@ -365,19 +365,67 @@
             "text": "Sendes på rulle, for at undgå folder."
           },
           "blocks": {}
+        },
+        "card_4cY3dT": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "design": "border",
+            "width_cols": "4",
+            "background_color": "light",
+            "use_global_gap": true,
+            "block_gap": 12,
+            "title": "",
+            "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "padding_sides": 24
+          },
+          "blocks": {
+            "material_badge_nKfKP8": {
+              "type": "material-badge",
+              "name": "Material Badge",
+              "settings": {
+                "width_cols": "2",
+                "icon": "filter_vintage",
+                "title": "OEKO-TEX® Standard 100"
+              },
+              "blocks": {}
+            },
+            "material_badge_9VUW8Y": {
+              "type": "material-badge",
+              "name": "Material Badge",
+              "settings": {
+                "width_cols": "2",
+                "icon": "eco",
+                "title": "100% Phthalatfri"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "material_badge_nKfKP8",
+            "material_badge_9VUW8Y"
+          ]
         }
       },
       "block_order": [
         "trust_checkmark_xhq8A9",
         "trust_countdown_GMJdXK",
         "trust_checkmark_9AbQBF",
-        "trust_checkmark_KcRXQx"
+        "trust_checkmark_KcRXQx",
+        "card_4cY3dT"
       ],
       "name": "Wrapper - Trust",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
-        "background_color": "shade",
+        "background_color": "transparent",
         "full_width": false,
         "alignment": "columns",
         "column_span_mobile": "4",
@@ -390,8 +438,8 @@
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
-        "column_span_desktop": "6",
-        "column_start_desktop": "9",
+        "column_span_desktop": "4",
+        "column_start_desktop": "8",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
@@ -480,53 +528,6 @@
     "row_p6nNCG": {
       "type": "wrapper",
       "blocks": {
-        "card_RYHhb3": {
-          "type": "card",
-          "name": "t:general.card",
-          "settings": {
-            "design": "border",
-            "width_cols": "4",
-            "background_color": "light",
-            "use_global_gap": true,
-            "block_gap": 12,
-            "title": "",
-            "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "padding_sides": 24
-          },
-          "blocks": {
-            "material_badge_nKfKP8": {
-              "type": "material-badge",
-              "name": "Material Badge",
-              "settings": {
-                "width_cols": "2",
-                "icon": "filter_vintage",
-                "title": "OEKO-TEX® Standard 100"
-              },
-              "blocks": {}
-            },
-            "material_badge_9VUW8Y": {
-              "type": "material-badge",
-              "name": "Material Badge",
-              "settings": {
-                "width_cols": "2",
-                "icon": "eco",
-                "title": "100% Phthalatfri"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "material_badge_nKfKP8",
-            "material_badge_9VUW8Y"
-          ]
-        },
         "card_DmALbG": {
           "type": "card",
           "name": "t:general.card",
@@ -551,7 +552,6 @@
         }
       },
       "block_order": [
-        "card_RYHhb3",
         "card_DmALbG"
       ],
       "name": "Row",
