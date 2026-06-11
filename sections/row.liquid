@@ -1,9 +1,6 @@
 {%- liquid
-  assign is_single_column = false
-  if section.settings.alignment != 'columns' and section.settings.alignment != 'full_width'
-    assign is_single_column = true
-  endif
   assign layout_style = section.settings.layout_style | default: 'full_width_bg'
+  assign is_full_width = section.settings.full_width | default: false
 
   # Detect if the row contains column group blocks
   assign has_group_block = false
@@ -15,17 +12,12 @@
   endfor
 
   # Calculate class names dynamically to handle grids and product detail column grids
-  assign row_classes = 'row-content'
-  if is_single_column
-    assign row_classes = row_classes | append: ' row-content--no-columns row-content--single row-content--' | append: section.settings.alignment
-  else
-    assign row_classes = row_classes | append: ' grid-layout'
-    unless has_group_block
-      assign row_classes = row_classes | append: ' row-content--no-columns'
-    endunless
-  endif
+  assign row_classes = 'row-content grid-layout'
+  unless has_group_block
+    assign row_classes = row_classes | append: ' row-content--no-columns'
+  endunless
 
-  if section.settings.alignment == 'full_width'
+  if is_full_width
     assign row_classes = row_classes | append: ' row-content--full-width'
   endif
 -%}
@@ -72,8 +64,16 @@
     --span-large: {{ section.settings.span_desktop | default: 12 }};
 
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    {%- if section.settings.alignment == 'left' -%}
+      margin-left: 0 !important;
+      margin-right: auto !important;
+    {%- elsif section.settings.alignment == 'right' -%}
+      margin-left: auto !important;
+      margin-right: 0 !important;
+    {%- else -%}
+      margin-left: auto !important;
+      margin-right: auto !important;
+    {%- endif -%}
     max-width: calc((var(--span-mobile) / 4) * 100%);
   }
 
@@ -88,53 +88,6 @@
       max-width: min(calc((var(--span-large) / 12) * var(--page-width, 1440px)), 100%);
     }
   }
-
-  {%- if is_single_column -%}
-    .row-content--single {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      width: 100%;
-      gap: var(--grid-gap);
-    }
-
-    {%- unless section.settings.use_global_gap -%}
-      .row-content--single {
-        --grid-gap: {{ section.settings.block_spacing | default: 8 }}px;
-      }
-    {%- endunless -%}
-
-    .row-content--left {
-      justify-content: flex-start;
-      text-align: left;
-    }
-
-    .row-content--center {
-      justify-content: center;
-      text-align: center;
-    }
-
-    .row-content--right {
-      justify-content: flex-end;
-      text-align: right;
-    }
-
-    .row-content--single > .shopify-block,
-    .row-content--single > shopify-block,
-    .row-content--single > [class*="shopify-block-"] {
-      padding-top: 0;
-      padding-bottom: 0;
-      padding-left: 0;
-      padding-right: 0;
-      width: auto !important;
-      display: inline-block !important;
-      max-width: 100%;
-    }
-
-    .row-content--single > * > div {
-      width: auto !important;
-    }
-  {%- endif -%}
 {%- endstyle -%}
 
 {%- capture bg_class -%}
@@ -148,13 +101,13 @@
 {%- liquid
   if layout_style == 'full_width_bg'
     assign outer_class = 'row-section w-full ' | append: bg_class | append: ' section-' | append: section.id | append: '-padding row-section--full-width'
-    if section.settings.alignment == 'full_width'
+    if is_full_width
       assign inner_class = 'w-full section-' | append: section.id | append: '-inner-padding'
     else
       assign inner_class = 'max-w-[var(--page-width)] mx-auto section-' | append: section.id | append: '-inner-padding'
     endif
   else
-    if section.settings.alignment == 'full_width'
+    if is_full_width
       assign outer_class = 'row-section w-full px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
     else
       assign outer_class = 'row-section max-w-[var(--page-width)] mx-auto px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
@@ -213,17 +166,21 @@
       "default": "light"
     },
     {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Fuld bredde",
+      "default": false
+    },
+    {
       "type": "select",
       "id": "alignment",
-      "label": "Layoutbredde",
+      "label": "Placering af indhold",
       "options": [
-        { "value": "columns", "label": "Grid" },
-        { "value": "full_width", "label": "Fuld bredde" },
-        { "value": "left",    "label": "Venstre" },
-        { "value": "center",  "label": "Centreret" },
-        { "value": "right",   "label": "Højre" }
+        { "value": "left", "label": "Venstre" },
+        { "value": "center", "label": "Centreret" },
+        { "value": "right", "label": "Højre" }
       ],
-      "default": "columns"
+      "default": "center"
     },
     {
       "type": "header",
