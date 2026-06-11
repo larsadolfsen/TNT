@@ -28,7 +28,7 @@
           "name": "t:general.card",
           "settings": {
             "design": "none",
-            "width_cols": "4",
+            "width_cols": "1",
             "background_color": "dark",
             "use_global_gap": true,
             "block_gap": 16,
