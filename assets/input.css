@@ -440,7 +440,7 @@ h4 {
 
 /* Ensure no horizontal scrolling when using 100vw breakout layouts */
 html, body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {

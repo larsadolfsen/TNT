@@ -2415,7 +2415,7 @@ h4 {
   }
 }
 html, body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 body {
   background-color: var(--color-background);

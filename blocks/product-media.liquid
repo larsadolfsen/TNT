@@ -15,7 +15,7 @@
   }
 {%- endstyle -%}
 
-<div class="relative w-full" {{ block.shopify_attributes }}>
+<div class="relative w-full product-media" {{ block.shopify_attributes }}>
   <!-- Hidden dummy image for third-party cart compatibility -->
   {%- if featured_image -%}
     <img id="main-product-img" src="{{ featured_image | image_url: width: 1200 }}" class="hidden" alt="" />
