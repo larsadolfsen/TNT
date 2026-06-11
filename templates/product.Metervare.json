@@ -136,7 +136,7 @@
           "type": "product-media",
           "name": "Product Media Gallery",
           "settings": {
-            "image_badge": "BESTSELLER",
+            "image_badge": "",
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0
