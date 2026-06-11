@@ -11,7 +11,8 @@
   --color-on-secondary-container: #1a1c1c;
   --color-surface: #ffffff;
   --color-surface-container: #f9f9f9;
-  --color-outline-variant: #e2e2e2;
+  --color-outline-variant: var(--color-border);
+  --color-slate-200: var(--color-border);
 
   --font-sans: var(--font-body-family), sans-serif;
   --font-serif: var(--font-header-family), serif;

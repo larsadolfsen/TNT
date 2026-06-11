@@ -94,6 +94,12 @@
       },
       {
         "type": "color",
+        "id": "border_color",
+        "default": "#e2e2e2",
+        "label": "Border color / Kantfarve"
+      },
+      {
+        "type": "color",
         "id": "foreground_color",
         "default": "#333333",
         "label": "t:labels.foreground"
