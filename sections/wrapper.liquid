@@ -59,9 +59,12 @@
   {%- endunless -%}
 
   .section-{{ section.id }}-inner-padding .wrapper-content {
-    --span-mobile: {{ section.settings.span_mobile | default: 4 }};
-    --span-expanded: {{ section.settings.span_tablet | default: 8 }};
-    --span-large: {{ section.settings.span_desktop | default: 12 }};
+    --wrapper-span-mobile: {{ section.settings.span_mobile | default: 4 }};
+    --wrapper-span-expanded: {{ section.settings.span_tablet | default: 8 }};
+    --wrapper-span-large: {{ section.settings.span_desktop | default: 12 }};
+    --span-mobile: var(--wrapper-span-mobile);
+    --span-expanded: var(--wrapper-span-expanded);
+    --span-large: var(--wrapper-span-large);
 
     width: 100%;
     {%- if section.settings.alignment == 'left' -%}
