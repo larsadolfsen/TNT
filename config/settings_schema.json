@@ -76,12 +76,6 @@
       },
       {
         "type": "color",
-        "id": "important_color",
-        "default": "#e11d48",
-        "label": "Important / Advarselsfarve"
-      },
-      {
-        "type": "color",
         "id": "background_color",
         "default": "#ffffff",
         "label": "Background light color"
@@ -103,6 +97,12 @@
         "id": "foreground_color",
         "default": "#333333",
         "label": "t:labels.foreground"
+      },
+      {
+        "type": "color",
+        "id": "important_color",
+        "default": "#e11d48",
+        "label": "Important / Advarselsfarve"
       },
       {
         "type": "range",
