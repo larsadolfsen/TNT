@@ -41,6 +41,44 @@ main {
   font-family: var(--font-sans);
   --color-text: #595959;
   color: var(--color-text);
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  width: 100%;
+  max-width: var(--page-width, 1440px);
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: --theme(--breakpoint-md)) {
+  main {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: --theme(--breakpoint-lg)) {
+  main {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    padding: 2.5rem 2rem;
+  }
+}
+
+main > .shopify-section {
+  grid-column-start: auto;
+  grid-column-end: span 4;
+}
+
+@media (min-width: --theme(--breakpoint-md)) {
+  main > .shopify-section {
+    grid-column-end: span 8;
+  }
+}
+
+@media (min-width: --theme(--breakpoint-lg)) {
+  main > .shopify-section {
+    grid-column-end: span 12;
+  }
 }
 
 

@@ -37,18 +37,23 @@
 
   .section-{{ section.id }}-inner-padding {
     {%- if layout_style == 'full_width_bg' -%}
-      padding-left: calc({{ section.settings.padding_sides | default: 0 }}px + 1rem);
-      padding-right: calc({{ section.settings.padding_sides | default: 0 }}px + 1rem);
+      padding-left: calc({{ section.settings.padding_left | default: 0 | times: 0.75 | round }}px + 1rem);
+      padding-right: calc({{ section.settings.padding_right | default: 0 | times: 0.75 | round }}px + 1rem);
     {%- else -%}
-      padding-left: {{ section.settings.padding_sides | default: 0 }}px;
-      padding-right: {{ section.settings.padding_sides | default: 0 }}px;
+      padding-left: {{ section.settings.padding_left | default: 0 | times: 0.75 | round }}px;
+      padding-right: {{ section.settings.padding_right | default: 0 | times: 0.75 | round }}px;
     {%- endif -%}
   }
 
   @media screen and (min-width: 840px) {
     .section-{{ section.id }}-inner-padding {
-      padding-left: {{ section.settings.padding_sides | default: 0 }}px;
-      padding-right: {{ section.settings.padding_sides | default: 0 }}px;
+      {%- if layout_style == 'full_width_bg' -%}
+        padding-left: calc({{ section.settings.padding_left | default: 0 }}px + 1rem);
+        padding-right: calc({{ section.settings.padding_right | default: 0 }}px + 1rem);
+      {%- else -%}
+        padding-left: {{ section.settings.padding_left | default: 0 }}px;
+        padding-right: {{ section.settings.padding_right | default: 0 }}px;
+      {%- endif -%}
     }
   }
 
@@ -59,9 +64,9 @@
   {%- endunless -%}
 
   .section-{{ section.id }}-inner-padding .wrapper-content {
-    --wrapper-span-mobile: {{ section.settings.span_mobile | default: 4 }};
-    --wrapper-span-expanded: {{ section.settings.span_tablet | default: 8 }};
-    --wrapper-span-large: {{ section.settings.span_desktop | default: 12 }};
+    --wrapper-span-mobile: {{ section.settings.column_span_mobile | default: 4 }};
+    --wrapper-span-expanded: {{ section.settings.column_span_tablet | default: 8 }};
+    --wrapper-span-large: {{ section.settings.column_span_desktop | default: 12 }};
     --span-mobile: var(--wrapper-span-mobile);
     --span-expanded: var(--wrapper-span-expanded);
     --span-large: var(--wrapper-span-large);
@@ -92,20 +97,102 @@
     }
   }
 
-  /* Support Grid container logic on desktop wrappers */
+  /* Support Grid container logic on wrappers */
   #shopify-section-{{ section.id }} {
-    grid-column-end: span {{ section.settings.span_mobile | default: 4 }};
+    grid-column-end: span {{ section.settings.column_span_mobile | default: 4 }};
+
+    {%- if section.settings.column_start_mobile != 'auto' and section.settings.column_start_mobile != blank -%}
+      grid-column-start: {{ section.settings.column_start_mobile }};
+    {%- else -%}
+      grid-column-start: auto;
+    {%- endif -%}
+
+    {%- if section.settings.row_span_mobile != 'auto' and section.settings.row_span_mobile != blank -%}
+      grid-row-end: span {{ section.settings.row_span_mobile }};
+    {%- else -%}
+      grid-row-end: auto;
+    {%- endif -%}
+
+    {%- if section.settings.row_start_mobile != 'auto' and section.settings.row_start_mobile != blank -%}
+      grid-row-start: {{ section.settings.row_start_mobile }};
+    {%- else -%}
+      grid-row-start: auto;
+    {%- endif -%}
+
+    {%- if section.settings.justify_self != 'auto' and section.settings.justify_self != blank -%}
+      justify-self: {{ section.settings.justify_self }};
+    {%- else -%}
+      justify-self: auto;
+    {%- endif -%}
+
+    {%- if section.settings.align_self != 'auto' and section.settings.align_self != blank -%}
+      align-self: {{ section.settings.align_self }};
+    {%- else -%}
+      align-self: auto;
+    {%- endif -%}
+
+    {%- if section.settings.hide_on_mobile -%}
+      display: none !important;
+    {%- endif -%}
   }
 
   @media screen and (min-width: 840px) {
     #shopify-section-{{ section.id }} {
-      grid-column-end: span {{ section.settings.span_tablet | default: 8 }};
+      grid-column-end: span {{ section.settings.column_span_tablet | default: 8 }};
+
+      {%- if section.settings.column_start_tablet != 'auto' and section.settings.column_start_tablet != blank -%}
+        grid-column-start: {{ section.settings.column_start_tablet }};
+      {%- elsif section.settings.column_start_tablet == 'auto' -%}
+        grid-column-start: auto;
+      {%- endif -%}
+
+      {%- if section.settings.row_span_tablet != 'auto' and section.settings.row_span_tablet != blank -%}
+        grid-row-end: span {{ section.settings.row_span_tablet }};
+      {%- elsif section.settings.row_span_tablet == 'auto' -%}
+        grid-row-end: auto;
+      {%- endif -%}
+
+      {%- if section.settings.row_start_tablet != 'auto' and section.settings.row_start_tablet != blank -%}
+        grid-row-start: {{ section.settings.row_start_tablet }};
+      {%- elsif section.settings.row_start_tablet == 'auto' -%}
+        grid-row-start: auto;
+      {%- endif -%}
+
+      {%- if section.settings.hide_on_tablet -%}
+        display: none !important;
+      {%- else -%}
+        display: block !important;
+      {%- endif -%}
     }
   }
 
   @media screen and (min-width: 1200px) {
     #shopify-section-{{ section.id }} {
-      grid-column-end: span {{ section.settings.span_desktop | default: 12 }};
+      grid-column-end: span {{ section.settings.column_span_desktop | default: 12 }};
+
+      {%- if section.settings.column_start_desktop != 'auto' and section.settings.column_start_desktop != blank -%}
+        grid-column-start: {{ section.settings.column_start_desktop }};
+      {%- elsif section.settings.column_start_desktop == 'auto' -%}
+        grid-column-start: auto;
+      {%- endif -%}
+
+      {%- if section.settings.row_span_desktop != 'auto' and section.settings.row_span_desktop != blank -%}
+        grid-row-end: span {{ section.settings.row_span_desktop }};
+      {%- elsif section.settings.row_span_desktop == 'auto' -%}
+        grid-row-end: auto;
+      {%- endif -%}
+
+      {%- if section.settings.row_start_desktop != 'auto' and section.settings.row_start_desktop != blank -%}
+        grid-row-start: {{ section.settings.row_start_desktop }};
+      {%- elsif section.settings.row_start_desktop == 'auto' -%}
+        grid-row-start: auto;
+      {%- endif -%}
+
+      {%- if section.settings.hide_on_desktop -%}
+        display: none !important;
+      {%- else -%}
+        display: block !important;
+      {%- endif -%}
     }
   }
 {%- endstyle -%}
@@ -204,12 +291,12 @@
     },
     {
       "type": "header",
-      "content": "Bredde i grid-kolonner (Spand)"
+      "content": "Grid Kolonne Placering (Col)"
     },
     {
       "type": "select",
-      "id": "span_mobile",
-      "label": "Grid bredde på mobil (af 4)",
+      "id": "column_span_mobile",
+      "label": "Grid kolonne bredde (Col Span) på Mobil (af 4)",
       "options": [
         { "value": "1", "label": "1 kolonne (25%)" },
         { "value": "2", "label": "2 kolonner (50%)" },
@@ -220,8 +307,8 @@
     },
     {
       "type": "select",
-      "id": "span_tablet",
-      "label": "Grid bredde på tablet (af 8)",
+      "id": "column_span_tablet",
+      "label": "Grid kolonne bredde (Col Span) på Tablet (af 8)",
       "options": [
         { "value": "1", "label": "1 ud af 8" },
         { "value": "2", "label": "2 ud af 8" },
@@ -236,8 +323,8 @@
     },
     {
       "type": "select",
-      "id": "span_desktop",
-      "label": "Grid bredde på desktop (af 12)",
+      "id": "column_span_desktop",
+      "label": "Grid kolonne bredde (Col Span) på Desktop (af 12)",
       "options": [
         { "value": "1", "label": "1 ud af 12" },
         { "value": "2", "label": "2 ud af 12" },
@@ -254,7 +341,217 @@
       ],
       "default": "12"
     },
-
+    {
+      "type": "select",
+      "id": "column_start_mobile",
+      "label": "Grid kolonne start (Col Start) på Mobil",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "column_start_tablet",
+      "label": "Grid kolonne start (Col Start) på Tablet",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "column_start_desktop",
+      "label": "Grid kolonne start (Col Start) på Desktop",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" },
+        { "value": "9", "label": "9" },
+        { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "header",
+      "content": "Grid Række Placering (Row)"
+    },
+    {
+      "type": "select",
+      "id": "row_span_mobile",
+      "label": "Grid række højde (Row Span) på Mobil",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1 række" },
+        { "value": "2", "label": "2 rækker" },
+        { "value": "3", "label": "3 rækker" },
+        { "value": "4", "label": "4 rækker" },
+        { "value": "5", "label": "5 rækker" },
+        { "value": "6", "label": "6 rækker" },
+        { "value": "7", "label": "7 rækker" },
+        { "value": "8", "label": "8 rækker" },
+        { "value": "9", "label": "9 rækker" },
+        { "value": "10", "label": "10 rækker" },
+        { "value": "11", "label": "11 rækker" },
+        { "value": "12", "label": "12 rækker" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "row_span_tablet",
+      "label": "Grid række højde (Row Span) på Tablet",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1 række" },
+        { "value": "2", "label": "2 rækker" },
+        { "value": "3", "label": "3 rækker" },
+        { "value": "4", "label": "4 rækker" },
+        { "value": "5", "label": "5 rækker" },
+        { "value": "6", "label": "6 rækker" },
+        { "value": "7", "label": "7 rækker" },
+        { "value": "8", "label": "8 rækker" },
+        { "value": "9", "label": "9 rækker" },
+        { "value": "10", "label": "10 rækker" },
+        { "value": "11", "label": "11 rækker" },
+        { "value": "12", "label": "12 rækker" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "row_span_desktop",
+      "label": "Grid række højde (Row Span) på Desktop",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1 række" },
+        { "value": "2", "label": "2 rækker" },
+        { "value": "3", "label": "3 rækker" },
+        { "value": "4", "label": "4 rækker" },
+        { "value": "5", "label": "5 rækker" },
+        { "value": "6", "label": "6 rækker" },
+        { "value": "7", "label": "7 rækker" },
+        { "value": "8", "label": "8 rækker" },
+        { "value": "9", "label": "9 rækker" },
+        { "value": "10", "label": "10 rækker" },
+        { "value": "11", "label": "11 rækker" },
+        { "value": "12", "label": "12 rækker" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "row_start_mobile",
+      "label": "Grid række start (Row Start) på Mobil",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" },
+        { "value": "9", "label": "9" },
+        { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "row_start_tablet",
+      "label": "Grid række start (Row Start) på Tablet",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" },
+        { "value": "9", "label": "9" },
+        { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "row_start_desktop",
+      "label": "Grid række start (Row Start) på Desktop",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" },
+        { "value": "9", "label": "9" },
+        { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "header",
+      "content": "Grid Alignment"
+    },
+    {
+      "type": "select",
+      "id": "justify_self",
+      "label": "Justify Self (Horisontal placering i celle)",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "start", "label": "Start / Venstre" },
+        { "value": "end", "label": "End / Højre" },
+        { "value": "center", "label": "Center / Centreret" },
+        { "value": "stretch", "label": "Stretch / Stræk" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "align_self",
+      "label": "Align Self (Vertikal placering i celle)",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "start", "label": "Start / Top" },
+        { "value": "end", "label": "End / Bund" },
+        { "value": "center", "label": "Center / Centreret" },
+        { "value": "stretch", "label": "Stretch / Stræk" }
+      ],
+      "default": "auto"
+    },
     {
       "type": "header",
       "content": "Padding"
@@ -281,13 +578,45 @@
     },
     {
       "type": "range",
-      "id": "padding_sides",
+      "id": "padding_left",
       "min": 0,
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Afstand i siderne",
+      "label": "Afstand i venstre side",
       "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i højre side",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Visibility / Synlighed"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Skjul på mobil",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_tablet",
+      "label": "Skjul på tablet",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_desktop",
+      "label": "Skjul på desktop",
+      "default": false
     },
     {
       "type": "header",
