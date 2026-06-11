@@ -956,7 +956,15 @@
         if (widthOptionIndex !== null) {
           document.querySelectorAll('.width-btn[data-width-value]').forEach(btn => {
             const val = btn.dataset.widthValue;
-            const match = findVariantForWidthAndOtherOptions(val, currentVariant);
+            let match = findVariantForWidthAndOtherOptions(val, currentVariant);
+            if (!match && variants && variants.length > 0) {
+              const targetValNorm = val.toLowerCase().replace('cm', '').replace(/\s+/g, '');
+              match = variants.find(v => {
+                if (!v.options || !v.options[widthOptionIndex]) return false;
+                const w = v.options[widthOptionIndex].toLowerCase().replace('cm', '').replace(/\s+/g, '');
+                return w === targetValNorm;
+              });
+            }
             const priceSpan = btn.querySelector('[data-width-value-price]');
             if (priceSpan && match) {
               const pricePerMeter = match.price * 100;
@@ -978,7 +986,6 @@
               if (!soldOutIndicator) {
                 const badge = document.createElement('span');
                 badge.className = 'sold-out-badge text-[11px] font-normal leading-[1.2] text-center mt-0.5';
-                badge.style.color = 'var(--color-important)';
                 badge.innerText = soldOutLabel;
                 // Find "pr. meter" span and replace/insert before it
                 const prMeterText = btn.lastElementChild;
