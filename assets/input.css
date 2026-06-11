@@ -234,24 +234,44 @@ h4 {
     align-items: start;
   }
 
-  /* Reset default full-width styling on individual rows */
+  /* Reset default width styling on individual rows */
   .template-product #MainContent > .shopify-section {
-    grid-column: 9 / span 4;
     width: 100%;
   }
 
-  /* Make the wrapper content respect the page width and margin */
-  .template-product .wrapper-content {
+  /* Make the wrapper content fill the grid cell width for side-by-side columns */
+  .template-product #MainContent > .shopify-section:has(.product-media) .wrapper-content,
+  .template-product #MainContent > .shopify-section:has(.shopify-block-product-media) .wrapper-content,
+  .template-product #MainContent > .shopify-section:has(.shopify-block-page-title) .wrapper-content,
+  .template-product #MainContent > .shopify-section:has(.page-title) .wrapper-content,
+  .template-product #MainContent > .shopify-section:has(.product-price) .wrapper-content,
+  .template-product #MainContent > .shopify-section:has(.product-customizer) .wrapper-content,
+  .template-product #MainContent > .shopify-section:has(.product-variant-picker) .wrapper-content {
     align-items: start;
     width: 100%;
     max-width: none;
     margin: 0;
   }
 
+  /* Disable 100vw breakout for the side-by-side columns on desktop to let them fit in grid cells */
+  .template-product #MainContent > .shopify-section:has(.product-media) .wrapper-section--full-width,
+  .template-product #MainContent > .shopify-section:has(.shopify-block-product-media) .wrapper-section--full-width,
+  .template-product #MainContent > .shopify-section:has(.shopify-block-page-title) .wrapper-section--full-width,
+  .template-product #MainContent > .shopify-section:has(.page-title) .wrapper-section--full-width,
+  .template-product #MainContent > .shopify-section:has(.product-price) .wrapper-section--full-width,
+  .template-product #MainContent > .shopify-section:has(.product-customizer) .wrapper-section--full-width,
+  .template-product #MainContent > .shopify-section:has(.product-variant-picker) .wrapper-section--full-width {
+    width: 100% !important;
+    position: static !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: none !important;
+  }
+
   /* Product Media (Gallery) in Left Column (Column 1-8) spanning rows 1-2 */
   .template-product #MainContent > .shopify-section:has(.product-media),
   .template-product #MainContent > .shopify-section:has(.shopify-block-product-media) {
-    grid-column: 1 / span 8;
+    grid-column-start: 1;
     grid-row: 1 / span 2;
     position: sticky;
     top: 2rem;
@@ -261,7 +281,7 @@ h4 {
   /* Heading Section in Right Column (Column 9-12) row 1 */
   .template-product #MainContent > .shopify-section:has(.shopify-block-page-title),
   .template-product #MainContent > .shopify-section:has(.page-title) {
-    grid-column: 9 / span 4;
+    grid-column-start: 9;
     grid-row: 1;
   }
 
@@ -269,7 +289,7 @@ h4 {
   .template-product #MainContent > .shopify-section:has(.product-price),
   .template-product #MainContent > .shopify-section:has(.product-customizer),
   .template-product #MainContent > .shopify-section:has(.product-variant-picker) {
-    grid-column: 9 / span 4;
+    grid-column-start: 9;
     grid-row: 2;
   }
 

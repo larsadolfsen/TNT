@@ -2312,28 +2312,34 @@ h4 {
     align-items: start;
   }
   .template-product #MainContent > .shopify-section {
-    grid-column: 9 / span 4;
     width: 100%;
   }
-  .template-product .wrapper-content {
+  .template-product #MainContent > .shopify-section:has(.product-media) .wrapper-content, .template-product #MainContent > .shopify-section:has(.shopify-block-product-media) .wrapper-content, .template-product #MainContent > .shopify-section:has(.shopify-block-page-title) .wrapper-content, .template-product #MainContent > .shopify-section:has(.page-title) .wrapper-content, .template-product #MainContent > .shopify-section:has(.product-price) .wrapper-content, .template-product #MainContent > .shopify-section:has(.product-customizer) .wrapper-content, .template-product #MainContent > .shopify-section:has(.product-variant-picker) .wrapper-content {
     align-items: start;
     width: 100%;
     max-width: none;
     margin: 0;
   }
+  .template-product #MainContent > .shopify-section:has(.product-media) .wrapper-section--full-width, .template-product #MainContent > .shopify-section:has(.shopify-block-product-media) .wrapper-section--full-width, .template-product #MainContent > .shopify-section:has(.shopify-block-page-title) .wrapper-section--full-width, .template-product #MainContent > .shopify-section:has(.page-title) .wrapper-section--full-width, .template-product #MainContent > .shopify-section:has(.product-price) .wrapper-section--full-width, .template-product #MainContent > .shopify-section:has(.product-customizer) .wrapper-section--full-width, .template-product #MainContent > .shopify-section:has(.product-variant-picker) .wrapper-section--full-width {
+    width: 100% !important;
+    position: static !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: none !important;
+  }
   .template-product #MainContent > .shopify-section:has(.product-media), .template-product #MainContent > .shopify-section:has(.shopify-block-product-media) {
-    grid-column: 1 / span 8;
+    grid-column-start: 1;
     grid-row: 1 / span 2;
     position: sticky;
     top: 2rem;
     z-index: 10;
   }
   .template-product #MainContent > .shopify-section:has(.shopify-block-page-title), .template-product #MainContent > .shopify-section:has(.page-title) {
-    grid-column: 9 / span 4;
+    grid-column-start: 9;
     grid-row: 1;
   }
   .template-product #MainContent > .shopify-section:has(.product-price), .template-product #MainContent > .shopify-section:has(.product-customizer), .template-product #MainContent > .shopify-section:has(.product-variant-picker) {
-    grid-column: 9 / span 4;
+    grid-column-start: 9;
     grid-row: 2;
   }
   .template-product #MainContent > .shopify-section:has(.product-testimonial), .template-product #MainContent > .shopify-section:has(.shopify-block-product-testimonial), .template-product #MainContent > .shopify-section:has(.product-cross-sell), .template-product #MainContent > .shopify-section:has(.shopify-block-product-cross-sell), .template-product #MainContent > .shopify-section:has(.trust-checkmark), .template-product #MainContent > .shopify-section:has(.product-accordions), .template-product #MainContent > .shopify-section:has(.accordion) {
