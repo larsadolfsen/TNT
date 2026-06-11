@@ -816,7 +816,16 @@
       } else {
         let currentVariant = getCurrentVariant();
         
-        const targetVariant = findVariantForWidthAndOtherOptions(value, currentVariant);
+        let targetVariant = findVariantForWidthAndOtherOptions(value, currentVariant);
+        if (!targetVariant && variants && variants.length > 0) {
+          // If mismatching other options (e.g. colour), pick the first one matching this width anyway
+          const targetValNorm = value.toLowerCase().replace('cm', '').replace(/\s+/g, '');
+          targetVariant = variants.find(v => {
+            if (!v.options || !v.options[widthOptionIndex]) return false;
+            const w = v.options[widthOptionIndex].toLowerCase().replace('cm', '').replace(/\s+/g, '');
+            return w === targetValNorm;
+          });
+        }
         if (targetVariant) {
           selectVariantById(targetVariant.id);
         }
