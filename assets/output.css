@@ -2372,6 +2372,9 @@ h4 {
 html, body {
   overflow-x: hidden;
 }
+body {
+  background-color: var(--color-background);
+}
 @media (min-width: 840px) {
   .wrapper-section--full-width {
     width: 100vw !important;

@@ -337,6 +337,9 @@ h4 {
 /* Ensure no horizontal scrolling when using 100vw breakout layouts */
 html, body {
   overflow-x: hidden;
+}
+
+body {
   background-color: var(--color-background);
 }
 
