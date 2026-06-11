@@ -846,7 +846,6 @@
         });
       }
       if (match && !match.available) {
-        showToast(`Bredden ${value} er desværre ${soldOutLabel.toLowerCase()}.`);
         return;
       }
 
@@ -937,7 +936,7 @@
               const soldOutIndicator = btn.querySelector('.sold-out-badge');
               if (!soldOutIndicator) {
                 const badge = document.createElement('span');
-                badge.className = 'sold-out-badge text-[9px] font-bold uppercase mt-0.5 tracking-wider';
+                badge.className = 'sold-out-badge text-[11px] font-normal leading-[1.2] text-center mt-0.5';
                 badge.style.color = 'var(--color-important)';
                 badge.innerText = soldOutLabel;
                 // Find "pr. meter" span and replace/insert before it
