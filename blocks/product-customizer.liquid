@@ -776,13 +776,13 @@
         if (isBtnActive) {
           btn.style.borderColor = '#f5c518';
           btn.style.borderWidth = '2px';
-          btn.classList.remove('border-slate-200', 'text-slate-600');
-          btn.classList.add('border-2', 'text-slate-900');
+          btn.classList.remove('border-slate-200', 'text-slate-600', 'opacity-55', 'bg-slate-50/50');
+          btn.classList.add('border-2', 'text-slate-900', 'opacity-100');
         } else {
           btn.style.borderColor = '';
           btn.style.borderWidth = '';
-          btn.classList.remove('border-2', 'text-slate-900');
-          btn.classList.add('border-slate-200', 'text-slate-600');
+          btn.classList.remove('border-2', 'text-slate-900', 'opacity-100');
+          btn.classList.add('border-slate-200', 'text-slate-600', 'opacity-55', 'bg-slate-50/50');
         }
       });
     }
