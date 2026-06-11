@@ -942,9 +942,9 @@
           }
         }
 
-        // Sync active state of width buttons
+        // Sync active state of width buttons (use base variant width so it stays active when custom width is enabled)
         if (widthOptionIndex !== null) {
-          updateWidthButtonsUI(state.width);
+          updateWidthButtonsUI(width);
         }
 
         // If shape is round, length selection is not possible (since diameter is determined by width)
