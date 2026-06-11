@@ -82,12 +82,40 @@
                 "padding_sides": 0
               },
               "blocks": {}
+            },
+            "product_price_QeBYWm": {
+              "type": "product-price",
+              "name": "Product Price",
+              "settings": {
+                "price_suffix": "pr. meter inkl. moms",
+                "price_subtext": "30 dages fuld returret, også på din dug.",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "product_urgency_4BRxjw": {
+              "type": "product-urgency",
+              "name": "Product Stock Urgency",
+              "settings": {
+                "show_urgency": true,
+                "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
+                "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
+                "hide_under_limit": 50,
+                "padding_top": 0,
+                "padding_bottom": 12,
+                "padding_sides": 0
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "text_MrzDdi",
             "product_trust_LLkidj",
-            "badge_nDm9GX"
+            "badge_nDm9GX",
+            "product_price_QeBYWm",
+            "product_urgency_4BRxjw"
           ]
         }
       },
@@ -177,74 +205,6 @@
         "padding_right": 24,
         "use_global_gap": true,
         "block_spacing": 0,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "row_dF89D3": {
-      "type": "wrapper",
-      "blocks": {
-        "product_price_dGeEHb": {
-          "type": "product-price",
-          "name": "Product Price",
-          "settings": {
-            "price_suffix": "pr. meter inkl. moms",
-            "price_subtext": "30 dages fuld returret, også på din dug.",
-            "padding_top": 0,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
-        "product_urgency_9qdhhc": {
-          "type": "product-urgency",
-          "name": "Product Stock Urgency",
-          "settings": {
-            "show_urgency": true,
-            "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
-            "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
-            "hide_under_limit": 50,
-            "padding_top": 0,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_price_dGeEHb",
-        "product_urgency_9qdhhc"
-      ],
-      "name": "Row - Pris",
-      "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "light",
-        "full_width": false,
-        "alignment": "full_width",
-        "column_span_mobile": "4",
-        "column_start_mobile": "auto",
-        "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "4",
-        "column_start_desktop": "5",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
       }
@@ -918,7 +878,6 @@
   "order": [
     "row_Y793QP",
     "row_PUJcnW",
-    "row_dF89D3",
     "wrapper_4x3qqq",
     "row_eTcPKr",
     "row_p6nNCG",
