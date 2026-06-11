@@ -9,11 +9,12 @@
  */
 {
   "current": {
+    "max_page_width": 1280,
     "min_page_margin": 24,
     "primary_color": "#ffd814",
     "background_color": "#fefefe",
-    "important_color": "#b12704",
     "border_color": "#e2e8f0",
+    "important_color": "#b12704",
     "input_corner_radius": 4,
     "content_for_index": []
   }
