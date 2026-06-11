@@ -1,0 +1,334 @@
+{%- liquid
+  assign layout_style = section.settings.layout_style | default: 'full_width_bg'
+  assign is_full_width = section.settings.full_width | default: false
+
+  # Detect if the wrapper contains column group blocks
+  assign has_group_block = false
+  for block in section.blocks
+    if block.type == 'group'
+      assign has_group_block = true
+      break
+    endif
+  endfor
+
+  # Calculate class names dynamically to handle grids and product detail column grids
+  assign wrapper_classes = 'wrapper-content grid-layout'
+  unless has_group_block
+    assign wrapper_classes = wrapper_classes | append: ' wrapper-content--no-columns'
+  endunless
+
+  if is_full_width
+    assign wrapper_classes = wrapper_classes | append: ' wrapper-content--full-width'
+  endif
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
+  }
+
+  @media screen and (min-width: 840px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .section-{{ section.id }}-inner-padding {
+    {%- if layout_style == 'full_width_bg' -%}
+      padding-left: calc({{ section.settings.padding_sides | default: 0 }}px + 1rem);
+      padding-right: calc({{ section.settings.padding_sides | default: 0 }}px + 1rem);
+    {%- else -%}
+      padding-left: {{ section.settings.padding_sides | default: 0 }}px;
+      padding-right: {{ section.settings.padding_sides | default: 0 }}px;
+    {%- endif -%}
+  }
+
+  @media screen and (min-width: 840px) {
+    .section-{{ section.id }}-inner-padding {
+      padding-left: {{ section.settings.padding_sides | default: 0 }}px;
+      padding-right: {{ section.settings.padding_sides | default: 0 }}px;
+    }
+  }
+
+  {%- unless section.settings.use_global_gap -%}
+    .section-{{ section.id }}-inner-padding .grid-layout {
+      --grid-gap: {{ section.settings.block_spacing | default: 8 }}px;
+    }
+  {%- endunless -%}
+
+  .section-{{ section.id }}-inner-padding .wrapper-content {
+    --span-mobile: {{ section.settings.span_mobile | default: 4 }};
+    --span-expanded: {{ section.settings.span_tablet | default: 8 }};
+    --span-large: {{ section.settings.span_desktop | default: 12 }};
+
+    width: 100%;
+    {%- if section.settings.alignment == 'left' -%}
+      margin-left: 0 !important;
+      margin-right: auto !important;
+    {%- elsif section.settings.alignment == 'right' -%}
+      margin-left: auto !important;
+      margin-right: 0 !important;
+    {%- else -%}
+      margin-left: auto !important;
+      margin-right: auto !important;
+    {%- endif -%}
+    max-width: calc((var(--span-mobile) / 4) * 100%);
+  }
+
+  @media screen and (min-width: 840px) {
+    .section-{{ section.id }}-inner-padding .wrapper-content {
+      max-width: min(calc((var(--span-expanded) / 8) * var(--page-width, 1440px)), 100%);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .section-{{ section.id }}-inner-padding .wrapper-content {
+      max-width: min(calc((var(--span-large) / 12) * var(--page-width, 1440px)), 100%);
+    }
+  }
+
+  /* Support Grid container logic on desktop wrappers */
+  #shopify-section-{{ section.id }} {
+    grid-column: span {{ section.settings.span_mobile | default: 4 }};
+  }
+
+  @media screen and (min-width: 840px) {
+    #shopify-section-{{ section.id }} {
+      grid-column: span {{ section.settings.span_tablet | default: 8 }};
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} {
+      grid-column: span {{ section.settings.span_desktop | default: 12 }};
+    }
+  }
+{%- endstyle -%}
+
+{%- capture bg_class -%}
+  {%- case section.settings.background_color -%}
+    {%- when 'light' -%}bg-background text-primary
+    {%- when 'dark' -%}bg-background-dark text-white
+    {%- when 'shade' -%}bg-background-shade text-primary
+  {%- endcase -%}
+{%- endcapture -%}
+
+{%- liquid
+  if layout_style == 'full_width_bg'
+    assign outer_class = 'wrapper-section w-full ' | append: bg_class | append: ' section-' | append: section.id | append: '-padding wrapper-section--full-width'
+    if is_full_width
+      assign inner_class = 'w-full section-' | append: section.id | append: '-inner-padding'
+    else
+      assign inner_class = 'max-w-[var(--page-width)] mx-auto section-' | append: section.id | append: '-inner-padding'
+    endif
+  else
+    if is_full_width
+      assign outer_class = 'wrapper-section w-full px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
+    else
+      assign outer_class = 'wrapper-section max-w-[var(--page-width)] mx-auto px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
+    endif
+    assign inner_class = 'w-full ' | append: bg_class | append: ' rounded-3xl py-10 expanded:py-16 shadow-md section-' | append: section.id | append: '-inner-padding'
+  endif
+-%}
+
+<div class="{{ outer_class }}"{% if section.settings.border_top or section.settings.border_bottom %} style="{% if section.settings.border_top %}border-top:1px solid var(--color-border);{% endif %}{% if section.settings.border_bottom %}border-bottom:1px solid var(--color-border);{% endif %}"{% endif %}>
+  <div class="{{ inner_class }}">
+    <div class="{{ wrapper_classes }}">
+      {%- if section.settings.heading != blank -%}
+        <{{ section.settings.heading_tag }} class="wrapper-section__heading">{{ section.settings.heading }}</{{ section.settings.heading_tag }}>
+      {%- endif -%}
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Overskrift"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Overskrift"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Overskriftstype",
+      "options": [
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Baggrundsfarve",
+      "options": [
+        { "value": "light", "label": "Lys" },
+        { "value": "dark",  "label": "Mørk" },
+        { "value": "shade", "label": "Grå / Tonet" }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Fuld bredde",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Placering af indhold",
+      "options": [
+        { "value": "left", "label": "Venstre" },
+        { "value": "center", "label": "Centreret" },
+        { "value": "right", "label": "Højre" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Bredde i grid-kolonner (Spand)"
+    },
+    {
+      "type": "select",
+      "id": "span_mobile",
+      "label": "Grid bredde på mobil (af 4)",
+      "options": [
+        { "value": "1", "label": "1 kolonne (25%)" },
+        { "value": "2", "label": "2 kolonner (50%)" },
+        { "value": "3", "label": "3 kolonner (75%)" },
+        { "value": "4", "label": "4 kolonner (100%)" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "span_tablet",
+      "label": "Grid bredde på tablet (af 8)",
+      "options": [
+        { "value": "1", "label": "1 ud af 8" },
+        { "value": "2", "label": "2 ud af 8" },
+        { "value": "3", "label": "3 ud af 8" },
+        { "value": "4", "label": "4 ud af 8 (50%)" },
+        { "value": "5", "label": "5 ud af 8" },
+        { "value": "6", "label": "6 ud af 8" },
+        { "value": "7", "label": "7 ud af 8" },
+        { "value": "8", "label": "8 ud af 8 (100%)" }
+      ],
+      "default": "8"
+    },
+    {
+      "type": "select",
+      "id": "span_desktop",
+      "label": "Grid bredde på desktop (af 12)",
+      "options": [
+        { "value": "1", "label": "1 ud af 12" },
+        { "value": "2", "label": "2 ud af 12" },
+        { "value": "3", "label": "3 ud af 12" },
+        { "value": "4", "label": "4 ud af 12" },
+        { "value": "5", "label": "5 ud af 12" },
+        { "value": "6", "label": "6 ud af 12 (50%)" },
+        { "value": "7", "label": "7 ud af 12" },
+        { "value": "8", "label": "8 ud af 12" },
+        { "value": "9", "label": "9 ud af 12" },
+        { "value": "10", "label": "10 ud af 12" },
+        { "value": "11", "label": "11 ud af 12" },
+        { "value": "12", "label": "12 ud af 12 (100%)" }
+      ],
+      "default": "12"
+    },
+
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_sides",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i siderne",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Blokafstand / Grid-gap"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_global_gap",
+      "label": "Brug global afstand (Gap)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "block_spacing",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Brugerdefineret afstand",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Kanter"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_top",
+      "label": "Kant i toppen",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "border_bottom",
+      "label": "Kant i bunden",
+      "default": false
+    }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "presets": [
+    { "name": "Wrapper" }
+  ]
+}
+{% endschema %}

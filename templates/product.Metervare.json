@@ -10,7 +10,7 @@
 {
   "sections": {
     "row_Y793QP": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "page_title_UACQEU": {
           "type": "page-title",
@@ -114,7 +114,7 @@
       }
     },
     "row_PUJcnW": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "product_media_d7ULhk": {
           "type": "product-media",
@@ -150,7 +150,7 @@
       }
     },
     "row_dF89D3": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "product_price_dGeEHb": {
           "type": "product-price",
@@ -272,7 +272,7 @@
       }
     },
     "row_eTcPKr": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "trust_checkmark_xhq8A9": {
           "type": "trust-checkmark",
@@ -329,7 +329,7 @@
       }
     },
     "row_p6nNCG": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "card_RYHhb3": {
           "type": "card",
@@ -424,7 +424,7 @@
       }
     },
     "row_VY7RVT": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "accordion_NzD7JY": {
           "type": "accordion",
@@ -478,7 +478,7 @@
       }
     },
     "row_CQqaPe": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "product_testimonial_gzGpa4": {
           "type": "product-testimonial",
@@ -525,7 +525,7 @@
       }
     },
     "row_Rg3kFD": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "product_cross_sell_fm46Qc": {
           "type": "product-cross-sell",
@@ -561,7 +561,7 @@
       }
     },
     "row_GqmzkT": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "accordion_panel_Matyga": {
           "type": "accordion",
@@ -640,7 +640,7 @@
       }
     },
     "row_j7wR4H": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "card_bNBzDD": {
           "type": "card",

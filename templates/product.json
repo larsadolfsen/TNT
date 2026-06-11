@@ -10,7 +10,7 @@
 {
   "sections": {
     "row_t6riLp": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "page_title_PMp6pd": {
           "type": "page-title",
@@ -109,7 +109,7 @@
       }
     },
     "row_eqmCNB": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "product_media_rdzkqV": {
           "type": "product-media",
@@ -141,7 +141,7 @@
       }
     },
     "row_nmPTLb": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "product_price_M99xTk": {
           "type": "product-price",
@@ -215,7 +215,7 @@
       }
     },
     "row_mHwx6E": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "trust_checkmark_nzpaFa": {
           "type": "trust-checkmark",
@@ -308,7 +308,7 @@
       }
     },
     "row_WcWUGA": {
-      "type": "row",
+      "type": "wrapper",
       "blocks": {
         "accordion_panel_NpBHBB": {
           "type": "accordion",

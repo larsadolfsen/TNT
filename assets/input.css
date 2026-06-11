@@ -196,26 +196,26 @@ h4 {
   }
 
   /* Reduce space between mobile media gallery (dots) and the product content details on mobile */
-  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group,
-  .template-product .row-content > .group ~ .group,
-  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group {
+  .template-product .wrapper-content > .shopify-block-group ~ .shopify-block-group .group,
+  .template-product .wrapper-content > .group ~ .group,
+  .template-product .wrapper-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group {
     padding-top: 12px !important;
   }
 
-  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > section,
-  .template-product .row-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > div,
-  .template-product .row-content > .group ~ .group > *:first-child > section,
-  .template-product .row-content > .group ~ .group > *:first-child > div,
-  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > section,
-  .template-product .row-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > div {
+  .template-product .wrapper-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > section,
+  .template-product .wrapper-content > .shopify-block-group ~ .shopify-block-group .group > *:first-child > div,
+  .template-product .wrapper-content > .group ~ .group > *:first-child > section,
+  .template-product .wrapper-content > .group ~ .group > *:first-child > div,
+  .template-product .wrapper-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > section,
+  .template-product .wrapper-content > .shopify-block:has(.group) ~ .shopify-block:has(.group) .group > *:first-child > div {
     padding-top: 4px !important;
   }
 }
 
 /* Make all child blocks inside columns stretch to full column width on both mobile and desktop */
-.template-product .row-content .group > *,
-.template-product .row-content .shopify-block-group > *,
-.template-product .row-content .shopify-block:has(.group) .shopify-block {
+.template-product .wrapper-content .group > *,
+.template-product .wrapper-content .shopify-block-group > *,
+.template-product .wrapper-content .shopify-block:has(.group) .shopify-block {
   display: block;
   width: 100%;
 }
@@ -223,74 +223,80 @@ h4 {
 /* Product Page Desktop Grid Layout */
 @media (min-width: --theme(--breakpoint-md)) {
   .template-product #MainContent {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  /* Make the row content wrapper respect the page width and margin */
-  .template-product .row-content {
-    align-items: start;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 2rem;
+    row-gap: 0;
     width: 100%;
     max-width: var(--page-width, 1440px);
     margin: 0 auto;
+    padding: 1.5rem 1rem;
+    align-items: start;
   }
 
-  /* Sticky positioning for the gallery, whether direct child or nested */
-  .template-product .row-content .shopify-block-product-media,
-  .template-product .row-content .product-media {
+  /* Reset default full-width styling on individual rows */
+  .template-product #MainContent > .shopify-section {
+    grid-column: 9 / span 4;
+    width: 100%;
+  }
+
+  /* Make the wrapper content respect the page width and margin */
+  .template-product .wrapper-content {
+    align-items: start;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  /* Product Media (Gallery) in Left Column (Column 1-8) spanning rows 1-2 */
+  .template-product #MainContent > .shopify-section:has(.product-media),
+  .template-product #MainContent > .shopify-section:has(.shopify-block-product-media) {
+    grid-column: 1 / span 8;
+    grid-row: 1 / span 2;
     position: sticky;
     top: 2rem;
     z-index: 10;
+  }
+
+  /* Heading Section in Right Column (Column 9-12) row 1 */
+  .template-product #MainContent > .shopify-section:has(.shopify-block-page-title),
+  .template-product #MainContent > .shopify-section:has(.page-title) {
+    grid-column: 9 / span 4;
+    grid-row: 1;
+  }
+
+  /* Price/Customizer/Buy Buttons in Right Column (Column 9-12) row 2 */
+  .template-product #MainContent > .shopify-section:has(.product-price),
+  .template-product #MainContent > .shopify-section:has(.product-customizer),
+  .template-product #MainContent > .shopify-section:has(.product-variant-picker) {
+    grid-column: 9 / span 4;
+    grid-row: 2;
+  }
+
+  /* Full-width sections span all 12 columns */
+  .template-product #MainContent > .shopify-section:has(.product-testimonial),
+  .template-product #MainContent > .shopify-section:has(.shopify-block-product-testimonial),
+  .template-product #MainContent > .shopify-section:has(.product-cross-sell),
+  .template-product #MainContent > .shopify-section:has(.shopify-block-product-cross-sell),
+  .template-product #MainContent > .shopify-section:has(.trust-checkmark),
+  .template-product #MainContent > .shopify-section:has(.product-accordions),
+  .template-product #MainContent > .shopify-section:has(.accordion) {
+    grid-column: 1 / -1;
   }
 
   .template-product .product-media-gallery {
     border-radius: 1.5rem !important;
   }
 
-  /* Sticky column behavior overrides align-self: stretch to align-self: start and enables position: sticky */
-  .template-product .row-content > .group--sticky,
-  .template-product .row-content > .shopify-block:has(.group--sticky) {
-    position: sticky;
-    top: 2rem;
-    z-index: 10;
-    align-self: start;
-  }
-
-  .template-product .row-content > .shopify-block-product-cross-sell,
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell),
-  .template-product .row-content > .shopify-block:has(.product-cross-sell),
-  .template-product .row-content > .shopify-block-product-banner-text,
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text),
-  .template-product .row-content > .shopify-block:has(.product-banner-text),
-  .template-product .row-content > .shopify-block-product-testimonial,
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial),
-  .template-product .row-content > .shopify-block:has(.product-testimonial) {
-    grid-column: 1 / -1 !important;
-  }
-
-  .template-product .row-content > .shopify-block-product-cross-sell:not(:first-child),
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-cross-sell):not(:first-child),
-  .template-product .row-content > .shopify-block:has(.product-cross-sell):not(:first-child),
-  .template-product .row-content > .shopify-block-product-banner-text:not(:first-child),
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-banner-text):not(:first-child),
-  .template-product .row-content > .shopify-block:has(.product-banner-text):not(:first-child),
-  .template-product .row-content > .shopify-block-product-testimonial:not(:first-child),
-  .template-product .row-content > .shopify-block:has(.shopify-block-product-testimonial):not(:first-child),
-  .template-product .row-content > .shopify-block:has(.product-testimonial):not(:first-child) {
-    margin-top: 1.5rem;
-  }
-
   /* Adjust section layout styles for individual sections when in product column layout */
-  .template-product .row-content > * > section {
+  .template-product .wrapper-content > * > section {
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
   }
 
   /* Make sure customizer has proper spacing in right column and standard padding of 16px */
-  .template-product .row-content .shopify-block-product-customizer > div {
+  .template-product .wrapper-content .shopify-block-product-customizer > div {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     padding: 16px;
@@ -303,9 +309,6 @@ h4 {
 
 @media (min-width: --theme(--breakpoint-lg)) {
   .template-product #MainContent {
-    padding: 0;
-  }
-  .template-product .row-content {
     column-gap: 3.5rem;
     padding: 2.5rem 2rem;
   }
@@ -316,9 +319,9 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Breakout styles for truly full-width row sections and testimonials */
+/* Breakout styles for truly full-width wrapper sections and testimonials */
 @media (min-width: --theme(--breakpoint-md)) {
-  .row-section--full-width {
+  .wrapper-section--full-width {
     width: 100vw !important;
     position: relative !important;
     left: 50% !important;
@@ -328,8 +331,8 @@ html, body {
     max-width: none !important;
   }
 
-  .row-section--full-width .shopify-block-product-testimonial > section,
-  .row-section--full-width .product-testimonial > section {
+  .wrapper-section--full-width .shopify-block-product-testimonial > section,
+  .wrapper-section--full-width .product-testimonial > section {
     width: 100vw !important;
     position: relative !important;
     left: 50% !important;
@@ -341,15 +344,15 @@ html, body {
 }
 
 @media (width < --theme(--breakpoint-md)) {
-  .row-section--full-width {
+  .wrapper-section--full-width {
     margin-left: -1rem !important;
     margin-right: -1rem !important;
     width: calc(100% + 2rem) !important;
     max-width: none !important;
   }
 
-  .row-section--full-width .shopify-block-product-testimonial > section,
-  .row-section--full-width .product-testimonial > section {
+  .wrapper-section--full-width .shopify-block-product-testimonial > section,
+  .wrapper-section--full-width .product-testimonial > section {
     margin-left: -1rem !important;
     margin-right: -1rem !important;
     width: calc(100% + 2rem) !important;
@@ -357,8 +360,8 @@ html, body {
   }
 }
 
-/* Make all direct children of full-width rows span the entire grid layout */
-.row-content--full-width > * {
+/* Make all direct children of full-width wrappers span the entire grid layout */
+.wrapper-content--full-width > * {
   grid-column: 1 / -1 !important;
 }
 
@@ -456,8 +459,8 @@ shopify-block,
   width: 100%;
 }
 
-/* 1. Full-width row alignment (pull to page margin on mobile, standard page width on desktop) */
-.row-section--full-width .shopify-block-product-accordions {
+/* 1. Full-width wrapper alignment (pull to page margin on mobile, standard page width on desktop) */
+.wrapper-section--full-width .shopify-block-product-accordions {
   @media (width < --theme(--breakpoint-md)) {
     margin-left: -1rem;
     margin-right: -1rem;
@@ -465,8 +468,8 @@ shopify-block,
   }
 }
 
-/* 2. Boxed row alignment (pull to card margin on both mobile and desktop) */
-.row-section:not(.row-section--full-width) .shopify-block-product-accordions {
+/* 2. Boxed wrapper alignment (pull to card margin on both mobile and desktop) */
+.wrapper-section:not(.wrapper-section--full-width) .shopify-block-product-accordions {
   margin-left: -1.5rem;
   margin-right: -1.5rem;
   width: calc(100% + 3rem);
@@ -485,9 +488,9 @@ shopify-block,
   padding-right: 0;
 }
 
-/* 4. Layout-aware Accordion Padding (boxed row alignment) */
-.row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-trigger,
-.row-section:not(.row-section--full-width) .shopify-block-product-accordions .accordion-content {
+/* 4. Layout-aware Accordion Padding (boxed wrapper alignment) */
+.wrapper-section:not(.wrapper-section--full-width) .shopify-block-product-accordions .accordion-trigger,
+.wrapper-section:not(.wrapper-section--full-width) .shopify-block-product-accordions .accordion-content {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 
@@ -499,22 +502,22 @@ shopify-block,
 
 /* 5. Layout-aware Accordion Padding (full-width alignment overrides) */
 @media (width < --theme(--breakpoint-md)) {
-  .row-section--full-width .shopify-block-product-accordions .accordion-trigger,
-  .row-section--full-width .shopify-block-product-accordions .accordion-content {
+  .wrapper-section--full-width .shopify-block-product-accordions .accordion-trigger,
+  .wrapper-section--full-width .shopify-block-product-accordions .accordion-content {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 }
 @media (min-width: --theme(--breakpoint-md)) {
-  .row-section--full-width .shopify-block-product-accordions .accordion-trigger,
-  .row-section--full-width .shopify-block-product-accordions .accordion-content {
+  .wrapper-section--full-width .shopify-block-product-accordions .accordion-trigger,
+  .wrapper-section--full-width .shopify-block-product-accordions .accordion-content {
     padding-left: 0;
     padding-right: 0;
   }
 }
 
-/* Row Section Headings */
-.row-section__heading {
+/* Wrapper Section Headings */
+.wrapper-section__heading {
   font-family: var(--font-serif);
   font-weight: 700;
   color: var(--color-primary);
@@ -524,26 +527,26 @@ shopify-block,
 }
 
 
-.grid-layout > .row-section__heading {
+.grid-layout > .wrapper-section__heading {
   grid-column: 1 / -1;
 }
 
-h2.row-section__heading {
+h2.wrapper-section__heading {
   font-size: var(--text-xl);
 }
 
-h3.row-section__heading {
+h3.wrapper-section__heading {
   font-size: var(--text-lg);
 }
 
 @media (min-width: 840px) {
-  .row-section__heading {
+  .wrapper-section__heading {
     margin-bottom: 16px;
   }
-  h2.row-section__heading {
+  h2.wrapper-section__heading {
     font-size: var(--text-2xl);
   }
-  h3.row-section__heading {
+  h3.wrapper-section__heading {
     font-size: var(--text-xl);
   }
 }
