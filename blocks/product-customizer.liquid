@@ -679,6 +679,7 @@
     let state = {
       length: 200,
       width: 140,
+      selectedStandardWidth: 140,
       customizeWidth: false,
       quantity: 1
     };
@@ -687,9 +688,11 @@
     let initVariant = getCurrentVariant();
     if (initVariant && widthOptionIndex !== null) {
       state.width = getVariantWidth(initVariant.title);
+      state.selectedStandardWidth = state.width;
     } else {
       // No width option on this product — use the metafield width limit as the fixed width
       state.width = maxWidthLimit;
+      state.selectedStandardWidth = state.width;
     }
 
     // DOM cache
@@ -935,6 +938,7 @@
       if (customWidthCheckbox) {
         customWidthCheckbox.checked = false;
       }
+      state.selectedStandardWidth = numericWidth;
       state.width = numericWidth;
       
       selectWidthOptionInShopify(value);
@@ -1070,7 +1074,7 @@
 
         // Sync active state of width buttons (use base variant width so it stays active when custom width is enabled)
         if (widthOptionIndex !== null) {
-          updateWidthButtonsUI(width);
+          updateWidthButtonsUI(state.selectedStandardWidth);
         }
 
         // If shape is round, length selection is not possible (since diameter is determined by width)
@@ -1094,7 +1098,7 @@
         // Dynamically update all step numbers based on visibility
         updateStepNumbers();
 
-        const maxWidth = width;
+        const maxWidth = state.selectedStandardWidth;
         const maxAllowedWidth = (customWidthCheckbox && customWidthCheckbox.checked) ? (maxWidth - 5) : maxWidth;
 
         const maxWidthDisplay = document.getElementById("max-width-display");
@@ -1456,16 +1460,10 @@
       customWidthCheckbox.addEventListener("change", () => {
         if (!customWidthCheckbox.checked) {
           // Reset width to standard active variant width when unchecked
-          const currentVariant = getCurrentVariant();
-          const pricingVariant = getPricingVariant(currentVariant);
-          const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
-          state.width = stdWidth;
+          state.width = state.selectedStandardWidth;
         } else {
           // If checked, set width to standard active variant width minus 5
-          const currentVariant = getCurrentVariant();
-          const pricingVariant = getPricingVariant(currentVariant);
-          const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
-          state.width = stdWidth - 5;
+          state.width = state.selectedStandardWidth - 5;
         }
         updateUI();
       });
