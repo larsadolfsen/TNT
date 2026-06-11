@@ -99,25 +99,20 @@
 
   /* Support Grid container logic on wrappers */
   #shopify-section-{{ section.id }} {
-    grid-column-end: span {{ section.settings.column_span_mobile | default: 4 }};
+    --col-span: {{ section.settings.column_span_mobile | default: 4 }};
+    --col-start: {{ section.settings.column_start_mobile | default: 'auto' }};
+    --row-span: {{ section.settings.row_span_mobile | default: 'auto' }};
+    --row-start: {{ section.settings.row_start_mobile | default: 'auto' }};
 
-    {%- if section.settings.column_start_mobile != 'auto' and section.settings.column_start_mobile != blank -%}
-      grid-column-start: {{ section.settings.column_start_mobile }};
-    {%- else -%}
-      grid-column-start: auto;
-    {%- endif -%}
-
+    grid-column-end: span var(--col-span);
+    grid-column-start: var(--col-start);
+    
     {%- if section.settings.row_span_mobile != 'auto' and section.settings.row_span_mobile != blank -%}
-      grid-row-end: span {{ section.settings.row_span_mobile }};
+      grid-row-end: span var(--row-span);
     {%- else -%}
       grid-row-end: auto;
     {%- endif -%}
-
-    {%- if section.settings.row_start_mobile != 'auto' and section.settings.row_start_mobile != blank -%}
-      grid-row-start: {{ section.settings.row_start_mobile }};
-    {%- else -%}
-      grid-row-start: auto;
-    {%- endif -%}
+    grid-row-start: var(--row-start);
 
     {%- if section.settings.justify_self != 'auto' and section.settings.justify_self != blank -%}
       justify-self: {{ section.settings.justify_self }};
@@ -138,25 +133,20 @@
 
   @media screen and (min-width: 840px) {
     #shopify-section-{{ section.id }} {
-      grid-column-end: span {{ section.settings.column_span_tablet | default: 8 }};
+      --col-span: {{ section.settings.column_span_tablet | default: 8 }};
+      --col-start: {{ section.settings.column_start_tablet | default: 'auto' }};
+      --row-span: {{ section.settings.row_span_tablet | default: 'auto' }};
+      --row-start: {{ section.settings.row_start_tablet | default: 'auto' }};
 
-      {%- if section.settings.column_start_tablet != 'auto' and section.settings.column_start_tablet != blank -%}
-        grid-column-start: {{ section.settings.column_start_tablet }};
-      {%- elsif section.settings.column_start_tablet == 'auto' -%}
-        grid-column-start: auto;
-      {%- endif -%}
+      grid-column-end: span var(--col-span);
+      grid-column-start: var(--col-start);
 
       {%- if section.settings.row_span_tablet != 'auto' and section.settings.row_span_tablet != blank -%}
-        grid-row-end: span {{ section.settings.row_span_tablet }};
-      {%- elsif section.settings.row_span_tablet == 'auto' -%}
+        grid-row-end: span var(--row-span);
+      {%- else -%}
         grid-row-end: auto;
       {%- endif -%}
-
-      {%- if section.settings.row_start_tablet != 'auto' and section.settings.row_start_tablet != blank -%}
-        grid-row-start: {{ section.settings.row_start_tablet }};
-      {%- elsif section.settings.row_start_tablet == 'auto' -%}
-        grid-row-start: auto;
-      {%- endif -%}
+      grid-row-start: var(--row-start);
 
       {%- if section.settings.hide_on_tablet -%}
         display: none !important;
@@ -168,25 +158,20 @@
 
   @media screen and (min-width: 1200px) {
     #shopify-section-{{ section.id }} {
-      grid-column-end: span {{ section.settings.column_span_desktop | default: 12 }};
+      --col-span: {{ section.settings.column_span_desktop | default: 12 }};
+      --col-start: {{ section.settings.column_start_desktop | default: 'auto' }};
+      --row-span: {{ section.settings.row_span_desktop | default: 'auto' }};
+      --row-start: {{ section.settings.row_start_desktop | default: 'auto' }};
 
-      {%- if section.settings.column_start_desktop != 'auto' and section.settings.column_start_desktop != blank -%}
-        grid-column-start: {{ section.settings.column_start_desktop }};
-      {%- elsif section.settings.column_start_desktop == 'auto' -%}
-        grid-column-start: auto;
-      {%- endif -%}
+      grid-column-end: span var(--col-span);
+      grid-column-start: var(--col-start);
 
       {%- if section.settings.row_span_desktop != 'auto' and section.settings.row_span_desktop != blank -%}
-        grid-row-end: span {{ section.settings.row_span_desktop }};
-      {%- elsif section.settings.row_span_desktop == 'auto' -%}
+        grid-row-end: span var(--row-span);
+      {%- else -%}
         grid-row-end: auto;
       {%- endif -%}
-
-      {%- if section.settings.row_start_desktop != 'auto' and section.settings.row_start_desktop != blank -%}
-        grid-row-start: {{ section.settings.row_start_desktop }};
-      {%- elsif section.settings.row_start_desktop == 'auto' -%}
-        grid-row-start: auto;
-      {%- endif -%}
+      grid-row-start: var(--row-start);
 
       {%- if section.settings.hide_on_desktop -%}
         display: none !important;
