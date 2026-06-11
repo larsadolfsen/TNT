@@ -252,7 +252,9 @@
         <span id="step-number-width" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
           <span id="label-width" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg bredde</span>
-          <p class="text-sm text-primary/85 mt-1">{{ block.settings.width_step_description | default: "Vælg en standardbredde eller tilpas på dine mål." }}</p>
+          {%- if block.settings.width_step_description != blank -%}
+            <p class="text-sm text-primary/85 mt-1">{{ block.settings.width_step_description }}</p>
+          {%- endif -%}
         </div>
       </div>
       <div class="flex overflow-x-auto pb-1 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
@@ -309,13 +311,15 @@
       
       <!-- Tilpas bredde Accordion Content (displayed inline below buttons) -->
       <div id="content-width-accordion" class="flex flex-col gap-2 w-full mt-0.5 pl-10" style="display: none;">
-        {%- assign width_desc = block.settings.width_description | default: 'Dugen skæres på dine mål. Max bredde er [max_width] cm.' -%}
-        <p class="text-sm text-primary/85 pl-1">
-          {{ width_desc | replace: '[max_width]', '<span id="max-width-display">140</span>' }}
-          {% if width_surcharge_variant %}
-             (+{{ width_surcharge_price_formatted | replace: 'Kr.', 'kr.' | replace: 'Kr', 'kr.' | strip }})
-          {% endif %}
-        </p>
+        {%- if block.settings.width_description != blank -%}
+          {%- assign width_desc = block.settings.width_description -%}
+          <p class="text-sm text-primary/85 pl-1">
+            {{ width_desc | replace: '[max_width]', '<span id="max-width-display">140</span>' }}
+            {% if width_surcharge_variant %}
+               (+{{ width_surcharge_price_formatted | replace: 'Kr.', 'kr.' | replace: 'Kr', 'kr.' | strip }})
+            {% endif %}
+          </p>
+        {%- endif -%}
         
         <!-- Pill-shaped Stepper -->
         <div class="w-full">
