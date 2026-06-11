@@ -249,6 +249,91 @@
         "border_bottom": false
       }
     },
+    "wrapper_KDR6Gy": {
+      "type": "wrapper",
+      "blocks": {
+        "product_customizer_kNq3L4": {
+          "type": "product-customizer",
+          "name": "Product Customizer",
+          "settings": {
+            "metervare_product": "",
+            "heading": "Tilpas dugen",
+            "firkantet_product": "",
+            "rund_product": "",
+            "oval_product": "",
+            "shape_description": "Vælg den form, du ønsker din dug i.",
+            "width_step_description": "Vælg en standardbredde eller tilpas på dine mål.",
+            "width_surcharge_product": "",
+            "width_description": "Dugen skæres på dine mål. Max bredde er [max_width] cm.",
+            "custom_width_checkbox_label": "Tilpas på dine mål",
+            "step_size": 10,
+            "min_length": 50,
+            "length_description": "Vi anbefaler ca. 20 cm til nedhæng i hver ende.",
+            "qty_description": "Vælg det ønskede antal duge.",
+            "border_top": true,
+            "border_bottom": false,
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0,
+            "sold_out_text": "Udsolgt"
+          },
+          "blocks": {}
+        },
+        "product_buy_buttons_NiLmrV": {
+          "type": "product-buy-buttons",
+          "name": "Product Buy Buttons",
+          "settings": {
+            "text_before_price": "Læg i kurv –",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0,
+            "payment_icons_height": 24,
+            "enable_sticky_buy_button": true,
+            "sticky_buy_button_text": "Læg i kurv",
+            "sticky_customize_button_text": "Tilpas",
+            "sticky_info_text": "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug."
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_customizer_kNq3L4",
+        "product_buy_buttons_NiLmrV"
+      ],
+      "name": "Wrapper",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h3",
+        "background_color": "light",
+        "full_width": false,
+        "alignment": "center",
+        "column_span_mobile": "4",
+        "column_start_mobile": "auto",
+        "row_span_mobile": "auto",
+        "row_start_mobile": "auto",
+        "hide_on_mobile": false,
+        "column_span_tablet": "8",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "4",
+        "column_start_desktop": "auto",
+        "row_span_desktop": "auto",
+        "row_start_desktop": "1",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_left": 24,
+        "padding_right": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
     "row_eTcPKr": {
       "type": "wrapper",
       "blocks": {
@@ -781,6 +866,7 @@
     "row_Y793QP",
     "row_PUJcnW",
     "wrapper_YHL3Wm",
+    "wrapper_KDR6Gy",
     "row_eTcPKr",
     "row_p6nNCG",
     "row_VY7RVT",
