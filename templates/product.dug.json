@@ -29,7 +29,7 @@
           "settings": {
             "design": "none",
             "width_cols": "4",
-            "background_color": "transparent",
+            "background_color": "dark",
             "use_global_gap": true,
             "block_gap": 0,
             "title": "",
@@ -60,7 +60,7 @@
               "type": "product-trust",
               "settings": {
                 "rating_score": "4,8",
-                "rating_count": "1.000+ anmeldelser",
+                "rating_count": "1.200+ butiksanmeldelser",
                 "badge_text": "",
                 "padding_top": 0,
                 "padding_bottom": 0,
