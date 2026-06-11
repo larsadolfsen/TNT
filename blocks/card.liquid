@@ -93,26 +93,11 @@
     }
   {%- endunless -%}
 
-  /* Support Grid Column Spanning based on 1-4 input cols */
+  /* Support Grid Column Spanning */
   #shopify-block-{{ block.id }}.shopify-block {
-    {%- case block.settings.width_cols -%}
-      {%- when '1' -%}
-        --span-mobile: 1;
-        --span-expanded: 2;
-        --span-large: 3;
-      {%- when '2' -%}
-        --span-mobile: 2;
-        --span-expanded: 4;
-        --span-large: 6;
-      {%- when '3' -%}
-        --span-mobile: 3;
-        --span-expanded: 6;
-        --span-large: 9;
-      {%- else -%}
-        --span-mobile: 4;
-        --span-expanded: 8;
-        --span-large: 12;
-    {%- endcase -%}
+    --span-mb: 4;
+    --span-tb: 8;
+    --span-lg: 12;
   }
 
   /* Force headers and links to inherit color on dark background cards */
@@ -227,18 +212,6 @@
         { "value": "raised", "label": "t:options.design.raised" }
       ],
       "default": "border"
-    },
-    {
-      "type": "select",
-      "id": "width_cols",
-      "label": "t:labels.width_cols",
-      "options": [
-        { "value": "1", "label": "t:options.width_cols.1" },
-        { "value": "2", "label": "t:options.width_cols.2" },
-        { "value": "3", "label": "t:options.width_cols.3" },
-        { "value": "4", "label": "t:options.width_cols.4" }
-      ],
-      "default": "4"
     },
     {
       "type": "select",
@@ -375,8 +348,7 @@
     {
       "name": "t:general.card",
       "settings": {
-        "design": "border",
-        "width_cols": "4"
+        "design": "border"
       }
     }
   ]

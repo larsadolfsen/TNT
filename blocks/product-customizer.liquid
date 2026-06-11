@@ -184,7 +184,7 @@
   <div class="grid-layout">
 
     <!-- Step 1: Shape Selector -->
-    <div id="step-container-shape" class="flex flex-col gap-3 py-2" style="--span-mobile: 4; --span-expanded: 8; --span-large: 12;">
+    <div id="step-container-shape" class="flex flex-col gap-3 py-2" style="--span-mb: 4; --span-tb: 8; --span-lg: 12;">
       <div class="flex items-start gap-3">
         <span id="step-number-shape" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">1</span>
         <div class="flex flex-col w-full">
@@ -197,7 +197,7 @@
       <div class="grid-layout w-full pl-10">
 
         <!-- Firkantet dug -->
-        <div class="flex flex-col items-center gap-1" style="--span-mobile: 1; --span-expanded: 1; --span-large: 1;">
+        <div class="flex flex-col items-center gap-1" style="--span-mb: 1; --span-tb: 1; --span-lg: 1;">
           <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
             class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-outline-variant bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             onclick="selectShape('firkantet')">
@@ -212,7 +212,7 @@
         </div>
 
         <!-- Rund dug -->
-        <div class="flex flex-col items-center gap-1" style="--span-mobile: 1; --span-expanded: 1; --span-large: 1;">
+        <div class="flex flex-col items-center gap-1" style="--span-mb: 1; --span-tb: 1; --span-lg: 1;">
           <button type="button" id="btn-shape-rund" data-shape="rund"
             class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-outline-variant bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             onclick="selectShape('rund')">
@@ -227,7 +227,7 @@
         </div>
 
         <!-- Oval dug -->
-        <div class="flex flex-col items-center gap-1" style="--span-mobile: 1; --span-expanded: 1; --span-large: 1;">
+        <div class="flex flex-col items-center gap-1" style="--span-mb: 1; --span-tb: 1; --span-lg: 1;">
           <button type="button" id="btn-shape-oval" data-shape="oval"
             class="shape-btn flex flex-col items-center justify-center gap-1.5 rounded-2xl border border-outline-variant bg-white text-slate-900 transition-all duration-200 cursor-pointer focus:outline-none w-full aspect-square"
             onclick="selectShape('oval')">
@@ -245,7 +245,7 @@
     </div>
 
     <!-- Step 2: Width Selection (Vælg bredde) -->
-    <div id="step-container-width" class="flex flex-col gap-3 py-2" style="--span-mobile: 4; --span-expanded: 8; --span-large: 12;">
+    <div id="step-container-width" class="flex flex-col gap-3 py-2" style="--span-mb: 4; --span-tb: 8; --span-lg: 12;">
       <div class="flex items-start gap-3">
         <span id="step-number-width" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
@@ -344,7 +344,7 @@
     </div>
 
     <!-- Step 3: Length Selection -->
-    <div id="step-container-length" class="flex flex-col gap-3 pt-2 pb-0" style="--span-mobile: 4; --span-expanded: 8; --span-large: 12;">
+    <div id="step-container-length" class="flex flex-col gap-3 pt-2 pb-0" style="--span-mb: 4; --span-tb: 8; --span-lg: 12;">
         <div class="flex items-start gap-3">
         <span id="step-number-length" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">3</span>
         <div class="flex flex-col w-full">
@@ -385,7 +385,7 @@
     </div>
 
     <!-- Step 4: Quantity Selector -->
-    <div id="step-container-qty" class="flex flex-col gap-2 w-full pt-6 pb-3" style="--span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
+    <div id="step-container-qty" class="flex flex-col gap-2 w-full pt-6 pb-3" style="--span-mb: 4; --span-tb: 8; --span-lg: 12; grid-column-start: 1;">
       <div class="flex items-start gap-3">
         <span id="step-number-qty" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">4</span>
         <div class="flex flex-col w-full">
@@ -417,7 +417,7 @@
     </div>
 
     <!-- Selected Specs & Price (Calculation Table Summary) -->
-    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-outline-variant rounded-2xl pt-5 pb-4 px-4 mt-2 mb-3 text-sm text-primary/90" style="display: none; --span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
+    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-outline-variant rounded-2xl pt-5 pb-4 px-4 mt-2 mb-3 text-sm text-primary/90" style="display: none; --span-mb: 4; --span-tb: 8; --span-lg: 12; grid-column-start: 1;">
       <!-- Title -->
       <div id="calc-title" class="mb-2 font-semibold text-primary"></div>
       

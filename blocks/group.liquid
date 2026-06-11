@@ -13,9 +13,9 @@
 
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
-    --span-mobile: {{ block.settings.span_mobile | default: 4 }};
-    --span-expanded: {{ block.settings.span_tablet | default: 4 }};
-    --span-large: {{ block.settings.span_desktop | default: 6 }};
+    --span-mb: {{ block.settings.span_mobile | default: 4 }};
+    --span-tb: {{ block.settings.span_tablet | default: 4 }};
+    --span-lg: {{ block.settings.span_desktop | default: 6 }};
   }
 
   #shopify-block-{{ block.id }} > .group {

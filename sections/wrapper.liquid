@@ -64,12 +64,12 @@
   {%- endunless -%}
 
   .section-{{ section.id }}-inner-padding .wrapper-content {
-    --wrapper-span-mobile: {{ section.settings.column_span_mobile | default: 4 }};
-    --wrapper-span-expanded: {{ section.settings.column_span_tablet | default: 8 }};
-    --wrapper-span-large: {{ section.settings.column_span_desktop | default: 12 }};
-    --span-mobile: var(--wrapper-span-mobile);
-    --span-expanded: var(--wrapper-span-expanded);
-    --span-large: var(--wrapper-span-large);
+    --wrapper-span-mb: {{ section.settings.column_span_mobile | default: 4 }};
+    --wrapper-span-tb: {{ section.settings.column_span_tablet | default: 8 }};
+    --wrapper-span-lg: {{ section.settings.column_span_desktop | default: 12 }};
+    --span-mb: var(--wrapper-span-mb);
+    --span-tb: var(--wrapper-span-tb);
+    --span-lg: var(--wrapper-span-lg);
 
     width: 100%;
     {%- if section.settings.alignment == 'left' -%}
@@ -82,18 +82,18 @@
       margin-left: auto !important;
       margin-right: auto !important;
     {%- endif -%}
-    max-width: calc((var(--span-mobile) / 4) * 100%);
+    max-width: calc((var(--span-mb) / 4) * 100%);
   }
 
   @media screen and (min-width: 840px) {
     .section-{{ section.id }}-inner-padding .wrapper-content {
-      max-width: min(calc((var(--span-expanded) / 8) * var(--page-width, 1440px)), 100%);
+      max-width: min(calc((var(--span-tb) / 8) * var(--page-width, 1440px)), 100%);
     }
   }
 
   @media screen and (min-width: 1200px) {
     .section-{{ section.id }}-inner-padding .wrapper-content {
-      max-width: min(calc((var(--span-large) / 12) * var(--page-width, 1440px)), 100%);
+      max-width: min(calc((var(--span-lg) / 12) * var(--page-width, 1440px)), 100%);
     }
   }
 
