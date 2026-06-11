@@ -25,14 +25,12 @@
 }
 
 :root {
-  --grid-gap: 8px;
-
-  @media (min-width: --theme(--breakpoint-md)) {
-    --grid-gap: 16px;
-  }
+  --grid-gap: 16px;
+  --grid-padding-y: 24px;
 
   @media (min-width: --theme(--breakpoint-lg)) {
     --grid-gap: 24px;
+    --grid-padding-y: 40px;
   }
 }
 
@@ -48,7 +46,7 @@ main {
   width: 100%;
   max-width: var(--page-width, 1440px);
   margin: 0 auto;
-  padding: 1.5rem 1rem;
+  padding: var(--grid-padding-y) var(--grid-gap);
 }
 
 @media (min-width: --theme(--breakpoint-md)) {
@@ -60,7 +58,6 @@ main {
 @media (min-width: --theme(--breakpoint-lg)) {
   main {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    padding: 2.5rem 2rem;
   }
 }
 
@@ -263,6 +260,35 @@ h4 {
   width: 100%;
 }
 
+/* Remove default wrapper padding for side-by-side product detail blocks on all screens */
+.template-product #MainContent .shopify-section:has(.product-media) .wrapper-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-product-media) .wrapper-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-page-title) .wrapper-section,
+.template-product #MainContent .shopify-section:has(.page-title) .wrapper-section,
+.template-product #MainContent .shopify-section:has(.product-price) .wrapper-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-product-price) .wrapper-section,
+.template-product #MainContent .shopify-section:has(.product-customizer) .wrapper-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-product-customizer) .wrapper-section,
+.template-product #MainContent .shopify-section:has(.product-variant-picker) .wrapper-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-product-variant-picker) .wrapper-section {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.template-product #MainContent .shopify-section:has(.product-media) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.shopify-block-product-media) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.shopify-block-page-title) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.page-title) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.product-price) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.shopify-block-product-price) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.product-customizer) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.shopify-block-product-customizer) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.product-variant-picker) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.shopify-block-product-variant-picker) [class*="-inner-padding"] {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 /* Product Page Desktop Grid Layout */
 @media (min-width: --theme(--breakpoint-md)) {
   .template-product #MainContent,
@@ -270,12 +296,11 @@ h4 {
   #MainContent:has(.shopify-block-product-media) {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: 2rem;
+    column-gap: var(--grid-gap);
     row-gap: 0;
     width: 100%;
     max-width: var(--page-width, 1440px);
     margin: 0 auto;
-    padding: 1.5rem 1rem;
     align-items: start;
 
     /* Reset default width styling on individual rows - no child selector so it matches in customizer preview */
@@ -390,14 +415,7 @@ h4 {
   }
 }
 
-@media (min-width: --theme(--breakpoint-lg)) {
-  .template-product #MainContent,
-  #MainContent:has(.product-media),
-  #MainContent:has(.shopify-block-product-media) {
-    column-gap: 3.5rem;
-    padding: 2.5rem 2rem;
-  }
-}
+
 
 /* Ensure no horizontal scrolling when using 100vw breakout layouts */
 html, body {
