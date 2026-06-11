@@ -525,69 +525,6 @@
         "border_bottom": false
       }
     },
-    "row_p6nNCG": {
-      "type": "wrapper",
-      "blocks": {
-        "card_DmALbG": {
-          "type": "card",
-          "name": "t:general.card",
-          "settings": {
-            "design": "border",
-            "width_cols": "2",
-            "background_color": "light",
-            "use_global_gap": true,
-            "block_gap": 12,
-            "title": "",
-            "content": "",
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "card_DmALbG"
-      ],
-      "name": "Row",
-      "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "shade",
-        "full_width": false,
-        "alignment": "columns",
-        "column_span_mobile": "4",
-        "column_start_mobile": "auto",
-        "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "4",
-        "column_start_desktop": "auto",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 24,
-        "padding_bottom": 48,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": true,
-        "border_bottom": true
-      }
-    },
     "row_CQqaPe": {
       "type": "wrapper",
       "blocks": {
@@ -617,7 +554,7 @@
       "block_order": [
         "product_testimonial_gzGpa4"
       ],
-      "name": "Reviews",
+      "name": "Wrapper - Reviews",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
@@ -869,7 +806,6 @@
     "wrapper_KDR6Gy",
     "row_eTcPKr",
     "row_VY7RVT",
-    "row_p6nNCG",
     "row_CQqaPe",
     "row_Rg3kFD",
     "row_GqmzkT",
