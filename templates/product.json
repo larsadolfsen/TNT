@@ -55,7 +55,7 @@
             "use_global_gap": true,
             "block_gap": 12,
             "title": "",
-            "content": "<p>Dette er et kortelement med tilpasset design.</p>",
+            "content": "",
             "card_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -66,18 +66,6 @@
             "padding_sides": 0
           },
           "blocks": {
-            "text_pJfQVM": {
-              "type": "text",
-              "name": "t:general.text",
-              "settings": {
-                "text": "<p>Text</p>",
-                "alignment": "left",
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
             "product_trust_N7XyGw": {
               "type": "product-trust",
               "name": "Product Trust",
@@ -93,7 +81,6 @@
             }
           },
           "block_order": [
-            "text_pJfQVM",
             "product_trust_N7XyGw"
           ]
         },
