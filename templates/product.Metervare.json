@@ -541,7 +541,7 @@
         "padding_top": 24,
         "padding_bottom": 24,
         "padding_left": 24,
-        "padding_right": 24,
+        "padding_right": 48,
         "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
