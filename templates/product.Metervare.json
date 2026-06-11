@@ -390,8 +390,8 @@
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
-        "column_span_desktop": "12",
-        "column_start_desktop": "auto",
+        "column_span_desktop": "6",
+        "column_start_desktop": "9",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
@@ -404,6 +404,76 @@
         "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "row_VY7RVT": {
+      "type": "wrapper",
+      "blocks": {
+        "accordion_NzD7JY": {
+          "type": "accordion",
+          "settings": {
+            "title": "Produktspecifikationer",
+            "content": "<p><strong>Form: </strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}<strong><br/>Certificeringer: </strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}<br/><strong>Kemi:</strong> {{ closest.product.metafields.custom.kemi.value }}<strong><br/>Bredde:  </strong>{{ closest.product.metafields.custom.bredde_cm | metafield_text: field: 'label' }}<strong><br/>Tykkelse:</strong> {{ closest.product.metafields.custom.tykkelse.value }} mm</p>",
+            "open_by_default": true
+          },
+          "blocks": {}
+        },
+        "accordion_6kXXUF": {
+          "type": "accordion",
+          "settings": {
+            "title": "Om Textil & Voksdug",
+            "content": "<p>Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        },
+        "accordion_6WF8D8": {
+          "type": "accordion",
+          "settings": {
+            "title": "Vedligeholdelse",
+            "content": "<p><strong>Daglig rengøring:</strong> Tør overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "accordion_NzD7JY",
+        "accordion_6kXXUF",
+        "accordion_6WF8D8"
+      ],
+      "name": "Productspecifications",
+      "settings": {
+        "heading": "Om dugen",
+        "heading_tag": "h3",
+        "background_color": "light",
+        "full_width": false,
+        "alignment": "full_width",
+        "column_span_mobile": "4",
+        "column_start_mobile": "auto",
+        "row_span_mobile": "auto",
+        "row_start_mobile": "auto",
+        "hide_on_mobile": false,
+        "column_span_tablet": "4",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "4",
+        "column_start_desktop": "auto",
+        "row_span_desktop": "auto",
+        "row_start_desktop": "auto",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "padding_left": 24,
+        "padding_right": 24,
+        "use_global_gap": true,
+        "block_spacing": 8,
+        "border_top": true,
         "border_bottom": false
       }
     },
@@ -516,76 +586,6 @@
         "block_spacing": 8,
         "border_top": true,
         "border_bottom": true
-      }
-    },
-    "row_VY7RVT": {
-      "type": "wrapper",
-      "blocks": {
-        "accordion_NzD7JY": {
-          "type": "accordion",
-          "settings": {
-            "title": "Produktspecifikationer",
-            "content": "<p><strong>Form: </strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}<strong><br/>Certificeringer: </strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}<br/><strong>Kemi:</strong> {{ closest.product.metafields.custom.kemi.value }}<strong><br/>Bredde:  </strong>{{ closest.product.metafields.custom.bredde_cm | metafield_text: field: 'label' }}<strong><br/>Tykkelse:</strong> {{ closest.product.metafields.custom.tykkelse.value }} mm</p>",
-            "open_by_default": true
-          },
-          "blocks": {}
-        },
-        "accordion_6kXXUF": {
-          "type": "accordion",
-          "settings": {
-            "title": "Om Textil & Voksdug",
-            "content": "<p>Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
-        },
-        "accordion_6WF8D8": {
-          "type": "accordion",
-          "settings": {
-            "title": "Vedligeholdelse",
-            "content": "<p><strong>Daglig rengøring:</strong> Tør overfladen af med en fugtig klud efter brug. Du kan eventuelt anvende en smule mild opvaskesæbe til genstridigt snavs.</p><p><strong>Beskyttelse mod varme:</strong> Undgå at placere varme elementer som gryder og pander direkte på overfladen. Brug altid bordskånere for at undgå varmeskader.</p><p><strong>Undgå stærke farvestoffer:</strong> Madvarer med kraftige pigmenter, såsom tomatsovs, karry, rødvin eller ketchup, bør tørres af med det samme for at undgå permanente pletter i plasten.</p><p><strong>Opbevaring:</strong> Ved opbevaring bør dugen rulles op på det medfølgende paprør. Foldning frarådes, da det kan skabe varige folder i materialet.</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "accordion_NzD7JY",
-        "accordion_6kXXUF",
-        "accordion_6WF8D8"
-      ],
-      "name": "Productspecifications",
-      "settings": {
-        "heading": "Om dugen",
-        "heading_tag": "h3",
-        "background_color": "light",
-        "full_width": false,
-        "alignment": "full_width",
-        "column_span_mobile": "4",
-        "column_start_mobile": "auto",
-        "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "4",
-        "column_start_desktop": "auto",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": true,
-        "border_bottom": false
       }
     },
     "row_CQqaPe": {
@@ -868,8 +868,8 @@
     "wrapper_YHL3Wm",
     "wrapper_KDR6Gy",
     "row_eTcPKr",
-    "row_p6nNCG",
     "row_VY7RVT",
+    "row_p6nNCG",
     "row_CQqaPe",
     "row_Rg3kFD",
     "row_GqmzkT",
