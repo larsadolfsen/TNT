@@ -2196,22 +2196,22 @@ main > .shopify-section {
 }
 .grid-layout {
   display: grid;
-  grid-template-columns: repeat(var(--wrapper-span-mb, 4), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--wrapper-span-mobile, 4), minmax(0, 1fr));
   gap: var(--grid-gap);
   @media (min-width: 840px) {
-    grid-template-columns: repeat(var(--wrapper-span-tb, 8), minmax(0, 1fr));
+    grid-template-columns: repeat(var(--wrapper-span-expanded, 8), minmax(0, 1fr));
   }
   @media (min-width: 1200px) {
-    grid-template-columns: repeat(var(--wrapper-span-lg, 12), minmax(0, 1fr));
+    grid-template-columns: repeat(var(--wrapper-span-large, 12), minmax(0, 1fr));
   }
 }
 .grid-layout > * {
-  grid-column: span var(--span-mb, 4) / span var(--span-mb, 4);
+  grid-column: span var(--span-mobile, 4) / span var(--span-mobile, 4);
   @media (min-width: 840px) {
-    grid-column: span var(--span-tb, var(--span-mb, 4)) / span var(--span-tb, var(--span-mb, 4));
+    grid-column: span var(--span-expanded, var(--span-mobile, 4)) / span var(--span-expanded, var(--span-mobile, 4));
   }
   @media (min-width: 1200px) {
-    grid-column: span var(--span-lg, var(--span-tb, 4)) / span var(--span-lg, var(--span-tb, 4));
+    grid-column: span var(--span-large, var(--span-expanded, 4)) / span var(--span-large, var(--span-expanded, 4));
   }
 }
 .wrapper-content--no-columns > * {
