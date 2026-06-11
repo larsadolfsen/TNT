@@ -9,6 +9,27 @@
  */
 {
   "sections": {
+    "wrapper_x73Eia": {
+      "type": "wrapper",
+      "name": "Wrapper",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h3",
+        "background_color": "light",
+        "full_width": false,
+        "alignment": "center",
+        "span_mobile": "4",
+        "span_tablet": "8",
+        "span_desktop": "12",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_sides": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
     "row_t6riLp": {
       "type": "wrapper",
       "blocks": {
@@ -28,8 +49,11 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
+            "design": "none",
             "width_cols": "4",
             "background_color": "transparent",
+            "use_global_gap": true,
+            "block_gap": 12,
             "title": "",
             "content": "<p>Dette er et kortelement med tilpasset design.</p>",
             "card_link": "",
@@ -99,10 +123,15 @@
         "heading": "",
         "heading_tag": "h3",
         "background_color": "light",
+        "full_width": false,
         "alignment": "columns",
+        "span_mobile": "4",
+        "span_tablet": "8",
+        "span_desktop": "12",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 24,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
@@ -131,10 +160,15 @@
         "heading": "",
         "heading_tag": "h3",
         "background_color": "light",
+        "full_width": false,
         "alignment": "columns",
+        "span_mobile": "4",
+        "span_tablet": "8",
+        "span_desktop": "12",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_sides": 24,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
@@ -189,7 +223,9 @@
             "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
             "payment_icons_height": 16,
             "enable_sticky_buy_button": true,
-            "sticky_buy_button_text": "Læg i kurv"
+            "sticky_buy_button_text": "Læg i kurv",
+            "sticky_customize_button_text": "Tilpas",
+            "sticky_info_text": "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug."
           },
           "blocks": {}
         }
@@ -205,10 +241,15 @@
         "heading": "",
         "heading_tag": "h3",
         "background_color": "light",
+        "full_width": false,
         "alignment": "columns",
+        "span_mobile": "4",
+        "span_tablet": "8",
+        "span_desktop": "12",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 16,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
@@ -246,8 +287,11 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
+            "design": "border",
             "width_cols": "4",
             "background_color": "light",
+            "use_global_gap": true,
+            "block_gap": 12,
             "title": "",
             "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
             "card_link": "",
@@ -298,10 +342,15 @@
         "heading": "",
         "heading_tag": "h3",
         "background_color": "shade",
+        "full_width": false,
         "alignment": "full_width",
+        "span_mobile": "4",
+        "span_tablet": "8",
+        "span_desktop": "12",
         "padding_top": 24,
         "padding_bottom": 24,
         "padding_sides": 24,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
@@ -351,10 +400,15 @@
         "heading": "",
         "heading_tag": "h3",
         "background_color": "light",
+        "full_width": false,
         "alignment": "columns",
+        "span_mobile": "4",
+        "span_tablet": "8",
+        "span_desktop": "12",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_sides": 0,
+        "use_global_gap": true,
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
@@ -362,6 +416,7 @@
     }
   },
   "order": [
+    "wrapper_x73Eia",
     "row_t6riLp",
     "row_eqmCNB",
     "row_nmPTLb",
