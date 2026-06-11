@@ -552,6 +552,7 @@
     const metervareVariantIntId = {% if metervare_variant %}{{ metervare_variant.id }}{% else %}null{% endif %};
     const widthOptionIndex = {{ width_option_index | json }};
     const widthOptionName = {{ width_option_name | json }};
+    const soldOutLabel = {{ block.settings.sold_out_text | default: "Ikke på lager" | json }};
     
     // Parse variants
     let variants = [];
@@ -927,13 +928,16 @@
             if (match && !match.available) {
               btn.classList.add("opacity-40");
               btn.style.cursor = "not-allowed";
-              // Optional: Add a visual indicator or label like "Udsolgt" or similar
+              
+              // Hide price per meter details
+              if (priceSpan) priceSpan.style.display = "none";
+              
               const soldOutIndicator = btn.querySelector('.sold-out-badge');
               if (!soldOutIndicator) {
                 const badge = document.createElement('span');
                 badge.className = 'sold-out-badge text-[9px] font-bold uppercase mt-0.5 tracking-wider';
                 badge.style.color = 'var(--color-important)';
-                badge.innerText = 'Udsolgt';
+                badge.innerText = soldOutLabel;
                 // Find "pr. meter" span and replace/insert before it
                 const prMeterText = btn.lastElementChild;
                 if (prMeterText && prMeterText.textContent.includes("meter")) {
@@ -942,10 +946,16 @@
                 } else {
                   btn.appendChild(badge);
                 }
+              } else {
+                soldOutIndicator.innerText = soldOutLabel;
               }
             } else {
               btn.classList.remove("opacity-40");
               btn.style.cursor = "pointer";
+              
+              // Restore price per meter details
+              if (priceSpan) priceSpan.style.display = "";
+              
               const soldOutIndicator = btn.querySelector('.sold-out-badge');
               if (soldOutIndicator) {
                 soldOutIndicator.remove();
@@ -1729,6 +1739,12 @@
       "unit": "px",
       "label": "Afstand i siderne",
       "default": 0
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "Tekst for udsolgte bredder",
+      "default": "Udsolgt"
     }
   ],
   "presets": [
