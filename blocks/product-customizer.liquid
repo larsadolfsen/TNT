@@ -631,10 +631,34 @@
     // Safety fallback for empty/missing variants
     const fallbackVariant = { id: null, title: "", options: [], price: 0 };
 
+    function getProductFormVariantInput() {
+      const customizerContainer = document.getElementById("voksdug-customizer-container");
+      if (customizerContainer) {
+        const closestForm = customizerContainer.closest('form[action*="/cart/add"]');
+        if (closestForm) {
+          const input = closestForm.querySelector('select[name="id"], input[name="id"]');
+          if (input) return input;
+        }
+        const closestSection = customizerContainer.closest('.product, .product-section, section');
+        if (closestSection) {
+          const input = closestSection.querySelector('select[name="id"], input[name="id"]');
+          if (input) return input;
+        }
+      }
+      const allInputs = document.querySelectorAll('select[name="id"], input[name="id"]');
+      for (const input of allInputs) {
+        const path = input.closest('.cart-drawer, .quick-add, .drawer, header, footer, #cart');
+        if (!path) {
+          return input;
+        }
+      }
+      return document.querySelector('select[name="id"], input[name="id"]');
+    }
+
     function getCurrentVariant() {
       if (!variants || variants.length === 0) return fallbackVariant;
       let activeVariantId = null;
-      const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+      const variantInput = getProductFormVariantInput();
       if (variantInput) {
         activeVariantId = parseInt(variantInput.value);
       }
@@ -757,10 +781,18 @@
     }
 
     function selectVariantById(variantId) {
+      const mainInput = getProductFormVariantInput();
+      if (mainInput) {
+        mainInput.value = variantId;
+        mainInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      
       const variantInputs = document.querySelectorAll('select[name="id"], input[name="id"]');
       variantInputs.forEach(input => {
-        input.value = variantId;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
+        if (input !== mainInput) {
+          input.value = variantId;
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
       });
       
       const url = new URL(window.location.href);
