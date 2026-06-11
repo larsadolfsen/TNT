@@ -2362,19 +2362,19 @@ h4 {
       max-width: none !important;
     }
     .shopify-section:has(.product-media), .shopify-section:has(.shopify-block-product-media) {
-      grid-column-start: 1;
-      grid-row: 1 / span 2;
+      grid-column-start: var(--col-start, 1);
+      grid-row: var(--row-start, 1) / span var(--row-span, 2);
       position: sticky;
       top: 2rem;
       z-index: 10;
     }
     .shopify-section:has(.shopify-block-page-title), .shopify-section:has(.page-title) {
-      grid-column-start: 9;
-      grid-row: 1;
+      grid-column-start: var(--col-start, 9);
+      grid-row: var(--row-start, 1);
     }
     .shopify-section:has(.product-price), .shopify-section:has(.product-customizer), .shopify-section:has(.product-variant-picker) {
-      grid-column-start: 9;
-      grid-row: 2;
+      grid-column-start: var(--col-start, 9);
+      grid-row: var(--row-start, 2);
     }
     .shopify-section:has(.product-testimonial), .shopify-section:has(.shopify-block-product-testimonial), .shopify-section:has(.product-cross-sell), .shopify-section:has(.shopify-block-product-cross-sell), .shopify-section:has(.trust-checkmark), .shopify-section:has(.product-accordions), .shopify-section:has(.accordion) {
       grid-column: 1 / -1;
