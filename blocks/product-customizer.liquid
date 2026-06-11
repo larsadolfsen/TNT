@@ -776,13 +776,13 @@
         if (isBtnActive) {
           btn.style.borderColor = '#f5c518';
           btn.style.borderWidth = '2px';
-          btn.classList.remove('border-slate-200', 'text-slate-600', 'opacity-55', 'bg-slate-50/50');
-          btn.classList.add('border-2', 'text-slate-900', 'opacity-100');
+          btn.classList.remove('border-slate-200', 'text-slate-600');
+          btn.classList.add('border-2', 'text-slate-900');
         } else {
           btn.style.borderColor = '';
           btn.style.borderWidth = '';
-          btn.classList.remove('border-2', 'text-slate-900', 'opacity-100');
-          btn.classList.add('border-slate-200', 'text-slate-600', 'opacity-55', 'bg-slate-50/50');
+          btn.classList.remove('border-2', 'text-slate-900');
+          btn.classList.add('border-slate-200', 'text-slate-600');
         }
       });
     }
@@ -926,8 +926,9 @@
             
             // Check availability/inventory
             if (match && !match.available) {
-              btn.classList.add("opacity-40");
+              btn.classList.add("opacity-25", "bg-slate-50/70");
               btn.style.cursor = "not-allowed";
+              btn.style.borderColor = "#e2e8f0";
               
               // Hide price per meter details
               if (priceSpan) priceSpan.style.display = "none";
@@ -950,7 +951,7 @@
                 soldOutIndicator.innerText = soldOutLabel;
               }
             } else {
-              btn.classList.remove("opacity-40");
+              btn.classList.remove("opacity-25", "bg-slate-50/70");
               btn.style.cursor = "pointer";
               
               // Restore price per meter details
