@@ -725,7 +725,9 @@
         if (!currentVariant || !currentVariant.options) return false;
         for (let i = 0; i < v.options.length; i++) {
           if (i === widthOptionIndex) continue;
-          if (v.options[i] !== currentVariant.options[i]) return false;
+          const optA = (v.options[i] || '').toLowerCase().trim();
+          const optB = (currentVariant.options[i] || '').toLowerCase().trim();
+          if (optA !== optB) return false;
         }
         if (!v.options || !v.options[widthOptionIndex]) return false;
         const vWidthVal = v.options[widthOptionIndex].toLowerCase().trim().replace('cm', '').replace(/\s+/g, '');
@@ -762,7 +764,9 @@
         if (!v || !v.title || v.title.toLowerCase().includes("tilpasset")) return false;
         for (let i = 0; i < v.options.length; i++) {
           if (i === widthOptionIndex) continue;
-          if (v.options[i] !== currentVariant.options[i]) return false;
+          const optA = (v.options[i] || '').toLowerCase().trim();
+          const optB = (currentVariant.options[i] || '').toLowerCase().trim();
+          if (optA !== optB) return false;
         }
         return true;
       });
@@ -989,7 +993,8 @@
         }
 
         // Width validation / setup
-        const width = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        const resolvedWidthFromVariant = getVariantWidth(pricingVariant ? pricingVariant.title : "");
+        const width = state.width ? state.width : resolvedWidthFromVariant;
         
         // Update prices per meter on the standard width buttons and handle out-of-stock states
         if (widthOptionIndex !== null) {
