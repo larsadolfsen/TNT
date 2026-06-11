@@ -91,18 +91,18 @@
 
   /* Support Grid container logic on desktop wrappers */
   #shopify-section-{{ section.id }} {
-    grid-column: span {{ section.settings.span_mobile | default: 4 }};
+    grid-column-end: span {{ section.settings.span_mobile | default: 4 }};
   }
 
   @media screen and (min-width: 840px) {
     #shopify-section-{{ section.id }} {
-      grid-column: span {{ section.settings.span_tablet | default: 8 }};
+      grid-column-end: span {{ section.settings.span_tablet | default: 8 }};
     }
   }
 
   @media screen and (min-width: 1200px) {
     #shopify-section-{{ section.id }} {
-      grid-column: span {{ section.settings.span_desktop | default: 12 }};
+      grid-column-end: span {{ section.settings.span_desktop | default: 12 }};
     }
   }
 {%- endstyle -%}
