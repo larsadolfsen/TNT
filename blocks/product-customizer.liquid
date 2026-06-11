@@ -819,27 +819,57 @@
     }
 
     function selectWidthOptionInShopify(value) {
-      const btn = Array.from(document.querySelectorAll('.product-variant-selectors button'))
-        .find(b => b.dataset.optionName === widthOptionName && b.dataset.optionValue === value);
+      // 1. Try to find and click/select buttons or radios in the theme
+      const btn = Array.from(document.querySelectorAll('.product-variant-selectors button, .product-form__input input[type="radio"], fieldset input[type="radio"]'))
+        .find(b => {
+          if (b.dataset && b.dataset.optionName === widthOptionName && b.dataset.optionValue === value) {
+            return true;
+          }
+          if (b.value === value || b.value.toLowerCase().trim() === value.toLowerCase().trim()) {
+            return true;
+          }
+          return false;
+        });
       
       if (btn) {
         btn.click();
-      } else {
-        let currentVariant = getCurrentVariant();
-        
-        let targetVariant = findVariantForWidthAndOtherOptions(value, currentVariant);
-        if (!targetVariant && variants && variants.length > 0) {
-          // If mismatching other options (e.g. colour), pick the first one matching this width anyway
-          const targetValNorm = value.toLowerCase().replace('cm', '').replace(/\s+/g, '');
-          targetVariant = variants.find(v => {
-            if (!v.options || !v.options[widthOptionIndex]) return false;
-            const w = v.options[widthOptionIndex].toLowerCase().replace('cm', '').replace(/\s+/g, '');
-            return w === targetValNorm;
-          });
+        if (btn.tagName === 'INPUT') {
+          btn.checked = true;
+          btn.dispatchEvent(new Event('change', { bubbles: true }));
         }
-        if (targetVariant) {
-          selectVariantById(targetVariant.id);
+      }
+
+      // 2. Try to find and update select dropdowns
+      const selects = document.querySelectorAll('select.single-option-selector, .product-form__input select, select[data-index]');
+      selects.forEach(select => {
+        const optionLabel = select.getAttribute('aria-label') || select.getAttribute('data-name') || '';
+        const isWidthSelect = optionLabel.toLowerCase().includes('bredde') || 
+                              optionLabel.toLowerCase().includes('width') || 
+                              optionLabel.toLowerCase().includes('størrelse') ||
+                              select.id.toLowerCase().includes('option' + (widthOptionIndex + 1));
+                              
+        if (isWidthSelect) {
+          const opt = Array.from(select.options).find(o => o.value === value || o.value.toLowerCase().trim() === value.toLowerCase().trim());
+          if (opt) {
+            select.value = opt.value;
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+          }
         }
+      });
+      
+      // 3. Directly force update the variant ID in Shopify's form inputs to guarantee selection
+      let currentVariant = getCurrentVariant();
+      let targetVariant = findVariantForWidthAndOtherOptions(value, currentVariant);
+      if (!targetVariant && variants && variants.length > 0) {
+        const targetValNorm = value.toLowerCase().replace('cm', '').replace(/\s+/g, '');
+        targetVariant = variants.find(v => {
+          if (!v.options || !v.options[widthOptionIndex]) return false;
+          const w = v.options[widthOptionIndex].toLowerCase().replace('cm', '').replace(/\s+/g, '');
+          return w === targetValNorm;
+        });
+      }
+      if (targetVariant) {
+        selectVariantById(targetVariant.id);
       }
     }
 
