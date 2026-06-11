@@ -834,7 +834,15 @@
 
     window.selectWidthValue = function(value, numericWidth) {
       let currentVariant = getCurrentVariant();
-      const match = findVariantForWidthAndOtherOptions(value, currentVariant);
+      let match = findVariantForWidthAndOtherOptions(value, currentVariant);
+      if (!match && variants && variants.length > 0) {
+        const targetValNorm = value.toLowerCase().replace('cm', '').replace(/\s+/g, '');
+        match = variants.find(v => {
+          if (!v.options || !v.options[widthOptionIndex]) return false;
+          const w = v.options[widthOptionIndex].toLowerCase().replace('cm', '').replace(/\s+/g, '');
+          return w === targetValNorm;
+        });
+      }
       if (match && !match.available) {
         showToast(`Bredden ${value} er desværre udsolgt.`);
         return;
