@@ -145,17 +145,12 @@
     padding: 4px;
   }
   .width-btn-slider-item {
-    width: calc((100% - 3 * var(--grid-gap, 16px)) / 4);
+    width: 76px;
     flex-shrink: 0;
   }
   @media (min-width: 840px) {
     .width-btn-slider-item {
-      width: calc((100% - 7 * var(--grid-gap, 16px)) / 8);
-    }
-  }
-  @media (min-width: 1200px) {
-    .width-btn-slider-item {
-      width: calc((100% - 11 * var(--grid-gap, 24px)) / 12);
+      width: 80px;
     }
   }
   
@@ -1796,7 +1791,7 @@
       "type": "checkbox",
       "id": "border_top",
       "label": "Kant i toppen",
-      "default": true
+      "default": false
     },
     {
       "type": "checkbox",
@@ -1812,7 +1807,7 @@
       "step": 2,
       "unit": "px",
       "label": "Afstand i toppen",
-      "default": 12
+      "default": 0
     },
     {
       "type": "range",

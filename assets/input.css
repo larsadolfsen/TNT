@@ -213,6 +213,12 @@ h4 {
   border-radius: 1rem;
 }
 
+/* Product Media Gallery Border */
+.product-media-gallery {
+  border: 1px solid var(--color-border);
+  box-sizing: border-box;
+}
+
 /* Product Page Mobile Breakout Layout */
 @media (width < --theme(--breakpoint-md)) {
   /* Prevent clipping of full width mobile media gallery */

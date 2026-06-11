@@ -2311,6 +2311,10 @@ h4 {
 .card-rte img {
   border-radius: 1rem;
 }
+.product-media-gallery {
+  border: 1px solid var(--color-border);
+  box-sizing: border-box;
+}
 @media (width < 840px) {
   .template-product .group:has(.shopify-block-product-media), .template-product .group:has(.product-media), .template-product .shopify-block:has(.shopify-block-product-media), .template-product .shopify-block:has(.product-media) {
     overflow: visible !important;
