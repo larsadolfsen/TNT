@@ -267,7 +267,7 @@
             "custom_width_checkbox_label": "Tilpas bredde",
             "step_size": 10,
             "min_length": 50,
-            "length_description": "Vi anbefaler ca. 20 cm til nedhæng i hver ende.",
+            "length_description": "Vi anbefaler 15 - 25 cm til nedhæng i hver ende.",
             "qty_description": "Vælg det ønskede antal duge.",
             "border_top": false,
             "border_bottom": false,
