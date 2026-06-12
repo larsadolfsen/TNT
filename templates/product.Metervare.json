@@ -370,7 +370,7 @@
           "name": "t:general.container",
           "settings": {
             "design": "border",
-            "background_color": "light",
+            "background_color": "dark",
             "use_global_gap": true,
             "block_gap": 12,
             "title": "",
@@ -445,7 +445,7 @@
         "align_self": "auto",
         "padding_top": 24,
         "padding_bottom": 24,
-        "padding_left": 48,
+        "padding_left": 24,
         "padding_right": 24,
         "use_global_gap": true,
         "block_spacing": 8,
