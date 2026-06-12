@@ -251,59 +251,84 @@
     "wrapper_KDR6Gy": {
       "type": "section",
       "blocks": {
-        "product_customizer_kNq3L4": {
-          "type": "product-customizer",
-          "name": "Product Customizer",
+        "container_dNTQjj": {
+          "type": "container",
+          "name": "t:general.container",
           "settings": {
-            "metervare_product": "firkantet-dug",
-            "heading": "Tilpas dugen",
-            "firkantet_product": "firkantet-dug-1",
-            "rund_product": "afrunding",
-            "oval_product": "oval-dug",
-            "shape_description": "Vælg den form, du ønsker din dug i.",
-            "width_step_description": "Vælg en standardbredde eller tilpas på dine mål.",
-            "width_surcharge_product": "tilpasset-bredde",
-            "width_description": "Vi anbefaler 15-25 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
-            "custom_width_checkbox_label": "Tilpas bredde",
-            "step_size": 10,
-            "min_length": 50,
-            "length_description": "Vi anbefaler 15 - 25 cm til nedhæng i hver ende.",
-            "qty_description": "Vælg det ønskede antal duge.",
-            "border_top": false,
-            "border_bottom": false,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0,
-            "sold_out_text": "Udsolgt"
+            "design": "border",
+            "background_color": "light",
+            "use_global_gap": true,
+            "block_gap": 12,
+            "title": "Kort Overskrift",
+            "content": "<p>Dette er et kortelement med tilpasset design.</p>",
+            "container_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "padding_sides": 24
           },
-          "blocks": {}
-        },
-        "product_buy_buttons_NiLmrV": {
-          "type": "product-buy-buttons",
-          "name": "Product Buy Buttons",
-          "settings": {
-            "text_before_price": "Læg i kurv –",
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 0,
-            "payment_icons_height": 24,
-            "enable_sticky_buy_button": true,
-            "sticky_buy_button_text": "Læg i kurv",
-            "sticky_customize_button_text": "Tilpas",
-            "sticky_info_text": "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug."
+          "blocks": {
+            "product_customizer_YefMih": {
+              "type": "product-customizer",
+              "name": "Product Customizer",
+              "settings": {
+                "metervare_product": "firkantet-dug",
+                "heading": "Tilpas dugen",
+                "firkantet_product": "firkantet-dug-1",
+                "rund_product": "afrunding",
+                "oval_product": "oval-dug",
+                "shape_description": "Vælg den form, du ønsker din dug i.",
+                "width_step_description": "Vælg en standardbredde eller tilpas på dine mål.",
+                "width_surcharge_product": "tilpasset-bredde",
+                "width_description": "Vi anbefaler 15-25 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
+                "custom_width_checkbox_label": "Tilpas bredde",
+                "step_size": 10,
+                "min_length": 50,
+                "length_description": "Vi anbefaler 15 - 25 cm til nedhæng i hver ende.",
+                "qty_description": "Vælg det ønskede antal duge.",
+                "border_top": false,
+                "border_bottom": false,
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0,
+                "sold_out_text": "Udsolgt"
+              },
+              "blocks": {}
+            },
+            "product_buy_buttons_HyJYbe": {
+              "type": "product-buy-buttons",
+              "name": "Product Buy Buttons",
+              "settings": {
+                "text_before_price": "Læg i kurv –",
+                "padding_top": 12,
+                "padding_bottom": 12,
+                "padding_sides": 0,
+                "payment_icons_height": 24,
+                "enable_sticky_buy_button": true,
+                "sticky_buy_button_text": "Læg i kurv",
+                "sticky_customize_button_text": "Tilpas",
+                "sticky_info_text": "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug."
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
+          "block_order": [
+            "product_customizer_YefMih",
+            "product_buy_buttons_HyJYbe"
+          ]
         }
       },
       "block_order": [
-        "product_customizer_kNq3L4",
-        "product_buy_buttons_NiLmrV"
+        "container_dNTQjj"
       ],
       "name": "Wrapper - Buy Button",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
-        "background_color": "light_grey",
+        "background_color": "transparent",
         "full_width": false,
         "alignment": "center",
         "column_span_mobile": "4",
