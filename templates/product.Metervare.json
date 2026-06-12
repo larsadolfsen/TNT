@@ -370,7 +370,7 @@
           "name": "t:general.container",
           "settings": {
             "design": "border",
-            "background_color": "dark",
+            "background_color": "light",
             "use_global_gap": true,
             "block_gap": 12,
             "title": "",
@@ -423,7 +423,7 @@
       "settings": {
         "heading": "",
         "heading_tag": "h3",
-        "background_color": "transparent",
+        "background_color": "light_grey",
         "full_width": false,
         "alignment": "center",
         "column_span_mobile": "4",
