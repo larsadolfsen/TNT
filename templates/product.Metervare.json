@@ -326,6 +326,83 @@
             "accordion_GGicbF",
             "accordion_DMx9ax"
           ]
+        },
+        "card_nxnJc4": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "design": "none",
+            "background_color": "transparent",
+            "grid_direction": "vertical",
+            "use_global_gap": true,
+            "block_gap": 12,
+            "span_mobile": "4",
+            "span_tablet": "8",
+            "span_desktop": "12",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "padding_sides": 24
+          },
+          "blocks": {
+            "text_mhkKGQ": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
+                "alignment": "left",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "card_fPDbUr": {
+              "type": "card",
+              "name": "t:general.card",
+              "settings": {
+                "design": "none",
+                "background_color": "light",
+                "grid_direction": "horizontal",
+                "use_global_gap": true,
+                "block_gap": 12,
+                "span_mobile": "4",
+                "span_tablet": "8",
+                "span_desktop": "12",
+                "card_link": "",
+                "alignment": "left",
+                "image_placement": "top",
+                "image_aspect_ratio": "landscape",
+                "image_overlay_opacity": 30,
+                "padding_top": 24,
+                "padding_bottom": 24,
+                "padding_sides": 24
+              },
+              "blocks": {
+                "material_badge_3NVfYn": {
+                  "type": "material-badge",
+                  "name": "Material Badge",
+                  "settings": {
+                    "width_cols": "4",
+                    "icon": "",
+                    "title": ""
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "material_badge_3NVfYn"
+              ]
+            }
+          },
+          "block_order": [
+            "text_mhkKGQ",
+            "card_fPDbUr"
+          ]
         }
       },
       "block_order": [
@@ -336,7 +413,8 @@
         "product_customizer_AhPkyg",
         "product_buy_buttons_ixkWkU",
         "card_Vqykq6",
-        "card_QctbPE"
+        "card_QctbPE",
+        "card_nxnJc4"
       ],
       "name": "Section",
       "settings": {
