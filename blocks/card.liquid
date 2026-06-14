@@ -78,7 +78,7 @@
     --span-large: {{ block.settings.span_desktop | default: 12 }};
   }
 
-  #shopify-block-{{ block.id }} > .card-block > .card-content {
+  #shopify-block-{{ block.id }} .card-content {
     {%- liquid
       assign padding_top = block.settings.padding_top | default: 24
       assign padding_bottom = block.settings.padding_bottom | default: 24
@@ -102,17 +102,15 @@
     padding-right: {{ padding_sides }}px;
   }
 
-  #shopify-block-{{ block.id }} > .card-block > .card-content > .card-nested-blocks {
+  #shopify-block-{{ block.id }} .card-nested-blocks {
     --span-mobile: 4;
     --span-expanded: 8;
     --span-large: 12;
     --section-span-mobile: 4;
     --section-span-expanded: 8;
     --section-span-large: 12;
-    {%- unless block.settings.use_global_gap -%}
-      --grid-gap: {% if block.settings.block_gap != blank %}{{ block.settings.block_gap }}{% else %}12{% endif %}px;
-    {%- endunless -%}
-    {%- if block.settings.grid_direction == 'horizontal' -%}
+    {%- if block.settings.block_gap != blank -%}
+      --grid-gap: {{ block.settings.block_gap }}px;
       gap: var(--grid-gap);
     {%- endif -%}
   }
@@ -260,20 +258,24 @@
       "default": "vertical"
     },
     {
-      "type": "checkbox",
-      "id": "use_global_gap",
-      "label": "Brug global afstand (Gap)",
-      "default": true
-    },
-    {
-      "type": "range",
+      "type": "select",
       "id": "block_gap",
-      "min": 0,
-      "max": 64,
-      "step": 4,
-      "unit": "px",
       "label": "Brugerdefineret afstand (Gap)",
-      "default": 12
+      "options": [
+        { "value": "", "label": "Global / Standard" },
+        { "value": "0", "label": "0px" },
+        { "value": "4", "label": "4px" },
+        { "value": "8", "label": "8px" },
+        { "value": "12", "label": "12px" },
+        { "value": "16", "label": "16px" },
+        { "value": "20", "label": "20px" },
+        { "value": "24", "label": "24px" },
+        { "value": "32", "label": "32px" },
+        { "value": "40", "label": "40px" },
+        { "value": "48", "label": "48px" },
+        { "value": "64", "label": "64px" }
+      ],
+      "default": ""
     },
     {
       "type": "header",
