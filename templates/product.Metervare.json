@@ -211,52 +211,12 @@
             "sticky_buy_button_text": "Læg i kurv"
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "page_title_aDDYBH",
-        "product_trust_zmjTqx",
-        "product_price_NnMeR6",
-        "product_urgency_zWDJdx",
-        "product_customizer_AhPkyg",
-        "product_buy_buttons_ixkWkU"
-      ],
-      "name": "Section",
-      "settings": {
-        "background_color": "transparent",
-        "alignment": "center",
-        "full_width": false,
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "6",
-        "column_start_desktop": "7",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 16,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "section_VFJzzk": {
-      "type": "section",
-      "blocks": {
-        "container_tKDyDd": {
+        },
+        "card_Vqykq6": {
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "design": "border",
+            "design": "none",
             "background_color": "light",
             "grid_direction": "vertical",
             "use_global_gap": true,
@@ -273,53 +233,62 @@
             "padding_bottom": 24,
             "padding_sides": 24
           },
-          "blocks": {}
-        },
-        "trust_checkmark_GaXXEH": {
-          "type": "trust-checkmark",
-          "settings": {
-            "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+          "blocks": {
+            "trust_checkmark_kHd67d": {
+              "type": "trust-checkmark",
+              "settings": {
+                "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+              },
+              "blocks": {}
+            },
+            "trust_countdown_yEUj9E": {
+              "type": "trust-countdown",
+              "settings": {
+                "text": "Bestil inden",
+                "suffix": "Så sender vi"
+              },
+              "blocks": {}
+            },
+            "trust_checkmark_xQkw4h": {
+              "type": "trust-checkmark",
+              "settings": {
+                "text": "30 dages fuld returret på din dug."
+              },
+              "blocks": {}
+            },
+            "trust_checkmark_k7XT46": {
+              "type": "trust-checkmark",
+              "settings": {
+                "text": "Sendes på rulle, for at undgå folder."
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
-        },
-        "trust_countdown_meQYqh": {
-          "type": "trust-countdown",
-          "settings": {
-            "text": "Bestil inden",
-            "suffix": "Så sender vi"
-          },
-          "blocks": {}
-        },
-        "trust_checkmark_PWqMdw": {
-          "type": "trust-checkmark",
-          "settings": {
-            "text": "30 dages fuld returret på din dug."
-          },
-          "blocks": {}
-        },
-        "trust_checkmark_baHQYj": {
-          "type": "trust-checkmark",
-          "settings": {
-            "text": "Sendes på rulle, for at undgå folder."
-          },
-          "blocks": {}
+          "block_order": [
+            "trust_checkmark_kHd67d",
+            "trust_countdown_yEUj9E",
+            "trust_checkmark_xQkw4h",
+            "trust_checkmark_k7XT46"
+          ]
         }
       },
       "block_order": [
-        "container_tKDyDd",
-        "trust_checkmark_GaXXEH",
-        "trust_countdown_meQYqh",
-        "trust_checkmark_PWqMdw",
-        "trust_checkmark_baHQYj"
+        "page_title_aDDYBH",
+        "product_trust_zmjTqx",
+        "product_price_NnMeR6",
+        "product_urgency_zWDJdx",
+        "product_customizer_AhPkyg",
+        "product_buy_buttons_ixkWkU",
+        "card_Vqykq6"
       ],
       "name": "Section",
       "settings": {
-        "background_color": "white",
+        "background_color": "transparent",
         "alignment": "center",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "4",
-        "column_start_tablet": "5",
+        "column_start_tablet": "auto",
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
@@ -668,7 +637,6 @@
     "section_DegQzi",
     "section_hhUykJ",
     "section_CjVmWk",
-    "section_VFJzzk",
     "section_x9Fd3C",
     "row_Rg3kFD",
     "row_GqmzkT",
