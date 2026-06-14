@@ -371,45 +371,8 @@
             "padding_sides": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_testimonial_cDBh7n"
-      ],
-      "name": "Section",
-      "settings": {
-        "background_color": "light_grey",
-        "alignment": "left",
-        "full_width": true,
-        "column_span_mobile": "4",
-        "row_span_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "8",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "12",
-        "column_start_desktop": "auto",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 16,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "row_VY7RVT": {
-      "type": "section",
-      "blocks": {
-        "card_ye8GkF": {
+        },
+        "container_NcfcGn": {
           "type": "container",
           "name": "t:general.container",
           "settings": {
@@ -467,45 +430,14 @@
         }
       },
       "block_order": [
-        "card_ye8GkF"
+        "product_testimonial_cDBh7n",
+        "container_NcfcGn"
       ],
-      "name": "Wrapper - Accordion",
+      "name": "Section",
       "settings": {
-        "background_color": "light",
+        "background_color": "light_grey",
         "alignment": "left",
-        "full_width": false,
-        "column_span_mobile": "4",
-        "row_span_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "6",
-        "column_start_desktop": "7",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "padding_left": 0,
-        "padding_right": 0,
-        "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "row_CQqaPe": {
-      "type": "section",
-      "name": "Wrapper - Reviews",
-      "settings": {
-        "background_color": "shade",
-        "alignment": "columns",
-        "full_width": false,
+        "full_width": true,
         "column_span_mobile": "4",
         "row_span_mobile": "auto",
         "hide_on_mobile": false,
@@ -521,14 +453,14 @@
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
-        "padding_top": 0,
-        "padding_bottom": 0,
+        "padding_top": 12,
+        "padding_bottom": 12,
         "padding_left": 24,
         "padding_right": 24,
         "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": true,
-        "border_bottom": true
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_Rg3kFD": {
@@ -753,8 +685,6 @@
     "section_CjVmWk",
     "section_VFJzzk",
     "section_x9Fd3C",
-    "row_VY7RVT",
-    "row_CQqaPe",
     "row_Rg3kFD",
     "row_GqmzkT",
     "row_j7wR4H"
