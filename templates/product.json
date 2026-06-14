@@ -98,7 +98,7 @@
         "column_span_mobile": "4",
         "row_span_mobile": "auto",
         "hide_on_mobile": false,
-        "column_span_tablet": "6",
+        "column_span_tablet": "4",
         "column_start_tablet": "auto",
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
