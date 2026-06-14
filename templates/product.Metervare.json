@@ -255,7 +255,7 @@
           "type": "container",
           "name": "t:general.container",
           "settings": {
-            "design": "border",
+            "design": "raised",
             "background_color": "light",
             "use_global_gap": true,
             "block_gap": 0,
