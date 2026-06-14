@@ -196,7 +196,7 @@
           {% endif %}
         </div>
       </div>
-      <div class="flex flex-row w-full pl-10" style="gap: var(--grid-gap);">
+      <div class="flex overflow-x-auto pb-3 -mb-2 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
 
         <!-- Firkantet dug -->
         <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
@@ -450,6 +450,30 @@
   <span id="toast-text" class="truncate">Lagt i kurven</span>
 </div>
 
+<!-- Mobile Sticky Customize Bar -->
+{%- if block.settings.enable_sticky_customize_button -%}
+<div id="mobile-sticky-customize-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-outline-variant/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[24px] translate-y-full opacity-0 pointer-events-none">
+  <div class="max-w-[var(--page-width)] mx-auto w-full">
+    <button id="btn-sticky-customize" class="w-full bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+      {{ block.settings.sticky_customize_button_text | default: "Tilpas" }}
+    </button>
+  </div>
+</div>
+
+<style>
+  #mobile-sticky-customize-bar {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+  @media (max-width: 839px) {
+    /* Ensure the shopify section containing the sticky bar stacks above subsequent sections on mobile */
+    .shopify-section:has(#mobile-sticky-customize-bar) {
+      position: relative;
+      z-index: 30;
+    }
+  }
+</style>
+{%- endif -%}
+
 <!-- Variant Data JSON -->
 <script id="variant-data" type="application/json">
   [
@@ -679,6 +703,14 @@
     // Initialize initial width state from active variant on load (or from metafield limit when no width option)
     let initVariant = getCurrentVariant();
     if (initVariant && widthOptionIndex !== null) {
+      // If the default/initial variant is sold out, automatically select the first available standard width variant
+      if (!initVariant.available && variants && variants.length > 0) {
+        const firstAvailable = variants.find(v => v.available && !v.title.toLowerCase().includes("tilpasset"));
+        if (firstAvailable) {
+          initVariant = firstAvailable;
+          selectVariantById(firstAvailable.id);
+        }
+      }
       state.width = getVariantWidth(initVariant.title);
       state.selectedStandardWidth = state.width;
     } else {
@@ -810,6 +842,17 @@
         const val = btn.dataset.widthValue;
         if (!val) return;
         const normalizedVal = val.toLowerCase().replace(/\s+/g, '').replace('cm', '');
+        
+        // Deactivated/sold-out button should not show active selection style
+        if (btn.classList.contains('opacity-50')) {
+          btn.classList.remove('active');
+          btn.style.borderColor = 'var(--color-border)';
+          btn.style.borderWidth = '';
+          btn.classList.remove('border-2');
+          btn.classList.add('border-outline-variant');
+          return;
+        }
+
         const isBtnActive = normalizedVal === normalizedSelected;
         
         if (isBtnActive) {
@@ -925,6 +968,11 @@
           const w = v.options[widthOptionIndex].toLowerCase().replace('cm', '').replace(/\s+/g, '');
           return w === targetValNorm;
         });
+      }
+
+      // Deactivated (out of stock) width button should not be selectable
+      if (match && !match.available) {
+        return;
       }
 
 
@@ -1667,6 +1715,45 @@
       }
     });
 
+    // Scroll and state handling for sticky customize button
+    const stickyCustomizeBar = document.getElementById("mobile-sticky-customize-bar");
+    const customizerEl = document.getElementById("voksdug-customizer-container");
+    const btnStickyCustomize = document.getElementById("btn-sticky-customize");
+
+    if (stickyCustomizeBar && customizerEl) {
+      function handleScroll() {
+        const rect = customizerEl.getBoundingClientRect();
+        
+        // 1. Above Customizer (top of customizer is below screen viewport bottom)
+        if (rect.top >= window.innerHeight) {
+          stickyCustomizeBar.style.transform = "translateY(0)";
+          stickyCustomizeBar.style.opacity = "1";
+          stickyCustomizeBar.style.pointerEvents = "auto";
+        } 
+        // 2. Customizer is visible in viewport or below it
+        else {
+          // Slide down and hide
+          stickyCustomizeBar.style.transform = "translateY(100%)";
+          stickyCustomizeBar.style.opacity = "0";
+          stickyCustomizeBar.style.pointerEvents = "none";
+        }
+      }
+
+      // Initial call
+      handleScroll();
+
+      // Listen on scroll and resize
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      window.addEventListener("resize", handleScroll, { passive: true });
+
+      // Click on sticky customize button scrolls smoothly to customizer
+      if (btnStickyCustomize) {
+        btnStickyCustomize.addEventListener("click", () => {
+          customizerEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
+    }
+
     // Initial load
     selectShape('firkantet');
     updateUI();
@@ -1830,6 +1917,22 @@
       "id": "sold_out_text",
       "label": "Tekst for udsolgte bredder",
       "default": "Udsolgt"
+    },
+    {
+      "type": "header",
+      "content": "Sticky Tilpasningsknap på mobil"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_customize_button",
+      "label": "Aktiver sticky Tilpas-knap på mobil",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sticky_customize_button_text",
+      "label": "Tekst på sticky Tilpas-knap",
+      "default": "Tilpas"
     }
   ],
   "presets": [

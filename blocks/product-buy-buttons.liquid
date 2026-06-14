@@ -391,12 +391,7 @@
       </button>
     </div>
 
-    <!-- Customize Tablecloth Button Content (State 1: Above Customizer / "Øverst") -->
-    <div id="sticky-bar-customize-content" class="w-full hidden">
-      <button id="btn-sticky-customize" class="w-full bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
-        {{ block.settings.sticky_customize_button_text | default: "Tilpas" }}
-      </button>
-    </div>
+
   </div>
 </div>
 
@@ -548,32 +543,28 @@
     // 5. Scroll and state handling for sticky buy bar when customizer is present
     const customizerEl = document.getElementById("voksdug-customizer-container");
     const standardContent = document.getElementById("sticky-bar-standard-content");
-    const customizeContent = document.getElementById("sticky-bar-customize-content");
-    const btnStickyCustomize = document.getElementById("btn-sticky-customize");
 
-    if (customizerEl && standardContent && customizeContent) {
+    if (customizerEl && standardContent) {
       function handleScroll() {
         const rect = customizerEl.getBoundingClientRect();
         
         // 1. Above Customizer (top of customizer is below screen viewport bottom)
         if (rect.top >= window.innerHeight) {
-          standardContent.classList.add("hidden");
-          customizeContent.classList.remove("hidden");
-          stickyBar.style.transform = "translateY(0)";
-          stickyBar.style.opacity = "1";
-          stickyBar.style.pointerEvents = "auto";
+          // Hide standard buy button
+          stickyBar.style.transform = "translateY(100%)";
+          stickyBar.style.opacity = "0";
+          stickyBar.style.pointerEvents = "none";
         } 
         // 2. Customizer is visible in viewport
         else if (rect.top < window.innerHeight && rect.bottom > 0) {
-          // Slide down and hide
+          // Hide standard buy button
           stickyBar.style.transform = "translateY(100%)";
           stickyBar.style.opacity = "0";
           stickyBar.style.pointerEvents = "none";
         } 
         // 3. Below Customizer (bottom of customizer is above viewport top)
         else {
-          customizeContent.classList.add("hidden");
-          standardContent.classList.remove("hidden");
+          // Show standard buy button
           stickyBar.style.transform = "translateY(0)";
           stickyBar.style.opacity = "1";
           stickyBar.style.pointerEvents = "auto";
@@ -586,13 +577,6 @@
       // Listen on scroll and resize
       window.addEventListener("scroll", handleScroll, { passive: true });
       window.addEventListener("resize", handleScroll, { passive: true });
-
-      // Click on "Tilpas dugen" scrolls smoothly to customizer
-      if (btnStickyCustomize) {
-        btnStickyCustomize.addEventListener("click", () => {
-          customizerEl.scrollIntoView({ behavior: "smooth", block: "center" });
-        });
-      }
     }
   });
 </script>
@@ -673,18 +657,6 @@
       "id": "sticky_buy_button_text",
       "label": "Tekst på sticky købsknap",
       "default": "Læg i kurv"
-    },
-    {
-      "type": "text",
-      "id": "sticky_customize_button_text",
-      "label": "Tekst på sticky tilpasningsknap",
-      "default": "Tilpas"
-    },
-    {
-      "type": "textarea",
-      "id": "sticky_info_text",
-      "label": "Info tekst på sticky bar / produktknap",
-      "default": "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug."
     }
   ],
   "presets": [
