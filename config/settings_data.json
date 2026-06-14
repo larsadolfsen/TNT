@@ -9,7 +9,7 @@
  */
 {
   "current": {
-    "max_page_width": 1280,
+    "max_page_width": "1280",
     "min_page_margin": 24,
     "primary_color": "#ffd814",
     "background_color": "#F9FAFB",
