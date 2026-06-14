@@ -97,11 +97,11 @@ main > .shopify-section {
   grid-column: span var(--span-mobile, 4) / span var(--span-mobile, 4);
 
   @media (min-width: --theme(--breakpoint-md)) {
-    grid-column: span var(--span-expanded, var(--span-mobile, 4)) / span var(--span-expanded, var(--span-mobile, 4));
+    grid-column: span var(--span-expanded, var(--span-mobile, 8)) / span var(--span-expanded, var(--span-mobile, 8));
   }
 
   @media (min-width: --theme(--breakpoint-lg)) {
-    grid-column: span var(--span-large, var(--span-expanded, 4)) / span var(--span-large, var(--span-expanded, 4));
+    grid-column: span var(--span-large, var(--span-expanded, var(--span-mobile, 12))) / span var(--span-large, var(--span-expanded, var(--span-mobile, 12)));
   }
 }
 
