@@ -35,11 +35,27 @@
             "padding_sides": 0
           },
           "blocks": {}
+        },
+        "badge_JnC8FF": {
+          "type": "badge",
+          "name": "Badge",
+          "settings": {
+            "text": "BESTSELLER",
+            "only_if_in_stock": false,
+            "alignment": "left",
+            "background_color": "#000000",
+            "text_color": "#ffffff",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "page_title_yXUxzj",
-        "product_trust_8Vq97H"
+        "product_trust_8Vq97H",
+        "badge_JnC8FF"
       ],
       "name": "Section",
       "settings": {
@@ -64,7 +80,7 @@
         "padding_left": 24,
         "padding_right": 24,
         "use_global_gap": true,
-        "block_spacing": 16,
+        "block_spacing": 0,
         "border_top": false,
         "border_bottom": false
       }
@@ -125,8 +141,7 @@
             "design": "none",
             "background_color": "light",
             "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 0,
+            "block_gap": "0",
             "span_mobile": "4",
             "span_tablet": "4",
             "span_desktop": "6",
@@ -263,8 +278,7 @@
             "design": "none",
             "background_color": "light",
             "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 12,
+            "block_gap": "12",
             "span_mobile": "4",
             "span_tablet": "8",
             "span_desktop": "12",
@@ -322,8 +336,7 @@
             "design": "none",
             "background_color": "transparent",
             "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 12,
+            "block_gap": "12",
             "span_mobile": "4",
             "span_tablet": "8",
             "span_desktop": "12",
@@ -378,8 +391,7 @@
             "design": "none",
             "background_color": "transparent",
             "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 12,
+            "block_gap": "12",
             "span_mobile": "4",
             "span_tablet": "8",
             "span_desktop": "12",
@@ -412,8 +424,7 @@
                 "design": "none",
                 "background_color": "light",
                 "grid_direction": "horizontal",
-                "use_global_gap": true,
-                "block_gap": 12,
+                "block_gap": "12",
                 "span_mobile": "4",
                 "span_tablet": "8",
                 "span_desktop": "12",
@@ -700,8 +711,7 @@
             "design": "border",
             "background_color": "transparent",
             "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 12,
+            "block_gap": "12",
             "span_mobile": "4",
             "span_tablet": "8",
             "span_desktop": "12",
