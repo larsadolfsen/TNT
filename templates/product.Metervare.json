@@ -398,7 +398,7 @@
       ],
       "name": "Section",
       "settings": {
-        "background_color": "dark",
+        "background_color": "light_grey",
         "alignment": "left",
         "full_width": true,
         "hide_on_mobile": false,
