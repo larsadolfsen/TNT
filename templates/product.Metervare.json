@@ -250,8 +250,44 @@
     },
     "wrapper_KDR6Gy": {
       "type": "section",
+      "name": "Wrapper - Buy Button",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h3",
+        "background_color": "transparent",
+        "full_width": false,
+        "alignment": "center",
+        "column_span_mobile": "4",
+        "column_start_mobile": "auto",
+        "row_span_mobile": "auto",
+        "row_start_mobile": "auto",
+        "hide_on_mobile": false,
+        "column_span_tablet": "4",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "6",
+        "column_start_desktop": "7",
+        "row_span_desktop": "auto",
+        "row_start_desktop": "auto",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "padding_left": 24,
+        "padding_right": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "row_eTcPKr": {
+      "type": "section",
       "blocks": {
-        "container_dNTQjj": {
+        "container_GXWCkL": {
           "type": "container",
           "name": "t:general.container",
           "settings": {
@@ -375,48 +411,7 @@
             "product_buy_buttons_HyJYbe",
             "container_iD7na7"
           ]
-        }
-      },
-      "block_order": [
-        "container_dNTQjj"
-      ],
-      "name": "Wrapper - Buy Button",
-      "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "transparent",
-        "full_width": false,
-        "alignment": "center",
-        "column_span_mobile": "4",
-        "column_start_mobile": "auto",
-        "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "6",
-        "column_start_desktop": "7",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 16,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "row_eTcPKr": {
-      "type": "section",
-      "blocks": {
+        },
         "card_4cY3dT": {
           "type": "container",
           "name": "t:general.container",
@@ -465,6 +460,7 @@
         }
       },
       "block_order": [
+        "container_GXWCkL",
         "card_4cY3dT"
       ],
       "name": "Wrapper - Trust",
