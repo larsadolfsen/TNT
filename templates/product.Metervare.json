@@ -387,15 +387,26 @@
                   "type": "material-badge",
                   "name": "Material Badge",
                   "settings": {
-                    "width_cols": "4",
-                    "icon": "",
-                    "title": ""
+                    "width_cols": "2",
+                    "icon": "eco",
+                    "title": "Bæredygtig"
+                  },
+                  "blocks": {}
+                },
+                "material_badge_tciQJT": {
+                  "type": "material-badge",
+                  "name": "Material Badge",
+                  "settings": {
+                    "width_cols": "2",
+                    "icon": "eco",
+                    "title": "Bæredygtig"
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
-                "material_badge_3NVfYn"
+                "material_badge_3NVfYn",
+                "material_badge_tciQJT"
               ]
             }
           },
