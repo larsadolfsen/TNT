@@ -167,7 +167,7 @@
             "price_suffix": "pr. meter inkl. moms",
             "price_subtext": "30 dages fuld returret, også på din dug.",
             "padding_top": 0,
-            "padding_bottom": 12,
+            "padding_bottom": 0,
             "padding_sides": 0
           },
           "blocks": {}
