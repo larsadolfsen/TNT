@@ -250,6 +250,64 @@
     },
     "wrapper_KDR6Gy": {
       "type": "section",
+      "blocks": {
+        "product_customizer_h9G3PW": {
+          "type": "product-customizer",
+          "name": "Product Customizer",
+          "settings": {
+            "metervare_product": "firkantet-dug",
+            "heading": "Tilpas dugen",
+            "firkantet_product": "firkantet-dug-1",
+            "rund_product": "afrunding",
+            "oval_product": "oval-dug",
+            "shape_description": "Vælg den form, du ønsker din dug i.",
+            "width_step_description": "Vælg en standardbredde eller tilpas på dine mål.",
+            "width_surcharge_product": "tilpasset-bredde",
+            "width_description": "Vi anbefaler 15-25 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
+            "custom_width_checkbox_label": "Tilpas bredde",
+            "step_size": 10,
+            "min_length": 50,
+            "length_description": "Vi anbefaler 15 - 25 cm til nedhæng i hver ende.",
+            "qty_description": "Vælg det ønskede antal duge.",
+            "border_top": false,
+            "border_bottom": false,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0,
+            "sold_out_text": "Udsolgt"
+          },
+          "blocks": {}
+        },
+        "product_buy_buttons_FiMHKX": {
+          "type": "product-buy-buttons",
+          "name": "Product Buy Buttons",
+          "settings": {
+            "text_before_price": "Læg i kurv –",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0,
+            "payment_icons_height": 24,
+            "enable_sticky_buy_button": true,
+            "sticky_buy_button_text": "Læg i kurv"
+          },
+          "blocks": {}
+        },
+        "accordion_aR7kqx": {
+          "type": "accordion",
+          "name": "Accordion",
+          "settings": {
+            "title": "Produktspecifikationer",
+            "content": "<p>Indtast indhold her.</p>",
+            "open_by_default": false
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_customizer_h9G3PW",
+        "product_buy_buttons_FiMHKX",
+        "accordion_aR7kqx"
+      ],
       "name": "Wrapper - Buy Button",
       "settings": {
         "heading": "",
@@ -287,14 +345,14 @@
     "row_eTcPKr": {
       "type": "section",
       "blocks": {
-        "container_GXWCkL": {
+        "container_figX3L": {
           "type": "container",
           "name": "t:general.container",
           "settings": {
             "design": "none",
-            "background_color": "light",
+            "background_color": "transparent",
             "use_global_gap": true,
-            "block_gap": 0,
+            "block_gap": 12,
             "title": "",
             "content": "",
             "container_link": "",
@@ -304,112 +362,44 @@
             "image_overlay_opacity": 30,
             "padding_top": 24,
             "padding_bottom": 24,
-            "padding_sides": 24
+            "padding_sides": 48
           },
           "blocks": {
-            "product_customizer_YefMih": {
-              "type": "product-customizer",
-              "name": "Product Customizer",
+            "trust_checkmark_MfXkhw": {
+              "type": "trust-checkmark",
               "settings": {
-                "metervare_product": "firkantet-dug",
-                "heading": "Tilpas dugen",
-                "firkantet_product": "firkantet-dug-1",
-                "rund_product": "afrunding",
-                "oval_product": "oval-dug",
-                "shape_description": "Vælg den form, du ønsker din dug i.",
-                "width_step_description": "Vælg en standardbredde eller tilpas på dine mål.",
-                "width_surcharge_product": "tilpasset-bredde",
-                "width_description": "Vi anbefaler 15-25 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
-                "custom_width_checkbox_label": "Tilpas bredde",
-                "step_size": 10,
-                "min_length": 50,
-                "length_description": "Vi anbefaler 15 - 25 cm til nedhæng i hver ende.",
-                "qty_description": "Vælg det ønskede antal duge.",
-                "border_top": false,
-                "border_bottom": false,
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0,
-                "sold_out_text": "Udsolgt"
+                "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
               },
               "blocks": {}
             },
-            "product_buy_buttons_HyJYbe": {
-              "type": "product-buy-buttons",
-              "name": "Product Buy Buttons",
+            "trust_countdown_f9t4Aq": {
+              "type": "trust-countdown",
               "settings": {
-                "text_before_price": "Læg i kurv –",
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0,
-                "payment_icons_height": 24,
-                "enable_sticky_buy_button": true,
-                "sticky_buy_button_text": "Læg i kurv"
+                "text": "Bestil inden",
+                "suffix": "Så sender vi"
               },
               "blocks": {}
             },
-            "container_iD7na7": {
-              "type": "container",
-              "name": "t:general.container",
+            "trust_checkmark_Wg47yh": {
+              "type": "trust-checkmark",
               "settings": {
-                "design": "none",
-                "background_color": "transparent",
-                "use_global_gap": true,
-                "block_gap": 12,
-                "title": "",
-                "content": "",
-                "container_link": "",
-                "alignment": "left",
-                "image_placement": "top",
-                "image_aspect_ratio": "landscape",
-                "image_overlay_opacity": 30,
-                "padding_top": 24,
-                "padding_bottom": 24,
-                "padding_sides": 48
+                "text": "30 dages fuld returret på din dug."
               },
-              "blocks": {
-                "trust_checkmark_MfXkhw": {
-                  "type": "trust-checkmark",
-                  "settings": {
-                    "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
-                  },
-                  "blocks": {}
-                },
-                "trust_countdown_f9t4Aq": {
-                  "type": "trust-countdown",
-                  "settings": {
-                    "text": "Bestil inden",
-                    "suffix": "Så sender vi"
-                  },
-                  "blocks": {}
-                },
-                "trust_checkmark_Wg47yh": {
-                  "type": "trust-checkmark",
-                  "settings": {
-                    "text": "30 dages fuld returret på din dug."
-                  },
-                  "blocks": {}
-                },
-                "trust_checkmark_i6Jm99": {
-                  "type": "trust-checkmark",
-                  "settings": {
-                    "text": "Sendes på rulle, for at undgå folder."
-                  },
-                  "blocks": {}
-                }
+              "blocks": {}
+            },
+            "trust_checkmark_i6Jm99": {
+              "type": "trust-checkmark",
+              "settings": {
+                "text": "Sendes på rulle, for at undgå folder."
               },
-              "block_order": [
-                "trust_checkmark_MfXkhw",
-                "trust_countdown_f9t4Aq",
-                "trust_checkmark_Wg47yh",
-                "trust_checkmark_i6Jm99"
-              ]
+              "blocks": {}
             }
           },
           "block_order": [
-            "product_customizer_YefMih",
-            "product_buy_buttons_HyJYbe",
-            "container_iD7na7"
+            "trust_checkmark_MfXkhw",
+            "trust_countdown_f9t4Aq",
+            "trust_checkmark_Wg47yh",
+            "trust_checkmark_i6Jm99"
           ]
         },
         "card_4cY3dT": {
@@ -460,7 +450,7 @@
         }
       },
       "block_order": [
-        "container_GXWCkL",
+        "container_figX3L",
         "card_4cY3dT"
       ],
       "name": "Wrapper - Trust",
