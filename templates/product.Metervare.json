@@ -164,7 +164,7 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "design": "border",
+            "design": "none",
             "background_color": "light",
             "grid_direction": "vertical",
             "block_gap": "0",
@@ -176,9 +176,9 @@
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
             "image_overlay_opacity": 30,
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "padding_sides": 24
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
           },
           "blocks": {
             "product_price_kbT9KB": {
