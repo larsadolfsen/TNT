@@ -291,22 +291,11 @@
             "sticky_buy_button_text": "Læg i kurv"
           },
           "blocks": {}
-        },
-        "accordion_aR7kqx": {
-          "type": "accordion",
-          "name": "Accordion",
-          "settings": {
-            "title": "Produktspecifikationer",
-            "content": "<p>Indtast indhold her.</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "product_customizer_h9G3PW",
-        "product_buy_buttons_FiMHKX",
-        "accordion_aR7kqx"
+        "product_buy_buttons_FiMHKX"
       ],
       "name": "Wrapper - Buy Button",
       "settings": {
