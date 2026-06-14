@@ -9,11 +9,9 @@
   assign container_classes = 'container-block flex flex-col relative overflow-hidden transition-all duration-300 w-full h-full'
   
   # Design mapping
-  assign radius_class = 'rounded-none'
   if block.settings.design == 'border' or block.settings.design == 'raised'
-    assign radius_class = 'rounded-2xl'
+    assign container_classes = container_classes | append: ' rounded-2xl'
   endif
-  assign container_classes = container_classes | append: ' ' | append: radius_class
 
   # Background color mapping
   if block.settings.design != 'none'
@@ -25,8 +23,6 @@
       when 'transparent'
         assign container_classes = container_classes | append: ' bg-transparent'
     endcase
-  else
-    assign container_classes = container_classes | append: ' bg-transparent'
   endif
 
   # Apply border / shadow classes based on design style
@@ -74,24 +70,37 @@
 
 {%- style -%}
   #shopify-block-{{ block.id }} > .container-block > .container-content {
-    {%- if block.settings.design != 'none' -%}
-      padding-top: {% if block.settings.padding_top != blank %}{{ block.settings.padding_top }}{% else %}24{% endif %}px;
-      padding-bottom: {% if block.settings.padding_bottom != blank %}{{ block.settings.padding_bottom }}{% else %}24{% endif %}px;
-      padding-left: {% if block.settings.padding_sides != blank %}{{ block.settings.padding_sides }}{% else %}24{% endif %}px;
-      padding-right: {% if block.settings.padding_sides != blank %}{{ block.settings.padding_sides }}{% else %}24{% endif %}px;
-    {%- else -%}
-      padding-top: 0px;
-      padding-bottom: 0px;
-      padding-left: 0px;
-      padding-right: 0px;
-    {%- endif -%}
+    {%- liquid
+      assign padding_top = block.settings.padding_top | default: 24
+      assign padding_bottom = block.settings.padding_bottom | default: 24
+      assign padding_sides = block.settings.padding_sides | default: 24
+
+      if block.settings.design == 'none'
+        if padding_top == 24
+          assign padding_top = 16
+        endif
+        if padding_bottom == 24
+          assign padding_bottom = 16
+        endif
+        if padding_sides == 24
+          assign padding_sides = 0
+        endif
+      endif
+    -%}
+    padding-top: {{ padding_top }}px;
+    padding-bottom: {{ padding_bottom }}px;
+    padding-left: {{ padding_sides }}px;
+    padding-right: {{ padding_sides }}px;
   }
 
-  {%- unless block.settings.use_global_gap -%}
-    #shopify-block-{{ block.id }} > .container-block > .container-content > .container-nested-blocks.grid-layout {
+  #shopify-block-{{ block.id }} > .container-block > .container-content > .container-nested-blocks {
+    {%- unless block.settings.use_global_gap -%}
       --grid-gap: {% if block.settings.block_gap != blank %}{{ block.settings.block_gap }}{% else %}12{% endif %}px;
-    }
-  {%- endunless -%}
+    {%- endunless -%}
+    {%- if block.settings.grid_direction == 'horizontal' -%}
+      gap: var(--grid-gap);
+    {%- endif -%}
+  }
 
   /* Force headers and links to inherit color on dark background containers */
   {%- liquid
@@ -139,17 +148,24 @@
   {%- endif -%}
 
   <div class="container-content flex flex-col flex-1 w-full z-10 {{ content_align_class }}">
-    {%- if block.settings.title != blank -%}
-      <h3 class="container-title font-serif font-bold text-lg md:text-xl mb-2 text-inherit">{{ block.settings.title }}</h3>
-    {%- endif -%}
-    
-    {%- if block.settings.content != blank -%}
-      <div class="container-rte rte text-sm mb-4 text-inherit w-full">
-        {{ block.settings.content }}
-      </div>
-    {%- endif -%}
-
-    <div class="container-nested-blocks w-full grid-layout">
+    {%- liquid
+      assign nested_blocks_classes = 'container-nested-blocks w-full'
+      if block.settings.grid_direction == 'horizontal'
+        assign flex_justify = 'justify-start'
+        case block.settings.alignment
+          when 'center'
+            assign flex_justify = 'justify-center'
+          when 'right'
+            assign flex_justify = 'justify-end'
+          when 'justify'
+            assign flex_justify = 'justify-between'
+        endcase
+        assign nested_blocks_classes = nested_blocks_classes | append: ' flex flex-row flex-wrap items-center ' | append: flex_justify
+      else
+        assign nested_blocks_classes = nested_blocks_classes | append: ' grid-layout'
+      endif
+    -%}
+    <div class="{{ nested_blocks_classes }}">
       {% content_for 'blocks' %}
     </div>
   </div>
@@ -181,7 +197,7 @@
   {%- endif -%}
 
   {%- if block.settings.container_link != blank -%}
-    <a href="{{ block.settings.container_link }}" class="absolute inset-0 z-20 cursor-pointer" aria-label="{{ block.settings.title | default: 'Container link' }}"></a>
+    <a href="{{ block.settings.container_link }}" class="absolute inset-0 z-20 cursor-pointer" aria-label="Container link"></a>
   {%- endif -%}
 </div>
 
@@ -215,7 +231,18 @@
         { "value": "light", "label": "Light" },
         { "value": "dark", "label": "Dark" }
       ],
-      "default": "light"
+      "default": "light",
+      "visible_if": "{{ block.settings.design != 'none' }}"
+    },
+    {
+      "type": "select",
+      "id": "grid_direction",
+      "label": "Grid retning",
+      "options": [
+        { "value": "vertical", "label": "Lodret (Vertical)" },
+        { "value": "horizontal", "label": "Vandret (Horizontal)" }
+      ],
+      "default": "vertical"
     },
     {
       "type": "checkbox",
@@ -236,18 +263,6 @@
     {
       "type": "header",
       "content": "Indhold"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Overskrift",
-      "default": "Kort Overskrift"
-    },
-    {
-      "type": "richtext",
-      "id": "content",
-      "label": "Tekstindhold",
-      "default": "<p>Dette er et kortelement med tilpasset design.</p>"
     },
     {
       "type": "url",

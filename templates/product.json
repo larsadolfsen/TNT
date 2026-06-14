@@ -263,8 +263,6 @@
             "background_color": "light",
             "use_global_gap": true,
             "block_gap": 12,
-            "title": "",
-            "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
             "container_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -275,6 +273,18 @@
             "padding_sides": 24
           },
           "blocks": {
+            "text_card_tymWUQ": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
+                "alignment": "left",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
             "material_badge_bRWLTf": {
               "type": "material-badge",
               "name": "Material Badge",
@@ -297,6 +307,7 @@
             }
           },
           "block_order": [
+            "text_card_tymWUQ",
             "material_badge_bRWLTf",
             "material_badge_Uy6wfE"
           ]

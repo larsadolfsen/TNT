@@ -399,8 +399,6 @@
             "background_color": "light",
             "use_global_gap": true,
             "block_gap": 12,
-            "title": "",
-            "content": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
             "container_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -411,6 +409,18 @@
             "padding_sides": 16
           },
           "blocks": {
+            "text_card_4cY3dT": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
+                "alignment": "left",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
             "material_badge_nKfKP8": {
               "type": "material-badge",
               "name": "Material Badge",
@@ -433,6 +443,7 @@
             }
           },
           "block_order": [
+            "text_card_4cY3dT",
             "material_badge_nKfKP8",
             "material_badge_9VUW8Y"
           ]
@@ -792,8 +803,6 @@
             "background_color": "transparent",
             "use_global_gap": true,
             "block_gap": 12,
-            "title": "",
-            "content": "{{ closest.product.description }}",
             "container_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -803,7 +812,23 @@
             "padding_bottom": 0,
             "padding_sides": 0
           },
-          "blocks": {}
+          "blocks": {
+            "text_card_bNBzDD": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "{{ closest.product.description }}",
+                "alignment": "left",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_card_bNBzDD"
+          ]
         }
       },
       "block_order": [

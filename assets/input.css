@@ -420,7 +420,7 @@ h4 {
     .shopify-section:has(.shopify-block-page-title),
     .shopify-section:has(.page-title) {
       grid-column-start: var(--col-start, 9);
-      grid-row: var(--row-start, 1);
+      grid-row: var(--row-start, auto);
     }
 
     /* Price/Customizer/Buy Buttons in Right Column (Column 9-12) row 2 */
@@ -431,7 +431,7 @@ h4 {
     .shopify-section:has(.product-variant-picker),
     .shopify-section:has(.shopify-block-product-variant-picker) {
       grid-column: var(--col-start, 9) / span var(--col-span, 4);
-      grid-row: var(--row-start, 2) / span var(--row-span, 1);
+      grid-row: var(--row-start, auto) / span var(--row-span, 1);
     }
 
     /* Full-width sections span all 12 columns */

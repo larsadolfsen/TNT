@@ -64,7 +64,6 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --font-weight-extrabold: 800;
     --tracking-tight: -0.025em;
     --tracking-wide: 0.025em;
     --tracking-wider: 0.05em;
@@ -692,6 +691,9 @@
   .flex-col {
     flex-direction: column;
   }
+  .flex-row {
+    flex-direction: row;
+  }
   .flex-nowrap {
     flex-wrap: nowrap;
   }
@@ -853,9 +855,6 @@
   }
   .rounded-md {
     border-radius: var(--radius-md);
-  }
-  .rounded-none {
-    border-radius: 0;
   }
   .rounded-sm {
     border-radius: var(--radius-sm);
@@ -1435,9 +1434,6 @@
   }
   .text-emerald-600 {
     color: var(--color-emerald-600);
-  }
-  .text-inherit {
-    color: inherit;
   }
   .text-outline-variant {
     color: var(--color-outline-variant);
@@ -2097,12 +2093,6 @@
       line-height: var(--tw-leading, var(--text-lg--line-height));
     }
   }
-  .md\:text-xl {
-    @media (width >= 840px) {
-      font-size: var(--text-xl);
-      line-height: var(--tw-leading, var(--text-xl--line-height));
-    }
-  }
   .md\:opacity-0 {
     @media (width >= 840px) {
       opacity: 0%;
@@ -2406,11 +2396,11 @@ h4 {
     }
     .shopify-section:has(.shopify-block-page-title), .shopify-section:has(.page-title) {
       grid-column-start: var(--col-start, 9);
-      grid-row: var(--row-start, 1);
+      grid-row: var(--row-start, auto);
     }
     .shopify-section:has(.product-price), .shopify-section:has(.shopify-block-product-price), .shopify-section:has(.product-customizer), .shopify-section:has(.shopify-block-product-customizer), .shopify-section:has(.product-variant-picker), .shopify-section:has(.shopify-block-product-variant-picker) {
       grid-column: var(--col-start, 9) / span var(--col-span, 4);
-      grid-row: var(--row-start, 2) / span var(--row-span, 1);
+      grid-row: var(--row-start, auto) / span var(--row-span, 1);
     }
     .shopify-section:has(.product-testimonial), .shopify-section:has(.shopify-block-product-testimonial), .shopify-section:has(.product-cross-sell), .shopify-section:has(.shopify-block-product-cross-sell), .shopify-section:has(.trust-checkmark), .shopify-section:has(.shopify-block-trust-checkmark), .shopify-section:has(.shopify-block-trust-countdown), .shopify-section:has(.product-accordions), .shopify-section:has(.shopify-block-product-accordions), .shopify-section:has(.accordion), .shopify-section:has(.shopify-block-accordion) {
       grid-column: var(--col-start, 1) / span var(--col-span, 12);
