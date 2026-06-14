@@ -114,7 +114,7 @@
         "column_span_desktop": "6",
         "column_start_desktop": "1",
         "row_span_desktop": "6",
-        "row_start_desktop": "auto",
+        "row_start_desktop": "1",
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
