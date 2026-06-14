@@ -108,20 +108,10 @@
   #shopify-section-{{ section.id }} {
     --col-span: {{ section.settings.column_span_mobile | default: 4 }};
     grid-column-end: span var(--col-span);
-
-    {%- if section.settings.column_start_mobile != 'auto' and section.settings.column_start_mobile != blank -%}
-      --col-start: {{ section.settings.column_start_mobile }};
-      grid-column-start: var(--col-start);
-    {%- endif -%}
     
     {%- if section.settings.row_span_mobile != 'auto' and section.settings.row_span_mobile != blank -%}
       --row-span: {{ section.settings.row_span_mobile }};
       grid-row-end: span var(--row-span);
-    {%- endif -%}
-
-    {%- if section.settings.row_start_mobile != 'auto' and section.settings.row_start_mobile != blank -%}
-      --row-start: {{ section.settings.row_start_mobile }};
-      grid-row-start: var(--row-start);
     {%- endif -%}
 
     {%- if section.settings.justify_self != 'auto' and section.settings.justify_self != blank -%}
@@ -145,28 +135,16 @@
       {%- if section.settings.column_start_tablet != 'auto' and section.settings.column_start_tablet != blank -%}
         --col-start: {{ section.settings.column_start_tablet }};
         grid-column-start: var(--col-start);
-      {%- else -%}
-        {%- if section.settings.column_start_mobile != 'auto' and section.settings.column_start_mobile != blank -%}
-          grid-column-start: auto;
-        {%- endif -%}
       {%- endif -%}
 
       {%- if section.settings.row_span_tablet != 'auto' and section.settings.row_span_tablet != blank -%}
         --row-span: {{ section.settings.row_span_tablet }};
         grid-row-end: span var(--row-span);
-      {%- else -%}
-        {%- if section.settings.row_span_mobile != 'auto' and section.settings.row_span_mobile != blank -%}
-          grid-row-end: auto;
-        {%- endif -%}
       {%- endif -%}
 
       {%- if section.settings.row_start_tablet != 'auto' and section.settings.row_start_tablet != blank -%}
         --row-start: {{ section.settings.row_start_tablet }};
         grid-row-start: var(--row-start);
-      {%- else -%}
-        {%- if section.settings.row_start_mobile != 'auto' and section.settings.row_start_mobile != blank -%}
-          grid-row-start: auto;
-        {%- endif -%}
       {%- endif -%}
 
       {%- if section.settings.hide_on_tablet -%}
@@ -188,7 +166,7 @@
         --col-start: {{ section.settings.column_start_desktop }};
         grid-column-start: var(--col-start);
       {%- else -%}
-        {%- if section.settings.column_start_tablet != 'auto' and section.settings.column_start_tablet != blank or section.settings.column_start_mobile != 'auto' and section.settings.column_start_mobile != blank -%}
+        {%- if section.settings.column_start_tablet != 'auto' and section.settings.column_start_tablet != blank -%}
           grid-column-start: auto;
         {%- endif -%}
       {%- endif -%}
@@ -197,7 +175,7 @@
         --row-span: {{ section.settings.row_span_desktop }};
         grid-row-end: span var(--row-span);
       {%- else -%}
-        {%- if section.settings.row_span_tablet != 'auto' and section.settings.row_span_tablet != blank or section.settings.row_span_mobile != 'auto' and section.settings.row_span_mobile != blank -%}
+        {%- if section.settings.row_span_tablet != 'auto' and section.settings.row_span_tablet != blank -%}
           grid-row-end: auto;
         {%- endif -%}
       {%- endif -%}
@@ -206,7 +184,7 @@
         --row-start: {{ section.settings.row_start_desktop }};
         grid-row-start: var(--row-start);
       {%- else -%}
-        {%- if section.settings.row_start_tablet != 'auto' and section.settings.row_start_tablet != blank or section.settings.row_start_mobile != 'auto' and section.settings.row_start_mobile != blank -%}
+        {%- if section.settings.row_start_tablet != 'auto' and section.settings.row_start_tablet != blank -%}
           grid-row-start: auto;
         {%- endif -%}
       {%- endif -%}
@@ -252,9 +230,6 @@
 <div class="{{ outer_class }}"{% if section.settings.border_top or section.settings.border_bottom %} style="{% if section.settings.border_top %}border-top:1px solid var(--color-border);{% endif %}{% if section.settings.border_bottom %}border-bottom:1px solid var(--color-border);{% endif %}"{% endif %}>
   <div class="{{ inner_class }}">
     <div class="{{ section_classes }}">
-      {%- if section.settings.heading != blank -%}
-        <{{ section.settings.heading_tag }} class="section-section__heading">{{ section.settings.heading }}</{{ section.settings.heading_tag }}>
-      {%- endif -%}
       {% content_for 'blocks' %}
     </div>
   </div>
@@ -264,25 +239,6 @@
 {
   "name": "Section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Overskrift"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Overskrift"
-    },
-    {
-      "type": "select",
-      "id": "heading_tag",
-      "label": "Overskriftstype",
-      "options": [
-        { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" }
-      ],
-      "default": "h3"
-    },
     {
       "type": "header",
       "content": "Layout"
@@ -334,42 +290,8 @@
     },
     {
       "type": "select",
-      "id": "column_start_mobile",
-      "label": "Kolonne start",
-      "options": [
-        { "value": "auto", "label": "Auto" },
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" }
-      ],
-      "default": "auto"
-    },
-    {
-      "type": "select",
       "id": "row_span_mobile",
       "label": "Højde",
-      "options": [
-        { "value": "auto", "label": "Auto" },
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },
-        { "value": "6", "label": "6" },
-        { "value": "7", "label": "7" },
-        { "value": "8", "label": "8" },
-        { "value": "9", "label": "9" },
-        { "value": "10", "label": "10" },
-        { "value": "11", "label": "11" },
-        { "value": "12", "label": "12" }
-      ],
-      "default": "auto"
-    },
-    {
-      "type": "select",
-      "id": "row_start_mobile",
-      "label": "Række start",
       "options": [
         { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1" },
