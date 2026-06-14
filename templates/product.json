@@ -60,7 +60,7 @@
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
         "column_span_desktop": "6",
-        "column_start_desktop": "1",
+        "column_start_desktop": "7",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
