@@ -348,7 +348,7 @@
           "name": "t:general.card",
           "settings": {
             "design": "border",
-            "background_color": "light",
+            "background_color": "dark",
             "grid_direction": "vertical",
             "block_gap": "12",
             "span_mobile": "4",
