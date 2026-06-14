@@ -52,14 +52,14 @@
   {%- endunless -%}
 
   .section-{{ section.id }}-inner-padding .section-content {
-    --section-span-mb: {{ section.settings.column_span_mobile | default: 4 }};
+    --section-span-mb: 4;
     --section-span-tb: {{ section.settings.column_span_tablet | default: 8 }};
     --section-span-lg: {{ section.settings.column_span_desktop | default: 12 }};
     --span-mb: var(--section-span-mb);
     --span-tb: var(--section-span-tb);
     --span-lg: var(--section-span-lg);
 
-    --section-span-mobile: {{ section.settings.column_span_mobile | default: 4 }};
+    --section-span-mobile: 4;
     --section-span-expanded: {{ section.settings.column_span_tablet | default: 8 }};
     --section-span-large: {{ section.settings.column_span_desktop | default: 12 }};
     --span-mobile: var(--section-span-mobile);
@@ -94,14 +94,9 @@
 
   /* Support Grid container logic on sections */
   #shopify-section-{{ section.id }} {
-    --col-span: {{ section.settings.column_span_mobile | default: 4 }};
+    --col-span: 4;
     grid-column-end: span var(--col-span);
     
-    {%- if section.settings.row_span_mobile != 'auto' and section.settings.row_span_mobile != blank -%}
-      --row-span: {{ section.settings.row_span_mobile }};
-      grid-row-end: span var(--row-span);
-    {%- endif -%}
-
     {%- if section.settings.justify_self != 'auto' and section.settings.justify_self != blank -%}
       justify-self: {{ section.settings.justify_self }};
     {%- endif -%}
@@ -263,39 +258,6 @@
     {
       "type": "header",
       "content": "Mobil"
-    },
-    {
-      "type": "select",
-      "id": "column_span_mobile",
-      "label": "Bredde",
-      "options": [
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" }
-      ],
-      "default": "4"
-    },
-    {
-      "type": "select",
-      "id": "row_span_mobile",
-      "label": "Højde",
-      "options": [
-        { "value": "auto", "label": "Auto" },
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },
-        { "value": "6", "label": "6" },
-        { "value": "7", "label": "7" },
-        { "value": "8", "label": "8" },
-        { "value": "9", "label": "9" },
-        { "value": "10", "label": "10" },
-        { "value": "11", "label": "11" },
-        { "value": "12", "label": "12" }
-      ],
-      "default": "auto"
     },
     {
       "type": "checkbox",

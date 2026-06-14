@@ -266,15 +266,15 @@
           "blocks": {}
         },
         "card_tymWUQ": {
-          "type": "container",
-          "name": "t:general.container",
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
             "design": "border",
             "background_color": "light",
             "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
-            "container_link": "",
+            "card_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",

@@ -1,50 +1,50 @@
 {% doc %}
-  Renders a customizable container block.
+  Renders a customizable card block.
 
   @example
-  {% content_for 'block', type: 'container', id: 'container' %}
+  {% content_for 'block', type: 'card', id: 'card' %}
 {% enddoc %}
 
 {%- liquid
-  assign container_classes = 'container-block flex flex-col relative overflow-hidden transition-all duration-300 w-full h-full'
+  assign card_classes = 'card-block flex flex-col relative overflow-hidden transition-all duration-300 w-full h-full'
   
   # Design mapping
   if block.settings.design == 'border' or block.settings.design == 'raised'
-    assign container_classes = container_classes | append: ' rounded-2xl'
+    assign card_classes = card_classes | append: ' rounded-2xl'
   endif
 
   # Background color mapping
   if block.settings.design != 'none'
     case block.settings.background_color
       when 'light'
-        assign container_classes = container_classes | append: ' bg-background text-primary'
+        assign card_classes = card_classes | append: ' bg-background text-primary'
       when 'dark'
-        assign container_classes = container_classes | append: ' bg-background-dark text-white'
+        assign card_classes = card_classes | append: ' bg-background-dark text-white'
       when 'transparent'
-        assign container_classes = container_classes | append: ' bg-transparent'
+        assign card_classes = card_classes | append: ' bg-transparent'
     endcase
   endif
 
   # Apply border / shadow classes based on design style
   if block.settings.design == 'border'
-    assign container_classes = container_classes | append: ' border border-outline-variant'
+    assign card_classes = card_classes | append: ' border border-outline-variant'
   elsif block.settings.design == 'raised'
-    assign container_classes = container_classes | append: ' shadow-sm hover:shadow-md'
+    assign card_classes = card_classes | append: ' shadow-sm hover:shadow-md'
   endif
 
   # Text Alignment
   case block.settings.alignment
     when 'center'
-      assign container_classes = container_classes | append: ' text-center items-center'
+      assign card_classes = card_classes | append: ' text-center items-center'
       assign content_align_class = 'items-center text-center'
     when 'right'
-      assign container_classes = container_classes | append: ' text-right items-end'
+      assign card_classes = card_classes | append: ' text-right items-end'
       assign content_align_class = 'items-end text-right'
     when 'justify'
-      assign container_classes = container_classes | append: ' text-justify'
+      assign card_classes = card_classes | append: ' text-justify'
       assign content_align_class = 'items-stretch text-justify'
     else
-      assign container_classes = container_classes | append: ' text-left items-start'
+      assign card_classes = card_classes | append: ' text-left items-start'
       assign content_align_class = 'items-start text-left'
   endcase
 
@@ -52,7 +52,7 @@
   assign has_bg_image = false
   if block.settings.image != blank and block.settings.image_placement == 'background'
     assign has_bg_image = true
-    assign container_classes = container_classes | append: ' text-white'
+    assign card_classes = card_classes | append: ' text-white'
   endif
 
   # Aspect ratio style mapping
@@ -78,7 +78,7 @@
     --span-large: {{ block.settings.span_desktop | default: 12 }};
   }
 
-  #shopify-block-{{ block.id }} > .container-block > .container-content {
+  #shopify-block-{{ block.id }} > .card-block > .card-content {
     {%- liquid
       assign padding_top = block.settings.padding_top | default: 24
       assign padding_bottom = block.settings.padding_bottom | default: 24
@@ -102,7 +102,7 @@
     padding-right: {{ padding_sides }}px;
   }
 
-  #shopify-block-{{ block.id }} > .container-block > .container-content > .container-nested-blocks {
+  #shopify-block-{{ block.id }} > .card-block > .card-content > .card-nested-blocks {
     --span-mobile: 4;
     --span-expanded: 8;
     --span-large: 12;
@@ -117,7 +117,7 @@
     {%- endif -%}
   }
 
-  /* Force headers and links to inherit color on dark background containers */
+  /* Force headers and links to inherit color on dark background cards */
   {%- liquid
     assign force_inherit_color = false
     if block.settings.design != 'none' and block.settings.background_color == 'dark'
@@ -134,7 +134,7 @@
     #shopify-block-{{ block.id }} .rte h4,
     #shopify-block-{{ block.id }} .rte h5,
     #shopify-block-{{ block.id }} .rte h6,
-    #shopify-block-{{ block.id }} .container-title {
+    #shopify-block-{{ block.id }} .card-title {
       color: currentColor !important;
     }
     #shopify-block-{{ block.id }} .rte a {
@@ -144,7 +144,7 @@
   {%- endif -%}
 {%- endstyle -%}
 
-<div class="{{ container_classes }}" {{ block.shopify_attributes }}>
+<div class="{{ card_classes }}" {{ block.shopify_attributes }}>
   
   {%- if block.settings.image != blank and block.settings.image_placement == 'top' -%}
     {%- liquid
@@ -162,9 +162,9 @@
     </div>
   {%- endif -%}
 
-  <div class="container-content flex flex-col flex-1 w-full z-10 {{ content_align_class }}">
+  <div class="card-content flex flex-col flex-1 w-full z-10 {{ content_align_class }}">
     {%- liquid
-      assign nested_blocks_classes = 'container-nested-blocks w-full'
+      assign nested_blocks_classes = 'card-nested-blocks w-full'
       if block.settings.grid_direction == 'horizontal'
         assign flex_justify = 'justify-start'
         case block.settings.alignment
@@ -211,15 +211,15 @@
     </div>
   {%- endif -%}
 
-  {%- if block.settings.container_link != blank -%}
-    <a href="{{ block.settings.container_link }}" class="absolute inset-0 z-20 cursor-pointer" aria-label="Container link"></a>
+  {%- if block.settings.card_link != blank -%}
+    <a href="{{ block.settings.card_link }}" class="absolute inset-0 z-20 cursor-pointer" aria-label="Card link"></a>
   {%- endif -%}
 </div>
 
 {% schema %}
 {
-  "name": "t:general.container",
-  "class": "shopify-block-container",
+  "name": "t:general.card",
+  "class": "shopify-block-card",
   "blocks": [{ "type": "@theme" }],
   "settings": [
     {
@@ -333,8 +333,8 @@
     },
     {
       "type": "url",
-      "id": "container_link",
-      "label": "t:labels.container_link"
+      "id": "card_link",
+      "label": "t:labels.card_link"
     },
     {
       "type": "text_alignment",
@@ -421,7 +421,7 @@
   ],
   "presets": [
     {
-      "name": "t:general.container",
+      "name": "t:general.card",
       "settings": {
         "design": "border"
       }

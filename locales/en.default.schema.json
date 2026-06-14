@@ -12,7 +12,7 @@
     "404": "Not found",
     "article": "Article",
     "block": "Block",
-    "container": "Container",
+    "card": "Card",
     "blog": "Blog",
     "cart": "Cart",
     "collection": "Collection",
@@ -61,7 +61,7 @@
     "text": "Text",
     "design": "Design",
     "width_cols": "Width (columns)",
-    "container_link": "Container link"
+    "card_link": "Card link"
   },
   "options": {
     "alignment": {

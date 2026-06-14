@@ -117,15 +117,15 @@
       "type": "section",
       "blocks": {
         "container_WBU3MJ": {
-          "type": "container",
-          "name": "t:general.container",
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
             "design": "none",
             "background_color": "light",
             "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
-            "container_link": "",
+            "card_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
@@ -331,15 +331,15 @@
       "type": "section",
       "blocks": {
         "container_figX3L": {
-          "type": "container",
-          "name": "t:general.container",
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
             "design": "none",
             "background_color": "transparent",
             "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
-            "container_link": "",
+            "card_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
@@ -387,15 +387,15 @@
           ]
         },
         "card_4cY3dT": {
-          "type": "container",
-          "name": "t:general.container",
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
             "design": "border",
             "background_color": "light",
             "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
-            "container_link": "",
+            "card_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
@@ -487,15 +487,15 @@
       "type": "section",
       "blocks": {
         "card_ye8GkF": {
-          "type": "container",
-          "name": "t:general.container",
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
             "design": "none",
             "background_color": "transparent",
             "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
-            "container_link": "",
+            "card_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
@@ -791,15 +791,15 @@
       "type": "section",
       "blocks": {
         "card_bNBzDD": {
-          "type": "container",
-          "name": "t:general.container",
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
             "design": "border",
             "background_color": "transparent",
             "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
-            "container_link": "",
+            "card_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "square",
