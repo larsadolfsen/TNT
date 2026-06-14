@@ -345,15 +345,6 @@
               },
               "blocks": {}
             },
-            "accordion_GGicbF": {
-              "type": "accordion",
-              "settings": {
-                "title": "Om Textil & Voksdug",
-                "content": "<p>Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
-                "open_by_default": false
-              },
-              "blocks": {}
-            },
             "accordion_DMx9ax": {
               "type": "accordion",
               "settings": {
@@ -362,12 +353,21 @@
                 "open_by_default": false
               },
               "blocks": {}
+            },
+            "accordion_MGNWa3": {
+              "type": "accordion",
+              "settings": {
+                "title": "Om Textil & Voksdug",
+                "content": "<p>Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.</p>",
+                "open_by_default": false
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "accordion_N6XxWL",
-            "accordion_GGicbF",
-            "accordion_DMx9ax"
+            "accordion_DMx9ax",
+            "accordion_MGNWa3"
           ]
         },
         "card_nxnJc4": {
