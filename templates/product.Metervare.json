@@ -215,6 +215,7 @@
         "card_Vqykq6": {
           "type": "card",
           "name": "t:general.card",
+          "disabled": true,
           "settings": {
             "design": "none",
             "background_color": "light",
