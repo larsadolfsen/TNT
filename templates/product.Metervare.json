@@ -22,21 +22,10 @@
             "padding_sides": 0
           },
           "blocks": {}
-        },
-        "accordion_dGnDir": {
-          "type": "accordion",
-          "name": "Accordion",
-          "settings": {
-            "title": "Produktspecifikationer",
-            "content": "<p>Indtast indhold her.</p>",
-            "open_by_default": false
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "page_title_yXUxzj",
-        "accordion_dGnDir"
+        "page_title_yXUxzj"
       ],
       "name": "Section",
       "settings": {
