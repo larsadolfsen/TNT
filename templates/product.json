@@ -92,8 +92,8 @@
       ],
       "name": "Section",
       "settings": {
-        "background_color": "white",
-        "alignment": "center",
+        "background_color": "transparent",
+        "alignment": "left",
         "full_width": false,
         "column_span_mobile": "4",
         "row_span_mobile": "auto",
