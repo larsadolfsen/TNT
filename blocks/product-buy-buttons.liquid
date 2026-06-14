@@ -375,29 +375,27 @@
 
 <!-- Mobile Sticky Buy Bar -->
 {%- if block.settings.enable_sticky_buy_button -%}
-<div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-outline-variant/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[24px]">
+<div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-100/50 px-5 pt-4 pb-4 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[32px]">
   <div class="max-w-[var(--page-width)] mx-auto w-full">
     <!-- Standard Buy Sheet Content (State 2: Below Customizer / "nederst") -->
     <div id="sticky-bar-standard-content" class="flex items-center justify-between gap-4 w-full">
       <!-- Left: Configuration Info -->
-      <div class="flex flex-col text-left overflow-hidden min-w-0">
-        <span id="sticky-title" class="font-bold text-slate-900 text-sm leading-tight block">{{ product.title }}</span>
-        <div id="sticky-config-summary" class="text-[11px] text-slate-500 truncate mt-0.5 leading-normal"></div>
-        <span id="sticky-price" class="font-extrabold text-[#0e1a28] text-[15px] mt-0.5 leading-tight"></span>
+      <div class="flex flex-col text-left overflow-hidden min-w-0 flex-1">
+        <span id="sticky-title" class="font-bold text-primary text-[15px] leading-tight block line-clamp-2">{{ product.title }}</span>
+        <div id="sticky-config-summary" class="text-[12px] text-slate-500 font-medium truncate mt-1 leading-normal"></div>
       </div>
       <!-- Right: Purchase Button -->
-      <button id="btn-sticky-buy" class="bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center min-w-[100px]">
-        {{ block.settings.sticky_buy_button_text | default: "Læg i kurv" }}
+      <button id="btn-sticky-buy" class="bg-accent hover:brightness-95 text-primary font-bold px-5 h-12 rounded-full text-[15px] shadow-[0_4px_12px_rgba(14,26,40,0.08)] active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center gap-1.5 min-w-[125px]">
+        <span id="btn-sticky-buy-text">{{ block.settings.sticky_buy_button_text | default: "Læg i kurv" }}</span>
+        <span id="btn-sticky-buy-price"></span>
       </button>
     </div>
-
-
   </div>
 </div>
 
 <style>
   #mobile-sticky-buy-bar {
-    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
   }
   @media (max-width: 839px) {
     /* Ensure the shopify section containing the sticky bar stacks above subsequent sections on mobile */
@@ -414,9 +412,9 @@
     if (!stickyBar) return;
 
     const stickyConfigSummary = document.getElementById("sticky-config-summary");
-    const stickyPrice = document.getElementById("sticky-price");
     const stickyBuyBtn = document.getElementById("btn-sticky-buy");
     const mainBuyBtn = document.getElementById("btn-add-to-cart");
+    const btnText = "{{ block.settings.sticky_buy_button_text | default: 'Læg i kurv' }}";
 
     // 1. Function to update sticky bar content
     function updateStickyBar() {
@@ -427,9 +425,19 @@
         priceText = mainPriceDisplay.textContent.trim();
       }
 
-      if (stickyPrice) {
-        stickyPrice.textContent = priceText;
+      // Clean the price to match the image: e.g. "118,00 kr." -> "118,00"
+      let priceTextClean = priceText.replace(/[\s]*kr\.?/gi, "").trim();
+
+      const stickyBuyPrice = document.getElementById("btn-sticky-buy-price");
+      if (stickyBuyPrice) {
+        stickyBuyPrice.textContent = priceTextClean;
       }
+
+      const stickyBuyText = document.getElementById("btn-sticky-buy-text");
+      if (stickyBuyText) {
+        stickyBuyText.textContent = btnText;
+      }
+
       const stickyPriceCustomize = document.getElementById("sticky-price-customize");
       if (stickyPriceCustomize) {
         stickyPriceCustomize.textContent = priceText;
@@ -525,16 +533,20 @@
           stickyBuyBtn.classList.remove("bg-accent");
           stickyBuyBtn.classList.add("bg-slate-200");
           const mainTextSpan = mainBuyBtn.querySelector('span:not(#btn-price-display)');
+          let disabledText = "Vent...";
           if (mainTextSpan && mainTextSpan.textContent.includes("Bredde")) {
-            stickyBuyBtn.textContent = "Over maks bredde";
-          } else {
-            stickyBuyBtn.textContent = "Vent...";
+            disabledText = "Over maks bredde";
           }
+          stickyBuyBtn.innerHTML = `<span>${disabledText}</span>`;
         } else {
           stickyBuyBtn.classList.remove("opacity-50", "cursor-not-allowed");
           stickyBuyBtn.classList.remove("bg-slate-200");
           stickyBuyBtn.classList.add("bg-accent");
-          stickyBuyBtn.textContent = "{{ block.settings.sticky_buy_button_text | default: 'Læg i kurv' }}";
+          stickyBuyBtn.innerHTML = `
+            <span id="btn-sticky-buy-text">${btnText}</span>
+            <span id="btn-sticky-buy-price" class="ml-1.5"></span>
+          `;
+          updateStickyBar();
         }
       });
       observer.observe(mainBuyBtn, { attributes: true, attributeFilter: ["disabled", "class"] });
