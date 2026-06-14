@@ -59,7 +59,7 @@
 
   {%- unless section.settings.use_global_gap -%}
     .section-{{ section.id }}-inner-padding .grid-layout {
-      --grid-gap: {{ section.settings.block_spacing | default: 8 }}px;
+      --grid-gap: {% if section.settings.block_spacing != blank %}{{ section.settings.block_spacing }}{% else %}8{% endif %}px;
     }
   {%- endunless -%}
 

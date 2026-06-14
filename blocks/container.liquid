@@ -75,10 +75,10 @@
 {%- style -%}
   #shopify-block-{{ block.id }} > .container-block > .container-content {
     {%- if block.settings.design != 'none' -%}
-      padding-top: {{ block.settings.padding_top | default: 24 }}px;
-      padding-bottom: {{ block.settings.padding_bottom | default: 24 }}px;
-      padding-left: {{ block.settings.padding_sides | default: 24 }}px;
-      padding-right: {{ block.settings.padding_sides | default: 24 }}px;
+      padding-top: {% if block.settings.padding_top != blank %}{{ block.settings.padding_top }}{% else %}24{% endif %}px;
+      padding-bottom: {% if block.settings.padding_bottom != blank %}{{ block.settings.padding_bottom }}{% else %}24{% endif %}px;
+      padding-left: {% if block.settings.padding_sides != blank %}{{ block.settings.padding_sides }}{% else %}24{% endif %}px;
+      padding-right: {% if block.settings.padding_sides != blank %}{{ block.settings.padding_sides }}{% else %}24{% endif %}px;
     {%- else -%}
       padding-top: 0px;
       padding-bottom: 0px;
@@ -89,7 +89,7 @@
 
   {%- unless block.settings.use_global_gap -%}
     #shopify-block-{{ block.id }} > .container-block > .container-content > .container-nested-blocks.grid-layout {
-      --grid-gap: {{ block.settings.block_gap | default: 12 }}px;
+      --grid-gap: {% if block.settings.block_gap != blank %}{{ block.settings.block_gap }}{% else %}12{% endif %}px;
     }
   {%- endunless -%}
 

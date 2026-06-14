@@ -392,16 +392,8 @@
     </div>
 
     <!-- Customize Tablecloth Button Content (State 1: Above Customizer / "Øverst") -->
-    <div id="sticky-bar-customize-content" class="flex items-center justify-between gap-4 w-full hidden">
-      <!-- Left: Product info and description -->
-      <div class="flex flex-col text-left overflow-hidden min-w-0">
-        <span id="sticky-title-customize" class="font-bold text-slate-900 text-sm leading-tight block">{{ product.title }}</span>
-        <p class="text-[10px] text-slate-500 mt-1 leading-normal font-medium">
-          {{ block.settings.sticky_info_text | default: "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug." }}
-        </p>
-      </div>
-      <!-- Right: Customize Button -->
-      <button id="btn-sticky-customize" class="bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center min-w-[100px]">
+    <div id="sticky-bar-customize-content" class="w-full hidden">
+      <button id="btn-sticky-customize" class="w-full bg-accent hover:brightness-95 text-primary font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
         {{ block.settings.sticky_customize_button_text | default: "Tilpas" }}
       </button>
     </div>
@@ -411,6 +403,13 @@
 <style>
   #mobile-sticky-buy-bar {
     padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+  @media (max-width: 839px) {
+    /* Ensure the shopify section containing the sticky bar stacks above subsequent sections on mobile */
+    .shopify-section:has(#mobile-sticky-buy-bar) {
+      position: relative;
+      z-index: 30;
+    }
   }
 </style>
 

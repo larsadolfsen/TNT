@@ -688,6 +688,9 @@
   .flex-col {
     flex-direction: column;
   }
+  .flex-row {
+    flex-direction: row;
+  }
   .flex-nowrap {
     flex-wrap: nowrap;
   }
