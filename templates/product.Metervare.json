@@ -29,10 +29,9 @@
           "settings": {
             "design": "none",
             "background_color": "dark",
+            "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 16,
-            "title": "",
-            "content": "",
             "container_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -163,7 +162,7 @@
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
-        "column_span_desktop": "6",
+        "column_span_desktop": "4",
         "column_start_desktop": "1",
         "row_span_desktop": "5",
         "row_start_desktop": "1",
@@ -274,7 +273,9 @@
             "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 0,
-            "sold_out_text": "Udsolgt"
+            "sold_out_text": "Udsolgt",
+            "enable_sticky_customize_button": true,
+            "sticky_customize_button_text": "Tilpas"
           },
           "blocks": {}
         },
@@ -340,10 +341,9 @@
           "settings": {
             "design": "none",
             "background_color": "transparent",
+            "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
-            "title": "",
-            "content": "",
             "container_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -397,6 +397,7 @@
           "settings": {
             "design": "border",
             "background_color": "light",
+            "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
             "container_link": "",
@@ -496,10 +497,9 @@
           "settings": {
             "design": "none",
             "background_color": "transparent",
+            "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
-            "title": "",
-            "content": "",
             "container_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -801,6 +801,7 @@
           "settings": {
             "design": "border",
             "background_color": "transparent",
+            "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
             "container_link": "",
