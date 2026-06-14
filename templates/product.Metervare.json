@@ -9,10 +9,10 @@
  */
 {
   "sections": {
-    "row_Y793QP": {
+    "section_DegQzi": {
       "type": "section",
       "blocks": {
-        "page_title_UACQEU": {
+        "page_title_yXUxzj": {
           "type": "page-title",
           "settings": {
             "title_override": "{{ product.title }}",
@@ -23,83 +23,28 @@
           },
           "blocks": {}
         },
-        "card_MENFqx": {
-          "type": "container",
-          "name": "t:general.container",
+        "accordion_dGnDir": {
+          "type": "accordion",
+          "name": "Accordion",
           "settings": {
-            "design": "none",
-            "background_color": "dark",
-            "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 16,
-            "container_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
+            "title": "Produktspecifikationer",
+            "content": "<p>Indtast indhold her.</p>",
+            "open_by_default": false
           },
-          "blocks": {
-            "text_MrzDdi": {
-              "type": "text",
-              "name": "t:general.text",
-              "settings": {
-                "text": "<p>Skæres efter mål og sendes på rulle.</p>",
-                "alignment": "left",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_trust_LLkidj": {
-              "type": "product-trust",
-              "settings": {
-                "rating_score": "4,8",
-                "rating_count": "1.200+ butikdanmeldelser",
-                "badge_text": "",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "badge_nDm9GX": {
-              "type": "badge",
-              "name": "Badge",
-              "settings": {
-                "text": "BESTSELLER",
-                "only_if_in_stock": false,
-                "alignment": "left",
-                "background_color": "#000000",
-                "text_color": "#ffffff",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_MrzDdi",
-            "product_trust_LLkidj",
-            "badge_nDm9GX"
-          ]
+          "blocks": {}
         }
       },
       "block_order": [
-        "page_title_UACQEU",
-        "card_MENFqx"
+        "page_title_yXUxzj",
+        "accordion_dGnDir"
       ],
-      "name": "Wrapper - Product Title",
+      "name": "Section",
       "settings": {
         "heading": "",
         "heading_tag": "h3",
-        "background_color": "light",
+        "background_color": "white",
         "full_width": false,
-        "alignment": "left",
+        "alignment": "center",
         "column_span_mobile": "4",
         "column_start_mobile": "auto",
         "row_span_mobile": "auto",
@@ -110,19 +55,71 @@
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
-        "column_span_desktop": "8",
-        "column_start_desktop": "5",
+        "column_span_desktop": "12",
+        "column_start_desktop": "auto",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
-        "padding_top": 0,
+        "padding_top": 12,
         "padding_bottom": 12,
         "padding_left": 24,
         "padding_right": 24,
         "use_global_gap": true,
-        "block_spacing": 0,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "section_hhUykJ": {
+      "type": "section",
+      "blocks": {
+        "product_media_Gchczj": {
+          "type": "product-media",
+          "name": "Product Media Gallery",
+          "settings": {
+            "image_badge": "",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_media_Gchczj"
+      ],
+      "name": "Section",
+      "settings": {
+        "heading": "",
+        "heading_tag": "h3",
+        "background_color": "transparent",
+        "full_width": false,
+        "alignment": "center",
+        "column_span_mobile": "4",
+        "column_start_mobile": "auto",
+        "row_span_mobile": "auto",
+        "row_start_mobile": "auto",
+        "hide_on_mobile": false,
+        "column_span_tablet": "8",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "12",
+        "column_start_desktop": "auto",
+        "row_span_desktop": "auto",
+        "row_start_desktop": "auto",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_left": 24,
+        "padding_right": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
         "border_top": false,
         "border_bottom": false
       }
@@ -149,22 +146,10 @@
             "padding_sides": 24
           },
           "blocks": {}
-        },
-        "product_media_d7ULhk": {
-          "type": "product-media",
-          "name": "Product Media Gallery",
-          "settings": {
-            "image_badge": "",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "container_WBU3MJ",
-        "product_media_d7ULhk"
+        "container_WBU3MJ"
       ],
       "name": "Wrapper - Product image",
       "settings": {
@@ -892,7 +877,8 @@
     }
   },
   "order": [
-    "row_Y793QP",
+    "section_DegQzi",
+    "section_hhUykJ",
     "row_PUJcnW",
     "wrapper_YHL3Wm",
     "wrapper_KDR6Gy",
