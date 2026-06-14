@@ -388,7 +388,7 @@
                 "span_tablet": "8",
                 "span_desktop": "12",
                 "card_link": "",
-                "alignment": "left",
+                "alignment": "center",
                 "image_placement": "top",
                 "image_aspect_ratio": "landscape",
                 "image_overlay_opacity": 30,
@@ -401,7 +401,7 @@
                   "type": "material-badge",
                   "name": "Material Badge",
                   "settings": {
-                    "width_cols": "2",
+                    "width_cols": "1",
                     "icon": "eco",
                     "title": "Bæredygtig"
                   },
@@ -411,7 +411,7 @@
                   "type": "material-badge",
                   "name": "Material Badge",
                   "settings": {
-                    "width_cols": "2",
+                    "width_cols": "1",
                     "icon": "eco",
                     "title": "Bæredygtig"
                   },
