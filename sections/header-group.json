@@ -19,8 +19,8 @@
         "show_menu_index": true,
         "show_search_collection": true,
         "show_menu_collection": true,
-        "show_search_product": false,
-        "show_menu_product": false,
+        "show_search_product": true,
+        "show_menu_product": true,
         "show_search_page": true,
         "show_menu_page": true,
         "show_search_search": true,
@@ -38,6 +38,7 @@
       "type": "breadcrumbs",
       "name": "Brødkrummer",
       "settings": {
+        "max_width": "1280px",
         "padding_top": 0,
         "padding_bottom": 0
       }

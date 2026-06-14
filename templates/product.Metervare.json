@@ -22,33 +22,43 @@
             "padding_sides": 0
           },
           "blocks": {}
+        },
+        "product_trust_8Vq97H": {
+          "type": "product-trust",
+          "name": "Product Trust",
+          "settings": {
+            "rating_score": "4,8",
+            "rating_count": "163",
+            "badge_text": "300+ købt den seneste måned",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "page_title_yXUxzj"
+        "page_title_yXUxzj",
+        "product_trust_8Vq97H"
       ],
       "name": "Section",
       "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "white",
-        "full_width": false,
+        "background_color": "transparent",
         "alignment": "center",
+        "full_width": false,
         "column_span_mobile": "4",
-        "column_start_mobile": "auto",
         "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
         "hide_on_mobile": false,
         "column_span_tablet": "4",
         "column_start_tablet": "auto",
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
-        "hide_on_tablet": false,
+        "hide_on_tablet": true,
         "column_span_desktop": "6",
         "column_start_desktop": "7",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
-        "hide_on_desktop": false,
+        "hide_on_desktop": true,
         "justify_self": "auto",
         "align_self": "auto",
         "padding_top": 12,
@@ -81,22 +91,18 @@
       ],
       "name": "Section",
       "settings": {
-        "heading": "",
-        "heading_tag": "h3",
         "background_color": "transparent",
+        "alignment": "left",
         "full_width": false,
-        "alignment": "center",
         "column_span_mobile": "4",
-        "column_start_mobile": "auto",
         "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
         "hide_on_mobile": false,
-        "column_span_tablet": "8",
+        "column_span_tablet": "4",
         "column_start_tablet": "auto",
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
-        "column_span_desktop": "4",
+        "column_span_desktop": "6",
         "column_start_desktop": "1",
         "row_span_desktop": "6",
         "row_start_desktop": "1",
@@ -113,71 +119,34 @@
         "border_bottom": false
       }
     },
-    "row_PUJcnW": {
+    "section_CjVmWk": {
       "type": "section",
       "blocks": {
-        "container_WBU3MJ": {
-          "type": "card",
-          "name": "t:general.card",
+        "page_title_aDDYBH": {
+          "type": "page-title",
           "settings": {
-            "design": "none",
-            "background_color": "light",
-            "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 12,
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "padding_sides": 24
+            "title_override": "{{ product.title }}",
+            "show_description": false,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "container_WBU3MJ"
-      ],
-      "name": "Wrapper - Product image",
-      "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "light",
-        "full_width": false,
-        "alignment": "left",
-        "column_span_mobile": "4",
-        "column_start_mobile": "auto",
-        "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "1",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "4",
-        "column_start_desktop": "1",
-        "row_span_desktop": "5",
-        "row_start_desktop": "1",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 0,
-        "padding_bottom": 24,
-        "padding_left": 0,
-        "padding_right": 0,
-        "use_global_gap": true,
-        "block_spacing": 0,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "wrapper_YHL3Wm": {
-      "type": "section",
-      "blocks": {
-        "product_price_BnTAKH": {
+        },
+        "product_trust_zmjTqx": {
+          "type": "product-trust",
+          "name": "Product Trust",
+          "settings": {
+            "rating_score": "4,8",
+            "rating_count": "163",
+            "badge_text": "300+ købt den seneste måned",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "product_price_NnMeR6": {
           "type": "product-price",
           "name": "Product Price",
           "settings": {
@@ -189,7 +158,7 @@
           },
           "blocks": {}
         },
-        "product_urgency_nVDPJP": {
+        "product_urgency_zWDJdx": {
           "type": "product-urgency",
           "name": "Product Stock Urgency",
           "settings": {
@@ -202,50 +171,8 @@
             "padding_sides": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_price_BnTAKH",
-        "product_urgency_nVDPJP"
-      ],
-      "name": "Wrapper - Price",
-      "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "light",
-        "full_width": false,
-        "alignment": "full_width",
-        "column_span_mobile": "4",
-        "column_start_mobile": "auto",
-        "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "8",
-        "column_start_desktop": "5",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "wrapper_KDR6Gy": {
-      "type": "section",
-      "blocks": {
-        "product_customizer_h9G3PW": {
+        },
+        "product_customizer_AhPkyg": {
           "type": "product-customizer",
           "name": "Product Customizer",
           "settings": {
@@ -274,7 +201,7 @@
           },
           "blocks": {}
         },
-        "product_buy_buttons_FiMHKX": {
+        "product_buy_buttons_ixkWkU": {
           "type": "product-buy-buttons",
           "name": "Product Buy Buttons",
           "settings": {
@@ -290,20 +217,20 @@
         }
       },
       "block_order": [
-        "product_customizer_h9G3PW",
-        "product_buy_buttons_FiMHKX"
+        "page_title_aDDYBH",
+        "product_trust_zmjTqx",
+        "product_price_NnMeR6",
+        "product_urgency_zWDJdx",
+        "product_customizer_AhPkyg",
+        "product_buy_buttons_ixkWkU"
       ],
-      "name": "Wrapper - Buy Button",
+      "name": "Section",
       "settings": {
-        "heading": "",
-        "heading_tag": "h3",
         "background_color": "transparent",
-        "full_width": false,
         "alignment": "center",
+        "full_width": false,
         "column_span_mobile": "4",
-        "column_start_mobile": "auto",
         "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
         "hide_on_mobile": false,
         "column_span_tablet": "4",
         "column_start_tablet": "auto",
@@ -317,8 +244,8 @@
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
-        "padding_top": 24,
-        "padding_bottom": 24,
+        "padding_top": 12,
+        "padding_bottom": 12,
         "padding_left": 24,
         "padding_right": 24,
         "use_global_gap": true,
@@ -327,66 +254,10 @@
         "border_bottom": false
       }
     },
-    "row_eTcPKr": {
+    "section_VFJzzk": {
       "type": "section",
       "blocks": {
-        "container_figX3L": {
-          "type": "card",
-          "name": "t:general.card",
-          "settings": {
-            "design": "none",
-            "background_color": "transparent",
-            "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 12,
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "padding_sides": 48
-          },
-          "blocks": {
-            "trust_checkmark_MfXkhw": {
-              "type": "trust-checkmark",
-              "settings": {
-                "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
-              },
-              "blocks": {}
-            },
-            "trust_countdown_f9t4Aq": {
-              "type": "trust-countdown",
-              "settings": {
-                "text": "Bestil inden",
-                "suffix": "Så sender vi"
-              },
-              "blocks": {}
-            },
-            "trust_checkmark_Wg47yh": {
-              "type": "trust-checkmark",
-              "settings": {
-                "text": "30 dages fuld returret på din dug."
-              },
-              "blocks": {}
-            },
-            "trust_checkmark_i6Jm99": {
-              "type": "trust-checkmark",
-              "settings": {
-                "text": "Sendes på rulle, for at undgå folder."
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "trust_checkmark_MfXkhw",
-            "trust_countdown_f9t4Aq",
-            "trust_checkmark_Wg47yh",
-            "trust_checkmark_i6Jm99"
-          ]
-        },
-        "card_4cY3dT": {
+        "container_tKDyDd": {
           "type": "card",
           "name": "t:general.card",
           "settings": {
@@ -395,73 +266,66 @@
             "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
+            "span_mobile": "4",
+            "span_tablet": "8",
+            "span_desktop": "12",
             "card_link": "",
             "alignment": "left",
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
             "image_overlay_opacity": 30,
-            "padding_top": 16,
-            "padding_bottom": 16,
-            "padding_sides": 16
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "padding_sides": 24
           },
-          "blocks": {
-            "text_card_4cY3dT": {
-              "type": "text",
-              "name": "t:general.text",
-              "settings": {
-                "text": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
-                "alignment": "left",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "material_badge_nKfKP8": {
-              "type": "material-badge",
-              "name": "Material Badge",
-              "settings": {
-                "width_cols": "2",
-                "icon": "filter_vintage",
-                "title": "OEKO-TEX® Standard 100"
-              },
-              "blocks": {}
-            },
-            "material_badge_9VUW8Y": {
-              "type": "material-badge",
-              "name": "Material Badge",
-              "settings": {
-                "width_cols": "2",
-                "icon": "eco",
-                "title": "100% Phthalatfri"
-              },
-              "blocks": {}
-            }
+          "blocks": {}
+        },
+        "trust_checkmark_GaXXEH": {
+          "type": "trust-checkmark",
+          "settings": {
+            "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
           },
-          "block_order": [
-            "text_card_4cY3dT",
-            "material_badge_nKfKP8",
-            "material_badge_9VUW8Y"
-          ]
+          "blocks": {}
+        },
+        "trust_countdown_meQYqh": {
+          "type": "trust-countdown",
+          "settings": {
+            "text": "Bestil inden",
+            "suffix": "Så sender vi"
+          },
+          "blocks": {}
+        },
+        "trust_checkmark_PWqMdw": {
+          "type": "trust-checkmark",
+          "settings": {
+            "text": "30 dages fuld returret på din dug."
+          },
+          "blocks": {}
+        },
+        "trust_checkmark_baHQYj": {
+          "type": "trust-checkmark",
+          "settings": {
+            "text": "Sendes på rulle, for at undgå folder."
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "container_figX3L",
-        "card_4cY3dT"
+        "container_tKDyDd",
+        "trust_checkmark_GaXXEH",
+        "trust_countdown_meQYqh",
+        "trust_checkmark_PWqMdw",
+        "trust_checkmark_baHQYj"
       ],
-      "name": "Wrapper - Trust",
+      "name": "Section",
       "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "light_grey",
-        "full_width": false,
+        "background_color": "white",
         "alignment": "center",
+        "full_width": false,
         "column_span_mobile": "4",
-        "column_start_mobile": "auto",
         "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
         "hide_on_mobile": false,
-        "column_span_tablet": "4",
+        "column_span_tablet": "8",
         "column_start_tablet": "auto",
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
@@ -473,20 +337,42 @@
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
-        "padding_top": 48,
-        "padding_bottom": 24,
-        "padding_left": 0,
-        "padding_right": 0,
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_left": 24,
+        "padding_right": 24,
         "use_global_gap": true,
-        "block_spacing": 8,
+        "block_spacing": 16,
         "border_top": false,
         "border_bottom": false
       }
     },
-    "row_VY7RVT": {
+    "section_x9Fd3C": {
       "type": "section",
       "blocks": {
-        "card_ye8GkF": {
+        "product_testimonial_cDBh7n": {
+          "type": "product-testimonial",
+          "settings": {
+            "heading": "Det siger kunderne",
+            "stars": 5,
+            "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
+            "author": "Mette S., Verificeret køber",
+            "stars_2": 5,
+            "quote_2": "Super hurtig levering og rigtig flot dug. Målene passede perfekt.",
+            "author_2": "Thomas K., Verificeret køber",
+            "stars_3": 5,
+            "quote_3": "Rigtig god service. Dugen er nem at tørre af og ser virkelig eksklusiv ud.",
+            "author_3": "Sofia L., Verificeret køber",
+            "stars_4": 5,
+            "quote_4": "Perfekt beskyttelse til vores spisebord. Dugen ligger stabilt og glider ikke.",
+            "author_4": "Jonas M., Verificeret køber",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "container_NcfcGn": {
           "type": "card",
           "name": "t:general.card",
           "settings": {
@@ -495,6 +381,9 @@
             "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
+            "span_mobile": "4",
+            "span_tablet": "8",
+            "span_desktop": "12",
             "card_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -541,82 +430,16 @@
         }
       },
       "block_order": [
-        "card_ye8GkF"
+        "product_testimonial_cDBh7n",
+        "container_NcfcGn"
       ],
-      "name": "Wrapper - Accordion",
+      "name": "Section",
       "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "light",
-        "full_width": false,
+        "background_color": "light_grey",
         "alignment": "left",
+        "full_width": true,
         "column_span_mobile": "4",
-        "column_start_mobile": "auto",
         "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "6",
-        "column_start_desktop": "7",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "padding_left": 0,
-        "padding_right": 0,
-        "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "row_CQqaPe": {
-      "type": "section",
-      "blocks": {
-        "product_testimonial_gzGpa4": {
-          "type": "product-testimonial",
-          "settings": {
-            "heading": "Det siger kunderne",
-            "stars": 5,
-            "quote": "Fantastisk kvalitet! Man ser næsten ikke at dugen er på, og den beskytter vores egetræsbord perfekt mod børnenes spild.",
-            "author": "Mette S., Verificeret køber",
-            "stars_2": 5,
-            "quote_2": "Super hurtig levering og rigtig flot dug. Målene passede perfekt.",
-            "author_2": "Thomas K., Verificeret køber",
-            "stars_3": 5,
-            "quote_3": "Rigtig god service. Dugen er nem at tørre af og ser virkelig eksklusiv ud.",
-            "author_3": "Sofia L., Verificeret køber",
-            "stars_4": 5,
-            "quote_4": "Perfekt beskyttelse til vores spisebord. Dugen ligger stabilt og glider ikke.",
-            "author_4": "Jonas M., Verificeret køber",
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_testimonial_gzGpa4"
-      ],
-      "name": "Wrapper - Reviews",
-      "settings": {
-        "heading": "",
-        "heading_tag": "h3",
-        "background_color": "shade",
-        "full_width": false,
-        "alignment": "columns",
-        "column_span_mobile": "4",
-        "column_start_mobile": "auto",
-        "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
         "hide_on_mobile": false,
         "column_span_tablet": "8",
         "column_start_tablet": "auto",
@@ -630,14 +453,14 @@
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
-        "padding_top": 0,
-        "padding_bottom": 0,
+        "padding_top": 12,
+        "padding_bottom": 12,
         "padding_left": 24,
         "padding_right": 24,
         "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": true,
-        "border_bottom": true
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "row_Rg3kFD": {
@@ -660,15 +483,11 @@
       ],
       "name": "Row - Mersalg",
       "settings": {
-        "heading": "Passer til din dug",
-        "heading_tag": "h3",
         "background_color": "light",
-        "full_width": false,
         "alignment": "left",
+        "full_width": false,
         "column_span_mobile": "4",
-        "column_start_mobile": "auto",
         "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
         "hide_on_mobile": false,
         "column_span_tablet": "8",
         "column_start_tablet": "auto",
@@ -755,15 +574,11 @@
       ],
       "name": "FAQ",
       "settings": {
-        "heading": "FAQ",
-        "heading_tag": "h3",
         "background_color": "light",
-        "full_width": false,
         "alignment": "full_width",
+        "full_width": false,
         "column_span_mobile": "4",
-        "column_start_mobile": "auto",
         "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
         "hide_on_mobile": false,
         "column_span_tablet": "8",
         "column_start_tablet": "auto",
@@ -799,6 +614,9 @@
             "grid_direction": "vertical",
             "use_global_gap": true,
             "block_gap": 12,
+            "span_mobile": "4",
+            "span_tablet": "8",
+            "span_desktop": "12",
             "card_link": "",
             "alignment": "left",
             "image_placement": "top",
@@ -832,15 +650,11 @@
       ],
       "name": "Row",
       "settings": {
-        "heading": "",
-        "heading_tag": "h3",
         "background_color": "light",
-        "full_width": false,
         "alignment": "full_width",
+        "full_width": false,
         "column_span_mobile": "4",
-        "column_start_mobile": "auto",
         "row_span_mobile": "auto",
-        "row_start_mobile": "auto",
         "hide_on_mobile": false,
         "column_span_tablet": "8",
         "column_start_tablet": "auto",
@@ -868,12 +682,9 @@
   "order": [
     "section_DegQzi",
     "section_hhUykJ",
-    "row_PUJcnW",
-    "wrapper_YHL3Wm",
-    "wrapper_KDR6Gy",
-    "row_eTcPKr",
-    "row_VY7RVT",
-    "row_CQqaPe",
+    "section_CjVmWk",
+    "section_VFJzzk",
+    "section_x9Fd3C",
     "row_Rg3kFD",
     "row_GqmzkT",
     "row_j7wR4H"
