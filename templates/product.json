@@ -45,7 +45,7 @@
       "name": "Section",
       "settings": {
         "background_color": "light",
-        "alignment": "right",
+        "alignment": "left",
         "full_width": false,
         "column_span_mobile": "4",
         "row_span_mobile": "auto",
