@@ -33,19 +33,9 @@
         "show_menu_default": true,
         "menu": "main-menu"
       }
-    },
-    "breadcrumbs_7wx37P": {
-      "type": "breadcrumbs",
-      "name": "Brødkrummer",
-      "settings": {
-        "max_width": "1280px",
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
     }
   },
   "order": [
-    "header",
-    "breadcrumbs_7wx37P"
+    "header"
   ]
 }
