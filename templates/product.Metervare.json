@@ -347,8 +347,8 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "design": "none",
-            "background_color": "transparent",
+            "design": "border",
+            "background_color": "light",
             "grid_direction": "vertical",
             "block_gap": "12",
             "span_mobile": "4",
