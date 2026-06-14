@@ -130,6 +130,26 @@
     "row_PUJcnW": {
       "type": "section",
       "blocks": {
+        "container_WBU3MJ": {
+          "type": "container",
+          "name": "t:general.container",
+          "settings": {
+            "design": "none",
+            "background_color": "light",
+            "grid_direction": "vertical",
+            "use_global_gap": true,
+            "block_gap": 12,
+            "container_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 24,
+            "padding_bottom": 24,
+            "padding_sides": 24
+          },
+          "blocks": {}
+        },
         "product_media_d7ULhk": {
           "type": "product-media",
           "name": "Product Media Gallery",
@@ -143,6 +163,7 @@
         }
       },
       "block_order": [
+        "container_WBU3MJ",
         "product_media_d7ULhk"
       ],
       "name": "Wrapper - Product image",
