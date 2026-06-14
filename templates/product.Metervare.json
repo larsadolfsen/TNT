@@ -22,10 +22,24 @@
             "padding_sides": 0
           },
           "blocks": {}
+        },
+        "product_trust_8Vq97H": {
+          "type": "product-trust",
+          "name": "Product Trust",
+          "settings": {
+            "rating_score": "4,8",
+            "rating_count": "163",
+            "badge_text": "300+ købt den seneste måned",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "page_title_yXUxzj"
+        "page_title_yXUxzj",
+        "product_trust_8Vq97H"
       ],
       "name": "Section",
       "settings": {
@@ -105,70 +119,34 @@
         "border_bottom": false
       }
     },
-    "row_PUJcnW": {
+    "section_CjVmWk": {
       "type": "section",
       "blocks": {
-        "container_WBU3MJ": {
-          "type": "container",
-          "name": "t:general.container",
+        "page_title_aDDYBH": {
+          "type": "page-title",
           "settings": {
-            "design": "none",
-            "background_color": "light",
-            "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 12,
-            "span_mobile": "4",
-            "span_tablet": "8",
-            "span_desktop": "12",
-            "container_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "padding_sides": 24
+            "title_override": "{{ product.title }}",
+            "show_description": false,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "container_WBU3MJ"
-      ],
-      "name": "Wrapper - Product image",
-      "settings": {
-        "background_color": "light",
-        "alignment": "left",
-        "full_width": false,
-        "column_span_mobile": "4",
-        "row_span_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "1",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "4",
-        "column_start_desktop": "1",
-        "row_span_desktop": "5",
-        "row_start_desktop": "1",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 0,
-        "padding_bottom": 24,
-        "padding_left": 0,
-        "padding_right": 0,
-        "use_global_gap": true,
-        "block_spacing": 0,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "wrapper_YHL3Wm": {
-      "type": "section",
-      "blocks": {
-        "product_price_BnTAKH": {
+        },
+        "product_trust_zmjTqx": {
+          "type": "product-trust",
+          "name": "Product Trust",
+          "settings": {
+            "rating_score": "4,8",
+            "rating_count": "163",
+            "badge_text": "300+ købt den seneste måned",
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
+        "product_price_NnMeR6": {
           "type": "product-price",
           "name": "Product Price",
           "settings": {
@@ -180,7 +158,7 @@
           },
           "blocks": {}
         },
-        "product_urgency_nVDPJP": {
+        "product_urgency_zWDJdx": {
           "type": "product-urgency",
           "name": "Product Stock Urgency",
           "settings": {
@@ -193,46 +171,8 @@
             "padding_sides": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_price_BnTAKH",
-        "product_urgency_nVDPJP"
-      ],
-      "name": "Wrapper - Price",
-      "settings": {
-        "background_color": "light",
-        "alignment": "full_width",
-        "full_width": false,
-        "column_span_mobile": "4",
-        "row_span_mobile": "auto",
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "8",
-        "column_start_desktop": "5",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "wrapper_KDR6Gy": {
-      "type": "section",
-      "blocks": {
-        "product_customizer_h9G3PW": {
+        },
+        "product_customizer_AhPkyg": {
           "type": "product-customizer",
           "name": "Product Customizer",
           "settings": {
@@ -261,7 +201,7 @@
           },
           "blocks": {}
         },
-        "product_buy_buttons_FiMHKX": {
+        "product_buy_buttons_ixkWkU": {
           "type": "product-buy-buttons",
           "name": "Product Buy Buttons",
           "settings": {
@@ -277,10 +217,14 @@
         }
       },
       "block_order": [
-        "product_customizer_h9G3PW",
-        "product_buy_buttons_FiMHKX"
+        "page_title_aDDYBH",
+        "product_trust_zmjTqx",
+        "product_price_NnMeR6",
+        "product_urgency_zWDJdx",
+        "product_customizer_AhPkyg",
+        "product_buy_buttons_ixkWkU"
       ],
-      "name": "Wrapper - Buy Button",
+      "name": "Section",
       "settings": {
         "background_color": "transparent",
         "alignment": "center",
@@ -300,8 +244,8 @@
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
-        "padding_top": 24,
-        "padding_bottom": 24,
+        "padding_top": 12,
+        "padding_bottom": 12,
         "padding_left": 24,
         "padding_right": 24,
         "use_global_gap": true,
@@ -839,9 +783,7 @@
   "order": [
     "section_DegQzi",
     "section_hhUykJ",
-    "row_PUJcnW",
-    "wrapper_YHL3Wm",
-    "wrapper_KDR6Gy",
+    "section_CjVmWk",
     "row_eTcPKr",
     "row_VY7RVT",
     "row_CQqaPe",
