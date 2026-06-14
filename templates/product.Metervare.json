@@ -258,7 +258,7 @@
             "design": "border",
             "background_color": "light",
             "use_global_gap": true,
-            "block_gap": 12,
+            "block_gap": 0,
             "title": "Kort Overskrift",
             "content": "<p>Dette er et kortelement med tilpasset design.</p>",
             "container_link": "",
