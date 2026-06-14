@@ -2210,12 +2210,15 @@ main > .shopify-section {
   }
 }
 .grid-layout > * {
-  grid-column: span var(--span-mobile, 4) / span var(--span-mobile, 4);
+  --col-span-mb: min(var(--span-mobile, 4), var(--section-span-mobile, 4));
+  grid-column: span var(--col-span-mb) / span var(--col-span-mb);
   @media (min-width: 840px) {
-    grid-column: span var(--span-expanded, var(--span-mobile, 8)) / span var(--span-expanded, var(--span-mobile, 8));
+    --col-span-tb: min(var(--span-expanded, var(--span-mobile, 8)), var(--section-span-expanded, 8));
+    grid-column: span var(--col-span-tb) / span var(--col-span-tb);
   }
   @media (min-width: 1200px) {
-    grid-column: span var(--span-large, var(--span-expanded, var(--span-mobile, 12))) / span var(--span-large, var(--span-expanded, var(--span-mobile, 12)));
+    --col-span-lg: min(var(--span-large, var(--span-expanded, var(--span-mobile, 12))), var(--section-span-large, 12));
+    grid-column: span var(--col-span-lg) / span var(--col-span-lg);
   }
 }
 h1, h2, h3, h5, h6 {
