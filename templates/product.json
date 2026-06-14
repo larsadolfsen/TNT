@@ -48,7 +48,7 @@
         "heading_tag": "h3",
         "background_color": "light",
         "full_width": false,
-        "alignment": "center",
+        "alignment": "left",
         "column_span_mobile": "4",
         "column_start_mobile": "auto",
         "row_span_mobile": "auto",
