@@ -211,7 +211,7 @@
       "settings": {
         "background_color": "light",
         "full_width": false,
-        "alignment": "center",
+        "alignment": "left",
         "column_span_mobile": "4",
         "row_span_mobile": "auto",
         "hide_on_mobile": false,
