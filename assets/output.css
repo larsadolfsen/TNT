@@ -2218,9 +2218,6 @@ main > .shopify-section {
     grid-column: span var(--span-large, var(--span-expanded, var(--span-mobile, 12))) / span var(--span-large, var(--span-expanded, var(--span-mobile, 12)));
   }
 }
-.section-content--no-columns > * {
-  grid-column: 1 / -1 !important;
-}
 h1, h2, h3, h5, h6 {
   font-family: var(--font-serif);
 }

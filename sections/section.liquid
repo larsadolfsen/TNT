@@ -2,20 +2,8 @@
   assign layout_style = section.settings.layout_style | default: 'full_width_bg'
   assign is_full_width = section.settings.full_width | default: false
 
-  # Detect if the section contains column group blocks
-  assign has_group_block = false
-  for block in section.blocks
-    if block.type == 'group'
-      assign has_group_block = true
-      break
-    endif
-  endfor
-
   # Calculate class names dynamically to handle grids and product detail column grids
   assign section_classes = 'section-content grid-layout'
-  unless has_group_block
-    assign section_classes = section_classes | append: ' section-content--no-columns'
-  endunless
 
   if is_full_width
     assign section_classes = section_classes | append: ' section-content--full-width'

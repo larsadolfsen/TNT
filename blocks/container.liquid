@@ -69,6 +69,15 @@
 -%}
 
 {%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    --span-mb: {{ block.settings.span_mobile | default: 4 }};
+    --span-tb: {{ block.settings.span_tablet | default: 8 }};
+    --span-lg: {{ block.settings.span_desktop | default: 12 }};
+    --span-mobile: {{ block.settings.span_mobile | default: 4 }};
+    --span-expanded: {{ block.settings.span_tablet | default: 8 }};
+    --span-large: {{ block.settings.span_desktop | default: 12 }};
+  }
+
   #shopify-block-{{ block.id }} > .container-block > .container-content {
     {%- liquid
       assign padding_top = block.settings.padding_top | default: 24
@@ -94,6 +103,12 @@
   }
 
   #shopify-block-{{ block.id }} > .container-block > .container-content > .container-nested-blocks {
+    --span-mobile: 4;
+    --span-expanded: 8;
+    --span-large: 12;
+    --section-span-mobile: 4;
+    --section-span-expanded: 8;
+    --section-span-large: 12;
     {%- unless block.settings.use_global_gap -%}
       --grid-gap: {% if block.settings.block_gap != blank %}{{ block.settings.block_gap }}{% else %}12{% endif %}px;
     {%- endunless -%}
@@ -259,6 +274,58 @@
       "unit": "px",
       "label": "Brugerdefineret afstand (Gap)",
       "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Grid Bredde"
+    },
+    {
+      "type": "select",
+      "id": "span_mobile",
+      "label": "Bredde på mobil",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "span_tablet",
+      "label": "Bredde på tablet",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" }
+      ],
+      "default": "8"
+    },
+    {
+      "type": "select",
+      "id": "span_desktop",
+      "label": "Bredde på desktop",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" },
+        { "value": "9", "label": "9" },
+        { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }
+      ],
+      "default": "12"
     },
     {
       "type": "header",
