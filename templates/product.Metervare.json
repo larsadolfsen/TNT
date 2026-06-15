@@ -85,7 +85,7 @@
       ],
       "name": "Section",
       "settings": {
-        "background_color": "transparent",
+        "background_color": "dark",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "4",
