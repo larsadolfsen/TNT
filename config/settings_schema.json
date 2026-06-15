@@ -88,6 +88,18 @@
       },
       {
         "type": "color",
+        "id": "card_light_color",
+        "default": "#ffffff",
+        "label": "Card light color"
+      },
+      {
+        "type": "color",
+        "id": "card_shade_color",
+        "default": "#f5f5f5",
+        "label": "Card shade color"
+      },
+      {
+        "type": "color",
         "id": "border_color",
         "default": "#e2e8f0",
         "label": "Border color / Kantfarve"

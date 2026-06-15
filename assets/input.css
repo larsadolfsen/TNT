@@ -5,6 +5,8 @@
   --color-background: var(--color-background);
   --color-background-dark: var(--color-background-dark);
   --color-background-shade: var(--color-background-shade);
+  --color-card-light: var(--color-card-light);
+  --color-card-shade: var(--color-card-shade);
   --color-accent: var(--color-accent);
   --color-secondary: var(--color-accent);
   --color-secondary-container: var(--color-accent);
