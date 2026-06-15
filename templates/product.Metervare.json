@@ -174,7 +174,7 @@
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
             "image_overlay_opacity": 30,
-            "padding_top": 16,
+            "padding_top": 24,
             "padding_bottom": 0,
             "padding_sides": 24
           },
@@ -476,7 +476,7 @@
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
-        "padding_top": 12,
+        "padding_top": 0,
         "padding_bottom": 12,
         "padding_left": 24,
         "padding_right": 24,
