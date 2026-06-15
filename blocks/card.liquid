@@ -8,6 +8,13 @@
 {%- liquid
   assign card_classes = 'card-block flex flex-col relative overflow-hidden transition-all duration-300 w-full h-full'
   
+  # Mobile/Desktop hiding
+  if block.settings.hide_on_mobile
+    assign card_classes = card_classes | append: ' hidden md:flex'
+  elsif block.settings.hide_on_desktop
+    assign card_classes = card_classes | append: ' flex md:hidden'
+  endif
+
   # Design mapping
   if block.settings.design == 'border' or block.settings.design == 'raised'
     assign card_classes = card_classes | append: ' rounded-2xl'
@@ -220,6 +227,18 @@
   "class": "shopify-block-card",
   "blocks": [{ "type": "@theme" }],
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Skjul på mobil",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_desktop",
+      "label": "Skjul på desktop",
+      "default": false
+    },
     {
       "type": "header",
       "content": "Design"
