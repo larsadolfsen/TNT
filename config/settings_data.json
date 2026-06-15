@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "show_breadcrumbs": true,
     "max_page_width": 1460,
     "min_page_margin": 24,
     "primary_color_light": "#0e1a28",

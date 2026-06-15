@@ -295,7 +295,10 @@ h4 {
 .template-product #MainContent .shopify-section:has(.shopify-block-trust-checkmark) .section-section,
 .template-product #MainContent .shopify-section:has(.shopify-block-trust-countdown) .section-section,
 .template-product #MainContent .shopify-section:has(.accordion) .section-section,
-.template-product #MainContent .shopify-section:has(.shopify-block-accordion) .section-section {
+.template-product #MainContent .shopify-section:has(.shopify-block-accordion) .section-section,
+.template-product #MainContent .shopify-section:has(.card) .section-section,
+.template-product #MainContent .shopify-section:has(.shopify-block-card) .section-section,
+.template-product #MainContent .shopify-section:has(.card-block) .section-section {
   padding-top: var(--section-padding-top, 0px);
   padding-bottom: var(--section-padding-bottom, 0px);
 }
@@ -314,7 +317,10 @@ h4 {
 .template-product #MainContent .shopify-section:has(.shopify-block-trust-checkmark) [class*="-inner-padding"],
 .template-product #MainContent .shopify-section:has(.shopify-block-trust-countdown) [class*="-inner-padding"],
 .template-product #MainContent .shopify-section:has(.accordion) [class*="-inner-padding"],
-.template-product #MainContent .shopify-section:has(.shopify-block-accordion) [class*="-inner-padding"] {
+.template-product #MainContent .shopify-section:has(.shopify-block-accordion) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.card) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.shopify-block-card) [class*="-inner-padding"],
+.template-product #MainContent .shopify-section:has(.card-block) [class*="-inner-padding"] {
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -334,7 +340,10 @@ h4 {
   .template-product #MainContent .shopify-section:has(.shopify-block-trust-checkmark) [class*="-inner-padding"],
   .template-product #MainContent .shopify-section:has(.shopify-block-trust-countdown) [class*="-inner-padding"],
   .template-product #MainContent .shopify-section:has(.accordion) [class*="-inner-padding"],
-  .template-product #MainContent .shopify-section:has(.shopify-block-accordion) [class*="-inner-padding"] {
+  .template-product #MainContent .shopify-section:has(.shopify-block-accordion) [class*="-inner-padding"],
+  .template-product #MainContent .shopify-section:has(.card) [class*="-inner-padding"],
+  .template-product #MainContent .shopify-section:has(.shopify-block-card) [class*="-inner-padding"],
+  .template-product #MainContent .shopify-section:has(.card-block) [class*="-inner-padding"] {
     padding-left: 0;
     padding-right: 0;
   }
@@ -376,7 +385,10 @@ h4 {
     .shopify-section:has(.shopify-block-trust-checkmark) .section-content,
     .shopify-section:has(.shopify-block-trust-countdown) .section-content,
     .shopify-section:has(.accordion) .section-content,
-    .shopify-section:has(.shopify-block-accordion) .section-content {
+    .shopify-section:has(.shopify-block-accordion) .section-content,
+    .shopify-section:has(.card) .section-content,
+    .shopify-section:has(.shopify-block-card) .section-content,
+    .shopify-section:has(.card-block) .section-content {
       align-items: start;
       width: 100%;
       max-width: none;
@@ -398,7 +410,10 @@ h4 {
     .shopify-section:has(.shopify-block-trust-checkmark) .section-section--full-width,
     .shopify-section:has(.shopify-block-trust-countdown) .section-section--full-width,
     .shopify-section:has(.accordion) .section-section--full-width,
-    .shopify-section:has(.shopify-block-accordion) .section-section--full-width {
+    .shopify-section:has(.shopify-block-accordion) .section-section--full-width,
+    .shopify-section:has(.card) .section-section--full-width,
+    .shopify-section:has(.shopify-block-card) .section-section--full-width,
+    .shopify-section:has(.card-block) .section-section--full-width {
       width: 100% !important;
       position: static !important;
       margin-left: 0 !important;

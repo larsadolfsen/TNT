@@ -50,6 +50,12 @@
         "unit": "px",
         "label": "t:labels.page_margin",
         "default": 20
+      },
+      {
+        "type": "checkbox",
+        "id": "show_breadcrumbs",
+        "label": "Vis brødkrummer / Show breadcrumbs",
+        "default": true
       }
     ]
   },

@@ -2,7 +2,7 @@
   Breadcrumbs Section
   Renders breadcrumbs navigation dynamically based on the current template.
 {% endcomment %}
-
+{%- if settings.show_breadcrumbs -%}
 {%- style -%}
   #shopify-section-{{ section.id }} {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
@@ -649,6 +649,7 @@
   }
   </script>
 {%- endunless -%}
+{%- endif -%}
 
 {% schema %}
 {
@@ -659,7 +660,7 @@
       "type": "select",
       "id": "max_width",
       "label": "Maksimal bredde",
-      "default": "page-width",
+      "default": "none",
       "options": [
         {
           "value": "1024px",
