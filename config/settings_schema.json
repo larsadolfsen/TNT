@@ -66,19 +66,19 @@
         "type": "color",
         "id": "primary_color_light",
         "default": "#0e1a28",
-        "label": "Primær farve / Primary color"
+        "label": "Primær farve"
       },
       {
         "type": "color",
         "id": "primary_foreground_color_light",
         "default": "#ffffff",
-        "label": "Primær tekst/ikon farve / Primary foreground"
+        "label": "Primær tekst"
       },
       {
         "type": "color",
         "id": "accent_color_light",
         "default": "#FFD814",
-        "label": "Accent farve / Accent color"
+        "label": "Accent farve"
       },
       {
         "type": "color",
@@ -90,7 +90,7 @@
         "type": "color",
         "id": "background_color_light",
         "default": "#ffffff",
-        "label": "Baggrundsfarve / Background color"
+        "label": "Side BG"
       },
       {
         "type": "color",
@@ -102,25 +102,25 @@
         "type": "color",
         "id": "card_light_color_light",
         "default": "#ffffff",
-        "label": "Kort baggrund / Card background"
+        "label": "Kort BG"
       },
       {
         "type": "color",
         "id": "card_high_color_light",
         "default": "#f3f4f6",
-        "label": "Kort forhøjet baggrund / Card elevated background"
+        "label": "Hævet BG"
       },
       {
         "type": "color",
         "id": "border_color_light",
         "default": "#e2e8f0",
-        "label": "Border farve / Border color"
+        "label": "Border farve"
       },
       {
         "type": "color",
         "id": "foreground_color_light",
         "default": "#333333",
-        "label": "Tekstfarve / Text color"
+        "label": "Tekstfarve"
       },
       {
         "type": "header",
@@ -151,19 +151,19 @@
         "type": "color",
         "id": "primary_color_dark",
         "default": "#ffffff",
-        "label": "Primær farve / Primary color (Dark)"
+        "label": "Primær farve (Dark)"
       },
       {
         "type": "color",
         "id": "primary_foreground_color_dark",
         "default": "#0e1a28",
-        "label": "Primær tekst/ikon farve / Primary foreground (Dark)"
+        "label": "Primær tekst (Dark)"
       },
       {
         "type": "color",
         "id": "accent_color_dark",
         "default": "#FFD814",
-        "label": "Accent farve / Accent color (Dark)"
+        "label": "Accent farve (Dark)"
       },
       {
         "type": "color",
@@ -175,7 +175,7 @@
         "type": "color",
         "id": "background_color_dark",
         "default": "#0e1a28",
-        "label": "Baggrundsfarve / Background color (Dark)"
+        "label": "Side BG (Dark)"
       },
       {
         "type": "color",
@@ -187,25 +187,25 @@
         "type": "color",
         "id": "card_light_color_dark",
         "default": "#1a2635",
-        "label": "Kort baggrund / Card background (Dark)"
+        "label": "Kort BG (Dark)"
       },
       {
         "type": "color",
         "id": "card_high_color_dark",
         "default": "#222f40",
-        "label": "Kort forhøjet baggrund / Card elevated background (Dark)"
+        "label": "Hævet BG (Dark)"
       },
       {
         "type": "color",
         "id": "border_color_dark",
         "default": "#253549",
-        "label": "Border farve / Border color (Dark)"
+        "label": "Border farve (Dark)"
       },
       {
         "type": "color",
         "id": "foreground_color_dark",
         "default": "#e2e8f0",
-        "label": "Tekstfarve / Text color (Dark)"
+        "label": "Tekstfarve (Dark)"
       }
     ]
   },
