@@ -29,6 +29,11 @@
     scroll-snap-align: center;
   }
 
+  .testimonial-item-{{ block.id }},
+  .testimonial-single-card-{{ block.id }} {
+    --color-primary: {{ settings.primary_dark_color | default: '#0e1a28' }};
+  }
+
   .testimonial-dot-btn-{{ block.id }} {
     width: 8px;
     height: 8px;
@@ -104,7 +109,7 @@
   {%- assign testimonial_count = testimonial_count | plus: 1 -%}
 {%- endif -%}
 
-<section class="py-8 bg-surface-container" {{ block.shopify_attributes }}>
+<div class="py-8 bg-transparent" {{ block.shopify_attributes }}>
   <div class="max-w-[var(--page-width)] mx-auto px-0 md:px-8">
     {%- if block.settings.heading != blank -%}
       <h3 class="text-center font-bold text-primary mb-6 text-xl md:text-2xl testimonial-heading-{{ block.id }}">{{ block.settings.heading }}</h3>
@@ -269,7 +274,7 @@
       </script>
     {%- endif -%}
   </div>
-</section>
+</div>
 
 {% schema %}
 {

@@ -648,7 +648,7 @@
       ],
       "name": "Section",
       "settings": {
-        "background_color": "dark",
+        "background_color": "transparent",
         "full_width": true,
         "hide_on_mobile": false,
         "column_span_tablet": "8",
@@ -673,10 +673,10 @@
         "border_bottom": false
       }
     },
-    "section_HKjUHW": {
+    "row_Rg3kFD": {
       "type": "section",
       "blocks": {
-        "product_cross_sell_dCEq4D": {
+        "product_cross_sell_fm46Qc": {
           "type": "product-cross-sell",
           "settings": {
             "cross_sell_1": "daekkeserviet-laeder-raw-organic-curve-sort",
@@ -689,11 +689,11 @@
         }
       },
       "block_order": [
-        "product_cross_sell_dCEq4D"
+        "product_cross_sell_fm46Qc"
       ],
-      "name": "Section",
+      "name": "Row - Mersalg",
       "settings": {
-        "background_color": "white",
+        "background_color": "light",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "8",
@@ -713,7 +713,7 @@
         "padding_left": 24,
         "padding_right": 24,
         "use_global_gap": true,
-        "block_spacing": 16,
+        "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
       }
@@ -885,7 +885,7 @@
     "section_CjVmWk",
     "section_atC4EK",
     "section_x9Fd3C",
-    "section_HKjUHW",
+    "row_Rg3kFD",
     "row_GqmzkT",
     "row_j7wR4H"
   ]
