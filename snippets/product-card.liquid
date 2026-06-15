@@ -90,7 +90,7 @@
         
         <!-- Rating: 5 Stars -->
         <div class="flex items-center gap-1 text-xs sm:text-sm text-secondary mt-1">
-          <div class="flex text-[#FFB800] gap-0.5">
+          <div class="flex text-star-rating gap-0.5">
             {%- assign rating_floor = rating | floor -%}
             {%- assign decimal = rating | minus: rating_floor -%}
             {%- assign rating_floor_plus_1 = rating_floor | plus: 1 -%}

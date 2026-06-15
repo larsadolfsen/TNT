@@ -105,6 +105,11 @@
     --md-sys-color-surface-container-high: {{ settings.card_high_color_light | default: 'rgb(238 231 218)' }};
     --md-sys-color-surface-container-highest: rgb(233 226 212);
 
+    /* Semantic utility tokens */
+    --color-star-rating: #FFB800;
+    --color-disabled-bg: var(--md-sys-color-surface-container-high);
+    --color-disabled-text: var(--md-sys-color-on-surface-variant);
+
     /* Legacy Theme variables mapped to MD3 */
     --color-primary: var(--md-sys-color-primary);
     --color-on-primary: var(--md-sys-color-on-primary);
@@ -171,6 +176,11 @@
     --md-sys-color-surface-container: {{ settings.card_light_color_dark | default: 'rgb(34 31 23)' }};
     --md-sys-color-surface-container-high: {{ settings.card_high_color_dark | default: 'rgb(45 42 33)' }};
     --md-sys-color-surface-container-highest: rgb(56 53 43);
+
+    /* Semantic utility tokens (Dark) */
+    --color-star-rating: #FFD95A;
+    --color-disabled-bg: var(--md-sys-color-surface-container-high);
+    --color-disabled-text: var(--md-sys-color-on-surface-variant);
 
     /* Legacy Theme variables mapped to MD3 (Dark) */
     --color-primary: var(--md-sys-color-primary);
