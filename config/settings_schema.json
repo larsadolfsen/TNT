@@ -57,58 +57,124 @@
     "name": "t:general.colors",
     "settings": [
       {
+        "type": "header",
+        "content": "Lys Tema / Light Theme"
+      },
+      {
         "type": "color",
-        "id": "primary_color",
+        "id": "primary_color_light",
+        "default": "#0e1a28",
+        "label": "Primær farve / Primary color"
+      },
+      {
+        "type": "color",
+        "id": "primary_foreground_color_light",
+        "default": "#ffffff",
+        "label": "Primær tekst/ikon farve / Primary foreground"
+      },
+      {
+        "type": "color",
+        "id": "accent_color_light",
         "default": "#FFD814",
-        "label": "Primary color"
+        "label": "Accent farve / Accent color"
       },
       {
         "type": "color",
-        "id": "primary_dark_color",
+        "id": "accent_foreground_color_light",
         "default": "#0e1a28",
-        "label": "Primary dark color"
+        "label": "Accent tekst/ikon farve / Accent foreground"
       },
       {
         "type": "color",
-        "id": "background_color",
+        "id": "background_color_light",
         "default": "#ffffff",
-        "label": "Background color"
+        "label": "Baggrundsfarve / Background color"
       },
       {
         "type": "color",
-        "id": "background_dark_color",
-        "default": "#0e1a28",
-        "label": "Background dark color"
-      },
-      {
-        "type": "color",
-        "id": "background_shade_color",
+        "id": "background_shade_color_light",
         "default": "#f9f9f9",
-        "label": "Background shade color"
+        "label": "Baggrund shade farve / Background shade color"
       },
       {
         "type": "color",
-        "id": "card_light_color",
+        "id": "card_light_color_light",
         "default": "#ffffff",
-        "label": "Light BG"
+        "label": "Kort baggrund / Card background"
       },
       {
         "type": "color",
-        "id": "card_shade_color",
-        "default": "#f5f5f5",
-        "label": "Shade BG"
-      },
-      {
-        "type": "color",
-        "id": "border_color",
+        "id": "border_color_light",
         "default": "#e2e8f0",
-        "label": "Border color / Kantfarve"
+        "label": "Border farve / Border color"
       },
       {
         "type": "color",
-        "id": "foreground_color",
+        "id": "foreground_color_light",
         "default": "#333333",
-        "label": "t:labels.foreground"
+        "label": "Tekstfarve / Text color"
+      },
+      {
+        "type": "header",
+        "content": "Mørk Tema / Dark Theme"
+      },
+      {
+        "type": "color",
+        "id": "primary_color_dark",
+        "default": "#ffffff",
+        "label": "Primær farve / Primary color (Dark)"
+      },
+      {
+        "type": "color",
+        "id": "primary_foreground_color_dark",
+        "default": "#0e1a28",
+        "label": "Primær tekst/ikon farve / Primary foreground (Dark)"
+      },
+      {
+        "type": "color",
+        "id": "accent_color_dark",
+        "default": "#FFD814",
+        "label": "Accent farve / Accent color (Dark)"
+      },
+      {
+        "type": "color",
+        "id": "accent_foreground_color_dark",
+        "default": "#0e1a28",
+        "label": "Accent tekst/ikon farve / Accent foreground (Dark)"
+      },
+      {
+        "type": "color",
+        "id": "background_color_dark",
+        "default": "#0e1a28",
+        "label": "Baggrundsfarve / Background color (Dark)"
+      },
+      {
+        "type": "color",
+        "id": "background_shade_color_dark",
+        "default": "#142131",
+        "label": "Baggrund shade farve / Background shade color (Dark)"
+      },
+      {
+        "type": "color",
+        "id": "card_light_color_dark",
+        "default": "#1a2635",
+        "label": "Kort baggrund / Card background (Dark)"
+      },
+      {
+        "type": "color",
+        "id": "border_color_dark",
+        "default": "#253549",
+        "label": "Border farve / Border color (Dark)"
+      },
+      {
+        "type": "color",
+        "id": "foreground_color_dark",
+        "default": "#e2e8f0",
+        "label": "Tekstfarve / Text color (Dark)"
+      },
+      {
+        "type": "header",
+        "content": "Generelt / General"
       },
       {
         "type": "color",
