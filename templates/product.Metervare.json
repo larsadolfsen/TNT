@@ -184,7 +184,7 @@
               "settings": {
                 "title_override": "{{ product.title }}",
                 "show_description": false,
-                "padding_top": 0,
+                "padding_top": 12,
                 "padding_bottom": 0,
                 "padding_sides": 0
               },
