@@ -183,8 +183,8 @@
 {%- capture bg_class -%}
   {%- case section.settings.background_color -%}
     {%- when 'transparent' -%}bg-transparent text-primary
-    {%- when 'white', 'light' -%}bg-background text-primary
-    {%- when 'light_grey', 'shade' -%}bg-background-shade text-primary
+    {%- when 'white', 'light' -%}bg-card-light text-primary
+    {%- when 'light_grey', 'shade' -%}bg-card-shade text-primary
     {%- when 'dark' -%}bg-background-dark text-white
   {%- endcase -%}
 {%- endcapture -%}
