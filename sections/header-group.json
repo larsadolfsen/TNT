@@ -38,7 +38,7 @@
       "type": "breadcrumbs",
       "name": "Brødkrummer",
       "settings": {
-        "max_width": "page-width",
+        "max_width": "none",
         "padding_top": 0,
         "padding_bottom": 0
       }
