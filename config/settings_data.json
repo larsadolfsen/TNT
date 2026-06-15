@@ -9,19 +9,21 @@
  */
 {
   "current": {
-    "show_breadcrumbs": true,
     "max_page_width": 1460,
     "min_page_margin": 24,
-    "primary_color_light": "#6e5d0e",
+    "show_breadcrumbs": true,
+    "primary_color_light": "#000000",
     "primary_foreground_color_light": "#ffffff",
-    "accent_color_light": "#44664e",
-    "accent_foreground_color_light": "#ffffff",
+    "accent_color_light": "#FFD814",
+    "accent_foreground_color_light": "#000000",
     "background_color_light": "#fff9ee",
     "background_shade_color_light": "#faf3e5",
     "card_light_color_light": "#f4eddf",
     "card_high_color_light": "#eee7da",
     "border_color_light": "#cdc6b4",
     "foreground_color_light": "#1e1b13",
+    "important_color": "#b12704",
+    "input_corner_radius": 4,
     "primary_color_dark": "#ddc66e",
     "primary_foreground_color_dark": "#3a3000",
     "accent_color_dark": "#aad0b2",
@@ -32,8 +34,6 @@
     "card_high_color_dark": "#2d2a21",
     "border_color_dark": "#757157",
     "foreground_color_dark": "#e9e2d4",
-    "important_color": "#b12704",
-    "input_corner_radius": 4,
     "content_for_index": []
   }
 }
