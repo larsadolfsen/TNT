@@ -268,7 +268,12 @@ h4 {
   width: 100%;
 }
 
-/* Remove default section padding for side-by-side product detail blocks on all screens */
+.section-section {
+  padding-top: var(--section-padding-top, 0px);
+  padding-bottom: var(--section-padding-bottom, 0px);
+}
+
+/* Remove default section padding for side-by-side product detail blocks on all screens, falling back to 0px if not set */
 .template-product #MainContent .shopify-section:has(.product-media) .section-section,
 .template-product #MainContent .shopify-section:has(.shopify-block-product-media) .section-section,
 .template-product #MainContent .shopify-section:has(.shopify-block-page-title) .section-section,
@@ -284,8 +289,8 @@ h4 {
 .template-product #MainContent .shopify-section:has(.shopify-block-trust-countdown) .section-section,
 .template-product #MainContent .shopify-section:has(.accordion) .section-section,
 .template-product #MainContent .shopify-section:has(.shopify-block-accordion) .section-section {
-  padding-top: 0;
-  padding-bottom: 0;
+  padding-top: var(--section-padding-top, 0px);
+  padding-bottom: var(--section-padding-bottom, 0px);
 }
 
 .template-product #MainContent .shopify-section:has(.product-media) [class*="-inner-padding"],
