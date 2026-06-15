@@ -246,6 +246,174 @@
         "border_bottom": false
       }
     },
+    "section_atC4EK": {
+      "type": "section",
+      "blocks": {
+        "card_P6bgHD": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "hide_on_mobile": false,
+            "hide_on_desktop": false,
+            "design": "raised",
+            "background_color": "light",
+            "grid_direction": "vertical",
+            "block_gap": "",
+            "span_mobile": "4",
+            "span_tablet": "8",
+            "span_desktop": "12",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 8,
+            "padding_bottom": 0,
+            "padding_sides": 16
+          },
+          "blocks": {
+            "product_customizer_6rahCU": {
+              "type": "product-customizer",
+              "name": "Product Customizer",
+              "settings": {
+                "metervare_product": "firkantet-dug",
+                "heading": "Tilpas dugen til dit bord",
+                "firkantet_product": "firkantet-dug-1",
+                "rund_product": "afrunding",
+                "oval_product": "oval-dug",
+                "shape_description": "Vælg den form, du ønsker din dug i.",
+                "width_step_description": "Vælg en standardbredde eller tilpas på dine mål.",
+                "width_surcharge_product": "tilpasset-bredde",
+                "width_description": "Vi anbefaler 15-25 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
+                "custom_width_checkbox_label": "Tilpas bredde",
+                "step_size": 10,
+                "min_length": 50,
+                "length_description": "Vi anbefaler 15 - 25 cm til nedhæng i hver ende.",
+                "qty_description": "Vælg det ønskede antal duge.",
+                "border_top": false,
+                "border_bottom": false,
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0,
+                "sold_out_text": "Udsolgt",
+                "enable_sticky_customize_button": true,
+                "sticky_customize_button_text": "Tilpas dugen til dit bord"
+              },
+              "blocks": {}
+            },
+            "product_buy_buttons_gFTjCi": {
+              "type": "product-buy-buttons",
+              "name": "Product Buy Buttons",
+              "settings": {
+                "text_before_price": "Læg i kurv –",
+                "padding_top": 12,
+                "padding_bottom": 12,
+                "padding_sides": 0,
+                "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
+                "payment_icons_height": 16,
+                "enable_sticky_buy_button": true,
+                "sticky_buy_button_text": "Læg i kurv"
+              },
+              "blocks": {}
+            },
+            "card_WQFRHd": {
+              "type": "card",
+              "name": "t:general.card",
+              "settings": {
+                "hide_on_mobile": false,
+                "hide_on_desktop": false,
+                "design": "none",
+                "background_color": "light",
+                "grid_direction": "vertical",
+                "block_gap": "12",
+                "span_mobile": "4",
+                "span_tablet": "8",
+                "span_desktop": "12",
+                "card_link": "",
+                "alignment": "left",
+                "image_placement": "top",
+                "image_aspect_ratio": "landscape",
+                "image_overlay_opacity": 30,
+                "padding_top": 24,
+                "padding_bottom": 24,
+                "padding_sides": 48
+              },
+              "blocks": {
+                "trust_checkmark_zge6cX": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+                  },
+                  "blocks": {}
+                },
+                "trust_countdown_WRG7XE": {
+                  "type": "trust-countdown",
+                  "settings": {
+                    "text": "Bestil inden",
+                    "suffix": "Så sender vi"
+                  },
+                  "blocks": {}
+                },
+                "trust_checkmark_eWd7zP": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "30 dages fuld returret på din dug."
+                  },
+                  "blocks": {}
+                },
+                "trust_checkmark_HBfhFN": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "Sendes på rulle, for at undgå folder."
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "trust_checkmark_zge6cX",
+                "trust_countdown_WRG7XE",
+                "trust_checkmark_eWd7zP",
+                "trust_checkmark_HBfhFN"
+              ]
+            }
+          },
+          "block_order": [
+            "product_customizer_6rahCU",
+            "product_buy_buttons_gFTjCi",
+            "card_WQFRHd"
+          ]
+        }
+      },
+      "block_order": [
+        "card_P6bgHD"
+      ],
+      "name": "Section - Customizer",
+      "settings": {
+        "background_color": "transparent",
+        "full_width": false,
+        "hide_on_mobile": false,
+        "column_span_tablet": "4",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "4",
+        "column_start_desktop": "9",
+        "row_span_desktop": "12",
+        "row_start_desktop": "1",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
+        "padding_top": 0,
+        "padding_bottom": 24,
+        "padding_left": 24,
+        "padding_right": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
     "section_xryRfP": {
       "type": "section",
       "blocks": {
@@ -420,174 +588,6 @@
         "align_self": "auto",
         "padding_top": 0,
         "padding_bottom": 12,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 16,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "section_atC4EK": {
-      "type": "section",
-      "blocks": {
-        "card_P6bgHD": {
-          "type": "card",
-          "name": "t:general.card",
-          "settings": {
-            "hide_on_mobile": false,
-            "hide_on_desktop": false,
-            "design": "raised",
-            "background_color": "light",
-            "grid_direction": "vertical",
-            "block_gap": "",
-            "span_mobile": "4",
-            "span_tablet": "8",
-            "span_desktop": "12",
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 8,
-            "padding_bottom": 0,
-            "padding_sides": 16
-          },
-          "blocks": {
-            "product_customizer_6rahCU": {
-              "type": "product-customizer",
-              "name": "Product Customizer",
-              "settings": {
-                "metervare_product": "firkantet-dug",
-                "heading": "Tilpas dugen til dit bord",
-                "firkantet_product": "firkantet-dug-1",
-                "rund_product": "afrunding",
-                "oval_product": "oval-dug",
-                "shape_description": "Vælg den form, du ønsker din dug i.",
-                "width_step_description": "Vælg en standardbredde eller tilpas på dine mål.",
-                "width_surcharge_product": "tilpasset-bredde",
-                "width_description": "Vi anbefaler 15-25 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
-                "custom_width_checkbox_label": "Tilpas bredde",
-                "step_size": 10,
-                "min_length": 50,
-                "length_description": "Vi anbefaler 15 - 25 cm til nedhæng i hver ende.",
-                "qty_description": "Vælg det ønskede antal duge.",
-                "border_top": false,
-                "border_bottom": false,
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0,
-                "sold_out_text": "Udsolgt",
-                "enable_sticky_customize_button": true,
-                "sticky_customize_button_text": "Tilpas dugen til dit bord"
-              },
-              "blocks": {}
-            },
-            "product_buy_buttons_gFTjCi": {
-              "type": "product-buy-buttons",
-              "name": "Product Buy Buttons",
-              "settings": {
-                "text_before_price": "Læg i kurv –",
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0,
-                "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
-                "payment_icons_height": 16,
-                "enable_sticky_buy_button": true,
-                "sticky_buy_button_text": "Læg i kurv"
-              },
-              "blocks": {}
-            },
-            "card_WQFRHd": {
-              "type": "card",
-              "name": "t:general.card",
-              "settings": {
-                "hide_on_mobile": false,
-                "hide_on_desktop": false,
-                "design": "none",
-                "background_color": "light",
-                "grid_direction": "vertical",
-                "block_gap": "12",
-                "span_mobile": "4",
-                "span_tablet": "8",
-                "span_desktop": "12",
-                "card_link": "",
-                "alignment": "left",
-                "image_placement": "top",
-                "image_aspect_ratio": "landscape",
-                "image_overlay_opacity": 30,
-                "padding_top": 24,
-                "padding_bottom": 24,
-                "padding_sides": 48
-              },
-              "blocks": {
-                "trust_checkmark_zge6cX": {
-                  "type": "trust-checkmark",
-                  "settings": {
-                    "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
-                  },
-                  "blocks": {}
-                },
-                "trust_countdown_WRG7XE": {
-                  "type": "trust-countdown",
-                  "settings": {
-                    "text": "Bestil inden",
-                    "suffix": "Så sender vi"
-                  },
-                  "blocks": {}
-                },
-                "trust_checkmark_eWd7zP": {
-                  "type": "trust-checkmark",
-                  "settings": {
-                    "text": "30 dages fuld returret på din dug."
-                  },
-                  "blocks": {}
-                },
-                "trust_checkmark_HBfhFN": {
-                  "type": "trust-checkmark",
-                  "settings": {
-                    "text": "Sendes på rulle, for at undgå folder."
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "trust_checkmark_zge6cX",
-                "trust_countdown_WRG7XE",
-                "trust_checkmark_eWd7zP",
-                "trust_checkmark_HBfhFN"
-              ]
-            }
-          },
-          "block_order": [
-            "product_customizer_6rahCU",
-            "product_buy_buttons_gFTjCi",
-            "card_WQFRHd"
-          ]
-        }
-      },
-      "block_order": [
-        "card_P6bgHD"
-      ],
-      "name": "Section - Customizer",
-      "settings": {
-        "background_color": "transparent",
-        "full_width": false,
-        "hide_on_mobile": false,
-        "column_span_tablet": "4",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "4",
-        "column_start_desktop": "9",
-        "row_span_desktop": "12",
-        "row_start_desktop": "1",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 0,
-        "padding_bottom": 24,
         "padding_left": 24,
         "padding_right": 24,
         "use_global_gap": true,
@@ -864,8 +864,8 @@
     "section_DegQzi",
     "section_hhUykJ",
     "section_CjVmWk",
-    "section_xryRfP",
     "section_atC4EK",
+    "section_xryRfP",
     "section_x9Fd3C",
     "row_Rg3kFD",
     "row_GqmzkT",
