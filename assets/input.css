@@ -476,6 +476,12 @@ h4 {
     width: 100%;
     box-sizing: border-box;
   }
+
+  /* Remove border around Card block containing customizer on desktop */
+  .card-block:has(.shopify-block-product-customizer),
+  .card-block:has(.product-customizer) {
+    border: none !important;
+  }
 }
 
 
