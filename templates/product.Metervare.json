@@ -130,7 +130,7 @@
       "block_order": [
         "product_media_Gchczj"
       ],
-      "name": "Section",
+      "name": "Section - Product Media",
       "settings": {
         "background_color": "transparent",
         "full_width": false,
@@ -141,9 +141,9 @@
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
         "column_span_desktop": "4",
-        "column_start_desktop": "1",
-        "row_span_desktop": "6",
-        "row_start_desktop": "1",
+        "column_start_desktop": "auto",
+        "row_span_desktop": "3",
+        "row_start_desktop": "auto",
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
@@ -214,8 +214,42 @@
             "product_price_kbT9KB",
             "product_urgency_nFWUiX"
           ]
-        },
-        "card_QctbPE": {
+        }
+      },
+      "block_order": [
+        "card_WFNVFD"
+      ],
+      "name": "Section",
+      "settings": {
+        "background_color": "transparent",
+        "full_width": false,
+        "hide_on_mobile": false,
+        "column_span_tablet": "4",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "4",
+        "column_start_desktop": "5",
+        "row_span_desktop": "auto",
+        "row_start_desktop": "auto",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
+        "padding_top": 0,
+        "padding_bottom": 12,
+        "padding_left": 24,
+        "padding_right": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "section_xryRfP": {
+      "type": "section",
+      "blocks": {
+        "card_qNtWGD": {
           "type": "card",
           "name": "t:general.card",
           "settings": {
@@ -238,7 +272,7 @@
             "padding_sides": 24
           },
           "blocks": {
-            "accordion_N6XxWL": {
+            "accordion_gKewwR": {
               "type": "accordion",
               "settings": {
                 "title": "Produktspecifikationer",
@@ -247,7 +281,7 @@
               },
               "blocks": {}
             },
-            "accordion_DMx9ax": {
+            "accordion_8wfcU9": {
               "type": "accordion",
               "settings": {
                 "title": "Vedligeholdelse",
@@ -256,7 +290,7 @@
               },
               "blocks": {}
             },
-            "accordion_MGNWa3": {
+            "accordion_jnaQM9": {
               "type": "accordion",
               "settings": {
                 "title": "Om Textil & Voksdug",
@@ -267,12 +301,12 @@
             }
           },
           "block_order": [
-            "accordion_N6XxWL",
-            "accordion_DMx9ax",
-            "accordion_MGNWa3"
+            "accordion_gKewwR",
+            "accordion_8wfcU9",
+            "accordion_jnaQM9"
           ]
         },
-        "card_nxnJc4": {
+        "card_KRwA6F": {
           "type": "card",
           "name": "t:general.card",
           "settings": {
@@ -295,7 +329,7 @@
             "padding_sides": 24
           },
           "blocks": {
-            "text_mhkKGQ": {
+            "text_TrjE9H": {
               "type": "text",
               "name": "t:general.text",
               "settings": {
@@ -307,7 +341,7 @@
               },
               "blocks": {}
             },
-            "card_fPDbUr": {
+            "card_Lk33JD": {
               "type": "card",
               "name": "t:general.card",
               "settings": {
@@ -330,7 +364,7 @@
                 "padding_sides": 24
               },
               "blocks": {
-                "material_badge_3NVfYn": {
+                "material_badge_6r4PpC": {
                   "type": "material-badge",
                   "name": "Material Badge",
                   "settings": {
@@ -340,7 +374,7 @@
                   },
                   "blocks": {}
                 },
-                "material_badge_tciQJT": {
+                "material_badge_WYTNrA": {
                   "type": "material-badge",
                   "name": "Material Badge",
                   "settings": {
@@ -352,21 +386,20 @@
                 }
               },
               "block_order": [
-                "material_badge_3NVfYn",
-                "material_badge_tciQJT"
+                "material_badge_6r4PpC",
+                "material_badge_WYTNrA"
               ]
             }
           },
           "block_order": [
-            "text_mhkKGQ",
-            "card_fPDbUr"
+            "text_TrjE9H",
+            "card_Lk33JD"
           ]
         }
       },
       "block_order": [
-        "card_WFNVFD",
-        "card_QctbPE",
-        "card_nxnJc4"
+        "card_qNtWGD",
+        "card_KRwA6F"
       ],
       "name": "Section",
       "settings": {
@@ -831,6 +864,7 @@
     "section_DegQzi",
     "section_hhUykJ",
     "section_CjVmWk",
+    "section_xryRfP",
     "section_atC4EK",
     "section_x9Fd3C",
     "row_Rg3kFD",
