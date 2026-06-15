@@ -2177,6 +2177,7 @@
 :root {
   --grid-gap: 16px;
   --grid-padding-y: 24px;
+  --grid-row-gap: 12px;
   @media (min-width: 1200px) {
     --grid-gap: 24px;
     --grid-padding-y: 40px;
@@ -2189,7 +2190,8 @@ main {
   color: var(--color-text);
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--grid-gap);
+  column-gap: var(--grid-gap);
+  row-gap: var(--grid-row-gap);
   width: 100%;
   max-width: var(--page-width, 1440px);
   margin: 0 auto;
