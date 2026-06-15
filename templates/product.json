@@ -45,7 +45,6 @@
       "name": "Section",
       "settings": {
         "background_color": "light",
-        "alignment": "left",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "6",
@@ -91,7 +90,6 @@
       "name": "Section",
       "settings": {
         "background_color": "transparent",
-        "alignment": "left",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "4",
@@ -170,15 +168,6 @@
           },
           "blocks": {}
         },
-        "product_variant_picker_Tf3UqF": {
-          "type": "product-variant-picker",
-          "settings": {
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
         "product_buy_buttons_ekNNjk": {
           "type": "product-buy-buttons",
           "name": "Product Buy Buttons",
@@ -200,13 +189,11 @@
         "product_trust_3CARKt",
         "product_price_TDzach",
         "product_urgency_kHLYUg",
-        "product_variant_picker_Tf3UqF",
         "product_buy_buttons_ekNNjk"
       ],
       "name": "Section",
       "settings": {
         "background_color": "light",
-        "alignment": "left",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "4",
@@ -266,8 +253,7 @@
             "design": "border",
             "background_color": "light",
             "grid_direction": "vertical",
-            "use_global_gap": true,
-            "block_gap": 12,
+            "block_gap": "12",
             "span_mobile": "4",
             "span_tablet": "8",
             "span_desktop": "12",
@@ -330,7 +316,6 @@
       "name": "Row",
       "settings": {
         "background_color": "shade",
-        "alignment": "full_width",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "8",
@@ -397,7 +382,6 @@
       "name": "Row",
       "settings": {
         "background_color": "light",
-        "alignment": "columns",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "8",
