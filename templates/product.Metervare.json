@@ -174,7 +174,7 @@
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
             "image_overlay_opacity": 30,
-            "padding_top": 24,
+            "padding_top": 0,
             "padding_bottom": 0,
             "padding_sides": 24
           },
@@ -471,7 +471,7 @@
         "hide_on_tablet": false,
         "column_span_desktop": "4",
         "column_start_desktop": "5",
-        "row_span_desktop": "auto",
+        "row_span_desktop": "1",
         "row_start_desktop": "2",
         "hide_on_desktop": false,
         "justify_self": "auto",
