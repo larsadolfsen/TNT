@@ -401,7 +401,7 @@
         "card_qNtWGD",
         "card_KRwA6F"
       ],
-      "name": "Section",
+      "name": "Section - Info",
       "settings": {
         "background_color": "dark",
         "full_width": false,
@@ -414,7 +414,7 @@
         "column_span_desktop": "4",
         "column_start_desktop": "5",
         "row_span_desktop": "auto",
-        "row_start_desktop": "2",
+        "row_start_desktop": "auto",
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
