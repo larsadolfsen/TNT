@@ -196,7 +196,7 @@
           {% endif %}
         </div>
       </div>
-      <div class="flex overflow-x-auto pb-3 -mb-2 hide-scrollbar w-full pl-10" style="gap: 16px;">
+      <div class="flex overflow-x-auto pb-3 -mb-2 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
 
         <!-- Firkantet dug -->
         <button type="button" id="btn-shape-firkantet" data-shape="firkantet"
@@ -251,7 +251,7 @@
           {%- endif -%}
         </div>
       </div>
-      <div class="flex overflow-x-auto pb-3 -mb-2 hide-scrollbar w-full pl-10" style="gap: 16px;">
+      <div class="flex overflow-x-auto pb-3 -mb-2 hide-scrollbar w-full pl-10" style="gap: var(--grid-gap);">
         {%- if width_option_values != blank -%}
           {%- for value in width_option_values -%}
             {%- assign value_down = value | downcase -%}
