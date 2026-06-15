@@ -109,9 +109,10 @@
     --section-span-mobile: 4;
     --section-span-expanded: 8;
     --section-span-large: 12;
+    --grid-gap: 16px;
+    gap: var(--grid-gap);
     {%- if block.settings.block_gap != blank -%}
       --grid-gap: {{ block.settings.block_gap }}px;
-      gap: var(--grid-gap);
     {%- endif -%}
   }
 

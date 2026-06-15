@@ -473,6 +473,7 @@ h4 {
     padding: 16px;
     border-radius: 1rem;
     border: 1px solid var(--color-outline-variant);
+    background-color: #ffffff;
     width: 100%;
     box-sizing: border-box;
   }
