@@ -72,6 +72,48 @@
       {%- endif -%}
     </div>
   </div>
+
+  <!-- Indicator Dots (Mobile Only) -->
+  <div id="gallery-dots">
+    {%- if product.media.size > 1 -%}
+      {%- for media in product.media -%}
+        <button 
+          class="dot-btn w-2.5 h-2.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-slate-300{% endif %} focus:outline-none transition-colors cursor-pointer" 
+          data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
+          aria-label="Skift billede {{ forloop.index }}"
+        ></button>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+
+  <!-- Thumbnails Container (Desktop/Tablet Only) -->
+  <div id="gallery-thumbnails">
+    {%- if product.media.size > 1 -%}
+      {%- for media in product.media -%}
+        <div class="thumbnail-wrapper">
+          <button 
+            class="thumbnail-btn {% if forloop.first %}border-primary{% endif %}"
+            data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
+            aria-label="Skift billede {{ forloop.index }}"
+          >
+            <img 
+              src="{{ media.preview_image.src | image_url: width: 200, height: 200, crop: 'center' }}" 
+              alt="{{ media.alt | default: product.title }}" 
+              loading="lazy"
+            />
+            {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+              <div class="video-thumbnail-overlay">
+                <span class="material-symbols-outlined text-white text-3xl">play_circle</span>
+              </div>
+            {%- endif -%}
+          </button>
+          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+            <span class="video-thumbnail-label">Video</span>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
 </div>
 
 <!-- CSS Styles for Gallery UI (bypasses Tailwind compilation issues) -->
@@ -83,7 +125,7 @@
     gap: 8px;
     padding: 0 16px;
     margin-top: 12px;
-    max-width: 1200px;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
   }
@@ -91,10 +133,11 @@
   #gallery-thumbnails {
     display: none;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
+    flex-wrap: nowrap;
+    gap: 8px;
     margin-top: 16px;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     align-items: start;
@@ -104,11 +147,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 72px;
   }
 
   .thumbnail-btn {
-    width: 48px;
-    height: 48px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
     border-radius: 8px;
     border: 2px solid var(--color-border);
     overflow: hidden;
@@ -191,48 +238,6 @@
     }
   }
 </style>
-
-<!-- Indicator Dots (Mobile Only) -->
-<div id="gallery-dots">
-  {%- if product.media.size > 1 -%}
-    {%- for media in product.media -%}
-      <button 
-        class="dot-btn w-2.5 h-2.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-slate-300{% endif %} focus:outline-none transition-colors cursor-pointer" 
-        data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
-        aria-label="Skift billede {{ forloop.index }}"
-      ></button>
-    {%- endfor -%}
-  {%- endif -%}
-</div>
-
-<!-- Thumbnails Container (Desktop/Tablet Only) -->
-<div id="gallery-thumbnails">
-  {%- if product.media.size > 1 -%}
-    {%- for media in product.media -%}
-      <div class="thumbnail-wrapper">
-        <button 
-          class="thumbnail-btn {% if forloop.first %}border-primary{% endif %}"
-          data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
-          aria-label="Skift billede {{ forloop.index }}"
-        >
-          <img 
-            src="{{ media.preview_image.src | image_url: width: 200, height: 200, crop: 'center' }}" 
-            alt="{{ media.alt | default: product.title }}" 
-            loading="lazy"
-          />
-          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
-            <div class="video-thumbnail-overlay">
-              <span class="material-symbols-outlined text-white text-3xl">play_circle</span>
-            </div>
-          {%- endif -%}
-        </button>
-        {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
-          <span class="video-thumbnail-label">Video</span>
-        {%- endif -%}
-      </div>
-    {%- endfor -%}
-  {%- endif -%}
-</div>
 
 <!-- Variant to media map -->
 <script id="product-media-variants" type="application/json">
