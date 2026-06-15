@@ -28,3 +28,20 @@ Theme colors are configured in the Shopify Customizer under separate "Lys Tema /
   - Use `border-outline-variant` or `border-slate-200` (mapped to `--color-border`) for borders.
 - Tailwind CSS v4 selector-based dark mode is enabled using `@variant dark (&:where(.dark, .dark *));` in `assets/input.css`.
 - If you change files that affect CSS styling, compile the output CSS using `cmd /c npm run tailwind:build`.
+
+## 3. Material Design 3 Surface Mapping Reference
+Our theme uses a three-tier elevation system to prevent visual blending in dark mode:
+1. **Surface (Base)**: `bg-background` (`--color-background`). Used for the main page body background.
+2. **Surface Container**: `bg-card-light` (`--color-card-light`). Used for headers, footers, product cards, testimonials, sidebar filters, and modal drawers.
+3. **Surface Container High**: `bg-card-high` (`--color-card-high`). Used for buttons, variant swatches, inputs, select dropdowns, stepper pills, and payment badges that sit *inside* a Surface Container.
+
+## 4. Git and Deployment Workflow
+- **Compilation**: Always build Tailwind CSS after changing styling classes in liquid files by running `cmd /c npm run tailwind:build`.
+- **Theme Sync**: Commits pushed to the `main` branch of the remote Git repository (`https://github.com/larsadolfsen/TNT.git`) are automatically deployed to the live Shopify theme (`TNT/main`) via Shopify webhooks.
+- **Workflow**:
+  1. Make modifications and verify locally.
+  2. Run `cmd /c npm run tailwind:build` to compile.
+  3. Run `git add .` and commit changes.
+  4. Run `git pull --rebase` to integrate remote changes.
+  5. Run `git push origin main` to deploy.
+
