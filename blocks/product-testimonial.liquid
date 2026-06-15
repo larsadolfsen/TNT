@@ -31,7 +31,7 @@
 
   .testimonial-item-{{ block.id }},
   .testimonial-single-card-{{ block.id }} {
-    --color-primary: {{ settings.primary_dark_color | default: '#0e1a28' }};
+    --color-primary: var(--color-primary);
   }
 
   .testimonial-dot-btn-{{ block.id }} {

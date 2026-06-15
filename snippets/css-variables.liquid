@@ -52,15 +52,34 @@
 
     --page-width: {{ settings.max_page_width | default: 1440 }}px;
     --page-margin: {{ settings.min_page_margin }}px;
-    --color-primary: {{ settings.primary_dark_color | default: '#0e1a28' }};
-    --color-accent: {{ settings.primary_color | default: '#FFD814' }};
-    --color-background: {{ settings.background_color | default: '#ffffff' }};
-    --color-background-dark: {{ settings.background_dark_color | default: '#0e1a28' }};
-    --color-background-shade: {{ settings.background_shade_color | default: '#f9f9f9' }};
-    --color-card-light: {{ settings.card_light_color | default: '#ffffff' }};
-    --color-card-shade: {{ settings.card_shade_color | default: '#f5f5f5' }};
-    --color-foreground: {{ settings.foreground_color }};
-    --color-border: {{ settings.border_color | default: '#e2e8f0' }};
     --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
+
+    /* Light Theme Settings */
+    --color-primary: {{ settings.primary_color_light | default: '#0e1a28' }};
+    --color-on-primary: {{ settings.primary_foreground_color_light | default: '#ffffff' }};
+    --color-accent: {{ settings.accent_color_light | default: '#FFD814' }};
+    --color-on-accent: {{ settings.accent_foreground_color_light | default: '#0e1a28' }};
+    --color-background: {{ settings.background_color_light | default: '#ffffff' }};
+    --color-background-dark: {{ settings.background_color_dark | default: '#0e1a28' }};
+    --color-background-shade: {{ settings.background_shade_color_light | default: '#f9f9f9' }};
+    --color-card-light: {{ settings.card_light_color_light | default: '#ffffff' }};
+    --color-card-shade: {{ settings.background_shade_color_light | default: '#f9f9f9' }};
+    --color-foreground: {{ settings.foreground_color_light | default: '#333333' }};
+    --color-border: {{ settings.border_color_light | default: '#e2e8f0' }};
+  }
+
+  .dark {
+    /* Dark Theme Settings */
+    --color-primary: {{ settings.primary_color_dark | default: '#ffffff' }};
+    --color-on-primary: {{ settings.primary_foreground_color_dark | default: '#0e1a28' }};
+    --color-accent: {{ settings.accent_color_dark | default: '#FFD814' }};
+    --color-on-accent: {{ settings.accent_foreground_color_dark | default: '#0e1a28' }};
+    --color-background: {{ settings.background_color_dark | default: '#0e1a28' }};
+    --color-background-dark: {{ settings.background_color_dark | default: '#0a111a' }};
+    --color-background-shade: {{ settings.background_shade_color_dark | default: '#142131' }};
+    --color-card-light: {{ settings.card_light_color_dark | default: '#1a2635' }};
+    --color-card-shade: {{ settings.background_shade_color_dark | default: '#142131' }};
+    --color-foreground: {{ settings.foreground_color_dark | default: '#e2e8f0' }};
+    --color-border: {{ settings.border_color_dark | default: '#253549' }};
   }
 {% endstyle %}

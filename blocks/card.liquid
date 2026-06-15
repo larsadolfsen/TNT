@@ -18,8 +18,6 @@
     case block.settings.background_color
       when 'light'
         assign card_classes = card_classes | append: ' bg-card-light text-primary'
-      when 'shade'
-        assign card_classes = card_classes | append: ' bg-card-shade text-primary'
       when 'dark'
         assign card_classes = card_classes | append: ' bg-background-dark text-white'
       when 'transparent'
@@ -244,7 +242,6 @@
       "options": [
         { "value": "transparent", "label": "Transparent" },
         { "value": "light", "label": "Light" },
-        { "value": "shade", "label": "Shade / Skygge" },
         { "value": "dark", "label": "Dark" }
       ],
       "default": "light",

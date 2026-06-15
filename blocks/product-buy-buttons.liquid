@@ -44,17 +44,17 @@
     <!-- Right: Button and Payment Badges -->
     <div class="flex flex-col items-center gap-3 w-full">
       <!-- Quantity Selector (Only visible for simple products when no customizer is present) -->
-      <div id="buy-buttons-quantity-container" class="w-full flex items-center bg-white rounded-xl border border-outline-variant overflow-hidden mb-1">
+      <div id="buy-buttons-quantity-container" class="w-full flex items-center bg-card-light rounded-xl border border-outline-variant overflow-hidden mb-1">
         <button type="button" id="btn-buy-qty-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer border-r border-outline-variant">
-          <span class="material-symbols-outlined text-[16px]">remove</span>
+          <span class="material-symbols-outlined text-[16px] select-none" style="font-size: 16px;">remove</span>
         </button>
-        <input id="input-buy-qty" class="w-full h-12 text-center border-none focus:ring-0 text-[16px] font-bold text-primary bg-transparent focus:outline-none" type="text" inputmode="numeric" pattern="[0-9]*" value="1" style="border: none; padding: 0; margin: 0; box-shadow: none; outline: none; text-align: center; font-size: 16px; font-weight: 700; color: #0e1a28; min-height: unset; line-height: 1;" />
+        <input id="input-buy-qty" class="w-full h-12 text-center border-none focus:ring-0 text-[16px] font-bold text-primary bg-transparent focus:outline-none" type="text" inputmode="numeric" pattern="[0-9]*" value="1" style="border: none; padding: 0; margin: 0; box-shadow: none; outline: none; text-align: center; font-size: 16px; font-weight: 700; color: var(--color-primary); min-height: unset; line-height: 1;" />
         <button type="button" id="btn-buy-qty-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer border-l border-outline-variant">
-          <span class="material-symbols-outlined text-[16px]">add</span>
+          <span class="material-symbols-outlined text-[16px] select-none" style="font-size: 16px;">add</span>
         </button>
       </div>
 
-      <button id="btn-add-to-cart" data-text-before-price="{{ text_before_price }}" class="w-full bg-accent hover:brightness-95 text-primary font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+      <button id="btn-add-to-cart" data-text-before-price="{{ text_before_price }}" class="w-full bg-accent hover:brightness-95 text-on-accent font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
         <span>{{ text_before_price }}</span>
         <span id="btn-price-display" class="ml-1.5">{{ product.selected_or_first_available_variant.price | money }}</span>
       </button>
@@ -375,7 +375,7 @@
 
 <!-- Mobile Sticky Buy Bar -->
 {%- if block.settings.enable_sticky_buy_button -%}
-<div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-100/50 px-5 pt-4 pb-4 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[32px]">
+<div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-card-light border-t border-slate-100/50 px-5 pt-4 pb-4 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[32px]">
   <div class="max-w-[var(--page-width)] mx-auto w-full">
     <!-- Standard Buy Sheet Content (State 2: Below Customizer / "nederst") -->
     <div id="sticky-bar-standard-content" class="flex items-center justify-between gap-4 w-full">
@@ -385,7 +385,7 @@
         <div id="sticky-config-summary" class="text-[12px] text-slate-500 font-medium truncate mt-1 leading-normal"></div>
       </div>
       <!-- Right: Purchase Button -->
-      <button id="btn-sticky-buy" class="bg-accent hover:brightness-95 text-primary font-bold px-5 h-12 rounded-full text-[15px] shadow-[0_4px_12px_rgba(14,26,40,0.08)] active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center gap-1.5 min-w-[125px]">
+      <button id="btn-sticky-buy" class="bg-accent hover:brightness-95 text-on-accent font-bold px-5 h-12 rounded-full text-[15px] shadow-[0_4px_12px_rgba(14,26,40,0.08)] active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center gap-1.5 min-w-[125px]">
         <span id="btn-sticky-buy-text">{{ block.settings.sticky_buy_button_text | default: "Læg i kurv" }}</span>
         <span id="btn-sticky-buy-price"></span>
       </button>

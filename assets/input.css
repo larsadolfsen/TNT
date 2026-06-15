@@ -2,12 +2,14 @@
 
 @theme {
   --color-primary: var(--color-primary);
+  --color-on-primary: var(--color-on-primary);
   --color-background: var(--color-background);
   --color-background-dark: var(--color-background-dark);
   --color-background-shade: var(--color-background-shade);
   --color-card-light: var(--color-card-light);
   --color-card-shade: var(--color-card-shade);
   --color-accent: var(--color-accent);
+  --color-on-accent: var(--color-on-accent);
   --color-secondary: var(--color-accent);
   --color-secondary-container: var(--color-accent);
   --color-on-secondary-container: #1a1c1c;
@@ -25,6 +27,8 @@
   --breakpoint-xl: 1600px;
   --breakpoint-2xl: false;
 }
+
+@variant dark (&:where(.dark, .dark *));
 
 :root {
   --grid-gap: 16px;

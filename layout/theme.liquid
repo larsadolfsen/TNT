@@ -4,6 +4,18 @@
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
 
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'system';
+        const rootEl = document.documentElement;
+        if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          rootEl.classList.add('dark');
+        } else {
+          rootEl.classList.remove('dark');
+        }
+      })();
+    </script>
+
     {% comment %}
       Font preloading:
       1. Preconnect to font CDN for faster connection

@@ -51,6 +51,15 @@
             <span class="material-symbols-outlined text-2xl text-primary block">search</span>
           </button>
         {%- endunless -%}
+        <button 
+          id="theme-toggle" 
+          type="button" 
+          onclick="toggleTheme()" 
+          class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
+          aria-label="Skift tema"
+        >
+          <span class="material-symbols-outlined text-2xl text-primary block theme-toggle-icon">dark_mode</span>
+        </button>
         <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); toggleCartDrawer(true);" class="relative cursor-pointer text-primary no-underline flex items-center justify-center">
           <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
           <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
@@ -154,6 +163,47 @@
 
 
 <script>
+  function updateThemeToggleIcons(isDark) {
+    const icons = document.querySelectorAll('.theme-toggle-icon');
+    icons.forEach(icon => {
+      icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+    });
+  }
+
+  function toggleTheme() {
+    const rootEl = document.documentElement;
+    const isCurrentlyDark = rootEl.classList.contains('dark');
+    const nextDark = !isCurrentlyDark;
+    
+    if (nextDark) {
+      rootEl.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      rootEl.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+    updateThemeToggleIcons(nextDark);
+  }
+
+  // Auto-init theme icons on load
+  document.addEventListener('DOMContentLoaded', () => {
+    const rootEl = document.documentElement;
+    updateThemeToggleIcons(rootEl.classList.contains('dark'));
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (localStorage.getItem('theme') === 'system' || !localStorage.getItem('theme')) {
+      const rootEl = document.documentElement;
+      const nextDark = e.matches;
+      if (nextDark) {
+        rootEl.classList.add('dark');
+      } else {
+        rootEl.classList.remove('dark');
+      }
+      updateThemeToggleIcons(nextDark);
+    }
+  });
+
   function formatMoney(cents) {
     const kr = cents / 100;
     return kr.toFixed(2).replace('.', ',') + ' Kr.';
