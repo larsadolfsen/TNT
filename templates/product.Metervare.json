@@ -244,7 +244,7 @@
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
-        "justify_self": "auto",
+        "justify_self": "start",
         "align_self": "auto",
         "padding_top": 0,
         "padding_bottom": 0,
