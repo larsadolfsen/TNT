@@ -16,6 +16,8 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
+            "hide_on_mobile": false,
+            "hide_on_desktop": false,
             "design": "none",
             "background_color": "light",
             "grid_direction": "vertical",
@@ -85,7 +87,7 @@
       ],
       "name": "Section",
       "settings": {
-        "background_color": "transparent",
+        "background_color": "dark",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "4",
@@ -162,6 +164,8 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
+            "hide_on_mobile": false,
+            "hide_on_desktop": false,
             "design": "none",
             "background_color": "light",
             "grid_direction": "vertical",
@@ -215,6 +219,8 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
+            "hide_on_mobile": false,
+            "hide_on_desktop": false,
             "design": "none",
             "background_color": "transparent",
             "grid_direction": "vertical",
@@ -270,6 +276,8 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
+            "hide_on_mobile": false,
+            "hide_on_desktop": false,
             "design": "border",
             "background_color": "light",
             "grid_direction": "vertical",
@@ -303,6 +311,8 @@
               "type": "card",
               "name": "t:general.card",
               "settings": {
+                "hide_on_mobile": false,
+                "hide_on_desktop": false,
                 "design": "none",
                 "background_color": "light",
                 "grid_direction": "horizontal",
@@ -392,6 +402,8 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
+            "hide_on_mobile": false,
+            "hide_on_desktop": false,
             "design": "raised",
             "background_color": "light",
             "grid_direction": "vertical",
@@ -457,6 +469,8 @@
               "type": "card",
               "name": "t:general.card",
               "settings": {
+                "hide_on_mobile": false,
+                "hide_on_desktop": false,
                 "design": "none",
                 "background_color": "light",
                 "grid_direction": "vertical",
@@ -745,6 +759,8 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
+            "hide_on_mobile": false,
+            "hide_on_desktop": false,
             "design": "border",
             "background_color": "transparent",
             "grid_direction": "vertical",
