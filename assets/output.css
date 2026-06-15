@@ -338,6 +338,9 @@
   .z-\[100\] {
     z-index: 100;
   }
+  .col-span-2 {
+    grid-column: span 2 / span 2;
+  }
   .col-span-full {
     grid-column: 1 / -1;
   }
@@ -693,6 +696,9 @@
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
   .flex-col {
     flex-direction: column;
   }
@@ -996,6 +1002,9 @@
   }
   .bg-\[\#0e1a28\] {
     background-color: #0e1a28;
+  }
+  .bg-\[\#123456\] {
+    background-color: #123456;
   }
   .bg-\[\#f9f9f9\] {
     background-color: #f9f9f9;
@@ -1436,6 +1445,9 @@
   }
   .text-blue-600 {
     color: var(--color-blue-600);
+  }
+  .text-card-light {
+    color: var(--color-card-light);
   }
   .text-emerald-400 {
     color: var(--color-emerald-400);
@@ -2133,6 +2145,11 @@
   .lg\:col-span-3 {
     @media (width >= 1200px) {
       grid-column: span 3 / span 3;
+    }
+  }
+  .lg\:col-span-4 {
+    @media (width >= 1200px) {
+      grid-column: span 4 / span 4;
     }
   }
   .lg\:block {

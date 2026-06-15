@@ -27,6 +27,9 @@ Theme colors are configured in the Shopify Customizer under separate "Lys Tema /
   - Use `text-on-primary` on any element styled with `bg-primary` (e.g. filter buttons, cart badges) to ensure text remains readable.
   - Use `border-outline-variant` or `border-slate-200` (mapped to `--color-border`) for borders.
 - Tailwind CSS v4 selector-based dark mode is enabled using `@variant dark (&:where(.dark, .dark *));` in `assets/input.css`.
+- **Tailwind Color System**: All Tailwind color classes are dynamically mapped to the global theme variables in `assets/input.css` (under `@theme`).
+  - Always use classes like `bg-primary`, `text-card-light`, and `border-outline-variant` in preference to arbitrary color overrides (`bg-[#123456]`).
+  - If you introduce a new custom color setting, declare it as a CSS variable in `css-variables.liquid` and map it inside the `@theme` directive in `assets/input.css` before using it in templates.
 - If you change files that affect CSS styling, compile the output CSS using `cmd /c npm run tailwind:build`.
 
 ## 3. Material Design 3 Surface Mapping Reference
@@ -54,5 +57,16 @@ Our theme uses a three-tier elevation system to prevent visual blending in dark 
   ```
   This allows all child elements to inherit the customized styling automatically without repeating CSS declarations or hardcoding colors inline on every child.
 - **Avoid `!important`**: Do NOT use `!important` to force style changes. Instead, manage specificity using CSS variable scoping overrides, clean selector hierarchy, or proper utility sequencing.
+
+## 6. Grid Layout System
+- **Use `.grid-layout` for standard page grids**: Instead of writing custom Tailwind grid classes (e.g., `grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12`), use the predefined `.grid-layout` class.
+- **Set Responsive Column Spanning using Variables**: Control child column spans by setting CSS variables inline instead of using standard Tailwind classes (like `col-span-2 lg:col-span-4`):
+  ```html
+  <div class="grid-layout">
+    <div style="--span-mobile: 4; --span-expanded: 4; --span-large: 6;">
+      <!-- Spans 4 columns on mobile/tablet, 6 on desktop -->
+    </div>
+  </div>
+  ```
 
 

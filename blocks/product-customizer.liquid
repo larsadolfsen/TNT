@@ -1741,9 +1741,12 @@
       // Initial call
       handleScroll();
 
-      // Listen on scroll and resize
+      // Listen on scroll and resize, plus window load and safety timeouts for layout shifts
       window.addEventListener("scroll", handleScroll, { passive: true });
       window.addEventListener("resize", handleScroll, { passive: true });
+      window.addEventListener("load", handleScroll, { passive: true });
+      setTimeout(handleScroll, 200);
+      setTimeout(handleScroll, 1000);
 
       // Click on sticky customize button scrolls smoothly to customizer
       if (btnStickyCustomize) {
