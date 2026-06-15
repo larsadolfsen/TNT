@@ -155,10 +155,10 @@
         "border_bottom": false
       }
     },
-    "section_CjVmWk": {
+    "section_NNJF64": {
       "type": "section",
       "blocks": {
-        "card_JzRErP": {
+        "card_rE4FhV": {
           "type": "card",
           "name": "t:general.card",
           "settings": {
@@ -224,7 +224,41 @@
             "product_trust_CbJ7qJ",
             "badge_3ehnW4"
           ]
-        },
+        }
+      },
+      "block_order": [
+        "card_rE4FhV"
+      ],
+      "name": "Section",
+      "settings": {
+        "background_color": "white",
+        "full_width": false,
+        "hide_on_mobile": true,
+        "column_span_tablet": "8",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "12",
+        "column_start_desktop": "auto",
+        "row_span_desktop": "auto",
+        "row_start_desktop": "auto",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 24,
+        "padding_right": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "section_CjVmWk": {
+      "type": "section",
+      "blocks": {
         "card_WFNVFD": {
           "type": "card",
           "name": "t:general.card",
@@ -421,7 +455,6 @@
         }
       },
       "block_order": [
-        "card_JzRErP",
         "card_WFNVFD",
         "card_QctbPE",
         "card_nxnJc4"
@@ -882,6 +915,7 @@
   "order": [
     "section_DegQzi",
     "section_hhUykJ",
+    "section_NNJF64",
     "section_CjVmWk",
     "section_atC4EK",
     "section_x9Fd3C",
