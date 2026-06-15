@@ -27,7 +27,7 @@
   endcase
 -%}
 <!-- Header (Not Sticky) -->
-<header class="bg-white border-b border-outline-variant py-4 px-4">
+<header class="bg-card-light border-b border-outline-variant py-4 px-4">
   <div class="max-w-screen-xl mx-auto flex flex-col gap-4">
     <div class="flex items-center justify-between">
       <button id="menu-toggle" class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer" aria-label="Menu" onclick="toggleMobileMenu(true)">
@@ -62,7 +62,7 @@
         </button>
         <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); toggleCartDrawer(true);" class="relative cursor-pointer text-primary no-underline flex items-center justify-center">
           <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
-          <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
+          <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
             {{ cart.item_count }}
           </span>
         </a>
@@ -111,7 +111,7 @@
 
 <!-- Mobile Menu Slide-out Drawer -->
 <div id="mobile-menu-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-start transition-opacity duration-300 opacity-0">
-  <div class="bg-white w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 -translate-x-full">
+  <div class="bg-card-light w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 -translate-x-full">
     <div>
       <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
         <span class="font-serif text-xl font-bold text-primary tracking-tight">Menu</span>
@@ -136,7 +136,7 @@
 
 <!-- Shopping Cart Slide-out Drawer -->
 <div id="cart-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end transition-opacity duration-300 opacity-0">
-  <div class="bg-white w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
+  <div class="bg-card-light w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
     <div>
       <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
         <span class="font-serif text-xl font-bold text-primary tracking-tight">Din Indkøbskurv</span>

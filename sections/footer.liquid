@@ -1,15 +1,15 @@
 <!-- Footer -->
-<footer class="bg-primary text-white py-12 px-6">
+<footer class="bg-card-light text-primary py-12 px-6 border-t border-outline-variant">
   <div class="max-w-screen-xl mx-auto space-y-10">
     <div class="space-y-4">
-      <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold block text-white no-underline">
+      <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold block text-primary no-underline">
         {%- if section.settings.footer_title != blank -%}
           {{ section.settings.footer_title }}
         {%- else -%}
           {{ shop.name }}
         {%- endif -%}
       </a>
-      <p class="text-sm text-slate-300 max-w-sm">
+      <p class="text-sm text-primary/70 max-w-sm">
         {{ section.settings.footer_description }}
       </p>
     </div>
@@ -17,7 +17,7 @@
     <div class="grid grid-cols-2 gap-8">
       <!-- Menu 1 -->
       <div class="space-y-4">
-        <h4 class="text-xs font-bold uppercase tracking-widest text-slate-400">
+        <h4 class="text-xs font-bold uppercase tracking-widest text-primary/60">
           {%- if section.settings.menu_1_title != blank -%}
             {{ section.settings.menu_1_title }}
           {%- else -%}
@@ -27,19 +27,19 @@
         <nav class="flex flex-col gap-3 text-sm">
           {%- if section.settings.menu_1 != blank -%}
             {%- for link in linklists[section.settings.menu_1].links -%}
-              <a class="text-slate-200 no-underline hover:text-white" href="{{ link.url }}">{{ link.title }}</a>
+              <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="{{ link.url }}">{{ link.title }}</a>
             {%- endfor -%}
           {%- else -%}
-            <a class="text-slate-200 no-underline hover:text-white" href="#">Fragt &amp; Retur</a>
-            <a class="text-slate-200 no-underline hover:text-white" href="#">Handelsbetingelser</a>
-            <a class="text-slate-200 no-underline hover:text-white" href="#">Kontakt os</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Fragt &amp; Retur</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Handelsbetingelser</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Kontakt os</a>
           {%- endif -%}
         </nav>
       </div>
       
       <!-- Menu 2 -->
       <div class="space-y-4">
-        <h4 class="text-xs font-bold uppercase tracking-widest text-slate-400">
+        <h4 class="text-xs font-bold uppercase tracking-widest text-primary/60">
           {%- if section.settings.menu_2_title != blank -%}
             {{ section.settings.menu_2_title }}
           {%- else -%}
@@ -49,22 +49,22 @@
         <nav class="flex flex-col gap-3 text-sm">
           {%- if section.settings.menu_2 != blank -%}
             {%- for link in linklists[section.settings.menu_2].links -%}
-              <a class="text-slate-200 no-underline hover:text-white" href="{{ link.url }}">{{ link.title }}</a>
+              <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="{{ link.url }}">{{ link.title }}</a>
             {%- endfor -%}
           {%- else -%}
-            <a class="text-slate-200 no-underline hover:text-white" href="#">Om os</a>
-            <a class="text-slate-200 no-underline hover:text-white" href="#">Vaskevejledning</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Om os</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Vaskevejledning</a>
           {%- endif -%}
         </nav>
       </div>
     </div>
     
-    <div class="pt-8 border-t border-slate-700 flex flex-col items-center gap-4 text-center">
+    <div class="pt-8 border-t border-outline-variant flex flex-col items-center gap-4 text-center">
       <div class="flex gap-4">
-        <span class="text-[10px] border border-slate-600 px-2 py-1 rounded text-slate-300">OEKO-TEX®</span>
-        <span class="text-[10px] border border-slate-600 px-2 py-1 rounded text-slate-300">Phthalat-fri</span>
+        <span class="text-[10px] border border-outline-variant px-2 py-1 rounded text-primary/70">OEKO-TEX®</span>
+        <span class="text-[10px] border border-outline-variant px-2 py-1 rounded text-primary/70">Phthalat-fri</span>
       </div>
-      <p class="text-[10px] text-slate-500 italic">
+      <p class="text-[10px] text-primary/50 italic">
         &copy; {{ 'now' | date: '%Y' }} {% if section.settings.copyright_text != blank %}{{ section.settings.copyright_text }}{% else %}{{ shop.name }}{% endif %}. {{ powered_by_link }}
       </p>
     </div>

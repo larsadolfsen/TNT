@@ -80,7 +80,7 @@
 
 <div {{ block.shopify_attributes }}>
   <!-- Dynamic Free Shipping Progress Bar Widget (No border) -->
-  <div id="free-shipping-widget" class="{% if hide_everything_except_text %}py-1{% else %}bg-white p-4 rounded-xl space-y-2 border border-outline-variant{% endif %}" data-threshold="{{ threshold }}">
+  <div id="free-shipping-widget" class="{% if hide_everything_except_text %}py-1{% else %}bg-card-light p-4 rounded-xl space-y-2 border border-outline-variant{% endif %}" data-threshold="{{ threshold }}">
     <div class="flex {% if hide_everything_except_text %}justify-center text-center{% else %}justify-between{% endif %} text-xs text-primary font-bold">
       <span id="shipping-status-text">
         <span id="shipping-progress-msg" class="{% if potential_total >= threshold %}hidden{% endif %}">

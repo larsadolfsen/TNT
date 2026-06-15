@@ -44,7 +44,7 @@
     <!-- Right: Button and Payment Badges -->
     <div class="flex flex-col items-center gap-3 w-full">
       <!-- Quantity Selector (Only visible for simple products when no customizer is present) -->
-      <div id="buy-buttons-quantity-container" class="w-full flex items-center bg-card-light rounded-xl border border-outline-variant overflow-hidden mb-1">
+      <div id="buy-buttons-quantity-container" class="w-full flex items-center bg-card-high rounded-xl border border-outline-variant overflow-hidden mb-1">
         <button type="button" id="btn-buy-qty-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer border-r border-outline-variant">
           <span class="material-symbols-outlined text-[16px] select-none" style="font-size: 16px;">remove</span>
         </button>
@@ -78,10 +78,10 @@
         </div>
       {%- else -%}
         <div class="flex justify-center items-center gap-2 text-primary/85 font-medium text-xs mt-1">
-          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">VISA</span>
-          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">MASTERCARD</span>
-          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">MOBILEPAY</span>
-          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-white font-bold tracking-wider">APPLE PAY</span>
+          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-card-high font-bold tracking-wider">VISA</span>
+          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-card-high font-bold tracking-wider">MASTERCARD</span>
+          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-card-high font-bold tracking-wider">MOBILEPAY</span>
+          <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-card-high font-bold tracking-wider">APPLE PAY</span>
         </div>
       {%- endif -%}
   </div>

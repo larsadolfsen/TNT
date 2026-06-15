@@ -52,7 +52,7 @@
                 
                  <button 
                   type="button"
-                  class="w-12 h-12 rounded-2xl overflow-hidden border-2 bg-card-light shadow-sm p-0.5 cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] ring-4 ring-[var(--color-accent)]/10{% else %}border-outline-variant hover:border-[var(--color-accent)]/60{% endif %}"
+                  class="w-12 h-12 rounded-2xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] ring-4 ring-[var(--color-accent)]/10{% else %}border-outline-variant hover:border-[var(--color-accent)]/60{% endif %}"
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"
                   title="{{ value | escape }}"
@@ -62,7 +62,7 @@
               {%- else -%}
                 <button 
                   type="button"
-                  class="px-4 py-2 text-sm rounded-2xl bg-card-light shadow-sm cursor-pointer transition-all {% if is_selected %}border-2 text-primary font-bold{% else %}border border-outline-variant text-primary/70{% endif %}"
+                  class="px-4 py-2 text-sm rounded-2xl bg-card-high shadow-sm cursor-pointer transition-all {% if is_selected %}border-2 text-primary font-bold{% else %}border border-outline-variant text-primary/70{% endif %}"
                   style="{% if is_selected %}border-color: var(--color-accent);{% endif %}"
                   data-option-name="{{ option.name }}"
                   data-option-value="{{ value | escape }}"

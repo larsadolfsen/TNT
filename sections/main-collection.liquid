@@ -16,7 +16,7 @@
   <div class="lg:grid lg:grid-cols-4 lg:gap-8 items-start">
     
     <!-- Desktop Sidebar Filters -->
-    <aside class="hidden lg:block lg:col-span-1 bg-white p-5 border border-outline-variant rounded-2xl sticky top-28">
+    <aside class="hidden lg:block lg:col-span-1 bg-card-light p-5 border border-outline-variant rounded-2xl sticky top-28">
       <div class="flex justify-between items-center pb-4 border-b border-outline-variant mb-4">
         <h2 class="text-sm font-bold text-primary uppercase tracking-wider m-0">Filtrering</h2>
         <button onclick="clearAllFilters()" class="text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0">Ryd alle</button>
@@ -245,7 +245,7 @@
 
 <!-- Mobile Filter Slide-out Drawer -->
 <div id="mobile-filter-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end transition-opacity duration-300 opacity-0">
-  <div class="bg-white w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
+  <div class="bg-card-light w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
     <div>
       <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
         <span class="font-serif text-xl font-bold text-primary tracking-tight">Filtrer produkter</span>
@@ -437,7 +437,7 @@
     </div>
     <div class="pt-4 border-t border-outline-variant flex gap-3">
       <button onclick="clearAllFilters()" class="flex-1 py-3 border border-outline-variant rounded-xl text-xs font-bold text-primary bg-transparent cursor-pointer">Ryd alle</button>
-      <button onclick="toggleMobileFilter(false)" class="flex-1 py-3 bg-primary text-white rounded-xl text-xs font-bold border-0 cursor-pointer">Vis resultater</button>
+      <button onclick="toggleMobileFilter(false)" class="flex-1 py-3 bg-primary text-on-primary rounded-xl text-xs font-bold border-0 cursor-pointer">Vis resultater</button>
     </div>
   </div>
 </div>
@@ -1062,10 +1062,10 @@
 
       let badgeHtml = "";
       if (product.badge) {
-        badgeHtml = `<span class="absolute top-2 left-2 bg-primary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">${product.badge}</span>`;
+        badgeHtml = `<span class="absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">${product.badge}</span>`;
       } else if (product.originalPrice && product.originalPrice > product.price) {
         const savings = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
-        badgeHtml = `<span class="absolute top-2 left-2 bg-secondary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">Spar ${savings}%</span>`;
+        badgeHtml = `<span class="absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">Spar ${savings}%</span>`;
       }
 
       const displayPrice = product.price_formatted ? product.price_formatted : `${product.price.toFixed(2).replace('.', ',')} Kr.`;
@@ -1110,7 +1110,7 @@
               swatchesHtml += `
                 <button 
                   type="button"
-                  class="w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all ${activeBorderClass}"
+                  class="w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all ${activeBorderClass}"
                   data-product-id="${product.id}"
                   data-option-name="${opt.name}"
                   data-option-value="${val}"
@@ -1126,7 +1126,7 @@
               swatchesHtml += `
                 <button 
                   type="button"
-                  class="px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all ${activeTextClass}"
+                  class="px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all ${activeTextClass}"
                   data-product-id="${product.id}"
                   data-option-name="${opt.name}"
                   data-option-value="${val}"
@@ -1148,7 +1148,7 @@
       }
 
       const cardHtml = `
-        <div class="product-card flex flex-col bg-white border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative" data-product-id="${product.id}">
+        <div class="product-card flex flex-col bg-card-light border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative" data-product-id="${product.id}">
           
           <!-- Image Zone -->
           <div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden" style="aspect-ratio: 1/1;">
@@ -1251,15 +1251,15 @@
       
       if (isColor) {
         if (isSelected) {
-          btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+          btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
         } else {
-          btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+          btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
         }
       } else {
         if (isSelected) {
-          btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+          btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
         } else {
-          btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+          btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
         }
       }
     });
@@ -1312,15 +1312,15 @@
             
             if (isColor) {
               if (isSelected) {
-                btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+                btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
               } else {
-                btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-white shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+                btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
               }
             } else {
               if (isSelected) {
-                btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+                btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
               } else {
-                btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-white shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+                btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
               }
             }
           });
@@ -1368,19 +1368,19 @@
           const savings = Math.round(((matchingVariant.originalPrice - matchingVariant.price) / matchingVariant.originalPrice) * 100);
           if (!badgeEl) {
             badgeEl = document.createElement('span');
-            badgeEl.className = "absolute top-2 left-2 bg-secondary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+            badgeEl.className = "absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
             imageZone.appendChild(badgeEl);
           } else {
-            badgeEl.className = "absolute top-2 left-2 bg-secondary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+            badgeEl.className = "absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
           }
           badgeEl.textContent = `Spar ${savings}%`;
         } else if (product.badge) {
           if (!badgeEl) {
             badgeEl = document.createElement('span');
-            badgeEl.className = "absolute top-2 left-2 bg-primary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+            badgeEl.className = "absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
             imageZone.appendChild(badgeEl);
           } else {
-            badgeEl.className = "absolute top-2 left-2 bg-primary text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+            badgeEl.className = "absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
           }
           badgeEl.textContent = product.badge;
         } else if (badgeEl) {
