@@ -90,13 +90,13 @@
         "type": "color",
         "id": "card_light_color",
         "default": "#ffffff",
-        "label": "Light BG -> This is the white"
+        "label": "Light BG"
       },
       {
         "type": "color",
         "id": "card_shade_color",
         "default": "#f5f5f5",
-        "label": "Shade BG -> This is the grey"
+        "label": "Shade BG"
       },
       {
         "type": "color",
