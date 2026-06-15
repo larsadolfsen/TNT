@@ -86,19 +86,18 @@
       "name": "Section",
       "settings": {
         "background_color": "transparent",
-        "alignment": "center",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "4",
         "column_start_tablet": "auto",
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
-        "hide_on_tablet": true,
+        "hide_on_tablet": false,
         "column_span_desktop": "6",
         "column_start_desktop": "7",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
-        "hide_on_desktop": true,
+        "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
         "padding_top": 0,
@@ -132,7 +131,6 @@
       "name": "Section",
       "settings": {
         "background_color": "transparent",
-        "alignment": "left",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "4",
@@ -468,7 +466,6 @@
       "name": "Section",
       "settings": {
         "background_color": "transparent",
-        "alignment": "center",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "4",
@@ -525,7 +522,6 @@
       "name": "Section",
       "settings": {
         "background_color": "light_grey",
-        "alignment": "left",
         "full_width": true,
         "hide_on_mobile": false,
         "column_span_tablet": "8",
@@ -571,7 +567,6 @@
       "name": "Row - Mersalg",
       "settings": {
         "background_color": "light",
-        "alignment": "left",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "8",
@@ -660,7 +655,6 @@
       "name": "FAQ",
       "settings": {
         "background_color": "light",
-        "alignment": "full_width",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "8",
@@ -733,7 +727,6 @@
       "name": "Row",
       "settings": {
         "background_color": "light",
-        "alignment": "full_width",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "8",
