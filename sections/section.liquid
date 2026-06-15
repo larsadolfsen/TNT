@@ -67,16 +67,8 @@
     --span-large: var(--section-span-large);
 
     width: 100%;
-    {%- if section.settings.alignment == 'left' -%}
-      margin-left: 0 !important;
-      margin-right: auto !important;
-    {%- elsif section.settings.alignment == 'right' -%}
-      margin-left: auto !important;
-      margin-right: 0 !important;
-    {%- else -%}
-      margin-left: auto !important;
-      margin-right: auto !important;
-    {%- endif -%}
+    margin-left: auto !important;
+    margin-right: auto !important;
     max-width: calc((var(--span-mb) / 4) * 100%);
   }
 
@@ -92,10 +84,15 @@
     }
   }
 
-  /* Support Grid container logic on sections */
   #shopify-section-{{ section.id }} {
     --col-span: 4;
     grid-column-end: span var(--col-span);
+
+    {%- if section.settings.background_color == 'dark' -%}
+      --color-primary: #ffffff;
+      --color-text: #e2e8f0;
+      --color-border: rgba(255, 255, 255, 0.2);
+    {%- endif -%}
     
     {%- if section.settings.justify_self != 'auto' and section.settings.justify_self != blank -%}
       justify-self: {{ section.settings.justify_self }};
@@ -191,6 +188,7 @@
     {%- when 'dark' -%}bg-background-dark text-white
   {%- endcase -%}
 {%- endcapture -%}
+{%- assign bg_class = bg_class | strip -%}
 
 {%- liquid
   if layout_style == 'full_width_bg'
@@ -238,17 +236,7 @@
       ],
       "default": "white"
     },
-    {
-      "type": "select",
-      "id": "alignment",
-      "label": "Justering",
-      "options": [
-        { "value": "left", "label": "Venstre" },
-        { "value": "center", "label": "Centreret" },
-        { "value": "right", "label": "Højre" }
-      ],
-      "default": "center"
-    },
+
     {
       "type": "checkbox",
       "id": "full_width",

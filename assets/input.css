@@ -46,7 +46,7 @@ main {
   width: 100%;
   max-width: var(--page-width, 1440px);
   margin: 0 auto;
-  padding: var(--grid-padding-y) var(--grid-gap);
+  padding: 0 var(--grid-gap) var(--grid-padding-y);
 }
 
 @media (min-width: --theme(--breakpoint-md)) {
