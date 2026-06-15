@@ -54,12 +54,8 @@
     ]
   },
   {
-    "name": "t:general.colors",
+    "name": "Lys Tema / Light Theme",
     "settings": [
-      {
-        "type": "header",
-        "content": "Lys Tema / Light Theme"
-      },
       {
         "type": "color",
         "id": "primary_color_light",
@@ -116,8 +112,29 @@
       },
       {
         "type": "header",
-        "content": "Mørk Tema / Dark Theme"
+        "content": "Generelt / General"
       },
+      {
+        "type": "color",
+        "id": "important_color",
+        "default": "#e11d48",
+        "label": "Important / Advarselsfarve"
+      },
+      {
+        "type": "range",
+        "id": "input_corner_radius",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "px",
+        "label": "t:labels.input_corner_radius",
+        "default": 4
+      }
+    ]
+  },
+  {
+    "name": "Mørk Tema / Dark Theme",
+    "settings": [
       {
         "type": "color",
         "id": "primary_color_dark",
@@ -171,26 +188,6 @@
         "id": "foreground_color_dark",
         "default": "#e2e8f0",
         "label": "Tekstfarve / Text color (Dark)"
-      },
-      {
-        "type": "header",
-        "content": "Generelt / General"
-      },
-      {
-        "type": "color",
-        "id": "important_color",
-        "default": "#e11d48",
-        "label": "Important / Advarselsfarve"
-      },
-      {
-        "type": "range",
-        "id": "input_corner_radius",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "unit": "px",
-        "label": "t:labels.input_corner_radius",
-        "default": 4
       }
     ]
   },
