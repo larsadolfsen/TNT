@@ -267,7 +267,7 @@
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
             "image_overlay_opacity": 30,
-            "padding_top": 8,
+            "padding_top": 24,
             "padding_bottom": 0,
             "padding_sides": 16
           },
