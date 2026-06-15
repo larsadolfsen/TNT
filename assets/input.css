@@ -472,7 +472,7 @@ h4 {
     margin-bottom: 0.5rem;
     padding: 16px;
     border-radius: 1rem;
-    border: 1px solid var(--color-outline-variant);
+    border: none;
     width: 100%;
     box-sizing: border-box;
   }
