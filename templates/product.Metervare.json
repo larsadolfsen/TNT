@@ -388,49 +388,76 @@
     "section_atC4EK": {
       "type": "section",
       "blocks": {
-        "product_customizer_88THQr": {
-          "type": "product-customizer",
-          "name": "Product Customizer",
+        "card_P6bgHD": {
+          "type": "card",
+          "name": "t:general.card",
           "settings": {
-            "metervare_product": "firkantet-dug",
-            "heading": "Tilpas dugen til dit bord",
-            "firkantet_product": "firkantet-dug-1",
-            "rund_product": "afrunding",
-            "oval_product": "oval-dug",
-            "shape_description": "Vælg den form, du ønsker din dug i.",
-            "width_step_description": "Vælg en standardbredde eller tilpas på dine mål.",
-            "width_surcharge_product": "tilpasset-bredde",
-            "width_description": "Vi anbefaler 15-25 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
-            "custom_width_checkbox_label": "Tilpas bredde",
-            "step_size": 10,
-            "min_length": 50,
-            "length_description": "Vi anbefaler 15 - 25 cm til nedhæng i hver ende.",
-            "qty_description": "Vælg det ønskede antal duge.",
-            "border_top": false,
-            "border_bottom": false,
+            "design": "border",
+            "background_color": "light",
+            "grid_direction": "vertical",
+            "block_gap": "",
+            "span_mobile": "4",
+            "span_tablet": "8",
+            "span_desktop": "12",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
             "padding_top": 24,
             "padding_bottom": 24,
-            "padding_sides": 0,
-            "sold_out_text": "Udsolgt",
-            "enable_sticky_customize_button": true,
-            "sticky_customize_button_text": "Tilpas dugen til dit bord"
+            "padding_sides": 24
           },
-          "blocks": {}
-        },
-        "product_buy_buttons_NW3n3P": {
-          "type": "product-buy-buttons",
-          "name": "Product Buy Buttons",
-          "settings": {
-            "text_before_price": "Læg i kurv –",
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 0,
-            "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
-            "payment_icons_height": 16,
-            "enable_sticky_buy_button": true,
-            "sticky_buy_button_text": "Læg i kurv"
+          "blocks": {
+            "product_customizer_6rahCU": {
+              "type": "product-customizer",
+              "name": "Product Customizer",
+              "settings": {
+                "metervare_product": "firkantet-dug",
+                "heading": "Tilpas dugen til dit bord",
+                "firkantet_product": "firkantet-dug-1",
+                "rund_product": "afrunding",
+                "oval_product": "oval-dug",
+                "shape_description": "Vælg den form, du ønsker din dug i.",
+                "width_step_description": "Vælg en standardbredde eller tilpas på dine mål.",
+                "width_surcharge_product": "tilpasset-bredde",
+                "width_description": "Vi anbefaler 15-25 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
+                "custom_width_checkbox_label": "Tilpas bredde",
+                "step_size": 10,
+                "min_length": 50,
+                "length_description": "Vi anbefaler 15 - 25 cm til nedhæng i hver ende.",
+                "qty_description": "Vælg det ønskede antal duge.",
+                "border_top": false,
+                "border_bottom": false,
+                "padding_top": 24,
+                "padding_bottom": 24,
+                "padding_sides": 0,
+                "sold_out_text": "Udsolgt",
+                "enable_sticky_customize_button": true,
+                "sticky_customize_button_text": "Tilpas dugen til dit bord"
+              },
+              "blocks": {}
+            },
+            "product_buy_buttons_gFTjCi": {
+              "type": "product-buy-buttons",
+              "name": "Product Buy Buttons",
+              "settings": {
+                "text_before_price": "Læg i kurv –",
+                "padding_top": 12,
+                "padding_bottom": 12,
+                "padding_sides": 0,
+                "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
+                "payment_icons_height": 16,
+                "enable_sticky_buy_button": true,
+                "sticky_buy_button_text": "Læg i kurv"
+              },
+              "blocks": {}
+            }
           },
-          "blocks": {}
+          "block_order": [
+            "product_customizer_6rahCU",
+            "product_buy_buttons_gFTjCi"
+          ]
         },
         "card_i4dUrc": {
           "type": "card",
@@ -492,8 +519,7 @@
         }
       },
       "block_order": [
-        "product_customizer_88THQr",
-        "product_buy_buttons_NW3n3P",
+        "card_P6bgHD",
         "card_i4dUrc"
       ],
       "name": "Section",
