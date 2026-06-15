@@ -28,16 +28,26 @@
         "page_title"
       ],
       "settings": {
-        "heading": "",
-        "heading_tag": "h3",
         "background_color": "light",
         "alignment": "columns",
-        "span_mobile": "4",
-        "span_tablet": "8",
-        "span_desktop": "12",
+        "full_width": false,
+        "hide_on_mobile": false,
+        "column_span_tablet": "8",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "12",
+        "column_start_desktop": "auto",
+        "row_span_desktop": "auto",
+        "row_start_desktop": "auto",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
         "padding_top": 0,
         "padding_bottom": 0,
-        "padding_sides": 24,
+        "padding_left": 24,
+        "padding_right": 24,
         "use_global_gap": true,
         "block_spacing": 16,
         "border_top": false,
@@ -58,11 +68,33 @@
         "grid_item_width": "collections--compact",
         "grid_gap": 10
       }
+    },
+    "collection_subcategories_raqR4D": {
+      "type": "collection-subcategories",
+      "name": "Underkategorier",
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 40
+      }
+    },
+    "collection_subcollections_q7XPxJ": {
+      "type": "collection-subcollections",
+      "name": "Underkollektioner Række",
+      "settings": {
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "title": "SØG UD FRA DIT BEHOV",
+        "mode": "automatic",
+        "main_collection": "",
+        "show_all_label": "Vis alle"
+      }
     }
   },
   "order": [
     "collection-header",
     "main-collection",
-    "collections_HznyAB"
+    "collections_HznyAB",
+    "collection_subcategories_raqR4D",
+    "collection_subcollections_q7XPxJ"
   ]
 }
