@@ -2160,6 +2160,11 @@
       gap: calc(var(--spacing) * 8);
     }
   }
+  .lg\:px-6 {
+    @media (width >= 1200px) {
+      padding-inline: calc(var(--spacing) * 6);
+    }
+  }
 }
 :root {
   --grid-gap: 16px;
