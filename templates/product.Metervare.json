@@ -460,7 +460,7 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
-            "design": "border",
+            "design": "raised",
             "background_color": "light",
             "grid_direction": "vertical",
             "block_gap": "",
