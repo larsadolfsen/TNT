@@ -174,7 +174,7 @@
             "image_placement": "top",
             "image_aspect_ratio": "landscape",
             "image_overlay_opacity": 30,
-            "padding_top": 12,
+            "padding_top": 16,
             "padding_bottom": 0,
             "padding_sides": 24
           },
@@ -520,75 +520,75 @@
                 "sticky_buy_button_text": "Læg i kurv"
               },
               "blocks": {}
+            },
+            "card_WQFRHd": {
+              "type": "card",
+              "name": "t:general.card",
+              "settings": {
+                "design": "none",
+                "background_color": "light",
+                "grid_direction": "vertical",
+                "block_gap": "12",
+                "span_mobile": "4",
+                "span_tablet": "8",
+                "span_desktop": "12",
+                "card_link": "",
+                "alignment": "left",
+                "image_placement": "top",
+                "image_aspect_ratio": "landscape",
+                "image_overlay_opacity": 30,
+                "padding_top": 24,
+                "padding_bottom": 24,
+                "padding_sides": 48
+              },
+              "blocks": {
+                "trust_checkmark_zge6cX": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+                  },
+                  "blocks": {}
+                },
+                "trust_countdown_WRG7XE": {
+                  "type": "trust-countdown",
+                  "settings": {
+                    "text": "Bestil inden",
+                    "suffix": "Så sender vi"
+                  },
+                  "blocks": {}
+                },
+                "trust_checkmark_eWd7zP": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "30 dages fuld returret på din dug."
+                  },
+                  "blocks": {}
+                },
+                "trust_checkmark_HBfhFN": {
+                  "type": "trust-checkmark",
+                  "settings": {
+                    "text": "Sendes på rulle, for at undgå folder."
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "trust_checkmark_zge6cX",
+                "trust_countdown_WRG7XE",
+                "trust_checkmark_eWd7zP",
+                "trust_checkmark_HBfhFN"
+              ]
             }
           },
           "block_order": [
             "product_customizer_6rahCU",
-            "product_buy_buttons_gFTjCi"
-          ]
-        },
-        "card_i4dUrc": {
-          "type": "card",
-          "name": "t:general.card",
-          "settings": {
-            "design": "none",
-            "background_color": "light",
-            "grid_direction": "vertical",
-            "block_gap": "12",
-            "span_mobile": "4",
-            "span_tablet": "8",
-            "span_desktop": "12",
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "padding_sides": 48
-          },
-          "blocks": {
-            "trust_checkmark_zge6cX": {
-              "type": "trust-checkmark",
-              "settings": {
-                "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
-              },
-              "blocks": {}
-            },
-            "trust_countdown_WRG7XE": {
-              "type": "trust-countdown",
-              "settings": {
-                "text": "Bestil inden",
-                "suffix": "Så sender vi"
-              },
-              "blocks": {}
-            },
-            "trust_checkmark_eWd7zP": {
-              "type": "trust-checkmark",
-              "settings": {
-                "text": "30 dages fuld returret på din dug."
-              },
-              "blocks": {}
-            },
-            "trust_checkmark_HBfhFN": {
-              "type": "trust-checkmark",
-              "settings": {
-                "text": "Sendes på rulle, for at undgå folder."
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "trust_checkmark_zge6cX",
-            "trust_countdown_WRG7XE",
-            "trust_checkmark_eWd7zP",
-            "trust_checkmark_HBfhFN"
+            "product_buy_buttons_gFTjCi",
+            "card_WQFRHd"
           ]
         }
       },
       "block_order": [
-        "card_P6bgHD",
-        "card_i4dUrc"
+        "card_P6bgHD"
       ],
       "name": "Section",
       "settings": {
