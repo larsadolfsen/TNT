@@ -142,7 +142,7 @@
         "hide_on_tablet": false,
         "column_span_desktop": "4",
         "column_start_desktop": "auto",
-        "row_span_desktop": "3",
+        "row_span_desktop": "12",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
         "justify_self": "auto",
@@ -403,7 +403,7 @@
       ],
       "name": "Section",
       "settings": {
-        "background_color": "transparent",
+        "background_color": "dark",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "4",
@@ -414,7 +414,7 @@
         "column_span_desktop": "4",
         "column_start_desktop": "5",
         "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
+        "row_start_desktop": "2",
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
@@ -569,7 +569,7 @@
       "block_order": [
         "card_P6bgHD"
       ],
-      "name": "Section",
+      "name": "Section - Customizer",
       "settings": {
         "background_color": "transparent",
         "full_width": false,
@@ -581,7 +581,7 @@
         "hide_on_tablet": false,
         "column_span_desktop": "4",
         "column_start_desktop": "9",
-        "row_span_desktop": "6",
+        "row_span_desktop": "12",
         "row_start_desktop": "1",
         "hide_on_desktop": false,
         "justify_self": "auto",
