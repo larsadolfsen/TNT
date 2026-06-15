@@ -45,3 +45,14 @@ Our theme uses a three-tier elevation system to prevent visual blending in dark 
   4. Run `git pull --rebase` to integrate remote changes.
   5. Run `git push origin main` to deploy.
 
+## 5. CSS Customization & Specificity Guidelines
+- **Global CSS Variables & Defaults**: Define core style values as CSS variables globally (on `:root` or `.dark` in `snippets/css-variables.liquid`). Component stylesheets should reference these variables (with optional fallbacks).
+- **Scope Overrides for Customization**: When sections or blocks have custom settings (e.g. customized text/background colors or spacing configured in the Shopify Customizer), apply these customizations by overriding the CSS variables locally on the section or block wrapper:
+  ```html
+  <!-- Section level override -->
+  <div style="--color-background: {{ section.settings.custom_bg_color }};">
+  ```
+  This allows all child elements to inherit the customized styling automatically without repeating CSS declarations or hardcoding colors inline on every child.
+- **Avoid `!important`**: Do NOT use `!important` to force style changes. Instead, manage specificity using CSS variable scoping overrides, clean selector hierarchy, or proper utility sequencing.
+
+

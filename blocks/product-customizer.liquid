@@ -181,7 +181,7 @@
 
 <div id="voksdug-customizer-container" class="w-full pb-3" {{ block.shopify_attributes }}>
   {%- if block.settings.heading != blank -%}
-    <h2 class="text-xl md:text-2xl font-bold text-slate-800 mb-8 leading-tight">{{ block.settings.heading }}</h2>
+    <h2 class="text-xl md:text-2xl font-bold text-primary mb-8 leading-tight">{{ block.settings.heading }}</h2>
   {%- endif -%}
   <div class="grid-layout">
 
@@ -190,7 +190,7 @@
       <div class="flex items-start gap-3">
         <span id="step-number-shape" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">1</span>
         <div class="flex flex-col w-full">
-          <span class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg form</span>
+          <span class="font-bold text-base uppercase tracking-wider text-primary">Vælg form</span>
           {% if block.settings.shape_description != blank %}
             <p class="text-sm text-primary/85 mt-1">{{ block.settings.shape_description }}</p>
           {% endif %}
@@ -244,7 +244,7 @@
       <div class="flex items-start gap-3">
         <span id="step-number-width" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
-          <span id="label-width" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg bredde</span>
+          <span id="label-width" class="font-bold text-base uppercase tracking-wider text-primary">Vælg bredde</span>
           {%- if block.settings.width_step_description != blank -%}
             <p class="text-sm text-primary/85 mt-1">{{ block.settings.width_step_description }}</p>
           {%- endif -%}
@@ -318,7 +318,7 @@
         <div class="w-full">
           <div class="stepper-pill flex w-full justify-between items-center bg-card-high border border-outline-variant rounded-full shadow-sm" style="height:56px;">
             <!-- Minus button -->
-            <button type="button" id="btn-width-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+            <button type="button" id="btn-width-minus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
               &mdash;
             </button>
             <!-- Value input -->
@@ -328,7 +328,7 @@
               style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
             />
             <!-- Plus button -->
-            <button type="button" id="btn-width-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+            <button type="button" id="btn-width-plus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
               &#43;
             </button>
           </div>
@@ -343,7 +343,7 @@
         <div class="flex items-start gap-3">
         <span id="step-number-length" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">3</span>
         <div class="flex flex-col w-full">
-          <span id="label-length" class="font-bold text-base uppercase tracking-wider text-slate-800">Vælg længde</span>
+          <span id="label-length" class="font-bold text-base uppercase tracking-wider text-primary">Vælg længde</span>
           {% if block.settings.length_description != blank %}
             <p class="text-sm text-primary/85 mt-1">{{ block.settings.length_description }}</p>
           {% endif %}
@@ -354,7 +354,7 @@
       <div class="w-full pl-10">
         <div class="stepper-pill flex w-full justify-between items-center bg-card-high border border-outline-variant rounded-full shadow-sm" style="height:56px;">
           <!-- Minus button -->
-          <button type="button" id="btn-length-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-length-minus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &mdash;
           </button>
           <!-- Value input -->
@@ -364,7 +364,7 @@
             style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
           />
           <!-- Plus button -->
-          <button type="button" id="btn-length-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-length-plus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &#43;
           </button>
         </div>
@@ -384,7 +384,7 @@
       <div class="flex items-start gap-3">
         <span id="step-number-qty" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">4</span>
         <div class="flex flex-col w-full">
-          <span class="font-bold text-base uppercase tracking-wider text-slate-800">Antal</span>
+          <span class="font-bold text-base uppercase tracking-wider text-primary">Antal</span>
           {% if block.settings.qty_description != blank %}
             <p class="text-sm text-primary/85 mt-1">{{ block.settings.qty_description }}</p>
           {% endif %}
@@ -393,7 +393,7 @@
       <div class="w-full pl-10">
         <div class="stepper-pill flex w-full justify-between items-center bg-card-high border border-outline-variant rounded-full shadow-sm" style="height:56px;transition:border-color 0.15s,box-shadow 0.15s;">
           <!-- Minus button -->
-          <button type="button" id="btn-qty-minus" class="h-full flex items-center justify-center text-slate-500 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-qty-minus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &mdash;
           </button>
           <!-- Value input -->
@@ -404,7 +404,7 @@
             style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
           />
           <!-- Plus button -->
-          <button type="button" id="btn-qty-plus" class="h-full flex items-center justify-center text-slate-500 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+          <button type="button" id="btn-qty-plus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
             &#43;
           </button>
         </div>
@@ -551,9 +551,9 @@
         btn.classList.remove('border-2');
         btn.classList.add('border', 'border-outline-variant');
       }
-      // Both active and not selected have text-slate-900
+      // Both active and not selected have text-primary
       btn.classList.remove('text-slate-600', 'text-slate-400');
-      btn.classList.add('text-slate-900');
+      btn.classList.add('text-primary');
     });
     
     if (typeof window.updateCustomizerUI === "function") {
@@ -871,7 +871,7 @@
         // unless they are disabled/deactivated by updateUI check.
         if (!btn.classList.contains('opacity-25') && !btn.classList.contains('opacity-50')) {
           btn.classList.remove('text-slate-600', 'text-slate-400');
-          btn.classList.add('text-slate-900');
+          btn.classList.add('text-primary');
         }
       });
     }
@@ -1063,7 +1063,7 @@
             if (match && !match.available) {
               btn.classList.add("opacity-50");
               btn.classList.remove("opacity-25", "bg-slate-50/70", "text-slate-400");
-              btn.classList.add("text-slate-900");
+              btn.classList.add("text-primary");
               btn.style.cursor = "not-allowed";
               btn.style.borderColor = "var(--color-border)";
               
@@ -1088,7 +1088,7 @@
               }
             } else {
               btn.classList.remove("opacity-50", "opacity-25", "bg-slate-50/70", "text-slate-400");
-              btn.classList.add("text-slate-900");
+              btn.classList.add("text-primary");
               btn.style.cursor = "pointer";
               
               // Restore price per meter details
