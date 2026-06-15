@@ -18,10 +18,12 @@
     "accent_foreground_color_light": "#0e1a28",
     "background_color_light": "#F9FAFB",
     "background_shade_color_light": "#f9f9f9",
-    "card_light_color_light": "#ffffff",
-    "card_high_color_light": "#f3f4f6",
+    "card_light_color_light": "#FAFAFA",
+    "card_high_color_light": "#FFFFFF",
     "border_color_light": "#e2e8f0",
     "foreground_color_light": "#333333",
+    "important_color": "#b12704",
+    "input_corner_radius": 4,
     "primary_color_dark": "#ffffff",
     "primary_foreground_color_dark": "#0e1a28",
     "accent_color_dark": "#ffd814",
@@ -32,8 +34,6 @@
     "card_high_color_dark": "#222f40",
     "border_color_dark": "#253549",
     "foreground_color_dark": "#e2e8f0",
-    "important_color": "#b12704",
-    "input_corner_radius": 4,
     "content_for_index": []
   }
 }
