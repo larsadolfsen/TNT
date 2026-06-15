@@ -93,7 +93,7 @@
     --color-accent: var(--color-accent);
     --color-on-accent: var(--color-on-accent);
     --color-secondary: var(--color-accent);
-    --color-surface-container: #f9f9f9;
+    --color-surface-container: var(--md-sys-color-surface-container);
     --color-outline-variant: var(--color-border);
   }
 }
