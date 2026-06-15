@@ -225,6 +225,59 @@
             "badge_3ehnW4"
           ]
         },
+        "card_hzMqBQ": {
+          "type": "card",
+          "name": "t:general.card",
+          "settings": {
+            "design": "none",
+            "background_color": "light",
+            "grid_direction": "vertical",
+            "block_gap": "0",
+            "span_mobile": "4",
+            "span_tablet": "8",
+            "span_desktop": "12",
+            "card_link": "",
+            "alignment": "left",
+            "image_placement": "top",
+            "image_aspect_ratio": "landscape",
+            "image_overlay_opacity": 30,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {
+            "product_price_kbT9KB": {
+              "type": "product-price",
+              "name": "Product Price",
+              "settings": {
+                "price_suffix": "pr. meter inkl. moms",
+                "price_subtext": "30 dages fuld returret, også på din dug.",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "product_urgency_nFWUiX": {
+              "type": "product-urgency",
+              "name": "Product Stock Urgency",
+              "settings": {
+                "show_urgency": true,
+                "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
+                "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
+                "hide_under_limit": 50,
+                "padding_top": 12,
+                "padding_bottom": 12,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_price_kbT9KB",
+            "product_urgency_nFWUiX"
+          ]
+        },
         "card_fC6YEz": {
           "type": "card",
           "name": "t:general.card",
@@ -278,59 +331,6 @@
           },
           "block_order": [
             "product_customizer_6rahCU"
-          ]
-        },
-        "card_WFNVFD": {
-          "type": "card",
-          "name": "t:general.card",
-          "settings": {
-            "design": "none",
-            "background_color": "light",
-            "grid_direction": "vertical",
-            "block_gap": "0",
-            "span_mobile": "4",
-            "span_tablet": "8",
-            "span_desktop": "12",
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {
-            "product_price_kbT9KB": {
-              "type": "product-price",
-              "name": "Product Price",
-              "settings": {
-                "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "30 dages fuld returret, også på din dug.",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_urgency_nFWUiX": {
-              "type": "product-urgency",
-              "name": "Product Stock Urgency",
-              "settings": {
-                "show_urgency": true,
-                "urgency_text": "Kun få på lager. Fri fragt på ordrer over 599 kr.",
-                "in_stock_text": "På lager. Fri fragt på ordrer over 599 kr.",
-                "hide_under_limit": 50,
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_price_kbT9KB",
-            "product_urgency_nFWUiX"
           ]
         },
         "card_QctbPE": {
@@ -477,8 +477,8 @@
       },
       "block_order": [
         "card_JzRErP",
+        "card_hzMqBQ",
         "card_fC6YEz",
-        "card_WFNVFD",
         "card_QctbPE",
         "card_nxnJc4"
       ],
