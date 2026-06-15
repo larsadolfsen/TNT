@@ -347,7 +347,7 @@ h4 {
   #MainContent:has(.shopify-block-product-media) {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(12, auto) minmax(0, 1fr);
+    grid-template-rows: repeat(5, auto) minmax(0, 1fr);
     column-gap: var(--grid-gap);
     row-gap: 0;
     width: 100%;
