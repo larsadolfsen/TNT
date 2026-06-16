@@ -251,12 +251,14 @@
         drawer.classList.remove("opacity-0");
         panel.classList.remove("translate-x-full");
       }, 10);
+      document.dispatchEvent(new CustomEvent("cart-drawer-opened"));
     } else {
       drawer.classList.add("opacity-0");
       panel.classList.add("translate-x-full");
       setTimeout(() => {
         drawer.classList.add("hidden");
       }, 300);
+      document.dispatchEvent(new CustomEvent("cart-drawer-closed"));
     }
   }
 

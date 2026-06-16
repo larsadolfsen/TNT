@@ -397,13 +397,6 @@
   #mobile-sticky-buy-bar {
     padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
   }
-  @media (max-width: 839px) {
-    /* Ensure the shopify section containing the sticky bar stacks above subsequent sections on mobile */
-    .shopify-section:has(#mobile-sticky-buy-bar) {
-      position: relative;
-      z-index: 150;
-    }
-  }
 </style>
 
 <script>
@@ -593,6 +586,26 @@
       setTimeout(handleScroll, 200);
       setTimeout(handleScroll, 1000);
     }
+
+    // 6. Hide sticky bar when cart drawer opens, restore when it closes
+    let cartHidden = false;
+    document.addEventListener("cart-drawer-opened", () => {
+      cartHidden = true;
+      stickyBar.style.transform = "translateY(100%)";
+      stickyBar.style.opacity = "0";
+      stickyBar.style.pointerEvents = "none";
+    });
+    document.addEventListener("cart-drawer-closed", () => {
+      cartHidden = false;
+      // Let the scroll handler decide visibility again
+      if (customizerEl && standardContent) {
+        handleScroll();
+      } else {
+        stickyBar.style.transform = "translateY(0)";
+        stickyBar.style.opacity = "1";
+        stickyBar.style.pointerEvents = "auto";
+      }
+    });
   });
 </script>
 {%- endif -%}

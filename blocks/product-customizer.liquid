@@ -616,13 +616,6 @@
   #mobile-sticky-customize-bar {
     padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
   }
-  @media (max-width: 839px) {
-    /* Ensure the shopify section containing the sticky bar stacks above subsequent sections on mobile */
-    .shopify-section:has(#mobile-sticky-customize-bar) {
-      position: relative;
-      z-index: 150;
-    }
-  }
 </style>
 {%- endif -%}
 
@@ -2402,6 +2395,17 @@
           }, 100);
         });
       }
+
+      // Hide sticky Tilpas bar when cart drawer opens, restore on close
+      document.addEventListener("cart-drawer-opened", () => {
+        stickyCustomizeBar.style.transform = "translateY(100%)";
+        stickyCustomizeBar.style.opacity = "0";
+        stickyCustomizeBar.style.pointerEvents = "none";
+      });
+      document.addEventListener("cart-drawer-closed", () => {
+        // Re-run scroll handler to decide if it should be visible
+        handleScroll();
+      });
     }
 
     // Initial load
