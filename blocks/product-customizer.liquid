@@ -188,6 +188,12 @@
   .shopify-block-product-customizer + .shopify-block-product-buy-buttons {
     padding-top: 0 !important;
   }
+  
+  /* Make form stepper fields use the page background color (side bg) */
+  .stepper-pill,
+  #buy-buttons-quantity-container {
+    background-color: var(--color-background) !important;
+  }
 </style>
 
 <!-- Hidden element to signal to product-buy-buttons that customizer is active -->
@@ -320,7 +326,7 @@
     </div>
 
     <!-- Step 3 (Simple Mode): Recommendation & Fit Choice -->
-    <div id="simple-recommendation-container" class="flex flex-col gap-3" style="--span-mb: 4; --span-tb: 8; --span-lg: 12; --span-mobile: 4; --span-expanded: 8; --span-large: 12;">
+    <div id="simple-recommendation-container" class="flex flex-col gap-3" style="--span-mb: 4; --span-tb: 8; --span-lg: 12; --span-mobile: 4; --span-expanded: 8; --span-large: 12; display: none;">
       <!-- The Recommendation Card was removed as requested -->
 
       <!-- Fit Prompt (only shown when width doesn't fit standard) -->
@@ -1305,9 +1311,8 @@
           btnAdvanced.classList.add("text-primary/70", "hover:text-primary", "bg-transparent");
         }
         
-        // Show/hide steps
         if (stepTableDims) stepTableDims.style.display = "flex";
-        if (simpleRecContainer) simpleRecContainer.style.display = "flex";
+        if (simpleRecContainer) simpleRecContainer.style.display = "none";
         if (stepWidth) stepWidth.style.display = "none";
         if (stepLength) stepLength.style.display = "none";
         
