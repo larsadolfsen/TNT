@@ -29,7 +29,7 @@
       ],
       "settings": {
         "layout_style": "full_width_bg",
-        "background_color": "light",
+        "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "8",

@@ -4,6 +4,22 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
   }
 
+  #product-grid {
+    grid-template-columns: repeat({{ section.settings.columns_mobile | default: 2 }}, minmax(0, 1fr));
+  }
+
+  @media screen and (min-width: 768px) {
+    #product-grid {
+      grid-template-columns: repeat({{ section.settings.columns_tablet | default: 3 }}, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    #product-grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, minmax(0, 1fr));
+    }
+  }
+
   @media screen and (min-width: 840px) {
     #shopify-section-{{ section.id }} {
       padding-top: {{ section.settings.padding_top }}px;
@@ -62,7 +78,7 @@
       </div>
 
       <!-- Product Grid -->
-      <div id="product-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mt-4">
+      <div id="product-grid" class="grid gap-4 lg:gap-6 mt-4">
         <!-- Genereres via Javascript -->
       </div>
     </section>
@@ -1645,10 +1661,10 @@
           </div>
 
            <!-- Info Zone -->
-          <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
+          <div class="p-3 flex flex-col justify-start flex-1 min-w-0">
             <div class="space-y-1">
               <h3 class="font-sans text-xs sm:text-sm font-normal text-primary leading-tight mb-1">
-                <a href="${product.url}" class="text-primary no-underline line-clamp-2">${product.title}</a>
+                <a href="${product.url}" class="text-primary no-underline">${product.title}</a>
               </h3>
               
               ${showReviews ? `
@@ -1682,23 +1698,23 @@
               </div>
               ` : ''}
 
-              ${swatchesHtml}
-              ${shapeSwatchesHtml}
-            </div>
-
-            <!-- Price & Buy Button (No divider border) -->
-            <div class="mt-3 space-y-3">
-              <div class="flex flex-col items-start gap-0.5">
-                <div class="flex items-baseline gap-1.5 flex-wrap">
-                  <span class="text-xs sm:text-sm md:text-base font-bold text-primary leading-none">
-                    ${displayPrice}
-                  </span>
-                  ${originalPriceHtml}
-                  <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">
-                    ${isMetervare ? 'pr. meter' : (isMeterProduct ? 'pr. cm' : '')}
-                  </span>
+              <!-- Price & Buy Button (No divider border) -->
+              <div class="mt-1">
+                <div class="flex flex-col items-start gap-0.5">
+                  <div class="flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-xs sm:text-sm md:text-base font-bold text-primary leading-none">
+                      ${displayPrice}
+                    </span>
+                    ${originalPriceHtml}
+                    <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">
+                      ${isMetervare ? 'pr. meter' : (isMeterProduct ? 'pr. cm' : '')}
+                    </span>
+                  </div>
                 </div>
               </div>
+
+              ${swatchesHtml}
+              ${shapeSwatchesHtml}
             </div>
           </div>
 
@@ -1856,6 +1872,33 @@
       "id": "disable_reviews",
       "label": "Deaktiver anmeldelser",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Antal kolonner på mobil",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Antal kolonner på tablet",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Antal kolonner på desktop",
+      "default": 4
     }
   ],
   "blocks": [

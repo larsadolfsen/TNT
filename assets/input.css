@@ -930,4 +930,9 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   }
 }
 
+/* Color swatches selection checkmark visibility */
+.filter-checkbox:checked ~ div span {
+  display: block !important;
+}
+
 

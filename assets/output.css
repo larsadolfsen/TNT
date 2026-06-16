@@ -2264,11 +2264,6 @@
       flex: 0 auto;
     }
   }
-  .md\:grid-cols-4 {
-    @media (width >= 840px) {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
   .md\:grid-cols-8 {
     @media (width >= 840px) {
       grid-template-columns: repeat(8, minmax(0, 1fr));
@@ -3011,6 +3006,9 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   .password-card {
     grid-column: 5 / span 4;
   }
+}
+.filter-checkbox:checked ~ div span {
+  display: block !important;
 }
 @property --tw-translate-x {
   syntax: "*";
