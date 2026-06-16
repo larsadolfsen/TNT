@@ -195,7 +195,7 @@
                     endif
                   -%}
                   <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer filter-label transition-all">
-                    <input type="checkbox" name="{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                    <input type="checkbox" name="{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="filter-checkbox rounded border-outline-variant text-primary focus:ring-primary"/>
                     <span>{{ display_val }} <span class="filter-count text-xs text-primary/60 ml-0.5">(0)</span></span>
                   </label>
                 {%- endfor -%}
@@ -434,7 +434,7 @@
                     endif
                   -%}
                   <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer filter-label transition-all">
-                    <input type="checkbox" name="mobile-{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
+                    <input type="checkbox" name="mobile-{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="filter-checkbox rounded border-outline-variant text-primary focus:ring-primary"/>
                     <span>{{ display_val }} <span class="filter-count text-xs text-primary/60 ml-0.5">(0)</span></span>
                   </label>
                 {%- endfor -%}
@@ -951,7 +951,7 @@
 
   function getSelectedFilters() {
     const filters = {};
-    const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    const checkedCheckboxes = document.querySelectorAll('input.filter-checkbox:checked');
     checkedCheckboxes.forEach(cb => {
       let name = cb.name;
       if (name.startsWith('mobile-')) {
@@ -1019,7 +1019,7 @@
     const minPrice = minPriceInput && minPriceInput.value ? parseFloat(minPriceInput.value) : 0;
     const maxPrice = maxPriceInput && maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
 
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const checkboxes = document.querySelectorAll('input.filter-checkbox');
     checkboxes.forEach(cb => {
       let name = cb.name;
       if (name.startsWith('mobile-')) {
@@ -1603,7 +1603,7 @@
   }
 
   function clearAllFilters(shouldRender = true) {
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    document.querySelectorAll('input.filter-checkbox').forEach(checkbox => {
       checkbox.checked = false;
     });
     ['price-min', 'price-max', 'mobile-price-min', 'mobile-price-max'].forEach(id => {
