@@ -613,6 +613,22 @@
   const showReviews = {{ section.settings.show_reviews | default: true | json }};
   console.log("Collection page products loaded:", products);
 
+  // Dynamic color map from metafields
+  const metafieldColorMap = {};
+  products.forEach(p => {
+    if (p.colors && p.colors.length > 0) {
+      p.colors.forEach(c => {
+        if (c.label) {
+          const lKey = c.label.toLowerCase().trim();
+          metafieldColorMap[lKey] = {
+            color: c.color || '',
+            image: c.image || ''
+          };
+        }
+      });
+    }
+  });
+
   const productGrid = document.getElementById("product-grid");
   const productCountDisplay = document.getElementById("product-count-display");
   const searchInput = document.getElementById("search-input");
@@ -636,22 +652,6 @@
     truncateFilterLists();
     isInitialCountRun = false;
   };
-
-  // Dynamic color map from metafields
-  const metafieldColorMap = {};
-  products.forEach(p => {
-    if (p.colors && p.colors.length > 0) {
-      p.colors.forEach(c => {
-        if (c.label) {
-          const lKey = c.label.toLowerCase().trim();
-          metafieldColorMap[lKey] = {
-            color: c.color || '',
-            image: c.image || ''
-          };
-        }
-      });
-    }
-  });
 
   function isHexLight(color) {
     if (!color || typeof color !== 'string') return false;
@@ -1786,6 +1786,43 @@
       }
     });
   }
+
+  function toggleMobileFilter(open) {
+    const drawer = document.getElementById("mobile-filter-drawer");
+    if (!drawer) return;
+    const panel = drawer.querySelector("div");
+    if (open) {
+      drawer.classList.remove("hidden");
+      setTimeout(() => {
+        drawer.classList.remove("opacity-0");
+        panel.classList.remove("translate-x-full");
+      }, 10);
+    } else {
+      drawer.classList.add("opacity-0");
+      panel.classList.add("translate-x-full");
+      setTimeout(() => {
+        drawer.classList.add("hidden");
+      }, 300);
+    }
+  }
+
+  function clearAllFilters(shouldRender = true) {
+    document.querySelectorAll('input.filter-checkbox').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    ['price-min', 'price-max', 'mobile-price-min', 'mobile-price-max'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+    if (shouldRender) {
+      filterProducts();
+    }
+  }
+
+  window.toggleMobileFilter = toggleMobileFilter;
+  window.clearAllFilters = clearAllFilters;
+  window.filterProducts = filterProducts;
+  window.syncFilters = syncFilters;
 
 </script>
 
