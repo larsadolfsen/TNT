@@ -83,9 +83,6 @@
     --span-mobile: {{ block.settings.span_mobile | default: 4 }};
     --span-expanded: {{ block.settings.span_tablet | default: 8 }};
     --span-large: {{ block.settings.span_desktop | default: 12 }};
-  }
-
-  #shopify-block-{{ block.id }} .card-content {
     {%- liquid
       assign padding_top = block.settings.padding_top | default: 24
       assign padding_bottom = block.settings.padding_bottom | default: 24
@@ -103,13 +100,13 @@
         endif
       endif
     -%}
-    padding-top: {{ padding_top }}px;
-    padding-bottom: {{ padding_bottom }}px;
-    padding-left: {{ padding_sides }}px;
-    padding-right: {{ padding_sides }}px;
+    --card-padding-top: {{ padding_top }}px;
+    --card-padding-bottom: {{ padding_bottom }}px;
+    --card-padding-left: {{ padding_sides }}px;
+    --card-padding-right: {{ padding_sides }}px;
   }
 
-  #shopify-block-{{ block.id }} .card-nested-blocks {
+  #shopify-block-{{ block.id }} .card-content {
     --span-mobile: 4;
     --span-expanded: 8;
     --span-large: 12;
@@ -120,6 +117,10 @@
       --grid-gap: {{ block.settings.block_gap }}px;
       gap: var(--grid-gap);
     {%- endif -%}
+    padding-top: var(--card-padding-top);
+    padding-bottom: var(--card-padding-bottom);
+    padding-left: var(--card-padding-left);
+    padding-right: var(--card-padding-right);
   }
 
   /* Force headers and links to inherit color on dark background cards */
@@ -167,27 +168,25 @@
     </div>
   {%- endif -%}
 
-  <div class="card-content flex flex-col flex-1 w-full z-10 {{ content_align_class }}">
-    {%- liquid
-      assign nested_blocks_classes = 'card-nested-blocks w-full'
-      if block.settings.grid_direction == 'horizontal'
-        assign flex_justify = 'justify-start'
-        case block.settings.alignment
-          when 'center'
-            assign flex_justify = 'justify-center'
-          when 'right'
-            assign flex_justify = 'justify-end'
-          when 'justify'
-            assign flex_justify = 'justify-between'
-        endcase
-        assign nested_blocks_classes = nested_blocks_classes | append: ' flex flex-row flex-wrap items-center ' | append: flex_justify
-      else
-        assign nested_blocks_classes = nested_blocks_classes | append: ' grid-layout'
-      endif
-    -%}
-    <div class="{{ nested_blocks_classes }}">
-      {% content_for 'blocks' %}
-    </div>
+  {%- liquid
+    assign card_content_classes = 'card-content w-full z-10 flex-1'
+    if block.settings.grid_direction == 'horizontal'
+      assign flex_justify = 'justify-start'
+      case block.settings.alignment
+        when 'center'
+          assign flex_justify = 'justify-center'
+        when 'right'
+          assign flex_justify = 'justify-end'
+        when 'justify'
+          assign flex_justify = 'justify-between'
+      endcase
+      assign card_content_classes = card_content_classes | append: ' flex flex-row flex-wrap items-center ' | append: flex_justify
+    else
+      assign card_content_classes = card_content_classes | append: ' grid-layout'
+    endif
+  -%}
+  <div class="{{ card_content_classes }}">
+    {% content_for 'blocks' %}
   </div>
 
   {%- if block.settings.image != blank and block.settings.image_placement == 'bottom' -%}
