@@ -509,13 +509,11 @@ h4 {
 
 }
 
-/* Remove border around Card block containing customizer */
+/* Give card block containing customizer a 1px solid standard border */
 .card-block:has(.shopify-block-product-customizer),
 .card-block:has(.product-customizer) {
-  border: none !important;
+  border: 1px solid var(--color-border) !important;
 }
-
-
 
 /* Ensure no horizontal scrolling when using 100vw breakout layouts */
 html, body {
