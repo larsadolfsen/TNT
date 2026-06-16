@@ -1125,12 +1125,13 @@
       });
     }
 
-    // Get standard widths available from variants
+    // Get standard widths available from variants (only in-stock standard variants)
     function getStandardWidths() {
       let stdWidths = [];
       if (widthOptionIndex !== null && variants.length > 0) {
         variants.forEach(v => {
           if (v.title.toLowerCase().includes("tilpasset") || v.title.toLowerCase().includes("tilpas")) return;
+          if (!v.available) return; // Only return available standard widths
           const wVal = v.options[widthOptionIndex];
           if (wVal) {
             const match = wVal.match(/\d+/);
@@ -1142,7 +1143,8 @@
             }
           }
         });
-      } else {
+      }
+      if (stdWidths.length === 0) {
         stdWidths = [maxWidthLimit];
       }
       stdWidths.sort((a, b) => a - b);
@@ -1186,11 +1188,13 @@
         // Find the cheapest standard width variant
         let cheapestWidth = fittingStdWidths[0];
         let cheapestPrice = Infinity;
+        let foundAvailable = false;
 
         fittingStdWidths.forEach(w => {
           let currentVariant = getCurrentVariant();
           let match = findVariantForWidthAndOtherOptions(w + " cm", currentVariant);
           if (match && match.available) {
+            foundAvailable = true;
             if (match.price < cheapestPrice) {
               cheapestPrice = match.price;
               cheapestWidth = w;
@@ -1198,8 +1202,10 @@
           }
         });
 
-        chosenWidth = cheapestWidth;
-        isFit = true;
+        if (foundAvailable) {
+          chosenWidth = cheapestWidth;
+          isFit = true;
+        }
       }
 
       const fitPromptContainer = document.getElementById("fit-prompt-container");
@@ -1209,6 +1215,7 @@
         if (fitPromptContainer) fitPromptContainer.style.display = "none";
         
         state.width = chosenWidth;
+        state.selectedStandardWidth = chosenWidth;
         state.customizeWidth = false;
         
         // Select standard variant in background
@@ -1273,6 +1280,7 @@
         
         if (choice === 'standard') {
           state.width = closestStdWidth;
+          state.selectedStandardWidth = closestStdWidth;
           state.customizeWidth = false;
           selectWidthOptionInShopify(closestStdWidth + " cm");
           
@@ -1280,10 +1288,10 @@
           if (customWidthCheckbox) customWidthCheckbox.checked = false;
         } else {
           state.width = recommendedCustomWidth;
-          state.customizeWidth = true;
-          
           // Select base standard variant for custom cut (the one >= recommendedCustomWidth)
           let baseStdWidth = stdWidths.find(w => w >= recommendedCustomWidth) || maxStdWidth;
+          state.selectedStandardWidth = baseStdWidth;
+          state.customizeWidth = true;
           selectWidthOptionInShopify(baseStdWidth + " cm");
           
           const customWidthCheckbox = document.getElementById("checkbox-custom-width");
@@ -1754,7 +1762,8 @@
           const calcTotalPrice = document.getElementById("calc-total-price");
 
           if (calcTitle) {
-            calcTitle.textContent = productTitle;
+            let baseTitle = productTitle.replace(/,\s*\d+\s*cm/i, '');
+            calcTitle.textContent = `${baseTitle}, ${width} cm`;
           }
 
           if (calcMetervareLabel) {
