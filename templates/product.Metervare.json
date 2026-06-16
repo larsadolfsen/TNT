@@ -281,7 +281,7 @@
                 "firkantet_product": "firkantet-dug-1",
                 "rund_product": "afrunding",
                 "oval_product": "oval-dug",
-                "shape_description": "Vælg den form, du ønsker din dug i.",
+                "shape_description": "",
                 "width_step_description": "",
                 "width_surcharge_product": "tilpasset-bredde",
                 "width_description": "Vi anbefaler 15-25 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
