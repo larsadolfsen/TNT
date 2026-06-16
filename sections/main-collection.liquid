@@ -121,9 +121,10 @@
           </div>
           
           <div class="flex items-center gap-2">
-            <div class="relative w-10 h-10 flex-shrink-0">
-              <div class="absolute inset-0 flex items-center justify-center border border-outline-variant rounded-full bg-slate-100 text-primary pointer-events-none">
-                <span class="material-symbols-outlined text-lg">swap_vert</span>
+            <div class="relative w-16 h-14 flex-shrink-0">
+              <div class="absolute inset-0 flex flex-col items-center justify-center border border-outline-variant rounded-2xl bg-slate-100 text-primary pointer-events-none">
+                <span class="material-symbols-outlined text-lg">sort</span>
+                <span class="text-[10px] font-semibold mt-0.5 leading-none">Sorter</span>
               </div>
               <select id="sort-select" onchange="filterProducts()" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer m-0 p-0 appearance-none" aria-label="Sortering">
                 {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
@@ -134,9 +135,9 @@
             </div>
 
             <!-- Mobil Filter Knap -->
-            <button onclick="toggleMobileFilter(true)" class="lg:hidden flex items-center justify-center gap-2 border border-outline-variant rounded-full bg-slate-100 h-10 px-4 text-xs text-primary font-semibold cursor-pointer">
-              <span class="material-symbols-outlined text-sm">filter_list</span>
-              Filtrer
+            <button onclick="toggleMobileFilter(true)" class="lg:hidden flex flex-col items-center justify-center border border-outline-variant rounded-2xl bg-slate-100 w-16 h-14 text-primary cursor-pointer p-0">
+              <span class="material-symbols-outlined text-lg">filter_list</span>
+              <span class="text-[10px] font-semibold mt-0.5 leading-none">Filtrer</span>
             </button>
           </div>
         </div>
