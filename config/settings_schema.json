@@ -56,6 +56,19 @@
         "id": "show_breadcrumbs",
         "label": "Vis brødkrummer / Show breadcrumbs",
         "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "disable_savings_badge",
+        "label": "Deaktiver rabatmærkat",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "savings_badge_text",
+        "label": "Tekst på rabatmærkat",
+        "default": "[savings] % rabat",
+        "info": "Brug '[savings]' til at indsætte rabatprocenten. F.eks. '[savings] % rabat'"
       }
     ]
   },

@@ -1202,6 +1202,8 @@
 
   // Handle switching variant on product card
   window.onCardVariantChange = function(buttonEl) {
+    const disableSavingsBadge = {{ settings.disable_savings_badge | json }};
+    const savingsBadgeTextTemplate = {{ settings.savings_badge_text | default: "[savings] % rabat" | json }};
     const productId = parseInt(buttonEl.dataset.productId);
     const optionName = buttonEl.dataset.optionName;
     const optionValue = buttonEl.dataset.optionValue;
@@ -1343,14 +1345,14 @@
       const savingsContainer = cardEl.querySelector('.product-savings-container');
       if (savingsContainer) {
         let savingsBadge = savingsContainer.querySelector('.product-savings-badge');
-        if (matchingVariant.originalPrice && matchingVariant.originalPrice > matchingVariant.price) {
+        if (!disableSavingsBadge && matchingVariant.originalPrice && matchingVariant.originalPrice > matchingVariant.price) {
           const savings = Math.round(((matchingVariant.originalPrice - matchingVariant.price) / matchingVariant.originalPrice) * 100);
           if (!savingsBadge) {
             savingsBadge = document.createElement('span');
-            savingsBadge.className = "product-savings-badge inline-block bg-secondary text-on-accent text-[10px] font-bold px-2 py-0.5 rounded-md uppercase";
+            savingsBadge.className = "product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase";
             savingsContainer.appendChild(savingsBadge);
           }
-          savingsBadge.textContent = `Spar ${savings}%`;
+          savingsBadge.textContent = savingsBadgeTextTemplate.replace('[savings]', savings);
         } else if (savingsBadge) {
           savingsBadge.remove();
         }
@@ -1531,6 +1533,8 @@
   }
 
   function renderProducts(items) {
+    const disableSavingsBadge = {{ settings.disable_savings_badge | json }};
+    const savingsBadgeTextTemplate = {{ settings.savings_badge_text | default: "[savings] % rabat" | json }};
     if (!productGrid) return;
     if (productCountDisplay) {
       productCountDisplay.innerText = items.length;
@@ -1561,9 +1565,9 @@
       }
 
       let savingsBadgeHtml = "";
-      if (product.originalPrice && product.originalPrice > product.price) {
+      if (!disableSavingsBadge && product.originalPrice && product.originalPrice > product.price) {
         const savings = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
-        savingsBadgeHtml = `<span class="product-savings-badge inline-block bg-secondary text-on-accent text-[10px] font-bold px-2 py-0.5 rounded-md uppercase">Spar ${savings}%</span>`;
+        savingsBadgeHtml = `<span class="product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase">${savingsBadgeTextTemplate.replace('[savings]', savings)}</span>`;
       }
 
       const displayPrice = product.price_formatted ? product.price_formatted : `${product.price.toFixed(2).replace('.', ',')} Kr.`;
