@@ -440,6 +440,18 @@
             "padding_sides": 24
           },
           "blocks": {
+            "text_aHQjFm": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "<h3>Om dugen</h3>",
+                "alignment": "left",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
             "accordion_gKewwR": {
               "type": "accordion",
               "settings": {
@@ -469,6 +481,7 @@
             }
           },
           "block_order": [
+            "text_aHQjFm",
             "accordion_gKewwR",
             "accordion_8wfcU9",
             "accordion_jnaQM9"
@@ -497,11 +510,11 @@
             "padding_sides": 24
           },
           "blocks": {
-            "text_TrjE9H": {
+            "text_UPK8M4": {
               "type": "text",
               "name": "t:general.text",
               "settings": {
-                "text": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
+                "text": "<p>{{ closest.product.metafields.custom.short_description | metafield_tag }}</p>",
                 "alignment": "left",
                 "padding_top": 0,
                 "padding_bottom": 0,
@@ -560,7 +573,7 @@
             }
           },
           "block_order": [
-            "text_TrjE9H",
+            "text_UPK8M4",
             "card_Lk33JD"
           ]
         }
