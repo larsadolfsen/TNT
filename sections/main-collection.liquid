@@ -93,9 +93,9 @@
     {%- paginate collection.products by 250 -%}
       {%- for product in collection.products -%}
         {%- liquid
-          assign thickness = '1,2 mm'
-          assign width = '140 cm'
-          assign form = 'Firkantet'
+          assign thickness = ''
+          assign width = ''
+          assign form = ''
           assign badge = ''
           
           for tag in product.tags
@@ -121,6 +121,26 @@
               assign form = option.values | first
             endif
           endfor
+
+          # Check if this is a meter product based on type, title, or tags/options
+          assign is_meter_product = false
+          assign product_title_down = product.title | downcase
+          if product.type == 'Metervare' or product_title_down contains 'voksdug' or product_title_down contains 'bordbeskytter' or product_title_down contains 'meter' or thickness != blank or width != blank or form != blank
+            assign is_meter_product = true
+          endif
+
+          # If it is a meter product, apply default fallbacks for missing values
+          if is_meter_product
+            if thickness == blank
+              assign thickness = '1,2 mm'
+            endif
+            if width == blank
+              assign width = '140 cm'
+            endif
+            if form == blank
+              assign form = 'Firkantet'
+            endif
+          endif
 
           assign variant = product.first_available_variant | default: product.variants[0]
           
@@ -159,6 +179,25 @@
           "reviews": {{ product.metafields.reviews.rating_count.value | default: 12 | json }},
           "popularity": {{ forloop.index }},
           "tags": {{ product.tags | json }},
+          "colors": [
+            {%- for color_item in product.metafields.shopify['color-pattern'].value -%}
+              {%- liquid
+                assign label = color_item.label.value | default: color_item.label
+                assign hex = color_item.farve.value | default: color_item.farve
+                assign img_url = ''
+                if color_item.billede.value != blank
+                  assign img_url = color_item.billede.value | image_url: width: 80
+                elsif color_item.billede != blank
+                  assign img_url = color_item.billede | image_url: width: 80
+                endif
+              -%}
+              {
+                "label": {{ label | json }},
+                "color": {{ hex | json }},
+                "image": {{ img_url | json }}
+              }{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          ],
           "options": {
             {%- for option in product.options_with_values -%}
               {%- liquid
@@ -248,6 +287,10 @@
       popularity: 95,
       url: "#",
       vendor: "Pure Shield",
+      colors: [
+        { "label": "Gennemsigtig", "color": "" },
+        { "label": "Frosted", "color": "" }
+      ],
       options: {
         "Farve": "Gennemsigtig",
         "Bredde": "140 cm"
@@ -463,7 +506,13 @@
       reviews: 29,
       popularity: 76,
       url: "#",
-      vendor: "Organic Raw"
+      vendor: "Organic Raw",
+      colors: [
+        { "label": "Sand", "color": "#e5d3b3" },
+        { "label": "Sort", "color": "#1a1a1a" },
+        { "label": "Brun", "color": "#a2845e" },
+        { "label": "Rød", "color": "#ff3b30" }
+      ]
     },
     {
       id: 5,
@@ -481,7 +530,12 @@
       reviews: 12,
       popularity: 64,
       url: "#",
-      vendor: "Klar Voksdug"
+      vendor: "Klar Voksdug",
+      colors: [
+        { "label": "Gennemsigtig", "color": "" },
+        { "label": "Guld", "color": "#d4af37" },
+        { "label": "Sølv", "color": "#c0c0c0" }
+      ]
     },
     {
       id: 6,
@@ -499,7 +553,12 @@
       reviews: 8,
       popularity: 60,
       url: "#",
-      vendor: "Medium Protector"
+      vendor: "Medium Protector",
+      colors: [
+        { "label": "Gennemsigtig", "color": "" },
+        { "label": "Blå", "color": "#007aff" },
+        { "label": "Grøn", "color": "#34c759" }
+      ]
     },
     {
       id: 7,
@@ -578,9 +637,117 @@
     isInitialCountRun = false;
   };
 
+  // Dynamic color map from metafields
+  const metafieldColorMap = {};
+  products.forEach(p => {
+    if (p.colors && p.colors.length > 0) {
+      p.colors.forEach(c => {
+        if (c.label) {
+          const lKey = c.label.toLowerCase().trim();
+          metafieldColorMap[lKey] = {
+            color: c.color || '',
+            image: c.image || ''
+          };
+        }
+      });
+    }
+  });
+
+  function isHexLight(color) {
+    if (!color || typeof color !== 'string') return false;
+    let hex = color.trim();
+    if (hex.startsWith('#')) hex = hex.substring(1);
+    if (hex.length === 3) {
+      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    if (hex.length !== 6) return false;
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    const brightness = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+    return brightness > 155;
+  }
+
+  function getColorSwatchStyles(colorName) {
+    const name = colorName.toLowerCase().trim();
+    
+    // Check dynamic metafield mapping first
+    if (metafieldColorMap[name]) {
+      const entry = metafieldColorMap[name];
+      if (entry.image) {
+        return { bg: `url(${entry.image}) center/cover no-repeat`, isLight: true };
+      }
+      if (entry.color) {
+        return { bg: entry.color, isLight: isHexLight(entry.color) };
+      }
+    }
+
+    let bg = '#cccccc';
+    let isLight = false;
+    let isCheckered = false;
+
+    const colorsMap = {
+      'hvid': { bg: '#ffffff', isLight: true },
+      'white': { bg: '#ffffff', isLight: true },
+      'sort': { bg: '#1a1a1a', isLight: false },
+      'black': { bg: '#1a1a1a', isLight: false },
+      'grå': { bg: '#8e8e93', isLight: false },
+      'graa': { bg: '#8e8e93', isLight: false },
+      'gray': { bg: '#8e8e93', isLight: false },
+      'grey': { bg: '#8e8e93', isLight: false },
+      'antracit': { bg: '#3a3a3c', isLight: false },
+      'rød': { bg: '#ff3b30', isLight: false },
+      'roed': { bg: '#ff3b30', isLight: false },
+      'red': { bg: '#ff3b30', isLight: false },
+      'blå': { bg: '#007aff', isLight: false },
+      'blaa': { bg: '#007aff', isLight: false },
+      'blue': { bg: '#007aff', isLight: false },
+      'grøn': { bg: '#34c759', isLight: false },
+      'groen': { bg: '#34c759', isLight: false },
+      'green': { bg: '#34c759', isLight: false },
+      'gul': { bg: '#ffcc00', isLight: true },
+      'yellow': { bg: '#ffcc00', isLight: true },
+      'orange': { bg: '#ff9500', isLight: false },
+      'brun': { bg: '#a2845e', isLight: false },
+      'brown': { bg: '#a2845e', isLight: false },
+      'pink': { bg: '#ff2d55', isLight: false },
+      'lyserød': { bg: '#ffb3c1', isLight: true },
+      'lyseroed': { bg: '#ffb3c1', isLight: true },
+      'lilla': { bg: '#af52de', isLight: false },
+      'purple': { bg: '#af52de', isLight: false },
+      'beige': { bg: '#f5f5dc', isLight: true },
+      'sand': { bg: '#e5d3b3', isLight: true },
+      'creme': { bg: '#fffdd0', isLight: true },
+      'cream': { bg: '#fffdd0', isLight: true },
+      'guld': { bg: 'linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)', isLight: true },
+      'gold': { bg: 'linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)', isLight: true },
+      'sølv': { bg: 'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)', isLight: true },
+      'soelv': { bg: 'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)', isLight: true },
+      'silver': { bg: 'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)', isLight: true },
+      'gennemsigtig': { bg: 'linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%), linear-gradient(45deg, #e0e0e0 25%, #ffffff 25%, #ffffff 75%, #e0e0e0 75%)', isLight: true, isCheckered: true },
+      'klar': { bg: 'linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%), linear-gradient(45deg, #e0e0e0 25%, #ffffff 25%, #ffffff 75%, #e0e0e0 75%)', isLight: true, isCheckered: true },
+      'transparent': { bg: 'linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%), linear-gradient(45deg, #e0e0e0 25%, #ffffff 25%, #ffffff 75%, #e0e0e0 75%)', isLight: true, isCheckered: true },
+      'frosted': { bg: 'linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%)', isLight: true }
+    };
+
+    const matchKey = Object.keys(colorsMap).find(k => name.includes(k));
+    if (matchKey) {
+      return colorsMap[matchKey];
+    }
+    
+    return { bg: name, isLight: false };
+  }
+
   function getProductValuesForKeyAll(product, filterKey) {
     const values = new Set();
     
+    // 0. Metafield colors
+    if ((filterKey === 'farve' || filterKey === 'color') && product.colors && product.colors.length > 0) {
+      product.colors.forEach(c => {
+        if (c.label) values.add(c.label);
+      });
+    }
+
     // 1. Direct fields
     if (filterKey === 'tykkelse' && product.thickness) values.add(product.thickness);
     if (filterKey === 'bredde' && product.width) values.add(product.width);
@@ -669,6 +836,13 @@
     function getOptionValues(optionNames) {
       const vals = new Set();
       products.forEach(p => {
+        // Dynamic metafield colors inclusion
+        if (p.colors && p.colors.length > 0 && optionNames.some(target => 'farve'.includes(target) || 'color'.includes(target))) {
+          p.colors.forEach(c => {
+            if (c.label) vals.add(c.label);
+          });
+        }
+
         if (p.options_with_values) {
           p.options_with_values.forEach(opt => {
             const nameDown = opt.name.toLowerCase();
@@ -707,7 +881,7 @@
       filtersToRender.push({
         key: 'farve',
         title: 'Farve',
-        type: 'checkbox',
+        type: 'color',
         values: colors.sort()
       });
     }
@@ -834,6 +1008,41 @@
       `;
     }
 
+    if (filter.type === 'color') {
+      let optionsHtml = '';
+      filter.values.forEach(opt => {
+        const val = opt;
+        const swatch = getColorSwatchStyles(val);
+        const checkColorClass = swatch.isLight ? 'text-black/85' : 'text-white';
+        const checkeredStyle = swatch.isCheckered ? 'background-size: 8px 8px; background-position: 0 0, 4px 4px;' : '';
+        
+        optionsHtml += `
+          <label class="relative group cursor-pointer filter-label select-none flex items-center justify-center" title="${val}">
+            <input type="checkbox" name="${prefix}${filter.key}" value="${val.replace(/"/g, '&quot;')}" onchange="syncFilters(this)" class="filter-checkbox sr-only peer"/>
+            <div class="w-8 h-8 rounded-full border border-outline-variant/65 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-[var(--color-accent)]/80 transition-all flex items-center justify-center relative shadow-sm hover:scale-105" style="background: ${swatch.bg}; ${checkeredStyle}">
+              <span class="material-symbols-outlined text-xs font-bold ${checkColorClass} hidden peer-checked:block select-none pointer-events-none" style="font-size: 14px;">check</span>
+            </div>
+            <!-- Dynamic count badge/label on hover -->
+            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-surface-container-high text-primary text-[10px] font-semibold rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md border border-outline-variant z-20">
+              ${val} <span class="filter-count text-[9px] text-primary/60 ml-0.5">(0)</span>
+            </div>
+          </label>
+        `;
+      });
+
+      return `
+        <div class="filter-block">
+          <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
+            <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">${filter.title}</h3>
+            <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
+          </div>
+          <div class="flex flex-wrap gap-2.5 filter-content pt-1">
+            ${optionsHtml}
+          </div>
+        </div>
+      `;
+    }
+
     if (filter.type === 'checkbox' || filter.type === 'rating') {
       let optionsHtml = '';
       filter.values.forEach(opt => {
@@ -911,29 +1120,31 @@
   }
 
   function truncateFilterLists() {
-    const filterContainers = document.querySelectorAll('#desktop-filters > div > div.space-y-2, #mobile-filters > div > div.space-y-2');
+    const filterContainers = document.querySelectorAll('#desktop-filters > div > div.filter-content, #mobile-filters > div > div.filter-content');
     filterContainers.forEach(container => {
       const labels = Array.from(container.querySelectorAll('label')).filter(l => l.style.display !== 'none');
-      if (labels.length > 8) {
-        for (let i = 8; i < labels.length; i++) {
+      const isColor = container.classList.contains('flex-wrap');
+      const limit = isColor ? 15 : 8;
+      if (labels.length > limit) {
+        for (let i = limit; i < labels.length; i++) {
           labels[i].classList.add('hidden', 'truncated-filter-option');
         }
 
         const toggleBtn = document.createElement('button');
         toggleBtn.type = 'button';
-        toggleBtn.className = 'text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0 mt-2 font-semibold flex items-center gap-1';
-        toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - 8})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
+        toggleBtn.className = 'text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0 mt-2 font-semibold flex items-center gap-1 w-full';
+        toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
         
         toggleBtn.onclick = function() {
           const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
           if (isExpanded) {
-            for (let i = 8; i < labels.length; i++) {
+            for (let i = limit; i < labels.length; i++) {
               labels[i].classList.add('hidden');
             }
             toggleBtn.setAttribute('aria-expanded', 'false');
-            toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - 8})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
+            toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
           } else {
-            for (let i = 8; i < labels.length; i++) {
+            for (let i = limit; i < labels.length; i++) {
               labels[i].classList.remove('hidden');
             }
             toggleBtn.setAttribute('aria-expanded', 'true');
@@ -1356,18 +1567,21 @@
             if (isColor) {
               const matchingVar = product.variants.find(v => v.options[opt.name] === val) || product.variants[0];
               const swatchImg = matchingVar.image || product.image;
-              const activeBorderClass = isSelected ? "border-[var(--color-accent)] ring-1 ring-[var(--color-accent)]/30" : "border-outline-variant hover:border-[var(--color-accent)]/60";
+              const activeBorderClass = isSelected ? "border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold" : "border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
               swatchesHtml += `
                 <button 
                   type="button"
-                  class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border bg-card-high p-0.5 cursor-pointer transition-all ${activeBorderClass}"
+                  class="inline-flex items-center gap-1.5 px-2 py-0.5 text-[9px] sm:text-[11px] rounded-full border bg-card-high cursor-pointer transition-all ${activeBorderClass}"
                   data-product-id="${product.id}"
                   data-option-name="${opt.name}"
                   data-option-value="${val}"
                   onclick="window.onCardVariantChange(this)"
                   title="${val}"
                 >
-                  <img src="${swatchImg}" alt="${val}" class="w-full h-full object-cover rounded-[5px]" />
+                  <span class="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full overflow-hidden flex-shrink-0 border border-black/10">
+                    <img src="${swatchImg}" alt="${val}" class="w-full h-full object-cover" />
+                  </span>
+                  <span>${val}</span>
                 </button>
               `;
             } else {
@@ -1375,7 +1589,7 @@
               swatchesHtml += `
                 <button 
                   type="button"
-                  class="px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border bg-card-high cursor-pointer transition-all ${activeTextClass}"
+                  class="px-2 py-0.5 text-[9px] sm:text-[11px] rounded-full border bg-card-high cursor-pointer transition-all ${activeTextClass}"
                   data-product-id="${product.id}"
                   data-option-name="${opt.name}"
                   data-option-value="${val}"
@@ -1404,9 +1618,9 @@
             <div class="flex flex-col gap-0.5">
               <span class="text-[9px] font-bold text-primary/70 uppercase tracking-wider">Form: <span class="text-primary font-semibold font-sans normal-case text-[10px]">${product.form || "Firkantet"}</span></span>
               <div class="flex flex-wrap gap-1.5 mt-0.5">
-                <a href="/products/firkantet-dug-1" class="px-2.5 py-1 text-[11px] rounded-xl border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center ${currentForm === 'firkantet' ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold' : 'border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80'}">Firkantet</a>
-                <a href="/products/afrunding" class="px-2.5 py-1 text-[11px] rounded-xl border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center ${currentForm === 'rund' ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold' : 'border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80'}">Rund</a>
-                <a href="/products/oval-dug" class="px-2.5 py-1 text-[11px] rounded-xl border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center ${currentForm === 'oval' ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold' : 'border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80'}">Oval</a>
+                <a href="/products/firkantet-dug-1" class="px-2.5 py-1 text-[11px] rounded-full border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center ${currentForm === 'firkantet' ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold' : 'border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80'}">Firkantet</a>
+                <a href="/products/afrunding" class="px-2.5 py-1 text-[11px] rounded-full border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center ${currentForm === 'rund' ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold' : 'border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80'}">Rund</a>
+                <a href="/products/oval-dug" class="px-2.5 py-1 text-[11px] rounded-full border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center ${currentForm === 'oval' ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold' : 'border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80'}">Oval</a>
               </div>
             </div>
           </div>
