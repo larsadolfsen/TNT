@@ -289,7 +289,7 @@
                 "step_size": 10,
                 "min_length": 50,
                 "length_description": "Vi anbefaler 20 cm til nedhæng i hver ende.",
-                "qty_description": "Vælg det ønskede antal duge.",
+                "qty_description": "",
                 "border_top": false,
                 "border_bottom": false,
                 "padding_top": 0,
