@@ -119,12 +119,38 @@ main > .shopify-section {
 
 
 
-h1, h2, h3, h5, h6 {
+h1, h2, h3, h5, h6,
+.h1, .h2, .h3, .h5, .h6 {
   font-family: var(--font-serif);
 }
 
-h4 {
+h4,
+.h4 {
   font-family: var(--font-sans);
+}
+
+.h1 {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.h2 {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.h4, .h5, .h6 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: var(--leading-tight);
 }
 
 .material-symbols-outlined {
