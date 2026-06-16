@@ -992,15 +992,15 @@
       
       if (isColor) {
         if (isSelected) {
-          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border bg-card-high p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-1 ring-[var(--color-accent)]/30";
         } else {
-          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border bg-card-high p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
         }
       } else {
         if (isSelected) {
-          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border bg-card-high cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
         } else {
-          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border bg-card-high cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
         }
       }
     });
@@ -1047,15 +1047,15 @@
             
             if (isColor) {
               if (isSelected) {
-                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border bg-card-high p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-1 ring-[var(--color-accent)]/30";
               } else {
-                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border bg-card-high p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
               }
             } else {
               if (isSelected) {
-                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border bg-card-high cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
               } else {
-                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border bg-card-high cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
               }
             }
           });
@@ -1355,11 +1355,11 @@
             if (isColor) {
               const matchingVar = product.variants.find(v => v.options[opt.name] === val) || product.variants[0];
               const swatchImg = matchingVar.image || product.image;
-              const activeBorderClass = isSelected ? "border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30" : "border-outline-variant hover:border-[var(--color-accent)]/60";
+              const activeBorderClass = isSelected ? "border-[var(--color-accent)] ring-1 ring-[var(--color-accent)]/30" : "border-outline-variant hover:border-[var(--color-accent)]/60";
               swatchesHtml += `
                 <button 
                   type="button"
-                  class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all ${activeBorderClass}"
+                  class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border bg-card-high p-0.5 cursor-pointer transition-all ${activeBorderClass}"
                   data-product-id="${product.id}"
                   data-option-name="${opt.name}"
                   data-option-value="${val}"
@@ -1374,7 +1374,7 @@
               swatchesHtml += `
                 <button 
                   type="button"
-                  class="px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all ${activeTextClass}"
+                  class="px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border bg-card-high cursor-pointer transition-all ${activeTextClass}"
                   data-product-id="${product.id}"
                   data-option-name="${opt.name}"
                   data-option-value="${val}"
