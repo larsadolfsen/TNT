@@ -184,7 +184,7 @@
       <div id="product-grid" class="grid gap-4 lg:gap-6 mt-4">
         {%- paginate collection.products by 24 -%}
           {%- for product in collection.products -%}
-            {%- render 'product-card', product: product -%}
+            {%- render 'product-card', product: product, layout: 'minimal', disable_reviews: section.settings.disable_reviews -%}
           {%- else -%}
             <div class="col-span-full py-12 text-center">
               <span class="material-symbols-outlined text-4xl text-primary/85 mb-2">sentiment_dissatisfied</span>
