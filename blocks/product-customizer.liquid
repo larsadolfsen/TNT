@@ -1021,15 +1021,21 @@
     }
 
     function selectWidthOptionInShopify(value) {
+      const normValue = value.toLowerCase().replace('cm', '').replace(/\s+/g, '').trim();
+
       // 1. Try to find and click/select buttons or radios in the theme
       const btn = Array.from(document.querySelectorAll('.product-variant-selectors button, .product-form__input input[type="radio"], fieldset input[type="radio"]'))
         .find(b => {
-          if (b.dataset && b.dataset.optionName === widthOptionName && b.dataset.optionValue === value) {
-            return true;
+          if (b.dataset && b.dataset.optionName === widthOptionName) {
+            const normOptVal = (b.dataset.optionValue || '').toLowerCase().replace('cm', '').replace(/\s+/g, '').trim();
+            if (normOptVal === normValue) return true;
           }
-          if (b.value === value || b.value.toLowerCase().trim() === value.toLowerCase().trim()) {
-            return true;
+          if (b.dataset && b.dataset.value) {
+            const normOptVal = (b.dataset.value || '').toLowerCase().replace('cm', '').replace(/\s+/g, '').trim();
+            if (normOptVal === normValue) return true;
           }
+          const normValAttr = (b.value || '').toLowerCase().replace('cm', '').replace(/\s+/g, '').trim();
+          if (normValAttr === normValue) return true;
           return false;
         });
       
@@ -1054,7 +1060,10 @@
                               select.id.toLowerCase().includes('option' + (widthOptionIndex + 1));
                               
         if (isWidthSelect) {
-          const opt = Array.from(select.options).find(o => o.value === value || o.value.toLowerCase().trim() === value.toLowerCase().trim());
+          const opt = Array.from(select.options).find(o => {
+            const normOptVal = o.value.toLowerCase().replace('cm', '').replace(/\s+/g, '').trim();
+            return normOptVal === normValue;
+          });
           if (opt) {
             opt.removeAttribute('disabled');
             opt.disabled = false;
@@ -1068,11 +1077,10 @@
       let currentVariant = getCurrentVariant();
       let targetVariant = findVariantForWidthAndOtherOptions(value, currentVariant);
       if (!targetVariant && variants && variants.length > 0) {
-        const targetValNorm = value.toLowerCase().replace('cm', '').replace(/\s+/g, '');
         targetVariant = variants.find(v => {
           if (!v.options || !v.options[widthOptionIndex]) return false;
-          const w = v.options[widthOptionIndex].toLowerCase().replace('cm', '').replace(/\s+/g, '');
-          return w === targetValNorm;
+          const w = v.options[widthOptionIndex].toLowerCase().replace('cm', '').replace(/\s+/g, '').trim();
+          return w === normValue;
         });
       }
       if (targetVariant) {
