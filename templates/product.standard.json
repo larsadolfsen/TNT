@@ -279,21 +279,8 @@
               "type": "product-price",
               "name": "Product Price",
               "settings": {
-                "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_shipping_progress_eztrfM": {
-              "type": "product-shipping-progress",
-              "name": "Product Shipping Widget",
-              "settings": {
-                "free_shipping_message": "Du er [beløb] fra gratis levering.",
-                "free_shipping_success_message": "Du har opnået gratis levering!",
-                "hide_everything_except_text": true,
+                "price_suffix": "inkl. moms",
+                "price_subtext": "Du er 599,00 fra gratis levering.",
                 "padding_top": 0,
                 "padding_bottom": 0,
                 "padding_sides": 0
@@ -388,7 +375,6 @@
           },
           "block_order": [
             "product_price_jKnHF6",
-            "product_shipping_progress_eztrfM",
             "product_variant_picker_z4eRf9",
             "product_buy_buttons_gFTjCi",
             "card_WQFRHd"
