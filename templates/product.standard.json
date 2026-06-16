@@ -291,7 +291,7 @@
               "type": "product-shipping-progress",
               "name": "Product Shipping Widget",
               "settings": {
-                "free_shipping_message": "Du er kun [beløb] fra fri fragt",
+                "free_shipping_message": "Du er [beløb] fra gratis levering.",
                 "free_shipping_success_message": "Du har opnået fri fragt!",
                 "hide_everything_except_text": true,
                 "padding_top": 0,
