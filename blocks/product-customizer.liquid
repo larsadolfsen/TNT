@@ -604,7 +604,7 @@
 
 <!-- Mobile Sticky Customize Bar -->
 {%- if block.settings.enable_sticky_customize_button -%}
-<div id="mobile-sticky-customize-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-card-light border-t border-outline-variant/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[24px] translate-y-full opacity-0 pointer-events-none">
+<div id="mobile-sticky-customize-bar" class="fixed bottom-0 left-0 right-0 z-[150] bg-card-light border-t border-outline-variant/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[24px] translate-y-full opacity-0 pointer-events-none">
   <div class="max-w-[var(--page-width)] mx-auto w-full">
     <button id="btn-sticky-customize" type="button" class="w-full bg-accent hover:brightness-95 text-on-accent font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
       {{ block.settings.sticky_customize_button_text | default: "Tilpas" }}

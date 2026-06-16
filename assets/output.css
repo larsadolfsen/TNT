@@ -341,8 +341,11 @@
   .z-50 {
     z-index: 50;
   }
-  .z-\[100\] {
-    z-index: 100;
+  .z-\[150\] {
+    z-index: 150;
+  }
+  .z-\[200\] {
+    z-index: 200;
   }
   .col-span-2 {
     grid-column: span 2 / span 2;
