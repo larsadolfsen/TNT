@@ -610,7 +610,7 @@
 
   // Fallback to mockup products if the current collection has 0 items
   const products = (rawCollectionProducts && rawCollectionProducts.length > 0) ? rawCollectionProducts : mockProducts;
-  const showReviews = {{ section.settings.show_reviews | default: true | json }};
+  const showReviews = {{ section.settings.disable_reviews | json }} ? false : true;
   console.log("Collection page products loaded:", products);
 
   // Dynamic color map from metafields
@@ -1853,9 +1853,9 @@
     },
     {
       "type": "checkbox",
-      "id": "show_reviews",
-      "label": "Vis anmeldelser",
-      "default": true
+      "id": "disable_reviews",
+      "label": "Deaktiver anmeldelser",
+      "default": false
     }
   ],
   "blocks": [
