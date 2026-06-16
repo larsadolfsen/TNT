@@ -30,6 +30,9 @@ Theme colors are configured in the Shopify Customizer under separate "Lys Tema /
 - **Tailwind Color System**: All Tailwind color classes are dynamically mapped to the global theme variables in `assets/input.css` (under `@theme`).
   - Always use classes like `bg-primary`, `text-card-light`, and `border-outline-variant` in preference to arbitrary color overrides (`bg-[#123456]`).
   - If you introduce a new custom color setting, declare it as a CSS variable in `css-variables.liquid` and map it inside the `@theme` directive in `assets/input.css` before using it in templates.
+- **Avoid Redundant Styles & Markup**: Keep the code as lean and clean as possible:
+  - Avoid adding unnecessary/redundant utility classes (such as adding `shadow-none` to an element that has no shadow by default).
+  - Avoid nesting unnecessary `div` elements; keep the HTML markup flat and semantic where possible.
 - If you change files that affect CSS styling, compile the output CSS using `cmd /c npm run tailwind:build`.
 
 ## 3. Material Design 3 Surface Mapping Reference
@@ -69,4 +72,5 @@ Our theme uses a three-tier elevation system to prevent visual blending in dark 
   </div>
   ```
 
-
+## 7. Content Customization & Shopify Settings
+- **Avoid Hardcoded Text**: All user-facing text, headings, labels, button text, and copy should be exposed as customizable settings in the section/block schema (`settings` in JSON schema) instead of being hardcoded in liquid templates. This enables merchants to easily translate, customize, and edit the copy directly from the Shopify theme editor.

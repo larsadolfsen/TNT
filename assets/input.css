@@ -507,11 +507,12 @@ h4 {
     box-sizing: border-box;
   }
 
-  /* Remove border around Card block containing customizer on desktop */
-  .card-block:has(.shopify-block-product-customizer),
-  .card-block:has(.product-customizer) {
-    border: none !important;
-  }
+}
+
+/* Remove border around Card block containing customizer */
+.card-block:has(.shopify-block-product-customizer),
+.card-block:has(.product-customizer) {
+  border: none !important;
 }
 
 

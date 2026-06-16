@@ -183,6 +183,17 @@
   {%- if block.settings.heading != blank -%}
     <h2 class="text-xl md:text-2xl font-bold text-primary mb-8 leading-tight">{{ block.settings.heading }}</h2>
   {%- endif -%}
+
+  <!-- Tab Switcher Control -->
+  <div class="customizer-tabs flex bg-[#f1f5f9] dark:bg-[#1e293b] p-1 rounded-full mb-8 max-w-md mx-auto" style="border: 1px solid var(--color-border); gap: 4px;">
+    <button type="button" id="btn-mode-simple" class="flex-1 py-2.5 text-sm font-bold rounded-full transition-all duration-200 cursor-pointer focus:outline-none text-center bg-white dark:bg-slate-700 shadow-sm text-primary" onclick="setCustomizerMode('simple')">
+      Hurtig beregner
+    </button>
+    <button type="button" id="btn-mode-advanced" class="flex-1 py-2.5 text-sm font-bold rounded-full transition-all duration-200 cursor-pointer focus:outline-none text-center text-primary/70 hover:text-primary bg-transparent" onclick="setCustomizerMode('advanced')">
+      Design selv
+    </button>
+  </div>
+
   <div class="grid-layout">
 
     <!-- Step 1: Shape Selector -->
@@ -234,8 +245,110 @@
             <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">Oval</span>
             <span class="text-[11px] font-normal leading-[1.2] text-center">{{ oval_price_formatted }}</span>
           </div>
-        </button>n>
+        </button>
 
+      </div>
+    </div>
+
+    <!-- Step 2 (Simple Mode): Table Dimensions -->
+    <div id="step-container-table-dimensions" class="flex flex-col gap-3" style="--span-mb: 4; --span-tb: 8; --span-lg: 12; --span-mobile: 4; --span-expanded: 8; --span-large: 12; display: flex;">
+      <div class="flex items-start gap-3">
+        <span id="step-number-table-dimensions" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
+        <div class="flex flex-col w-full">
+          <span id="label-table-dimensions" class="font-bold text-base uppercase tracking-wider text-primary">Indtast bordets mål</span>
+          <p class="text-sm text-primary/85 mt-1">Indtast målene på dit bord, så beregner vi den ideelle dugstørrelse.</p>
+        </div>
+      </div>
+      
+      <div class="flex flex-col md:flex-row gap-4 w-full pl-10">
+        <!-- Width / Diameter Input -->
+        <div class="flex-1 flex flex-col gap-2">
+          <span id="label-table-width" class="text-sm font-semibold text-primary">Bordets bredde</span>
+          <div class="stepper-pill flex justify-between items-center bg-card-high border border-outline-variant rounded-full shadow-sm" style="height:56px;">
+            <button type="button" id="btn-table-width-minus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+              &mdash;
+            </button>
+            <input id="display-table-width" type="number" inputmode="numeric" pattern="[0-9]*"
+              value="100"
+              class="text-center font-bold text-primary text-xl bg-transparent border-none outline-none p-0 m-0"
+              style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
+            />
+            <button type="button" id="btn-table-width-plus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+              &#43;
+            </button>
+          </div>
+        </div>
+        
+        <!-- Length Input -->
+        <div id="container-table-length" class="flex-1 flex flex-col gap-2">
+          <span class="text-sm font-semibold text-primary">Bordets længde</span>
+          <div class="stepper-pill flex justify-between items-center bg-card-high border border-outline-variant rounded-full shadow-sm" style="height:56px;">
+            <button type="button" id="btn-table-length-minus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+              &mdash;
+            </button>
+            <input id="display-table-length" type="number" inputmode="numeric" pattern="[0-9]*"
+              value="160"
+              class="text-center font-bold text-primary text-xl bg-transparent border-none outline-none p-0 m-0"
+              style="-moz-appearance:textfield;appearance:textfield;height:100%;width:100%;"
+            />
+            <button type="button" id="btn-table-length-plus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-r-full" style="width:56px;flex-shrink:0;border-left:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
+              &#43;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 (Simple Mode): Recommendation & Fit Choice -->
+    <div id="simple-recommendation-container" class="flex flex-col gap-3" style="--span-mb: 4; --span-tb: 8; --span-lg: 12; --span-mobile: 4; --span-expanded: 8; --span-large: 12;">
+      <!-- The Recommendation Card -->
+      <div id="simple-recommendation-card" class="pl-10 w-full" style="display: none;">
+        <div class="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/50 rounded-2xl flex flex-col gap-1.5 shadow-sm">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-500 text-lg">check_circle</span>
+            <span id="recommendation-text" class="text-sm text-primary font-bold"></span>
+          </div>
+          <p id="recommendation-details" class="text-xs text-primary/70 pl-7"></p>
+        </div>
+      </div>
+
+      <!-- Fit Prompt (only shown when width doesn't fit standard) -->
+      <div id="fit-prompt-container" class="pl-10 w-full" style="display: none;">
+        <div class="p-4 bg-[#fffbeb] dark:bg-amber-950/20 border border-[#fef3c7] dark:border-amber-900/50 rounded-2xl flex flex-col gap-3 shadow-sm">
+          <div class="flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-amber-600 dark:text-amber-500 mt-0.5 text-lg">info</span>
+            <div class="flex flex-col">
+              <span class="font-bold text-primary text-xs uppercase tracking-wide">Bredden passer ikke med en standardbredde</span>
+              <p class="text-xs text-primary/80 mt-0.5">Vi anbefaler 15-25 cm nedhæng. Vælg din foretrukne løsning:</p>
+            </div>
+          </div>
+          
+          <div class="flex flex-col gap-2">
+            <!-- Option A: Standard Width -->
+            <label class="p-3 border border-outline-variant rounded-xl bg-card-high cursor-pointer transition-all hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-between shadow-xs">
+              <div class="flex items-center gap-2.5">
+                <input type="radio" name="width-fit-choice" value="standard" class="cursor-pointer" style="accent-color: var(--color-accent);" onchange="updateSimpleChoice()" />
+                <div class="flex flex-col flex-1 pl-1">
+                  <span id="fit-opt-standard-label" class="text-xs font-bold text-primary">Standardbredde: -- cm</span>
+                  <span id="fit-opt-standard-desc" class="text-[11px] text-primary/75">Giver -- cm nedhæng i siderne. Billigste løsning!</span>
+                </div>
+              </div>
+              <span id="fit-opt-standard-price" class="text-xs font-bold text-primary">-- kr.</span>
+            </label>
+            
+            <!-- Option B: Custom Width -->
+            <label class="p-3 border border-outline-variant rounded-xl bg-card-high cursor-pointer transition-all hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-between shadow-xs">
+              <div class="flex items-center gap-2.5">
+                <input type="radio" name="width-fit-choice" value="custom" checked class="cursor-pointer" style="accent-color: var(--color-accent);" onchange="updateSimpleChoice()" />
+                <div class="flex flex-col flex-1 pl-1">
+                  <span id="fit-opt-custom-label" class="text-xs font-bold text-primary">Specialtilpasset: -- cm</span>
+                  <span id="fit-opt-custom-desc" class="text-[11px] text-primary/75">Skræddersyet på dine mål.</span>
+                </div>
+              </div>
+              <span id="fit-opt-custom-price" class="text-xs font-bold text-primary">-- kr.</span>
+            </label>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -536,6 +649,17 @@
       lengthLabel.textContent = (shape === 'rund') ? 'Vælg diameter' : 'Vælg længde';
     }
 
+    // Update simple labels & visibility
+    const labelTableWidth = document.getElementById('label-table-width');
+    const containerTableLength = document.getElementById('container-table-length');
+    if (shape === 'rund') {
+      if (labelTableWidth) labelTableWidth.textContent = 'Bordets diameter';
+      if (containerTableLength) containerTableLength.style.display = 'none';
+    } else {
+      if (labelTableWidth) labelTableWidth.textContent = 'Bordets bredde';
+      if (containerTableLength) containerTableLength.style.display = 'block';
+    }
+
     document.querySelectorAll('.shape-btn').forEach(btn => {
       const isActive = btn.dataset.shape === shape;
       if (isActive) {
@@ -555,6 +679,10 @@
       btn.classList.remove('text-slate-600', 'text-slate-400');
       btn.classList.add('text-primary');
     });
+
+    if (typeof window.calculateSimpleCustomizer === "function") {
+      window.calculateSimpleCustomizer();
+    }
     
     if (typeof window.updateCustomizerUI === "function") {
       window.updateCustomizerUI();
@@ -696,7 +824,10 @@
       width: 140,
       selectedStandardWidth: 140,
       customizeWidth: false,
-      quantity: 1
+      quantity: 1,
+      customizerMode: 'simple',
+      tableWidth: 100,
+      tableLength: 160
     };
 
     // Initialize initial width state from active variant on load (or from metafield limit when no width option)
@@ -880,6 +1011,7 @@
       let stepNum = 1;
       const steps = [
         { containerId: "step-container-shape", labelId: "step-number-shape" },
+        { containerId: "step-container-table-dimensions", labelId: "step-number-table-dimensions" },
         { containerId: "step-container-width", labelId: "step-number-width" },
         { containerId: "step-container-length", labelId: "step-number-length" },
         { containerId: "step-container-qty", labelId: "step-number-qty" }
@@ -889,7 +1021,7 @@
         const container = document.getElementById(step.containerId);
         const label = document.getElementById(step.labelId);
         if (container && label) {
-          if (window.getComputedStyle(container).display !== "none") {
+          if (container.style.display !== "none" && window.getComputedStyle(container).display !== "none") {
             label.textContent = stepNum;
             stepNum++;
           }
@@ -1000,6 +1132,384 @@
           container.style.display = "none";
         }
       });
+    }
+
+    // Get standard widths available from variants
+    function getStandardWidths() {
+      let stdWidths = [];
+      if (widthOptionIndex !== null && variants.length > 0) {
+        variants.forEach(v => {
+          if (v.title.toLowerCase().includes("tilpasset") || v.title.toLowerCase().includes("tilpas")) return;
+          const wVal = v.options[widthOptionIndex];
+          if (wVal) {
+            const match = wVal.match(/\d+/);
+            if (match) {
+              const w = parseInt(match[0]);
+              if (!stdWidths.includes(w)) {
+                stdWidths.push(w);
+              }
+            }
+          }
+        });
+      } else {
+        stdWidths = [maxWidthLimit];
+      }
+      stdWidths.sort((a, b) => a - b);
+      return stdWidths;
+    }
+
+    // Main calculation function for Simple Customizer mode
+    function calculateSimpleCustomizer() {
+      if (state.customizerMode !== 'simple') return;
+
+      const tw = state.tableWidth;
+      const tl = state.tableLength;
+      const shape = selectedShape;
+
+      // 1. Get sorted standard widths
+      const stdWidths = getStandardWidths();
+      const maxStdWidth = stdWidths[stdWidths.length - 1] || maxWidthLimit;
+
+      // 2. We recommend Table Width + 40 cm (20 cm overhang per side) and Table Length + 40 cm
+      let targetWidth = tw + 40;
+      let targetLength = tl + 40;
+
+      if (shape === 'rund') {
+        targetWidth = tw + 40;
+        targetLength = targetWidth; // round has equal width and length (diameter)
+      }
+
+      // 3. Check if any standard width W satisfies Tw + 30 <= W <= Tw + 50
+      let fittingStdWidths = [];
+      stdWidths.forEach(w => {
+        const overhang = (w - tw) / 2;
+        if (overhang >= 15 && overhang <= 25) {
+          fittingStdWidths.push(w);
+        }
+      });
+
+      let chosenWidth = null;
+      let isFit = false;
+
+      if (fittingStdWidths.length > 0) {
+        // Find the cheapest standard width variant
+        let cheapestWidth = fittingStdWidths[0];
+        let cheapestPrice = Infinity;
+
+        fittingStdWidths.forEach(w => {
+          let currentVariant = getCurrentVariant();
+          let match = findVariantForWidthAndOtherOptions(w + " cm", currentVariant);
+          if (match && match.available) {
+            if (match.price < cheapestPrice) {
+              cheapestPrice = match.price;
+              cheapestWidth = w;
+            }
+          }
+        });
+
+        chosenWidth = cheapestWidth;
+        isFit = true;
+      }
+
+      const fitPromptContainer = document.getElementById("fit-prompt-container");
+
+      if (isFit) {
+        // Fits standard width perfectly
+        if (fitPromptContainer) fitPromptContainer.style.display = "none";
+        
+        state.width = chosenWidth;
+        state.customizeWidth = false;
+        
+        // Select standard variant in background
+        selectWidthOptionInShopify(chosenWidth + " cm");
+        
+        const customWidthCheckbox = document.getElementById("checkbox-custom-width");
+        if (customWidthCheckbox) customWidthCheckbox.checked = false;
+      } else {
+        // Does not fit a standard width perfectly
+        // Find closest standard width
+        let closestStdWidth = maxStdWidth;
+        let minDiff = Infinity;
+        stdWidths.forEach(w => {
+          const diff = Math.abs(w - targetWidth);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestStdWidth = w;
+          }
+        });
+
+        // Recommended custom width (capped at maxStdWidth - 5)
+        let recommendedCustomWidth = Math.min(maxStdWidth - 5, targetWidth);
+        recommendedCustomWidth = Math.max(50, recommendedCustomWidth);
+
+        // Standard surcharge price
+        const surchargePrice = widthSurchargeData.price || 0;
+
+        if (fitPromptContainer) {
+          fitPromptContainer.style.display = "block";
+          
+          const optStandardLabel = document.getElementById("fit-opt-standard-label");
+          const optStandardDesc = document.getElementById("fit-opt-standard-desc");
+          const optStandardPrice = document.getElementById("fit-opt-standard-price");
+          
+          const optCustomLabel = document.getElementById("fit-opt-custom-label");
+          const optCustomDesc = document.getElementById("fit-opt-custom-desc");
+          const optCustomPrice = document.getElementById("fit-opt-custom-price");
+
+          const stdOverhang = (closestStdWidth - tw) / 2;
+          
+          if (optStandardLabel) optStandardLabel.textContent = `Standardbredde: ${closestStdWidth} cm`;
+          if (optStandardDesc) optStandardDesc.textContent = `Giver ${stdOverhang} cm nedhæng i siderne. Billigste løsning!`;
+          
+          if (optCustomLabel) optCustomLabel.textContent = `Specialtilpasset: ${recommendedCustomWidth} cm`;
+          if (optCustomDesc) optCustomDesc.textContent = `Skræddersyet på dine mål for at give 20 cm nedhæng (+${formatDanishPrice(surchargePrice).replace("Kr.", "kr.")})`;
+
+          // Calculate approximate pricing for displaying on the options
+          let currentVariant = getCurrentVariant();
+          let stdMatch = findVariantForWidthAndOtherOptions(closestStdWidth + " cm", currentVariant);
+          let stdPrice = stdMatch ? stdMatch.price * targetLength : 0;
+          
+          let baseStdWidth = stdWidths.find(w => w >= recommendedCustomWidth) || maxStdWidth;
+          let customBaseMatch = findVariantForWidthAndOtherOptions(baseStdWidth + " cm", currentVariant);
+          let customPrice = customBaseMatch ? (customBaseMatch.price * targetLength + surchargePrice) : 0;
+
+          if (optStandardPrice) optStandardPrice.textContent = formatDanishPrice(stdPrice).replace("Kr.", "kr.");
+          if (optCustomPrice) optCustomPrice.textContent = formatDanishPrice(customPrice).replace("Kr.", "kr.");
+        }
+
+        // Check which radio option is selected (default to standard to suggest the cheapest version)
+        const choice = document.querySelector('input[name="width-fit-choice"]:checked')?.value || 'standard';
+        
+        if (choice === 'standard') {
+          state.width = closestStdWidth;
+          state.customizeWidth = false;
+          selectWidthOptionInShopify(closestStdWidth + " cm");
+          
+          const customWidthCheckbox = document.getElementById("checkbox-custom-width");
+          if (customWidthCheckbox) customWidthCheckbox.checked = false;
+        } else {
+          state.width = recommendedCustomWidth;
+          state.customizeWidth = true;
+          
+          // Select base standard variant for custom cut (the one >= recommendedCustomWidth)
+          let baseStdWidth = stdWidths.find(w => w >= recommendedCustomWidth) || maxStdWidth;
+          selectWidthOptionInShopify(baseStdWidth + " cm");
+          
+          const customWidthCheckbox = document.getElementById("checkbox-custom-width");
+          if (customWidthCheckbox) customWidthCheckbox.checked = true;
+        }
+      }
+
+      // Snapped recommended length
+      state.length = clampLength(targetLength);
+
+      // Update advanced inputs display in the background
+      const displayLength = document.getElementById("display-length");
+      if (displayLength) displayLength.value = state.length;
+      
+      const displayWidth = document.getElementById("display-width");
+      if (displayWidth) displayWidth.value = state.width;
+
+      // Update recommendation card display
+      const recCard = document.getElementById("simple-recommendation-card");
+      if (recCard) {
+        recCard.style.display = "block";
+        const recText = document.getElementById("recommendation-text");
+        const recDetails = document.getElementById("recommendation-details");
+        if (recText) {
+          if (shape === 'rund') {
+            recText.innerHTML = `Vi anbefaler en rund dug med diameter <strong>${state.length} cm</strong>`;
+          } else {
+            recText.innerHTML = `Vi anbefaler en dug på <strong>${state.width} x ${state.length} cm</strong>`;
+          }
+        }
+        if (recDetails) {
+          const overhangW = (state.width - tw) / 2;
+          const overhangL = (state.length - tl) / 2;
+          if (shape === 'rund') {
+            recDetails.textContent = `Bordets diameter: ${tw} cm | Nedhæng: ${overhangW} cm hele vejen rundt`;
+          } else {
+            recDetails.textContent = `Bordets mål: ${tw} x ${tl} cm | Nedhæng: ${overhangW} cm i siderne og ${overhangL} cm i enderne`;
+          }
+        }
+      }
+    }
+
+    // Tab mode toggler
+    window.setCustomizerMode = function(mode) {
+      state.customizerMode = mode;
+      
+      const btnSimple = document.getElementById("btn-mode-simple");
+      const btnAdvanced = document.getElementById("btn-mode-advanced");
+      
+      const stepTableDims = document.getElementById("step-container-table-dimensions");
+      const stepWidth = document.getElementById("step-container-width");
+      const stepLength = document.getElementById("step-container-length");
+      const simpleRecContainer = document.getElementById("simple-recommendation-container");
+      
+      if (mode === 'simple') {
+        // Toggle tabs styles
+        if (btnSimple) {
+          btnSimple.classList.add("bg-white", "dark:bg-slate-700", "shadow-sm", "text-primary");
+          btnSimple.classList.remove("text-primary/70", "hover:text-primary", "bg-transparent");
+        }
+        if (btnAdvanced) {
+          btnAdvanced.classList.remove("bg-white", "dark:bg-slate-700", "shadow-sm", "text-primary");
+          btnAdvanced.classList.add("text-primary/70", "hover:text-primary", "bg-transparent");
+        }
+        
+        // Show/hide steps
+        if (stepTableDims) stepTableDims.style.display = "flex";
+        if (simpleRecContainer) simpleRecContainer.style.display = "flex";
+        if (stepWidth) stepWidth.style.display = "none";
+        if (stepLength) stepLength.style.display = "none";
+        
+        // Disable pointer clicks on standard width buttons
+        document.querySelectorAll('.width-btn').forEach(btn => {
+          btn.style.pointerEvents = "none";
+        });
+        
+        calculateSimpleCustomizer();
+      } else {
+        // Toggle tabs styles
+        if (btnAdvanced) {
+          btnAdvanced.classList.add("bg-white", "dark:bg-slate-700", "shadow-sm", "text-primary");
+          btnAdvanced.classList.remove("text-primary/70", "hover:text-primary", "bg-transparent");
+        }
+        if (btnSimple) {
+          btnSimple.classList.remove("bg-white", "dark:bg-slate-700", "shadow-sm", "text-primary");
+          btnSimple.classList.add("text-primary/70", "hover:text-primary", "bg-transparent");
+        }
+        
+        // Show/hide steps
+        if (stepTableDims) stepTableDims.style.display = "none";
+        if (simpleRecContainer) simpleRecContainer.style.display = "none";
+        if (stepWidth) stepWidth.style.display = "flex";
+        if (stepLength) stepLength.style.display = "flex";
+        
+        // Restore pointer clicks on standard width buttons
+        document.querySelectorAll('.width-btn').forEach(btn => {
+          btn.style.pointerEvents = "auto";
+        });
+        
+        // Sync custom width checkbox in UI
+        const customWidthCheckbox = document.getElementById("checkbox-custom-width");
+        if (customWidthCheckbox) {
+          customWidthCheckbox.checked = state.customizeWidth;
+        }
+        
+        // Re-read width and length from advanced inputs
+        const displayLengthInput = document.getElementById("display-length");
+        if (displayLengthInput) {
+          state.length = parseInt(displayLengthInput.value) || 200;
+        }
+        if (state.customizeWidth) {
+          const displayWidthInput = document.getElementById("display-width");
+          if (displayWidthInput) {
+            state.width = parseInt(displayWidthInput.value) || 140;
+          }
+        } else {
+          state.width = state.selectedStandardWidth;
+        }
+      }
+      
+      updateUI();
+    };
+
+    window.updateSimpleChoice = function() {
+      calculateSimpleCustomizer();
+      updateUI();
+    };
+
+    window.calculateSimpleCustomizer = calculateSimpleCustomizer;
+
+    // Simple Mode table dimensions steppers and inputs listeners
+    const displayTableWidth = document.getElementById("display-table-width");
+    const btnTableWidthMinus = document.getElementById("btn-table-width-minus");
+    const btnTableWidthPlus = document.getElementById("btn-table-width-plus");
+
+    const displayTableLength = document.getElementById("display-table-length");
+    const btnTableLengthMinus = document.getElementById("btn-table-length-minus");
+    const btnTableLengthPlus = document.getElementById("btn-table-length-plus");
+
+    function clampTableWidth(val) {
+      return Math.min(180, Math.max(50, val));
+    }
+    
+    function clampTableLength(val) {
+      return Math.min(400, Math.max(50, val));
+    }
+
+    if (btnTableWidthMinus && displayTableWidth) {
+      btnTableWidthMinus.addEventListener("click", () => {
+        state.tableWidth = clampTableWidth(state.tableWidth - 5);
+        displayTableWidth.value = state.tableWidth;
+        calculateSimpleCustomizer();
+        updateUI();
+      });
+    }
+
+    if (btnTableWidthPlus && displayTableWidth) {
+      btnTableWidthPlus.addEventListener("click", () => {
+        state.tableWidth = clampTableWidth(state.tableWidth + 5);
+        displayTableWidth.value = state.tableWidth;
+        calculateSimpleCustomizer();
+        updateUI();
+      });
+    }
+
+    if (displayTableWidth) {
+      displayTableWidth.addEventListener("change", () => {
+        const raw = parseInt(displayTableWidth.value, 10);
+        state.tableWidth = isNaN(raw) ? state.tableWidth : clampTableWidth(raw);
+        displayTableWidth.value = state.tableWidth;
+        calculateSimpleCustomizer();
+        updateUI();
+      });
+      displayTableWidth.addEventListener("blur", () => {
+        const raw = parseInt(displayTableWidth.value, 10);
+        state.tableWidth = isNaN(raw) ? state.tableWidth : clampTableWidth(raw);
+        displayTableWidth.value = state.tableWidth;
+        calculateSimpleCustomizer();
+        updateUI();
+      });
+      displayTableWidth.addEventListener("focus", () => displayTableWidth.select());
+    }
+
+    if (btnTableLengthMinus && displayTableLength) {
+      btnTableLengthMinus.addEventListener("click", () => {
+        state.tableLength = clampTableLength(state.tableLength - 10);
+        displayTableLength.value = state.tableLength;
+        calculateSimpleCustomizer();
+        updateUI();
+      });
+    }
+
+    if (btnTableLengthPlus && displayTableLength) {
+      btnTableLengthPlus.addEventListener("click", () => {
+        state.tableLength = clampTableLength(state.tableLength + 10);
+        displayTableLength.value = state.tableLength;
+        calculateSimpleCustomizer();
+        updateUI();
+      });
+    }
+
+    if (displayTableLength) {
+      displayTableLength.addEventListener("change", () => {
+        const raw = parseInt(displayTableLength.value, 10);
+        state.tableLength = isNaN(raw) ? state.tableLength : clampTableLength(raw);
+        displayTableLength.value = state.tableLength;
+        calculateSimpleCustomizer();
+        updateUI();
+      });
+      displayTableLength.addEventListener("blur", () => {
+        const raw = parseInt(displayTableLength.value, 10);
+        state.tableLength = isNaN(raw) ? state.tableLength : clampTableLength(raw);
+        displayTableLength.value = state.tableLength;
+        calculateSimpleCustomizer();
+        updateUI();
+      });
+      displayTableLength.addEventListener("focus", () => displayTableLength.select());
     }
 
     // Recalculate price display
@@ -1378,6 +1888,7 @@
     // Steppers listeners
     if (btnLengthMinus && displayLength) {
       btnLengthMinus.addEventListener("click", () => {
+        if (state.customizerMode === 'simple') return;
         if (state.length > minLength) {
           state.length = clampLength(state.length - stepSize);
           displayLength.value = state.length;
@@ -1388,6 +1899,7 @@
 
     if (btnLengthPlus && displayLength) {
       btnLengthPlus.addEventListener("click", () => {
+        if (state.customizerMode === 'simple') return;
         const maxAllowed = (selectedShape === 'rund') ? absoluteMaxWidth : 9999;
         if (state.length < maxAllowed) {
           state.length = clampLength(state.length + stepSize);
@@ -1402,6 +1914,7 @@
     // Direct keyboard input – length
     if (displayLength) {
       displayLength.addEventListener("change", () => {
+        if (state.customizerMode === 'simple') return;
         const raw = parseInt(displayLength.value, 10);
         if (!isNaN(raw)) {
           state.length = clampLength(raw);
@@ -1412,6 +1925,7 @@
         }
       });
       displayLength.addEventListener("blur", () => {
+        if (state.customizerMode === 'simple') return;
         const raw = parseInt(displayLength.value, 10);
         state.length = isNaN(raw) ? state.length : clampLength(raw);
         displayLength.value = state.length;
@@ -1433,6 +1947,7 @@
 
     if (btnWidthMinus && displayWidth) {
       btnWidthMinus.addEventListener("click", () => {
+        if (state.customizerMode === 'simple') return;
         if (state.width > 50) {
           // Resolve standard width first to get maxAllowedWidth
           const currentVariant = getCurrentVariant();
@@ -1449,6 +1964,7 @@
 
     if (btnWidthPlus && displayWidth) {
       btnWidthPlus.addEventListener("click", () => {
+        if (state.customizerMode === 'simple') return;
         // Resolve standard width first to get maxAllowedWidth
         const currentVariant = getCurrentVariant();
         const pricingVariant = getPricingVariant(currentVariant);
@@ -1465,6 +1981,7 @@
 
     if (displayWidth) {
       displayWidth.addEventListener("change", () => {
+        if (state.customizerMode === 'simple') return;
         // Resolve standard width first to get maxAllowedWidth
         const currentVariant = getCurrentVariant();
         const pricingVariant = getPricingVariant(currentVariant);
@@ -1481,6 +1998,7 @@
         }
       });
       displayWidth.addEventListener("blur", () => {
+        if (state.customizerMode === 'simple') return;
         // Resolve standard width first to get maxAllowedWidth
         const currentVariant = getCurrentVariant();
         const pricingVariant = getPricingVariant(currentVariant);
@@ -1499,6 +2017,7 @@
     const customWidthCheckbox = document.getElementById("checkbox-custom-width");
     if (customWidthCheckbox) {
       customWidthCheckbox.addEventListener("change", () => {
+        if (state.customizerMode === 'simple') return;
         if (!customWidthCheckbox.checked) {
           // Reset width to standard active variant width when unchecked
           state.width = state.selectedStandardWidth;
@@ -1758,6 +2277,7 @@
 
     // Initial load
     selectShape('firkantet');
+    setCustomizerMode('simple');
     updateUI();
   }
 

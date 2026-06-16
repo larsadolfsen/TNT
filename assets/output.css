@@ -2470,9 +2470,9 @@ h4 {
     width: 100%;
     box-sizing: border-box;
   }
-  .card-block:has(.shopify-block-product-customizer), .card-block:has(.product-customizer) {
-    border: none !important;
-  }
+}
+.card-block:has(.shopify-block-product-customizer), .card-block:has(.product-customizer) {
+  border: none !important;
 }
 html, body {
   overflow-x: clip;
