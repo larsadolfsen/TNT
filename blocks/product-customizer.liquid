@@ -606,7 +606,7 @@
 {%- if block.settings.enable_sticky_customize_button -%}
 <div id="mobile-sticky-customize-bar" class="fixed bottom-0 left-0 right-0 z-[100] bg-card-light border-t border-outline-variant/80 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[24px] translate-y-full opacity-0 pointer-events-none">
   <div class="max-w-[var(--page-width)] mx-auto w-full">
-    <button id="btn-sticky-customize" class="w-full bg-accent hover:brightness-95 text-on-accent font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+    <button id="btn-sticky-customize" type="button" class="w-full bg-accent hover:brightness-95 text-on-accent font-bold px-6 h-12 rounded-full text-[15px] shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
       {{ block.settings.sticky_customize_button_text | default: "Tilpas" }}
     </button>
   </div>
@@ -620,7 +620,7 @@
     /* Ensure the shopify section containing the sticky bar stacks above subsequent sections on mobile */
     .shopify-section:has(#mobile-sticky-customize-bar) {
       position: relative;
-      z-index: 30;
+      z-index: 150;
     }
   }
 </style>
@@ -2356,6 +2356,7 @@
         
         // 1. Above Customizer (top of customizer is below screen viewport bottom)
         if (rect.top >= window.innerHeight) {
+          stickyCustomizeBar.classList.remove("pointer-events-none", "opacity-0", "translate-y-full");
           stickyCustomizeBar.style.transform = "translateY(0)";
           stickyCustomizeBar.style.opacity = "1";
           stickyCustomizeBar.style.pointerEvents = "auto";
@@ -2363,6 +2364,7 @@
         // 2. Customizer is visible in viewport or below it
         else {
           // Slide down and hide
+          stickyCustomizeBar.classList.add("pointer-events-none", "opacity-0", "translate-y-full");
           stickyCustomizeBar.style.transform = "translateY(100%)";
           stickyCustomizeBar.style.opacity = "0";
           stickyCustomizeBar.style.pointerEvents = "none";
@@ -2382,7 +2384,22 @@
       // Click on sticky customize button scrolls smoothly to customizer
       if (btnStickyCustomize) {
         btnStickyCustomize.addEventListener("click", () => {
-          customizerEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          console.log("Sticky Tilpas button clicked, scrolling to customizer...");
+          // iOS Safari fix: scroll after short timeout to let the tap event finish
+          setTimeout(() => {
+            const yOffset = -90; // offset to account for sticky header
+            const rect = customizerEl.getBoundingClientRect();
+            const targetY = window.pageYOffset + rect.top + yOffset;
+            
+            if (typeof window.scrollTo === "function") {
+              window.scrollTo({
+                top: targetY,
+                behavior: "smooth"
+              });
+            } else {
+              customizerEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          }, 100);
         });
       }
     }

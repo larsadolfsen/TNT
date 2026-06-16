@@ -15,7 +15,6 @@
     --color-amber-600: oklch(66.6% 0.179 58.318);
     --color-amber-900: oklch(41.4% 0.112 45.904);
     --color-amber-950: oklch(27.9% 0.077 45.635);
-    --color-emerald-50: oklch(97.9% 0.021 166.113);
     --color-emerald-300: oklch(84.5% 0.143 164.978);
     --color-emerald-400: oklch(76.5% 0.177 163.223);
     --color-emerald-500: oklch(69.6% 0.17 162.48);
@@ -1072,9 +1071,6 @@
   .bg-card-shade {
     background-color: var(--color-card-shade);
   }
-  .bg-emerald-50 {
-    background-color: var(--color-emerald-50);
-  }
   .bg-emerald-300 {
     background-color: var(--color-emerald-300);
   }
@@ -2108,11 +2104,6 @@
       grid-template-columns: repeat(8, minmax(0, 1fr));
     }
   }
-  .md\:flex-row {
-    @media (width >= 840px) {
-      flex-direction: row;
-    }
-  }
   .md\:flex-wrap {
     @media (width >= 840px) {
       flex-wrap: wrap;
@@ -2487,7 +2478,7 @@ h4 {
 @media (min-width: 840px) {
   .template-product #MainContent, #MainContent:has(.product-media), #MainContent:has(.shopify-block-product-media) {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-columns: repeat(8, minmax(0, 1fr));
     grid-template-rows: repeat(5, auto) minmax(0, 1fr);
     column-gap: var(--grid-gap);
     row-gap: 0;
@@ -2512,7 +2503,7 @@ h4 {
       max-width: none !important;
     }
     .shopify-section:has(.product-media), .shopify-section:has(.shopify-block-product-media) {
-      grid-column-start: var(--col-start, 1);
+      grid-column: var(--col-start, 1) / span var(--col-span, 5);
       grid-row: var(--row-start, 1) / span var(--row-span, 2);
       align-self: stretch;
     }
@@ -2526,17 +2517,36 @@ h4 {
       align-self: start;
     }
     .shopify-section:has(.shopify-block-page-title), .shopify-section:has(.page-title) {
-      grid-column-start: var(--col-start, 9);
+      grid-column: var(--col-start, 6) / span var(--col-span, 3);
       grid-row: var(--row-start, auto);
     }
     .shopify-section:has(.product-price), .shopify-section:has(.shopify-block-product-price), .shopify-section:has(.product-customizer), .shopify-section:has(.shopify-block-product-customizer), .shopify-section:has(.product-variant-picker), .shopify-section:has(.shopify-block-product-variant-picker) {
-      grid-column: var(--col-start, 9) / span var(--col-span, 4);
+      grid-column: var(--col-start, 6) / span var(--col-span, 3);
       grid-row: var(--row-start, auto) / span var(--row-span, 1);
+    }
+    .shopify-section:has(.product-testimonial), .shopify-section:has(.shopify-block-product-testimonial), .shopify-section:has(.product-cross-sell), .shopify-section:has(.shopify-block-product-cross-sell), .shopify-section:has(.trust-checkmark), .shopify-section:has(.shopify-block-trust-checkmark), .shopify-section:has(.shopify-block-trust-countdown), .shopify-section:has(.product-accordions), .shopify-section:has(.shopify-block-product-accordions), .shopify-section:has(.accordion), .shopify-section:has(.shopify-block-accordion) {
+      grid-column: var(--col-start, 1) / span var(--col-span, 8);
+    }
+  }
+}
+@media (min-width: 1200px) {
+  .template-product #MainContent, #MainContent:has(.product-media), #MainContent:has(.shopify-block-product-media) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    .shopify-section:has(.product-media), .shopify-section:has(.shopify-block-product-media) {
+      grid-column: var(--col-start, 1) / span var(--col-span, 8);
+    }
+    .shopify-section:has(.shopify-block-page-title), .shopify-section:has(.page-title) {
+      grid-column: var(--col-start, 9) / span var(--col-span, 4);
+    }
+    .shopify-section:has(.product-price), .shopify-section:has(.shopify-block-product-price), .shopify-section:has(.product-customizer), .shopify-section:has(.shopify-block-product-customizer), .shopify-section:has(.product-variant-picker), .shopify-section:has(.shopify-block-product-variant-picker) {
+      grid-column: var(--col-start, 9) / span var(--col-span, 4);
     }
     .shopify-section:has(.product-testimonial), .shopify-section:has(.shopify-block-product-testimonial), .shopify-section:has(.product-cross-sell), .shopify-section:has(.shopify-block-product-cross-sell), .shopify-section:has(.trust-checkmark), .shopify-section:has(.shopify-block-trust-checkmark), .shopify-section:has(.shopify-block-trust-countdown), .shopify-section:has(.product-accordions), .shopify-section:has(.shopify-block-product-accordions), .shopify-section:has(.accordion), .shopify-section:has(.shopify-block-accordion) {
       grid-column: var(--col-start, 1) / span var(--col-span, 12);
     }
   }
+}
+@media (min-width: 840px) {
   .template-product .product-media-gallery, .product-media-gallery {
     border-radius: 1.5rem !important;
   }

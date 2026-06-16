@@ -26,7 +26,7 @@
      {{ block.shopify_attributes }}>
   <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
   <span id="countdown-content-{{ block.id }}">
-    {{ block.settings.text }} <span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">12.00</span>{{ block.settings.suffix }}
+    {{ block.settings.text }} <span class="font-bold">12.00</span>{{ block.settings.suffix }}
   </span>
 </div>
 
@@ -126,7 +126,7 @@
       
       // Clean up cutoff string format (e.g. replace ':' with '.') to match Danish style
       const formattedCutoff = config.cutoff.replace(':', '.');
-      const cutoffHtml = `<span class="font-mono font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">${formattedCutoff}</span>`;
+      const cutoffHtml = `<span class="font-bold">${formattedCutoff}</span>`;
       
       // Determine shipping day text
       let shippingDayText = '';
