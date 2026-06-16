@@ -272,6 +272,30 @@
             "padding_sides": 16
           },
           "blocks": {
+            "text_MVRqCe": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "<h3>Tilpas dugen</h3>",
+                "alignment": "left",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "product_price_BPpHAd": {
+              "type": "product-price",
+              "name": "Product Price",
+              "settings": {
+                "price_suffix": "pr. meter inkl. moms",
+                "price_subtext": "30 dages fuld returret, også på din dug.",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
             "product_customizer_6rahCU": {
               "type": "product-customizer",
               "name": "Product Customizer",
@@ -378,6 +402,8 @@
             }
           },
           "block_order": [
+            "text_MVRqCe",
+            "product_price_BPpHAd",
             "product_customizer_6rahCU",
             "product_buy_buttons_gFTjCi",
             "card_WQFRHd"
