@@ -801,6 +801,25 @@
 
     function getPricingVariant(currentVariant) {
       if (!variants || variants.length === 0) return fallbackVariant;
+
+      // In Simple Mode, directly match the variant for state.selectedStandardWidth
+      if (state && state.customizerMode === 'simple') {
+        const targetWidth = state.selectedStandardWidth;
+        const match = variants.find(v => {
+          if (v.title.toLowerCase().includes("tilpasset") || v.title.toLowerCase().includes("tilpas")) return false;
+          if (widthOptionIndex !== null) {
+            const wVal = v.options[widthOptionIndex];
+            if (wVal) {
+              const numMatch = wVal.match(/\d+/);
+              const num = numMatch ? parseInt(numMatch[0]) : 0;
+              return num === targetWidth;
+            }
+          }
+          return false;
+        });
+        if (match) return match;
+      }
+
       if (!currentVariant) currentVariant = getCurrentVariant();
       let pricingVariant = currentVariant;
       if (pricingVariant && pricingVariant.title && pricingVariant.title.toLowerCase().includes("tilpasset")) {
