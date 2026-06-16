@@ -1395,6 +1395,23 @@
         swatchesHtml += `</div>`;
       }
 
+      let shapeSwatchesHtml = "";
+      if (isMeterProduct) {
+        const currentForm = (product.form || "Firkantet").toLowerCase();
+        shapeSwatchesHtml = `
+          <div class="product-shape-swatches mt-3 space-y-2 border-t border-outline-variant/40 pt-2">
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[9px] font-bold text-primary/70 uppercase tracking-wider">Form: <span class="text-primary font-semibold font-sans normal-case text-[10px]">${product.form || "Firkantet"}</span></span>
+              <div class="flex flex-wrap gap-1.5 mt-0.5">
+                <a href="/products/firkantet-dug-1" class="px-2.5 py-1 text-[11px] rounded-xl border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center ${currentForm === 'firkantet' ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold' : 'border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80'}">Firkantet</a>
+                <a href="/products/afrunding" class="px-2.5 py-1 text-[11px] rounded-xl border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center ${currentForm === 'rund' ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold' : 'border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80'}">Rund</a>
+                <a href="/products/oval-dug" class="px-2.5 py-1 text-[11px] rounded-xl border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center ${currentForm === 'oval' ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold' : 'border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80'}">Oval</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
       const cardHtml = `
         <div class="product-card flex flex-col bg-transparent transition-all duration-300 group relative max-h-[420px] sm:max-h-none" data-product-id="${product.id}">
           
@@ -1449,6 +1466,7 @@
               </div>
 
               ${swatchesHtml}
+              ${shapeSwatchesHtml}
             </div>
 
             <!-- Price & Buy Button (No divider border) -->
