@@ -5,17 +5,25 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/search
 {% endcomment %}
 
-<h1>{{ 'search.title' | t }}</h1>
+<h1 class="font-serif text-3xl font-bold text-primary mb-6">{{ 'search.title' | t }}</h1>
 
-<form action="{{ routes.search_url }}" method="get" role="search">
-  <input
-    type="search"
-    size="50"
-    name="q"
-    value="{{ search.terms | escape }}"
-    placeholder="{{ 'search.placeholder' | t }}"
-  >
-  <button type="submit">{{ 'search.submit' | t }}</button>
+<form action="{{ routes.search_url }}" method="get" role="search" class="relative max-w-xl mb-8">
+  <div class="relative w-full">
+    <input
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ 'search.placeholder' | t }}"
+      class="w-full h-12 pl-5 pr-14 rounded-full border border-outline-variant text-base focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all"
+    >
+    <button 
+      type="submit" 
+      class="absolute right-1.5 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-primary text-on-primary flex items-center justify-center hover:opacity-90 transition-all cursor-pointer focus:outline-none"
+      aria-label="{{ 'search.submit' | t }}"
+    >
+      <span class="material-symbols-outlined text-xl">search</span>
+    </button>
+  </div>
 </form>
 
 {% if search.performed %}

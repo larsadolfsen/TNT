@@ -67,6 +67,7 @@
     --color-card-shade: {{ settings.background_shade_color_light | default: '#f9f9f9' }};
     --color-foreground: {{ settings.foreground_color_light | default: '#333333' }};
     --color-border: {{ settings.border_color_light | default: '#e2e8f0' }};
+    --color-surface-container: {{ settings.background_shade_color_light | default: '#f9f9f9' }};
   }
 
   .dark {
@@ -83,5 +84,6 @@
     --color-card-shade: {{ settings.background_shade_color_dark | default: '#142131' }};
     --color-foreground: {{ settings.foreground_color_dark | default: '#e2e8f0' }};
     --color-border: {{ settings.border_color_dark | default: '#253549' }};
+    --color-surface-container: {{ settings.background_shade_color_dark | default: '#142131' }};
   }
 {% endstyle %}

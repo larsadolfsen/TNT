@@ -75,14 +75,22 @@
       method="get" 
       class="relative m-0 {% unless show_search %}hidden{% endunless %} transition-all duration-300"
     >
-      <input 
-        type="text" 
-        name="q" 
-        id="search-input" 
-        class="w-full h-10 pl-10 pr-4 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container focus:outline-none" 
-        placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
-      />
-      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary/85 text-xl">search</span>
+      <div class="relative w-full">
+        <input 
+          type="text" 
+          name="q" 
+          id="search-input" 
+          class="w-full h-10 pl-4 pr-12 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
+          placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
+        />
+        <button 
+          type="submit" 
+          class="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-primary text-on-primary flex items-center justify-center hover:opacity-90 transition-all cursor-pointer focus:outline-none"
+          aria-label="Søg"
+        >
+          <span class="material-symbols-outlined text-lg">search</span>
+        </button>
+      </div>
     </form>
 
     <!-- Menu under search bar -->
