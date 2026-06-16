@@ -423,8 +423,8 @@
           "settings": {
             "hide_on_mobile": false,
             "hide_on_desktop": false,
-            "design": "none",
-            "background_color": "transparent",
+            "design": "border",
+            "background_color": "light",
             "grid_direction": "vertical",
             "block_gap": "12",
             "span_mobile": "4",
