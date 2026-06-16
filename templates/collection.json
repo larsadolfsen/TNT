@@ -12,6 +12,23 @@
     "collection-header": {
       "type": "section",
       "blocks": {
+        "group_y4UQRq": {
+          "type": "group",
+          "name": "t:general.column",
+          "settings": {
+            "span_mobile": "4",
+            "span_tablet": "4",
+            "span_desktop": "6",
+            "sticky": false,
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "align_left": false,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        },
         "page_title": {
           "type": "page-title",
           "settings": {
@@ -25,6 +42,7 @@
         }
       },
       "block_order": [
+        "group_y4UQRq",
         "page_title"
       ],
       "settings": {
@@ -52,48 +70,9 @@
         "border_top": false,
         "border_bottom": false
       }
-    },
-    "main-collection": {
-      "type": "main-collection",
-      "settings": {
-        "padding_top": 16,
-        "padding_bottom": 16
-      }
-    },
-    "collections_HznyAB": {
-      "type": "collections",
-      "name": "t:general.collections_grid",
-      "settings": {
-        "grid_item_width": "collections--compact",
-        "grid_gap": 10
-      }
-    },
-    "collection_subcategories_raqR4D": {
-      "type": "collection-subcategories",
-      "name": "Underkategorier",
-      "settings": {
-        "padding_top": 0,
-        "padding_bottom": 40
-      }
-    },
-    "collection_subcollections_q7XPxJ": {
-      "type": "collection-subcollections",
-      "name": "Underkollektioner Række",
-      "settings": {
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "title": "SØG UD FRA DIT BEHOV",
-        "mode": "automatic",
-        "main_collection": "",
-        "show_all_label": "Vis alle"
-      }
     }
   },
   "order": [
-    "collection-header",
-    "main-collection",
-    "collections_HznyAB",
-    "collection_subcategories_raqR4D",
-    "collection_subcollections_q7XPxJ"
+    "collection-header"
   ]
 }
