@@ -257,6 +257,7 @@
         <div class="flex flex-col w-full">
           <span id="label-table-dimensions" class="font-bold text-base uppercase tracking-wider text-primary">Indtast bordets mål</span>
           <p class="text-sm text-primary/85 mt-1">Indtast målene på dit bord, så beregner vi den ideelle dugstørrelse.</p>
+          <p class="text-sm text-primary/85 mt-1">Den maksimale bredde er <span id="max-table-width-display">--</span> cm.</p>
         </div>
       </div>
       
@@ -518,7 +519,7 @@
     </div>
 
     <!-- Selected Specs & Price (Calculation Table Summary) -->
-    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-outline-variant rounded-2xl pt-5 pb-4 px-4 text-sm text-primary/90" style="display: none; --span-mb: 4; --span-tb: 8; --span-lg: 12; --span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
+    <div id="buy-buttons-summary-container" class="flex flex-col text-left w-full border border-outline-variant rounded-2xl pt-5 pb-4 px-4 text-sm text-primary/90" style="background-color: var(--color-background); display: none; --span-mb: 4; --span-tb: 8; --span-lg: 12; --span-mobile: 4; --span-expanded: 8; --span-large: 12; grid-column-start: 1;">
       <!-- Title -->
       <div id="calc-title" class="mb-2 font-semibold text-primary"></div>
       
@@ -1191,6 +1192,10 @@
       // 1. Get sorted standard widths
       const stdWidths = getStandardWidths();
       const maxStdWidth = stdWidths[stdWidths.length - 1] || maxWidthLimit;
+      const maxTableWidthDisplay = document.getElementById("max-table-width-display");
+      if (maxTableWidthDisplay) {
+        maxTableWidthDisplay.textContent = maxStdWidth - 40;
+      }
 
       // 2. We recommend Table Width + 40 cm (20 cm overhang per side) and Table Length + 40 cm
       let targetWidth = Math.round((tw + 40) / 5) * 5;
@@ -1358,7 +1363,10 @@
     const btnTableLengthPlus = document.getElementById("btn-table-length-plus");
 
     function clampTableWidth(val) {
-      return Math.min(180, Math.max(50, val));
+      const stdWidths = getStandardWidths();
+      const maxStdWidth = stdWidths[stdWidths.length - 1] || maxWidthLimit;
+      const maxTableWidth = maxStdWidth - 40;
+      return Math.min(maxTableWidth, Math.max(50, val));
     }
     
     function clampTableLength(val) {
@@ -1469,6 +1477,58 @@
           } else {
             btnLengthMinus.disabled = false;
             btnLengthMinus.classList.remove("opacity-30", "pointer-events-none");
+          }
+        }
+
+        // Table width stepper plus/minus state in Simple Mode
+        const btnTableWidthPlus = document.getElementById("btn-table-width-plus");
+        const btnTableWidthMinus = document.getElementById("btn-table-width-minus");
+        if (btnTableWidthPlus || btnTableWidthMinus) {
+          const stdWidths = getStandardWidths();
+          const maxStdWidth = stdWidths[stdWidths.length - 1] || maxWidthLimit;
+          const maxTableWidth = maxStdWidth - 40;
+          
+          if (btnTableWidthPlus) {
+            if (state.tableWidth >= maxTableWidth) {
+              btnTableWidthPlus.disabled = true;
+              btnTableWidthPlus.classList.add("opacity-30", "pointer-events-none");
+            } else {
+              btnTableWidthPlus.disabled = false;
+              btnTableWidthPlus.classList.remove("opacity-30", "pointer-events-none");
+            }
+          }
+          if (btnTableWidthMinus) {
+            if (state.tableWidth <= 50) {
+              btnTableWidthMinus.disabled = true;
+              btnTableWidthMinus.classList.add("opacity-30", "pointer-events-none");
+            } else {
+              btnTableWidthMinus.disabled = false;
+              btnTableWidthMinus.classList.remove("opacity-30", "pointer-events-none");
+            }
+          }
+        }
+
+        // Table length stepper plus/minus state in Simple Mode
+        const btnTableLengthPlus = document.getElementById("btn-table-length-plus");
+        const btnTableLengthMinus = document.getElementById("btn-table-length-minus");
+        if (btnTableLengthPlus || btnTableLengthMinus) {
+          if (btnTableLengthPlus) {
+            if (state.tableLength >= 400) {
+              btnTableLengthPlus.disabled = true;
+              btnTableLengthPlus.classList.add("opacity-30", "pointer-events-none");
+            } else {
+              btnTableLengthPlus.disabled = false;
+              btnTableLengthPlus.classList.remove("opacity-30", "pointer-events-none");
+            }
+          }
+          if (btnTableLengthMinus) {
+            if (state.tableLength <= 50) {
+              btnTableLengthMinus.disabled = true;
+              btnTableLengthMinus.classList.add("opacity-30", "pointer-events-none");
+            } else {
+              btnTableLengthMinus.disabled = false;
+              btnTableLengthMinus.classList.remove("opacity-30", "pointer-events-none");
+            }
           }
         }
 
@@ -1715,7 +1775,7 @@
           }
 
           if (calcMetervareLabel) {
-            const labelText = (selectedShape === 'rund') ? 'Diameter' : 'Længde';
+            const labelText = (selectedShape === 'rund') ? 'Diameter (tilpasset til længden)' : 'Længde (tilpasset til længden)';
             calcMetervareLabel.textContent = `${labelText}: ${state.length} cm`;
           }
           
@@ -1744,7 +1804,11 @@
               calcWidthRow.style.display = "flex";
               const tableclothWidth = state.width;
               if (calcWidthLabel) {
-                calcWidthLabel.textContent = `Bredde: ${tableclothWidth} cm`;
+                if (isWidthAdjusted) {
+                  calcWidthLabel.textContent = `Bredde (tilpasset): ${tableclothWidth} cm`;
+                } else {
+                  calcWidthLabel.textContent = `Bredde: ${tableclothWidth} cm`;
+                }
               }
               if (calcWidthPrice) {
                 const surchargePrice = isWidthAdjusted ? (widthSurchargeData.price || 0) : 0;
@@ -2097,10 +2161,14 @@
         };
 
         if (selectedShape === 'rund') {
-          itemToAdd.properties["Diameter"] = `${state.length} cm`;
+          itemToAdd.properties["Diameter (tilpasset til længden)"] = `${state.length} cm`;
         } else {
-          itemToAdd.properties["Længde"] = `${state.length} cm`;
-          itemToAdd.properties["Bredde"] = `${finalWidth} cm`;
+          itemToAdd.properties["Længde (tilpasset til længden)"] = `${state.length} cm`;
+          if (isWidthAdjusted) {
+            itemToAdd.properties["Bredde (tilpasset)"] = `${finalWidth} cm`;
+          } else {
+            itemToAdd.properties["Bredde"] = `${finalWidth} cm`;
+          }
         }
 
         if (shapeVariantId) {
