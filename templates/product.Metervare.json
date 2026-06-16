@@ -287,7 +287,7 @@
                 "rund_label": "Rund",
                 "oval_label": "Oval",
                 "simple_heading": "Indtast bordets mål",
-                "simple_description": "Vi lægger automatisk 20 cm nedhæng til på hver side. Bordets maksimale bredde er [max_width] cm.",
+                "simple_description": "Vi lægger 20 cm nedhæng til på hver side. Bordets maksimale bredde er [max_width] cm.",
                 "simple_width_label": "Bordets bredde",
                 "simple_diameter_label": "Bordets diameter",
                 "simple_length_label": "Bordets længde",
