@@ -255,7 +255,7 @@
           "settings": {
             "hide_on_mobile": false,
             "hide_on_desktop": false,
-            "design": "raised",
+            "design": "border",
             "background_color": "light",
             "grid_direction": "vertical",
             "block_gap": "",
