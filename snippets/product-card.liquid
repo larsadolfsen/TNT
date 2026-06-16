@@ -110,7 +110,7 @@
           </h3>
         {%- endif -%}
         
-        <div class="product-savings-container mt-1">
+        <div class="product-savings-container flex items-center mt-2 mb-2">
           {%- unless settings.disable_savings_badge -%}
             {%- if original_price > price -%}
               {%- assign savings = original_price | minus: price | times: 100 | divided_by: original_price -%}
