@@ -280,7 +280,7 @@
               "name": "Product Price",
               "settings": {
                 "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "",
+                "price_subtext": "Fri fragt fra 599,00 kr.",
                 "padding_top": 0,
                 "padding_bottom": 0,
                 "padding_sides": 0
