@@ -123,7 +123,7 @@
           <div class="flex items-center gap-2">
             <!-- Sortering -->
             <div class="relative">
-              <select id="sort-select" onchange="filterProducts()" class="text-xs border border-outline-variant rounded-xl bg-surface-container py-2 pl-3 pr-8 focus:ring-1 focus:ring-primary focus:border-primary text-primary font-semibold cursor-pointer">
+              <select id="sort-select" onchange="filterProducts()" class="text-xs border border-outline-variant rounded-full bg-slate-100 py-2 pl-4 pr-8 focus:ring-1 focus:ring-primary focus:border-primary text-primary font-semibold cursor-pointer">
                 {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
                 {%- for option in collection.sort_options -%}
                   <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name }}</option>
@@ -132,7 +132,7 @@
             </div>
 
             <!-- Mobil Filter Knap -->
-            <button onclick="toggleMobileFilter(true)" class="lg:hidden flex items-center gap-2 border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-xs text-primary font-semibold bg-transparent cursor-pointer">
+            <button onclick="toggleMobileFilter(true)" class="lg:hidden flex items-center gap-2 border border-outline-variant rounded-full bg-slate-100 py-2 px-4 text-xs text-primary font-semibold cursor-pointer">
               <span class="material-symbols-outlined text-sm">filter_list</span>
               Filtrer
             </button>
