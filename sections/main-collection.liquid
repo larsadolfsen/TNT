@@ -22,193 +22,8 @@
         <h2 class="text-base font-semibold text-primary m-0 font-sans">Filtre</h2>
       </div>
 
-      <div class="space-y-6">
-        {%- for block in section.blocks -%}
-          {%- liquid
-            assign block_title = block.settings.title
-            assign block_type = block.settings.filter_type
-            assign block_key = block.settings.key | strip | downcase
-            assign block_mapping = block.settings.display_mapping
-            
-            # Extract unique values for this filter from all products
-            assign values_list_str = ""
-          -%}
-          
-          {%- if block_type == 'price' -%}
-            <!-- Filter: Pris -->
-            <div {{ block.shopify_attributes }} class="filter-block">
-              <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
-                <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">{{ block_title }}</h3>
-                <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
-              </div>
-              <div class="flex items-center gap-2 filter-content">
-                <input type="number" id="price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-                <span class="text-xs text-primary/85">-</span>
-                <input type="number" id="price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-              </div>
-            </div>
-            {%- continue -%}
-          {%- endif -%}
-
-          {%- paginate collection.products by 250 -%}
-            {%- for product in collection.products -%}
-              {%- liquid
-                assign val = ""
-                if block_type == 'tag'
-                  for tag in product.tags
-                    assign tag_down = tag | downcase
-                    assign check_prefix = block_key | append: ':'
-                    if tag_down contains check_prefix
-                      assign val = tag | remove_first: check_prefix | strip
-                      assign first_char = block_key | slice: 0 | upcase
-                      assign rest = block_key | slice: 1, block_key.size
-                      assign title_key = first_char | append: rest | append: ':'
-                      assign val = val | remove_first: title_key | strip
-                    endif
-                  endfor
-                elsif block_type == 'option'
-                  for option in product.options_with_values
-                    assign option_name = option.name | downcase
-                    if option_name contains block_key
-                      assign opt_index = forloop.index0
-                      assign variant = product.first_available_variant | default: product.variants[0]
-                      assign val = variant.options[opt_index]
-                    endif
-                  endfor
-                endif
-
-                if val != blank
-                  assign check_val = val | prepend: '|' | append: '|'
-                  unless values_list_str contains check_val
-                    assign values_list_str = values_list_str | append: val | append: '|'
-                  endunless
-                endif
-              -%}
-            {%- endfor -%}
-          {%- endpaginate -%}
-
-          {%- liquid
-            assign raw_values = values_list_str | split: '|' | compact
-            
-            # Fallbacks for empty collections
-            if raw_values == empty or raw_values.size == 0
-              if block_key contains 'tykkelse' or block_key contains 'thick'
-                assign raw_values = "0,8 mm|1,2 mm|2,0 mm" | split: "|"
-              elsif block_key contains 'bredde' or block_key contains 'width' or block_key contains 'størrelse' or block_key contains 'size'
-                assign raw_values = "41x33 cm|80 cm|90 cm|100 cm|140 cm" | split: "|"
-              elsif block_key contains 'form' or block_key contains 'type'
-                assign raw_values = "Firkantet|Rund|Dækkeserviet" | split: "|"
-              endif
-            endif
-
-            assign is_thickness = false
-            assign is_width = false
-            if block_key contains 'tykkelse' or block_key contains 'thick'
-              assign is_thickness = true
-            elsif block_key contains 'bredde' or block_key contains 'width' or block_key contains 'størrelse' or block_key contains 'size'
-              assign is_width = true
-            endif
-
-            if is_thickness
-              assign values_padded_list = ""
-              for v in raw_values
-                if v == blank
-                  continue
-                endif
-                assign v_num_str = v | replace: ',', '.' | split: ' ' | first
-                assign v_num = v_num_str | plus: 0
-                assign v_num_int = v_num | times: 10 | plus: 0
-                if v_num_int < 10
-                  assign padded = "000" | append: v_num_int
-                elsif v_num_int < 100
-                  assign padded = "00" | append: v_num_int
-                elsif v_num_int < 1000
-                  assign padded = "0" | append: v_num_int
-                else
-                  assign padded = v_num_int
-                endif
-                assign values_padded_list = values_padded_list | append: padded | append: ':' | append: v | append: '|'
-              endfor
-              assign values_padded_arr = values_padded_list | split: '|' | sort
-              assign sorted_values = ""
-              for item in values_padded_arr
-                if item == blank
-                  continue
-                endif
-                assign real_val = item | split: ':' | last
-                assign sorted_values = sorted_values | append: real_val | append: '|'
-              endfor
-              assign sorted_values = sorted_values | split: '|' | compact
-            elsif is_width
-              assign values_padded_list = ""
-              for v in raw_values
-                if v == blank
-                  continue
-                endif
-                if v contains 'x'
-                  assign parts = v | split: 'x'
-                  assign v_num_str = parts[0]
-                else
-                  assign parts = v | split: ' '
-                  assign v_num_str = parts[0]
-                endif
-                assign v_num = v_num_str | plus: 0
-                if v_num < 10
-                  assign padded = "000" | append: v_num
-                elsif v_num < 100
-                  assign padded = "00" | append: v_num
-                elsif v_num < 1000
-                  assign padded = "0" | append: v_num
-                else
-                  assign padded = v_num
-                endif
-                assign values_padded_list = values_padded_list | append: padded | append: ':' | append: v | append: '|'
-              endfor
-              assign values_padded_arr = values_padded_list | split: '|' | sort
-              assign sorted_values = ""
-              for item in values_padded_arr
-                if item == blank
-                  continue
-                endif
-                assign real_val = item | split: ':' | last
-                assign sorted_values = sorted_values | append: real_val | append: '|'
-              endfor
-              assign sorted_values = sorted_values | split: '|' | compact
-            else
-              assign sorted_values = raw_values | sort
-            endif
-          -%}
-
-          {%- if sorted_values.size > 0 -%}
-            <!-- Filter: {{ block_title }} -->
-            <div {{ block.shopify_attributes }} class="filter-block">
-              <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
-                <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">{{ block_title }}</h3>
-                <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
-              </div>
-              <div class="space-y-2 filter-content">
-                {%- for val in sorted_values -%}
-                  {%- liquid
-                    assign display_val = val
-                    if block_mapping == 'width' and val == '41x33 cm'
-                      assign display_val = '41x33 cm (Dækkeserviet)'
-                    elsif block_mapping == 'form'
-                      if val == 'Firkantet'
-                        assign display_val = 'Firkantet (Rulle)'
-                      elsif val == 'Rund'
-                        assign display_val = 'Rund skåret'
-                      endif
-                    endif
-                  -%}
-                  <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer filter-label transition-all">
-                    <input type="checkbox" name="{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="filter-checkbox rounded border-outline-variant text-primary focus:ring-primary"/>
-                    <span>{{ display_val }} <span class="filter-count text-xs text-primary/60 ml-0.5">(0)</span></span>
-                  </label>
-                {%- endfor -%}
-              </div>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
+      <div id="desktop-filters" class="space-y-6">
+        <!-- Generated dynamically in Javascript -->
       </div>
     </aside>
 
@@ -226,11 +41,7 @@
             <!-- Sortering -->
             <div class="relative">
               <select id="sort-select" onchange="filterProducts()" class="text-xs border border-outline-variant rounded-xl bg-surface-container py-2 pl-3 pr-8 focus:ring-1 focus:ring-primary focus:border-primary text-primary font-semibold cursor-pointer">
-                <option value="popularity">Mest populære</option>
-                <option value="price-asc">Pris: Lav til høj</option>
-                <option value="price-desc">Pris: Høj til lav</option>
-                <option value="rating-desc">Brugerbedømmelse</option>
-                <option value="newest">Nyeste</option>
+                <!-- Generated dynamically in Javascript -->
               </select>
             </div>
 
@@ -267,198 +78,12 @@
         <button onclick="toggleMobileFilter(false)" class="material-symbols-outlined text-2xl text-primary bg-transparent border-0 cursor-pointer" aria-label="Luk filtre">close</button>
       </div>
       
-      <div class="space-y-6 overflow-y-auto max-h-[calc(100vh-200px)] pr-2 hide-scrollbar">
-        {%- for block in section.blocks -%}
-          {%- liquid
-            assign block_title = block.settings.title
-            assign block_type = block.settings.filter_type
-            assign block_key = block.settings.key | strip | downcase
-            assign block_mapping = block.settings.display_mapping
-            
-            # Extract unique values for this filter from all products
-            assign values_list_str = ""
-          -%}
-          
-          {%- if block_type == 'price' -%}
-            <!-- Filter: Pris -->
-            <div {{ block.shopify_attributes }} class="filter-block">
-              <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
-                <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">{{ block_title }}</h3>
-                <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
-              </div>
-              <div class="flex items-center gap-2 filter-content">
-                <input type="number" id="mobile-price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-                <span class="text-xs text-primary/85">-</span>
-                <input type="number" id="mobile-price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
-              </div>
-            </div>
-            {%- continue -%}
-          {%- endif -%}
-
-          {%- paginate collection.products by 250 -%}
-            {%- for product in collection.products -%}
-              {%- liquid
-                assign val = ""
-                if block_type == 'tag'
-                  for tag in product.tags
-                    assign tag_down = tag | downcase
-                    assign check_prefix = block_key | append: ':'
-                    if tag_down contains check_prefix
-                      assign val = tag | remove_first: check_prefix | strip
-                      assign first_char = block_key | slice: 0 | upcase
-                      assign rest = block_key | slice: 1, block_key.size
-                      assign title_key = first_char | append: rest | append: ':'
-                      assign val = val | remove_first: title_key | strip
-                    endif
-                  endfor
-                elsif block_type == 'option'
-                  for option in product.options_with_values
-                    assign option_name = option.name | downcase
-                    if option_name contains block_key
-                      assign opt_index = forloop.index0
-                      assign variant = product.first_available_variant | default: product.variants[0]
-                      assign val = variant.options[opt_index]
-                    endif
-                  endfor
-                endif
-
-                if val != blank
-                  assign check_val = val | prepend: '|' | append: '|'
-                  unless values_list_str contains check_val
-                    assign values_list_str = values_list_str | append: val | append: '|'
-                  endunless
-                endif
-              -%}
-            {%- endfor -%}
-          {%- endpaginate -%}
-
-          {%- liquid
-            assign raw_values = values_list_str | split: '|' | compact
-            
-            # Fallbacks for empty collections
-            if raw_values == empty or raw_values.size == 0
-              if block_key contains 'tykkelse' or block_key contains 'thick'
-                assign raw_values = "0,8 mm|1,2 mm|2,0 mm" | split: "|"
-              elsif block_key contains 'bredde' or block_key contains 'width' or block_key contains 'størrelse' or block_key contains 'size'
-                assign raw_values = "41x33 cm|80 cm|90 cm|100 cm|140 cm" | split: "|"
-              elsif block_key contains 'form' or block_key contains 'type'
-                assign raw_values = "Firkantet|Rund|Dækkeserviet" | split: "|"
-              endif
-            endif
-
-            assign is_thickness = false
-            assign is_width = false
-            if block_key contains 'tykkelse' or block_key contains 'thick'
-              assign is_thickness = true
-            elsif block_key contains 'bredde' or block_key contains 'width' or block_key contains 'størrelse' or block_key contains 'size'
-              assign is_width = true
-            endif
-
-            if is_thickness
-              assign values_padded_list = ""
-              for v in raw_values
-                if v == blank
-                  continue
-                endif
-                assign v_num_str = v | replace: ',', '.' | split: ' ' | first
-                assign v_num = v_num_str | plus: 0
-                assign v_num_int = v_num | times: 10 | plus: 0
-                if v_num_int < 10
-                  assign padded = "000" | append: v_num_int
-                elsif v_num_int < 100
-                  assign padded = "00" | append: v_num_int
-                elsif v_num_int < 1000
-                  assign padded = "0" | append: v_num_int
-                else
-                  assign padded = v_num_int
-                endif
-                assign values_padded_list = values_padded_list | append: padded | append: ':' | append: v | append: '|'
-              endfor
-              assign values_padded_arr = values_padded_list | split: '|' | sort
-              assign sorted_values = ""
-              for item in values_padded_arr
-                if item == blank
-                  continue
-                endif
-                assign real_val = item | split: ':' | last
-                assign sorted_values = sorted_values | append: real_val | append: '|'
-              endfor
-              assign sorted_values = sorted_values | split: '|' | compact
-            elsif is_width
-              assign values_padded_list = ""
-              for v in raw_values
-                if v == blank
-                  continue
-                endif
-                if v contains 'x'
-                  assign parts = v | split: 'x'
-                  assign v_num_str = parts[0]
-                else
-                  assign parts = v | split: ' '
-                  assign v_num_str = parts[0]
-                endif
-                assign v_num = v_num_str | plus: 0
-                if v_num < 10
-                  assign padded = "000" | append: v_num
-                elsif v_num < 100
-                  assign padded = "00" | append: v_num
-                elsif v_num < 1000
-                  assign padded = "0" | append: v_num
-                else
-                  assign padded = v_num
-                endif
-                assign values_padded_list = values_padded_list | append: padded | append: ':' | append: v | append: '|'
-              endfor
-              assign values_padded_arr = values_padded_list | split: '|' | sort
-              assign sorted_values = ""
-              for item in values_padded_arr
-                if item == blank
-                  continue
-                endif
-                assign real_val = item | split: ':' | last
-                assign sorted_values = sorted_values | append: real_val | append: '|'
-              endfor
-              assign sorted_values = sorted_values | split: '|' | compact
-            else
-              assign sorted_values = raw_values | sort
-            endif
-          -%}
-
-          {%- if sorted_values.size > 0 -%}
-            <!-- Filter: {{ block_title }} -->
-            <div {{ block.shopify_attributes }} class="filter-block">
-              <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
-                <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">{{ block_title }}</h3>
-                <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
-              </div>
-              <div class="space-y-2 filter-content">
-                {%- for val in sorted_values -%}
-                  {%- liquid
-                    assign display_val = val
-                    if block_mapping == 'width' and val == '41x33 cm'
-                      assign display_val = '41x33 cm (Dækkeserviet)'
-                    elsif block_mapping == 'form'
-                      if val == 'Firkantet'
-                        assign display_val = 'Firkantet (Rulle)'
-                      elsif val == 'Rund'
-                        assign display_val = 'Rund skåret'
-                      endif
-                    endif
-                  -%}
-                  <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer filter-label transition-all">
-                    <input type="checkbox" name="mobile-{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="filter-checkbox rounded border-outline-variant text-primary focus:ring-primary"/>
-                    <span>{{ display_val }} <span class="filter-count text-xs text-primary/60 ml-0.5">(0)</span></span>
-                  </label>
-                {%- endfor -%}
-              </div>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
+      <div id="mobile-filters" class="space-y-6 overflow-y-auto max-h-[calc(100vh-200px)] pr-2 hide-scrollbar">
+        <!-- Generated dynamically in Javascript -->
       </div>
     </div>
-    <div class="pt-4 border-t border-outline-variant flex gap-3">
-      <button onclick="clearAllFilters()" class="flex-1 py-3 border border-outline-variant rounded-xl text-xs font-bold text-primary bg-transparent cursor-pointer">Ryd alle</button>
-      <button id="mobile-apply-btn" onclick="toggleMobileFilter(false)" class="flex-1 py-3 bg-primary text-on-primary rounded-xl text-xs font-bold border-0 cursor-pointer">Vis resultater</button>
+    <div class="pt-4 border-t border-outline-variant">
+      <button onclick="clearAllFilters()" class="w-full py-3 border border-outline-variant rounded-xl text-xs font-bold text-primary bg-transparent cursor-pointer">Ryd alle</button>
     </div>
   </div>
 </div>
@@ -519,6 +144,7 @@
           "id": {{ variant.id | json }},
           "title": {{ product.title | json }},
           "type": {{ product.type | json }},
+          "vendor": {{ product.vendor | json }},
           "price": {{ price }},
           "price_formatted": {{ display_price_cents | money | json }},
           "originalPrice": {{ originalPrice }},
@@ -529,8 +155,8 @@
           "width": {{ width | json }},
           "form": {{ form | json }},
           "badge": {{ badge | json }},
-          "rating": 4.8,
-          "reviews": 12,
+          "rating": {{ product.metafields.reviews.rating.value.rating | default: 4.8 | json }},
+          "reviews": {{ product.metafields.reviews.rating_count.value | default: 12 | json }},
           "popularity": {{ forloop.index }},
           "tags": {{ product.tags | json }},
           "options": {
@@ -621,6 +247,7 @@
       reviews: 38,
       popularity: 95,
       url: "#",
+      vendor: "Pure Shield",
       options: {
         "Farve": "Gennemsigtig",
         "Bredde": "140 cm"
@@ -692,6 +319,7 @@
       reviews: 52,
       popularity: 88,
       url: "#",
+      vendor: "Soft Transparens",
       options: {
         "Tykkelse": "0,8 mm",
         "Bredde": "140 cm"
@@ -763,6 +391,7 @@
       reviews: 17,
       popularity: 82,
       url: "#",
+      vendor: "Cirkel Shield",
       options: {
         "Tykkelse": "2,0 mm",
         "Bredde": "100 cm"
@@ -833,7 +462,8 @@
       rating: 4.6,
       reviews: 29,
       popularity: 76,
-      url: "#"
+      url: "#",
+      vendor: "Organic Raw"
     },
     {
       id: 5,
@@ -850,7 +480,8 @@
       rating: 4.5,
       reviews: 12,
       popularity: 64,
-      url: "#"
+      url: "#",
+      vendor: "Klar Voksdug"
     },
     {
       id: 6,
@@ -867,7 +498,8 @@
       rating: 4.4,
       reviews: 8,
       popularity: 60,
-      url: "#"
+      url: "#",
+      vendor: "Medium Protector"
     },
     {
       id: 7,
@@ -884,7 +516,8 @@
       rating: 4.7,
       reviews: 22,
       popularity: 70,
-      url: "#"
+      url: "#",
+      vendor: "Soft Circle"
     },
     {
       id: 8,
@@ -901,7 +534,8 @@
       rating: 4.3,
       reviews: 14,
       popularity: 55,
-      url: "#"
+      url: "#",
+      vendor: "Bred Bordbeskyttelse"
     }
   ];
 
@@ -922,187 +556,360 @@
   const productGrid = document.getElementById("product-grid");
   const productCountDisplay = document.getElementById("product-count-display");
   const searchInput = document.getElementById("search-input");
+  
+  let isInitialCountRun = true;
 
-  // Run immediately since DOM elements are already parsed above the script
+  // Initialize filters & sorting
+  renderFilterBlocks();
+  renderSortOptions();
   filterProducts();
   truncateFilterLists();
+  
+  // Disable initial count run check flag
+  isInitialCountRun = false;
 
   window.onload = function() {
+    isInitialCountRun = true;
+    renderFilterBlocks();
+    renderSortOptions();
     filterProducts();
     truncateFilterLists();
+    isInitialCountRun = false;
   };
 
-  function syncFilters(changedInput) {
-    const name = changedInput.name;
-    const value = changedInput.value;
-    const isChecked = changedInput.checked;
+  function getProductValuesForKeyAll(product, filterKey) {
+    const values = new Set();
     
-    let counterpartName;
-    if (name.startsWith('mobile-')) {
-      counterpartName = name.replace('mobile-', '');
-    } else {
-      counterpartName = 'mobile-' + name;
-    }
-
-    const counterparts = document.querySelectorAll(`input[name="${counterpartName}"][value="${value}"]`);
-    counterparts.forEach(el => el.checked = isChecked);
-
-    filterProducts();
-  }
-
-  function syncPriceFilters(changedInput) {
-    const id = changedInput.id;
-    const val = changedInput.value;
-    if (id === 'price-min') {
-      const el = document.getElementById('mobile-price-min');
-      if (el) el.value = val;
-    } else if (id === 'price-max') {
-      const el = document.getElementById('mobile-price-max');
-      if (el) el.value = val;
-    } else if (id === 'mobile-price-min') {
-      const el = document.getElementById('price-min');
-      if (el) el.value = val;
-    } else if (id === 'mobile-price-max') {
-      const el = document.getElementById('price-max');
-      if (el) el.value = val;
-    }
-    filterProducts();
-  }
-
-  function getSelectedFilters() {
-    const filters = {};
-    const checkedCheckboxes = document.querySelectorAll('input.filter-checkbox:checked');
-    checkedCheckboxes.forEach(cb => {
-      let name = cb.name;
-      if (name.startsWith('mobile-')) {
-        name = name.replace('mobile-', '');
-      }
-      if (!filters[name]) {
-        filters[name] = [];
-      }
-      if (!filters[name].includes(cb.value)) {
-        filters[name].push(cb.value);
-      }
-    });
-    return filters;
-  }
-
-  function removeFilterChip(key, value) {
-    const inputs = document.querySelectorAll(`input[name="${key}"][value="${value}"], input[name="mobile-${key}"][value="${value}"]`);
-    inputs.forEach(input => {
-      input.checked = false;
-    });
-    filterProducts();
-  }
-
-  function removePriceFilterChip() {
-    ['price-min', 'price-max', 'mobile-price-min', 'mobile-price-max'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = "";
-    });
-    filterProducts();
-  }
-
-  function getProductValueForKey(product, filterKey) {
-    let productValue = "";
-    if (filterKey === 'tykkelse') {
-      productValue = product.thickness;
-    } else if (filterKey === 'bredde') {
-      productValue = product.width;
-    } else if (filterKey === 'form') {
-      productValue = product.form;
-    }
-    if (!productValue) {
-      const tagPrefix = filterKey.toLowerCase() + ":";
-      if (product.tags) {
-        const matchingTag = product.tags.find(t => t.toLowerCase().startsWith(tagPrefix));
-        if (matchingTag) {
-          productValue = matchingTag.substring(tagPrefix.length).trim();
-        }
-      }
-    }
-    if (!productValue && product.options) {
-      const optName = Object.keys(product.options).find(k => k.toLowerCase().includes(filterKey.toLowerCase()));
-      if (optName) {
-        productValue = product.options[optName];
-      }
-    }
-    return productValue;
-  }
-
-  function updateFilterCounts() {
-    const activeFilters = getSelectedFilters();
-    const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    // 1. Direct fields
+    if (filterKey === 'tykkelse' && product.thickness) values.add(product.thickness);
+    if (filterKey === 'bredde' && product.width) values.add(product.width);
+    if (filterKey === 'form' && product.form) values.add(product.form);
     
-    const minPriceInput = document.getElementById("price-min");
-    const maxPriceInput = document.getElementById("price-max");
-    const minPrice = minPriceInput && minPriceInput.value ? parseFloat(minPriceInput.value) : 0;
-    const maxPrice = maxPriceInput && maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
-
-    const checkboxes = document.querySelectorAll('input.filter-checkbox');
-    checkboxes.forEach(cb => {
-      let name = cb.name;
-      if (name.startsWith('mobile-')) {
-        name = name.replace('mobile-', '');
-      }
-      const val = cb.value;
-
-      const tempFilters = {};
-      for (const k in activeFilters) {
-        if (k !== name) {
-          tempFilters[k] = activeFilters[k];
-        }
-      }
-
-      let count = 0;
-      products.forEach(product => {
-        if (product.price < minPrice || product.price > maxPrice) return;
-
-        if (searchQuery) {
-          const matchesTitle = product.title.toLowerCase().includes(searchQuery);
-          const matchesThickness = product.thickness ? product.thickness.toLowerCase().includes(searchQuery) : false;
-          const matchesForm = product.form ? product.form.toLowerCase().includes(searchQuery) : false;
-          if (!matchesTitle && !matchesThickness && !matchesForm) return;
-        }
-
-        for (const fk in tempFilters) {
-          const selectedVals = tempFilters[fk];
-          if (selectedVals.length === 0) continue;
-          
-          let pVal = getProductValueForKey(product, fk);
-          if (!pVal || !selectedVals.includes(pVal)) return;
-        }
-
-        let currentPVal = getProductValueForKey(product, name);
-        if (currentPVal === val) {
-          count++;
+    // 2. Tags
+    const tagPrefix = filterKey.toLowerCase() + ":";
+    if (product.tags) {
+      product.tags.forEach(t => {
+        if (t.toLowerCase().startsWith(tagPrefix)) {
+          values.add(t.substring(tagPrefix.length).trim());
         }
       });
-
-      const label = cb.closest('label');
-      let countSpan = cb.parentNode.querySelector('.filter-count');
-      if (countSpan) {
-        countSpan.textContent = ` (${count})`;
+    }
+    
+    // 3. Main options
+    if (product.options) {
+      const optName = Object.keys(product.options).find(k => k.toLowerCase().includes(filterKey.toLowerCase()));
+      if (optName && product.options[optName]) {
+        values.add(product.options[optName]);
       }
+    }
+    
+    // 4. Variant options (variations)
+    if (product.variants && product.variants.length > 0) {
+      product.variants.forEach(v => {
+        if (v.options) {
+          const optName = Object.keys(v.options).find(k => k.toLowerCase().includes(filterKey.toLowerCase()));
+          if (optName && v.options[optName]) {
+            values.add(v.options[optName]);
+          }
+        }
+      });
+    }
 
-      if (count === 0 && !cb.checked) {
-        cb.disabled = true;
-        if (label) {
-          label.classList.add('opacity-40', 'cursor-not-allowed', 'pointer-events-none');
+    // 5. options_with_values
+    if (product.options_with_values) {
+      product.options_with_values.forEach(opt => {
+        if (opt.name.toLowerCase().includes(filterKey.toLowerCase())) {
+          opt.values.forEach(val => values.add(val));
         }
-      } else {
-        cb.disabled = false;
-        if (label) {
-          label.classList.remove('opacity-40', 'cursor-not-allowed', 'pointer-events-none');
+      });
+    }
+
+    // 6. Brand (vendor)
+    if (filterKey === 'brand' && product.vendor) {
+      values.add(product.vendor);
+    }
+
+    // 7. Rating thresholds
+    if (filterKey === 'rating') {
+      const r = parseFloat(product.rating) || 0;
+      if (r >= 4.5) values.add('4.5');
+      if (r >= 4.0) values.add('4.0');
+      if (r >= 3.5) values.add('3.5');
+    }
+    
+    return Array.from(values);
+  }
+
+  function renderFilterBlocks() {
+    const desktopContainer = document.getElementById('desktop-filters');
+    const mobileContainer = document.getElementById('mobile-filters');
+    if (!desktopContainer || !mobileContainer) return;
+
+    desktopContainer.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    const filtersToRender = [];
+
+    // 1. Price
+    const prices = products.map(p => p.price);
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    if (prices.length > 0 && maxPrice > minPrice) {
+      filtersToRender.push({
+        key: 'price',
+        title: 'Pris',
+        type: 'price',
+        min: minPrice,
+        max: maxPrice
+      });
+    }
+
+    // Helper to get option values
+    function getOptionValues(optionNames) {
+      const vals = new Set();
+      products.forEach(p => {
+        if (p.options_with_values) {
+          p.options_with_values.forEach(opt => {
+            if (optionNames.includes(opt.name.toLowerCase())) {
+              opt.values.forEach(v => vals.add(v));
+            }
+          });
         }
+        if (p.options) {
+          Object.keys(p.options).forEach(k => {
+            if (optionNames.includes(k.toLowerCase())) {
+              vals.add(p.options[k]);
+            }
+          });
+        }
+        if (p.variants) {
+          p.variants.forEach(v => {
+            if (v.options) {
+              Object.keys(v.options).forEach(k => {
+                if (optionNames.includes(k.toLowerCase())) {
+                  vals.add(v.options[k]);
+                }
+              });
+            }
+          });
+        }
+      });
+      return Array.from(vals).filter(v => v && v.trim() !== '');
+    }
+
+    // 2. Color (Farve)
+    const colors = getOptionValues(['farve', 'color', 'colour', 'mønster']);
+    if (colors.length > 0) {
+      filtersToRender.push({
+        key: 'farve',
+        title: 'Farve',
+        type: 'checkbox',
+        values: colors.sort()
+      });
+    }
+
+    // 3. Size (Størrelse / Bredde)
+    const sizes = getOptionValues(['størrelse', 'size', 'bredde', 'width', 'længde', 'length']);
+    if (sizes.length === 0) {
+      const widthSet = new Set();
+      products.forEach(p => {
+        if (p.width) widthSet.add(p.width);
+      });
+      if (widthSet.size > 0) {
+        sizes.push(...Array.from(widthSet));
       }
+    }
+    if (sizes.length > 0) {
+      sizes.sort((a, b) => {
+        const aNum = parseFloat(a.replace(',', '.')) || 0;
+        const bNum = parseFloat(b.replace(',', '.')) || 0;
+        return aNum - bNum;
+      });
+      filtersToRender.push({
+        key: 'størrelse',
+        title: 'Størrelse',
+        type: 'checkbox',
+        values: sizes
+      });
+    }
+
+    // 4. Tykkelse
+    const thicknesses = getOptionValues(['tykkelse', 'thickness']);
+    if (thicknesses.length === 0) {
+      const thickSet = new Set();
+      products.forEach(p => {
+        if (p.thickness) thickSet.add(p.thickness);
+      });
+      if (thickSet.size > 0) {
+        thicknesses.push(...Array.from(thickSet));
+      }
+    }
+    if (thicknesses.length > 0) {
+      thicknesses.sort((a, b) => {
+        const aNum = parseFloat(a.replace(',', '.')) || 0;
+        const bNum = parseFloat(b.replace(',', '.')) || 0;
+        return aNum - bNum;
+      });
+      filtersToRender.push({
+        key: 'tykkelse',
+        title: 'Tykkelse',
+        type: 'checkbox',
+        values: thicknesses
+      });
+    }
+
+    // 5. Brand (Mærke)
+    const brands = Array.from(new Set(products.map(p => p.vendor).filter(v => v && v.trim() !== '')));
+    if (brands.length > 0) {
+      filtersToRender.push({
+        key: 'brand',
+        title: 'Brand',
+        type: 'checkbox',
+        values: brands.sort()
+      });
+    }
+
+    // 6. User Rating (Brugerbedømmelse)
+    const hasRatings = products.some(p => p.rating > 0);
+    if (hasRatings) {
+      filtersToRender.push({
+        key: 'rating',
+        title: 'Brugerbedømmelse',
+        type: 'rating',
+        values: [
+          { val: '4.5', label: '4,5 stjerner & derover' },
+          { val: '4.0', label: '4,0 stjerner & derover' },
+          { val: '3.5', label: '3,5 stjerner & derover' }
+        ]
+      });
+    }
+
+    // 7. Form (Type / Form)
+    const forms = getOptionValues(['form', 'type']);
+    if (forms.length === 0) {
+      const formSet = new Set();
+      products.forEach(p => {
+        if (p.form) formSet.add(p.form);
+      });
+      if (formSet.size > 0) {
+        forms.push(...Array.from(formSet));
+      }
+    }
+    if (forms.length > 0) {
+      filtersToRender.push({
+        key: 'form',
+        title: 'Type / Form',
+        type: 'checkbox',
+        values: forms.sort()
+      });
+    }
+
+    filtersToRender.forEach(filter => {
+      const desktopHtml = renderFilterHtml(filter, false);
+      const mobileHtml = renderFilterHtml(filter, true);
+      desktopContainer.insertAdjacentHTML('beforeend', desktopHtml);
+      mobileContainer.insertAdjacentHTML('beforeend', mobileHtml);
+    });
+  }
+
+  function renderFilterHtml(filter, isMobile) {
+    const prefix = isMobile ? 'mobile-' : '';
+    if (filter.type === 'price') {
+      return `
+        <div class="filter-block">
+          <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
+            <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">${filter.title}</h3>
+            <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
+          </div>
+          <div class="flex items-center gap-2 filter-content">
+            <input type="number" id="${prefix}price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary" oninput="syncPriceFilters(this)"/>
+            <span class="text-xs text-primary/85">-</span>
+            <input type="number" id="${prefix}price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary" oninput="syncPriceFilters(this)"/>
+          </div>
+        </div>
+      `;
+    }
+
+    if (filter.type === 'checkbox' || filter.type === 'rating') {
+      let optionsHtml = '';
+      filter.values.forEach(opt => {
+        const val = filter.type === 'rating' ? opt.val : opt;
+        const labelText = filter.type === 'rating' ? opt.label : opt;
+        
+        let displayVal = labelText;
+        if (filter.key === 'størrelse' && labelText === '41x33 cm') {
+          displayVal = '41x33 cm (Dækkeserviet)';
+        } else if (filter.key === 'form') {
+          if (labelText === 'Firkantet') displayVal = 'Firkantet (Rulle)';
+          else if (labelText === 'Rund') displayVal = 'Rund skåret';
+        }
+
+        optionsHtml += `
+          <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer filter-label transition-all">
+            <input type="checkbox" name="${prefix}${filter.key}" value="${val.replace(/"/g, '&quot;')}" onchange="syncFilters(this)" class="filter-checkbox rounded border-outline-variant text-primary focus:ring-primary"/>
+            <span>${displayVal} <span class="filter-count text-xs text-primary/60 ml-0.5">(0)</span></span>
+          </label>
+        `;
+      });
+
+      return `
+        <div class="filter-block">
+          <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
+            <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">${filter.title}</h3>
+            <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
+          </div>
+          <div class="space-y-2 filter-content">
+            ${optionsHtml}
+          </div>
+        </div>
+      `;
+    }
+    return '';
+  }
+
+  function renderSortOptions() {
+    const sortSelect = document.getElementById("sort-select");
+    if (!sortSelect) return;
+
+    const currentSortVal = sortSelect.value || "popularity";
+    sortSelect.innerHTML = "";
+
+    const options = [];
+
+    // Best Selling / Popularity
+    options.push({ val: "popularity", label: "Mest populære" });
+
+    // Price sorting (if we have different prices)
+    const uniquePrices = new Set(products.map(p => p.price));
+    if (uniquePrices.size > 1) {
+      options.push({ val: "price-asc", label: "Pris: Lav til høj" });
+      options.push({ val: "price-desc", label: "Pris: Høj til lav" });
+    }
+
+    // User Rating (if ratings exist)
+    const hasRatings = products.some(p => p.rating > 0);
+    if (hasRatings) {
+      options.push({ val: "rating-desc", label: "Brugerbedømmelse" });
+    }
+
+    // Newest
+    options.push({ val: "newest", label: "Nyeste" });
+
+    options.forEach(opt => {
+      const el = document.createElement("option");
+      el.value = opt.val;
+      el.textContent = opt.label;
+      if (opt.val === currentSortVal) {
+        el.selected = true;
+      }
+      sortSelect.appendChild(el);
     });
   }
 
   function truncateFilterLists() {
-    const filterContainers = document.querySelectorAll('.space-y-6 > div > div.space-y-2, #mobile-filter-drawer .space-y-6 > div > div.space-y-2');
+    const filterContainers = document.querySelectorAll('#desktop-filters > div > div.space-y-2, #mobile-filters > div > div.space-y-2');
     filterContainers.forEach(container => {
-      const labels = container.querySelectorAll('label');
+      const labels = Array.from(container.querySelectorAll('label')).filter(l => l.style.display !== 'none');
       if (labels.length > 8) {
         for (let i = 8; i < labels.length; i++) {
           labels[i].classList.add('hidden', 'truncated-filter-option');
@@ -1144,6 +951,248 @@
     return (v / (v + K)) * r + (K / (v + K)) * C;
   }
 
+  function syncFilters(changedInput) {
+    const name = changedInput.name;
+    const value = changedInput.value;
+    const isChecked = changedInput.checked;
+    
+    let counterpartName;
+    if (name.startsWith('mobile-')) {
+      counterpartName = name.replace('mobile-', '');
+    } else {
+      counterpartName = 'mobile-' + name;
+    }
+
+    const counterparts = document.querySelectorAll(`input[name="${counterpartName}"][value="${value.replace(/"/g, '\\"')}"]`);
+    counterparts.forEach(el => el.checked = isChecked);
+
+    filterProducts();
+  }
+
+  // Handle switching variant on product card
+  window.onCardVariantChange = function(buttonEl) {
+    const productId = parseInt(buttonEl.dataset.productId);
+    const optionName = buttonEl.dataset.optionName;
+    const optionValue = buttonEl.dataset.optionValue;
+    
+    const cardEl = buttonEl.closest('.product-card');
+    if (!cardEl) return;
+    
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const optionButtons = Array.from(cardEl.querySelectorAll('button[data-option-name]')).filter(btn => btn.dataset.optionName === optionName);
+    optionButtons.forEach(btn => {
+      const isColor = btn.querySelector('img') !== null;
+      const val = btn.dataset.optionValue;
+      const isSelected = (val === optionValue);
+      
+      if (isColor) {
+        if (isSelected) {
+          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+        } else {
+          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+        }
+      } else {
+        if (isSelected) {
+          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+        } else {
+          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+        }
+      }
+    });
+
+    const labelSpan = Array.from(cardEl.querySelectorAll('[data-selected-option-label]')).find(span => span.dataset.selectedOptionLabel === `${productId}-${optionName}`);
+    if (labelSpan) {
+      labelSpan.textContent = optionValue;
+    }
+
+    const activeOptions = {};
+    const selectedButtons = Array.from(cardEl.querySelectorAll('.product-variant-swatches button')).filter(btn => btn.classList.contains('border-[var(--color-accent)]'));
+    selectedButtons.forEach(btn => {
+      activeOptions[btn.dataset.optionName] = btn.dataset.optionValue;
+    });
+
+    product.options_with_values.forEach(opt => {
+      if (!activeOptions[opt.name]) {
+        activeOptions[opt.name] = product.options[opt.name];
+      }
+    });
+
+    let matchingVariant = product.variants.find(v => {
+      return Object.entries(activeOptions).every(([name, val]) => {
+        return v.options[name] === val;
+      });
+    });
+
+    if (!matchingVariant) {
+      matchingVariant = product.variants.find(v => v.options[optionName] === optionValue);
+      
+      if (matchingVariant) {
+        product.options_with_values.forEach(opt => {
+          const matchingVal = matchingVariant.options[opt.name];
+          const labelSpanToUpdate = Array.from(cardEl.querySelectorAll('[data-selected-option-label]')).find(span => span.dataset.selectedOptionLabel === `${productId}-${opt.name}`);
+          if (labelSpanToUpdate) {
+            labelSpanToUpdate.textContent = matchingVal;
+          }
+          
+          const optBtns = Array.from(cardEl.querySelectorAll('button[data-option-name]')).filter(btn => btn.dataset.optionName === opt.name);
+          optBtns.forEach(btn => {
+            const isColor = btn.querySelector('img') !== null;
+            const val = btn.dataset.optionValue;
+            const isSelected = (val === matchingVal);
+            
+            if (isColor) {
+              if (isSelected) {
+                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+              } else {
+                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+              }
+            } else {
+              if (isSelected) {
+                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+              } else {
+                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+              }
+            }
+          });
+        });
+      }
+    }
+
+    if (matchingVariant) {
+      // 1. Update card image with fade transition
+      const imgEl = cardEl.querySelector('.product-card-image');
+      if (imgEl) {
+        imgEl.style.opacity = '0.3';
+        setTimeout(() => {
+          imgEl.src = matchingVariant.image;
+          imgEl.style.opacity = '1';
+        }, 100);
+      }
+
+      // 2. Update price display
+      const priceValEl = cardEl.querySelector('.font-bold.text-primary.leading-none');
+      if (priceValEl) {
+        priceValEl.textContent = matchingVariant.price_formatted;
+      }
+
+      // 3. Update original price display
+      const priceWrapper = cardEl.querySelector('.flex.items-baseline.gap-1.5');
+      if (priceWrapper) {
+        let originalPriceEl = priceWrapper.querySelector('.line-through');
+        if (matchingVariant.originalPrice && matchingVariant.originalPrice > matchingVariant.price) {
+          if (!originalPriceEl) {
+            originalPriceEl = document.createElement('span');
+            originalPriceEl.className = "text-[8px] sm:text-[9px] text-primary/70 line-through leading-none";
+            priceWrapper.insertBefore(originalPriceEl, priceWrapper.querySelector('span:last-child'));
+          }
+          originalPriceEl.textContent = matchingVariant.originalPrice_formatted;
+        } else if (originalPriceEl) {
+          originalPriceEl.remove();
+        }
+      }
+
+      // Update badge
+      const imageZone = cardEl.querySelector('.relative.w-full.flex-shrink-0');
+      if (imageZone) {
+        let badgeEl = imageZone.querySelector('span');
+        if (matchingVariant.originalPrice && matchingVariant.originalPrice > matchingVariant.price) {
+          const savings = Math.round(((matchingVariant.originalPrice - matchingVariant.price) / matchingVariant.originalPrice) * 100);
+          if (!badgeEl) {
+            badgeEl = document.createElement('span');
+            badgeEl.className = "absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+            imageZone.appendChild(badgeEl);
+          } else {
+            badgeEl.className = "absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+          }
+          badgeEl.textContent = `Spar ${savings}%`;
+        } else if (product.badge) {
+          if (!badgeEl) {
+            badgeEl = document.createElement('span');
+            badgeEl.className = "absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+            imageZone.appendChild(badgeEl);
+          } else {
+            badgeEl.className = "absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+          }
+          badgeEl.textContent = product.badge;
+        } else if (badgeEl) {
+          badgeEl.remove();
+        }
+      }
+
+      const buyButton = cardEl.querySelector('button');
+      if (buyButton) {
+        if (matchingVariant.available) {
+          buyButton.disabled = false;
+          buyButton.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-slate-200');
+          buyButton.classList.add('bg-accent', 'hover:brightness-95');
+          buyButton.setAttribute('onclick', `window.addToCart(${matchingVariant.id})`);
+          buyButton.innerHTML = `<span>Køb</span>`;
+        } else {
+          buyButton.disabled = true;
+          buyButton.classList.add('opacity-50', 'cursor-not-allowed', 'bg-slate-200');
+          buyButton.classList.remove('bg-accent', 'hover:brightness-95');
+          buyButton.removeAttribute('onclick');
+          buyButton.innerHTML = `<span>Udsolgt</span>`;
+        }
+      }
+    }
+  };
+
+  function syncPriceFilters(changedInput) {
+    const id = changedInput.id;
+    const val = changedInput.value;
+    if (id === 'price-min') {
+      const el = document.getElementById('mobile-price-min');
+      if (el) el.value = val;
+    } else if (id === 'price-max') {
+      const el = document.getElementById('mobile-price-max');
+      if (el) el.value = val;
+    } else if (id === 'mobile-price-min') {
+      const el = document.getElementById('price-min');
+      if (el) el.value = val;
+    } else if (id === 'mobile-price-max') {
+      const el = document.getElementById('price-max');
+      if (el) el.value = val;
+    }
+    filterProducts();
+  }
+
+  function getSelectedFilters() {
+    const filters = {};
+    const checkedCheckboxes = document.querySelectorAll('input.filter-checkbox:checked');
+    checkedCheckboxes.forEach(cb => {
+      let name = cb.name;
+      if (name.startsWith('mobile-')) {
+        name = name.replace('mobile-', '');
+      }
+      if (!filters[name]) {
+        filters[name] = [];
+      }
+      if (!filters[name].includes(cb.value)) {
+        filters[name].push(cb.value);
+      }
+    });
+    return filters;
+  }
+
+  function removeFilterChip(key, value) {
+    const inputs = document.querySelectorAll(`input[name="${key}"][value="${value.replace(/"/g, '\\"')}"], input[name="mobile-${key}"][value="${value.replace(/"/g, '\\"')}"]`);
+    inputs.forEach(input => {
+      input.checked = false;
+    });
+    filterProducts();
+  }
+
+  function removePriceFilterChip() {
+    ['price-min', 'price-max', 'mobile-price-min', 'mobile-price-max'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+    filterProducts();
+  }
+
   function filterProducts() {
     const activeFilters = getSelectedFilters();
     const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
@@ -1164,8 +1213,9 @@
         const selectedValues = activeFilters[filterKey];
         if (selectedValues.length === 0) continue;
 
-        let productValue = getProductValueForKey(product, filterKey);
-        if (!productValue || !selectedValues.includes(productValue)) {
+        let productValues = getProductValuesForKeyAll(product, filterKey);
+        const hasMatch = productValues.some(val => selectedValues.includes(val));
+        if (!hasMatch) {
           return false;
         }
       }
@@ -1194,12 +1244,6 @@
       filtered.sort((a, b) => b.popularity - a.popularity);
     }
 
-    // Dynamic mobile apply button text
-    const mobileApplyBtn = document.getElementById("mobile-apply-btn");
-    if (mobileApplyBtn) {
-      mobileApplyBtn.textContent = `Vis ${filtered.length} resultater`;
-    }
-
     // Dynamic applied filters chips
     const appliedContainer = document.getElementById("applied-filters-container");
     const appliedList = document.getElementById("applied-filters-list");
@@ -1216,11 +1260,19 @@
           
           let displayKey = key.charAt(0).toUpperCase() + key.slice(1);
           if (key === 'tykkelse') displayKey = 'Tykkelse';
-          else if (key === 'bredde') displayKey = 'Bredde';
+          else if (key === 'størrelse') displayKey = 'Størrelse';
           else if (key === 'form') displayKey = 'Form';
+          else if (key === 'farve') displayKey = 'Farve';
+          else if (key === 'brand') displayKey = 'Brand';
+          else if (key === 'rating') displayKey = 'Bedømmelse';
+
+          let displayVal = val;
+          if (key === 'rating') {
+            displayVal = `${val} stjerner & derover`;
+          }
 
           chip.innerHTML = `
-            <span>${displayKey}: ${val}</span>
+            <span>${displayKey}: ${displayVal}</span>
             <button onclick="removeFilterChip('${key}', '${val.replace(/'/g, "\\'")}')" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern ${val}">
               <span class="material-symbols-outlined text-[10px]">close</span>
             </button>
@@ -1256,9 +1308,7 @@
       }
     }
 
-    // Update checkbox counts dynamically
     updateFilterCounts();
-
     renderProducts(filtered);
   }
 
@@ -1296,7 +1346,6 @@
       }
 
       const displayPrice = product.price_formatted ? product.price_formatted : `${product.price.toFixed(2).replace('.', ',')} Kr.`;
-
       const isMetervare = product.type === "Metervare";
       const isMeterProduct = product.thickness || product.width || product.title.toLowerCase().includes("voksdug") || product.title.toLowerCase().includes("bordbeskytter");
 
@@ -1380,8 +1429,8 @@
           <!-- Info Zone -->
           <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
             <div class="space-y-1">
-              <h3 class="font-sans text-xs sm:text-sm font-bold text-primary leading-tight hover:text-secondary mb-1">
-                <a href="${product.url}" class="text-primary no-underline hover:text-secondary line-clamp-2">${product.title}</a>
+              <h3 class="font-sans text-xs sm:text-sm font-bold text-primary leading-tight mb-1">
+                <a href="${product.url}" class="text-primary no-underline line-clamp-2">${product.title}</a>
               </h3>
               
               <!-- Rating: 5 Stars -->
@@ -1613,82 +1662,958 @@
     }
   };
 
-  function applyQuickFilter(type, value) {
-    clearAllFilters(false);
-    const inputs = document.querySelectorAll(`input[name="${type}"], input[name="mobile-${type}"]`);
-    inputs.forEach(input => {
-      if (input.value === value) {
-        input.checked = true;
+  function syncPriceFilters(changedInput) {
+    const id = changedInput.id;
+    const val = changedInput.value;
+    if (id === 'price-min') {
+      const el = document.getElementById('mobile-price-min');
+      if (el) el.value = val;
+    } else if (id === 'price-max') {
+      const el = document.getElementById('mobile-price-max');
+      if (el) el.value = val;
+    } else if (id === 'mobile-price-min') {
+      const el = document.getElementById('price-min');
+      if (el) el.value = val;
+    } else if (id === 'mobile-price-max') {
+      const el = document.getElementById('price-max');
+      if (el) el.value = val;
+    }
+    filterProducts();
+  }
+
+  function getSelectedFilters() {
+    const filters = {};
+    const checkedCheckboxes = document.querySelectorAll('input.filter-checkbox:checked');
+    checkedCheckboxes.forEach(cb => {
+      let name = cb.name;
+      if (name.startsWith('mobile-')) {
+        name = name.replace('mobile-', '');
       }
+      if (!filters[name]) {
+        filters[name] = [];
+      }
+      if (!filters[name].includes(cb.value)) {
+        filters[name].push(cb.value);
+      }
+    });
+    return filters;
+  }
+
+  function removeFilterChip(key, value) {
+    const inputs = document.querySelectorAll(`input[name="${key}"][value="${value.replace(/"/g, '\\"')}"], input[name="mobile-${key}"][value="${value.replace(/"/g, '\\"')}"]`);
+    inputs.forEach(input => {
+      input.checked = false;
     });
     filterProducts();
   }
 
-  function clearAllFilters(shouldRender = true) {
-    document.querySelectorAll('input.filter-checkbox').forEach(checkbox => {
-      checkbox.checked = false;
-    });
+  function removePriceFilterChip() {
     ['price-min', 'price-max', 'mobile-price-min', 'mobile-price-max'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.value = "";
     });
-    if (shouldRender) {
-      filterProducts();
-    }
+    filterProducts();
   }
 
-  function toggleFilterBlock(headerEl) {
-    const blockContent = headerEl.nextElementSibling;
-    const toggleIcon = headerEl.querySelector('.toggle-icon');
-    if (blockContent) {
-      const isHidden = blockContent.classList.contains('hidden');
-      if (isHidden) {
-        blockContent.classList.remove('hidden');
-        if (toggleIcon) toggleIcon.textContent = 'remove';
+  function filterProducts() {
+    const activeFilters = getSelectedFilters();
+    const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    const sortEl = document.getElementById("sort-select");
+    const sortBy = sortEl ? sortEl.value : "popularity";
+
+    const minPriceInput = document.getElementById("price-min");
+    const maxPriceInput = document.getElementById("price-max");
+    const minPrice = minPriceInput && minPriceInput.value ? parseFloat(minPriceInput.value) : 0;
+    const maxPrice = maxPriceInput && maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
+
+    let filtered = products.filter(product => {
+      if (product.price < minPrice || product.price > maxPrice) {
+        return false;
+      }
+
+      for (const filterKey in activeFilters) {
+        const selectedValues = activeFilters[filterKey];
+        if (selectedValues.length === 0) continue;
+
+        let productValues = getProductValuesForKeyAll(product, filterKey);
+        const hasMatch = productValues.some(val => selectedValues.includes(val));
+        if (!hasMatch) {
+          return false;
+        }
+      }
+
+      if (searchQuery) {
+        const matchesTitle = product.title.toLowerCase().includes(searchQuery);
+        const matchesThickness = product.thickness ? product.thickness.toLowerCase().includes(searchQuery) : false;
+        const matchesForm = product.form ? product.form.toLowerCase().includes(searchQuery) : false;
+        if (!matchesTitle && !matchesThickness && !matchesForm) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    // Sort execution
+    if (sortBy === "price-asc") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price-desc") {
+      filtered.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "rating-desc") {
+      filtered.sort((a, b) => getBayesianRating(b) - getBayesianRating(a));
+    } else if (sortBy === "newest") {
+      filtered.sort((a, b) => b.id - a.id);
+    } else {
+      filtered.sort((a, b) => b.popularity - a.popularity);
+    }
+
+    // Dynamic applied filters chips
+    const appliedContainer = document.getElementById("applied-filters-container");
+    const appliedList = document.getElementById("applied-filters-list");
+    if (appliedContainer && appliedList) {
+      appliedList.innerHTML = "";
+      let hasActive = false;
+
+      for (const key in activeFilters) {
+        const vals = activeFilters[key];
+        vals.forEach(val => {
+          hasActive = true;
+          const chip = document.createElement("div");
+          chip.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-xs text-primary font-semibold transition-all";
+          
+          let displayKey = key.charAt(0).toUpperCase() + key.slice(1);
+          if (key === 'tykkelse') displayKey = 'Tykkelse';
+          else if (key === 'størrelse') displayKey = 'Størrelse';
+          else if (key === 'form') displayKey = 'Form';
+          else if (key === 'farve') displayKey = 'Farve';
+          else if (key === 'brand') displayKey = 'Brand';
+          else if (key === 'rating') displayKey = 'Bedømmelse';
+
+          let displayVal = val;
+          if (key === 'rating') {
+            displayVal = `${val} stjerner & derover`;
+          }
+
+          chip.innerHTML = `
+            <span>${displayKey}: ${displayVal}</span>
+            <button onclick="removeFilterChip('${key}', '${val.replace(/'/g, "\\'")}')" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern ${val}">
+              <span class="material-symbols-outlined text-[10px]">close</span>
+            </button>
+          `;
+          appliedList.appendChild(chip);
+        });
+      }
+
+      const minVal = minPriceInput ? minPriceInput.value : "";
+      const maxVal = maxPriceInput ? maxPriceInput.value : "";
+      if (minVal || maxVal) {
+        hasActive = true;
+        const chip = document.createElement("div");
+        chip.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-xs text-primary font-semibold transition-all";
+        let text = "Pris: ";
+        if (minVal && maxVal) text += `${minVal} - ${maxVal} Kr.`;
+        else if (minVal) text += `Over ${minVal} Kr.`;
+        else if (maxVal) text += `Under ${maxVal} Kr.`;
+
+        chip.innerHTML = `
+          <span>${text}</span>
+          <button onclick="removePriceFilterChip()" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern prisfilter">
+            <span class="material-symbols-outlined text-[10px]">close</span>
+          </button>
+        `;
+        appliedList.appendChild(chip);
+      }
+
+      if (hasActive) {
+        appliedContainer.classList.remove("hidden");
       } else {
-        blockContent.classList.add('hidden');
-        if (toggleIcon) toggleIcon.textContent = 'add';
+        appliedContainer.classList.add("hidden");
       }
     }
-  }
-  window.toggleFilterBlock = toggleFilterBlock;
 
-  function toggleMobileFilter(open) {
-    const drawer = document.getElementById("mobile-filter-drawer");
-    if (!drawer) return;
-    const panel = drawer.querySelector("div");
-    if (open) {
-      drawer.classList.remove("hidden");
-      setTimeout(() => {
-        drawer.classList.remove("opacity-0");
-        panel.classList.remove("translate-x-full");
-      }, 10);
-    } else {
-      drawer.classList.add("opacity-0");
-      panel.classList.add("translate-x-full");
-      setTimeout(() => {
-        drawer.classList.add("hidden");
-      }, 300);
+    updateFilterCounts();
+    renderProducts(filtered);
+  }
+
+  function renderProducts(items) {
+    if (!productGrid) return;
+    if (productCountDisplay) {
+      productCountDisplay.innerText = items.length;
     }
+    productGrid.innerHTML = "";
+
+    if (items.length === 0) {
+      productGrid.innerHTML = `
+        <div class="col-span-full py-12 text-center">
+          <span class="material-symbols-outlined text-4xl text-primary/85 mb-2">sentiment_dissatisfied</span>
+          <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
+          <button onclick="clearAllFilters()" class="mt-4 text-xs text-secondary underline bg-transparent border-0 cursor-pointer">Ryd filtre</button>
+        </div>
+      `;
+      return;
+    }
+
+    items.forEach(product => {
+      let originalPriceHtml = "";
+      if (product.originalPrice && product.originalPrice > product.price) {
+        const displayOrig = product.originalPrice_formatted ? product.originalPrice_formatted : `${product.originalPrice.toFixed(2).replace('.', ',')} Kr.`;
+        originalPriceHtml = `<span class="text-[8px] sm:text-[9px] text-primary/70 line-through leading-none">${displayOrig}</span>`;
+      }
+
+      let badgeHtml = "";
+      if (product.badge) {
+        badgeHtml = `<span class="absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">${product.badge}</span>`;
+      } else if (product.originalPrice && product.originalPrice > product.price) {
+        const savings = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+        badgeHtml = `<span class="absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">Spar ${savings}%</span>`;
+      }
+
+      const displayPrice = product.price_formatted ? product.price_formatted : `${product.price.toFixed(2).replace('.', ',')} Kr.`;
+      const isMetervare = product.type === "Metervare";
+      const isMeterProduct = product.thickness || product.width || product.title.toLowerCase().includes("voksdug") || product.title.toLowerCase().includes("bordbeskytter");
+
+      let swatchesHtml = "";
+      if (product.options_with_values && product.options_with_values.length > 0 && product.variants && product.variants.length > 1) {
+        swatchesHtml = `<div class="product-variant-swatches mt-3 space-y-2 border-t border-outline-variant/40 pt-2">`;
+        
+        product.options_with_values.forEach(opt => {
+          const optNameLower = opt.name.toLowerCase();
+          const isColor = optNameLower.includes("farve") || optNameLower.includes("mønster") || optNameLower.includes("color") || optNameLower.includes("colour");
+          
+          swatchesHtml += `
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[9px] font-bold text-primary/70 uppercase tracking-wider">${opt.name}: <span class="text-primary font-semibold font-sans normal-case text-[10px]" data-selected-option-label="${product.id}-${opt.name}">${product.options[opt.name] || opt.values[0]}</span></span>
+              <div class="flex flex-wrap gap-1 mt-0.5">
+          `;
+          
+          opt.values.forEach(val => {
+            const isSelected = (product.options[opt.name] === val);
+            
+            if (isColor) {
+              const matchingVar = product.variants.find(v => v.options[opt.name] === val) || product.variants[0];
+              const swatchImg = matchingVar.image || product.image;
+              const activeBorderClass = isSelected ? "border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30" : "border-outline-variant hover:border-[var(--color-accent)]/60";
+              swatchesHtml += `
+                <button 
+                  type="button"
+                  class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all ${activeBorderClass}"
+                  data-product-id="${product.id}"
+                  data-option-name="${opt.name}"
+                  data-option-value="${val}"
+                  onclick="window.onCardVariantChange(this)"
+                  title="${val}"
+                >
+                  <img src="${swatchImg}" alt="${val}" class="w-full h-full object-cover rounded-[5px]" />
+                </button>
+              `;
+            } else {
+              const activeTextClass = isSelected ? "border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold" : "border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+              swatchesHtml += `
+                <button 
+                  type="button"
+                  class="px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all ${activeTextClass}"
+                  data-product-id="${product.id}"
+                  data-option-name="${opt.name}"
+                  data-option-value="${val}"
+                  onclick="window.onCardVariantChange(this)"
+                >
+                  ${val}
+                </button>
+              `;
+            }
+          });
+          
+          swatchesHtml += `
+              </div>
+            </div>
+          `;
+        });
+        
+        swatchesHtml += `</div>`;
+      }
+
+      const cardHtml = `
+        <div class="product-card flex flex-col bg-transparent transition-all duration-300 group relative max-h-[420px] sm:max-h-none" data-product-id="${product.id}">
+          
+          <!-- Image Zone -->
+          <div class="relative w-full flex-shrink-0 bg-surface-container rounded-2xl border border-outline-variant overflow-hidden" style="aspect-ratio: 1/1;">
+            <a href="${product.url}" class="block w-full h-full">
+              <img 
+                src="${product.image}" 
+                alt="${product.title}" 
+                class="product-card-image w-full h-full object-cover group-hover:scale-103 transition-transform duration-1000 ease-out"
+                onerror="this.src='https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80'"
+                loading="lazy"
+              />
+            </a>
+            ${badgeHtml}
+          </div>
+
+          <!-- Info Zone -->
+          <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
+            <div class="space-y-1">
+              <h3 class="font-sans text-xs sm:text-sm font-bold text-primary leading-tight mb-1">
+                <a href="${product.url}" class="text-primary no-underline line-clamp-2">${product.title}</a>
+              </h3>
+              
+              <!-- Rating: 5 Stars -->
+              <div class="flex items-center gap-1 text-[10px] text-secondary mt-1">
+                <div class="flex text-[#FFB800] gap-0.5">
+                  ${(() => {
+                    let starsHtml = "";
+                    const ratingFloor = Math.floor(product.rating);
+                    const decimal = product.rating - ratingFloor;
+                    for (let i = 1; i <= 5; i++) {
+                      if (i <= ratingFloor) {
+                        starsHtml += `<span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                      } else if (i === ratingFloor + 1) {
+                        if (decimal >= 0.75) {
+                          starsHtml += `<span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                        } else if (decimal >= 0.25) {
+                          starsHtml += `<span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star_half</span>`;
+                        } else {
+                          starsHtml += `<span class="material-symbols-outlined text-[12px] text-outline-variant select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                        }
+                      } else {
+                        starsHtml += `<span class="material-symbols-outlined text-[12px] text-outline-variant select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                      }
+                    }
+                    return starsHtml;
+                  })()}
+                </div>
+                <span class="font-bold text-primary ml-1">${product.rating}</span>
+                <span class="text-primary/85">(${product.reviews})</span>
+              </div>
+
+              ${swatchesHtml}
+            </div>
+
+            <!-- Price & Buy Button (No divider border) -->
+            <div class="mt-3 space-y-3">
+              <div class="flex flex-col items-start gap-0.5">
+                <div class="flex items-baseline gap-1.5 flex-wrap">
+                  <span class="text-xs sm:text-sm md:text-base font-bold text-primary leading-none">
+                    ${displayPrice}
+                  </span>
+                  ${originalPriceHtml}
+                  <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">
+                    ${isMetervare ? 'pr. meter' : (isMeterProduct ? 'pr. cm' : '')}
+                  </span>
+                </div>
+              </div>
+
+              <button onclick="window.addToCart(${product.variants && product.variants.length > 0 ? product.variants[0].id : product.id})" class="w-full bg-accent hover:brightness-95 text-primary py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors focus:outline-none text-[11px] sm:text-xs font-bold border-0 cursor-pointer" aria-label="Køb ${product.title}">
+                <span>Køb</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      `;
+      productGrid.insertAdjacentHTML("beforeend", cardHtml);
+    });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const filterDrawer = document.getElementById("mobile-filter-drawer");
-    if (filterDrawer) {
-      filterDrawer.addEventListener("click", (e) => {
-        if (e.target === filterDrawer) {
-          toggleMobileFilter(false);
+  // Handle switching variant on product card
+  window.onCardVariantChange = function(buttonEl) {
+    const productId = parseInt(buttonEl.dataset.productId);
+    const optionName = buttonEl.dataset.optionName;
+    const optionValue = buttonEl.dataset.optionValue;
+    
+    const cardEl = buttonEl.closest('.product-card');
+    if (!cardEl) return;
+    
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const optionButtons = Array.from(cardEl.querySelectorAll('button[data-option-name]')).filter(btn => btn.dataset.optionName === optionName);
+    optionButtons.forEach(btn => {
+      const isColor = btn.querySelector('img') !== null;
+      const val = btn.dataset.optionValue;
+      const isSelected = (val === optionValue);
+      
+      if (isColor) {
+        if (isSelected) {
+          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+        } else {
+          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+        }
+      } else {
+        if (isSelected) {
+          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+        } else {
+          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+        }
+      }
+    });
+
+    const labelSpan = Array.from(cardEl.querySelectorAll('[data-selected-option-label]')).find(span => span.dataset.selectedOptionLabel === `${productId}-${optionName}`);
+    if (labelSpan) {
+      labelSpan.textContent = optionValue;
+    }
+
+    const activeOptions = {};
+    const selectedButtons = Array.from(cardEl.querySelectorAll('.product-variant-swatches button')).filter(btn => btn.classList.contains('border-[var(--color-accent)]'));
+    selectedButtons.forEach(btn => {
+      activeOptions[btn.dataset.optionName] = btn.dataset.optionValue;
+    });
+
+    product.options_with_values.forEach(opt => {
+      if (!activeOptions[opt.name]) {
+        activeOptions[opt.name] = product.options[opt.name];
+      }
+    });
+
+    let matchingVariant = product.variants.find(v => {
+      return Object.entries(activeOptions).every(([name, val]) => {
+        return v.options[name] === val;
+      });
+    });
+
+    if (!matchingVariant) {
+      matchingVariant = product.variants.find(v => v.options[optionName] === optionValue);
+      
+      if (matchingVariant) {
+        product.options_with_values.forEach(opt => {
+          const matchingVal = matchingVariant.options[opt.name];
+          const labelSpanToUpdate = Array.from(cardEl.querySelectorAll('[data-selected-option-label]')).find(span => span.dataset.selectedOptionLabel === `${productId}-${opt.name}`);
+          if (labelSpanToUpdate) {
+            labelSpanToUpdate.textContent = matchingVal;
+          }
+          
+          const optBtns = Array.from(cardEl.querySelectorAll('button[data-option-name]')).filter(btn => btn.dataset.optionName === opt.name);
+          optBtns.forEach(btn => {
+            const isColor = btn.querySelector('img') !== null;
+            const val = btn.dataset.optionValue;
+            const isSelected = (val === matchingVal);
+            
+            if (isColor) {
+              if (isSelected) {
+                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+              } else {
+                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+              }
+            } else {
+              if (isSelected) {
+                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+              } else {
+                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+              }
+            }
+          });
+        });
+      }
+    }
+
+    if (matchingVariant) {
+      // 1. Update card image with fade transition
+      const imgEl = cardEl.querySelector('.product-card-image');
+      if (imgEl) {
+        imgEl.style.opacity = '0.3';
+        setTimeout(() => {
+          imgEl.src = matchingVariant.image;
+          imgEl.style.opacity = '1';
+        }, 100);
+      }
+
+      // 2. Update price display
+      const priceValEl = cardEl.querySelector('.font-bold.text-primary.leading-none');
+      if (priceValEl) {
+        priceValEl.textContent = matchingVariant.price_formatted;
+      }
+
+      // 3. Update original price display
+      const priceWrapper = cardEl.querySelector('.flex.items-baseline.gap-1.5');
+      if (priceWrapper) {
+        let originalPriceEl = priceWrapper.querySelector('.line-through');
+        if (matchingVariant.originalPrice && matchingVariant.originalPrice > matchingVariant.price) {
+          if (!originalPriceEl) {
+            originalPriceEl = document.createElement('span');
+            originalPriceEl.className = "text-[8px] sm:text-[9px] text-primary/70 line-through leading-none";
+            priceWrapper.insertBefore(originalPriceEl, priceWrapper.querySelector('span:last-child'));
+          }
+          originalPriceEl.textContent = matchingVariant.originalPrice_formatted;
+        } else if (originalPriceEl) {
+          originalPriceEl.remove();
+        }
+      }
+
+      // Update badge
+      const imageZone = cardEl.querySelector('.relative.w-full.flex-shrink-0');
+      if (imageZone) {
+        let badgeEl = imageZone.querySelector('span');
+        if (matchingVariant.originalPrice && matchingVariant.originalPrice > matchingVariant.price) {
+          const savings = Math.round(((matchingVariant.originalPrice - matchingVariant.price) / matchingVariant.originalPrice) * 100);
+          if (!badgeEl) {
+            badgeEl = document.createElement('span');
+            badgeEl.className = "absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+            imageZone.appendChild(badgeEl);
+          } else {
+            badgeEl.className = "absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+          }
+          badgeEl.textContent = `Spar ${savings}%`;
+        } else if (product.badge) {
+          if (!badgeEl) {
+            badgeEl = document.createElement('span');
+            badgeEl.className = "absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+            imageZone.appendChild(badgeEl);
+          } else {
+            badgeEl.className = "absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10";
+          }
+          badgeEl.textContent = product.badge;
+        } else if (badgeEl) {
+          badgeEl.remove();
+        }
+      }
+
+      const buyButton = cardEl.querySelector('button');
+      if (buyButton) {
+        if (matchingVariant.available) {
+          buyButton.disabled = false;
+          buyButton.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-slate-200');
+          buyButton.classList.add('bg-accent', 'hover:brightness-95');
+          buyButton.setAttribute('onclick', `window.addToCart(${matchingVariant.id})`);
+          buyButton.innerHTML = `<span>Køb</span>`;
+        } else {
+          buyButton.disabled = true;
+          buyButton.classList.add('opacity-50', 'cursor-not-allowed', 'bg-slate-200');
+          buyButton.classList.remove('bg-accent', 'hover:brightness-95');
+          buyButton.removeAttribute('onclick');
+          buyButton.innerHTML = `<span>Udsolgt</span>`;
+        }
+      }
+    }
+  };
+
+  function syncPriceFilters(changedInput) {
+    const id = changedInput.id;
+    const val = changedInput.value;
+    if (id === 'price-min') {
+      const el = document.getElementById('mobile-price-min');
+      if (el) el.value = val;
+    } else if (id === 'price-max') {
+      const el = document.getElementById('mobile-price-max');
+      if (el) el.value = val;
+    } else if (id === 'mobile-price-min') {
+      const el = document.getElementById('price-min');
+      if (el) el.value = val;
+    } else if (id === 'mobile-price-max') {
+      const el = document.getElementById('price-max');
+      if (el) el.value = val;
+    }
+    filterProducts();
+  }
+
+  function getSelectedFilters() {
+    const filters = {};
+    const checkedCheckboxes = document.querySelectorAll('input.filter-checkbox:checked');
+    checkedCheckboxes.forEach(cb => {
+      let name = cb.name;
+      if (name.startsWith('mobile-')) {
+        name = name.replace('mobile-', '');
+      }
+      if (!filters[name]) {
+        filters[name] = [];
+      }
+      if (!filters[name].includes(cb.value)) {
+        filters[name].push(cb.value);
+      }
+    });
+    return filters;
+  }
+
+  function removeFilterChip(key, value) {
+    const inputs = document.querySelectorAll(`input[name="${key}"][value="${value.replace(/"/g, '\\"')}"], input[name="mobile-${key}"][value="${value.replace(/"/g, '\\"')}"]`);
+    inputs.forEach(input => {
+      input.checked = false;
+    });
+    filterProducts();
+  }
+
+  function removePriceFilterChip() {
+    ['price-min', 'price-max', 'mobile-price-min', 'mobile-price-max'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+    filterProducts();
+  }
+
+  function filterProducts() {
+    const activeFilters = getSelectedFilters();
+    const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    const sortEl = document.getElementById("sort-select");
+    const sortBy = sortEl ? sortEl.value : "popularity";
+
+    const minPriceInput = document.getElementById("price-min");
+    const maxPriceInput = document.getElementById("price-max");
+    const minPrice = minPriceInput && minPriceInput.value ? parseFloat(minPriceInput.value) : 0;
+    const maxPrice = maxPriceInput && maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
+
+    let filtered = products.filter(product => {
+      if (product.price < minPrice || product.price > maxPrice) {
+        return false;
+      }
+
+      for (const filterKey in activeFilters) {
+        const selectedValues = activeFilters[filterKey];
+        if (selectedValues.length === 0) continue;
+
+        let productValues = getProductValuesForKeyAll(product, filterKey);
+        const hasMatch = productValues.some(val => selectedValues.includes(val));
+        if (!hasMatch) {
+          return false;
+        }
+      }
+
+      if (searchQuery) {
+        const matchesTitle = product.title.toLowerCase().includes(searchQuery);
+        const matchesThickness = product.thickness ? product.thickness.toLowerCase().includes(searchQuery) : false;
+        const matchesForm = product.form ? product.form.toLowerCase().includes(searchQuery) : false;
+        if (!matchesTitle && !matchesThickness && !matchesForm) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    // Sort execution
+    if (sortBy === "price-asc") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price-desc") {
+      filtered.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "rating-desc") {
+      filtered.sort((a, b) => getBayesianRating(b) - getBayesianRating(a));
+    } else if (sortBy === "newest") {
+      filtered.sort((a, b) => b.id - a.id);
+    } else {
+      filtered.sort((a, b) => b.popularity - a.popularity);
+    }
+
+    // Dynamic applied filters chips
+    const appliedContainer = document.getElementById("applied-filters-container");
+    const appliedList = document.getElementById("applied-filters-list");
+    if (appliedContainer && appliedList) {
+      appliedList.innerHTML = "";
+      let hasActive = false;
+
+      for (const key in activeFilters) {
+        const vals = activeFilters[key];
+        vals.forEach(val => {
+          hasActive = true;
+          const chip = document.createElement("div");
+          chip.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-xs text-primary font-semibold transition-all";
+          
+          let displayKey = key.charAt(0).toUpperCase() + key.slice(1);
+          if (key === 'tykkelse') displayKey = 'Tykkelse';
+          else if (key === 'størrelse') displayKey = 'Størrelse';
+          else if (key === 'form') displayKey = 'Form';
+          else if (key === 'farve') displayKey = 'Farve';
+          else if (key === 'brand') displayKey = 'Brand';
+          else if (key === 'rating') displayKey = 'Bedømmelse';
+
+          let displayVal = val;
+          if (key === 'rating') {
+            displayVal = `${val} stjerner & derover`;
+          }
+
+          chip.innerHTML = `
+            <span>${displayKey}: ${displayVal}</span>
+            <button onclick="removeFilterChip('${key}', '${val.replace(/'/g, "\\'")}')" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern ${val}">
+              <span class="material-symbols-outlined text-[10px]">close</span>
+            </button>
+          `;
+          appliedList.appendChild(chip);
+        });
+      }
+
+      const minVal = minPriceInput ? minPriceInput.value : "";
+      const maxVal = maxPriceInput ? maxPriceInput.value : "";
+      if (minVal || maxVal) {
+        hasActive = true;
+        const chip = document.createElement("div");
+        chip.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-xs text-primary font-semibold transition-all";
+        let text = "Pris: ";
+        if (minVal && maxVal) text += `${minVal} - ${maxVal} Kr.`;
+        else if (minVal) text += `Over ${minVal} Kr.`;
+        else if (maxVal) text += `Under ${maxVal} Kr.`;
+
+        chip.innerHTML = `
+          <span>${text}</span>
+          <button onclick="removePriceFilterChip()" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern prisfilter">
+            <span class="material-symbols-outlined text-[10px]">close</span>
+          </button>
+        `;
+        appliedList.appendChild(chip);
+      }
+
+      if (hasActive) {
+        appliedContainer.classList.remove("hidden");
+      } else {
+        appliedContainer.classList.add("hidden");
+      }
+    }
+
+    updateFilterCounts();
+    renderProducts(filtered);
+  }
+
+  function renderProducts(items) {
+    if (!productGrid) return;
+    if (productCountDisplay) {
+      productCountDisplay.innerText = items.length;
+    }
+    productGrid.innerHTML = "";
+
+    if (items.length === 0) {
+      productGrid.innerHTML = `
+        <div class="col-span-full py-12 text-center">
+          <span class="material-symbols-outlined text-4xl text-primary/85 mb-2">sentiment_dissatisfied</span>
+          <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
+          <button onclick="clearAllFilters()" class="mt-4 text-xs text-secondary underline bg-transparent border-0 cursor-pointer">Ryd filtre</button>
+        </div>
+      `;
+      return;
+    }
+
+    items.forEach(product => {
+      let originalPriceHtml = "";
+      if (product.originalPrice && product.originalPrice > product.price) {
+        const displayOrig = product.originalPrice_formatted ? product.originalPrice_formatted : `${product.originalPrice.toFixed(2).replace('.', ',')} Kr.`;
+        originalPriceHtml = `<span class="text-[8px] sm:text-[9px] text-primary/70 line-through leading-none">${displayOrig}</span>`;
+      }
+
+      let badgeHtml = "";
+      if (product.badge) {
+        badgeHtml = `<span class="absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">${product.badge}</span>`;
+      } else if (product.originalPrice && product.originalPrice > product.price) {
+        const savings = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+        badgeHtml = `<span class="absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">Spar ${savings}%</span>`;
+      }
+
+      const displayPrice = product.price_formatted ? product.price_formatted : `${product.price.toFixed(2).replace('.', ',')} Kr.`;
+      const isMetervare = product.type === "Metervare";
+      const isMeterProduct = product.thickness || product.width || product.title.toLowerCase().includes("voksdug") || product.title.toLowerCase().includes("bordbeskytter");
+
+      let swatchesHtml = "";
+      if (product.options_with_values && product.options_with_values.length > 0 && product.variants && product.variants.length > 1) {
+        swatchesHtml = `<div class="product-variant-swatches mt-3 space-y-2 border-t border-outline-variant/40 pt-2">`;
+        
+        product.options_with_values.forEach(opt => {
+          const optNameLower = opt.name.toLowerCase();
+          const isColor = optNameLower.includes("farve") || optNameLower.includes("mønster") || optNameLower.includes("color") || optNameLower.includes("colour");
+          
+          swatchesHtml += `
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[9px] font-bold text-primary/70 uppercase tracking-wider">${opt.name}: <span class="text-primary font-semibold font-sans normal-case text-[10px]" data-selected-option-label="${product.id}-${opt.name}">${product.options[opt.name] || opt.values[0]}</span></span>
+              <div class="flex flex-wrap gap-1 mt-0.5">
+          `;
+          
+          opt.values.forEach(val => {
+            const isSelected = (product.options[opt.name] === val);
+            
+            if (isColor) {
+              const matchingVar = product.variants.find(v => v.options[opt.name] === val) || product.variants[0];
+              const swatchImg = matchingVar.image || product.image;
+              const activeBorderClass = isSelected ? "border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30" : "border-outline-variant hover:border-[var(--color-accent)]/60";
+              swatchesHtml += `
+                <button 
+                  type="button"
+                  class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all ${activeBorderClass}"
+                  data-product-id="${product.id}"
+                  data-option-name="${opt.name}"
+                  data-option-value="${val}"
+                  onclick="window.onCardVariantChange(this)"
+                  title="${val}"
+                >
+                  <img src="${swatchImg}" alt="${val}" class="w-full h-full object-cover rounded-[5px]" />
+                </button>
+              `;
+            } else {
+              const activeTextClass = isSelected ? "border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold" : "border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+              swatchesHtml += `
+                <button 
+                  type="button"
+                  class="px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all ${activeTextClass}"
+                  data-product-id="${product.id}"
+                  data-option-name="${opt.name}"
+                  data-option-value="${val}"
+                  onclick="window.onCardVariantChange(this)"
+                >
+                  ${val}
+                </button>
+              `;
+            }
+          });
+          
+          swatchesHtml += `
+              </div>
+            </div>
+          `;
+        });
+        
+        swatchesHtml += `</div>`;
+      }
+
+      const cardHtml = `
+        <div class="product-card flex flex-col bg-transparent transition-all duration-300 group relative max-h-[420px] sm:max-h-none" data-product-id="${product.id}">
+          
+          <!-- Image Zone -->
+          <div class="relative w-full flex-shrink-0 bg-surface-container rounded-2xl border border-outline-variant overflow-hidden" style="aspect-ratio: 1/1;">
+            <a href="${product.url}" class="block w-full h-full">
+              <img 
+                src="${product.image}" 
+                alt="${product.title}" 
+                class="product-card-image w-full h-full object-cover group-hover:scale-103 transition-transform duration-1000 ease-out"
+                onerror="this.src='https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80'"
+                loading="lazy"
+              />
+            </a>
+            ${badgeHtml}
+          </div>
+
+          <!-- Info Zone -->
+          <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
+            <div class="space-y-1">
+              <h3 class="font-sans text-xs sm:text-sm font-bold text-primary leading-tight mb-1">
+                <a href="${product.url}" class="text-primary no-underline line-clamp-2">${product.title}</a>
+              </h3>
+              
+              <!-- Rating: 5 Stars -->
+              <div class="flex items-center gap-1 text-[10px] text-secondary mt-1">
+                <div class="flex text-[#FFB800] gap-0.5">
+                  ${(() => {
+                    let starsHtml = "";
+                    const ratingFloor = Math.floor(product.rating);
+                    const decimal = product.rating - ratingFloor;
+                    for (let i = 1; i <= 5; i++) {
+                      if (i <= ratingFloor) {
+                        starsHtml += `<span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                      } else if (i === ratingFloor + 1) {
+                        if (decimal >= 0.75) {
+                          starsHtml += `<span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                        } else if (decimal >= 0.25) {
+                          starsHtml += `<span class="material-symbols-outlined text-[12px] filled-star select-none" style="font-size: 12px; line-height: 1;">star_half</span>`;
+                        } else {
+                          starsHtml += `<span class="material-symbols-outlined text-[12px] text-outline-variant select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                        }
+                      } else {
+                        starsHtml += `<span class="material-symbols-outlined text-[12px] text-outline-variant select-none" style="font-size: 12px; line-height: 1;">star</span>`;
+                      }
+                    }
+                    return starsHtml;
+                  })()}
+                </div>
+                <span class="font-bold text-primary ml-1">${product.rating}</span>
+                <span class="text-primary/85">(${product.reviews})</span>
+              </div>
+
+              ${swatchesHtml}
+            </div>
+
+            <!-- Price & Buy Button (No divider border) -->
+            <div class="mt-3 space-y-3">
+              <div class="flex flex-col items-start gap-0.5">
+                <div class="flex items-baseline gap-1.5 flex-wrap">
+                  <span class="text-xs sm:text-sm md:text-base font-bold text-primary leading-none">
+                    ${displayPrice}
+                  </span>
+                  ${originalPriceHtml}
+                  <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">
+                    ${isMetervare ? 'pr. meter' : (isMeterProduct ? 'pr. cm' : '')}
+                  </span>
+                </div>
+              </div>
+
+              <button onclick="window.addToCart(${product.variants && product.variants.length > 0 ? product.variants[0].id : product.id})" class="w-full bg-accent hover:brightness-95 text-primary py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors focus:outline-none text-[11px] sm:text-xs font-bold border-0 cursor-pointer" aria-label="Køb ${product.title}">
+                <span>Køb</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      `;
+      productGrid.insertAdjacentHTML("beforeend", cardHtml);
+    });
+  }
+
+  function updateFilterCounts() {
+    const activeFilters = getSelectedFilters();
+    const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    
+    const minPriceInput = document.getElementById("price-min");
+    const maxPriceInput = document.getElementById("price-max");
+    const minPrice = minPriceInput && minPriceInput.value ? parseFloat(minPriceInput.value) : 0;
+    const maxPrice = maxPriceInput && maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
+
+    const checkboxes = document.querySelectorAll('input.filter-checkbox');
+    checkboxes.forEach(cb => {
+      let name = cb.name;
+      if (name.startsWith('mobile-')) {
+        name = name.replace('mobile-', '');
+      }
+      const val = cb.value;
+
+      const tempFilters = {};
+      for (const k in activeFilters) {
+        if (k !== name) {
+          tempFilters[k] = activeFilters[k];
+        }
+      }
+
+      let count = 0;
+      products.forEach(product => {
+        if (product.price < minPrice || product.price > maxPrice) return;
+
+        if (searchQuery) {
+          const matchesTitle = product.title.toLowerCase().includes(searchQuery);
+          const matchesThickness = product.thickness ? product.thickness.toLowerCase().includes(searchQuery) : false;
+          const matchesForm = product.form ? product.form.toLowerCase().includes(searchQuery) : false;
+          if (!matchesTitle && !matchesThickness && !matchesForm) return;
+        }
+
+        for (const fk in tempFilters) {
+          const selectedVals = tempFilters[fk];
+          if (selectedVals.length === 0) continue;
+          
+          let pVals = getProductValuesForKeyAll(product, fk);
+          const matchesTemp = pVals.some(v => selectedVals.includes(v));
+          if (!matchesTemp) return;
+        }
+
+        let currentPVals = getProductValuesForKeyAll(product, name);
+        if (currentPVals.includes(val)) {
+          count++;
         }
       });
-    }
-  });
 
-  window.syncFilters = syncFilters;
-  window.syncPriceFilters = syncPriceFilters;
-  window.filterProducts = filterProducts;
-  window.applyQuickFilter = applyQuickFilter;
-  window.clearAllFilters = clearAllFilters;
-  window.toggleMobileFilter = toggleMobileFilter;
+      const label = cb.closest('label');
+      let countSpan = cb.parentNode.querySelector('.filter-count');
+      if (countSpan) {
+        countSpan.textContent = ` (${count})`;
+      }
+
+      if (count === 0) {
+        if (isInitialCountRun) {
+          cb.dataset.initialZero = "true";
+          if (label) {
+            label.style.display = "none";
+          }
+        }
+        cb.disabled = true;
+        if (label && !isInitialCountRun) {
+          label.classList.add('opacity-40', 'cursor-not-allowed', 'pointer-events-none');
+        }
+      } else {
+        cb.disabled = false;
+        if (label) {
+          label.classList.remove('opacity-40', 'cursor-not-allowed', 'pointer-events-none');
+          if (cb.dataset.initialZero !== "true") {
+            label.style.display = ""; 
+          }
+        }
+      }
+    });
+  }
+
 </script>
 
 {% schema %}
