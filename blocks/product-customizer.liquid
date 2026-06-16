@@ -1164,134 +1164,55 @@
       const maxStdWidth = stdWidths[stdWidths.length - 1] || maxWidthLimit;
 
       // 2. We recommend Table Width + 40 cm (20 cm overhang per side) and Table Length + 40 cm
-      let targetWidth = tw + 40;
-      let targetLength = tl + 40;
+      let targetWidth = Math.round((tw + 40) / 5) * 5;
+      let targetLength = Math.round((tl + 40) / 10) * 10;
 
       if (shape === 'rund') {
-        targetWidth = tw + 40;
+        targetWidth = Math.round((tw + 40) / 5) * 5;
         targetLength = targetWidth; // round has equal width and length (diameter)
       }
 
-      // 3. Check if any standard width W satisfies Tw + 30 <= W <= Tw + 50
-      let fittingStdWidths = [];
-      stdWidths.forEach(w => {
-        const overhang = (w - tw) / 2;
-        if (overhang >= 15 && overhang <= 25) {
-          fittingStdWidths.push(w);
-        }
-      });
-
-      let chosenWidth = null;
-      let isFit = false;
-
-      if (fittingStdWidths.length > 0) {
-        // Find the cheapest standard width variant
-        let cheapestWidth = fittingStdWidths[0];
-        let cheapestPrice = Infinity;
-        let foundAvailable = false;
-
-        fittingStdWidths.forEach(w => {
-          let currentVariant = getCurrentVariant();
-          let match = findVariantForWidthAndOtherOptions(w + " cm", currentVariant);
-          if (match && match.available) {
-            foundAvailable = true;
-            if (match.price < cheapestPrice) {
-              cheapestPrice = match.price;
-              cheapestWidth = w;
-            }
-          }
-        });
-
-        if (foundAvailable) {
-          chosenWidth = cheapestWidth;
-          isFit = true;
-        }
+      // Hide the fit prompt container in simple mode as we now calculate exactly 20cm overhang
+      const fitPromptContainer = document.getElementById("fit-prompt-container");
+      if (fitPromptContainer) {
+        fitPromptContainer.style.display = "none";
       }
 
-      const fitPromptContainer = document.getElementById("fit-prompt-container");
+      // 3. Find if targetWidth matches a standard width exactly
+      const exactMatch = stdWidths.find(w => w === targetWidth);
 
-      if (isFit) {
+      if (exactMatch !== undefined) {
         // Fits standard width perfectly
-        if (fitPromptContainer) fitPromptContainer.style.display = "none";
-        
-        state.width = chosenWidth;
-        state.selectedStandardWidth = chosenWidth;
+        state.width = exactMatch;
+        state.selectedStandardWidth = exactMatch;
         state.customizeWidth = false;
         
         // Select standard variant in background
-        selectWidthOptionInShopify(chosenWidth + " cm");
+        selectWidthOptionInShopify(exactMatch + " cm");
         
         const customWidthCheckbox = document.getElementById("checkbox-custom-width");
         if (customWidthCheckbox) customWidthCheckbox.checked = false;
       } else {
-        // Does not fit a standard width perfectly
-        // Find closest standard width
-        let closestStdWidth = maxStdWidth;
-        let minDiff = Infinity;
-        stdWidths.forEach(w => {
-          const diff = Math.abs(w - targetWidth);
-          if (diff < minDiff) {
-            minDiff = diff;
-            closestStdWidth = w;
-          }
-        });
-
-        // Recommended custom width (capped at maxStdWidth - 5)
-        let recommendedCustomWidth = Math.min(maxStdWidth - 5, targetWidth);
-        recommendedCustomWidth = Math.max(50, recommendedCustomWidth);
-
-        // Standard surcharge price
-        const surchargePrice = widthSurchargeData.price || 0;
-
-        if (fitPromptContainer) {
-          fitPromptContainer.style.display = "block";
-          
-          const optStandardLabel = document.getElementById("fit-opt-standard-label");
-          const optStandardDesc = document.getElementById("fit-opt-standard-desc");
-          const optStandardPrice = document.getElementById("fit-opt-standard-price");
-          
-          const optCustomLabel = document.getElementById("fit-opt-custom-label");
-          const optCustomDesc = document.getElementById("fit-opt-custom-desc");
-          const optCustomPrice = document.getElementById("fit-opt-custom-price");
-
-          const stdOverhang = (closestStdWidth - tw) / 2;
-          
-          if (optStandardLabel) optStandardLabel.textContent = `Standardbredde: ${closestStdWidth} cm`;
-          if (optStandardDesc) optStandardDesc.textContent = `Giver ${stdOverhang} cm nedhæng i siderne. Billigste løsning!`;
-          
-          if (optCustomLabel) optCustomLabel.textContent = `Specialtilpasset: ${recommendedCustomWidth} cm`;
-          if (optCustomDesc) optCustomDesc.textContent = `Skræddersyet på dine mål for at give 20 cm nedhæng (+${formatDanishPrice(surchargePrice).replace("Kr.", "kr.")})`;
-
-          // Calculate approximate pricing for displaying on the options
-          let currentVariant = getCurrentVariant();
-          let stdMatch = findVariantForWidthAndOtherOptions(closestStdWidth + " cm", currentVariant);
-          let stdPrice = stdMatch ? stdMatch.price * targetLength : 0;
-          
-          let baseStdWidth = stdWidths.find(w => w >= recommendedCustomWidth) || maxStdWidth;
-          let customBaseMatch = findVariantForWidthAndOtherOptions(baseStdWidth + " cm", currentVariant);
-          let customPrice = customBaseMatch ? (customBaseMatch.price * targetLength + surchargePrice) : 0;
-
-          if (optStandardPrice) optStandardPrice.textContent = formatDanishPrice(stdPrice).replace("Kr.", "kr.");
-          if (optCustomPrice) optCustomPrice.textContent = formatDanishPrice(customPrice).replace("Kr.", "kr.");
-        }
-
-        // Check which radio option is selected (default to standard to suggest the cheapest version)
-        const choice = document.querySelector('input[name="width-fit-choice"]:checked')?.value || 'standard';
-        
-        if (choice === 'standard') {
-          state.width = closestStdWidth;
-          state.selectedStandardWidth = closestStdWidth;
+        // Does not match a standard width exactly
+        if (targetWidth > maxStdWidth) {
+          // If the target width is larger than the maximum available standard width,
+          // we cannot customize it wider than maxStdWidth. So we clamp to maxStdWidth.
+          state.width = maxStdWidth;
+          state.selectedStandardWidth = maxStdWidth;
           state.customizeWidth = false;
-          selectWidthOptionInShopify(closestStdWidth + " cm");
+          
+          selectWidthOptionInShopify(maxStdWidth + " cm");
           
           const customWidthCheckbox = document.getElementById("checkbox-custom-width");
           if (customWidthCheckbox) customWidthCheckbox.checked = false;
         } else {
-          state.width = recommendedCustomWidth;
-          // Select base standard variant for custom cut (the one >= recommendedCustomWidth)
-          let baseStdWidth = stdWidths.find(w => w >= recommendedCustomWidth) || maxStdWidth;
+          // Find the smallest standard width >= targetWidth
+          const baseStdWidth = stdWidths.find(w => w >= targetWidth) || maxStdWidth;
+          
+          state.width = targetWidth;
           state.selectedStandardWidth = baseStdWidth;
           state.customizeWidth = true;
+          
           selectWidthOptionInShopify(baseStdWidth + " cm");
           
           const customWidthCheckbox = document.getElementById("checkbox-custom-width");
@@ -1308,8 +1229,6 @@
       
       const displayWidth = document.getElementById("display-width");
       if (displayWidth) displayWidth.value = state.width;
-
-
     }
 
     // Tab mode toggler
