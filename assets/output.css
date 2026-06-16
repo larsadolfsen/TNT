@@ -2556,7 +2556,9 @@ h4 {
   }
 }
 .card-block:has(.shopify-block-product-customizer), .card-block:has(.product-customizer) {
-  border: 1px solid var(--color-border) !important;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--color-border);
 }
 html, body {
   overflow-x: clip;
