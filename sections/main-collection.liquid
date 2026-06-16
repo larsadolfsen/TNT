@@ -1121,22 +1121,6 @@
         }
       }
 
-      const buyButton = cardEl.querySelector('button');
-      if (buyButton) {
-        if (matchingVariant.available) {
-          buyButton.disabled = false;
-          buyButton.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-slate-200');
-          buyButton.classList.add('bg-accent', 'hover:brightness-95');
-          buyButton.setAttribute('onclick', `window.addToCart(${matchingVariant.id})`);
-          buyButton.innerHTML = `<span>Køb</span>`;
-        } else {
-          buyButton.disabled = true;
-          buyButton.classList.add('opacity-50', 'cursor-not-allowed', 'bg-slate-200');
-          buyButton.classList.remove('bg-accent', 'hover:brightness-95');
-          buyButton.removeAttribute('onclick');
-          buyButton.innerHTML = `<span>Udsolgt</span>`;
-        }
-      }
     }
   };
 
@@ -1478,10 +1462,6 @@
                   </span>
                 </div>
               </div>
-
-              <button onclick="window.addToCart(${product.variants && product.variants.length > 0 ? product.variants[0].id : product.id})" class="w-full bg-accent hover:brightness-95 text-primary py-2 rounded-full flex items-center justify-center gap-1.5 transition-colors focus:outline-none text-[11px] sm:text-xs font-bold border-0 cursor-pointer" aria-label="Køb ${product.title}">
-                <span>Køb</span>
-              </button>
             </div>
           </div>
 
