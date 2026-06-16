@@ -12,23 +12,6 @@
     "collection-header": {
       "type": "section",
       "blocks": {
-        "group_y4UQRq": {
-          "type": "group",
-          "name": "t:general.column",
-          "settings": {
-            "span_mobile": "4",
-            "span_tablet": "4",
-            "span_desktop": "6",
-            "sticky": false,
-            "layout_direction": "group--vertical",
-            "alignment": "flex-start",
-            "align_left": false,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        },
         "page_title": {
           "type": "page-title",
           "settings": {
@@ -42,7 +25,6 @@
         }
       },
       "block_order": [
-        "group_y4UQRq",
         "page_title"
       ],
       "settings": {
