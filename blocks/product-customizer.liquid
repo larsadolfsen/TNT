@@ -301,16 +301,7 @@
 
     <!-- Step 3 (Simple Mode): Recommendation & Fit Choice -->
     <div id="simple-recommendation-container" class="flex flex-col gap-3" style="--span-mb: 4; --span-tb: 8; --span-lg: 12; --span-mobile: 4; --span-expanded: 8; --span-large: 12;">
-      <!-- The Recommendation Card -->
-      <div id="simple-recommendation-card" class="pl-10 w-full" style="display: none;">
-        <div class="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/50 rounded-2xl flex flex-col gap-1.5 shadow-sm">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-500 text-lg">check_circle</span>
-            <span id="recommendation-text" class="text-sm text-primary font-bold"></span>
-          </div>
-          <p id="recommendation-details" class="text-xs text-primary/70 pl-7"></p>
-        </div>
-      </div>
+      <!-- The Recommendation Card was removed as requested -->
 
       <!-- Fit Prompt (only shown when width doesn't fit standard) -->
       <div id="fit-prompt-container" class="pl-10 w-full" style="display: none;">
@@ -1310,29 +1301,7 @@
       const displayWidth = document.getElementById("display-width");
       if (displayWidth) displayWidth.value = state.width;
 
-      // Update recommendation card display
-      const recCard = document.getElementById("simple-recommendation-card");
-      if (recCard) {
-        recCard.style.display = "block";
-        const recText = document.getElementById("recommendation-text");
-        const recDetails = document.getElementById("recommendation-details");
-        if (recText) {
-          if (shape === 'rund') {
-            recText.innerHTML = `Vi anbefaler en rund dug med diameter <strong>${state.length} cm</strong>`;
-          } else {
-            recText.innerHTML = `Vi anbefaler en dug på <strong>${state.width} x ${state.length} cm</strong>`;
-          }
-        }
-        if (recDetails) {
-          const overhangW = (state.width - tw) / 2;
-          const overhangL = (state.length - tl) / 2;
-          if (shape === 'rund') {
-            recDetails.textContent = `Bordets diameter: ${tw} cm | Nedhæng: ${overhangW} cm hele vejen rundt`;
-          } else {
-            recDetails.textContent = `Bordets mål: ${tw} x ${tl} cm | Nedhæng: ${overhangW} cm i siderne og ${overhangL} cm i enderne`;
-          }
-        }
-      }
+
     }
 
     // Tab mode toggler
@@ -1632,12 +1601,17 @@
         const widthSelectionContainer = document.getElementById("step-container-width");
         const lengthSelectionContainer = document.getElementById("step-container-length");
         
-        if (selectedShape === 'rund') {
-          if (widthSelectionContainer) widthSelectionContainer.style.display = "flex";
+        if (state.customizerMode === 'simple') {
+          if (widthSelectionContainer) widthSelectionContainer.style.display = "none";
           if (lengthSelectionContainer) lengthSelectionContainer.style.display = "none";
         } else {
-          if (widthSelectionContainer) widthSelectionContainer.style.display = "flex";
-          if (lengthSelectionContainer) lengthSelectionContainer.style.display = "flex";
+          if (selectedShape === 'rund') {
+            if (widthSelectionContainer) widthSelectionContainer.style.display = "flex";
+            if (lengthSelectionContainer) lengthSelectionContainer.style.display = "none";
+          } else {
+            if (widthSelectionContainer) widthSelectionContainer.style.display = "flex";
+            if (lengthSelectionContainer) lengthSelectionContainer.style.display = "flex";
+          }
         }
 
         const widthAccordion = document.getElementById("content-width-accordion");
