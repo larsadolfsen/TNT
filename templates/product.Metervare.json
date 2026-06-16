@@ -286,7 +286,7 @@
                 "firkantet_label": "Firkantet",
                 "rund_label": "Rund",
                 "oval_label": "Oval",
-                "simple_heading": "Bordets bredde og længde",
+                "simple_heading": "Bordets mål",
                 "simple_description": "For at dugen passer perfekt til bordet, lægger vi 20 cm nedhæng til på hver side.  Bordets maksimale bredde er [max_width] cm.",
                 "simple_width_label": "Bordets bredde",
                 "simple_diameter_label": "Bordets diameter",
