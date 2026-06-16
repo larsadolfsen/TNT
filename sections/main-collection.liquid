@@ -1349,15 +1349,15 @@
       }
 
       const cardHtml = `
-        <div class="product-card flex flex-col bg-card-light border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative max-h-[420px] sm:max-h-none" data-product-id="${product.id}">
+        <div class="product-card flex flex-col bg-transparent transition-all duration-300 group relative max-h-[420px] sm:max-h-none" data-product-id="${product.id}">
           
           <!-- Image Zone -->
-          <div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden" style="aspect-ratio: 1/1;">
+          <div class="relative w-full flex-shrink-0 bg-surface-container rounded-2xl overflow-hidden" style="aspect-ratio: 1/1;">
             <a href="${product.url}" class="block w-full h-full">
               <img 
                 src="${product.image}" 
                 alt="${product.title}" 
-                class="product-card-image w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                class="product-card-image w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                 onerror="this.src='https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80'"
                 loading="lazy"
               />
