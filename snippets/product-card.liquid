@@ -115,7 +115,7 @@
             {%- if original_price > price -%}
               {%- assign savings = original_price | minus: price | times: 100 | divided_by: original_price -%}
               {%- assign badge_text = settings.savings_badge_text | default: "[savings] % rabat" | replace: "[savings]", savings -%}
-              <span class="product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase">{{ badge_text }}</span>
+              <span class="product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase">{{ badge_text }}</span>
             {%- endif -%}
           {%- endunless -%}
         </div>
@@ -514,7 +514,7 @@
                 const savings = Math.round(((matchingVariant.originalPrice - matchingVariant.price) / matchingVariant.originalPrice) * 100);
                 if (!savingsBadge) {
                   savingsBadge = document.createElement('span');
-                  savingsBadge.className = "product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase";
+                  savingsBadge.className = "product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase";
                   savingsContainer.appendChild(savingsBadge);
                 }
                 savingsBadge.textContent = savingsBadgeTextTemplate.replace('[savings]', savings);
