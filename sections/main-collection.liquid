@@ -194,9 +194,9 @@
                       endif
                     endif
                   -%}
-                  <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer">
+                  <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer filter-label transition-all">
                     <input type="checkbox" name="{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-                    <span>{{ display_val }}</span>
+                    <span>{{ display_val }} <span class="filter-count text-xs text-primary/60 ml-0.5">(0)</span></span>
                   </label>
                 {%- endfor -%}
               </div>
@@ -223,6 +223,8 @@
                 <option value="popularity">Mest populære</option>
                 <option value="price-asc">Pris: Lav til høj</option>
                 <option value="price-desc">Pris: Høj til lav</option>
+                <option value="rating-desc">Brugerbedømmelse</option>
+                <option value="newest">Nyeste</option>
               </select>
             </div>
 
@@ -232,6 +234,13 @@
               Filtrer
             </button>
           </div>
+        </div>
+
+        <!-- Applied Filters Bar -->
+        <div id="applied-filters-container" class="flex flex-wrap gap-2 items-center hidden border-t border-outline-variant/40 pt-3">
+          <span class="text-xs font-bold text-primary/70 uppercase tracking-wider mr-1">Aktive filtre:</span>
+          <div id="applied-filters-list" class="flex flex-wrap gap-1.5"></div>
+          <button onclick="clearAllFilters()" class="text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0 ml-2 font-semibold">Ryd alle</button>
         </div>
       </div>
 
@@ -424,9 +433,9 @@
                       endif
                     endif
                   -%}
-                  <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer">
+                  <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer filter-label transition-all">
                     <input type="checkbox" name="mobile-{{ block_key }}" value="{{ val | escape }}" onchange="syncFilters(this)" class="rounded border-outline-variant text-primary focus:ring-primary"/>
-                    <span>{{ display_val }}</span>
+                    <span>{{ display_val }} <span class="filter-count text-xs text-primary/60 ml-0.5">(0)</span></span>
                   </label>
                 {%- endfor -%}
               </div>
@@ -437,7 +446,7 @@
     </div>
     <div class="pt-4 border-t border-outline-variant flex gap-3">
       <button onclick="clearAllFilters()" class="flex-1 py-3 border border-outline-variant rounded-xl text-xs font-bold text-primary bg-transparent cursor-pointer">Ryd alle</button>
-      <button onclick="toggleMobileFilter(false)" class="flex-1 py-3 bg-primary text-on-primary rounded-xl text-xs font-bold border-0 cursor-pointer">Vis resultater</button>
+      <button id="mobile-apply-btn" onclick="toggleMobileFilter(false)" class="flex-1 py-3 bg-primary text-on-primary rounded-xl text-xs font-bold border-0 cursor-pointer">Vis resultater</button>
     </div>
   </div>
 </div>
@@ -900,6 +909,7 @@
 
   window.onload = function() {
     filterProducts();
+    truncateFilterLists();
   };
 
   function syncFilters(changedInput) {
@@ -957,6 +967,163 @@
     return filters;
   }
 
+  function removeFilterChip(key, value) {
+    const inputs = document.querySelectorAll(`input[name="${key}"][value="${value}"], input[name="mobile-${key}"][value="${value}"]`);
+    inputs.forEach(input => {
+      input.checked = false;
+    });
+    filterProducts();
+  }
+
+  function removePriceFilterChip() {
+    ['price-min', 'price-max', 'mobile-price-min', 'mobile-price-max'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+    filterProducts();
+  }
+
+  function getProductValueForKey(product, filterKey) {
+    let productValue = "";
+    if (filterKey === 'tykkelse') {
+      productValue = product.thickness;
+    } else if (filterKey === 'bredde') {
+      productValue = product.width;
+    } else if (filterKey === 'form') {
+      productValue = product.form;
+    }
+    if (!productValue) {
+      const tagPrefix = filterKey.toLowerCase() + ":";
+      if (product.tags) {
+        const matchingTag = product.tags.find(t => t.toLowerCase().startsWith(tagPrefix));
+        if (matchingTag) {
+          productValue = matchingTag.substring(tagPrefix.length).trim();
+        }
+      }
+    }
+    if (!productValue && product.options) {
+      const optName = Object.keys(product.options).find(k => k.toLowerCase().includes(filterKey.toLowerCase()));
+      if (optName) {
+        productValue = product.options[optName];
+      }
+    }
+    return productValue;
+  }
+
+  function updateFilterCounts() {
+    const activeFilters = getSelectedFilters();
+    const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    
+    const minPriceInput = document.getElementById("price-min");
+    const maxPriceInput = document.getElementById("price-max");
+    const minPrice = minPriceInput && minPriceInput.value ? parseFloat(minPriceInput.value) : 0;
+    const maxPrice = maxPriceInput && maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+      let name = cb.name;
+      if (name.startsWith('mobile-')) {
+        name = name.replace('mobile-', '');
+      }
+      const val = cb.value;
+
+      const tempFilters = {};
+      for (const k in activeFilters) {
+        if (k !== name) {
+          tempFilters[k] = activeFilters[k];
+        }
+      }
+
+      let count = 0;
+      products.forEach(product => {
+        if (product.price < minPrice || product.price > maxPrice) return;
+
+        if (searchQuery) {
+          const matchesTitle = product.title.toLowerCase().includes(searchQuery);
+          const matchesThickness = product.thickness ? product.thickness.toLowerCase().includes(searchQuery) : false;
+          const matchesForm = product.form ? product.form.toLowerCase().includes(searchQuery) : false;
+          if (!matchesTitle && !matchesThickness && !matchesForm) return;
+        }
+
+        for (const fk in tempFilters) {
+          const selectedVals = tempFilters[fk];
+          if (selectedVals.length === 0) continue;
+          
+          let pVal = getProductValueForKey(product, fk);
+          if (!pVal || !selectedVals.includes(pVal)) return;
+        }
+
+        let currentPVal = getProductValueForKey(product, name);
+        if (currentPVal === val) {
+          count++;
+        }
+      });
+
+      const label = cb.closest('label');
+      let countSpan = cb.parentNode.querySelector('.filter-count');
+      if (countSpan) {
+        countSpan.textContent = ` (${count})`;
+      }
+
+      if (count === 0 && !cb.checked) {
+        cb.disabled = true;
+        if (label) {
+          label.classList.add('opacity-40', 'cursor-not-allowed', 'pointer-events-none');
+        }
+      } else {
+        cb.disabled = false;
+        if (label) {
+          label.classList.remove('opacity-40', 'cursor-not-allowed', 'pointer-events-none');
+        }
+      }
+    });
+  }
+
+  function truncateFilterLists() {
+    const filterContainers = document.querySelectorAll('.space-y-6 > div > div.space-y-2, #mobile-filter-drawer .space-y-6 > div > div.space-y-2');
+    filterContainers.forEach(container => {
+      const labels = container.querySelectorAll('label');
+      if (labels.length > 8) {
+        for (let i = 8; i < labels.length; i++) {
+          labels[i].classList.add('hidden', 'truncated-filter-option');
+        }
+
+        const toggleBtn = document.createElement('button');
+        toggleBtn.type = 'button';
+        toggleBtn.className = 'text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0 mt-2 font-semibold flex items-center gap-1';
+        toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - 8})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
+        
+        toggleBtn.onclick = function() {
+          const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+          if (isExpanded) {
+            for (let i = 8; i < labels.length; i++) {
+              labels[i].classList.add('hidden');
+            }
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - 8})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
+          } else {
+            for (let i = 8; i < labels.length; i++) {
+              labels[i].classList.remove('hidden');
+            }
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            toggleBtn.innerHTML = `<span>Vis færre</span><span class="material-symbols-outlined text-xs">keyboard_arrow_up</span>`;
+          }
+        };
+
+        container.appendChild(toggleBtn);
+      }
+    });
+  }
+
+  // Bayesian rating index formula
+  function getBayesianRating(p) {
+    const r = p.rating || 0;
+    const v = p.reviews || 0;
+    const K = 5; 
+    const C = 4.5;
+    return (v / (v + K)) * r + (K / (v + K)) * C;
+  }
+
   function filterProducts() {
     const activeFilters = getSelectedFilters();
     const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
@@ -968,53 +1135,20 @@
     const maxPrice = maxPriceInput && maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
 
     let filtered = products.filter(product => {
-      // 1. Price Range Check
       if (product.price < minPrice || product.price > maxPrice) {
         return false;
       }
 
-      // 2. Dynamic checkboxes filtering
       for (const filterKey in activeFilters) {
         const selectedValues = activeFilters[filterKey];
         if (selectedValues.length === 0) continue;
 
-        let productValue = "";
-        
-        // Match specific standard keys first to keep backward compatibility
-        if (filterKey === 'tykkelse') {
-          productValue = product.thickness;
-        } else if (filterKey === 'bredde') {
-          productValue = product.width;
-        } else if (filterKey === 'form') {
-          productValue = product.form;
-        }
-
-        // If not found in standard properties, search in all tags and options
-        if (!productValue) {
-          // Check tags (e.g. tag is "farve:Rød", search tag starting with "farve:")
-          const tagPrefix = filterKey.toLowerCase() + ":";
-          if (product.tags) {
-            const matchingTag = product.tags.find(t => t.toLowerCase().startsWith(tagPrefix));
-            if (matchingTag) {
-              productValue = matchingTag.substring(tagPrefix.length).trim();
-            }
-          }
-        }
-
-        if (!productValue && product.options) {
-          // Check product variant options (case insensitive option name match)
-          const optName = Object.keys(product.options).find(k => k.toLowerCase().includes(filterKey.toLowerCase()));
-          if (optName) {
-            productValue = product.options[optName];
-          }
-        }
-
+        let productValue = getProductValueForKey(product, filterKey);
         if (!productValue || !selectedValues.includes(productValue)) {
           return false;
         }
       }
 
-      // 3. Search query check
       if (searchQuery) {
         const matchesTitle = product.title.toLowerCase().includes(searchQuery);
         const matchesThickness = product.thickness ? product.thickness.toLowerCase().includes(searchQuery) : false;
@@ -1026,13 +1160,83 @@
       return true;
     });
 
+    // Sort execution
     if (sortBy === "price-asc") {
       filtered.sort((a, b) => a.price - b.price);
     } else if (sortBy === "price-desc") {
       filtered.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "rating-desc") {
+      filtered.sort((a, b) => getBayesianRating(b) - getBayesianRating(a));
+    } else if (sortBy === "newest") {
+      filtered.sort((a, b) => b.id - a.id);
     } else {
       filtered.sort((a, b) => b.popularity - a.popularity);
     }
+
+    // Dynamic mobile apply button text
+    const mobileApplyBtn = document.getElementById("mobile-apply-btn");
+    if (mobileApplyBtn) {
+      mobileApplyBtn.textContent = `Vis ${filtered.length} resultater`;
+    }
+
+    // Dynamic applied filters chips
+    const appliedContainer = document.getElementById("applied-filters-container");
+    const appliedList = document.getElementById("applied-filters-list");
+    if (appliedContainer && appliedList) {
+      appliedList.innerHTML = "";
+      let hasActive = false;
+
+      for (const key in activeFilters) {
+        const vals = activeFilters[key];
+        vals.forEach(val => {
+          hasActive = true;
+          const chip = document.createElement("div");
+          chip.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-xs text-primary font-semibold transition-all";
+          
+          let displayKey = key.charAt(0).toUpperCase() + key.slice(1);
+          if (key === 'tykkelse') displayKey = 'Tykkelse';
+          else if (key === 'bredde') displayKey = 'Bredde';
+          else if (key === 'form') displayKey = 'Form';
+
+          chip.innerHTML = `
+            <span>${displayKey}: ${val}</span>
+            <button onclick="removeFilterChip('${key}', '${val.replace(/'/g, "\\'")}')" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern ${val}">
+              <span class="material-symbols-outlined text-[10px]">close</span>
+            </button>
+          `;
+          appliedList.appendChild(chip);
+        });
+      }
+
+      const minVal = minPriceInput ? minPriceInput.value : "";
+      const maxVal = maxPriceInput ? maxPriceInput.value : "";
+      if (minVal || maxVal) {
+        hasActive = true;
+        const chip = document.createElement("div");
+        chip.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-xs text-primary font-semibold transition-all";
+        let text = "Pris: ";
+        if (minVal && maxVal) text += `${minVal} - ${maxVal} Kr.`;
+        else if (minVal) text += `Over ${minVal} Kr.`;
+        else if (maxVal) text += `Under ${maxVal} Kr.`;
+
+        chip.innerHTML = `
+          <span>${text}</span>
+          <button onclick="removePriceFilterChip()" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern prisfilter">
+            <span class="material-symbols-outlined text-[10px]">close</span>
+          </button>
+        `;
+        appliedList.appendChild(chip);
+      }
+
+      if (hasActive) {
+        appliedContainer.classList.remove("hidden");
+      } else {
+        appliedContainer.classList.add("hidden");
+      }
+    }
+
+    // Update checkbox counts dynamically
+    updateFilterCounts();
 
     renderProducts(filtered);
   }
@@ -1070,63 +1274,49 @@
 
       const displayPrice = product.price_formatted ? product.price_formatted : `${product.price.toFixed(2).replace('.', ',')} Kr.`;
 
-      // Determine if it is a Metervare product (priced per meter)
       const isMetervare = product.type === "Metervare";
-
-      // Determine if it is a general meter-sold product (priced per cm)
       const isMeterProduct = product.thickness || product.width || product.title.toLowerCase().includes("voksdug") || product.title.toLowerCase().includes("bordbeskytter");
 
-      let priceLabel = 'Pris';
-      if (isMetervare) {
-        priceLabel = 'Pris pr. meter';
-      } else if (isMeterProduct) {
-        priceLabel = 'Pris pr. cm';
-      }
-
-      // Generate variant swatches HTML (Images for color/pattern, text pills for sizes/widths/others)
       let swatchesHtml = "";
       if (product.options_with_values && product.options_with_values.length > 0 && product.variants && product.variants.length > 1) {
-        swatchesHtml = `<div class="product-variant-swatches mt-3 space-y-2.5 border-t border-outline-variant/40 pt-2.5">`;
+        swatchesHtml = `<div class="product-variant-swatches mt-3 space-y-2 border-t border-outline-variant/40 pt-2">`;
         
         product.options_with_values.forEach(opt => {
           const optNameLower = opt.name.toLowerCase();
           const isColor = optNameLower.includes("farve") || optNameLower.includes("mønster") || optNameLower.includes("color") || optNameLower.includes("colour");
           
           swatchesHtml += `
-            <div class="flex flex-col gap-1">
+            <div class="flex flex-col gap-0.5">
               <span class="text-[9px] font-bold text-primary/70 uppercase tracking-wider">${opt.name}: <span class="text-primary font-semibold font-sans normal-case text-[10px]" data-selected-option-label="${product.id}-${opt.name}">${product.options[opt.name] || opt.values[0]}</span></span>
-              <div class="flex flex-wrap gap-1.5 mt-0.5">
+              <div class="flex flex-wrap gap-1 mt-0.5">
           `;
           
           opt.values.forEach(val => {
             const isSelected = (product.options[opt.name] === val);
             
             if (isColor) {
-              // Find matching variant to get its image
               const matchingVar = product.variants.find(v => v.options[opt.name] === val) || product.variants[0];
               const swatchImg = matchingVar.image || product.image;
-              
               const activeBorderClass = isSelected ? "border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30" : "border-outline-variant hover:border-[var(--color-accent)]/60";
               swatchesHtml += `
                 <button 
                   type="button"
-                  class="w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all ${activeBorderClass}"
+                  class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all ${activeBorderClass}"
                   data-product-id="${product.id}"
                   data-option-name="${opt.name}"
                   data-option-value="${val}"
                   onclick="window.onCardVariantChange(this)"
                   title="${val}"
                 >
-                  <img src="${swatchImg}" alt="${val}" class="w-full h-full object-cover rounded-[10px]" />
+                  <img src="${swatchImg}" alt="${val}" class="w-full h-full object-cover rounded-[5px]" />
                 </button>
               `;
             } else {
-              // Text pill
               const activeTextClass = isSelected ? "border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold" : "border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
               swatchesHtml += `
                 <button 
                   type="button"
-                  class="px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all ${activeTextClass}"
+                  class="px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all ${activeTextClass}"
                   data-product-id="${product.id}"
                   data-option-name="${opt.name}"
                   data-option-value="${val}"
@@ -1148,7 +1338,7 @@
       }
 
       const cardHtml = `
-        <div class="product-card flex flex-col bg-card-light border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative" data-product-id="${product.id}">
+        <div class="product-card flex flex-col bg-card-light border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative max-h-[420px] sm:max-h-none" data-product-id="${product.id}">
           
           <!-- Image Zone -->
           <div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden" style="aspect-ratio: 1/1;">
@@ -1156,7 +1346,7 @@
               <img 
                 src="${product.image}" 
                 alt="${product.title}" 
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                class="product-card-image w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
                 onerror="this.src='https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80'"
                 loading="lazy"
               />
@@ -1205,15 +1395,15 @@
 
             <!-- Price & Buy Button (No divider border) -->
             <div class="mt-3 space-y-3">
-              <div class="flex flex-col items-start gap-1">
-                <span class="text-[10px] sm:text-xs text-primary/85 leading-none">
-                  ${priceLabel}
-                </span>
+              <div class="flex flex-col items-start gap-0.5">
                 <div class="flex items-baseline gap-1.5 flex-wrap">
                   <span class="text-xs sm:text-sm md:text-base font-bold text-primary leading-none">
-                    ${isMetervare || isMeterProduct ? 'Fra ' : ''}${displayPrice}
+                    ${displayPrice}
                   </span>
                   ${originalPriceHtml}
+                  <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">
+                    ${isMetervare ? 'pr. meter' : (isMeterProduct ? 'pr. cm' : '')}
+                  </span>
                 </div>
               </div>
 
@@ -1238,11 +1428,9 @@
     const cardEl = buttonEl.closest('.product-card');
     if (!cardEl) return;
     
-    // Find product data
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
-    // Update styling for all buttons of this option to reflect active state
     const optionButtons = Array.from(cardEl.querySelectorAll('button[data-option-name]')).filter(btn => btn.dataset.optionName === optionName);
     optionButtons.forEach(btn => {
       const isColor = btn.querySelector('img') !== null;
@@ -1251,51 +1439,45 @@
       
       if (isColor) {
         if (isSelected) {
-          btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
         } else {
-          btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+          btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
         }
       } else {
         if (isSelected) {
-          btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
         } else {
-          btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+          btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
         }
       }
     });
 
-    // Update label text showing selected value
     const labelSpan = Array.from(cardEl.querySelectorAll('[data-selected-option-label]')).find(span => span.dataset.selectedOptionLabel === `${productId}-${optionName}`);
     if (labelSpan) {
       labelSpan.textContent = optionValue;
     }
 
-    // Now gather all currently selected options on this card
     const activeOptions = {};
     const selectedButtons = Array.from(cardEl.querySelectorAll('.product-variant-swatches button')).filter(btn => btn.classList.contains('border-[var(--color-accent)]'));
     selectedButtons.forEach(btn => {
       activeOptions[btn.dataset.optionName] = btn.dataset.optionValue;
     });
 
-    // Fallback for options that don't have selected buttons yet
     product.options_with_values.forEach(opt => {
       if (!activeOptions[opt.name]) {
         activeOptions[opt.name] = product.options[opt.name];
       }
     });
 
-    // Find matching variant
     let matchingVariant = product.variants.find(v => {
       return Object.entries(activeOptions).every(([name, val]) => {
         return v.options[name] === val;
       });
     });
 
-    // If no perfect match, find first variant matching the clicked option value
     if (!matchingVariant) {
       matchingVariant = product.variants.find(v => v.options[optionName] === optionValue);
       
-      // Update other swatches styling to match this found variant's options
       if (matchingVariant) {
         product.options_with_values.forEach(opt => {
           const matchingVal = matchingVariant.options[opt.name];
@@ -1312,15 +1494,15 @@
             
             if (isColor) {
               if (isSelected) {
-                btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
+                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30";
               } else {
-                btn.className = "w-10 h-10 rounded-xl overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
+                btn.className = "w-7 h-7 sm:w-9 sm:h-9 rounded-lg overflow-hidden border-2 bg-card-high shadow-sm p-0.5 cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60";
               }
             } else {
               if (isSelected) {
-                btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
+                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold";
               } else {
-                btn.className = "px-2.5 py-1 text-[11px] rounded-xl border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
+                btn.className = "px-2 py-0.5 text-[9px] sm:text-[11px] rounded-lg border-2 bg-card-high shadow-sm cursor-pointer transition-all border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80";
               }
             }
           });
@@ -1329,19 +1511,20 @@
     }
 
     if (matchingVariant) {
-      // 1. Update card image
-      const imgEl = cardEl.querySelector('img');
+      // 1. Update card image with fade transition
+      const imgEl = cardEl.querySelector('.product-card-image');
       if (imgEl) {
-        imgEl.src = matchingVariant.image;
+        imgEl.style.opacity = '0.3';
+        setTimeout(() => {
+          imgEl.src = matchingVariant.image;
+          imgEl.style.opacity = '1';
+        }, 100);
       }
 
       // 2. Update price display
       const priceValEl = cardEl.querySelector('.font-bold.text-primary.leading-none');
       if (priceValEl) {
-        const isMetervare = product.type === "Metervare";
-        const isMeterProduct = product.thickness || product.width || product.title.toLowerCase().includes("voksdug") || product.title.toLowerCase().includes("bordbeskytter");
-        const pricePrefix = isMetervare || isMeterProduct ? 'Fra ' : '';
-        priceValEl.textContent = `${pricePrefix}${matchingVariant.price_formatted}`;
+        priceValEl.textContent = matchingVariant.price_formatted;
       }
 
       // 3. Update original price display
@@ -1352,7 +1535,7 @@
           if (!originalPriceEl) {
             originalPriceEl = document.createElement('span');
             originalPriceEl.className = "text-[8px] sm:text-[9px] text-primary/70 line-through leading-none";
-            priceWrapper.appendChild(originalPriceEl);
+            priceWrapper.insertBefore(originalPriceEl, priceWrapper.querySelector('span:last-child'));
           }
           originalPriceEl.textContent = matchingVariant.originalPrice_formatted;
         } else if (originalPriceEl) {
@@ -1388,7 +1571,6 @@
         }
       }
 
-      // 4. Update button active variant target
       const buyButton = cardEl.querySelector('button');
       if (buyButton) {
         if (matchingVariant.available) {

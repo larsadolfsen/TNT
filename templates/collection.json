@@ -52,9 +52,58 @@
         "border_top": false,
         "border_bottom": false
       }
+    },
+    "main-collection": {
+      "type": "main-collection",
+      "blocks": {
+        "filter_0": {
+          "type": "filter",
+          "settings": {
+            "title": "Tykkelse",
+            "filter_type": "tag",
+            "key": "tykkelse"
+          }
+        },
+        "filter_1": {
+          "type": "filter",
+          "settings": {
+            "title": "Størrelse / Bredde",
+            "filter_type": "option",
+            "key": "bredde",
+            "display_mapping": "width"
+          }
+        },
+        "filter_2": {
+          "type": "filter",
+          "settings": {
+            "title": "Type / Form",
+            "filter_type": "option",
+            "key": "form",
+            "display_mapping": "form"
+          }
+        },
+        "filter_3": {
+          "type": "filter",
+          "settings": {
+            "title": "Pris",
+            "filter_type": "price"
+          }
+        }
+      },
+      "block_order": [
+        "filter_0",
+        "filter_1",
+        "filter_2",
+        "filter_3"
+      ],
+      "settings": {
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
     }
   },
   "order": [
-    "collection-header"
+    "collection-header",
+    "main-collection"
   ]
 }
