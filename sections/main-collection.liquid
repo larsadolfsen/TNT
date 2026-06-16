@@ -19,7 +19,7 @@
     <aside class="hidden lg:block lg:col-span-1 bg-transparent sticky top-28 pr-6">
       <div class="flex items-center gap-2 pb-3.5 border-b border-outline-variant mb-5">
         <span class="material-symbols-outlined text-lg text-primary select-none">format_list_bulleted</span>
-        <h2 class="text-base font-semibold text-primary m-0">Filtre</h2>
+        <h2 class="text-base font-semibold text-primary m-0 font-sans">Filtre</h2>
       </div>
 
       <div class="space-y-6">
@@ -38,7 +38,7 @@
             <!-- Filter: Pris -->
             <div {{ block.shopify_attributes }} class="filter-block">
               <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
-                <h3 class="text-sm font-semibold text-primary m-0 select-none">{{ block_title }}</h3>
+                <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">{{ block_title }}</h3>
                 <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
               </div>
               <div class="flex items-center gap-2 filter-content">
@@ -183,7 +183,7 @@
             <!-- Filter: {{ block_title }} -->
             <div {{ block.shopify_attributes }} class="filter-block">
               <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
-                <h3 class="text-sm font-semibold text-primary m-0 select-none">{{ block_title }}</h3>
+                <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">{{ block_title }}</h3>
                 <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
               </div>
               <div class="space-y-2 filter-content">
@@ -263,7 +263,7 @@
   <div class="bg-card-light w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
     <div>
       <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
-        <span class="font-serif text-xl font-bold text-primary tracking-tight">Filtrer produkter</span>
+        <span class="font-sans text-xl font-bold text-primary tracking-tight">Filtrer produkter</span>
         <button onclick="toggleMobileFilter(false)" class="material-symbols-outlined text-2xl text-primary bg-transparent border-0 cursor-pointer" aria-label="Luk filtre">close</button>
       </div>
       
@@ -283,7 +283,7 @@
             <!-- Filter: Pris -->
             <div {{ block.shopify_attributes }} class="filter-block">
               <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
-                <h3 class="text-sm font-semibold text-primary m-0 select-none">{{ block_title }}</h3>
+                <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">{{ block_title }}</h3>
                 <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
               </div>
               <div class="flex items-center gap-2 filter-content">
@@ -426,9 +426,12 @@
 
           {%- if sorted_values.size > 0 -%}
             <!-- Filter: {{ block_title }} -->
-            <div {{ block.shopify_attributes }}>
-              <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
-              <div class="space-y-2">
+            <div {{ block.shopify_attributes }} class="filter-block">
+              <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
+                <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">{{ block_title }}</h3>
+                <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
+              </div>
+              <div class="space-y-2 filter-content">
                 {%- for val in sorted_values -%}
                   {%- liquid
                     assign display_val = val
