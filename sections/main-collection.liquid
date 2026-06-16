@@ -907,6 +907,10 @@
   const productCountDisplay = document.getElementById("product-count-display");
   const searchInput = document.getElementById("search-input");
 
+  // Run immediately since DOM elements are already parsed above the script
+  filterProducts();
+  truncateFilterLists();
+
   window.onload = function() {
     filterProducts();
     truncateFilterLists();
