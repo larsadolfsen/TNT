@@ -10,9 +10,9 @@
 
 {%- if product != blank -%}
   {%- liquid
-    assign thickness = '1,2 mm'
-    assign width = '140 cm'
-    assign form = 'Firkantet'
+    assign thickness = ''
+    assign width = ''
+    assign form = ''
     assign badge = ''
     
     for tag in product.tags
@@ -39,16 +39,29 @@
       endif
     endfor
 
+    # Check if this is a meter product based on title, type, or tags/options
+    assign is_meter_product = false
+    assign product_title_down = product.title | downcase
+    if product.type == 'Metervare' or product_title_down contains 'voksdug' or product_title_down contains 'bordbeskytter' or product_title_down contains 'meter' or thickness != blank or width != blank or form != blank
+      assign is_meter_product = true
+    endif
+
+    # If it is a meter product, apply default fallbacks for missing values
+    if is_meter_product
+      if thickness == blank
+        assign thickness = '1,2 mm'
+      endif
+      if width == blank
+        assign width = '140 cm'
+      endif
+      if form == blank
+        assign form = 'Firkantet'
+      endif
+    endif
+
     assign variant = product.first_available_variant | default: product.variants[0]
     assign price = product.price
     assign original_price = product.compare_at_price
-
-    # Check if this is a meter product based on title or tags
-    assign is_meter_product = false
-    assign product_title_down = product.title | downcase
-    if product_title_down contains 'voksdug' or product_title_down contains 'bordbeskytter' or product_title_down contains 'meter' or thickness != blank or width != blank
-      assign is_meter_product = true
-    endif
 
     # Let's mock a rating if metafields are not present, or use product rating metafields if they are
     assign rating = product.metafields.reviews.rating.value | default: 4.8
