@@ -20,7 +20,7 @@
     "background_shade_color_light": "#F8F9FD",
     "card_light_color_light": "#FAF7EF",
     "card_high_color_light": "#FFFFFF",
-    "border_color_light": "#CFD8DC",
+    "border_color_light": "#EEEEEE",
     "foreground_color_light": "#263238",
     "important_color": "#b12704",
     "input_corner_radius": 9,
