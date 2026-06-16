@@ -109,6 +109,9 @@
   endif
 
   assign width_surcharge_price_formatted = width_surcharge_variant.price | default: 0 | money | replace: 'kr.', '' | replace: 'kr', '' | replace: 'Kr.', '' | replace: 'Kr', '' | strip | append: ' Kr.'
+
+  # Calculate initial price per meter formatted as in product-price.liquid
+  assign initial_price_per_meter = current_variant.price | times: 100 | money | replace: 'kr.', '' | replace: 'kr', '' | replace: 'Kr.', '' | replace: 'Kr', '' | strip | append: ' kr'
 -%}
 
 {%- style -%}
@@ -201,8 +204,16 @@
 
 <div id="voksdug-customizer-container" class="w-full pb-3" {{ block.shopify_attributes }}>
   {%- if block.settings.heading != blank -%}
-    <h2 class="text-xl md:text-2xl font-bold text-primary mb-8 leading-tight">{{ block.settings.heading }}</h2>
+    <h2 class="text-xl md:text-2xl font-bold text-primary mb-2 leading-tight">{{ block.settings.heading }}</h2>
   {%- endif -%}
+
+  <!-- Price per meter (reused from product-price) -->
+  <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden mb-6">
+    <span id="customizer-price-per-meter" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
+      {{ initial_price_per_meter }}
+    </span>
+    <span class="text-sm text-primary/85 font-medium whitespace-nowrap">pr. meter inkl. moms</span>
+  </div>
 
   <!-- Tab Switcher Control -->
   <div class="customizer-tabs flex bg-[#f1f5f9] dark:bg-[#1e293b] p-1 rounded-full mb-8 max-w-md mx-auto" style="border: 1px solid var(--color-border); gap: 4px;">
@@ -221,7 +232,7 @@
       <div class="flex items-start gap-3">
         <span id="step-number-shape" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">1</span>
         <div class="flex flex-col w-full">
-          <span class="font-bold text-base uppercase tracking-wider text-primary">Vælg form</span>
+          <span class="font-bold text-base uppercase tracking-wider text-primary">{{ block.settings.shape_step_heading | default: "Vælg form" }}</span>
           {% if block.settings.shape_description != blank %}
             <p class="text-sm text-primary/85 mt-1">{{ block.settings.shape_description }}</p>
           {% endif %}
@@ -236,7 +247,7 @@
             <rect x="3" y="6" width="18" height="12" rx="1.5"/>
           </svg>
           <div class="flex flex-col items-center gap-0.5 w-full">
-            <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">Firkantet</span>
+            <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">{{ block.settings.firkantet_label | default: "Firkantet" }}</span>
             <span class="text-[11px] font-normal leading-[1.2] text-center">{{ firkantet_price_formatted }}</span>
           </div>
         </button>
@@ -249,7 +260,7 @@
             <circle cx="12" cy="12" r="8.5"/>
           </svg>
           <div class="flex flex-col items-center gap-0.5 w-full">
-            <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">Rund</span>
+            <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">{{ block.settings.rund_label | default: "Rund" }}</span>
             <span class="text-[11px] font-normal leading-[1.2] text-center">{{ rund_price_formatted }}</span>
           </div>
         </button>
@@ -262,7 +273,7 @@
             <rect x="3" y="8" width="18" height="8" rx="4"/>
           </svg>
           <div class="flex flex-col items-center gap-0.5 w-full">
-            <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">Oval</span>
+            <span class="text-[11px] font-semibold tracking-[0.02em] leading-[1.2] text-center">{{ block.settings.oval_label | default: "Oval" }}</span>
             <span class="text-[11px] font-normal leading-[1.2] text-center">{{ oval_price_formatted }}</span>
           </div>
         </button>
@@ -275,15 +286,19 @@
       <div class="flex items-start gap-3">
         <span id="step-number-table-dimensions" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
-          <span id="label-table-dimensions" class="font-bold text-base uppercase tracking-wider text-primary">Indtast bordets mål</span>
-          <p class="text-sm text-primary/85 mt-1">Indtast målene på dit bord, så beregner vi den ideelle dugstørrelse. Bordets maksimale bredde er <span id="max-table-width-display">--</span> cm.</p>
+          <span id="label-table-dimensions" class="font-bold text-base uppercase tracking-wider text-primary">{{ block.settings.simple_heading | default: "Indtast bordets mål" }}</span>
+          <p class="text-sm text-primary/85 mt-1">{{ block.settings.simple_description | default: "Indtast målene på dit bord, så beregner vi den ideelle dugstørrelse. Bordets maksimale bredde er [max_width] cm." | replace: '[max_width]', '<span id="max-table-width-display">--</span>' }}</p>
         </div>
       </div>
       
       <div class="flex flex-col gap-4 w-full pl-10">
         <!-- Width / Diameter Input -->
         <div class="flex-1 flex flex-col gap-2">
-          <span id="label-table-width" class="text-sm font-semibold text-primary">Bordets bredde</span>
+          <span id="label-table-width" class="text-sm font-semibold text-primary"
+            data-label-width="{{ block.settings.simple_width_label | default: 'Bordets bredde' | escape }}"
+            data-label-diameter="{{ block.settings.simple_diameter_label | default: 'Bordets diameter' | escape }}">
+            {{ block.settings.simple_width_label | default: "Bordets bredde" }}
+          </span>
           <div>
             <div class="stepper-pill flex justify-between items-center bg-card-high border border-outline-variant rounded-full shadow-sm" style="height:56px;">
               <button type="button" id="btn-table-width-minus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
@@ -304,7 +319,7 @@
         
         <!-- Length Input -->
         <div id="container-table-length" class="flex-1 flex flex-col gap-2">
-          <span class="text-sm font-semibold text-primary">Bordets længde</span>
+          <span class="text-sm font-semibold text-primary">{{ block.settings.simple_length_label | default: "Bordets længde" }}</span>
           <div>
             <div class="stepper-pill flex justify-between items-center bg-card-high border border-outline-variant rounded-full shadow-sm" style="height:56px;">
               <button type="button" id="btn-table-length-minus" class="h-full flex items-center justify-center text-primary/60 hover:text-primary active:scale-90 transition-transform font-bold text-xl cursor-pointer focus:outline-none rounded-l-full" style="width:56px;flex-shrink:0;border-right:1px solid var(--color-border);min-width:56px;min-height:48px;height:100%;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;">
@@ -374,7 +389,11 @@
       <div class="flex items-start gap-3">
         <span id="step-number-width" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">2</span>
         <div class="flex flex-col w-full">
-          <span id="label-width" class="font-bold text-base uppercase tracking-wider text-primary">Vælg bredde</span>
+          <span id="label-width" class="font-bold text-base uppercase tracking-wider text-primary"
+            data-label-width="{{ block.settings.width_step_heading | default: 'Vælg bredde' | escape }}"
+            data-label-diameter="{{ block.settings.width_step_diameter_heading | default: 'Vælg diameter' | escape }}">
+            {{ block.settings.width_step_heading | default: "Vælg bredde" }}
+          </span>
           {%- if block.settings.width_step_description != blank -%}
             <p class="text-sm text-primary/85 mt-1">{{ block.settings.width_step_description }}</p>
           {%- endif -%}
@@ -473,7 +492,11 @@
         <div class="flex items-start gap-3">
         <span id="step-number-length" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">3</span>
         <div class="flex flex-col w-full">
-          <span id="label-length" class="font-bold text-base uppercase tracking-wider text-primary">Vælg længde</span>
+          <span id="label-length" class="font-bold text-base uppercase tracking-wider text-primary"
+            data-label-length="{{ block.settings.length_step_heading | default: 'Vælg længde' | escape }}"
+            data-label-diameter="{{ block.settings.length_step_diameter_heading | default: 'Vælg diameter' | escape }}">
+            {{ block.settings.length_step_heading | default: "Vælg længde" }}
+          </span>
           {% if block.settings.length_description != blank %}
             <p class="text-sm text-primary/85 mt-1">{{ block.settings.length_description }}</p>
           {% endif %}
@@ -514,7 +537,7 @@
       <div class="flex items-start gap-3">
         <span id="step-number-qty" class="w-7 h-7 flex items-center justify-center bg-slate-900 text-white text-sm font-bold rounded-full mt-0.5 shrink-0">4</span>
         <div class="flex flex-col w-full">
-          <span class="font-bold text-base uppercase tracking-wider text-primary">Antal</span>
+          <span class="font-bold text-base uppercase tracking-wider text-primary">{{ block.settings.qty_step_heading | default: "Antal" }}</span>
           {% if block.settings.qty_description != blank %}
             <p class="text-sm text-primary/85 mt-1">{{ block.settings.qty_description }}</p>
           {% endif %}
@@ -659,21 +682,29 @@
     
     const widthLabel = document.getElementById('label-width');
     if (widthLabel) {
-      widthLabel.textContent = (shape === 'rund') ? 'Vælg diameter' : 'Vælg bredde';
+      const labelW = widthLabel.dataset.labelWidth || 'Vælg bredde';
+      const labelD = widthLabel.dataset.labelDiameter || 'Vælg diameter';
+      widthLabel.textContent = (shape === 'rund') ? labelD : labelW;
     }
     const lengthLabel = document.getElementById('label-length');
     if (lengthLabel) {
-      lengthLabel.textContent = (shape === 'rund') ? 'Vælg diameter' : 'Vælg længde';
+      const labelL = lengthLabel.dataset.labelLength || 'Vælg længde';
+      const labelD = lengthLabel.dataset.labelDiameter || 'Vælg diameter';
+      lengthLabel.textContent = (shape === 'rund') ? labelD : labelL;
     }
 
     // Update simple labels & visibility
     const labelTableWidth = document.getElementById('label-table-width');
     const containerTableLength = document.getElementById('container-table-length');
     if (shape === 'rund') {
-      if (labelTableWidth) labelTableWidth.textContent = 'Bordets diameter';
+      if (labelTableWidth) {
+        labelTableWidth.textContent = labelTableWidth.dataset.labelDiameter || 'Bordets diameter';
+      }
       if (containerTableLength) containerTableLength.style.display = 'none';
     } else {
-      if (labelTableWidth) labelTableWidth.textContent = 'Bordets bredde';
+      if (labelTableWidth) {
+        labelTableWidth.textContent = labelTableWidth.dataset.labelWidth || 'Bordets bredde';
+      }
       if (containerTableLength) containerTableLength.style.display = 'block';
     }
 
@@ -721,6 +752,17 @@
     const widthOptionIndex = {{ width_option_index | json }};
     const widthOptionName = {{ width_option_name | json }};
     const soldOutLabel = {{ block.settings.sold_out_text | default: "Ikke på lager" | json }};
+
+    // New schema text settings for labels
+    const firkantetLabel = {{ block.settings.firkantet_label | default: "Firkantet" | json }};
+    const rundLabel = {{ block.settings.rund_label | default: "Rund" | json }};
+    const ovalLabel = {{ block.settings.oval_label | default: "Oval" | json }};
+    const simpleLengthSummaryLabel = {{ block.settings.simple_length_summary_label | default: "Længde" | json }};
+    const simpleDiameterSummaryLabel = {{ block.settings.simple_diameter_summary_label | default: "Diameter" | json }};
+    const simpleWidthSummaryLabel = {{ block.settings.simple_width_summary_label | default: "Bredde" | json }};
+    const simpleWidthCustomSummaryLabel = {{ block.settings.simple_width_custom_summary_label | default: "Bredde (tilpasset)" | json }};
+    const simpleCustomWidthSurchargeLabel = {{ block.settings.simple_custom_width_surcharge_label | default: "Tilpasset bredde" | json }};
+    const simpleShapeSummaryLabelPrefix = {{ block.settings.simple_shape_summary_label_prefix | default: "Form:" | json }};
     
     // Parse variants
     let variants = [];
@@ -1474,6 +1516,14 @@
         let currentVariant = getCurrentVariant();
         let pricingVariant = getPricingVariant(currentVariant);
 
+        // Update price-per-meter display under the customizer heading
+        const customizerPricePerMeter = document.getElementById("customizer-price-per-meter");
+        const priceVarForMeter = pricingVariant || currentVariant;
+        if (customizerPricePerMeter && priceVarForMeter) {
+          const pricePerMeter = priceVarForMeter.price * 100;
+          customizerPricePerMeter.textContent = pricePerMeter.toLocaleString("da-DK", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " kr";
+        }
+
         // Cap length (diameter) if shape is 'rund'
         if (selectedShape === 'rund') {
           state.length = state.width;
@@ -1797,7 +1847,7 @@
           }
 
           if (calcMetervareLabel) {
-            const labelText = (selectedShape === 'rund') ? 'Diameter' : 'Længde';
+            const labelText = (selectedShape === 'rund') ? simpleDiameterSummaryLabel : simpleLengthSummaryLabel;
             calcMetervareLabel.textContent = `${labelText}: ${state.length} cm`;
           }
           
@@ -1809,9 +1859,13 @@
           if (calcShapeRow) {
             if (shapeInfo) {
               calcShapeRow.style.display = "flex";
-              const shapeLabels = { firkantet: 'Form: Firkantet', rund: 'Form: Rund', oval: 'Form: Oval' };
+              const shapeLabels = { 
+                firkantet: `${simpleShapeSummaryLabelPrefix} ${firkantetLabel}`, 
+                rund: `${simpleShapeSummaryLabelPrefix} ${rundLabel}`, 
+                oval: `${simpleShapeSummaryLabelPrefix} ${ovalLabel}` 
+              };
               if (calcShapeLabel) {
-                calcShapeLabel.textContent = shapeLabels[selectedShape] || `Form: ${selectedShape.charAt(0).toUpperCase() + selectedShape.slice(1)}`;
+                calcShapeLabel.textContent = shapeLabels[selectedShape] || `${simpleShapeSummaryLabelPrefix} ${selectedShape.charAt(0).toUpperCase() + selectedShape.slice(1)}`;
               }
               if (calcShapePrice) {
                 calcShapePrice.textContent = formatDanishPrice(shapeInfo.price);
@@ -1827,9 +1881,9 @@
               const tableclothWidth = state.width;
               if (calcWidthLabel) {
                 if (isWidthAdjusted) {
-                  calcWidthLabel.textContent = `Bredde (tilpasset): ${tableclothWidth} cm`;
+                  calcWidthLabel.textContent = `${simpleWidthCustomSummaryLabel}: ${tableclothWidth} cm`;
                 } else {
-                  calcWidthLabel.textContent = `Bredde: ${tableclothWidth} cm`;
+                  calcWidthLabel.textContent = `${simpleWidthSummaryLabel}: ${tableclothWidth} cm`;
                 }
               }
               if (calcWidthPrice) {
@@ -1889,7 +1943,7 @@
                 minimumFractionDigits: 2, 
                 maximumFractionDigits: 2 
               });
-              widthCalculation.textContent = `Tilpasset bredde: +${formattedTotalWidthPrice} kr.`;
+              widthCalculation.textContent = `${simpleCustomWidthSurchargeLabel}: +${formattedTotalWidthPrice} kr.`;
               widthCalculation.style.display = "block";
             } else {
               widthCalculation.style.display = "none";
@@ -1905,7 +1959,7 @@
                 minimumFractionDigits: 2, 
                 maximumFractionDigits: 2 
               });
-              simpleWidthCalculation.textContent = `Tilpasset bredde: +${formattedTotalWidthPrice} kr.`;
+              simpleWidthCalculation.textContent = `${simpleCustomWidthSurchargeLabel}: +${formattedTotalWidthPrice} kr.`;
               simpleWidthCalculation.style.display = "block";
             } else {
               simpleWidthCalculation.style.display = "none";
@@ -2352,6 +2406,10 @@
   "class": "shopify-block-product-customizer",
   "settings": [
     {
+      "type": "header",
+      "content": "Generelle indstillinger"
+    },
+    {
       "type": "product",
       "id": "metervare_product",
       "label": "Metervare"
@@ -2363,49 +2421,151 @@
       "default": "Tilpas dugen"
     },
     {
-      "type": "header",
-      "content": "Trin 1: Form"
-    },
-    {
-      "type": "product",
-      "id": "firkantet_product",
-      "label": "Firkantet"
-    },
-    {
-      "type": "product",
-      "id": "rund_product",
-      "label": "Rund"
-    },
-    {
-      "type": "product",
-      "id": "oval_product",
-      "label": "Oval"
+      "type": "text",
+      "id": "shape_step_heading",
+      "label": "Trin 1: Form overskrift",
+      "default": "Vælg form"
     },
     {
       "type": "text",
       "id": "shape_description",
-      "label": "Vælg form - beskrivelse",
+      "label": "Trin 1: Form beskrivelse",
       "default": "Vælg den form, du ønsker din dug i."
     },
     {
+      "type": "product",
+      "id": "firkantet_product",
+      "label": "Firkantet produkt"
+    },
+    {
+      "type": "product",
+      "id": "rund_product",
+      "label": "Rund produkt"
+    },
+    {
+      "type": "product",
+      "id": "oval_product",
+      "label": "Oval produkt"
+    },
+    {
+      "type": "text",
+      "id": "firkantet_label",
+      "label": "Form label: Firkantet",
+      "default": "Firkantet"
+    },
+    {
+      "type": "text",
+      "id": "rund_label",
+      "label": "Form label: Rund",
+      "default": "Rund"
+    },
+    {
+      "type": "text",
+      "id": "oval_label",
+      "label": "Form label: Oval",
+      "default": "Oval"
+    },
+    {
       "type": "header",
-      "content": "Trin 2: Bredde"
+      "content": "Hurtig beregner"
+    },
+    {
+      "type": "text",
+      "id": "simple_heading",
+      "label": "Overskrift for bordets mål",
+      "default": "Indtast bordets mål"
+    },
+    {
+      "type": "text",
+      "id": "simple_description",
+      "label": "Beskrivelse for bordets mål",
+      "default": "Indtast målene på dit bord, så beregner vi den ideelle dugstørrelse. Bordets maksimale bredde er [max_width] cm."
+    },
+    {
+      "type": "text",
+      "id": "simple_width_label",
+      "label": "Label for bordets bredde",
+      "default": "Bordets bredde"
+    },
+    {
+      "type": "text",
+      "id": "simple_diameter_label",
+      "label": "Label for diameter (Rund)",
+      "default": "Bordets diameter"
+    },
+    {
+      "type": "text",
+      "id": "simple_length_label",
+      "label": "Label for bordets længde",
+      "default": "Bordets længde"
+    },
+    {
+      "type": "text",
+      "id": "simple_length_summary_label",
+      "label": "Beregningsopsummering: Længde label",
+      "default": "Længde"
+    },
+    {
+      "type": "text",
+      "id": "simple_diameter_summary_label",
+      "label": "Beregningsopsummering: Diameter label",
+      "default": "Diameter"
+    },
+    {
+      "type": "text",
+      "id": "simple_width_summary_label",
+      "label": "Beregningsopsummering: Bredde label",
+      "default": "Bredde"
+    },
+    {
+      "type": "text",
+      "id": "simple_width_custom_summary_label",
+      "label": "Beregningsopsummering: Tilpasset bredde label",
+      "default": "Bredde (tilpasset)"
+    },
+    {
+      "type": "text",
+      "id": "simple_custom_width_surcharge_label",
+      "label": "Beregningsopsummering: Tilpasset breddetillæg label",
+      "default": "Tilpasset bredde"
+    },
+    {
+      "type": "text",
+      "id": "simple_shape_summary_label_prefix",
+      "label": "Beregningsopsummering: Form prefix",
+      "default": "Form:"
+    },
+    {
+      "type": "header",
+      "content": "Design selv"
+    },
+    {
+      "type": "text",
+      "id": "width_step_heading",
+      "label": "Trin 2: Bredde overskrift",
+      "default": "Vælg bredde"
+    },
+    {
+      "type": "text",
+      "id": "width_step_diameter_heading",
+      "label": "Trin 2: Diameter overskrift (Rund)",
+      "default": "Vælg diameter"
     },
     {
       "type": "text",
       "id": "width_step_description",
-      "label": "Vælg bredde - beskrivelse",
+      "label": "Trin 2: Bredde beskrivelse",
       "default": "Vælg en standardbredde eller tilpas på dine mål."
     },
     {
       "type": "product",
       "id": "width_surcharge_product",
-      "label": "Tilpas bredde"
+      "label": "Tilpas bredde produkt (SKU BTM005)"
     },
     {
       "type": "text",
       "id": "width_description",
-      "label": "Tilpas bredde - beskrivelse",
+      "label": "Trin 2: Specialtilpasning beskrivelse",
       "default": "Dugen skæres på dine mål. Max bredde er [max_width] cm."
     },
     {
@@ -2415,35 +2575,49 @@
       "default": "Tilpas på dine mål"
     },
     {
-      "type": "header",
-      "content": "Trin 3: Længde"
+      "type": "text",
+      "id": "length_step_heading",
+      "label": "Trin 3: Længde overskrift",
+      "default": "Vælg længde"
+    },
+    {
+      "type": "text",
+      "id": "length_step_diameter_heading",
+      "label": "Trin 3: Diameter overskrift (Rund)",
+      "default": "Vælg diameter"
     },
     {
       "type": "number",
       "id": "step_size",
-      "label": "Længde trin",
+      "label": "Længde trin (cm)",
       "default": 10
     },
     {
       "type": "number",
       "id": "min_length",
-      "label": "Minimum længde",
+      "label": "Minimum længde (cm)",
       "default": 50
     },
     {
       "type": "text",
       "id": "length_description",
-      "label": "Vælg længde - beskrivelse",
+      "label": "Trin 3: Længde beskrivelse",
       "default": "Vi anbefaler ca. 20 cm til nedhæng i hver ende."
     },
     {
       "type": "header",
-      "content": "Trin 4: Antal"
+      "content": "Antal"
+    },
+    {
+      "type": "text",
+      "id": "qty_step_heading",
+      "label": "Trin 4: Antal overskrift",
+      "default": "Antal"
     },
     {
       "type": "text",
       "id": "qty_description",
-      "label": "Antal - beskrivelse",
+      "label": "Trin 4: Antal beskrivelse",
       "default": "Vælg det ønskede antal duge."
     },
     {
