@@ -280,7 +280,20 @@
               "name": "Product Price",
               "settings": {
                 "price_suffix": "pr. meter inkl. moms",
-                "price_subtext": "Fri fragt fra 599,00 kr.",
+                "price_subtext": "",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
+            "product_shipping_progress_eztrfM": {
+              "type": "product-shipping-progress",
+              "name": "Product Shipping Widget",
+              "settings": {
+                "free_shipping_message": "Du er kun [beløb] fra fri fragt",
+                "free_shipping_success_message": "Du har opnået fri fragt!",
+                "hide_everything_except_text": true,
                 "padding_top": 0,
                 "padding_bottom": 0,
                 "padding_sides": 0
@@ -375,6 +388,7 @@
           },
           "block_order": [
             "product_price_jKnHF6",
+            "product_shipping_progress_eztrfM",
             "product_variant_picker_z4eRf9",
             "product_buy_buttons_gFTjCi",
             "card_WQFRHd"
