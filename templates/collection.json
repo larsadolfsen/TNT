@@ -54,6 +54,14 @@
         "border_bottom": false
       }
     },
+    "collections_rP4rdP": {
+      "type": "collections",
+      "name": "t:general.collections_grid",
+      "settings": {
+        "grid_item_width": "collections--compact",
+        "grid_gap": 10
+      }
+    },
     "collection_subcollections_rqhcLB": {
       "type": "collection-subcollections",
       "name": "Underkollektioner Række",
@@ -124,6 +132,7 @@
   },
   "order": [
     "collection-header",
+    "collections_rP4rdP",
     "collection_subcollections_rqhcLB",
     "main-collection"
   ]
