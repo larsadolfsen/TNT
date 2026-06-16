@@ -12,8 +12,12 @@
     {%- elsif section.settings.max_width != 'none' -%}
       max-width: {{ section.settings.max_width | default: '1280px' }};
     {%- else -%}
-      max-width: none;
+      max-width: var(--page-width, 1280px);
     {%- endif -%}
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    text-align: left;
   }
 
   @media screen and (min-width: 840px) {
@@ -229,16 +233,16 @@
       {%- assign parent_title = blog.title -%}
   {%- endcase -%}
 
-  <div class="mobile-breadcrumb md:hidden flex items-center h-12">
-    <a href="{{ parent_url }}" class="flex items-center gap-1 hover:underline text-primary/85 no-underline text-sm">
+  <div class="mobile-breadcrumb md:hidden flex items-center justify-start h-12 text-left">
+    <a href="{{ parent_url }}" class="flex items-center justify-start gap-1 hover:underline text-primary/85 no-underline text-sm">
       <span class="material-symbols-outlined text-[18px] select-none">chevron_left</span>
       <span>{{ parent_title }}</span>
     </a>
   </div>
 
-  <div class="breadcrumbs-wrapper hidden md:block">
+  <div class="breadcrumbs-wrapper hidden md:block text-left">
     <div class="breadcrumbs-fade-left opacity-0"></div>
-    <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs sm:text-sm text-primary/85 flex items-center gap-0.5 overflow-x-auto whitespace-nowrap h-12 hide-scrollbar" aria-label="Brødkrummer">
+    <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs sm:text-sm text-primary/85 flex items-center justify-start gap-0.5 overflow-x-auto whitespace-nowrap h-12 hide-scrollbar" aria-label="Brødkrummer">
         
         {%- comment -%} Forside (root) {%- endcomment -%}
         {%- assign forside_class = "" -%}
