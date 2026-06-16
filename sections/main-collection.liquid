@@ -16,10 +16,10 @@
   <div class="lg:grid lg:grid-cols-4 lg:gap-8 items-start">
     
     <!-- Desktop Sidebar Filters -->
-    <aside class="hidden lg:block lg:col-span-1 bg-card-light p-5 border border-outline-variant rounded-2xl sticky top-28">
-      <div class="flex justify-between items-center pb-4 border-b border-outline-variant mb-4">
-        <h2 class="text-sm font-bold text-primary uppercase tracking-wider m-0">Filtrering</h2>
-        <button onclick="clearAllFilters()" class="text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0">Ryd alle</button>
+    <aside class="hidden lg:block lg:col-span-1 bg-transparent sticky top-28 pr-6">
+      <div class="flex items-center gap-2 pb-3.5 border-b border-outline-variant mb-5">
+        <span class="material-symbols-outlined text-lg text-primary select-none">format_list_bulleted</span>
+        <h2 class="text-base font-semibold text-primary m-0">Filtre</h2>
       </div>
 
       <div class="space-y-6">
@@ -36,9 +36,12 @@
           
           {%- if block_type == 'price' -%}
             <!-- Filter: Pris -->
-            <div {{ block.shopify_attributes }}>
-              <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
-              <div class="flex items-center gap-2">
+            <div {{ block.shopify_attributes }} class="filter-block">
+              <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
+                <h3 class="text-sm font-semibold text-primary m-0 select-none">{{ block_title }}</h3>
+                <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
+              </div>
+              <div class="flex items-center gap-2 filter-content">
                 <input type="number" id="price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
                 <span class="text-xs text-primary/85">-</span>
                 <input type="number" id="price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
@@ -178,9 +181,12 @@
 
           {%- if sorted_values.size > 0 -%}
             <!-- Filter: {{ block_title }} -->
-            <div {{ block.shopify_attributes }}>
-              <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
-              <div class="space-y-2">
+            <div {{ block.shopify_attributes }} class="filter-block">
+              <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
+                <h3 class="text-sm font-semibold text-primary m-0 select-none">{{ block_title }}</h3>
+                <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
+              </div>
+              <div class="space-y-2 filter-content">
                 {%- for val in sorted_values -%}
                   {%- liquid
                     assign display_val = val
@@ -275,9 +281,12 @@
           
           {%- if block_type == 'price' -%}
             <!-- Filter: Pris -->
-            <div {{ block.shopify_attributes }}>
-              <h3 class="text-xs font-bold text-primary uppercase tracking-wider mb-3 mt-0">{{ block_title }}</h3>
-              <div class="flex items-center gap-2">
+            <div {{ block.shopify_attributes }} class="filter-block">
+              <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
+                <h3 class="text-sm font-semibold text-primary m-0 select-none">{{ block_title }}</h3>
+                <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
+              </div>
+              <div class="flex items-center gap-2 filter-content">
                 <input type="number" id="mobile-price-min" placeholder="Min" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
                 <span class="text-xs text-primary/85">-</span>
                 <input type="number" id="mobile-price-max" placeholder="Maks" class="w-full text-xs border border-outline-variant rounded-xl bg-surface-container py-2 px-3 text-primary focus:ring-1 focus:ring-primary focus:border-primary" oninput="syncPriceFilters(this)"/>
@@ -1352,7 +1361,7 @@
         <div class="product-card flex flex-col bg-transparent transition-all duration-300 group relative max-h-[420px] sm:max-h-none" data-product-id="${product.id}">
           
           <!-- Image Zone -->
-          <div class="relative w-full flex-shrink-0 bg-surface-container rounded-2xl overflow-hidden" style="aspect-ratio: 1/1;">
+          <div class="relative w-full flex-shrink-0 bg-surface-container rounded-2xl border border-outline-variant overflow-hidden" style="aspect-ratio: 1/1;">
             <a href="${product.url}" class="block w-full h-full">
               <img 
                 src="${product.image}" 
@@ -1624,6 +1633,22 @@
       filterProducts();
     }
   }
+
+  function toggleFilterBlock(headerEl) {
+    const blockContent = headerEl.nextElementSibling;
+    const toggleIcon = headerEl.querySelector('.toggle-icon');
+    if (blockContent) {
+      const isHidden = blockContent.classList.contains('hidden');
+      if (isHidden) {
+        blockContent.classList.remove('hidden');
+        if (toggleIcon) toggleIcon.textContent = 'remove';
+      } else {
+        blockContent.classList.add('hidden');
+        if (toggleIcon) toggleIcon.textContent = 'add';
+      }
+    }
+  }
+  window.toggleFilterBlock = toggleFilterBlock;
 
   function toggleMobileFilter(open) {
     const drawer = document.getElementById("mobile-filter-drawer");
