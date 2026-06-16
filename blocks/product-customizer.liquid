@@ -277,6 +277,7 @@
               &#43;
             </button>
           </div>
+          <div id="simple-width-calculation" class="text-sm text-primary/85 mt-1.5 text-center w-full"></div>
         </div>
         
         <!-- Length Input -->
@@ -295,6 +296,7 @@
               &#43;
             </button>
           </div>
+          <div id="simple-length-calculation" class="text-sm text-primary/85 mt-1.5 text-center w-full"></div>
         </div>
       </div>
     </div>
@@ -1666,7 +1668,7 @@
           const shapePrice = (shapeInfo ? shapeInfo.price : 0) * state.quantity;
 
           // Calculate width surcharge
-          const isWidthAdjusted = state.width < maxWidth;
+          const isWidthAdjusted = (state.width < maxWidth) && (selectedShape === 'firkantet' || selectedShape === 'oval');
           const widthSurcharge = isWidthAdjusted ? (widthSurchargeData.price || 0) * state.quantity : 0;
 
           // Calculate price: (price per cm) * length * quantity
@@ -1760,7 +1762,12 @@
             calcTotalPrice.textContent = formatDanishPrice(singleTotalPrice);
           }
 
-          // Update length calculation display
+          const formattedPricePerMeter = (pricingVariant.price * 100).toLocaleString("da-DK", { 
+            minimumFractionDigits: 2, 
+            maximumFractionDigits: 2 
+          });
+
+          // Update length calculation display (Advanced Mode)
           const lengthCalculation = document.getElementById("length-calculation");
           if (lengthCalculation) {
             const totalLengthPrice = pricingVariant.price * state.length;
@@ -1768,10 +1775,26 @@
               minimumFractionDigits: 2, 
               maximumFractionDigits: 2 
             });
-            lengthCalculation.textContent = `${formattedTotalLengthPrice} Kr.`;
+            lengthCalculation.textContent = `${formattedPricePerMeter} x ${state.length} cm = ${formattedTotalLengthPrice} Kr.`;
           }
 
-          // Update width calculation display
+          // Update length calculation display (Simple Mode)
+          const simpleLengthCalculation = document.getElementById("simple-length-calculation");
+          if (simpleLengthCalculation) {
+            if (state.customizerMode === 'simple') {
+              const totalLengthPrice = pricingVariant.price * state.length;
+              const formattedTotalLengthPrice = totalLengthPrice.toLocaleString("da-DK", { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+              });
+              simpleLengthCalculation.textContent = `${formattedPricePerMeter} x ${state.length} cm = ${formattedTotalLengthPrice} Kr.`;
+              simpleLengthCalculation.style.display = "block";
+            } else {
+              simpleLengthCalculation.style.display = "none";
+            }
+          }
+
+          // Update width calculation display (Advanced Mode)
           const widthCalculation = document.getElementById("width-calculation");
           if (widthCalculation) {
             if (isWidthAdjusted) {
@@ -1780,10 +1803,26 @@
                 minimumFractionDigits: 2, 
                 maximumFractionDigits: 2 
               });
-              widthCalculation.textContent = `${formattedTotalWidthPrice} Kr.`;
+              widthCalculation.textContent = `+${formattedTotalWidthPrice} Kr.`;
               widthCalculation.style.display = "block";
             } else {
               widthCalculation.style.display = "none";
+            }
+          }
+
+          // Update width calculation display (Simple Mode)
+          const simpleWidthCalculation = document.getElementById("simple-width-calculation");
+          if (simpleWidthCalculation) {
+            if (state.customizerMode === 'simple' && isWidthAdjusted) {
+              const totalWidthPrice = widthSurchargeData.price || 0;
+              const formattedTotalWidthPrice = totalWidthPrice.toLocaleString("da-DK", { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+              });
+              simpleWidthCalculation.textContent = `+${formattedTotalWidthPrice} Kr.`;
+              simpleWidthCalculation.style.display = "block";
+            } else {
+              simpleWidthCalculation.style.display = "none";
             }
           }
 
