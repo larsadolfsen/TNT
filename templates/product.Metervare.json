@@ -280,7 +280,7 @@
                 "alignment": "left",
                 "padding_top": 0,
                 "padding_bottom": 0,
-                "padding_sides": 24
+                "padding_sides": 16
               },
               "blocks": {}
             },
@@ -292,7 +292,7 @@
                 "price_subtext": "",
                 "padding_top": 0,
                 "padding_bottom": 0,
-                "padding_sides": 24
+                "padding_sides": 16
               },
               "blocks": {}
             },
