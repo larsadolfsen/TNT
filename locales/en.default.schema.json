@@ -33,6 +33,8 @@
     "password": "Password",
     "primary": "Primary",
     "product": "Product",
+    "product_category": "Produkt",
+    "general_category": "Generel",
     "row": "Row",
     "search": "Search",
     "secondary": "Secondary",
