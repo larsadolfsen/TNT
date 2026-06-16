@@ -22,10 +22,21 @@
             "padding_sides": 0
           },
           "blocks": {}
+        },
+        "collection_children": {
+          "type": "collection-children",
+          "settings": {
+            "title": "Underkategorier",
+            "limit": 6,
+            "padding_top": 12,
+            "padding_bottom": 12,
+            "padding_sides": 0
+          }
         }
       },
       "block_order": [
-        "page_title"
+        "page_title",
+        "collection_children"
       ],
       "settings": {
         "layout_style": "full_width_bg",

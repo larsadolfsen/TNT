@@ -1,0 +1,130 @@
+{% doc %}
+  Renders a block showing the children/subcollections of the current collection.
+  The children are retrieved from the collection metafield `custom.child`.
+  It displays the first 6 child collections in a simple 2-column grid showing only the image and the name.
+{% enddoc %}
+
+{%- liquid
+  assign children = collection.metafields.custom.child.value
+  assign title = block.settings.title
+  assign limit = block.settings.limit | default: 6
+-%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    --block-padding-top: {{ block.settings.padding_top | default: 12 }}px;
+    --block-padding-bottom: {{ block.settings.padding_bottom | default: 12 }}px;
+    --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
+    --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
+  }
+{%- endstyle -%}
+
+{%- if children != blank or request.design_mode -%}
+  <div class="shopify-block-collection-children w-full" {{ block.shopify_attributes }}>
+    {%- if title != blank -%}
+      <h2 class="font-serif text-lg md:text-xl font-semibold mb-4 text-primary">
+        {{ title }}
+      </h2>
+    {%- endif -%}
+
+    <div class="grid grid-cols-2 gap-4 sm:gap-6">
+      {%- if children != blank -%}
+        {%- for child in children limit: limit -%}
+          {%- liquid
+            assign child_image = child.featured_image
+            if child_image == blank and child.products.first != blank
+              assign child_image = child.products.first.featured_image
+            endif
+          -%}
+          <a href="{{ child.url }}" class="group block no-underline text-left">
+            <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
+              {%- if child_image != blank -%}
+                <img 
+                  src="{{ child_image | image_url: width: 500, height: 500, crop: 'center' }}" 
+                  alt="{{ child.title | escape }}" 
+                  width="500"
+                  height="500"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'w-full h-full bg-slate-200 opacity-60' }}
+              {%- endif -%}
+            </div>
+            <h3 class="text-sm font-semibold text-primary group-hover:underline m-0">{{ child.title }}</h3>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Mockup Data for Shopify Theme Customizer Preview -->
+        {%- for i in (1..limit) -%}
+          <div class="group block text-left">
+            <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 relative w-full flex items-center justify-center">
+              {{ 'collection-' | append: i | placeholder_svg_tag: 'w-full h-full bg-slate-100 opacity-50' }}
+            </div>
+            <h3 class="text-sm font-semibold text-primary m-0">Underkategori {{ i }}</h3>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kollektionsbørn / Children",
+  "class": "shopify-block-collection-children-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Overskrift",
+      "default": "Underkategorier"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "label": "Maks antal kollektioner",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_sides",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i siderne",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kollektionsbørn / Children",
+      "category": "Kollektion"
+    }
+  ]
+}
+{% endschema %}
