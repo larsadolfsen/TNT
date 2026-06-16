@@ -895,13 +895,17 @@
 
   let rawCollectionProducts = [];
   try {
-    rawCollectionProducts = JSON.parse(document.getElementById('collection-products-json').textContent);
+    const jsonEl = document.getElementById('collection-products-json');
+    if (jsonEl) {
+      rawCollectionProducts = JSON.parse(jsonEl.textContent);
+    }
   } catch(e) {
     console.warn("Could not parse collection-products-json", e);
   }
 
   // Fallback to mockup products if the current collection has 0 items
-  const products = rawCollectionProducts.length > 0 ? rawCollectionProducts : mockProducts;
+  const products = (rawCollectionProducts && rawCollectionProducts.length > 0) ? rawCollectionProducts : mockProducts;
+  console.log("Collection page products loaded:", products);
 
   const productGrid = document.getElementById("product-grid");
   const productCountDisplay = document.getElementById("product-count-display");
@@ -1131,7 +1135,8 @@
   function filterProducts() {
     const activeFilters = getSelectedFilters();
     const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
-    const sortBy = document.getElementById("sort-select").value;
+    const sortEl = document.getElementById("sort-select");
+    const sortBy = sortEl ? sortEl.value : "popularity";
 
     const minPriceInput = document.getElementById("price-min");
     const maxPriceInput = document.getElementById("price-max");
@@ -1247,7 +1252,9 @@
 
   function renderProducts(items) {
     if (!productGrid) return;
-    productCountDisplay.innerText = items.length;
+    if (productCountDisplay) {
+      productCountDisplay.innerText = items.length;
+    }
     productGrid.innerHTML = "";
 
     if (items.length === 0) {
