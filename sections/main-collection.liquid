@@ -670,14 +670,16 @@
       products.forEach(p => {
         if (p.options_with_values) {
           p.options_with_values.forEach(opt => {
-            if (optionNames.includes(opt.name.toLowerCase())) {
+            const nameDown = opt.name.toLowerCase();
+            if (optionNames.some(target => nameDown.includes(target))) {
               opt.values.forEach(v => vals.add(v));
             }
           });
         }
         if (p.options) {
           Object.keys(p.options).forEach(k => {
-            if (optionNames.includes(k.toLowerCase())) {
+            const nameDown = k.toLowerCase();
+            if (optionNames.some(target => nameDown.includes(target))) {
               vals.add(p.options[k]);
             }
           });
@@ -686,7 +688,8 @@
           p.variants.forEach(v => {
             if (v.options) {
               Object.keys(v.options).forEach(k => {
-                if (optionNames.includes(k.toLowerCase())) {
+                const nameDown = k.toLowerCase();
+                if (optionNames.some(target => nameDown.includes(target))) {
                   vals.add(v.options[k]);
                 }
               });
@@ -727,7 +730,7 @@
       });
       filtersToRender.push({
         key: 'størrelse',
-        title: 'Størrelse',
+        title: 'Bredde',
         type: 'checkbox',
         values: sizes
       });
@@ -1243,7 +1246,7 @@
           
           let displayKey = key.charAt(0).toUpperCase() + key.slice(1);
           if (key === 'tykkelse') displayKey = 'Tykkelse';
-          else if (key === 'størrelse') displayKey = 'Størrelse';
+          else if (key === 'størrelse') displayKey = 'Bredde';
           else if (key === 'form') displayKey = 'Form';
           else if (key === 'farve') displayKey = 'Farve';
           else if (key === 'brand') displayKey = 'Brand';
