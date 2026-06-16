@@ -1315,7 +1315,7 @@
         if (matchingVariant.originalPrice && matchingVariant.originalPrice > matchingVariant.price) {
           if (!originalPriceEl) {
             originalPriceEl = document.createElement('span');
-            originalPriceEl.className = "text-[8px] sm:text-[9px] text-primary/70 line-through leading-none";
+            originalPriceEl.className = "text-[12px] text-primary/70 line-through leading-none";
             priceWrapper.insertBefore(originalPriceEl, priceWrapper.querySelector('span:last-child'));
           }
           originalPriceEl.textContent = matchingVariant.originalPrice_formatted;
@@ -1548,15 +1548,18 @@
       let originalPriceHtml = "";
       if (product.originalPrice && product.originalPrice > product.price) {
         const displayOrig = product.originalPrice_formatted ? product.originalPrice_formatted : `${product.originalPrice.toFixed(2).replace('.', ',')} Kr.`;
-        originalPriceHtml = `<span class="text-[8px] sm:text-[9px] text-primary/70 line-through leading-none">${displayOrig}</span>`;
+        originalPriceHtml = `<span class="text-[12px] text-primary/70 line-through leading-none">${displayOrig}</span>`;
       }
 
       let badgeHtml = "";
       if (product.badge) {
         badgeHtml = `<span class="absolute top-2 left-2 bg-primary text-on-primary text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">${product.badge}</span>`;
-      } else if (product.originalPrice && product.originalPrice > product.price) {
+      }
+
+      let savingsBadgeHtml = "";
+      if (product.originalPrice && product.originalPrice > product.price) {
         const savings = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
-        badgeHtml = `<span class="absolute top-2 left-2 bg-secondary text-on-accent text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">Spar ${savings}%</span>`;
+        savingsBadgeHtml = `<span class="product-savings-badge inline-block bg-secondary text-on-accent text-[10px] font-bold px-2 py-0.5 rounded-md uppercase">Spar ${savings}%</span>`;
       }
 
       const displayPrice = product.price_formatted ? product.price_formatted : `${product.price.toFixed(2).replace('.', ',')} Kr.`;
