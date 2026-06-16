@@ -292,7 +292,7 @@
               "name": "Product Shipping Widget",
               "settings": {
                 "free_shipping_message": "Du er [beløb] fra gratis levering.",
-                "free_shipping_success_message": "Du har opnået fri fragt!",
+                "free_shipping_success_message": "Du har opnået gratis levering!",
                 "hide_everything_except_text": true,
                 "padding_top": 0,
                 "padding_bottom": 0,
