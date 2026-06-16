@@ -14,14 +14,14 @@
       name="q"
       value="{{ search.terms | escape }}"
       placeholder="{{ 'search.placeholder' | t }}"
-      class="w-full h-12 pl-5 pr-14 rounded-full border border-outline-variant text-base focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all"
+      class="w-full h-12 pl-5 pr-24 rounded-full border border-outline-variant text-base focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all"
     >
     <button 
       type="submit" 
-      class="absolute right-1.5 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-primary text-on-primary flex items-center justify-center hover:opacity-90 transition-all cursor-pointer focus:outline-none"
+      class="absolute right-1.5 top-1/2 -translate-y-1/2 h-9 px-5 rounded-full bg-zinc-200 text-zinc-800 hover:bg-zinc-300 dark:bg-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-600 transition-all cursor-pointer focus:outline-none flex items-center justify-center font-medium text-sm"
       aria-label="{{ 'search.submit' | t }}"
     >
-      <span class="material-symbols-outlined text-xl">search</span>
+      Søg
     </button>
   </div>
 </form>
