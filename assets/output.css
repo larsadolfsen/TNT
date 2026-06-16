@@ -2558,7 +2558,7 @@ h4 {
   .template-product .section-content .shopify-block-product-customizer > div, #MainContent:has(.product-media) .section-content .shopify-block-product-customizer > div, #MainContent:has(.shopify-block-product-media) .section-content .shopify-block-product-customizer > div {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    padding: 16px;
+    padding: 0;
     border-radius: 1rem;
     border: none;
     width: 100%;
@@ -2620,7 +2620,7 @@ body {
   padding-top: var(--block-padding-top, 12px);
   padding-bottom: var(--block-padding-bottom, 12px);
 }
-.shopify-block-group, .shopify-block-product-media, .shopify-block-product-customizer, .shopify-block-product-buy-buttons, .shopify-block-product-accordions, .shopify-block-product-trust-checkmarks, .shopify-block-accordion, .shopify-block-badge, .shopify-block-card, .shopify-block-material-badge, .shopify-block-product-cross-sell {
+.shopify-block-group, .shopify-block-product-media, .shopify-block-product-accordions, .shopify-block-product-trust-checkmarks, .shopify-block-accordion, .shopify-block-badge, .shopify-block-card, .shopify-block-material-badge, .shopify-block-product-cross-sell {
   padding-left: var(--block-padding-left, 0px);
   padding-right: var(--block-padding-right, 0px);
   padding-top: var(--block-padding-top, 0px);
@@ -2658,9 +2658,9 @@ body {
   padding-top: 0px;
   padding-bottom: 8px;
 }
-.shopify-block-product-buy-buttons, .shopify-block-product-customizer {
-  display: block;
-  width: 100%;
+.card-content > .shopify-block, .card-content > [class*="shopify-block-"] {
+  padding-left: 0;
+  padding-right: 0;
 }
 .shopify-block-product-accordions .shopify-block, .shopify-block-accordion, .shopify-block-material-badge, .product-trust-checkmarks-list .shopify-block, .product-trust-checkmarks-list > *, .shopify-block:has(> .accordion-item) {
   display: block;

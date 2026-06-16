@@ -540,13 +540,13 @@ h4 {
     margin-right: 0;
   }
 
-  /* Make sure customizer has proper spacing in right column and standard padding of 16px */
+  /* Make sure customizer has proper spacing in right column */
   .template-product .section-content .shopify-block-product-customizer > div,
   #MainContent:has(.product-media) .section-content .shopify-block-product-customizer > div,
   #MainContent:has(.shopify-block-product-media) .section-content .shopify-block-product-customizer > div {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    padding: 16px;
+    padding: 0;
     border-radius: 1rem;
     border: none;
     width: 100%;
@@ -632,8 +632,6 @@ shopify-block,
 /* Structural and special layout blocks that should default to 0 padding */
 .shopify-block-group,
 .shopify-block-product-media,
-.shopify-block-product-customizer,
-.shopify-block-product-buy-buttons,
 .shopify-block-product-accordions,
 .shopify-block-product-trust-checkmarks,
 .shopify-block-accordion,
@@ -688,11 +686,11 @@ shopify-block,
   padding-bottom: 8px;
 }
 
-/* Buy buttons and customizer blocks should have 0 horizontal padding to span full-width */
-.shopify-block-product-buy-buttons,
-.shopify-block-product-customizer {
-  display: block;
-  width: 100%;
+/* Blocks inside card containers should have 0 side padding to prevent double padding */
+.card-content > .shopify-block,
+.card-content > [class*="shopify-block-"] {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Nested sub-blocks inside galleries, accordions, and trust checkmarks should have 0 padding */
