@@ -455,7 +455,7 @@
             "accordion_gKewwR": {
               "type": "accordion",
               "settings": {
-                "title": "Produktspecifikationer",
+                "title": "Specifikationer",
                 "content": "<p><strong>Form:<br/></strong>{{ closest.product.metafields.shopify.shape | metafield_text: field: 'label' }}</p><p><strong>Certificeringer:<br/></strong>{{ closest.product.metafields.shopify[\"product-certifications-standards\"] | metafield_text: field: 'label' }}</p><p><strong>Kemi:</strong> <br/>{{ closest.product.metafields.custom.kemi.value }}</p><p><strong>Bredde:<br/> </strong>{{ closest.product.metafields.custom.bredde_cm | metafield_text: field: 'label' }}</p><p><strong>Tykkelse:</strong> <br/>{{ closest.product.metafields.custom.tykkelse.value }} mm</p>",
                 "open_by_default": true
               },
