@@ -8,16 +8,20 @@
     padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
     {%- if section.settings.max_width == 'page-width' -%}
-      max-width: var(--page-width, 1440px);
-    {%- elsif section.settings.max_width != 'none' -%}
-      max-width: {{ section.settings.max_width | default: '1280px' }};
+      max-width: var(--page-width, 1440px) !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    {%- elsif section.settings.max_width != 'none' and section.settings.max_width != blank -%}
+      max-width: {{ section.settings.max_width }} !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
     {%- else -%}
-      max-width: var(--page-width, 1280px);
+      max-width: none !important;
+      margin-left: 0 !important;
+      margin-right: auto !important;
     {%- endif -%}
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    text-align: left;
+    width: 100% !important;
+    text-align: left !important;
   }
 
   @media screen and (min-width: 840px) {
