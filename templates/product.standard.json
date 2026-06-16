@@ -87,6 +87,7 @@
       ],
       "name": "Section - Title 1|2",
       "settings": {
+        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -132,6 +133,7 @@
       ],
       "name": "Section - Product Media",
       "settings": {
+        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -221,6 +223,7 @@
       ],
       "name": "Section - Price 2|2",
       "settings": {
+        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -272,52 +275,13 @@
             "padding_sides": 16
           },
           "blocks": {
-            "product_customizer_6rahCU": {
-              "type": "product-customizer",
-              "name": "Product Customizer",
+            "product_variant_picker_z4eRf9": {
+              "type": "product-variant-picker",
+              "name": "Product Variant Picker",
               "settings": {
-                "metervare_product": "firkantet-dug",
-                "heading": "Tilpas dugen til dit bord",
-                "shape_step_heading": "Vælg form",
-                "shape_description": "",
-                "firkantet_product": "firkantet-dug-1",
-                "rund_product": "afrunding",
-                "oval_product": "oval-dug",
-                "firkantet_label": "Firkantet",
-                "rund_label": "Rund",
-                "oval_label": "Oval",
-                "simple_heading": "Størrelsen på bordet",
-                "simple_description": "For at dugen passer perfekt til bordet, lægger vi 20 cm nedhæng til på hver side.  Bordets maksimale bredde er [max_width] cm.",
-                "simple_width_label": "Bordets bredde",
-                "simple_diameter_label": "Bordets diameter",
-                "simple_length_label": "Bordets længde",
-                "simple_length_summary_label": "Dugens længde",
-                "simple_diameter_summary_label": "Dugesn diameter",
-                "simple_width_summary_label": "Dugens bredde",
-                "simple_width_custom_summary_label": "Bredde (tilpasset)",
-                "simple_custom_width_surcharge_label": "Tilpasset bredde",
-                "simple_shape_summary_label_prefix": "Dugens form:",
-                "width_step_heading": "Vælg dugens bredde",
-                "width_step_diameter_heading": "Vælg dugens diameter",
-                "width_step_description": "",
-                "width_surcharge_product": "tilpasset-bredde",
-                "width_description": "Vi anbefaler 20 cm til nedhæng i hver side.  Du kan vælge fra 50 cm. til [max_width] cm.",
-                "custom_width_checkbox_label": "Gør dugen smallere",
-                "length_step_heading": "Vælg dugens længde",
-                "length_step_diameter_heading": "Vælg dugens diameter",
-                "step_size": 10,
-                "min_length": 50,
-                "length_description": "Vi anbefaler 20 cm nedhæng i hver ende.",
-                "qty_step_heading": "Antal",
-                "qty_description": "",
-                "border_top": false,
-                "border_bottom": false,
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0,
-                "sold_out_text": "Udsolgt",
-                "enable_sticky_customize_button": true,
-                "sticky_customize_button_text": "Tilpas dugen til dit bord"
+                "padding_top": 12,
+                "padding_bottom": 12,
+                "padding_sides": 0
               },
               "blocks": {}
             },
@@ -398,7 +362,7 @@
             }
           },
           "block_order": [
-            "product_customizer_6rahCU",
+            "product_variant_picker_z4eRf9",
             "product_buy_buttons_gFTjCi",
             "card_WQFRHd"
           ]
@@ -409,6 +373,7 @@
       ],
       "name": "Section - Customizer",
       "settings": {
+        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -604,6 +569,7 @@
       ],
       "name": "Section - Info 2|3",
       "settings": {
+        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -660,6 +626,7 @@
       ],
       "name": "Section",
       "settings": {
+        "layout_style": "full_width_bg",
         "background_color": "light_grey",
         "full_width": true,
         "hide_on_mobile": false,
@@ -705,6 +672,7 @@
       ],
       "name": "Row - Mersalg",
       "settings": {
+        "layout_style": "full_width_bg",
         "background_color": "light",
         "full_width": false,
         "hide_on_mobile": false,
@@ -793,6 +761,7 @@
       ],
       "name": "FAQ",
       "settings": {
+        "layout_style": "full_width_bg",
         "background_color": "light",
         "full_width": false,
         "hide_on_mobile": false,
@@ -867,6 +836,7 @@
       ],
       "name": "Row",
       "settings": {
+        "layout_style": "full_width_bg",
         "background_color": "light",
         "full_width": false,
         "hide_on_mobile": false,
