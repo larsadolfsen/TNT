@@ -137,7 +137,7 @@
         "hide_on_mobile": false,
         "column_span_tablet": "4",
         "column_start_tablet": "1",
-        "row_span_tablet": "auto",
+        "row_span_tablet": "4",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
         "column_span_desktop": "4",
