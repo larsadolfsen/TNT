@@ -1321,11 +1321,11 @@
   .pr-6 {
     padding-right: calc(var(--spacing) * 6);
   }
-  .pr-20 {
-    padding-right: calc(var(--spacing) * 20);
-  }
   .pr-24 {
     padding-right: calc(var(--spacing) * 24);
+  }
+  .pr-28 {
+    padding-right: calc(var(--spacing) * 28);
   }
   .pb-1 {
     padding-bottom: calc(var(--spacing) * 1);
