@@ -28,7 +28,6 @@
         "page_title"
       ],
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -61,7 +60,7 @@
         "columns_mobile": 3,
         "columns_tablet": 6,
         "columns_desktop": 8,
-        "grid_gap": 10
+        "grid_gap": 15
       }
     },
     "collection_subcollections_rqhcLB": {
@@ -71,9 +70,37 @@
         "padding_top": 24,
         "padding_bottom": 24,
         "title": "SØG UD FRA DIT BEHOV",
-        "mode": "automatic",
-        "main_collection": "",
+        "metafield_key": "custom.child",
         "show_all_label": "Vis alle"
+      }
+    },
+    "section_eUpcwy": {
+      "type": "section",
+      "name": "Section",
+      "settings": {
+        "background_color": "transparent",
+        "full_width": false,
+        "hide_on_mobile": false,
+        "column_span_tablet": "8",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "12",
+        "column_start_desktop": "auto",
+        "row_span_desktop": "auto",
+        "row_start_desktop": "auto",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_left": 24,
+        "padding_right": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
       }
     },
     "main-collection": {
@@ -128,7 +155,8 @@
         "disable_reviews": true,
         "columns_mobile": 2,
         "columns_tablet": 3,
-        "columns_desktop": 4
+        "columns_desktop": 4,
+        "filter_width_desktop": 2
       }
     },
     "section_c4ay6a": {
@@ -152,7 +180,6 @@
       ],
       "name": "Section",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "dark",
         "full_width": false,
         "hide_on_mobile": false,
@@ -183,6 +210,7 @@
     "collection-header",
     "collections_rP4rdP",
     "collection_subcollections_rqhcLB",
+    "section_eUpcwy",
     "main-collection",
     "section_c4ay6a"
   ]
