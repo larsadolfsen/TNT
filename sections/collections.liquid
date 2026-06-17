@@ -24,13 +24,9 @@
 {%- endstyle -%}
 
 {%- liquid
-  assign display_collections = collections
-  if section.settings.collection_source == 'children'
-    if collection != blank and collection.metafields.custom.child.value != blank
-      assign display_collections = collection.metafields.custom.child.value
-    else
-      assign display_collections = blank
-    endif
+  assign display_collections = blank
+  if collection != blank and collection.metafields.custom.child.value != blank
+    assign display_collections = collection.metafields.custom.child.value
   endif
 -%}
 
@@ -63,7 +59,7 @@
       </div>
     </a>
   {% else %}
-    {% if section.settings.collection_source == 'children' and request.design_mode %}
+    {% if request.design_mode %}
       {% for i in (1..4) %}
         <div class="collection-card group">
           <div class="collection-card__image-wrapper flex items-center justify-center">
@@ -149,17 +145,7 @@
 {
   "name": "t:general.collections_grid",
   "settings": [
-    {
-      "type": "select",
-      "id": "collection_source",
-      "label": "Kollektionskilde / Collection source",
-      "options": [
-        { "value": "all", "label": "Alle kollektioner / All collections" },
-        { "value": "children", "label": "Underkollektioner (via metafelt) / Child collections (via metafield)" }
-      ],
-      "default": "all",
-      "info": "Vælg om der skal vises alle kollektioner i shoppen eller kun underkollektioner af den nuværende kollektion baseret på 'custom.child' metafeltet."
-    },
+
     {
       "type": "range",
       "id": "columns_mobile",

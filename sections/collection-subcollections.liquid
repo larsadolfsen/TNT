@@ -59,7 +59,7 @@
 -%}
 
 {%- if has_subcollections or request.design_mode -%}
-<div>
+<div id="collection-subcollections-container" class="shopify-section-collection-subcollections w-full">
   {%- if section.settings.title != blank -%}
     <h2 class="text-xs font-bold text-primary uppercase tracking-wider mb-3">
       {{ section.settings.title }}
@@ -67,11 +67,12 @@
   {%- endif -%}
 
   <div class="flex overflow-x-auto gap-2.5 pb-2 hide-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
+
     <!-- 'Vis alle' pill -->
     {%- liquid
       assign show_all_class = "bg-surface-container text-primary border border-outline-variant hover:border-primary/50"
       if is_show_all_active
-        assign show_all_class = "bg-black text-white border border-black font-bold"
+        assign show_all_class = "bg-primary text-on-primary border border-primary font-bold"
       endif
     -%}
     <a href="{{ main_url }}" class="{{ show_all_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
@@ -95,7 +96,7 @@
 
         assign pill_class = "bg-surface-container text-primary border border-outline-variant hover:border-primary/50"
         if is_pill_active
-          assign pill_class = "bg-black text-white border border-black font-bold"
+          assign pill_class = "bg-primary text-on-primary border border-primary font-bold"
         endif
 
         assign pill_label = sub_col.metafields.custom.label_override.value | default: sub_col.metafields.custom.label_override | default: sub_col.title

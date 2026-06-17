@@ -535,6 +535,75 @@
   }
 
   document.addEventListener('click', function(e) {
+    const chip = e.target.closest('[data-collection-chip="true"]');
+    if (chip) {
+      e.preventDefault();
+      const url = new URL(chip.href);
+      
+      if (productGrid) {
+        productGrid.classList.add('opacity-50', 'pointer-events-none');
+      }
+
+      fetch(url.href)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          const newGrid = doc.getElementById('product-grid');
+          if (newGrid && productGrid) {
+            productGrid.innerHTML = newGrid.innerHTML;
+          }
+
+          const newProductCount = doc.getElementById('product-count-display');
+          if (newProductCount && productCountDisplay) {
+            productCountDisplay.innerText = newProductCount.innerText;
+          }
+
+          const newAppliedFilters = doc.getElementById('applied-filters-container');
+          const appliedFilters = document.getElementById('applied-filters-container');
+          if (newAppliedFilters && appliedFilters) {
+            appliedFilters.innerHTML = newAppliedFilters.innerHTML;
+            appliedFilters.className = newAppliedFilters.className;
+          } else if (appliedFilters) {
+            appliedFilters.classList.add('hidden');
+          }
+
+          const newDesktopFilters = doc.getElementById('desktop-filters');
+          if (newDesktopFilters && desktopFilters) {
+            desktopFilters.innerHTML = newDesktopFilters.innerHTML;
+          }
+
+          const newMobileFilters = doc.getElementById('mobile-filters');
+          if (newMobileFilters && mobileFilters) {
+            mobileFilters.innerHTML = newMobileFilters.innerHTML;
+          }
+
+          const newSubcollections = doc.getElementById('collection-subcollections-container');
+          const subcollections = document.getElementById('collection-subcollections-container');
+          if (newSubcollections && subcollections) {
+            subcollections.innerHTML = newSubcollections.innerHTML;
+            subcollections.className = newSubcollections.className;
+          }
+
+          enhanceColorSwatches();
+          truncateFilterLists();
+
+          window.history.pushState({ path: url.href }, '', url.href);
+
+          if (productGrid) {
+            productGrid.classList.remove('opacity-50', 'pointer-events-none');
+          }
+        })
+        .catch(err => {
+          console.error('Error filtering collection by chip:', err);
+          if (productGrid) {
+            productGrid.classList.remove('opacity-50', 'pointer-events-none');
+          }
+        });
+      return;
+    }
+
     const navLink = e.target.closest('#product-grid nav[role="navigation"] a');
     if (navLink) {
       e.preventDefault();
