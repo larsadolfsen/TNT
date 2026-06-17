@@ -22,21 +22,10 @@
             "padding_sides": 0
           },
           "blocks": {}
-        },
-        "collection_children": {
-          "type": "collection-children",
-          "settings": {
-            "title": "Underkategorier",
-            "limit": 6,
-            "padding_top": 12,
-            "padding_bottom": 12,
-            "padding_sides": 0
-          }
         }
       },
       "block_order": [
-        "page_title",
-        "collection_children"
+        "page_title"
       ],
       "settings": {
         "layout_style": "full_width_bg",
@@ -63,6 +52,26 @@
         "block_spacing": 16,
         "border_top": false,
         "border_bottom": false
+      }
+    },
+    "collections_rP4rdP": {
+      "type": "collections",
+      "name": "t:general.collections_grid",
+      "settings": {
+        "grid_item_width": "collections--compact",
+        "grid_gap": 10
+      }
+    },
+    "collection_subcollections_rqhcLB": {
+      "type": "collection-subcollections",
+      "name": "Underkollektioner Række",
+      "settings": {
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "title": "SØG UD FRA DIT BEHOV",
+        "mode": "automatic",
+        "main_collection": "",
+        "show_all_label": "Vis alle"
       }
     },
     "main-collection": {
@@ -114,12 +123,17 @@
       "settings": {
         "padding_top": 16,
         "padding_bottom": 16,
-        "disable_reviews": true
+        "disable_reviews": true,
+        "columns_mobile": 2,
+        "columns_tablet": 3,
+        "columns_desktop": 4
       }
     }
   },
   "order": [
     "collection-header",
+    "collections_rP4rdP",
+    "collection_subcollections_rqhcLB",
     "main-collection"
   ]
 }
