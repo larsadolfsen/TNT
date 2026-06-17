@@ -133,10 +133,27 @@
     },
     "section_c4ay6a": {
       "type": "section",
+      "blocks": {
+        "text_BwLUp8": {
+          "type": "text",
+          "name": "t:general.text",
+          "settings": {
+            "text": "<p>Text</p>",
+            "alignment": "left",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_sides": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_BwLUp8"
+      ],
       "name": "Section",
       "settings": {
         "layout_style": "full_width_bg",
-        "background_color": "white",
+        "background_color": "dark",
         "full_width": false,
         "hide_on_mobile": false,
         "column_span_tablet": "8",
@@ -144,8 +161,8 @@
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
-        "column_span_desktop": "12",
-        "column_start_desktop": "auto",
+        "column_span_desktop": "8",
+        "column_start_desktop": "5",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
