@@ -1,0 +1,178 @@
+{%- style -%}
+  #shopify-block-{{ block.id }} {
+    padding-top: {{ block.settings.padding_top | times: 0.75 | round }}px;
+    padding-bottom: {{ block.settings.padding_bottom | times: 0.75 | round }}px;
+  }
+
+  @media screen and (min-width: 840px) {
+    #shopify-block-{{ block.id }} {
+      padding-top: {{ block.settings.padding_top }}px;
+      padding-bottom: {{ block.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign show_all_label = block.settings.show_all_label | default: "Vis alle"
+  assign parent_col = collection.metafields.custom.parent.value
+
+  # If the current collection has a parent, then the parent collection is the main one.
+  # Otherwise, the current collection is the main/parent one.
+  assign target_parent = collection
+  if parent_col != blank
+    assign target_parent = parent_col
+  endif
+
+  # Retrieve child collections from target_parent using the configured metafield key
+  assign metafield_key = block.settings.metafield_key | default: "custom.child"
+  assign parts = metafield_key | split: '.'
+  assign namespace = parts[0]
+  assign key = parts[1]
+  assign child_collections = target_parent.metafields[namespace][key].value
+
+  assign has_subcollections = false
+  if child_collections != blank
+    assign has_subcollections = true
+  endif
+
+  # Determine the "Vis alle" main link url
+  assign main_url = target_parent.url
+
+  # "Vis alle" is active if we are viewing the target parent collection page,
+  # or if we are not viewing any of the child collections.
+  assign is_show_all_active = false
+  if collection.handle == target_parent.handle
+    assign is_show_all_active = true
+  else
+    assign is_any_pill_active = false
+    for sub_col in child_collections
+      if sub_col != blank and collection.handle == sub_col.handle
+        assign is_any_pill_active = true
+        break
+      endif
+    endfor
+    if is_any_pill_active == false
+      assign is_show_all_active = true
+    endif
+  endif
+-%}
+
+{%- if has_subcollections or request.design_mode -%}
+<div class="shopify-block-collection-subcollections w-full" {{ block.shopify_attributes }}>
+  {%- if block.settings.title != blank -%}
+    <h2 class="text-xs font-bold text-primary uppercase tracking-wider mb-3">
+      {{ block.settings.title }}
+    </h2>
+  {%- endif -%}
+
+  <div class="flex overflow-x-auto gap-2.5 pb-2 hide-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
+    <!-- 'Vis alle' pill -->
+    {%- liquid
+      assign show_all_class = "bg-surface-container text-primary border border-outline-variant hover:border-primary/50"
+      if is_show_all_active
+        assign show_all_class = "bg-primary text-white border border-primary font-bold"
+      endif
+    -%}
+    <a href="{{ main_url }}" class="{{ show_all_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+      {{ show_all_label }}
+    </a>
+
+    <!-- Render automatic subcollections from metafield -->
+    {%- for sub_col in child_collections -%}
+      {%- liquid
+        if sub_col == blank
+          continue
+        endif
+
+        assign is_pill_active = false
+        if collection.handle == sub_col.handle
+          assign is_pill_active = true
+        endif
+
+        assign pill_class = "bg-surface-container text-primary border border-outline-variant hover:border-primary/50"
+        if is_pill_active
+          assign pill_class = "bg-primary text-white border border-primary font-bold"
+        endif
+
+        assign pill_label = sub_col.metafields.custom.label_override.value | default: sub_col.metafields.custom.label_override | default: sub_col.title
+        assign subtitle = sub_col.metafields.custom.subtitle.value | default: sub_col.metafields.custom.subtitle | default: sub_col.metafields.custom.suffix.value | default: sub_col.metafields.custom.suffix
+        if subtitle != blank
+          assign pill_label = pill_label | append: ' (' | append: subtitle | append: ')'
+        endif
+      -%}
+      <a href="{{ sub_col.url }}" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        {{ pill_label }}
+      </a>
+    {%- endfor -%}
+
+    {%- if has_subcollections == false and request.design_mode -%}
+      <!-- Fallback Mockup Data in design mode if empty -->
+      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        Børnefamilien (Let rengøring)
+      </a>
+      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        Havebordet (Udeliv & UV-resistent)
+      </a>
+      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        Minimalistisk (Diskret beskyttelse)
+      </a>
+      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        Professionel (Ekstra slidstærk)
+      </a>
+    {%- endif -%}
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Underkollektioner Række",
+  "class": "shopify-block-collection-subcollections-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Overskrift",
+      "default": "SØG UD FRA DIT BEHOV"
+    },
+    {
+      "type": "text",
+      "id": "metafield_key",
+      "label": "Underkollektioner Metafelt-nøgle / Subcollections Metafield Key",
+      "default": "custom.child",
+      "info": "Indtast metafelt-nøglen (f.eks. 'custom.child') der indeholder listen af underkollektioner."
+    },
+    {
+      "type": "text",
+      "id": "show_all_label",
+      "label": "Label til 'Vis alle'",
+      "default": "Vis alle"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Underkollektioner Række"
+    }
+  ]
+}
+{% endschema %}
