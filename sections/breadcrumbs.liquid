@@ -42,9 +42,12 @@
   {%- if t == 'collection' -%}
     {%- assign leaf_collection = collection -%}
   {%- elsif t == 'product' -%}
-    {%- assign leaf_collection = collection -%}
+    {%- assign leaf_collection = product.metafields.custom.parent.value -%}
     {%- if leaf_collection == blank -%}
-      {%- assign leaf_collection = product.collections.first -%}
+      {%- assign leaf_collection = collection -%}
+      {%- if leaf_collection == blank -%}
+        {%- assign leaf_collection = product.collections.first -%}
+      {%- endif -%}
     {%- endif -%}
   {%- endif -%}
 
