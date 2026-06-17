@@ -14,89 +14,46 @@
 
 {%- liquid
   assign show_all_label = section.settings.show_all_label | default: "Vis alle"
-  assign main_col = section.settings.main_collection
   assign parent_col = collection.metafields.custom.parent.value
-  assign main_col_handle = main_col.handle | default: parent_col.handle
-  
-  # Determine the "Vis alle" main link url
-  assign main_url = "#"
-  if main_col != blank
-    assign main_url = main_col.url
-  elsif parent_col != blank
-    assign main_url = parent_col.url
-  else
-    assign main_url = collection.url
+
+  # If the current collection has a parent, then the parent collection is the main one.
+  # Otherwise, the current collection is the main/parent one.
+  assign target_parent = collection
+  if parent_col != blank
+    assign target_parent = parent_col
   endif
 
-  assign target_parent = parent_col | default: collection
+  # Retrieve child collections from target_parent using the configured metafield key
+  assign metafield_key = section.settings.metafield_key | default: "custom.child"
+  assign parts = metafield_key | split: '.'
+  assign namespace = parts[0]
+  assign key = parts[1]
+  assign child_collections = target_parent.metafields[namespace][key].value
 
-  # Dynamic extraction of sibling/subcollections from products if in automatic mode
-  assign col_handles_str = ""
-  if section.settings.mode == 'automatic'
-    paginate target_parent.products by 250
-      for prod in target_parent.products
-        for col_item in prod.collections
-          if col_item.handle != target_parent.handle and col_item.handle != 'all' and col_item.handle != 'frontpage'
-            assign col_parent = col_item.metafields.custom.parent.value
-            if col_parent != blank and col_parent.handle == target_parent.handle
-              assign check_handle = col_item.handle | prepend: '|' | append: '|'
-              unless col_handles_str contains check_handle
-                assign col_handles_str = col_handles_str | append: col_item.handle | append: '|'
-              endunless
-            endif
-          endif
-        endfor
-      endfor
-    endpaginate
-    assign col_handles = col_handles_str | split: '|'
-  endif
-
-  # Determine if we actually have any valid subcollections
   assign has_subcollections = false
-  if section.settings.mode == 'manual'
-    for block in section.blocks
-      if block.settings.collection != blank
-        assign has_subcollections = true
+  if child_collections != blank
+    assign has_subcollections = true
+  endif
+
+  # Determine the "Vis alle" main link url
+  assign main_url = target_parent.url
+
+  # "Vis alle" is active if we are viewing the target parent collection page,
+  # or if we are not viewing any of the child collections.
+  assign is_show_all_active = false
+  if collection.handle == target_parent.handle
+    assign is_show_all_active = true
+  else
+    assign is_any_pill_active = false
+    for sub_col in child_collections
+      if sub_col != blank and collection.handle == sub_col.handle
+        assign is_any_pill_active = true
         break
       endif
     endfor
-  else
-    if col_handles_str != blank
-      for sub_handle in col_handles
-        if sub_handle != blank
-          assign sub_col = collections[sub_handle]
-          if sub_col != blank
-            assign has_subcollections = true
-            break
-          endif
-        endif
-      endfor
+    if is_any_pill_active == false
+      assign is_show_all_active = true
     endif
-  endif
-
-  # Check if any rendered pill matches the current collection handle to manage active states
-  assign is_any_pill_active = false
-  if section.settings.mode == 'manual'
-    for block in section.blocks
-      if block.settings.collection != blank and block.settings.collection.handle == collection.handle
-        assign is_any_pill_active = true
-      endif
-    endfor
-  else
-    for sub_handle in col_handles
-      if sub_handle != blank and sub_handle == collection.handle
-        assign is_any_pill_active = true
-      endif
-    endfor
-  endif
-
-  # "Vis alle" is active if no subcollection pill is currently selected,
-  # or if we are actively viewing the configured main collection (or parent collection).
-  assign is_show_all_active = false
-  if is_any_pill_active == false
-    assign is_show_all_active = true
-  elsif main_col_handle != blank and collection.handle == main_col_handle
-    assign is_show_all_active = true
   endif
 -%}
 
@@ -120,100 +77,48 @@
       {{ show_all_label }}
     </a>
 
-    <!-- Render manual blocks -->
-    {%- if section.settings.mode == 'manual' -%}
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign sub_col = block.settings.collection
-          if sub_col == blank
-            continue
-          endif
+    <!-- Render automatic subcollections from metafield -->
+    {%- for sub_col in child_collections -%}
+      {%- liquid
+        if sub_col == blank
+          continue
+        endif
 
-          assign pill_label = block.settings.label_override | default: sub_col.title
-          assign subtitle = block.settings.subtitle
-          if subtitle != blank
-            assign pill_label = pill_label | append: ' (' | append: subtitle | append: ')'
-          endif
+        assign is_pill_active = false
+        if collection.handle == sub_col.handle
+          assign is_pill_active = true
+        endif
 
-          assign is_pill_active = false
-          if collection.handle == sub_col.handle
-            assign is_pill_active = true
-          endif
+        assign pill_class = "bg-surface-container text-primary border border-outline-variant hover:border-primary/50"
+        if is_pill_active
+          assign pill_class = "bg-primary text-white border border-primary font-bold"
+        endif
 
-          assign pill_class = "bg-surface-container text-primary border border-outline-variant hover:border-primary/50"
-          if is_pill_active
-            assign pill_class = "bg-primary text-white border border-primary font-bold"
-          endif
-        -%}
-        <a href="{{ sub_col.url }}" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline" {{ block.shopify_attributes }}>
-          {{ pill_label }}
-        </a>
-      {%- endfor -%}
+        assign pill_label = sub_col.metafields.custom.label_override.value | default: sub_col.metafields.custom.label_override | default: sub_col.title
+        assign subtitle = sub_col.metafields.custom.subtitle.value | default: sub_col.metafields.custom.subtitle | default: sub_col.metafields.custom.suffix.value | default: sub_col.metafields.custom.suffix
+        if subtitle != blank
+          assign pill_label = pill_label | append: ' (' | append: subtitle | append: ')'
+        endif
+      -%}
+      <a href="{{ sub_col.url }}" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        {{ pill_label }}
+      </a>
+    {%- endfor -%}
 
-      {%- if has_subcollections == false and request.design_mode -%}
-        <!-- Fallback Mockup Data when no blocks are defined yet -->
-        <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          Børnefamilien (Let rengøring)
-        </a>
-        <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          Havebordet (Udeliv & UV-resistent)
-        </a>
-        <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          Minimalistisk (Diskret beskyttelse)
-        </a>
-        <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          Professionel (Ekstra slidstærk)
-        </a>
-      {%- endif -%}
-
-    {%- else -%}
-      <!-- Render automatic subcollections -->
-      {%- for sub_handle in col_handles -%}
-        {%- liquid
-          if sub_handle == blank
-            continue
-          endif
-          assign sub_col = collections[sub_handle]
-          if sub_col == blank
-            continue
-          endif
-
-          assign is_pill_active = false
-          if collection.handle == sub_col.handle
-            assign is_pill_active = true
-          endif
-
-          assign pill_class = "bg-surface-container text-primary border border-outline-variant hover:border-primary/50"
-          if is_pill_active
-            assign pill_class = "bg-primary text-white border border-primary font-bold"
-          endif
-
-          assign pill_label = sub_col.metafields.custom.label_override.value | default: sub_col.metafields.custom.label_override | default: sub_col.title
-          assign subtitle = sub_col.metafields.custom.subtitle.value | default: sub_col.metafields.custom.subtitle | default: sub_col.metafields.custom.suffix.value | default: sub_col.metafields.custom.suffix
-          if subtitle != blank
-            assign pill_label = pill_label | append: ' (' | append: subtitle | append: ')'
-          endif
-        -%}
-        <a href="{{ sub_col.url }}" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          {{ pill_label }}
-        </a>
-      {%- endfor -%}
-
-      {%- if has_subcollections == false and request.design_mode -%}
-        <!-- Fallback Mockup Data in automatic mode if empty -->
-        <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          Børnefamilien (Let rengøring)
-        </a>
-        <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          Havebordet (Udeliv & UV-resistent)
-        </a>
-        <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          Minimalistisk (Diskret beskyttelse)
-        </a>
-        <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-          Professionel (Ekstra slidstærk)
-        </a>
-      {%- endif -%}
+    {%- if has_subcollections == false and request.design_mode -%}
+      <!-- Fallback Mockup Data in design mode if empty -->
+      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        Børnefamilien (Let rengøring)
+      </a>
+      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        Havebordet (Udeliv & UV-resistent)
+      </a>
+      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        Minimalistisk (Diskret beskyttelse)
+      </a>
+      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+        Professionel (Ekstra slidstærk)
+      </a>
     {%- endif -%}
   </div>
 </div>
@@ -251,53 +156,17 @@
       "default": "SØG UD FRA DIT BEHOV"
     },
     {
-      "type": "select",
-      "id": "mode",
-      "label": "Hentningsmetode",
-      "options": [
-        { "value": "manual", "label": "Manuel (Brug blokke)" },
-        { "value": "automatic", "label": "Automatisk (Fra produkternes kollektioner)" }
-      ],
-      "default": "automatic",
-      "info": "Manuel tilstand giver dig mulighed for at tilføje præcise undertekster som '(Let rengøring)'."
-    },
-    {
-      "type": "collection",
-      "id": "main_collection",
-      "label": "Hovedkollektion (til 'Vis alle')",
-      "info": "Vælg den overordnede kollektion (f.eks. Voksduge) som 'Vis alle' knappen skal linke tilbage til på underkollektionssiderne."
+      "type": "text",
+      "id": "metafield_key",
+      "label": "Underkollektioner Metafelt-nøgle / Subcollections Metafield Key",
+      "default": "custom.child",
+      "info": "Indtast metafelt-nøglen (f.eks. 'custom.child') der indeholder listen af underkollektioner."
     },
     {
       "type": "text",
       "id": "show_all_label",
       "label": "Label til 'Vis alle'",
       "default": "Vis alle"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "collection_pill",
-      "name": "Kollektion pill",
-      "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Vælg kollektion"
-        },
-        {
-          "type": "text",
-          "id": "label_override",
-          "label": "Titel override",
-          "info": "Standard er kollektionens eget navn"
-        },
-        {
-          "type": "text",
-          "id": "subtitle",
-          "label": "Undertekst/Suffix",
-          "placeholder": "f.eks. Let rengøring",
-          "info": "Vil blive vist i parentes bag navnet, f.eks. 'Børnefamilien (Let rengøring)'"
-        }
-      ]
     }
   ],
   "presets": [

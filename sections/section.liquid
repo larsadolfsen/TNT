@@ -1,5 +1,5 @@
 {%- liquid
-  assign layout_style = section.settings.layout_style | default: 'full_width_bg'
+  assign layout_style = 'full_width_bg'
   assign is_full_width = section.settings.full_width | default: false
 
   # Calculate class names dynamically to handle grids and product detail column grids
@@ -223,16 +223,6 @@
     {
       "type": "header",
       "content": "Layout"
-    },
-    {
-      "type": "select",
-      "id": "layout_style",
-      "label": "Layout-stil / Layout style",
-      "options": [
-        { "value": "full_width_bg", "label": "Sektion / Section" },
-        { "value": "card", "label": "Kort / Card" }
-      ],
-      "default": "full_width_bg"
     },
     {
       "type": "select",

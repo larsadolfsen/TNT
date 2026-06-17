@@ -821,6 +821,9 @@
   .gap-8 {
     gap: calc(var(--spacing) * 8);
   }
+  .gap-\[var\(--grid-gap\)\] {
+    gap: var(--grid-gap);
+  }
   .space-y-1 {
     :where(& > :not(:last-child)) {
       --tw-space-y-reverse: 0;
@@ -2377,9 +2380,9 @@
       }
     }
   }
-  .lg\:col-span-1 {
+  .lg\:col-span-2 {
     @media (width >= 1200px) {
-      grid-column: span 1 / span 1;
+      grid-column: span 2 / span 2;
     }
   }
   .lg\:col-span-3 {
@@ -2390,6 +2393,21 @@
   .lg\:col-span-4 {
     @media (width >= 1200px) {
       grid-column: span 4 / span 4;
+    }
+  }
+  .lg\:col-span-8 {
+    @media (width >= 1200px) {
+      grid-column: span 8 / span 8;
+    }
+  }
+  .lg\:col-span-9 {
+    @media (width >= 1200px) {
+      grid-column: span 9 / span 9;
+    }
+  }
+  .lg\:col-span-10 {
+    @media (width >= 1200px) {
+      grid-column: span 10 / span 10;
     }
   }
   .lg\:block {
@@ -2407,11 +2425,6 @@
       display: none;
     }
   }
-  .lg\:grid-cols-4 {
-    @media (width >= 1200px) {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
   .lg\:grid-cols-12 {
     @media (width >= 1200px) {
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -2420,11 +2433,6 @@
   .lg\:gap-6 {
     @media (width >= 1200px) {
       gap: calc(var(--spacing) * 6);
-    }
-  }
-  .lg\:gap-8 {
-    @media (width >= 1200px) {
-      gap: calc(var(--spacing) * 8);
     }
   }
   .lg\:px-6 {
