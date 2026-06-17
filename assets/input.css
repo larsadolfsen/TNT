@@ -18,7 +18,6 @@
   --color-surface-container: var(--color-surface-container);
   --color-outline-variant: var(--color-border);
   --color-slate-200: var(--color-border);
-  --color-border: var(--color-border);
 
   --font-sans: var(--font-body-family), sans-serif;
   --font-serif: var(--font-header-family), serif;
