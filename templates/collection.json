@@ -155,8 +155,8 @@
         "disable_reviews": true,
         "columns_mobile": 2,
         "columns_tablet": 3,
-        "columns_desktop": 4,
-        "filter_width_desktop": 2
+        "columns_desktop": 3,
+        "filter_width_desktop": 3
       }
     },
     "section_c4ay6a": {
@@ -188,8 +188,8 @@
         "row_span_tablet": "auto",
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
-        "column_span_desktop": "8",
-        "column_start_desktop": "5",
+        "column_span_desktop": "9",
+        "column_start_desktop": "4",
         "row_span_desktop": "auto",
         "row_start_desktop": "auto",
         "hide_on_desktop": false,
