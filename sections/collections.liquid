@@ -40,7 +40,8 @@
   .collections {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--collection-card-size), 100%), 1fr));
-    gap: inherit;
+    column-gap: var(--grid-gap);
+    row-gap: var(--grid-row-gap);
   }
   .collections--compact {
     --collection-card-size: 160px;
