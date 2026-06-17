@@ -7,6 +7,7 @@
 {%- style -%}
   #collections-grid-{{ section.id }} {
     grid-template-columns: repeat({{ section.settings.columns_mobile | default: 2 }}, minmax(0, 1fr));
+    --grid-gap: {{ section.settings.grid_gap | default: 16 }}px;
   }
 
   @media screen and (min-width: 768px) {
@@ -22,14 +23,25 @@
   }
 {%- endstyle -%}
 
+{%- liquid
+  assign display_collections = collections
+  if section.settings.collection_source == 'children'
+    if collection != blank and collection.metafields.custom.child.value != blank
+      assign display_collections = collection.metafields.custom.child.value
+    else
+      assign display_collections = blank
+    endif
+  endif
+-%}
+
 <div id="collections-grid-{{ section.id }}" class="collections">
-  {% for collection in collections %}
-    <a class="collection-card group" href="{{ collection.url }}">
+  {% for col_item in display_collections %}
+    <a class="collection-card group" href="{{ col_item.url }}">
       <div class="collection-card__image-wrapper">
-        {% if collection.featured_image %}
+        {% if col_item.featured_image %}
           {% render 'image',
             class: 'collection-card__image',
-            image: collection.featured_image,
+            image: col_item.featured_image,
             width: 600,
             height: 600,
             crop: 'center'
@@ -42,13 +54,27 @@
       </div>
 
       <div class="collection-card__content">
-        <h3 class="collection-card__title">{{ collection.title }}</h3>
+        <h3 class="collection-card__title">{{ col_item.title }}</h3>
 
-        {% if collection.description %}
-          <p class="collection-card__description">{{ collection.description | strip_html | truncatewords: 15 }}</p>
+        {% if col_item.description %}
+          <p class="collection-card__description">{{ col_item.description | strip_html | truncatewords: 15 }}</p>
         {% endif %}
       </div>
     </a>
+  {% else %}
+    {% if section.settings.collection_source == 'children' and request.design_mode %}
+      {% for i in (1..4) %}
+        <div class="collection-card group">
+          <div class="collection-card__image-wrapper flex items-center justify-center">
+            {{ 'collection-' | append: i | placeholder_svg_tag: 'w-full h-full bg-slate-100 opacity-50' }}
+          </div>
+          <div class="collection-card__content">
+            <h3 class="collection-card__title">Underkategori {{ i }}</h3>
+            <p class="collection-card__description">Dette er en eksempel-underkategori i designvisning.</p>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
   {% endfor %}
 </div>
 
@@ -122,6 +148,17 @@
   "name": "t:general.collections_grid",
   "settings": [
     {
+      "type": "select",
+      "id": "collection_source",
+      "label": "Kollektionskilde / Collection source",
+      "options": [
+        { "value": "all", "label": "Alle kollektioner / All collections" },
+        { "value": "children", "label": "Underkollektioner (via metafelt) / Child collections (via metafield)" }
+      ],
+      "default": "all",
+      "info": "Vælg om der skal vises alle kollektioner i shoppen eller kun underkollektioner af den nuværende kollektion baseret på 'custom.child' metafeltet."
+    },
+    {
       "type": "range",
       "id": "columns_mobile",
       "min": 1,
@@ -154,9 +191,9 @@
       "label": "t:labels.grid_gap",
       "min": 0,
       "max": 50,
-      "step": 5,
+      "step": 2,
       "unit": "px",
-      "default": 10
+      "default": 16
     }
   ],
   "presets": [{ "name": "t:general.collections_grid" }]
