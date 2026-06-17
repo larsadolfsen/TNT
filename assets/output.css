@@ -1205,9 +1205,6 @@
   .bg-white {
     background-color: var(--color-white);
   }
-  .bg-zinc-200 {
-    background-color: var(--color-zinc-200);
-  }
   .object-cover {
     object-fit: cover;
   }
@@ -1639,9 +1636,6 @@
   .text-white {
     color: var(--color-white);
   }
-  .text-zinc-800 {
-    color: var(--color-zinc-800);
-  }
   .capitalize {
     text-transform: capitalize;
   }
@@ -2017,13 +2011,6 @@
       }
     }
   }
-  .hover\:bg-zinc-300 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-zinc-300);
-      }
-    }
-  }
   .hover\:text-accent {
     &:hover {
       @media (hover: hover) {
@@ -2070,6 +2057,13 @@
     &:hover {
       @media (hover: hover) {
         opacity: 80%;
+      }
+    }
+  }
+  .hover\:opacity-90 {
+    &:hover {
+      @media (hover: hover) {
+        opacity: 90%;
       }
     }
   }
@@ -2466,19 +2460,9 @@
       background-color: var(--color-slate-700);
     }
   }
-  .dark\:bg-zinc-700 {
-    &:where(.dark, .dark *) {
-      background-color: var(--color-zinc-700);
-    }
-  }
   .dark\:text-amber-500 {
     &:where(.dark, .dark *) {
       color: var(--color-amber-500);
-    }
-  }
-  .dark\:text-zinc-100 {
-    &:where(.dark, .dark *) {
-      color: var(--color-zinc-100);
     }
   }
   .dark\:hover\:bg-slate-800 {
@@ -2486,15 +2470,6 @@
       &:hover {
         @media (hover: hover) {
           background-color: var(--color-slate-800);
-        }
-      }
-    }
-  }
-  .dark\:hover\:bg-zinc-600 {
-    &:where(.dark, .dark *) {
-      &:hover {
-        @media (hover: hover) {
-          background-color: var(--color-zinc-600);
         }
       }
     }
