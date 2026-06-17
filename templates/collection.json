@@ -130,12 +130,43 @@
         "columns_tablet": 3,
         "columns_desktop": 4
       }
+    },
+    "section_c4ay6a": {
+      "type": "section",
+      "name": "Section",
+      "settings": {
+        "layout_style": "full_width_bg",
+        "background_color": "white",
+        "full_width": false,
+        "hide_on_mobile": false,
+        "column_span_tablet": "8",
+        "column_start_tablet": "auto",
+        "row_span_tablet": "auto",
+        "row_start_tablet": "auto",
+        "hide_on_tablet": false,
+        "column_span_desktop": "12",
+        "column_start_desktop": "auto",
+        "row_span_desktop": "auto",
+        "row_start_desktop": "auto",
+        "hide_on_desktop": false,
+        "justify_self": "auto",
+        "align_self": "auto",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "padding_left": 24,
+        "padding_right": 24,
+        "use_global_gap": true,
+        "block_spacing": 16,
+        "border_top": false,
+        "border_bottom": false
+      }
     }
   },
   "order": [
     "collection-header",
     "collections_rP4rdP",
     "collection_subcollections_rqhcLB",
-    "main-collection"
+    "main-collection",
+    "section_c4ay6a"
   ]
 }
