@@ -59,7 +59,7 @@
 -%}
 
 {%- if has_subcollections or request.design_mode -%}
-<div class="shopify-block-collection-subcollections w-full" {{ block.shopify_attributes }}>
+<div id="collection-subcollections-container" class="shopify-block-collection-subcollections w-full" {{ block.shopify_attributes }}>
   {%- if block.settings.title != blank -%}
     <h2 class="text-xs font-bold text-primary uppercase tracking-wider mb-3">
       {{ block.settings.title }}
@@ -67,19 +67,6 @@
   {%- endif -%}
 
   <div class="flex overflow-x-auto gap-2.5 pb-2 hide-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
-    <!-- 'Vis alle' pill -->
-    {%- liquid
-      assign show_all_class = "bg-surface-container text-primary border border-outline-variant hover:border-primary/50"
-      if is_show_all_active
-        assign show_all_class = "bg-primary text-on-primary border border-primary font-bold"
-      endif
-    -%}
-    <a href="{{ main_url }}" class="{{ show_all_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
-      {%- if is_show_all_active -%}
-        <span class="material-symbols-outlined text-xs mr-1 select-none pointer-events-none" style="font-size: 14px; font-weight: 900;">check</span>
-      {%- endif -%}
-      {{ show_all_label }}
-    </a>
 
     <!-- Render automatic subcollections from metafield -->
     {%- for sub_col in child_collections -%}
@@ -95,7 +82,7 @@
 
         assign pill_class = "bg-surface-container text-primary border border-outline-variant hover:border-primary/50"
         if is_pill_active
-          assign pill_class = "bg-primary text-on-primary border border-primary font-bold"
+          assign pill_class = "bg-black text-white border border-black font-bold"
         endif
 
         assign pill_label = sub_col.metafields.custom.label_override.value | default: sub_col.metafields.custom.label_override | default: sub_col.title
@@ -104,7 +91,7 @@
           assign pill_label = pill_label | append: ' (' | append: subtitle | append: ')'
         endif
       -%}
-      <a href="{{ sub_col.url }}" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+      <a href="{{ sub_col.url }}" data-collection-chip="true" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
         {%- if is_pill_active -%}
           <span class="material-symbols-outlined text-xs mr-1 select-none pointer-events-none" style="font-size: 14px; font-weight: 900;">check</span>
         {%- endif -%}
@@ -114,21 +101,74 @@
 
     {%- if has_subcollections == false and request.design_mode -%}
       <!-- Fallback Mockup Data in design mode if empty -->
-      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+      <a href="#" data-collection-chip="true" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
         Børnefamilien (Let rengøring)
       </a>
-      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+      <a href="#" data-collection-chip="true" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
         Havebordet (Udeliv & UV-resistent)
       </a>
-      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+      <a href="#" data-collection-chip="true" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
         Minimalistisk (Diskret beskyttelse)
       </a>
-      <a href="#" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
+      <a href="#" data-collection-chip="true" class="bg-surface-container text-primary border border-outline-variant hover:border-primary/50 px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
         Professionel (Ekstra slidstærk)
       </a>
     {%- endif -%}
   </div>
 </div>
+
+<script>
+(function() {
+  function handleChipClick(e) {
+    var chip = e.target.closest('[data-collection-chip="true"]');
+    if (!chip || !chip.href || chip.href === '#') return;
+    e.preventDefault();
+    var targetUrl = chip.href;
+    var productGrid = document.getElementById('product-grid');
+    var subcollectionsContainer = document.getElementById('collection-subcollections-container');
+    var productCountDisplay = document.getElementById('product-count-display');
+    var appliedFilters = document.getElementById('applied-filters-container');
+    var desktopFilters = document.getElementById('desktop-filters');
+    var mobileFilters = document.getElementById('mobile-filters');
+    if (productGrid) { productGrid.classList.add('opacity-50', 'pointer-events-none'); }
+    fetch(targetUrl)
+      .then(function(res) { return res.text(); })
+      .then(function(html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, 'text/html');
+        var newGrid = doc.getElementById('product-grid');
+        if (newGrid && productGrid) { productGrid.innerHTML = newGrid.innerHTML; }
+        var newCount = doc.getElementById('product-count-display');
+        if (newCount && productCountDisplay) { productCountDisplay.innerText = newCount.innerText; }
+        var newApplied = doc.getElementById('applied-filters-container');
+        if (newApplied && appliedFilters) {
+          appliedFilters.innerHTML = newApplied.innerHTML;
+          appliedFilters.className = newApplied.className;
+        } else if (appliedFilters) {
+          appliedFilters.classList.add('hidden');
+        }
+        var newDesktop = doc.getElementById('desktop-filters');
+        if (newDesktop && desktopFilters) { desktopFilters.innerHTML = newDesktop.innerHTML; }
+        var newMobile = doc.getElementById('mobile-filters');
+        if (newMobile && mobileFilters) { mobileFilters.innerHTML = newMobile.innerHTML; }
+        var newSubs = doc.getElementById('collection-subcollections-container');
+        if (newSubs && subcollectionsContainer) {
+          subcollectionsContainer.innerHTML = newSubs.innerHTML;
+        }
+        window.history.pushState({ path: targetUrl }, '', targetUrl);
+        if (productGrid) { productGrid.classList.remove('opacity-50', 'pointer-events-none'); }
+        if (typeof enhanceColorSwatches === 'function') enhanceColorSwatches();
+        if (typeof truncateFilterLists === 'function') truncateFilterLists();
+      })
+      .catch(function(err) {
+        console.error('Chip navigation error:', err);
+        if (productGrid) { productGrid.classList.remove('opacity-50', 'pointer-events-none'); }
+      });
+  }
+  document.addEventListener('click', handleChipClick);
+})();
+</script>
+
 {%- endif -%}
 
 {% schema %}
