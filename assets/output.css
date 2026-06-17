@@ -105,6 +105,7 @@
     --color-secondary: var(--color-accent);
     --color-surface-container: var(--color-surface-container);
     --color-outline-variant: var(--color-border);
+    --color-border: var(--color-border);
   }
 }
 @layer base {
@@ -2490,6 +2491,9 @@
       }
     }
   }
+}
+*, ::after, ::before, ::backdrop, ::file-selector-button {
+  border-color: var(--color-border);
 }
 :root {
   --grid-gap: 16px;
