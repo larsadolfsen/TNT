@@ -1,0 +1,181 @@
+{% doc %}
+  Renders a collection grid block.
+  Merchant can choose a specific collection, or it defaults to the template's current collection.
+{% enddoc %}
+
+{%- liquid
+  assign selected_collection = block.settings.collection | default: collection
+  assign limit = block.settings.products_to_show | default: 8
+  assign layout_style = block.settings.layout | default: 'minimal'
+  assign disable_reviews = block.settings.disable_reviews | default: false
+-%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    --block-padding-top: {{ block.settings.padding_top | default: 12 }}px;
+    --block-padding-bottom: {{ block.settings.padding_bottom | default: 12 }}px;
+    --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
+    --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
+    width: 100%;
+  }
+
+  #collection-grid-{{ block.id }} {
+    grid-template-columns: repeat({{ block.settings.columns_mobile | default: 2 }}, minmax(0, 1fr));
+  }
+
+  @media screen and (min-width: 768px) {
+    #collection-grid-{{ block.id }} {
+      grid-template-columns: repeat({{ block.settings.columns_tablet | default: 3 }}, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    #collection-grid-{{ block.id }} {
+      grid-template-columns: repeat({{ block.settings.columns_desktop | default: 4 }}, minmax(0, 1fr));
+    }
+  }
+{%- endstyle -%}
+
+<div class="shopify-block-collection-grid w-full" {{ block.shopify_attributes }}>
+  {%- if block.settings.title != blank -%}
+    <h2 class="font-serif text-lg md:text-xl font-semibold mb-4 text-primary">
+      {{ block.settings.title }}
+    </h2>
+  {%- endif -%}
+
+  <div id="collection-grid-{{ block.id }}" class="grid gap-4 lg:gap-6">
+    {%- if selected_collection != blank and selected_collection.products_count > 0 -%}
+      {%- for product in selected_collection.products limit: limit -%}
+        {%- render 'product-card', product: product, layout: layout_style, disable_reviews: disable_reviews -%}
+      {%- endfor -%}
+    {%- else -%}
+      <!-- Mockup Data / Placeholders for Shopify Theme Customizer Preview -->
+      {%- for i in (1..limit) -%}
+        <div class="product-card flex flex-col bg-transparent max-h-[420px] sm:max-h-none border border-outline-variant rounded-2xl p-3">
+          <div class="relative w-full aspect-square bg-surface-container rounded-2xl flex items-center justify-center overflow-hidden mb-2">
+            {{ 'product-' | append: i | placeholder_svg_tag: 'w-full h-full bg-slate-100 opacity-50' }}
+          </div>
+          <div class="space-y-1">
+            <h3 class="font-sans text-xs sm:text-sm font-normal text-primary leading-tight">Eksempel produkt {{ i }}</h3>
+            <p class="text-xs font-semibold text-primary">199,00 kr.</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Kollektion Grid / Collection Grid",
+  "class": "shopify-block-collection-grid-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Overskrift"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Kollektion"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "label": "Antal produkter at vise",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout-stil",
+      "options": [
+        { "value": "minimal", "label": "Minimal" },
+        { "value": "standard", "label": "Standard" }
+      ],
+      "default": "minimal"
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_reviews",
+      "label": "Deaktiver anmeldelser",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Kolonne Indstillinger"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Antal kolonner på mobil",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Antal kolonner på tablet",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Antal kolonner på desktop",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_sides",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i siderne",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kollektion Grid / Collection Grid",
+      "category": "t:general.collection_category"
+    }
+  ]
+}
+{% endschema %}
