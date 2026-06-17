@@ -58,7 +58,9 @@
       "type": "collections",
       "name": "t:general.collections_grid",
       "settings": {
-        "grid_item_width": "collections--compact",
+        "columns_mobile": 3,
+        "columns_tablet": 6,
+        "columns_desktop": 8,
         "grid_gap": 10
       }
     },
