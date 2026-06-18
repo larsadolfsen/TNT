@@ -74,15 +74,6 @@
     "header_hygWBY": {
       "type": "header",
       "blocks": {
-        "theme_toggle_RRdyeh": {
-          "type": "theme_toggle",
-          "settings": {
-            "placement": "right",
-            "hide_on_mobile": false,
-            "hide_on_tablet": false,
-            "hide_on_desktop": false
-          }
-        },
         "navigation_76HemT": {
           "type": "navigation",
           "settings": {
@@ -96,7 +87,6 @@
         }
       },
       "block_order": [
-        "theme_toggle_RRdyeh",
         "navigation_76HemT"
       ],
       "name": "Header Row",
