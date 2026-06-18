@@ -375,7 +375,7 @@
           {%- assign menu_handle = navigation_block.settings.menu -%}
           {%- if menu_handle != blank -%}
             <nav class="w-full overflow-x-auto hide-scrollbar py-1 -mx-4 px-4{{ navigation_visibility }}" aria-label="Kategori menu" {{ navigation_block.shopify_attributes }}>
-              <ul class="flex items-center gap-5 whitespace-nowrap list-none p-0 m-0">
+              <ul class="flex items-center gap-5 whitespace-nowrap list-none p-0 m-0 {% if navigation_block.settings.placement == 'right' %}justify-end{% elsif navigation_block.settings.placement == 'left' %}justify-start{% else %}justify-center{% endif %}">
                 {%- for link in linklists[menu_handle].links -%}
                   <li>
                     <a 
