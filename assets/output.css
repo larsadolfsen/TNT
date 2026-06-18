@@ -250,6 +250,9 @@
   }
 }
 @layer utilities {
+  .pointer-events-auto {
+    pointer-events: auto;
+  }
   .pointer-events-none {
     pointer-events: none;
   }
@@ -314,9 +317,6 @@
   }
   .right-1\.5 {
     right: calc(var(--spacing) * 1.5);
-  }
-  .right-3 {
-    right: calc(var(--spacing) * 3);
   }
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
@@ -570,6 +570,9 @@
   .min-h-\[38px\] {
     min-height: 38px;
   }
+  .min-h-\[44px\] {
+    min-height: 44px;
+  }
   .min-h-screen {
     min-height: 100vh;
   }
@@ -617,6 +620,9 @@
   }
   .w-64 {
     width: calc(var(--spacing) * 64);
+  }
+  .w-80 {
+    width: calc(var(--spacing) * 80);
   }
   .w-\[calc\(100\%-2rem\)\] {
     width: calc(100% - 2rem);
@@ -1040,12 +1046,6 @@
       border-color: color-mix(in oklab, var(--color-outline-variant) 20%, transparent);
     }
   }
-  .border-outline-variant\/30 {
-    border-color: var(--color-outline-variant);
-    @supports (color: color-mix(in lab, red, red)) {
-      border-color: color-mix(in oklab, var(--color-outline-variant) 30%, transparent);
-    }
-  }
   .border-outline-variant\/40 {
     border-color: var(--color-outline-variant);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1357,9 +1357,6 @@
   }
   .pr-6 {
     padding-right: calc(var(--spacing) * 6);
-  }
-  .pr-10 {
-    padding-right: calc(var(--spacing) * 10);
   }
   .pr-24 {
     padding-right: calc(var(--spacing) * 24);
