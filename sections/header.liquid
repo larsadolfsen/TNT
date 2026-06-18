@@ -310,17 +310,22 @@
       <div class="w-full flex flex-col gap-3">
         <div class="grid grid-cols-3 items-center w-full">
           <!-- Left Slot -->
-          <div class="flex justify-start">
+          <div class="flex justify-start items-center gap-3">
             {%- if hamburger_block -%}
               <div class="{{ hamburger_visibility }}" {{ hamburger_block.shopify_attributes }}>
                 {{ hamburger_html }}
               </div>
             {%- endif -%}
+            {%- if logo_block and logo_block.settings.placement == 'left' -%}
+              <div class="{{ logo_visibility }}" {{ logo_block.shopify_attributes }}>
+                {{ logo_html }}
+              </div>
+            {%- endif -%}
           </div>
 
           <!-- Center Slot -->
-          <div class="flex justify-center">
-            {%- if logo_block -%}
+          <div class="flex justify-center items-center">
+            {%- if logo_block and logo_block.settings.placement != 'left' -%}
               <div class="{{ logo_visibility }}" {{ logo_block.shopify_attributes }}>
                 {{ logo_html }}
               </div>
