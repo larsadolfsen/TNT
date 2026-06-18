@@ -657,6 +657,9 @@
   .max-w-md {
     max-width: var(--container-md);
   }
+  .max-w-none {
+    max-width: none;
+  }
   .max-w-screen-xl {
     max-width: var(--breakpoint-xl);
   }
@@ -1039,6 +1042,12 @@
   }
   .border-outline-variant {
     border-color: var(--color-outline-variant);
+  }
+  .border-outline-variant\/10 {
+    border-color: var(--color-outline-variant);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-outline-variant) 10%, transparent);
+    }
   }
   .border-outline-variant\/20 {
     border-color: var(--color-outline-variant);
