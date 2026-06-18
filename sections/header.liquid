@@ -26,13 +26,42 @@
       assign show_menu = section.settings.show_menu_cart
   endcase
 
-  # Block references lookup
-  assign logo_block = section.blocks | where: "type", "logo" | first
-  assign navigation_block = section.blocks | where: "type", "navigation" | first
-  assign search_block = section.blocks | where: "type", "search" | first
-  assign theme_toggle_block = section.blocks | where: "type", "theme_toggle" | first
-  assign cart_block = section.blocks | where: "type", "cart" | first
-  assign hamburger_block = section.blocks | where: "type", "hamburger" | first
+  # Block references lookup (dynamic discovery based on selected content type)
+  assign logo_block = nil
+  assign navigation_block = nil
+  assign search_block = nil
+  assign theme_toggle_block = nil
+  assign cart_block = nil
+  assign hamburger_block = nil
+
+  for block in section.blocks
+    case block.settings.content_type
+      when 'logo'
+        if logo_block == nil
+          assign logo_block = block
+        endif
+      when 'navigation'
+        if navigation_block == nil
+          assign navigation_block = block
+        endif
+      when 'search'
+        if search_block == nil
+          assign search_block = block
+        endif
+      when 'theme_toggle'
+        if theme_toggle_block == nil
+          assign theme_toggle_block = block
+        endif
+      when 'cart'
+        if cart_block == nil
+          assign cart_block = block
+        endif
+      when 'hamburger'
+        if hamburger_block == nil
+          assign hamburger_block = block
+        endif
+    endcase
+  endfor
 -%}
 <!-- Reusable Captured Header Subcomponents -->
 {%- capture logo_html -%}
@@ -112,7 +141,7 @@
 
 {%- for block in section.blocks -%}
   {%- capture block_html -%}
-    {%- case block.type -%}
+    {%- case block.settings.content_type -%}
       {%- when 'logo' -%}
         <div class="flex-shrink-0" {{ block.shopify_attributes }}>
           <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity">
@@ -132,7 +161,7 @@
           {%- assign menu_handle = block.settings.menu -%}
           {%- if menu_handle != blank -%}
             <nav class="flex items-center overflow-x-auto hide-scrollbar w-full" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
-              <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0 w-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}">
+              <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0 w-full {% if block.type == 'fill' or block.type == 'center' %}justify-center{% elsif block.type == 'right' %}justify-end{% else %}justify-start{% endif %}">
                 {%- for link in linklists[menu_handle].links -%}
                   <li>
                     <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
@@ -147,7 +176,7 @@
       {%- when 'search' -%}
         {%- if show_search -%}
           {%- if block.settings.desktop_search_style == 'always_visible' -%}
-            <div class="{% if block.settings.placement == 'fill' %}max-w-xl mx-auto w-full{% else %}{{ block.settings.desktop_width | default: 'max-w-md w-full' }}{% endif %} flex-shrink-0" {{ block.shopify_attributes }}>
+            <div class="{% if block.type == 'fill' %}max-w-xl mx-auto w-full{% else %}{{ block.settings.desktop_width | default: 'max-w-md w-full' }}{% endif %} flex-shrink-0" {{ block.shopify_attributes }}>
               {{ search_form_html }}
             </div>
           {%- else -%}
@@ -183,9 +212,13 @@
             </span>
           </a>
         </div>
+      {%- when 'hamburger' -%}
+        <div class="flex-shrink-0" {{ block.shopify_attributes }}>
+          {{ hamburger_html }}
+        </div>
       {%- when 'custom_content' -%}
         {%- if block.settings.content != blank -%}
-          <div class="flex-shrink-0 text-sm text-primary w-full flex {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center text-center{% elsif block.settings.placement == 'right' %}justify-end text-right{% else %}justify-start text-left{% endif %}" {{ block.shopify_attributes }}>
+          <div class="flex-shrink-0 text-sm text-primary w-full flex {% if block.type == 'fill' or block.type == 'center' %}justify-center text-center{% elsif block.type == 'right' %}justify-end text-right{% else %}justify-start text-left{% endif %}" {{ block.shopify_attributes }}>
             <div class="prose prose-sm max-w-none text-primary">
               {{ block.settings.content }}
             </div>
@@ -194,11 +227,11 @@
     {%- endcase -%}
   {%- endcapture -%}
   
-  {%- if block.settings.placement == 'left' -%}
+  {%- if block.type == 'left' -%}
     {%- capture left_zone_html -%}{{ left_zone_html }}{{ block_html }}{%- endcapture -%}
-  {%- elsif block.settings.placement == 'right' -%}
+  {%- elsif block.type == 'right' -%}
     {%- capture right_zone_html -%}{{ right_zone_html }}{{ block_html }}{%- endcapture -%}
-  {%- elsif block.settings.placement == 'fill' -%}
+  {%- elsif block.type == 'fill' -%}
     {%- capture fill_rows_html -%}{{ fill_rows_html }}<div class="w-full flex items-center min-h-[44px] py-1">{{ block_html }}</div>{%- endcapture -%}
   {%- else -%}
     {%- capture center_zone_html -%}{{ center_zone_html }}{{ block_html }}{%- endcapture -%}
@@ -262,7 +295,7 @@
     {%- assign show_mobile_header = true -%}
   {%- elsif section.blocks.size > 0 -%}
     {%- for block in section.blocks -%}
-      {%- if block.type == 'custom_content' and block.settings.content != blank -%}
+      {%- if block.settings.content_type == 'custom_content' and block.settings.content != blank -%}
         {%- assign show_mobile_header = true -%}
       {%- endif -%}
     {%- endfor -%}
@@ -354,7 +387,7 @@
 
         <!-- Mobile Custom Content -->
         {%- for block in section.blocks -%}
-          {%- if block.type == 'custom_content' and block.settings.content != blank -%}
+          {%- if block.settings.content_type == 'custom_content' and block.settings.content != blank -%}
             <div class="w-full text-center text-sm py-1 border-t border-outline-variant/10 pt-2" {{ block.shopify_attributes }}>
               <div class="prose prose-sm max-w-none text-primary">
                 {{ block.settings.content }}
@@ -1169,66 +1202,48 @@
   ],
   "blocks": [
     {
-      "type": "logo",
-      "name": "Logo",
+      "type": "left",
+      "name": "Float Left",
       "settings": [
+        {
+          "type": "select",
+          "id": "content_type",
+          "label": "Indholdstype (Content Type)",
+          "options": [
+            { "value": "logo", "label": "Logo" },
+            { "value": "navigation", "label": "Navigation Menu" },
+            { "value": "search", "label": "Search Bar" },
+            { "value": "theme_toggle", "label": "Theme Toggle" },
+            { "value": "cart", "label": "Cart Icon" },
+            { "value": "hamburger", "label": "Mobile Hamburger Menu" },
+            { "value": "custom_content", "label": "Custom Content" }
+          ],
+          "default": "logo"
+        },
+        {
+          "type": "header",
+          "content": "Indstillinger for indhold (Content Settings)"
+        },
         {
           "type": "text",
           "id": "logo_text",
           "label": "Logo Text Override"
         },
         {
-          "type": "select",
-          "id": "placement",
-          "label": "Desktop Placement",
-          "options": [
-            { "value": "left", "label": "Float Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Float Right" },
-            { "value": "fill", "label": "Fill Row" }
-          ],
-          "default": "left"
-        }
-      ]
-    },
-    {
-      "type": "navigation",
-      "name": "Navigation Menu",
-      "settings": [
-        {
           "type": "link_list",
           "id": "menu",
-          "label": "Menu",
-          "default": "main-menu"
+          "label": "Menu (Navigation)"
         },
         {
           "type": "checkbox",
           "id": "show_on_mobile_bar",
-          "label": "Show as horizontal bar on mobile",
+          "label": "Show as horizontal bar on mobile (Navigation)",
           "default": false
         },
         {
           "type": "select",
-          "id": "placement",
-          "label": "Desktop Placement",
-          "options": [
-            { "value": "left", "label": "Float Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Float Right" },
-            { "value": "fill", "label": "Fill Row" }
-          ],
-          "default": "center"
-        }
-      ]
-    },
-    {
-      "type": "search",
-      "name": "Search Bar",
-      "settings": [
-        {
-          "type": "select",
           "id": "desktop_search_style",
-          "label": "Desktop Search Style",
+          "label": "Desktop Search Style (Search)",
           "options": [
             { "value": "always_visible", "label": "Always visible input" },
             { "value": "icon_toggle", "label": "Toggle with icon click" }
@@ -1238,7 +1253,7 @@
         {
           "type": "select",
           "id": "desktop_width",
-          "label": "Search Bar Width (Desktop)",
+          "label": "Search Bar Width (Search)",
           "options": [
             { "value": "w-64", "label": "Small (256px)" },
             { "value": "w-80", "label": "Medium (320px)" },
@@ -1251,7 +1266,7 @@
         {
           "type": "select",
           "id": "mobile_search_style",
-          "label": "Mobile Search Style",
+          "label": "Mobile Search Style (Search)",
           "options": [
             { "value": "under_logo_bar", "label": "Full-width input below logo" },
             { "value": "icon_toggle", "label": "Toggle with icon click" },
@@ -1260,99 +1275,273 @@
           "default": "under_logo_bar"
         },
         {
-          "type": "select",
-          "id": "placement",
-          "label": "Desktop Placement",
-          "options": [
-            { "value": "left", "label": "Float Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Float Right" },
-            { "value": "fill", "label": "Fill Row" }
-          ],
-          "default": "center"
-        }
-      ]
-    },
-    {
-      "type": "theme_toggle",
-      "name": "Theme Toggle",
-      "settings": [
-        {
-          "type": "select",
-          "id": "placement",
-          "label": "Desktop Placement",
-          "options": [
-            { "value": "left", "label": "Float Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Float Right" },
-            { "value": "fill", "label": "Fill Row" }
-          ],
-          "default": "right"
-        }
-      ]
-    },
-    {
-      "type": "cart",
-      "name": "Cart Icon",
-      "settings": [
-        {
-          "type": "select",
-          "id": "placement",
-          "label": "Desktop Placement",
-          "options": [
-            { "value": "left", "label": "Float Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Float Right" },
-            { "value": "fill", "label": "Fill Row" }
-          ],
-          "default": "right"
-        }
-      ]
-    },
-    {
-      "type": "hamburger",
-      "name": "Mobile Hamburger Menu",
-      "settings": [
-        {
           "type": "link_list",
           "id": "mobile_menu",
-          "label": "Mobile Menu Override"
+          "label": "Mobile Menu Override (Hamburger)"
         },
-        {
-          "type": "select",
-          "id": "placement",
-          "label": "Desktop Placement",
-          "options": [
-            { "value": "left", "label": "Float Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Float Right" },
-            { "value": "fill", "label": "Fill Row" }
-          ],
-          "default": "left"
-        }
-      ]
-    },
-    {
-      "type": "custom_content",
-      "name": "Custom Content",
-      "settings": [
         {
           "type": "liquid",
           "id": "content",
-          "label": "Content (Liquid / HTML / Text)",
+          "label": "Content (Custom Content)",
           "default": "<span>Ring til os: +45 70 20 10 30</span>"
+        }
+      ]
+    },
+    {
+      "type": "center",
+      "name": "Center",
+      "settings": [
+        {
+          "type": "select",
+          "id": "content_type",
+          "label": "Indholdstype (Content Type)",
+          "options": [
+            { "value": "logo", "label": "Logo" },
+            { "value": "navigation", "label": "Navigation Menu" },
+            { "value": "search", "label": "Search Bar" },
+            { "value": "theme_toggle", "label": "Theme Toggle" },
+            { "value": "cart", "label": "Cart Icon" },
+            { "value": "hamburger", "label": "Mobile Hamburger Menu" },
+            { "value": "custom_content", "label": "Custom Content" }
+          ],
+          "default": "logo"
+        },
+        {
+          "type": "header",
+          "content": "Indstillinger for indhold (Content Settings)"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Logo Text Override"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu (Navigation)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_on_mobile_bar",
+          "label": "Show as horizontal bar on mobile (Navigation)",
+          "default": false
         },
         {
           "type": "select",
-          "id": "placement",
-          "label": "Desktop Placement",
+          "id": "desktop_search_style",
+          "label": "Desktop Search Style (Search)",
           "options": [
-            { "value": "left", "label": "Float Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Float Right" },
-            { "value": "fill", "label": "Fill Row" }
+            { "value": "always_visible", "label": "Always visible input" },
+            { "value": "icon_toggle", "label": "Toggle with icon click" }
           ],
-          "default": "left"
+          "default": "always_visible"
+        },
+        {
+          "type": "select",
+          "id": "desktop_width",
+          "label": "Search Bar Width (Search)",
+          "options": [
+            { "value": "w-64", "label": "Small (256px)" },
+            { "value": "w-80", "label": "Medium (320px)" },
+            { "value": "max-w-md w-full", "label": "Large (448px)" },
+            { "value": "max-w-xl w-full", "label": "Extra Large (576px)" },
+            { "value": "flex-grow", "label": "Full width" }
+          ],
+          "default": "max-w-md w-full"
+        },
+        {
+          "type": "select",
+          "id": "mobile_search_style",
+          "label": "Mobile Search Style (Search)",
+          "options": [
+            { "value": "under_logo_bar", "label": "Full-width input below logo" },
+            { "value": "icon_toggle", "label": "Toggle with icon click" },
+            { "value": "hidden", "label": "Hidden" }
+          ],
+          "default": "under_logo_bar"
+        },
+        {
+          "type": "link_list",
+          "id": "mobile_menu",
+          "label": "Mobile Menu Override (Hamburger)"
+        },
+        {
+          "type": "liquid",
+          "id": "content",
+          "label": "Content (Custom Content)",
+          "default": "<span>Ring til os: +45 70 20 10 30</span>"
+        }
+      ]
+    },
+    {
+      "type": "right",
+      "name": "Float Right",
+      "settings": [
+        {
+          "type": "select",
+          "id": "content_type",
+          "label": "Indholdstype (Content Type)",
+          "options": [
+            { "value": "logo", "label": "Logo" },
+            { "value": "navigation", "label": "Navigation Menu" },
+            { "value": "search", "label": "Search Bar" },
+            { "value": "theme_toggle", "label": "Theme Toggle" },
+            { "value": "cart", "label": "Cart Icon" },
+            { "value": "hamburger", "label": "Mobile Hamburger Menu" },
+            { "value": "custom_content", "label": "Custom Content" }
+          ],
+          "default": "logo"
+        },
+        {
+          "type": "header",
+          "content": "Indstillinger for indhold (Content Settings)"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Logo Text Override"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu (Navigation)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_on_mobile_bar",
+          "label": "Show as horizontal bar on mobile (Navigation)",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "desktop_search_style",
+          "label": "Desktop Search Style (Search)",
+          "options": [
+            { "value": "always_visible", "label": "Always visible input" },
+            { "value": "icon_toggle", "label": "Toggle with icon click" }
+          ],
+          "default": "always_visible"
+        },
+        {
+          "type": "select",
+          "id": "desktop_width",
+          "label": "Search Bar Width (Search)",
+          "options": [
+            { "value": "w-64", "label": "Small (256px)" },
+            { "value": "w-80", "label": "Medium (320px)" },
+            { "value": "max-w-md w-full", "label": "Large (448px)" },
+            { "value": "max-w-xl w-full", "label": "Extra Large (576px)" },
+            { "value": "flex-grow", "label": "Full width" }
+          ],
+          "default": "max-w-md w-full"
+        },
+        {
+          "type": "select",
+          "id": "mobile_search_style",
+          "label": "Mobile Search Style (Search)",
+          "options": [
+            { "value": "under_logo_bar", "label": "Full-width input below logo" },
+            { "value": "icon_toggle", "label": "Toggle with icon click" },
+            { "value": "hidden", "label": "Hidden" }
+          ],
+          "default": "under_logo_bar"
+        },
+        {
+          "type": "link_list",
+          "id": "mobile_menu",
+          "label": "Mobile Menu Override (Hamburger)"
+        },
+        {
+          "type": "liquid",
+          "id": "content",
+          "label": "Content (Custom Content)",
+          "default": "<span>Ring til os: +45 70 20 10 30</span>"
+        }
+      ]
+    },
+    {
+      "type": "fill",
+      "name": "Fill Row",
+      "settings": [
+        {
+          "type": "select",
+          "id": "content_type",
+          "label": "Indholdstype (Content Type)",
+          "options": [
+            { "value": "logo", "label": "Logo" },
+            { "value": "navigation", "label": "Navigation Menu" },
+            { "value": "search", "label": "Search Bar" },
+            { "value": "theme_toggle", "label": "Theme Toggle" },
+            { "value": "cart", "label": "Cart Icon" },
+            { "value": "hamburger", "label": "Mobile Hamburger Menu" },
+            { "value": "custom_content", "label": "Custom Content" }
+          ],
+          "default": "logo"
+        },
+        {
+          "type": "header",
+          "content": "Indstillinger for indhold (Content Settings)"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Logo Text Override"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu (Navigation)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_on_mobile_bar",
+          "label": "Show as horizontal bar on mobile (Navigation)",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "desktop_search_style",
+          "label": "Desktop Search Style (Search)",
+          "options": [
+            { "value": "always_visible", "label": "Always visible input" },
+            { "value": "icon_toggle", "label": "Toggle with icon click" }
+          ],
+          "default": "always_visible"
+        },
+        {
+          "type": "select",
+          "id": "desktop_width",
+          "label": "Search Bar Width (Search)",
+          "options": [
+            { "value": "w-64", "label": "Small (256px)" },
+            { "value": "w-80", "label": "Medium (320px)" },
+            { "value": "max-w-md w-full", "label": "Large (448px)" },
+            { "value": "max-w-xl w-full", "label": "Extra Large (576px)" },
+            { "value": "flex-grow", "label": "Full width" }
+          ],
+          "default": "max-w-md w-full"
+        },
+        {
+          "type": "select",
+          "id": "mobile_search_style",
+          "label": "Mobile Search Style (Search)",
+          "options": [
+            { "value": "under_logo_bar", "label": "Full-width input below logo" },
+            { "value": "icon_toggle", "label": "Toggle with icon click" },
+            { "value": "hidden", "label": "Hidden" }
+          ],
+          "default": "under_logo_bar"
+        },
+        {
+          "type": "link_list",
+          "id": "mobile_menu",
+          "label": "Mobile Menu Override (Hamburger)"
+        },
+        {
+          "type": "liquid",
+          "id": "content",
+          "label": "Content (Custom Content)",
+          "default": "<span>Ring til os: +45 70 20 10 30</span>"
         }
       ]
     }
@@ -1361,12 +1550,10 @@
     {
       "name": "Header Row",
       "blocks": [
-        { "type": "logo", "settings": { "placement": "left" } },
-        { "type": "navigation", "settings": { "placement": "center" } },
-        { "type": "search", "settings": { "placement": "center" } },
-        { "type": "theme_toggle", "settings": { "placement": "right" } },
-        { "type": "cart", "settings": { "placement": "right" } },
-        { "type": "hamburger", "settings": { "placement": "left" } }
+        { "type": "left", "settings": { "content_type": "logo" } },
+        { "type": "center", "settings": { "content_type": "navigation" } },
+        { "type": "right", "settings": { "content_type": "cart" } },
+        { "type": "left", "settings": { "content_type": "hamburger" } }
       ]
     }
   ]
