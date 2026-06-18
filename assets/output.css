@@ -2522,6 +2522,15 @@
       color: var(--color-amber-500);
     }
   }
+  .dark\:hover\:bg-slate-600 {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-slate-600);
+        }
+      }
+    }
+  }
   .dark\:hover\:bg-slate-800 {
     &:where(.dark, .dark *) {
       &:hover {
