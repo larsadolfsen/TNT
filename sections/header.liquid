@@ -328,10 +328,6 @@
               <div class="{{ logo_visibility }}" {{ logo_block.shopify_attributes }}>
                 {{ logo_html }}
               </div>
-            {%- else -%}
-              <div class="{{ logo_visibility }}">
-                {{ logo_html }}
-              </div>
             {%- endif -%}
           </div>
 
@@ -1106,7 +1102,6 @@
     {
       "type": "logo",
       "name": "Logo",
-      "limit": 1,
       "settings": [
         {
           "type": "select",
