@@ -2036,7 +2036,8 @@
         if (state.customizerMode === 'simple') return;
         if (state.width > 50) {
           const maxAllowedWidth = state.selectedStandardWidth - 5;
-          state.width = clampWidth(state.width - 5, maxAllowedWidth);
+          const targetVal = Math.floor((state.width - 1) / 5) * 5;
+          state.width = clampWidth(targetVal, maxAllowedWidth);
           displayWidth.value = state.width;
           updateUI();
         }
@@ -2048,7 +2049,8 @@
         if (state.customizerMode === 'simple') return;
         const maxAllowedWidth = state.selectedStandardWidth - 5;
         if (state.width < maxAllowedWidth) {
-          state.width = clampWidth(state.width + 5, maxAllowedWidth);
+          const targetVal = Math.ceil((state.width + 1) / 5) * 5;
+          state.width = clampWidth(targetVal, maxAllowedWidth);
           displayWidth.value = state.width;
           updateUI();
         }
