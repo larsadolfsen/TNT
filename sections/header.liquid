@@ -258,23 +258,19 @@
       
       <!-- Main Row (Left, Center, Right) -->
       {%- if left_zone_html != blank or center_zone_html != blank or right_zone_html != blank -%}
-        <div class="relative flex items-center justify-between gap-6 min-h-[44px] w-full">
+        <div class="grid grid-cols-3 items-center gap-6 min-h-[44px] w-full">
           <!-- Left Zone -->
-          <div class="flex items-center justify-start gap-6 z-10 flex-shrink-0">
+          <div class="flex items-center justify-start gap-6">
             {{ left_zone_html }}
           </div>
 
-          <!-- Center Zone (Absolutely Centered) -->
-          {%- if center_zone_html != blank -%}
-            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-6 pointer-events-none z-0">
-              <div class="pointer-events-auto flex items-center gap-6">
-                {{ center_zone_html }}
-              </div>
-            </div>
-          {%- endif -%}
+          <!-- Center Zone -->
+          <div class="flex items-center justify-center gap-6">
+            {{ center_zone_html }}
+          </div>
 
           <!-- Right Zone -->
-          <div class="flex items-center justify-end gap-6 z-10 flex-shrink-0">
+          <div class="flex items-center justify-end gap-6">
             {{ right_zone_html }}
           </div>
         </div>
