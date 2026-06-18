@@ -34,6 +34,18 @@
             "hide_on_desktop": false
           }
         },
+        "search_VaTtKF": {
+          "type": "search",
+          "settings": {
+            "placement": "center",
+            "desktop_search_style": "always_visible",
+            "desktop_width": "max-w-md w-full",
+            "mobile_search_style": "under_logo_bar",
+            "hide_on_mobile": false,
+            "hide_on_tablet": false,
+            "hide_on_desktop": false
+          }
+        },
         "theme_toggle_fb9WqR": {
           "type": "theme_toggle",
           "settings": {
@@ -56,9 +68,37 @@
       "block_order": [
         "hamburger_dtii4V",
         "logo_9F9jxg",
+        "search_VaTtKF",
         "theme_toggle_fb9WqR",
         "cart_FwjJjD"
       ],
+      "settings": {
+        "desktop_sticky": "none",
+        "mobile_sticky": "none",
+        "hide_on_mobile": false,
+        "hide_on_tablet": false,
+        "hide_on_desktop": false
+      }
+    },
+    "header_hygWBY": {
+      "type": "header",
+      "blocks": {
+        "navigation_76HemT": {
+          "type": "navigation",
+          "settings": {
+            "placement": "center",
+            "menu": "main-menu",
+            "show_on_mobile_bar": true,
+            "hide_on_mobile": false,
+            "hide_on_tablet": false,
+            "hide_on_desktop": false
+          }
+        }
+      },
+      "block_order": [
+        "navigation_76HemT"
+      ],
+      "name": "Header Row",
       "settings": {
         "desktop_sticky": "none",
         "mobile_sticky": "none",
@@ -79,6 +119,7 @@
   },
   "order": [
     "header",
+    "header_hygWBY",
     "breadcrumbs_nWQKAJ"
   ]
 }
