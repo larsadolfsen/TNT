@@ -86,7 +86,7 @@
         "navigation_76HemT": {
           "type": "navigation",
           "settings": {
-            "placement": "center",
+            "placement": "left",
             "menu": "main-menu",
             "show_on_mobile_bar": true,
             "hide_on_mobile": false,
