@@ -254,7 +254,7 @@
 
   <!-- DESKTOP HEADER -->
   <header class="hidden md:block bg-background border-b border-outline-variant py-4 px-6">
-    <div class="max-w-[var(--page-width,1440px)] mx-auto w-full flex flex-col gap-4">
+    <div class="{% if section.settings.content_width == 'full' %}w-full{% else %}max-w-[var(--page-width,1440px)] mx-auto w-full{% endif %} flex flex-col gap-4">
       
       <!-- Main Row (Left, Center, Right) -->
       {%- if left_zone_html != blank or center_zone_html != blank or right_zone_html != blank -%}
@@ -1052,6 +1052,16 @@
     {
       "type": "header",
       "content": "Global Layout & Sticky"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content Width",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "theme", "label": "Theme width" }
+      ],
+      "default": "theme"
     },
     {
       "type": "select",
