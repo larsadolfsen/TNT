@@ -40,7 +40,7 @@
             "placement": "right",
             "desktop_search_style": "always_visible",
             "desktop_width": "max-w-md w-full",
-            "mobile_search_style": "under_logo_bar",
+            "mobile_search_style": "icon_toggle",
             "hide_on_mobile": false,
             "hide_on_tablet": false,
             "hide_on_desktop": false
