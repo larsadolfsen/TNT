@@ -147,59 +147,12 @@
         "columns_desktop": 4,
         "filter_width_desktop": 3
       }
-    },
-    "section_c4ay6a": {
-      "type": "section",
-      "blocks": {
-        "text_BwLUp8": {
-          "type": "text",
-          "name": "t:general.text",
-          "settings": {
-            "text": "<p>Text</p>",
-            "alignment": "left",
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "text_BwLUp8"
-      ],
-      "name": "Section",
-      "settings": {
-        "background_color": "dark",
-        "full_width": false,
-        "hide_on_mobile": false,
-        "column_span_tablet": "8",
-        "column_start_tablet": "auto",
-        "row_span_tablet": "auto",
-        "row_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "9",
-        "column_start_desktop": "4",
-        "row_span_desktop": "auto",
-        "row_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "justify_self": "auto",
-        "align_self": "auto",
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 16,
-        "border_top": false,
-        "border_bottom": false
-      }
     }
   },
   "order": [
     "collection-header",
     "collections_rP4rdP",
     "section_eUpcwy",
-    "main-collection",
-    "section_c4ay6a"
+    "main-collection"
   ]
 }
