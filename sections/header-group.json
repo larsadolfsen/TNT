@@ -13,8 +13,79 @@
   "sections": {
     "header": {
       "type": "header",
+      "blocks": {
+        "logo_9F9jxg": {
+          "type": "logo",
+          "settings": {
+            "logo_text": ""
+          }
+        },
+        "theme_toggle_fb9WqR": {
+          "type": "theme_toggle",
+          "settings": {}
+        },
+        "cart_FwjJjD": {
+          "type": "cart",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "logo_9F9jxg",
+        "theme_toggle_fb9WqR",
+        "cart_FwjJjD"
+      ],
       "settings": {
         "logo_text": "Textil & Voksdug",
+        "desktop_layout_mode": "inline",
+        "desktop_sticky": "none",
+        "mobile_sticky": "none",
+        "show_search_index": true,
+        "show_menu_index": true,
+        "show_search_collection": true,
+        "show_menu_collection": true,
+        "show_search_product": false,
+        "show_menu_product": false,
+        "show_search_page": true,
+        "show_menu_page": true,
+        "show_search_search": true,
+        "show_menu_search": true,
+        "show_search_blog": true,
+        "show_menu_blog": true,
+        "show_search_cart": true,
+        "show_menu_cart": true,
+        "show_search_default": true,
+        "show_menu_default": true,
+        "menu": "main-menu"
+      }
+    },
+    "header_9ywUzE": {
+      "type": "header",
+      "blocks": {
+        "navigation_wUEqyY": {
+          "type": "navigation",
+          "settings": {
+            "menu": "main-menu",
+            "desktop_alignment": "center",
+            "show_on_mobile_bar": false
+          }
+        },
+        "search_yRzBzN": {
+          "type": "search",
+          "settings": {
+            "desktop_search_style": "always_visible",
+            "mobile_search_style": "under_logo_bar"
+          }
+        }
+      },
+      "block_order": [
+        "navigation_wUEqyY",
+        "search_yRzBzN"
+      ],
+      "settings": {
+        "logo_text": "Textil & Voksdug",
+        "desktop_layout_mode": "inline",
+        "desktop_sticky": "none",
+        "mobile_sticky": "none",
         "show_search_index": true,
         "show_menu_index": true,
         "show_search_collection": true,
@@ -46,6 +117,7 @@
   },
   "order": [
     "header",
+    "header_9ywUzE",
     "breadcrumbs_nWQKAJ"
   ]
 }

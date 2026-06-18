@@ -63,17 +63,6 @@
         "grid_gap": 16
       }
     },
-    "collection_subcollections_rqhcLB": {
-      "type": "collection-subcollections",
-      "name": "Underkollektioner Række",
-      "settings": {
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "title": "SØG UD FRA DIT BEHOV",
-        "metafield_key": "custom.child",
-        "show_all_label": "Vis alle"
-      }
-    },
     "section_eUpcwy": {
       "type": "section",
       "name": "Section",
@@ -156,7 +145,7 @@
         "columns_mobile": 2,
         "columns_tablet": 3,
         "columns_desktop": 4,
-        "filter_width_desktop": 2
+        "filter_width_desktop": 3
       }
     },
     "section_c4ay6a": {
@@ -209,7 +198,6 @@
   "order": [
     "collection-header",
     "collections_rP4rdP",
-    "collection_subcollections_rqhcLB",
     "section_eUpcwy",
     "main-collection",
     "section_c4ay6a"
