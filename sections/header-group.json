@@ -17,22 +17,40 @@
         "hamburger_dtii4V": {
           "type": "hamburger",
           "settings": {
-            "mobile_menu": ""
+            "placement": "center",
+            "mobile_menu": "",
+            "hide_on_mobile": false,
+            "hide_on_tablet": false,
+            "hide_on_desktop": false
           }
         },
         "logo_9F9jxg": {
           "type": "logo",
           "settings": {
-            "logo_text": ""
+            "placement": "center",
+            "logo_text": "Textil & Voksdug",
+            "hide_on_mobile": false,
+            "hide_on_tablet": false,
+            "hide_on_desktop": false
           }
         },
         "theme_toggle_fb9WqR": {
           "type": "theme_toggle",
-          "settings": {}
+          "settings": {
+            "placement": "center",
+            "hide_on_mobile": false,
+            "hide_on_tablet": false,
+            "hide_on_desktop": false
+          }
         },
         "cart_FwjJjD": {
           "type": "cart",
-          "settings": {}
+          "settings": {
+            "placement": "center",
+            "hide_on_mobile": false,
+            "hide_on_tablet": false,
+            "hide_on_desktop": false
+          }
         }
       },
       "block_order": [
@@ -42,71 +60,11 @@
         "cart_FwjJjD"
       ],
       "settings": {
-        "logo_text": "Textil & Voksdug",
         "desktop_sticky": "none",
         "mobile_sticky": "none",
-        "show_search_index": true,
-        "show_menu_index": true,
-        "show_search_collection": true,
-        "show_menu_collection": true,
-        "show_search_product": false,
-        "show_menu_product": false,
-        "show_search_page": true,
-        "show_menu_page": true,
-        "show_search_search": true,
-        "show_menu_search": true,
-        "show_search_blog": true,
-        "show_menu_blog": true,
-        "show_search_cart": true,
-        "show_menu_cart": true,
-        "show_search_default": true,
-        "show_menu_default": true,
-        "menu": "main-menu"
-      }
-    },
-    "header_9ywUzE": {
-      "type": "header",
-      "blocks": {
-        "navigation_wUEqyY": {
-          "type": "navigation",
-          "settings": {
-            "menu": "main-menu",
-            "show_on_mobile_bar": false
-          }
-        },
-        "search_yRzBzN": {
-          "type": "search",
-          "settings": {
-            "desktop_search_style": "always_visible",
-            "mobile_search_style": "icon_toggle"
-          }
-        }
-      },
-      "block_order": [
-        "navigation_wUEqyY",
-        "search_yRzBzN"
-      ],
-      "settings": {
-        "logo_text": "Textil & Voksdug",
-        "desktop_sticky": "none",
-        "mobile_sticky": "none",
-        "show_search_index": true,
-        "show_menu_index": true,
-        "show_search_collection": true,
-        "show_menu_collection": true,
-        "show_search_product": false,
-        "show_menu_product": false,
-        "show_search_page": true,
-        "show_menu_page": true,
-        "show_search_search": true,
-        "show_menu_search": true,
-        "show_search_blog": true,
-        "show_menu_blog": true,
-        "show_search_cart": true,
-        "show_menu_cart": true,
-        "show_search_default": true,
-        "show_menu_default": true,
-        "menu": "main-menu"
+        "hide_on_mobile": false,
+        "hide_on_tablet": false,
+        "hide_on_desktop": false
       }
     },
     "breadcrumbs_nWQKAJ": {
@@ -121,7 +79,6 @@
   },
   "order": [
     "header",
-    "header_9ywUzE",
     "breadcrumbs_nWQKAJ"
   ]
 }
