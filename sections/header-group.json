@@ -21,7 +21,7 @@
             "mobile_menu": "",
             "hide_on_mobile": false,
             "hide_on_tablet": false,
-            "hide_on_desktop": false
+            "hide_on_desktop": true
           }
         },
         "logo_9F9jxg": {
