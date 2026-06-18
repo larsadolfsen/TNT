@@ -2199,6 +2199,11 @@
       background-color: var(--color-slate-100);
     }
   }
+  .max-sm\:hidden {
+    @media (width < 600px) {
+      display: none;
+    }
+  }
   .sm\:mx-0 {
     @media (width >= 600px) {
       margin-inline: calc(var(--spacing) * 0);
@@ -2315,6 +2320,13 @@
   .sm\:text-\[11px\] {
     @media (width >= 600px) {
       font-size: 11px;
+    }
+  }
+  .sm\:max-md\:hidden {
+    @media (width >= 600px) {
+      @media (width < 840px) {
+        display: none;
+      }
     }
   }
   .md\:mx-0 {
