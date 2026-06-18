@@ -1,79 +1,71 @@
 {%- liquid
-  assign show_search = section.settings.show_search_default
-  assign show_menu = section.settings.show_menu_default
-
-  case template.name
-    when 'index'
-      assign show_search = section.settings.show_search_index
-      assign show_menu = section.settings.show_menu_index
-    when 'collection'
-      assign show_search = section.settings.show_search_collection
-      assign show_menu = section.settings.show_menu_collection
-    when 'product'
-      assign show_search = section.settings.show_search_product
-      assign show_menu = section.settings.show_menu_product
-    when 'page'
-      assign show_search = section.settings.show_search_page
-      assign show_menu = section.settings.show_menu_page
-    when 'search'
-      assign show_search = section.settings.show_search_search
-      assign show_menu = section.settings.show_menu_search
-    when 'blog' or 'article'
-      assign show_search = section.settings.show_search_blog
-      assign show_menu = section.settings.show_menu_blog
-    when 'cart'
-      assign show_search = section.settings.show_search_cart
-      assign show_menu = section.settings.show_menu_cart
-  endcase
 
   # Block references lookup (dynamic discovery based on selected content type)
   assign logo_block = nil
+  assign logo_visibility = ""
   assign navigation_block = nil
+  assign navigation_visibility = ""
   assign search_block = nil
+  assign search_visibility = ""
   assign theme_toggle_block = nil
+  assign theme_toggle_visibility = ""
   assign cart_block = nil
+  assign cart_visibility = ""
   assign hamburger_block = nil
+  assign hamburger_visibility = ""
 
   for block in section.blocks
+    assign block_vis = ""
+    if block.settings.hide_on_mobile
+      assign block_vis = block_vis | append: " max-sm:hidden"
+    endif
+    if block.settings.hide_on_tablet
+      assign block_vis = block_vis | append: " sm:max-md:hidden"
+    endif
+    if block.settings.hide_on_desktop
+      assign block_vis = block_vis | append: " md:hidden"
+    endif
+
     case block.type
       when 'logo'
         if logo_block == nil
           assign logo_block = block
+          assign logo_visibility = block_vis
         endif
       when 'navigation'
         if navigation_block == nil
           assign navigation_block = block
+          assign navigation_visibility = block_vis
         endif
       when 'search'
         if search_block == nil
           assign search_block = block
+          assign search_visibility = block_vis
         endif
       when 'theme_toggle'
         if theme_toggle_block == nil
           assign theme_toggle_block = block
+          assign theme_toggle_visibility = block_vis
         endif
       when 'cart'
         if cart_block == nil
           assign cart_block = block
+          assign cart_visibility = block_vis
         endif
       when 'hamburger'
         if hamburger_block == nil
           assign hamburger_block = block
+          assign hamburger_visibility = block_vis
         endif
     endcase
   endfor
 -%}
-<!-- Reusable Captured Header Subcomponents -->
 {%- capture logo_html -%}
   <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity">
     {%- if logo_block and logo_block.settings.logo_text != blank -%}
       {{ logo_block.settings.logo_text }}
     {%- else -%}
-      {%- if section.settings.logo_text != blank -%}
-        {{ section.settings.logo_text }}
-      {%- else -%}
-        {{ shop.name }}
-      {%- endif -%}
+      {{ shop.name }}
     {%- endif -%}
   </a>
 {%- endcapture -%}
@@ -140,60 +132,63 @@
 {%- assign fill_rows_html = '' -%}
 
 {%- for block in section.blocks -%}
+  {%- assign block_visibility_classes = "" -%}
+  {%- if block.settings.hide_on_mobile -%}
+    {%- assign block_visibility_classes = block_visibility_classes | append: " max-sm:hidden" -%}
+  {%- endif -%}
+  {%- if block.settings.hide_on_tablet -%}
+    {%- assign block_visibility_classes = block_visibility_classes | append: " sm:max-md:hidden" -%}
+  {%- endif -%}
+  {%- if block.settings.hide_on_desktop -%}
+    {%- assign block_visibility_classes = block_visibility_classes | append: " md:hidden" -%}
+  {%- endif -%}
+
   {%- capture block_html -%}
     {%- case block.type -%}
       {%- when 'logo' -%}
-        <div class="flex-shrink-0" {{ block.shopify_attributes }}>
+        <div class="flex-shrink-0{{ block_visibility_classes }}" {{ block.shopify_attributes }}>
           <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity">
             {%- if block.settings.logo_text != blank -%}
               {{ block.settings.logo_text }}
             {%- else -%}
-              {%- if section.settings.logo_text != blank -%}
-                {{ section.settings.logo_text }}
-              {%- else -%}
-                {{ shop.name }}
-              {%- endif -%}
+              {{ shop.name }}
             {%- endif -%}
           </a>
         </div>
       {%- when 'navigation' -%}
-        {%- if show_menu -%}
-          {%- assign menu_handle = block.settings.menu -%}
-          {%- if menu_handle != blank -%}
-            <nav class="flex items-center overflow-x-auto hide-scrollbar w-full" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
-              <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0 w-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}">
-                {%- for link in linklists[menu_handle].links -%}
-                  <li>
-                    <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
-                      {{ link.title }}
-                    </a>
-                  </li>
-                {%- endfor -%}
-              </ul>
-            </nav>
-          {%- endif -%}
+        {%- assign menu_handle = block.settings.menu -%}
+        {%- if menu_handle != blank -%}
+          <nav class="flex items-center overflow-x-auto hide-scrollbar w-full{{ block_visibility_classes }}" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
+            <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0 w-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}">
+              {%- for link in linklists[menu_handle].links -%}
+                <li>
+                  <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
+                    {{ link.title }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
         {%- endif -%}
       {%- when 'search' -%}
-        {%- if show_search -%}
-          {%- if block.settings.desktop_search_style == 'always_visible' -%}
-            <div class="{% if block.settings.placement == 'fill' %}max-w-xl mx-auto w-full{% else %}{{ block.settings.desktop_width | default: 'max-w-md w-full' }}{% endif %} flex-shrink-0" {{ block.shopify_attributes }}>
-              {{ search_form_html }}
-            </div>
-          {%- else -%}
-            <div class="flex-shrink-0" {{ block.shopify_attributes }}>
-              <button 
-                type="button" 
-                onclick="toggleSearchInput('desktop', '{{ section.id }}')" 
-                class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
-                aria-label="Søg"
-              >
-                <span class="material-symbols-outlined text-2xl text-primary block">search</span>
-              </button>
-            </div>
-          {%- endif -%}
+        {%- if block.settings.desktop_search_style == 'always_visible' -%}
+          <div class="{% if block.settings.placement == 'fill' %}max-w-xl mx-auto w-full{% else %}{{ block.settings.desktop_width | default: 'max-w-md w-full' }}{% endif %} flex-shrink-0{{ block_visibility_classes }}" {{ block.shopify_attributes }}>
+            {{ search_form_html }}
+          </div>
+        {%- else -%}
+          <div class="flex-shrink-0{{ block_visibility_classes }}" {{ block.shopify_attributes }}>
+            <button 
+              type="button" 
+              onclick="toggleSearchInput('desktop', '{{ section.id }}')" 
+              class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
+              aria-label="Søg"
+            >
+              <span class="material-symbols-outlined text-2xl text-primary block">search</span>
+            </button>
+          </div>
         {%- endif -%}
       {%- when 'theme_toggle' -%}
-        <div class="flex-shrink-0" {{ block.shopify_attributes }}>
+        <div class="flex-shrink-0{{ block_visibility_classes }}" {{ block.shopify_attributes }}>
           <button 
             type="button" 
             onclick="toggleTheme()" 
@@ -204,7 +199,7 @@
           </button>
         </div>
       {%- when 'cart' -%}
-        <div class="flex-shrink-0" {{ block.shopify_attributes }}>
+        <div class="flex-shrink-0{{ block_visibility_classes }}" {{ block.shopify_attributes }}>
           <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); toggleCartDrawer(true);" class="relative cursor-pointer text-primary no-underline flex items-center justify-center hover:opacity-80 transition-opacity">
             <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
             <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
@@ -213,12 +208,12 @@
           </a>
         </div>
       {%- when 'hamburger' -%}
-        <div class="flex-shrink-0" {{ block.shopify_attributes }}>
+        <div class="flex-shrink-0{{ block_visibility_classes }}" {{ block.shopify_attributes }}>
           {{ hamburger_html }}
         </div>
       {%- when 'custom_content' -%}
         {%- if block.settings.content != blank -%}
-          <div class="flex-shrink-0 text-sm text-primary w-full flex {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center text-center{% elsif block.settings.placement == 'right' %}justify-end text-right{% else %}justify-start text-left{% endif %}" {{ block.shopify_attributes }}>
+          <div class="flex-shrink-0 text-sm text-primary w-full flex {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center text-center{% elsif block.settings.placement == 'right' %}justify-end text-right{% else %}justify-start text-left{% endif %}{{ block_visibility_classes }}" {{ block.shopify_attributes }}>
             <div class="prose prose-sm max-w-none text-primary">
               {{ block.settings.content }}
             </div>
@@ -238,9 +233,22 @@
   {%- endif -%}
 {%- endfor -%}
 
+{%- liquid
+  assign section_visibility_classes = ""
+  if section.settings.hide_on_mobile
+    assign section_visibility_classes = section_visibility_classes | append: " max-sm:hidden"
+  endif
+  if section.settings.hide_on_tablet
+    assign section_visibility_classes = section_visibility_classes | append: " sm:max-md:hidden"
+  endif
+  if section.settings.hide_on_desktop
+    assign section_visibility_classes = section_visibility_classes | append: " md:hidden"
+  endif
+-%}
+
 <!-- Outer Header Sticky Wrapper -->
 <div id="shopify-section-header-wrapper-{{ section.id }}" 
-     class="w-full z-[100] bg-background shopify-section-header-wrapper"
+     class="w-full z-[100] bg-background shopify-section-header-wrapper{{ section_visibility_classes }}"
      data-desktop-sticky="{{ section.settings.desktop_sticky }}"
      data-mobile-sticky="{{ section.settings.mobile_sticky }}">
 
@@ -278,7 +286,7 @@
     </div>
     
     <!-- Toggle Search Bar for desktop if search is block toggle -->
-    {%- if show_search and search_block and search_block.settings.desktop_search_style == 'icon_toggle' -%}
+    {%- if search_block and search_block.settings.desktop_search_style == 'icon_toggle' -%}
       <div id="desktop-search-dropdown-{{ section.id }}" class="hidden mt-4 pt-3 border-t border-outline-variant/20 transition-all duration-300">
         {{ search_form_html }}
       </div>
@@ -289,9 +297,9 @@
   {%- assign show_mobile_header = false -%}
   {%- if hamburger_block or logo_block or theme_toggle_block or cart_block -%}
     {%- assign show_mobile_header = true -%}
-  {%- elsif show_search and search_block and search_block.settings.mobile_search_style != 'hidden' -%}
+  {%- elsif search_block and search_block.settings.mobile_search_style != 'hidden' -%}
     {%- assign show_mobile_header = true -%}
-  {%- elsif show_menu and navigation_block and navigation_block.settings.show_on_mobile_bar -%}
+  {%- elsif navigation_block and navigation_block.settings.show_on_mobile_bar -%}
     {%- assign show_mobile_header = true -%}
   {%- elsif section.blocks.size > 0 -%}
     {%- for block in section.blocks -%}
@@ -308,7 +316,7 @@
           <!-- Left Slot -->
           <div class="flex justify-start">
             {%- if hamburger_block -%}
-              <div {{ hamburger_block.shopify_attributes }}>
+              <div class="{{ hamburger_visibility }}" {{ hamburger_block.shopify_attributes }}>
                 {{ hamburger_html }}
               </div>
             {%- endif -%}
@@ -317,18 +325,20 @@
           <!-- Center Slot -->
           <div class="flex justify-center">
             {%- if logo_block -%}
-              <div {{ logo_block.shopify_attributes }}>
+              <div class="{{ logo_visibility }}" {{ logo_block.shopify_attributes }}>
                 {{ logo_html }}
               </div>
             {%- else -%}
-              {{ logo_html }}
+              <div class="{{ logo_visibility }}">
+                {{ logo_html }}
+              </div>
             {%- endif -%}
           </div>
 
           <!-- Right Slot -->
           <div class="flex justify-end items-center gap-3">
-            {%- if show_search and search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
-              <div {{ search_block.shopify_attributes }}>
+            {%- if search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
+              <div class="{{ search_visibility }}" {{ search_block.shopify_attributes }}>
                 <button 
                   type="button" 
                   onclick="toggleSearchInput('mobile', '{{ section.id }}')" 
@@ -340,12 +350,12 @@
               </div>
             {%- endif -%}
             {%- if theme_toggle_block -%}
-              <div {{ theme_toggle_block.shopify_attributes }}>
+              <div class="{{ theme_toggle_visibility }}" {{ theme_toggle_block.shopify_attributes }}>
                 {{ theme_toggle_button_html }}
               </div>
             {%- endif -%}
             {%- if cart_block -%}
-              <div {{ cart_block.shopify_attributes }}>
+              <div class="{{ cart_visibility }}" {{ cart_block.shopify_attributes }}>
                 {{ cart_icon_html }}
               </div>
             {%- endif -%}
@@ -353,21 +363,21 @@
         </div>
 
         <!-- Mobile Search Form (if under logo bar) -->
-        {%- if show_search and search_block and search_block.settings.mobile_search_style == 'under_logo_bar' -%}
-          <div class="w-full" {{ search_block.shopify_attributes }}>
+        {%- if search_block and search_block.settings.mobile_search_style == 'under_logo_bar' -%}
+          <div class="w-full{{ search_visibility }}" {{ search_block.shopify_attributes }}>
             {{ search_form_html }}
           </div>
-        {%- elsif show_search and search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
-          <div id="mobile-search-dropdown-{{ section.id }}" class="hidden w-full transition-all duration-300">
+        {%- elsif search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
+          <div id="mobile-search-dropdown-{{ section.id }}" class="hidden w-full transition-all duration-300{{ search_visibility }}">
             {{ search_form_html }}
           </div>
         {%- endif -%}
 
         <!-- Mobile Navigation Bar -->
-        {%- if show_menu and navigation_block and navigation_block.settings.show_on_mobile_bar -%}
+        {%- if navigation_block and navigation_block.settings.show_on_mobile_bar -%}
           {%- assign menu_handle = navigation_block.settings.menu -%}
           {%- if menu_handle != blank -%}
-            <nav class="w-full overflow-x-auto hide-scrollbar py-1 -mx-4 px-4" aria-label="Kategori menu" {{ navigation_block.shopify_attributes }}>
+            <nav class="w-full overflow-x-auto hide-scrollbar py-1 -mx-4 px-4{{ navigation_visibility }}" aria-label="Kategori menu" {{ navigation_block.shopify_attributes }}>
               <ul class="flex items-center gap-5 whitespace-nowrap list-none p-0 m-0">
                 {%- for link in linklists[menu_handle].links -%}
                   <li>
@@ -388,7 +398,17 @@
         <!-- Mobile Custom Content -->
         {%- for block in section.blocks -%}
           {%- if block.type == 'custom_content' and block.settings.content != blank -%}
-            <div class="w-full text-center text-sm py-1 border-t border-outline-variant/10 pt-2" {{ block.shopify_attributes }}>
+            {%- assign cc_vis = "" -%}
+            {%- if block.settings.hide_on_mobile -%}
+              {%- assign cc_vis = cc_vis | append: " max-sm:hidden" -%}
+            {%- endif -%}
+            {%- if block.settings.hide_on_tablet -%}
+              {%- assign cc_vis = cc_vis | append: " sm:max-md:hidden" -%}
+            {%- endif -%}
+            {%- if block.settings.hide_on_desktop -%}
+              {%- assign cc_vis = cc_vis | append: " md:hidden" -%}
+            {%- endif -%}
+            <div class="w-full text-center text-sm py-1 border-t border-outline-variant/10 pt-2{{ cc_vis }}" {{ block.shopify_attributes }}>
               <div class="prose prose-sm max-w-none text-primary">
                 {{ block.settings.content }}
               </div>
@@ -1034,12 +1054,6 @@
   },
   "settings": [
     {
-      "type": "text",
-      "id": "logo_text",
-      "label": "Logo Text Override",
-      "default": "Textil & Voksdug"
-    },
-    {
       "type": "header",
       "content": "Global Layout & Sticky"
     },
@@ -1067,137 +1081,25 @@
     },
     {
       "type": "header",
-      "content": "Forside (Home page)"
+      "content": "Visibility Settings"
     },
     {
       "type": "checkbox",
-      "id": "show_search_index",
-      "label": "Vis søgefelt",
-      "default": true
+      "id": "hide_on_mobile",
+      "label": "Hide on Mobile",
+      "default": false
     },
     {
       "type": "checkbox",
-      "id": "show_menu_index",
-      "label": "Vis menu under søgefelt",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Kollektionsside (Collection page)"
+      "id": "hide_on_tablet",
+      "label": "Hide on Tablet",
+      "default": false
     },
     {
       "type": "checkbox",
-      "id": "show_search_collection",
-      "label": "Vis søgefelt",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_menu_collection",
-      "label": "Vis menu under søgefelt",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Produktside (Product page)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_search_product",
-      "label": "Vis søgefelt",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_menu_product",
-      "label": "Vis menu under søgefelt",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Standard sider (Page)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_search_page",
-      "label": "Vis søgefelt",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_menu_page",
-      "label": "Vis menu under søgefelt",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Søgeside (Search page)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_search_search",
-      "label": "Vis søgefelt",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_menu_search",
-      "label": "Vis menu under søgefelt",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Blog & Artikelside (Blog & Article pages)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_search_blog",
-      "label": "Vis søgefelt",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_menu_blog",
-      "label": "Vis menu under søgefelt",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Kurveside (Cart page)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_search_cart",
-      "label": "Vis søgefelt",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_menu_cart",
-      "label": "Vis menu under søgefelt",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Øvrige sider (Other pages)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_search_default",
-      "label": "Vis søgefelt",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_menu_default",
-      "label": "Vis menu under søgefelt",
-      "default": true
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu under søgefelt",
-      "default": "main-menu"
+      "id": "hide_on_desktop",
+      "label": "Hide on Desktop",
+      "default": false
     }
   ],
   "blocks": [
@@ -1222,6 +1124,24 @@
           "type": "text",
           "id": "logo_text",
           "label": "Logo Text Override"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_tablet",
+          "label": "Hide on Tablet",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Desktop",
+          "default": false
         }
       ]
     },
@@ -1250,6 +1170,24 @@
           "type": "checkbox",
           "id": "show_on_mobile_bar",
           "label": "Show as horizontal bar on mobile (Navigation)",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_tablet",
+          "label": "Hide on Tablet",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Desktop",
           "default": false
         }
       ]
@@ -1303,6 +1241,24 @@
             { "value": "hidden", "label": "Hidden" }
           ],
           "default": "under_logo_bar"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_tablet",
+          "label": "Hide on Tablet",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Desktop",
+          "default": false
         }
       ]
     },
@@ -1321,6 +1277,24 @@
             { "value": "fill", "label": "Fill Row" }
           ],
           "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_tablet",
+          "label": "Hide on Tablet",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Desktop",
+          "default": false
         }
       ]
     },
@@ -1339,6 +1313,24 @@
             { "value": "fill", "label": "Fill Row" }
           ],
           "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_tablet",
+          "label": "Hide on Tablet",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Desktop",
+          "default": false
         }
       ]
     },
@@ -1362,6 +1354,24 @@
           "type": "link_list",
           "id": "mobile_menu",
           "label": "Mobile Menu Override (Hamburger)"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_tablet",
+          "label": "Hide on Tablet",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Desktop",
+          "default": false
         }
       ]
     },
@@ -1386,6 +1396,24 @@
           "id": "content",
           "label": "Content (Custom Content)",
           "default": "<span>Ring til os: +45 70 20 10 30</span>"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on Mobile",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_tablet",
+          "label": "Hide on Tablet",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide on Desktop",
+          "default": false
         }
       ]
     }
