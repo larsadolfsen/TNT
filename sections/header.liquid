@@ -97,258 +97,214 @@
   </form>
 {%- endcapture -%}
 
-<!-- Outer Header Sticky Wrapper -->
-<div id="shopify-section-header-wrapper" 
-     class="w-full z-[100] bg-background"
-     data-desktop-sticky="{{ section.settings.desktop_sticky }}"
-     data-mobile-sticky="{{ section.settings.mobile_sticky }}">
+{%- style -%}
+  .shopify-section-header-row + .shopify-section-header-row {
+    margin-top: -1px;
+    position: relative;
+    z-index: 10;
+  }
+{%- endstyle -%}
 
-  <!-- DESKTOP HEADER -->
-  <header class="hidden md:block bg-background border-b border-outline-variant py-4 px-6">
-    <div class="max-w-[var(--page-width,1440px)] mx-auto w-full">
-      {%- if section.settings.desktop_layout_mode == 'inline' -%}
-        <!-- Inline Row Layout: Renders blocks sequentially. The Navigation Menu acts as an auto-expanding spacer -->
-        <div class="flex items-center justify-between gap-6 w-full">
-          {%- for block in section.blocks -%}
-            {%- case block.type -%}
-              {%- when 'logo' -%}
-                <div class="flex-shrink-0" {{ block.shopify_attributes }}>
-                  {{ logo_html }}
-                </div>
-              {%- when 'navigation' -%}
-                {%- if show_menu -%}
-                  {%- assign menu_handle = block.settings.menu -%}
-                  {%- assign nav_align = block.settings.desktop_alignment -%}
-                  {%- assign justify_class = 'justify-center' -%}
-                  {%- if nav_align == 'left' -%}
-                    {%- assign justify_class = 'justify-start' -%}
-                  {%- elsif nav_align == 'right' -%}
-                    {%- assign justify_class = 'justify-end' -%}
-                  {%- endif -%}
-                  {%- if menu_handle != blank -%}
-                    <nav class="flex-grow flex {{ justify_class }} overflow-x-auto hide-scrollbar" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
-                      <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0">
-                        {%- for link in linklists[menu_handle].links -%}
-                          <li>
-                            <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
-                              {{ link.title }}
-                            </a>
-                          </li>
-                        {%- endfor -%}
-                      </ul>
-                    </nav>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- when 'search' -%}
-                {%- if show_search -%}
-                  {%- if block.settings.desktop_search_style == 'always_visible' -%}
-                    <div class="w-64 flex-shrink-0" {{ block.shopify_attributes }}>
-                      <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
-                        <div class="relative w-full">
-                          <input 
-                            type="text" 
-                            name="q" 
-                            class="w-full h-9 pl-4 pr-10 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
-                            placeholder="Søg..."
-                          />
-                          <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:opacity-85 cursor-pointer bg-transparent border-0 p-0 flex items-center justify-center" aria-label="Søg">
-                            <span class="material-symbols-outlined text-xl">search</span>
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  {%- else -%}
-                    <div class="flex-shrink-0" {{ block.shopify_attributes }}>
-                      <button 
-                        type="button" 
-                        onclick="toggleSearchInput('desktop')" 
-                        class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
-                        aria-label="Søg"
-                      >
-                        <span class="material-symbols-outlined text-2xl text-primary block">search</span>
-                      </button>
-                    </div>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- when 'theme_toggle' -%}
-                <div class="flex-shrink-0" {{ block.shopify_attributes }}>
-                  {{ theme_toggle_button_html }}
-                </div>
-              {%- when 'cart' -%}
-                <div class="flex-shrink-0" {{ block.shopify_attributes }}>
-                  {{ cart_icon_html }}
-                </div>
-            {%- endcase -%}
-          {%- endfor -%}
+{%- assign left_zone_html = '' -%}
+{%- assign center_zone_html = '' -%}
+{%- assign right_zone_html = '' -%}
+
+{%- for block in section.blocks -%}
+  {%- capture block_html -%}
+    {%- case block.type -%}
+      {%- when 'logo' -%}
+        <div class="flex-shrink-0" {{ block.shopify_attributes }}>
+          {{ logo_html }}
         </div>
-        
-        <!-- Toggle Search Bar for Inline layout if search is block toggle -->
-        {%- if show_search and search_block and search_block.settings.desktop_search_style == 'icon_toggle' -%}
-          <div id="desktop-search-dropdown" class="hidden mt-4 pt-3 border-t border-outline-variant/20 transition-all duration-300">
-            {{ search_form_html }}
-          </div>
-        {%- endif -%}
-
-      {%- else -%}
-        <!-- Split Rows Layout: Row 1 has Logo, Search & Utilities; Row 2 has Navigation Menu centered -->
-        <div class="flex flex-col gap-4">
-          <div class="flex items-center justify-between gap-6 w-full">
-            <!-- Left: Logo -->
-            <div class="flex-shrink-0">
-              {{ logo_html }}
-            </div>
-            <!-- Center: Search Input if present and set to always_visible -->
-            {%- if show_search and search_block and search_block.settings.desktop_search_style == 'always_visible' -%}
-              <div class="flex-grow max-w-xl mx-auto" {{ search_block.shopify_attributes }}>
-                {{ search_form_html }}
-              </div>
-            {%- else -%}
-              <div class="flex-grow"></div>
-            {%- endif -%}
-            <!-- Right: Utilities (Theme, Cart, Search Toggle if toggle mode) -->
-            <div class="flex items-center gap-5 flex-shrink-0">
-              {%- if show_search and search_block and search_block.settings.desktop_search_style == 'icon_toggle' -%}
-                <div {{ search_block.shopify_attributes }}>
-                  <button type="button" onclick="toggleSearchInput('desktop')" class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity" aria-label="Søg">
-                    <span class="material-symbols-outlined text-2xl text-primary block">search</span>
-                  </button>
-                </div>
-              {%- endif -%}
-              {%- if theme_toggle_block -%}
-                <div {{ theme_toggle_block.shopify_attributes }}>
-                  {{ theme_toggle_button_html }}
-                </div>
-              {%- endif -%}
-              {%- if cart_block -%}
-                <div {{ cart_block.shopify_attributes }}>
-                  {{ cart_icon_html }}
-                </div>
-              {%- endif -%}
-            </div>
-          </div>
-          <!-- Row 2: Navigation Menu -->
-          {%- if show_menu and navigation_block -%}
-            {%- assign menu_handle = navigation_block.settings.menu -%}
-            {%- assign nav_align = navigation_block.settings.desktop_alignment -%}
-            {%- assign justify_class = 'justify-center' -%}
-            {%- if nav_align == 'left' -%}
-              {%- assign justify_class = 'justify-start' -%}
-            {%- elsif nav_align == 'right' -%}
-              {%- assign justify_class = 'justify-end' -%}
-            {%- endif -%}
-            {%- if menu_handle != blank -%}
-              <div class="w-full border-t border-outline-variant/30 pt-3 flex {{ justify_class }}" {{ navigation_block.shopify_attributes }}>
-                <nav aria-label="Hovedmenu" class="w-full flex {{ justify_class }}">
-                  <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0">
-                    {%- for link in linklists[menu_handle].links -%}
-                      <li>
-                        <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
-                          {{ link.title }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </nav>
-              </div>
-            {%- endif -%}
+      {%- when 'navigation' -%}
+        {%- if show_menu -%}
+          {%- assign menu_handle = block.settings.menu -%}
+          {%- if menu_handle != blank -%}
+            <nav class="flex items-center overflow-x-auto hide-scrollbar" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
+              <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0">
+                {%- for link in linklists[menu_handle].links -%}
+                  <li>
+                    <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
+                      {{ link.title }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </nav>
           {%- endif -%}
-        </div>
-
-        <!-- Toggle Search Bar for Split layout -->
-        {%- if show_search and search_block and search_block.settings.desktop_search_style == 'icon_toggle' -%}
-          <div id="desktop-search-dropdown" class="hidden mt-4 pt-3 border-t border-outline-variant/20 transition-all duration-300">
-            {{ search_form_html }}
-          </div>
         {%- endif -%}
-      {%- endif -%}
-    </div>
-  </header>
-
-  <!-- MOBILE HEADER -->
-  <header class="block md:hidden bg-background border-b border-outline-variant py-3 px-4">
-    <div class="w-full flex flex-col gap-3">
-      <div class="grid grid-cols-3 items-center w-full">
-        <!-- Left Slot -->
-        <div class="flex justify-start">
-          {%- if hamburger_block -%}
-            <div {{ hamburger_block.shopify_attributes }}>
-              {{ hamburger_html }}
-            </div>
-          {%- endif -%}
-        </div>
-
-        <!-- Center Slot -->
-        <div class="flex justify-center">
-          {%- if logo_block -%}
-            <div {{ logo_block.shopify_attributes }}>
-              {{ logo_html }}
+      {%- when 'search' -%}
+        {%- if show_search -%}
+          {%- if block.settings.desktop_search_style == 'always_visible' -%}
+            <div class="{{ block.settings.desktop_width | default: 'max-w-md w-full' }} flex-shrink-0" {{ block.shopify_attributes }}>
+              {{ search_form_html }}
             </div>
           {%- else -%}
-            {{ logo_html }}
-          {%- endif -%}
-        </div>
-
-        <!-- Right Slot -->
-        <div class="flex justify-end items-center gap-3">
-          {%- if show_search and search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
-            <div {{ search_block.shopify_attributes }}>
+            <div class="flex-shrink-0" {{ block.shopify_attributes }}>
               <button 
                 type="button" 
-                onclick="toggleSearchInput('mobile')" 
-                class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-85 transition-opacity" 
+                onclick="toggleSearchInput('desktop', '{{ section.id }}')" 
+                class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
                 aria-label="Søg"
               >
                 <span class="material-symbols-outlined text-2xl text-primary block">search</span>
               </button>
             </div>
           {%- endif -%}
-          {%- if theme_toggle_block -%}
-            <div {{ theme_toggle_block.shopify_attributes }}>
-              {{ theme_toggle_button_html }}
-            </div>
-          {%- endif -%}
-          {%- if cart_block -%}
-            <div {{ cart_block.shopify_attributes }}>
-              {{ cart_icon_html }}
-            </div>
-          {%- endif -%}
+        {%- endif -%}
+      {%- when 'theme_toggle' -%}
+        <div class="flex-shrink-0" {{ block.shopify_attributes }}>
+          {{ theme_toggle_button_html }}
         </div>
+      {%- when 'cart' -%}
+        <div class="flex-shrink-0" {{ block.shopify_attributes }}>
+          {{ cart_icon_html }}
+        </div>
+    {%- endcase -%}
+  {%- endcapture -%}
+  
+  {%- if block.settings.placement == 'left' -%}
+    {%- capture left_zone_html -%}{{ left_zone_html }}{{ block_html }}{%- endcapture -%}
+  {%- elsif block.settings.placement == 'right' -%}
+    {%- capture right_zone_html -%}{{ right_zone_html }}{{ block_html }}{%- endcapture -%}
+  {%- else -%}
+    {%- capture center_zone_html -%}{{ center_zone_html }}{{ block_html }}{%- endcapture -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<!-- Outer Header Sticky Wrapper -->
+<div id="shopify-section-header-wrapper-{{ section.id }}" 
+     class="w-full z-[100] bg-background shopify-section-header-wrapper"
+     data-desktop-sticky="{{ section.settings.desktop_sticky }}"
+     data-mobile-sticky="{{ section.settings.mobile_sticky }}">
+
+  <!-- DESKTOP HEADER -->
+  <header class="hidden md:block bg-background border-b border-outline-variant py-4 px-6">
+    <div class="max-w-[var(--page-width,1440px)] mx-auto w-full relative flex items-center justify-between gap-6 min-h-[44px]">
+      <!-- Left Zone -->
+      <div class="flex items-center justify-start gap-6 z-10 flex-shrink-0">
+        {{ left_zone_html }}
       </div>
 
-      <!-- Mobile Search Form (if under logo bar) -->
-      {%- if show_search and search_block and search_block.settings.mobile_search_style == 'under_logo_bar' -%}
-        <div class="w-full" {{ search_block.shopify_attributes }}>
-          {{ search_form_html }}
-        </div>
-      {%- elsif show_search and search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
-        <div id="mobile-search-dropdown" class="hidden w-full transition-all duration-300">
-          {{ search_form_html }}
+      <!-- Center Zone (Absolutely Centered) -->
+      {%- if center_zone_html != blank -%}
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-6 pointer-events-none z-0">
+          <div class="pointer-events-auto flex items-center gap-6">
+            {{ center_zone_html }}
+          </div>
         </div>
       {%- endif -%}
 
-      <!-- Mobile Navigation Bar (if enabled in navigation block settings) -->
-      {%- if show_menu and navigation_block and navigation_block.settings.show_on_mobile_bar -%}
-        {%- assign menu_handle = navigation_block.settings.menu -%}
-        {%- if menu_handle != blank -%}
-          <nav class="w-full overflow-x-auto hide-scrollbar py-1 -mx-4 px-4" aria-label="Kategori menu" {{ navigation_block.shopify_attributes }}>
-            <ul class="flex items-center gap-5 whitespace-nowrap list-none p-0 m-0">
-              {%- for link in linklists[menu_handle].links -%}
-                <li>
-                  <a 
-                    href="{{ link.url }}" 
-                    class="text-sm font-medium text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}"
-                    {% if link.active %}aria-current="page"{% endif %}
-                  >
-                    {{ link.title }}
-                  </a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </nav>
-        {%- endif -%}
-      {%- endif -%}
+      <!-- Right Zone -->
+      <div class="flex items-center justify-end gap-6 z-10 flex-shrink-0">
+        {{ right_zone_html }}
+      </div>
     </div>
+    
+    <!-- Toggle Search Bar for desktop if search is block toggle -->
+    {%- if show_search and search_block and search_block.settings.desktop_search_style == 'icon_toggle' -%}
+      <div id="desktop-search-dropdown-{{ section.id }}" class="hidden mt-4 pt-3 border-t border-outline-variant/20 transition-all duration-300">
+        {{ search_form_html }}
+      </div>
+    {%- endif -%}
   </header>
+
+  <!-- MOBILE HEADER -->
+  {%- assign show_mobile_header = false -%}
+  {%- if hamburger_block or logo_block or theme_toggle_block or cart_block -%}
+    {%- assign show_mobile_header = true -%}
+  {%- elsif show_search and search_block and search_block.settings.mobile_search_style != 'hidden' -%}
+    {%- assign show_mobile_header = true -%}
+  {%- elsif show_menu and navigation_block and navigation_block.settings.show_on_mobile_bar -%}
+    {%- assign show_mobile_header = true -%}
+  {%- endif -%}
+
+  {%- if show_mobile_header -%}
+    <header class="block md:hidden bg-background border-b border-outline-variant py-3 px-4">
+      <div class="w-full flex flex-col gap-3">
+        <div class="grid grid-cols-3 items-center w-full">
+          <!-- Left Slot -->
+          <div class="flex justify-start">
+            {%- if hamburger_block -%}
+              <div {{ hamburger_block.shopify_attributes }}>
+                {{ hamburger_html }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <!-- Center Slot -->
+          <div class="flex justify-center">
+            {%- if logo_block -%}
+              <div {{ logo_block.shopify_attributes }}>
+                {{ logo_html }}
+              </div>
+            {%- else -%}
+              {{ logo_html }}
+            {%- endif -%}
+          </div>
+
+          <!-- Right Slot -->
+          <div class="flex justify-end items-center gap-3">
+            {%- if show_search and search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
+              <div {{ search_block.shopify_attributes }}>
+                <button 
+                  type="button" 
+                  onclick="toggleSearchInput('mobile', '{{ section.id }}')" 
+                  class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-85 transition-opacity" 
+                  aria-label="Søg"
+                >
+                  <span class="material-symbols-outlined text-2xl text-primary block">search</span>
+                </button>
+              </div>
+            {%- endif -%}
+            {%- if theme_toggle_block -%}
+              <div {{ theme_toggle_block.shopify_attributes }}>
+                {{ theme_toggle_button_html }}
+              </div>
+            {%- endif -%}
+            {%- if cart_block -%}
+              <div {{ cart_block.shopify_attributes }}>
+                {{ cart_icon_html }}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <!-- Mobile Search Form (if under logo bar) -->
+        {%- if show_search and search_block and search_block.settings.mobile_search_style == 'under_logo_bar' -%}
+          <div class="w-full" {{ search_block.shopify_attributes }}>
+            {{ search_form_html }}
+          </div>
+        {%- elsif show_search and search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
+          <div id="mobile-search-dropdown-{{ section.id }}" class="hidden w-full transition-all duration-300">
+            {{ search_form_html }}
+          </div>
+        {%- endif -%}
+
+        <!-- Mobile Navigation Bar -->
+        {%- if show_menu and navigation_block and navigation_block.settings.show_on_mobile_bar -%}
+          {%- assign menu_handle = navigation_block.settings.menu -%}
+          {%- if menu_handle != blank -%}
+            <nav class="w-full overflow-x-auto hide-scrollbar py-1 -mx-4 px-4" aria-label="Kategori menu" {{ navigation_block.shopify_attributes }}>
+              <ul class="flex items-center gap-5 whitespace-nowrap list-none p-0 m-0">
+                {%- for link in linklists[menu_handle].links -%}
+                  <li>
+                    <a 
+                      href="{{ link.url }}" 
+                      class="text-sm font-medium text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}"
+                      {% if link.active %}aria-current="page"{% endif %}
+                    >
+                      {{ link.title }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </nav>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    </header>
+  {%- endif -%}
 </div>
 
 <!-- Mobile Menu Drawer -->
@@ -459,8 +415,9 @@
     }
   }
 
-  function toggleSearchInput(viewport = 'desktop') {
-    const formId = viewport === 'mobile' ? 'mobile-search-dropdown' : 'desktop-search-dropdown';
+  function toggleSearchInput(viewport = 'desktop', sectionId = '') {
+    const baseId = viewport === 'mobile' ? 'mobile-search-dropdown' : 'desktop-search-dropdown';
+    const formId = sectionId ? `${baseId}-${sectionId}` : baseId;
     const searchForm = document.getElementById(formId);
     if (!searchForm) return;
     searchForm.classList.toggle("hidden");
@@ -848,63 +805,61 @@
 
   // Sticky scroll mechanics and input search sync helpers
   function initHeaderSticky() {
-    const wrapper = document.getElementById('shopify-section-header-wrapper');
-    if (!wrapper) return;
+    const wrappers = document.querySelectorAll('.shopify-section-header-wrapper');
+    wrappers.forEach(wrapper => {
+      const desktopSticky = wrapper.getAttribute('data-desktop-sticky');
+      const mobileSticky = wrapper.getAttribute('data-mobile-sticky');
 
-    const desktopSticky = wrapper.getAttribute('data-desktop-sticky');
-    const mobileSticky = wrapper.getAttribute('data-mobile-sticky');
+      let lastScrollY = window.scrollY;
 
-    let lastScrollY = window.scrollY;
+      function handleScroll() {
+        const currentScrollY = window.scrollY;
+        const isMobile = window.innerWidth < 840; // md breakpoint is 840px in input.css
+        const stickyMode = isMobile ? mobileSticky : desktopSticky;
+        const headerHeight = wrapper.offsetHeight;
 
-    function handleScroll() {
-      const currentScrollY = window.scrollY;
-      const isMobile = window.innerWidth < 840; // md breakpoint is 840px in input.css
-      const stickyMode = isMobile ? mobileSticky : desktopSticky;
-      const headerHeight = wrapper.offsetHeight;
-
-      if (stickyMode === 'none') {
-        wrapper.classList.remove('fixed', 'sticky', 'top-0', 'shadow-md', 'translate-y-0', '-translate-y-full');
-        wrapper.style.position = '';
-        return;
-      }
-
-      if (stickyMode === 'always') {
-        wrapper.style.position = 'sticky';
-        wrapper.classList.add('top-0', 'shadow-md');
-        wrapper.classList.remove('-translate-y-full');
-      } else if (stickyMode === 'scroll_up') {
-        wrapper.style.position = 'sticky';
-        wrapper.classList.add('top-0', 'transition-transform', 'duration-300');
-
-        if (currentScrollY > headerHeight) {
-          if (currentScrollY > lastScrollY) {
-            // Scrolling down - hide header
-            wrapper.classList.add('-translate-y-full', 'shadow-md');
-            wrapper.classList.remove('translate-y-0');
-          } else {
-            // Scrolling up - show header
-            wrapper.classList.remove('-translate-y-full');
-            wrapper.classList.add('translate-y-0', 'shadow-md');
-          }
-        } else {
-          // Near top
-          wrapper.classList.remove('-translate-y-full', 'shadow-md');
-          wrapper.classList.add('translate-y-0');
+        if (stickyMode === 'none') {
+          wrapper.classList.remove('fixed', 'sticky', 'top-0', 'shadow-md', 'translate-y-0', '-translate-y-full');
+          wrapper.style.position = '';
+          return;
         }
+
+        if (stickyMode === 'always') {
+          wrapper.style.position = 'sticky';
+          wrapper.classList.add('top-0', 'shadow-md');
+          wrapper.classList.remove('-translate-y-full');
+        } else if (stickyMode === 'scroll_up') {
+          wrapper.style.position = 'sticky';
+          wrapper.classList.add('top-0', 'transition-transform', 'duration-300');
+
+          if (currentScrollY > headerHeight) {
+            if (currentScrollY > lastScrollY) {
+              wrapper.classList.add('-translate-y-full', 'shadow-md');
+              wrapper.classList.remove('translate-y-0');
+            } else {
+              wrapper.classList.remove('-translate-y-full');
+              wrapper.classList.add('translate-y-0', 'shadow-md');
+            }
+          } else {
+            wrapper.classList.remove('-translate-y-full', 'shadow-md');
+            wrapper.classList.add('translate-y-0');
+          }
+        }
+
+        lastScrollY = currentScrollY;
       }
 
-      lastScrollY = currentScrollY;
-    }
+      const wrapperId = wrapper.id;
+      if (window[`_headerScrollHandler_${wrapperId}`]) {
+        window.removeEventListener('scroll', window[`_headerScrollHandler_${wrapperId}`]);
+        window.removeEventListener('resize', window[`_headerScrollHandler_${wrapperId}`]);
+      }
+      window[`_headerScrollHandler_${wrapperId}`] = handleScroll;
 
-    if (window._headerScrollHandler) {
-      window.removeEventListener('scroll', window._headerScrollHandler);
-      window.removeEventListener('resize', window._headerScrollHandler);
-    }
-    window._headerScrollHandler = handleScroll;
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
-    handleScroll();
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', handleScroll);
+      handleScroll();
+    });
   }
 
   function initHeaderSearchSync() {
@@ -980,7 +935,11 @@
 
 {% schema %}
 {
-  "name": "Custom Header",
+  "name": "Header Row",
+  "class": "shopify-section-header-row",
+  "enabled_on": {
+    "groups": ["header"]
+  },
   "settings": [
     {
       "type": "text",
@@ -991,16 +950,6 @@
     {
       "type": "header",
       "content": "Global Layout & Sticky"
-    },
-    {
-      "type": "select",
-      "id": "desktop_layout_mode",
-      "label": "Desktop Layout Mode",
-      "options": [
-        { "value": "inline", "label": "Single inline row" },
-        { "value": "split_rows", "label": "Double row (Menu below logo)" }
-      ],
-      "default": "inline"
     },
     {
       "type": "select",
@@ -1169,6 +1118,17 @@
           "type": "text",
           "id": "logo_text",
           "label": "Logo Text Override"
+        },
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Desktop Placement",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
         }
       ]
     },
@@ -1184,21 +1144,21 @@
           "default": "main-menu"
         },
         {
+          "type": "checkbox",
+          "id": "show_on_mobile_bar",
+          "label": "Show as horizontal bar on mobile",
+          "default": false
+        },
+        {
           "type": "select",
-          "id": "desktop_alignment",
-          "label": "Desktop Alignment",
+          "id": "placement",
+          "label": "Desktop Placement",
           "options": [
             { "value": "left", "label": "Left" },
             { "value": "center", "label": "Center" },
             { "value": "right", "label": "Right" }
           ],
           "default": "center"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_on_mobile_bar",
-          "label": "Show as horizontal bar on mobile",
-          "default": false
         }
       ]
     },
@@ -1219,6 +1179,19 @@
         },
         {
           "type": "select",
+          "id": "desktop_width",
+          "label": "Search Bar Width (Desktop)",
+          "options": [
+            { "value": "w-64", "label": "Small (256px)" },
+            { "value": "w-80", "label": "Medium (320px)" },
+            { "value": "max-w-md w-full", "label": "Large (448px)" },
+            { "value": "max-w-xl w-full", "label": "Extra Large (576px)" },
+            { "value": "flex-grow", "label": "Full width" }
+          ],
+          "default": "max-w-md w-full"
+        },
+        {
+          "type": "select",
           "id": "mobile_search_style",
           "label": "Mobile Search Style",
           "options": [
@@ -1227,18 +1200,55 @@
             { "value": "hidden", "label": "Hidden" }
           ],
           "default": "under_logo_bar"
+        },
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Desktop Placement",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
         }
       ]
     },
     {
       "type": "theme_toggle",
       "name": "Theme Toggle",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Desktop Placement",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "right"
+        }
+      ]
     },
     {
       "type": "cart",
       "name": "Cart Icon",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Desktop Placement",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "right"
+        }
+      ]
     },
     {
       "type": "hamburger",
@@ -1249,20 +1259,31 @@
           "type": "link_list",
           "id": "mobile_menu",
           "label": "Mobile Menu Override"
+        },
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Desktop Placement",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Custom Header",
+      "name": "Header Row",
       "blocks": [
-        { "type": "logo" },
-        { "type": "navigation" },
-        { "type": "search" },
-        { "type": "theme_toggle" },
-        { "type": "cart" },
-        { "type": "hamburger" }
+        { "type": "logo", "settings": { "placement": "left" } },
+        { "type": "navigation", "settings": { "placement": "center" } },
+        { "type": "search", "settings": { "placement": "center" } },
+        { "type": "theme_toggle", "settings": { "placement": "right" } },
+        { "type": "cart", "settings": { "placement": "right" } },
+        { "type": "hamburger", "settings": { "placement": "left" } }
       ]
     }
   ]
