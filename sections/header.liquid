@@ -26,97 +26,401 @@
       assign show_menu = section.settings.show_menu_cart
   endcase
 -%}
-<!-- Header (Not Sticky) -->
-<header class="bg-background border-b border-outline-variant py-4 px-4">
-  <div class="w-full flex flex-col gap-4">
-    <div class="flex items-center justify-between">
-      <button id="menu-toggle" class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer" aria-label="Menu" onclick="toggleMobileMenu(true)">
-        <span class="material-symbols-outlined text-2xl text-primary block">menu</span>
-      </button>
-      <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline">
-        {%- if section.settings.logo_text != blank -%}
-          {{ section.settings.logo_text }}
-        {%- else -%}
-          {{ shop.name }}
-        {%- endif -%}
-      </a>
-      <div class="flex items-center gap-4">
-        {%- unless show_search -%}
-          <button 
-            type="button" 
-            onclick="toggleSearchInput()" 
-            class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
-            aria-label="Søg"
-          >
-            <span class="material-symbols-outlined text-2xl text-primary block">search</span>
-          </button>
-        {%- endunless -%}
-        <button 
-          id="theme-toggle" 
-          type="button" 
-          onclick="toggleTheme()" 
-          class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
-          aria-label="Skift tema"
-        >
-          <span class="material-symbols-outlined text-2xl text-primary block theme-toggle-icon">dark_mode</span>
-        </button>
-        <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); toggleCartDrawer(true);" class="relative cursor-pointer text-primary no-underline flex items-center justify-center">
-          <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
-          <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
-            {{ cart.item_count }}
-          </span>
-        </a>
-      </div>
-    </div>
-    <!-- Search Bar -->
-    <form 
-      id="header-search-form" 
-      action="{{ routes.search_url }}" 
-      method="get" 
-      class="relative m-0 {% unless show_search %}hidden{% endunless %} transition-all duration-300"
-    >
-      <div class="relative w-full">
-        <input 
-          type="text" 
-          name="q" 
-          id="search-input" 
-          class="w-full h-10 pl-4 pr-24 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
-          placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
-        />
-        <button 
-          type="submit" 
-          class="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 rounded-full bg-black text-white hover:opacity-80 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-xs"
-          aria-label="Søg"
-        >
-          <span class="material-symbols-outlined text-[15px]">search</span>
-          <span>Søg</span>
-        </button>
-      </div>
-    </form>
-
-    <!-- Menu under search bar -->
-    {%- if show_menu and section.settings.menu != blank -%}
-      {%- assign header_menu = linklists[section.settings.menu] -%}
-      {%- if header_menu.links.size > 0 -%}
-        <nav class="w-full overflow-x-auto hide-scrollbar py-1 -mx-4 px-4 md:mx-0 md:px-0" aria-label="Kategori menu">
-          <ul class="flex items-center gap-5 whitespace-nowrap md:justify-center md:flex-wrap list-none p-0 m-0">
-            {%- for link in header_menu.links -%}
-              <li>
-                <a 
-                  href="{{ link.url }}" 
-                  class="text-sm sm:text-base font-medium text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}"
-                  {% if link.active %}aria-current="page"{% endif %}
-                >
-                  {{ link.title }}
-                </a>
-              </li>
-            {%- endfor -%}
-          </ul>
-        </nav>
-      {%- endif -%}
+<!-- Reusable Captured Header Subcomponents -->
+{%- capture logo_html -%}
+  <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity">
+    {%- if section.settings.logo_text != blank -%}
+      {{ section.settings.logo_text }}
+    {%- else -%}
+      {{ shop.name }}
     {%- endif -%}
-  </div>
-</header>
+  </a>
+{%- endcapture -%}
+
+{%- capture search_toggle_button_html -%}
+  <button 
+    type="button" 
+    onclick="toggleSearchInput('desktop')" 
+    class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
+    aria-label="Søg"
+  >
+    <span class="material-symbols-outlined text-2xl text-primary block">search</span>
+  </button>
+{%- endcapture -%}
+
+{%- capture theme_toggle_button_html -%}
+  <button 
+    id="theme-toggle" 
+    type="button" 
+    onclick="toggleTheme()" 
+    class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
+    aria-label="Skift tema"
+  >
+    <span class="material-symbols-outlined text-2xl text-primary block theme-toggle-icon">dark_mode</span>
+  </button>
+{%- endcapture -%}
+
+{%- capture cart_icon_html -%}
+  <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); toggleCartDrawer(true);" class="relative cursor-pointer text-primary no-underline flex items-center justify-center hover:opacity-80 transition-opacity">
+    <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
+    <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
+      {{ cart.item_count }}
+    </span>
+  </a>
+{%- endcapture -%}
+
+{%- capture hamburger_html -%}
+  <button id="menu-toggle" class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity" aria-label="Menu" onclick="toggleMobileMenu(true)">
+    <span class="material-symbols-outlined text-2xl text-primary block">menu</span>
+  </button>
+{%- endcapture -%}
+
+<!-- Outer Header Sticky Wrapper -->
+<div id="shopify-section-header-wrapper" 
+     class="w-full z-[100] bg-background"
+     data-desktop-sticky="{{ section.settings.desktop_sticky }}"
+     data-mobile-sticky="{{ section.settings.mobile_sticky }}">
+
+  <!-- DESKTOP HEADER -->
+  <header class="hidden md:block bg-background border-b border-outline-variant py-4 px-6">
+    <div class="max-w-[var(--page-width,1440px)] mx-auto w-full">
+      {%- case section.settings.desktop_layout -%}
+        {%- when 'logo_left_menu_center' -%}
+          <div class="flex items-center justify-between gap-6">
+            <div class="flex-shrink-0">
+              {{ logo_html }}
+            </div>
+            {%- if show_menu and section.settings.desktop_menu != blank -%}
+              <nav class="flex-grow flex justify-center overflow-x-auto hide-scrollbar" aria-label="Hovedmenu">
+                <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0">
+                  {%- for link in linklists[section.settings.desktop_menu].links -%}
+                    <li>
+                      <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
+                        {{ link.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            {%- endif -%}
+            <div class="flex items-center gap-5 flex-shrink-0">
+              {%- if section.settings.desktop_search_style == 'always_visible' and show_search -%}
+                <div class="w-64">
+                  <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
+                    <div class="relative w-full">
+                      <input 
+                        type="text" 
+                        name="q" 
+                        class="w-full h-9 pl-4 pr-10 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
+                        placeholder="Søg..."
+                      />
+                      <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:opacity-85 cursor-pointer bg-transparent border-0 p-0 flex items-center justify-center" aria-label="Søg">
+                        <span class="material-symbols-outlined text-xl">search</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              {%- elsif section.settings.desktop_search_style == 'icon_toggle' or show_search == false -%}
+                {%- if section.settings.desktop_search_style != 'hidden' -%}
+                  {{ search_toggle_button_html }}
+                {%- endif -%}
+              {%- endif -%}
+              {{ theme_toggle_button_html }}
+              {{ cart_icon_html }}
+            </div>
+          </div>
+
+        {%- when 'logo_left_menu_left' -%}
+          <div class="flex items-center justify-between gap-8">
+            <div class="flex items-center gap-8 flex-grow">
+              <div class="flex-shrink-0">
+                {{ logo_html }}
+              </div>
+              {%- if show_menu and section.settings.desktop_menu != blank -%}
+                <nav class="flex-grow overflow-x-auto hide-scrollbar" aria-label="Hovedmenu">
+                  <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0">
+                    {%- for link in linklists[section.settings.desktop_menu].links -%}
+                      <li>
+                        <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
+                          {{ link.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </nav>
+              {%- endif -%}
+            </div>
+            <div class="flex items-center gap-5 flex-shrink-0">
+              {%- if section.settings.desktop_search_style == 'always_visible' and show_search -%}
+                <div class="w-64">
+                  <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
+                    <div class="relative w-full">
+                      <input 
+                        type="text" 
+                        name="q" 
+                        class="w-full h-9 pl-4 pr-10 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
+                        placeholder="Søg..."
+                      />
+                      <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:opacity-85 cursor-pointer bg-transparent border-0 p-0 flex items-center justify-center" aria-label="Søg">
+                        <span class="material-symbols-outlined text-xl">search</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              {%- elsif section.settings.desktop_search_style == 'icon_toggle' or show_search == false -%}
+                {%- if section.settings.desktop_search_style != 'hidden' -%}
+                  {{ search_toggle_button_html }}
+                {%- endif -%}
+              {%- endif -%}
+              {{ theme_toggle_button_html }}
+              {{ cart_icon_html }}
+            </div>
+          </div>
+
+        {%- when 'logo_center_menu_bottom' -%}
+          <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-3 items-center w-full">
+              <!-- Left: Search Toggle/Input -->
+              <div class="flex justify-start items-center gap-4">
+                {%- if section.settings.desktop_search_style == 'icon_toggle' or show_search == false -%}
+                  {%- if section.settings.desktop_search_style != 'hidden' -%}
+                    {{ search_toggle_button_html }}
+                  {%- endif -%}
+                {%- elsif section.settings.desktop_search_style == 'always_visible' and show_search -%}
+                  <div class="w-64">
+                    <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
+                      <div class="relative w-full">
+                        <input 
+                          type="text" 
+                          name="q" 
+                          class="w-full h-9 pl-4 pr-10 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
+                          placeholder="Søg..."
+                        />
+                        <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:opacity-85 cursor-pointer bg-transparent border-0 p-0 flex items-center justify-center" aria-label="Søg">
+                          <span class="material-symbols-outlined text-xl">search</span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                {%- endif -%}
+              </div>
+              <!-- Center: Logo -->
+              <div class="flex justify-center">
+                {{ logo_html }}
+              </div>
+              <!-- Right: Icons -->
+              <div class="flex justify-end items-center gap-5">
+                {{ theme_toggle_button_html }}
+                {{ cart_icon_html }}
+              </div>
+            </div>
+            {%- if show_menu and section.settings.desktop_menu != blank -%}
+              <nav class="w-full flex justify-center border-t border-outline-variant/30 pt-3" aria-label="Hovedmenu">
+                <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0">
+                  {%- for link in linklists[section.settings.desktop_menu].links -%}
+                    <li>
+                      <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
+                        {{ link.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            {%- endif -%}
+          </div>
+
+        {%- when 'logo_left_search_center' -%}
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center justify-between gap-8">
+              <div class="flex-shrink-0">
+                {{ logo_html }}
+              </div>
+              {%- if section.settings.desktop_search_style != 'hidden' and show_search -%}
+                <div class="flex-grow max-w-xl mx-auto w-full">
+                  <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
+                    <div class="relative w-full">
+                      <input 
+                        type="text" 
+                        name="q" 
+                        class="w-full h-10 pl-4 pr-24 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
+                        placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
+                      />
+                      <button 
+                        type="submit" 
+                        class="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 rounded-full bg-black text-white hover:opacity-80 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-xs"
+                        aria-label="Søg"
+                      >
+                        <span class="material-symbols-outlined text-[15px]">search</span>
+                        <span>Søg</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              {%- else -%}
+                <div class="flex-grow"></div>
+              {%- endif -%}
+              <div class="flex items-center gap-5 flex-shrink-0">
+                {%- if section.settings.desktop_search_style == 'icon_toggle' or show_search == false -%}
+                  {%- if section.settings.desktop_search_style != 'hidden' -%}
+                    {{ search_toggle_button_html }}
+                  {%- endif -%}
+                {%- endif -%}
+                {{ theme_toggle_button_html }}
+                {{ cart_icon_html }}
+              </div>
+            </div>
+            {%- if show_menu and section.settings.desktop_menu != blank -%}
+              <nav class="w-full flex justify-center border-t border-outline-variant/30 pt-3" aria-label="Hovedmenu">
+                <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0">
+                  {%- for link in linklists[section.settings.desktop_menu].links -%}
+                    <li>
+                      <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
+                        {{ link.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            {%- endif -%}
+          </div>
+      {%- endcase -%}
+
+      <!-- Desktop Toggle Search Bar -->
+      {%- if section.settings.desktop_search_style == 'icon_toggle' or show_search == false -%}
+        {%- if section.settings.desktop_search_style != 'hidden' -%}
+          <div id="desktop-search-dropdown" class="hidden mt-4 pt-3 border-t border-outline-variant/20 transition-all duration-300">
+            <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
+              <div class="relative w-full">
+                <input 
+                  type="text" 
+                  name="q" 
+                  class="w-full h-10 pl-4 pr-24 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
+                  placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
+                />
+                <button 
+                  type="submit" 
+                  class="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 rounded-full bg-black text-white hover:opacity-80 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-xs"
+                  aria-label="Søg"
+                >
+                  <span class="material-symbols-outlined text-[15px]">search</span>
+                  <span>Søg</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </header>
+
+  <!-- MOBILE HEADER -->
+  <header class="block md:hidden bg-background border-b border-outline-variant py-3 px-4">
+    <div class="w-full flex flex-col gap-3">
+      {%- if section.settings.mobile_layout == 'logo_center_burger_left' -%}
+        <div class="grid grid-cols-3 items-center w-full">
+          <!-- Left: Hamburger -->
+          <div class="flex justify-start">
+            {{ hamburger_html }}
+          </div>
+          <!-- Center: Logo -->
+          <div class="flex justify-center">
+            {{ logo_html }}
+          </div>
+          <!-- Right: Icons -->
+          <div class="flex justify-end items-center gap-3">
+            {%- if section.settings.mobile_search_style == 'icon_toggle' or show_search == false -%}
+              {%- if section.settings.mobile_search_style != 'hidden' -%}
+                <button 
+                  type="button" 
+                  onclick="toggleSearchInput('mobile')" 
+                  class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-85 transition-opacity" 
+                  aria-label="Søg"
+                >
+                  <span class="material-symbols-outlined text-2xl text-primary block">search</span>
+                </button>
+              {%- endif -%}
+            {%- endif -%}
+            {{ theme_toggle_button_html }}
+            {{ cart_icon_html }}
+          </div>
+        </div>
+      {%- else -%}
+        <!-- logo_left_burger_right -->
+        <div class="flex items-center justify-between gap-4">
+          <!-- Left: Logo -->
+          <div class="flex-shrink-0">
+            {{ logo_html }}
+          </div>
+          <!-- Right: Icons + Hamburger -->
+          <div class="flex items-center gap-3">
+            {%- if section.settings.mobile_search_style == 'icon_toggle' or show_search == false -%}
+              {%- if section.settings.mobile_search_style != 'hidden' -%}
+                <button 
+                  type="button" 
+                  onclick="toggleSearchInput('mobile')" 
+                  class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-85 transition-opacity" 
+                  aria-label="Søg"
+                >
+                  <span class="material-symbols-outlined text-2xl text-primary block">search</span>
+                </button>
+              {%- endif -%}
+            {%- endif -%}
+            {{ theme_toggle_button_html }}
+            {{ cart_icon_html }}
+            {{ hamburger_html }}
+          </div>
+        </div>
+      {%- endif -%}
+
+      <!-- Mobile Search Form (if under logo bar) -->
+      {%- if section.settings.mobile_search_style == 'under_logo_bar' and show_search -%}
+        <div class="w-full">
+          <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
+            <div class="relative w-full">
+              <input 
+                type="text" 
+                name="q" 
+                class="w-full h-10 pl-4 pr-24 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
+                placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
+              />
+              <button 
+                type="submit" 
+                class="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 rounded-full bg-black text-white hover:opacity-80 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-xs"
+                aria-label="Søg"
+              >
+                <span class="material-symbols-outlined text-[15px]">search</span>
+                <span>Søg</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      {%- elsif section.settings.mobile_search_style == 'icon_toggle' or show_search == false -%}
+        {%- if section.settings.mobile_search_style != 'hidden' -%}
+          <div id="mobile-search-dropdown" class="hidden w-full transition-all duration-300">
+            <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
+              <div class="relative w-full">
+                <input 
+                  type="text" 
+                  name="q" 
+                  class="w-full h-10 pl-4 pr-24 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all" 
+                  placeholder="Søg efter klar voksdug, tykkelser eller dækkeservietter..."
+                />
+                <button 
+                  type="submit" 
+                  class="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 rounded-full bg-black text-white hover:opacity-80 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-xs"
+                  aria-label="Søg"
+                >
+                  <span class="material-symbols-outlined text-[15px]">search</span>
+                  <span>Søg</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </header>
+</div>
 
 <!-- Mobile Menu Slide-out Drawer -->
 <div id="mobile-menu-drawer" class="fixed inset-0 bg-black/50 z-[200] hidden flex justify-start transition-opacity duration-300 opacity-0">
@@ -128,8 +432,8 @@
       </div>
       <nav class="space-y-4 flex flex-col">
         <a href="{{ routes.root_url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">Forside</a>
-        {%- if section.settings.menu != blank -%}
-          {%- for link in linklists[section.settings.menu].links -%}
+        {%- if section.settings.mobile_menu != blank -%}
+          {%- for link in linklists[section.settings.mobile_menu].links -%}
             <a href="{{ link.url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">{{ link.title }}</a>
           {%- endfor -%}
         {%- endif -%}
@@ -194,25 +498,6 @@
     updateThemeToggleIcons(nextDark);
   }
 
-  // Auto-init theme icons on load
-  document.addEventListener('DOMContentLoaded', () => {
-    const rootEl = document.documentElement;
-    updateThemeToggleIcons(rootEl.classList.contains('dark'));
-  });
-
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    if (localStorage.getItem('theme') === 'system' || !localStorage.getItem('theme')) {
-      const rootEl = document.documentElement;
-      const nextDark = e.matches;
-      if (nextDark) {
-        rootEl.classList.add('dark');
-      } else {
-        rootEl.classList.remove('dark');
-      }
-      updateThemeToggleIcons(nextDark);
-    }
-  });
-
   function formatMoney(cents) {
     const kr = cents / 100;
     return kr.toFixed(2).replace('.', ',') + ' Kr.';
@@ -237,12 +522,13 @@
     }
   }
 
-  function toggleSearchInput() {
-    const searchForm = document.getElementById("header-search-form");
+  function toggleSearchInput(viewport = 'desktop') {
+    const formId = viewport === 'mobile' ? 'mobile-search-dropdown' : 'desktop-search-dropdown';
+    const searchForm = document.getElementById(formId);
     if (!searchForm) return;
     searchForm.classList.toggle("hidden");
     if (!searchForm.classList.contains("hidden")) {
-      const searchInput = document.getElementById("search-input");
+      const searchInput = searchForm.querySelector("input[name='q']");
       if (searchInput) {
         searchInput.focus();
       }
@@ -270,7 +556,6 @@
       document.dispatchEvent(new CustomEvent("cart-drawer-closed"));
     }
   }
-
 
   let currentCart = null;
 
@@ -535,7 +820,7 @@
       return sum + linePrice;
     }, 0);
 
-    // Render med det samme (0ms delay!)
+    // Render med det samme
     renderCart(currentCart);
 
     try {
@@ -624,17 +909,84 @@
   window.toggleMobileMenu = toggleMobileMenu;
   window.toggleSearchInput = toggleSearchInput;
 
-  // Intercept søgning på kollektionssiden
-  document.addEventListener("DOMContentLoaded", () => {
-    const searchInput = document.getElementById("search-input");
-    if (searchInput) {
+  // Sticky scroll mechanics and input search sync helpers
+  function initHeaderSticky() {
+    const wrapper = document.getElementById('shopify-section-header-wrapper');
+    if (!wrapper) return;
+
+    const desktopSticky = wrapper.getAttribute('data-desktop-sticky');
+    const mobileSticky = wrapper.getAttribute('data-mobile-sticky');
+
+    let lastScrollY = window.scrollY;
+
+    function handleScroll() {
+      const currentScrollY = window.scrollY;
+      const isMobile = window.innerWidth < 840; // md breakpoint is 840px in input.css
+      const stickyMode = isMobile ? mobileSticky : desktopSticky;
+      const headerHeight = wrapper.offsetHeight;
+
+      if (stickyMode === 'none') {
+        wrapper.classList.remove('fixed', 'sticky', 'top-0', 'shadow-md', 'translate-y-0', '-translate-y-full');
+        wrapper.style.position = '';
+        return;
+      }
+
+      if (stickyMode === 'always') {
+        wrapper.style.position = 'sticky';
+        wrapper.classList.add('top-0', 'shadow-md');
+        wrapper.classList.remove('-translate-y-full');
+      } else if (stickyMode === 'scroll_up') {
+        wrapper.style.position = 'sticky';
+        wrapper.classList.add('top-0', 'transition-transform', 'duration-300');
+
+        if (currentScrollY > headerHeight) {
+          if (currentScrollY > lastScrollY) {
+            // Scrolling down - hide header
+            wrapper.classList.add('-translate-y-full', 'shadow-md');
+            wrapper.classList.remove('translate-y-0');
+          } else {
+            // Scrolling up - show header
+            wrapper.classList.remove('-translate-y-full');
+            wrapper.classList.add('translate-y-0', 'shadow-md');
+          }
+        } else {
+          // Near top
+          wrapper.classList.remove('-translate-y-full', 'shadow-md');
+          wrapper.classList.add('translate-y-0');
+        }
+      }
+
+      lastScrollY = currentScrollY;
+    }
+
+    if (window._headerScrollHandler) {
+      window.removeEventListener('scroll', window._headerScrollHandler);
+      window.removeEventListener('resize', window._headerScrollHandler);
+    }
+    window._headerScrollHandler = handleScroll;
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    handleScroll();
+  }
+
+  function initHeaderSearchSync() {
+    const searchInputs = document.querySelectorAll("input[name='q']");
+    searchInputs.forEach(searchInput => {
+      // Sync on input
       searchInput.addEventListener("input", () => {
         const grid = document.getElementById("product-grid");
         if (grid && typeof window.filterProducts === "function") {
+          searchInputs.forEach(otherInput => {
+            if (otherInput !== searchInput) {
+              otherInput.value = searchInput.value;
+            }
+          });
           window.filterProducts();
         }
       });
       
+      // Prevent form submit when filtering is active
       const searchForm = searchInput.closest("form");
       if (searchForm) {
         searchForm.addEventListener("submit", (e) => {
@@ -644,7 +996,15 @@
           }
         });
       }
-    }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const rootEl = document.documentElement;
+    updateThemeToggleIcons(rootEl.classList.contains('dark'));
+
+    initHeaderSticky();
+    initHeaderSearchSync();
     
     // Luk skuffer når der klikkes udenfor
     const menuDrawer = document.getElementById("mobile-menu-drawer");
@@ -667,6 +1027,17 @@
     
     updateCartUI();
   });
+
+  // Re-initialize for Shopify Theme Customizer loads
+  document.addEventListener('shopify:section:load', (e) => {
+    if (e.target.id.includes('header')) {
+      initHeaderSticky();
+      initHeaderSearchSync();
+      updateCartUI();
+      const rootEl = document.documentElement;
+      updateThemeToggleIcons(rootEl.classList.contains('dark'));
+    }
+  });
 </script>
 
 
@@ -679,6 +1050,146 @@
       "id": "logo_text",
       "label": "Logo Text Override",
       "default": "Textil & Voksdug"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Header Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Desktop Layout",
+      "options": [
+        {
+          "value": "logo_left_menu_center",
+          "label": "Logo left, menu center, icons right"
+        },
+        {
+          "value": "logo_left_menu_left",
+          "label": "Logo left, menu left, icons right"
+        },
+        {
+          "value": "logo_center_menu_bottom",
+          "label": "Logo center, menu bottom, icons right"
+        },
+        {
+          "value": "logo_left_search_center",
+          "label": "Logo left, search center, icons right, menu bottom"
+        }
+      ],
+      "default": "logo_left_menu_center"
+    },
+    {
+      "type": "link_list",
+      "id": "desktop_menu",
+      "label": "Desktop Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "select",
+      "id": "desktop_search_style",
+      "label": "Desktop Search Style",
+      "options": [
+        {
+          "value": "always_visible",
+          "label": "Always visible input"
+        },
+        {
+          "value": "icon_toggle",
+          "label": "Toggle with icon click"
+        },
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        }
+      ],
+      "default": "always_visible"
+    },
+    {
+      "type": "select",
+      "id": "desktop_sticky",
+      "label": "Desktop Sticky Behavior",
+      "options": [
+        {
+          "value": "none",
+          "label": "Scrolls away"
+        },
+        {
+          "value": "always",
+          "label": "Always sticky"
+        },
+        {
+          "value": "scroll_up",
+          "label": "Sticky on scroll up"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Header Layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile Layout",
+      "options": [
+        {
+          "value": "logo_center_burger_left",
+          "label": "Hamburger left, logo center, icons right"
+        },
+        {
+          "value": "logo_left_burger_right",
+          "label": "Logo left, hamburger right, icons right"
+        }
+      ],
+      "default": "logo_center_burger_left"
+    },
+    {
+      "type": "link_list",
+      "id": "mobile_menu",
+      "label": "Mobile Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "select",
+      "id": "mobile_search_style",
+      "label": "Mobile Search Style",
+      "options": [
+        {
+          "value": "under_logo_bar",
+          "label": "Full-width input below logo"
+        },
+        {
+          "value": "icon_toggle",
+          "label": "Toggle with icon click"
+        },
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        }
+      ],
+      "default": "under_logo_bar"
+    },
+    {
+      "type": "select",
+      "id": "mobile_sticky",
+      "label": "Mobile Sticky Behavior",
+      "options": [
+        {
+          "value": "none",
+          "label": "Scrolls away"
+        },
+        {
+          "value": "always",
+          "label": "Always sticky"
+        },
+        {
+          "value": "scroll_up",
+          "label": "Sticky on scroll up"
+        }
+      ],
+      "default": "none"
     },
     {
       "type": "header",

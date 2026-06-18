@@ -862,26 +862,13 @@
 
     function getPricingVariant(currentVariant) {
       if (!variants || variants.length === 0) return fallbackVariant;
-
-      // In Simple Mode, directly match the variant for state.selectedStandardWidth
-      if (state && state.customizerMode === 'simple') {
-        const targetWidth = state.selectedStandardWidth;
-        const match = variants.find(v => {
-          if (v.title.toLowerCase().includes("tilpasset") || v.title.toLowerCase().includes("tilpas")) return false;
-          if (widthOptionIndex !== null) {
-            const wVal = v.options[widthOptionIndex];
-            if (wVal) {
-              const numMatch = wVal.match(/\d+/);
-              const num = numMatch ? parseInt(numMatch[0]) : 0;
-              return num === targetWidth;
-            }
-          }
-          return false;
-        });
-        if (match) return match;
-      }
-
       if (!currentVariant) currentVariant = getCurrentVariant();
+
+      // Find standard variant matching state.selectedStandardWidth and other options of currentVariant
+      const targetWidth = state.selectedStandardWidth;
+      const match = findVariantForWidthAndOtherOptions(targetWidth + " cm", currentVariant);
+      if (match) return match;
+
       let pricingVariant = currentVariant;
       if (pricingVariant && pricingVariant.title && pricingVariant.title.toLowerCase().includes("tilpasset")) {
         pricingVariant = variants.find(v => !v.title.toLowerCase().includes("tilpasset") && v.price > 0) || variants[0] || fallbackVariant;
@@ -1256,11 +1243,11 @@
       }
 
       // 2. We recommend Table Width + 40 cm (20 cm overhang per side) and Table Length + 40 cm
-      let targetWidth = Math.round((tw + 40) / 5) * 5;
-      let targetLength = Math.round((tl + 40) / 10) * 10;
+      let targetWidth = tw + 40;
+      let targetLength = tl + 40;
 
       if (shape === 'rund') {
-        targetWidth = Math.round((tw + 40) / 5) * 5;
+        targetWidth = tw + 40;
         targetLength = targetWidth; // round has equal width and length (diameter)
       }
 
@@ -1982,7 +1969,6 @@
     // Helper: snap length to nearest valid step within bounds
     function clampLength(val) {
       const maxAllowed = (selectedShape === 'rund') ? absoluteMaxWidth : 9999;
-      val = Math.round(val / stepSize) * stepSize;
       return Math.min(maxAllowed, Math.max(minLength, val));
     }
 
@@ -2042,7 +2028,6 @@
     const displayWidth = document.getElementById("display-width");
 
     function clampWidth(val, maxVal) {
-      val = Math.round(val / 5) * 5;
       return Math.min(maxVal, Math.max(50, val));
     }
 
@@ -2050,12 +2035,7 @@
       btnWidthMinus.addEventListener("click", () => {
         if (state.customizerMode === 'simple') return;
         if (state.width > 50) {
-          // Resolve standard width first to get maxAllowedWidth
-          const currentVariant = getCurrentVariant();
-          const pricingVariant = getPricingVariant(currentVariant);
-          const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
-          const maxAllowedWidth = stdWidth - 5;
-
+          const maxAllowedWidth = state.selectedStandardWidth - 5;
           state.width = clampWidth(state.width - 5, maxAllowedWidth);
           displayWidth.value = state.width;
           updateUI();
@@ -2066,12 +2046,7 @@
     if (btnWidthPlus && displayWidth) {
       btnWidthPlus.addEventListener("click", () => {
         if (state.customizerMode === 'simple') return;
-        // Resolve standard width first to get maxAllowedWidth
-        const currentVariant = getCurrentVariant();
-        const pricingVariant = getPricingVariant(currentVariant);
-        const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
-        const maxAllowedWidth = stdWidth - 5;
-
+        const maxAllowedWidth = state.selectedStandardWidth - 5;
         if (state.width < maxAllowedWidth) {
           state.width = clampWidth(state.width + 5, maxAllowedWidth);
           displayWidth.value = state.width;
@@ -2083,12 +2058,7 @@
     if (displayWidth) {
       displayWidth.addEventListener("change", () => {
         if (state.customizerMode === 'simple') return;
-        // Resolve standard width first to get maxAllowedWidth
-        const currentVariant = getCurrentVariant();
-        const pricingVariant = getPricingVariant(currentVariant);
-        const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
-        const maxAllowedWidth = stdWidth - 5;
-
+        const maxAllowedWidth = state.selectedStandardWidth - 5;
         const raw = parseInt(displayWidth.value, 10);
         if (!isNaN(raw)) {
           state.width = clampWidth(raw, maxAllowedWidth);
@@ -2100,12 +2070,7 @@
       });
       displayWidth.addEventListener("blur", () => {
         if (state.customizerMode === 'simple') return;
-        // Resolve standard width first to get maxAllowedWidth
-        const currentVariant = getCurrentVariant();
-        const pricingVariant = getPricingVariant(currentVariant);
-        const stdWidth = getVariantWidth(pricingVariant ? pricingVariant.title : "");
-        const maxAllowedWidth = stdWidth - 5;
-
+        const maxAllowedWidth = state.selectedStandardWidth - 5;
         const raw = parseInt(displayWidth.value, 10);
         state.width = isNaN(raw) ? state.width : clampWidth(raw, maxAllowedWidth);
         displayWidth.value = state.width;
