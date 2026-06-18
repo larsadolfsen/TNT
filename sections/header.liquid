@@ -115,7 +115,17 @@
     {%- case block.type -%}
       {%- when 'logo' -%}
         <div class="flex-shrink-0" {{ block.shopify_attributes }}>
-          {{ logo_html }}
+          <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity">
+            {%- if block.settings.logo_text != blank -%}
+              {{ block.settings.logo_text }}
+            {%- else -%}
+              {%- if section.settings.logo_text != blank -%}
+                {{ section.settings.logo_text }}
+              {%- else -%}
+                {{ shop.name }}
+              {%- endif -%}
+            {%- endif -%}
+          </a>
         </div>
       {%- when 'navigation' -%}
         {%- if show_menu -%}
@@ -155,11 +165,23 @@
         {%- endif -%}
       {%- when 'theme_toggle' -%}
         <div class="flex-shrink-0" {{ block.shopify_attributes }}>
-          {{ theme_toggle_button_html }}
+          <button 
+            type="button" 
+            onclick="toggleTheme()" 
+            class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200" 
+            aria-label="Skift tema"
+          >
+            <span class="material-symbols-outlined text-2xl text-primary block theme-toggle-icon">dark_mode</span>
+          </button>
         </div>
       {%- when 'cart' -%}
         <div class="flex-shrink-0" {{ block.shopify_attributes }}>
-          {{ cart_icon_html }}
+          <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); toggleCartDrawer(true);" class="relative cursor-pointer text-primary no-underline flex items-center justify-center hover:opacity-80 transition-opacity">
+            <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
+            <span id="cart-counter" class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}">
+              {{ cart.item_count }}
+            </span>
+          </a>
         </div>
       {%- when 'custom_content' -%}
         {%- if block.settings.content != blank -%}
@@ -1149,7 +1171,6 @@
     {
       "type": "logo",
       "name": "Logo",
-      "limit": 1,
       "settings": [
         {
           "type": "text",
@@ -1173,7 +1194,6 @@
     {
       "type": "navigation",
       "name": "Navigation Menu",
-      "limit": 1,
       "settings": [
         {
           "type": "link_list",
@@ -1204,7 +1224,6 @@
     {
       "type": "search",
       "name": "Search Bar",
-      "limit": 1,
       "settings": [
         {
           "type": "select",
@@ -1257,7 +1276,6 @@
     {
       "type": "theme_toggle",
       "name": "Theme Toggle",
-      "limit": 1,
       "settings": [
         {
           "type": "select",
@@ -1276,7 +1294,6 @@
     {
       "type": "cart",
       "name": "Cart Icon",
-      "limit": 1,
       "settings": [
         {
           "type": "select",
@@ -1295,7 +1312,6 @@
     {
       "type": "hamburger",
       "name": "Mobile Hamburger Menu",
-      "limit": 1,
       "settings": [
         {
           "type": "link_list",
