@@ -61,7 +61,7 @@
   endfor
 -%}
 {%- capture logo_html -%}
-  <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity">
+  <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity whitespace-nowrap">
     {%- if logo_block and logo_block.settings.logo_text != blank -%}
       {{ logo_block.settings.logo_text }}
     {%- else -%}
@@ -308,32 +308,32 @@
   {%- if show_mobile_header -%}
     <header class="block md:hidden bg-background border-b border-outline-variant py-3 px-4">
       <div class="w-full flex flex-col gap-3">
-        <div class="grid grid-cols-3 items-center w-full">
+        <div class="relative flex items-center justify-between w-full min-h-[44px]">
           <!-- Left Slot -->
-          <div class="flex justify-start items-center gap-3">
+          <div class="flex justify-start items-center gap-3 z-10 min-w-0">
             {%- if hamburger_block -%}
-              <div class="{{ hamburger_visibility }}" {{ hamburger_block.shopify_attributes }}>
+              <div class="{{ hamburger_visibility }} shrink-0" {{ hamburger_block.shopify_attributes }}>
                 {{ hamburger_html }}
               </div>
             {%- endif -%}
             {%- if logo_block and logo_block.settings.placement == 'left' -%}
-              <div class="{{ logo_visibility }}" {{ logo_block.shopify_attributes }}>
+              <div class="{{ logo_visibility }} min-w-0" {{ logo_block.shopify_attributes }}>
                 {{ logo_html }}
               </div>
             {%- endif -%}
           </div>
 
           <!-- Center Slot -->
-          <div class="flex justify-center items-center">
+          <div class="absolute inset-x-0 flex justify-center items-center pointer-events-none z-0">
             {%- if logo_block and logo_block.settings.placement != 'left' -%}
-              <div class="{{ logo_visibility }}" {{ logo_block.shopify_attributes }}>
+              <div class="{{ logo_visibility }} pointer-events-auto" {{ logo_block.shopify_attributes }}>
                 {{ logo_html }}
               </div>
             {%- endif -%}
           </div>
 
           <!-- Right Slot -->
-          <div class="flex justify-end items-center gap-3">
+          <div class="flex justify-end items-center gap-3 z-10 shrink-0">
             {%- if search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
               <div class="{{ search_visibility }}" {{ search_block.shopify_attributes }}>
                 <button 
