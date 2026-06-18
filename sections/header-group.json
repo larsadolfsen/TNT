@@ -17,7 +17,7 @@
         "hamburger_dtii4V": {
           "type": "hamburger",
           "settings": {
-            "placement": "center",
+            "placement": "left",
             "mobile_menu": "",
             "hide_on_mobile": false,
             "hide_on_tablet": false,
@@ -27,7 +27,7 @@
         "logo_9F9jxg": {
           "type": "logo",
           "settings": {
-            "placement": "center",
+            "placement": "left",
             "logo_text": "Textil & Voksdug",
             "hide_on_mobile": false,
             "hide_on_tablet": false,
@@ -37,7 +37,7 @@
         "search_VaTtKF": {
           "type": "search",
           "settings": {
-            "placement": "center",
+            "placement": "right",
             "desktop_search_style": "always_visible",
             "desktop_width": "max-w-md w-full",
             "mobile_search_style": "under_logo_bar",
@@ -49,7 +49,7 @@
         "theme_toggle_fb9WqR": {
           "type": "theme_toggle",
           "settings": {
-            "placement": "center",
+            "placement": "right",
             "hide_on_mobile": false,
             "hide_on_tablet": false,
             "hide_on_desktop": false
@@ -58,7 +58,7 @@
         "cart_FwjJjD": {
           "type": "cart",
           "settings": {
-            "placement": "center",
+            "placement": "right",
             "hide_on_mobile": false,
             "hide_on_tablet": false,
             "hide_on_desktop": false
