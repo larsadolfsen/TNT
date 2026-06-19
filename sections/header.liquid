@@ -61,7 +61,11 @@
   endfor
 -%}
 {%- capture logo_html -%}
-  <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity whitespace-nowrap">
+  {%- assign logo_font_size_style = '' -%}
+  {%- if logo_block and logo_block.settings.logo_height != blank -%}
+    {%- assign logo_font_size_style = 'font-size: ' | append: logo_block.settings.logo_height | append: 'px;' -%}
+  {%- endif -%}
+  <a href="{{ routes.root_url }}" class="font-serif font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity whitespace-nowrap" style="{{ logo_font_size_style }}">
     {%- if logo_block and logo_block.settings.logo_text != blank -%}
       {{ logo_block.settings.logo_text }}
     {%- else -%}
@@ -146,8 +150,12 @@
   {%- capture block_html -%}
     {%- case block.type -%}
       {%- when 'logo' -%}
+        {%- assign block_logo_style = '' -%}
+        {%- if block.settings.logo_height != blank -%}
+          {%- assign block_logo_style = 'font-size: ' | append: block.settings.logo_height | append: 'px;' -%}
+        {%- endif -%}
         <div class="flex-shrink-0{{ block_visibility_classes }}" {{ block.shopify_attributes }}>
-          <a href="{{ routes.root_url }}" class="font-serif text-2xl font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity">
+          <a href="{{ routes.root_url }}" class="font-serif font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity" style="{{ block_logo_style }}">
             {%- if block.settings.logo_text != blank -%}
               {{ block.settings.logo_text }}
             {%- else -%}
@@ -254,11 +262,11 @@
 
   <!-- DESKTOP HEADER -->
   <header class="hidden md:flex md:items-center bg-background border-b border-outline-variant h-14 px-6">
-    <div class="{% if section.settings.content_width == 'full' %}w-full{% else %}max-w-[var(--page-width,1440px)] mx-auto w-full{% endif %} flex flex-col gap-4">
+    <div class="{% if section.settings.content_width == 'full' %}w-full{% else %}max-w-[var(--page-width,1440px)] mx-auto w-full{% endif %} flex items-center h-full">
       
       <!-- Main Row (Left, Center, Right) -->
       {%- if left_zone_html != blank or center_zone_html != blank or right_zone_html != blank -%}
-        <div class="grid grid-cols-3 items-center gap-6 min-h-[44px] w-full">
+        <div class="grid grid-cols-3 items-center gap-6 h-full w-full">
           <!-- Left Zone -->
           <div class="flex items-center justify-start gap-6">
             {{ left_zone_html }}
@@ -1130,6 +1138,16 @@
           "type": "text",
           "id": "logo_text",
           "label": "Logo Text Override"
+        },
+        {
+          "type": "range",
+          "id": "logo_height",
+          "label": "Height",
+          "min": 12,
+          "max": 72,
+          "step": 1,
+          "unit": "px",
+          "default": 24
         },
         {
           "type": "checkbox",
