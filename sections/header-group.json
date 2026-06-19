@@ -78,8 +78,9 @@
         "navigation_HkBNQW": {
           "type": "navigation",
           "settings": {
-            "placement": "center",
+            "placement": "left",
             "menu": "main-menu",
+            "item_padding": 20,
             "show_on_mobile_bar": false,
             "hide_on_mobile": false,
             "hide_on_tablet": false,
