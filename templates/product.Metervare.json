@@ -408,10 +408,10 @@
             "padding_sides": 48
           },
           "blocks": {
-            "trust_checkmark_zge6cX": {
+            "trust_checkmark_eWd7zP": {
               "type": "trust-checkmark",
               "settings": {
-                "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+                "text": "30 dages fuld returret på din dug."
               },
               "blocks": {}
             },
@@ -423,26 +423,26 @@
               },
               "blocks": {}
             },
-            "trust_checkmark_eWd7zP": {
-              "type": "trust-checkmark",
-              "settings": {
-                "text": "30 dages fuld returret på din dug."
-              },
-              "blocks": {}
-            },
             "trust_checkmark_HBfhFN": {
               "type": "trust-checkmark",
               "settings": {
                 "text": "Sendes på rulle, for at undgå folder."
               },
               "blocks": {}
+            },
+            "trust_checkmark_zge6cX": {
+              "type": "trust-checkmark",
+              "settings": {
+                "text": "GLS Pakkeshop til 59 kr. eller hjemmelevering til 79 kr."
+              },
+              "blocks": {}
             }
           },
           "block_order": [
-            "trust_checkmark_zge6cX",
-            "trust_countdown_WRG7XE",
             "trust_checkmark_eWd7zP",
-            "trust_checkmark_HBfhFN"
+            "trust_countdown_WRG7XE",
+            "trust_checkmark_HBfhFN",
+            "trust_checkmark_zge6cX"
           ]
         }
       },
