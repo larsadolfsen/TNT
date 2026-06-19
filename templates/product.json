@@ -250,6 +250,8 @@
           "type": "card",
           "name": "t:general.card",
           "settings": {
+            "hide_on_mobile": false,
+            "hide_on_desktop": false,
             "design": "border",
             "background_color": "light",
             "grid_direction": "vertical",
@@ -405,9 +407,19 @@
         "border_top": false,
         "border_bottom": false
       }
+    },
+    "breadcrumbs_ERkpwB": {
+      "type": "breadcrumbs",
+      "name": "Brødkrummer",
+      "settings": {
+        "max_width": "none",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     }
   },
   "order": [
+    "breadcrumbs_ERkpwB",
     "section_ndBcy7",
     "section_Ei7cMG",
     "section_4GmQ4N",
