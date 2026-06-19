@@ -47,6 +47,15 @@
             "hide_on_desktop": false
           }
         },
+        "theme_toggle_KhWjWz": {
+          "type": "theme_toggle",
+          "settings": {
+            "placement": "right",
+            "hide_on_mobile": false,
+            "hide_on_tablet": false,
+            "hide_on_desktop": false
+          }
+        },
         "cart_FwjJjD": {
           "type": "cart",
           "settings": {
@@ -61,6 +70,7 @@
         "hamburger_dtii4V",
         "logo_9F9jxg",
         "search_VaTtKF",
+        "theme_toggle_KhWjWz",
         "cart_FwjJjD"
       ],
       "settings": {
