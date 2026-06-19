@@ -9,6 +9,15 @@
  */
 {
   "sections": {
+    "breadcrumbs_J3bFbD": {
+      "type": "breadcrumbs",
+      "name": "Brødkrummer",
+      "settings": {
+        "max_width": "none",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "section_DegQzi": {
       "type": "section",
       "blocks": {
@@ -87,7 +96,6 @@
       ],
       "name": "Section - Title 1|2",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -133,7 +141,6 @@
       ],
       "name": "Section - Product Media",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -223,7 +230,6 @@
       ],
       "name": "Section - Price 2|2",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -386,7 +392,6 @@
       ],
       "name": "Section - Customizer",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -582,7 +587,6 @@
       ],
       "name": "Section - Info 2|3",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
@@ -639,7 +643,6 @@
       ],
       "name": "Section",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "light_grey",
         "full_width": true,
         "hide_on_mobile": false,
@@ -685,7 +688,6 @@
       ],
       "name": "Row - Mersalg",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "light",
         "full_width": false,
         "hide_on_mobile": false,
@@ -774,7 +776,6 @@
       ],
       "name": "FAQ",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "light",
         "full_width": false,
         "hide_on_mobile": false,
@@ -849,7 +850,6 @@
       ],
       "name": "Row",
       "settings": {
-        "layout_style": "full_width_bg",
         "background_color": "light",
         "full_width": false,
         "hide_on_mobile": false,
@@ -877,6 +877,7 @@
     }
   },
   "order": [
+    "breadcrumbs_J3bFbD",
     "section_DegQzi",
     "section_hhUykJ",
     "section_CjVmWk",
