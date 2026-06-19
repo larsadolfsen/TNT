@@ -166,11 +166,11 @@
       {%- when 'navigation' -%}
         {%- assign menu_handle = block.settings.menu -%}
         {%- if menu_handle != blank -%}
-          <nav class="flex items-center overflow-x-auto hide-scrollbar w-full{{ block_visibility_classes }}" style="height: var(--nav-block-height);" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
-            <ul class="flex items-center whitespace-nowrap list-none p-0 m-0 w-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}" style="gap: var(--nav-menu-gap);">
+          <nav class="flex items-stretch overflow-x-auto hide-scrollbar w-full h-full{{ block_visibility_classes }}" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
+            <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}" style="gap: var(--nav-menu-gap);">
               {%- for link in linklists[menu_handle].links -%}
-                <li>
-                  <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
+                <li class="h-full flex items-center border-b-2 border-transparent hover:border-yellow-400 transition-all duration-200 {% if link.active %}border-yellow-400{% endif %}">
+                  <a href="{{ link.url }}" class="text-base font-semibold text-primary no-underline">
                     {{ link.title }}
                   </a>
                 </li>
@@ -261,7 +261,7 @@
      data-mobile-sticky="{{ section.settings.mobile_sticky }}">
 
   <!-- DESKTOP HEADER -->
-  <header class="hidden md:flex md:items-center bg-background border-b border-outline-variant h-14 px-6">
+  <header class="hidden md:flex md:items-center bg-background border-b border-outline-variant h-14 px-6 py-1">
     <div class="{% if section.settings.content_width == 'full' %}w-full{% else %}max-w-[var(--page-width,1440px)] mx-auto w-full{% endif %} flex items-center h-full">
       
       <!-- Main Row (Left, Center, Right) -->
