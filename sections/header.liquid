@@ -130,11 +130,19 @@
   }
 
   .nav-menu-item {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+  }
+  .nav-menu-item a {
+    display: flex;
+    align-items: center;
+    height: 100%;
     border-bottom: 2px solid transparent;
     transition: border-color 200ms ease;
   }
-  .nav-menu-item:hover,
-  .nav-menu-item--active {
+  .nav-menu-item:hover a,
+  .nav-menu-item--active a {
     border-bottom-color: #facc15;
   }
 {%- endstyle -%}
@@ -178,7 +186,7 @@
           <nav class="flex items-stretch overflow-x-auto hide-scrollbar w-full h-full{{ block_visibility_classes }}" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
             <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}">
               {%- for link in linklists[menu_handle].links -%}
-                <li class="nav-menu-item h-full flex items-center transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}" style="padding-inline: {{ block.settings.item_padding }}px;">
+                <li class="nav-menu-item transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}" style="padding-inline: {{ block.settings.item_padding }}px;">
                   <a href="{{ link.url }}" class="text-base font-semibold text-primary no-underline">
                     {{ link.title }}
                   </a>
@@ -270,7 +278,7 @@
      data-mobile-sticky="{{ section.settings.mobile_sticky }}">
 
   <!-- DESKTOP HEADER -->
-  <header class="hidden md:flex md:items-center bg-background border-b border-outline-variant h-14 px-6 py-1">
+  <header class="hidden md:flex md:items-center bg-background border-b border-outline-variant h-14 px-6">
     <div class="{% if section.settings.content_width == 'full' %}w-full{% else %}max-w-[var(--page-width,1440px)] mx-auto w-full{% endif %} flex items-center h-full">
       
       <!-- Main Row (Left, Center, Right) -->
