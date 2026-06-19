@@ -9,7 +9,7 @@
  */
 {
   "sections": {
-    "breadcrumbs_J3bFbD": {
+    "breadcrumbs_KPbdBM": {
       "type": "breadcrumbs",
       "name": "Brødkrummer",
       "settings": {
@@ -152,7 +152,7 @@
         "column_span_desktop": "4",
         "column_start_desktop": "auto",
         "row_span_desktop": "12",
-        "row_start_desktop": "auto",
+        "row_start_desktop": "2",
         "hide_on_desktop": false,
         "justify_self": "auto",
         "align_self": "auto",
@@ -877,7 +877,7 @@
     }
   },
   "order": [
-    "breadcrumbs_J3bFbD",
+    "breadcrumbs_KPbdBM",
     "section_DegQzi",
     "section_hhUykJ",
     "section_CjVmWk",
