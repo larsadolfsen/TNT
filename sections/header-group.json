@@ -29,6 +29,7 @@
           "settings": {
             "placement": "left",
             "logo_text": "Textil & Voksdug",
+            "logo_height": 20,
             "hide_on_mobile": false,
             "hide_on_tablet": false,
             "hide_on_desktop": false
