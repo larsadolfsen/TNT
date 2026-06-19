@@ -244,7 +244,7 @@
   {%- elsif block.settings.placement == 'right' -%}
     {%- capture right_zone_html -%}{{ right_zone_html }}{{ block_html }}{%- endcapture -%}
   {%- elsif block.settings.placement == 'fill' -%}
-    {%- capture fill_rows_html -%}{{ fill_rows_html }}<div class="w-full flex items-stretch" style="min-height: var(--nav-block-height);">{{ block_html }}</div>{%- endcapture -%}
+    {%- capture fill_rows_html -%}{{ fill_rows_html }}<div class="w-full flex items-stretch" style="height: var(--nav-block-height);">{{ block_html }}</div>{%- endcapture -%}
   {%- else -%}
     {%- capture center_zone_html -%}{{ center_zone_html }}{{ block_html }}{%- endcapture -%}
   {%- endif -%}
