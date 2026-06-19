@@ -292,6 +292,18 @@
             "padding_sides": 16
           },
           "blocks": {
+            "text_xrUkqJ": {
+              "type": "text",
+              "name": "t:general.text",
+              "settings": {
+                "text": "<h2>Vælg antal</h2>",
+                "alignment": "left",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
             "product_buy_buttons_gFTjCi": {
               "type": "product-buy-buttons",
               "name": "Product Buy Buttons",
@@ -369,6 +381,7 @@
             }
           },
           "block_order": [
+            "text_xrUkqJ",
             "product_buy_buttons_gFTjCi",
             "card_WQFRHd"
           ]
