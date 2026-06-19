@@ -147,9 +147,19 @@
         "columns_desktop": 4,
         "filter_width_desktop": 3
       }
+    },
+    "breadcrumbs_JbJ6he": {
+      "type": "breadcrumbs",
+      "name": "Brødkrummer",
+      "settings": {
+        "max_width": "none",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     }
   },
   "order": [
+    "breadcrumbs_JbJ6he",
     "collection-header",
     "collections_rP4rdP",
     "section_eUpcwy",

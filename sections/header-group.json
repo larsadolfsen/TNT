@@ -98,20 +98,10 @@
         "hide_on_tablet": false,
         "hide_on_desktop": false
       }
-    },
-    "breadcrumbs_nWQKAJ": {
-      "type": "breadcrumbs",
-      "name": "Brødkrummer",
-      "settings": {
-        "max_width": "none",
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
     }
   },
   "order": [
     "header",
-    "header_hygWBY",
-    "breadcrumbs_nWQKAJ"
+    "header_hygWBY"
   ]
 }
