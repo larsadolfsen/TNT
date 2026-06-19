@@ -270,24 +270,24 @@
      data-mobile-sticky="{{ section.settings.mobile_sticky }}">
 
   <!-- DESKTOP HEADER -->
-  <header class="hidden md:flex md:items-center bg-background h-14 px-6 py-1">
+  <header class="hidden md:flex md:items-center bg-background border-b border-outline-variant h-14 px-6 py-1">
     <div class="{% if section.settings.content_width == 'full' %}w-full{% else %}max-w-[var(--page-width,1440px)] mx-auto w-full{% endif %} flex items-center h-full">
       
       <!-- Main Row (Left, Center, Right) -->
       {%- if left_zone_html != blank or center_zone_html != blank or right_zone_html != blank -%}
         <div class="grid grid-cols-3 items-center gap-6 h-full w-full">
           <!-- Left Zone -->
-          <div class="flex items-center justify-start gap-6">
+          <div class="flex items-center justify-start gap-6 h-full self-stretch">
             {{ left_zone_html }}
           </div>
 
           <!-- Center Zone -->
-          <div class="flex items-center justify-center gap-6">
+          <div class="flex items-center justify-center gap-6 h-full self-stretch">
             {{ center_zone_html }}
           </div>
 
           <!-- Right Zone -->
-          <div class="flex items-center justify-end gap-6">
+          <div class="flex items-center justify-end gap-6 h-full self-stretch">
             {{ right_zone_html }}
           </div>
         </div>
