@@ -204,6 +204,16 @@
               },
               "blocks": {}
             },
+            "product_variant_picker_TLMQAc": {
+              "type": "product-variant-picker",
+              "name": "Product Variant Picker",
+              "settings": {
+                "padding_top": 12,
+                "padding_bottom": 12,
+                "padding_sides": 0
+              },
+              "blocks": {}
+            },
             "product_urgency_nFWUiX": {
               "type": "product-urgency",
               "name": "Product Stock Urgency",
@@ -221,6 +231,7 @@
           },
           "block_order": [
             "product_price_kbT9KB",
+            "product_variant_picker_TLMQAc",
             "product_urgency_nFWUiX"
           ]
         }
@@ -281,28 +292,6 @@
             "padding_sides": 16
           },
           "blocks": {
-            "product_price_jKnHF6": {
-              "type": "product-price",
-              "name": "Product Price",
-              "settings": {
-                "price_suffix": "inkl. moms",
-                "price_subtext": "Du er 599,00 fra gratis levering.",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
-            "product_variant_picker_z4eRf9": {
-              "type": "product-variant-picker",
-              "name": "Product Variant Picker",
-              "settings": {
-                "padding_top": 12,
-                "padding_bottom": 12,
-                "padding_sides": 0
-              },
-              "blocks": {}
-            },
             "product_buy_buttons_gFTjCi": {
               "type": "product-buy-buttons",
               "name": "Product Buy Buttons",
@@ -380,8 +369,6 @@
             }
           },
           "block_order": [
-            "product_price_jKnHF6",
-            "product_variant_picker_z4eRf9",
             "product_buy_buttons_gFTjCi",
             "card_WQFRHd"
           ]
