@@ -158,8 +158,8 @@
       {%- when 'navigation' -%}
         {%- assign menu_handle = block.settings.menu -%}
         {%- if menu_handle != blank -%}
-          <nav class="flex items-center overflow-x-auto hide-scrollbar w-full{{ block_visibility_classes }}" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
-            <ul class="flex items-center gap-6 whitespace-nowrap list-none p-0 m-0 w-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}">
+          <nav class="flex items-center overflow-x-auto hide-scrollbar w-full{{ block_visibility_classes }}" style="height: var(--nav-block-height);" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
+            <ul class="flex items-center whitespace-nowrap list-none p-0 m-0 w-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}" style="gap: var(--nav-menu-gap);">
               {%- for link in linklists[menu_handle].links -%}
                 <li>
                   <a href="{{ link.url }}" class="text-base font-semibold text-primary hover:text-accent border-b-2 border-transparent hover:border-accent pb-1 transition-all duration-200 no-underline {% if link.active %}text-accent border-accent{% endif %}">
@@ -227,7 +227,7 @@
   {%- elsif block.settings.placement == 'right' -%}
     {%- capture right_zone_html -%}{{ right_zone_html }}{{ block_html }}{%- endcapture -%}
   {%- elsif block.settings.placement == 'fill' -%}
-    {%- capture fill_rows_html -%}{{ fill_rows_html }}<div class="w-full flex items-center min-h-[44px] py-1">{{ block_html }}</div>{%- endcapture -%}
+    {%- capture fill_rows_html -%}{{ fill_rows_html }}<div class="w-full flex items-center" style="min-height: var(--nav-block-height);">{{ block_html }}</div>{%- endcapture -%}
   {%- else -%}
     {%- capture center_zone_html -%}{{ center_zone_html }}{{ block_html }}{%- endcapture -%}
   {%- endif -%}

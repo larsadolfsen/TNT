@@ -40,6 +40,9 @@
   --grid-padding-y: 24px;
   --grid-row-gap: 12px;
 
+  --nav-block-height: 48px;
+  --nav-menu-gap: 24px;
+
   @media (min-width: --theme(--breakpoint-lg)) {
     --grid-gap: 24px;
     --grid-padding-y: 40px;
