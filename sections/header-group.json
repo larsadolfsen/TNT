@@ -73,6 +73,22 @@
     },
     "header_hygWBY": {
       "type": "header",
+      "blocks": {
+        "navigation_HkBNQW": {
+          "type": "navigation",
+          "settings": {
+            "placement": "center",
+            "menu": "main-menu",
+            "show_on_mobile_bar": false,
+            "hide_on_mobile": false,
+            "hide_on_tablet": false,
+            "hide_on_desktop": false
+          }
+        }
+      },
+      "block_order": [
+        "navigation_HkBNQW"
+      ],
       "name": "Header Row",
       "settings": {
         "content_width": "full",
