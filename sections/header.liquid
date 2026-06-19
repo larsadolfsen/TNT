@@ -138,8 +138,14 @@
     display: flex;
     align-items: center;
     height: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
     border-bottom: 2px solid transparent;
-    transition: border-color 200ms ease;
+    border-radius: 6px;
+    transition: background-color 150ms ease, border-color 200ms ease;
+  }
+  .nav-menu-item a:hover {
+    background-color: var(--color-background-shade);
   }
 {%- for block in section.blocks -%}
   {%- if block.type == 'navigation' -%}
