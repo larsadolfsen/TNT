@@ -141,10 +141,17 @@
     border-bottom: 2px solid transparent;
     transition: border-color 200ms ease;
   }
-  .nav-menu-item:hover a,
-  .nav-menu-item--active a {
-    border-bottom-color: #facc15;
+{%- for block in section.blocks -%}
+  {%- if block.type == 'navigation' -%}
+  [data-block-id="{{ block.id }}"] .nav-menu-item a {
+    border-bottom-width: {{ block.settings.border_width }}px;
   }
+  [data-block-id="{{ block.id }}"] .nav-menu-item:hover a,
+  [data-block-id="{{ block.id }}"] .nav-menu-item--active a {
+    border-bottom-color: {{ block.settings.border_color }};
+  }
+  {%- endif -%}
+{%- endfor -%}
 {%- endstyle -%}
 
 {%- assign left_zone_html = '' -%}
@@ -183,7 +190,7 @@
       {%- when 'navigation' -%}
         {%- assign menu_handle = block.settings.menu -%}
         {%- if menu_handle != blank -%}
-          <nav class="flex items-stretch overflow-x-auto hide-scrollbar w-full h-full{{ block_visibility_classes }}" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
+          <nav class="flex items-stretch overflow-x-auto hide-scrollbar w-full h-full{{ block_visibility_classes }}" aria-label="Hovedmenu" {{ block.shopify_attributes }} data-block-id="{{ block.id }}">
             <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}">
               {%- for link in linklists[menu_handle].links -%}
                 <li class="nav-menu-item transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}">
@@ -1215,6 +1222,22 @@
           "max": 72,
           "step": 2,
           "default": 24,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Aktiv border farve",
+          "default": "#facc15"
+        },
+        {
+          "type": "range",
+          "id": "border_width",
+          "label": "Border tykkelse",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "default": 2,
           "unit": "px"
         },
         {
