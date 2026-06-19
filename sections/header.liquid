@@ -149,7 +149,7 @@
     width: 100%;
   }
   .nav-menu-item a:hover span {
-    background-color: var(--color-card-high);
+    background-color: var(--color-border);
   }
 {%- endstyle -%}
 
@@ -190,7 +190,7 @@
         {%- assign menu_handle = block.settings.menu -%}
         {%- if menu_handle != blank -%}
           <nav class="flex items-stretch overflow-x-auto hide-scrollbar w-full h-full{{ block_visibility_classes }}" aria-label="Hovedmenu" {{ block.shopify_attributes }} data-block-id="{{ block.id }}">
-            <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}"{% if block.settings.placement == 'left' %} style="margin-left: -{{ block.settings.item_padding }}px;"{% endif %}>
+            <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}"{% if block.settings.placement == 'left' %} style="margin-left: -8px;"{% endif %}>
               {%- for link in linklists[menu_handle].links -%}
                 <li class="nav-menu-item transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}">
                   <a href="{{ link.url }}" class="text-base font-semibold text-primary no-underline" style="padding-inline: {{ block.settings.item_padding }}px;">
