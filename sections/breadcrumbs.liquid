@@ -22,6 +22,9 @@
     {%- endif -%}
     width: 100% !important;
     text-align: left !important;
+    /* Always place breadcrumbs above the grid: row 1, full width */
+    grid-column: 1 / -1 !important;
+    grid-row-start: 1 !important;
   }
 
   @media screen and (min-width: 840px) {
