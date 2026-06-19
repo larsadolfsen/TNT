@@ -178,7 +178,7 @@
           <nav class="flex items-stretch overflow-x-auto hide-scrollbar w-full h-full{{ block_visibility_classes }}" aria-label="Hovedmenu" {{ block.shopify_attributes }}>
             <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full {% if block.settings.placement == 'fill' or block.settings.placement == 'center' %}justify-center{% elsif block.settings.placement == 'right' %}justify-end{% else %}justify-start{% endif %}">
               {%- for link in linklists[menu_handle].links -%}
-                <li class="nav-menu-item h-full flex items-center transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}" style="padding-inline: calc(var(--nav-menu-gap) / 2);">
+                <li class="nav-menu-item h-full flex items-center transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}" style="padding-inline: {{ block.settings.item_padding }}px;">
                   <a href="{{ link.url }}" class="text-base font-semibold text-primary no-underline">
                     {{ link.title }}
                   </a>
@@ -1198,6 +1198,16 @@
           "type": "link_list",
           "id": "menu",
           "label": "Menu (Navigation)"
+        },
+        {
+          "type": "range",
+          "id": "item_padding",
+          "label": "Afstand mellem menupunkter (px)",
+          "min": 0,
+          "max": 48,
+          "step": 2,
+          "default": 12,
+          "unit": "px"
         },
         {
           "type": "checkbox",
