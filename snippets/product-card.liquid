@@ -168,7 +168,13 @@
           {%- endunless -%}
           <div class="flex items-baseline gap-1.5 flex-wrap">
             <span class="{% if is_minimal %}text-xs sm:text-sm md:text-base{% else %}text-sm sm:text-base md:text-lg{% endif %} font-bold text-primary leading-none">
-              {%- if product.variants.size > 1 and (product.price_varies or is_meter_product) -%}Fra {% endif %}{{ price | money }}
+              {%- assign show_fra = false -%}
+              {%- if product.variants.size > 1 -%}
+                {%- if product.price_varies or is_meter_product -%}
+                  {%- assign show_fra = true -%}
+                {%- endif -%}
+              {%- endif -%}
+              {%- if show_fra -%}Fra {% endif %}{{ price | money }}
             </span>
             {%- if original_price > price -%}
               <span class="text-[12px] text-primary/70 line-through leading-none">{{ original_price | money }}</span>
