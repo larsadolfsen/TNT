@@ -1,0 +1,65 @@
+{% doc %}
+  A flex container inside a Header Row 2 with alignment settings (left, center, right).
+  Accepts any theme blocks nested inside it.
+{% enddoc %}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0;
+  }
+
+  {%- if block.settings.alignment == 'left' -%}
+    #shopify-block-{{ block.id }}.shopify-block {
+      justify-content: flex-start;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+  {%- elsif block.settings.alignment == 'right' -%}
+    #shopify-block-{{ block.id }}.shopify-block {
+      justify-content: flex-end;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+  {%- else -%}
+    #shopify-block-{{ block.id }}.shopify-block {
+      justify-content: center;
+      flex-grow: 1;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<div
+  class="header-group flex items-center gap-4"
+  style="height: 48px; justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Header Group",
+  "blocks": [{ "type": "@theme" }],
+  "settings": [
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header Group"
+    }
+  ]
+}
+{% endschema %}

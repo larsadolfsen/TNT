@@ -1,55 +1,38 @@
 {% doc %}
-  Renders a header row 2 container with alignment settings (left, center, right).
+  A horizontal row inside Header 2. Add Header Group blocks inside to arrange
+  items to the left, center, or right.
 {% enddoc %}
 
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
     display: flex;
     align-items: center;
-    height: 48px;
+    width: 100%;
+    height: 56px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
   }
-
-  {%- if block.settings.alignment == 'left' -%}
-    #shopify-block-{{ block.id }}.shopify-block {
-      justify-content: flex-start;
-      flex-grow: 0;
-      flex-shrink: 0;
-    }
-  {%- elsif block.settings.alignment == 'right' -%}
-    #shopify-block-{{ block.id }}.shopify-block {
-      justify-content: flex-end;
-      flex-grow: 0;
-      flex-shrink: 0;
-    }
-  {%- else -%}
-    #shopify-block-{{ block.id }}.shopify-block {
-      justify-content: center;
-      flex-grow: 1;
-    }
-  {%- endif -%}
 {%- endstyle -%}
 
-<div class="header-row-2-group flex items-center gap-4 w-full" style="height: 48px; justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};" {{ block.shopify_attributes }}>
+<div
+  class="header-row-2 flex items-center w-full gap-4"
+  {{ block.shopify_attributes }}
+>
   {% content_for 'blocks' %}
 </div>
 
 {% schema %}
 {
   "name": "Header Row 2",
-  "blocks": [{ "type": "@theme" }],
-  "settings": [
+  "blocks": [
     {
-      "type": "select",
-      "id": "alignment",
-      "label": "Alignment",
-      "default": "center",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
+      "type": "header-group"
     }
   ],
+  "settings": [],
   "presets": [
     {
       "name": "Header Row 2"
