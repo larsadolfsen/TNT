@@ -204,7 +204,20 @@
           "type": "header-row-2",
           "name": "Header Row 2",
           "settings": {},
-          "blocks": {}
+          "blocks": {
+            "header_navigation_jztJXy": {
+              "type": "header-navigation",
+              "name": "Navigation Menu",
+              "settings": {
+                "menu": "main-menu",
+                "item_padding": 12
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "header_navigation_jztJXy"
+          ]
         }
       },
       "block_order": [
