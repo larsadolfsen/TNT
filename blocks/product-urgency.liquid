@@ -43,9 +43,15 @@
 <div id="product-urgency-section-{{ block.id }}" style="{% unless show_urgency %}display: none;{% endunless %}" {{ block.shopify_attributes }}>
   <p id="product-urgency-text-{{ block.id }}" class="text-sm font-semibold {% if urgency_state == 'low-stock' %}text-red-700{% else %}text-emerald-600{% endif %}">
     {%- if urgency_state == 'low-stock' -%}
-      {{ block.settings.urgency_text | default: "Kun få på lager. Fri fragt på ordrer over 599 kr." }}
+      {%- assign qty = target_variant.inventory_quantity -%}
+      {%- assign default_text = "Kun få på lager. Fri fragt på ordrer over 599 kr." -%}
+      {%- assign block_text = block.settings.urgency_text | default: default_text -%}
+      {{ block_text | replace: 'få', qty | replace: 'Få', qty | replace: '[count]', qty | replace: '[antal]', qty }}
     {%- else -%}
-      {{ block.settings.in_stock_text | default: "På lager. Fri fragt på ordrer over 599 kr." }}
+      {%- assign qty = target_variant.inventory_quantity -%}
+      {%- assign default_text = "På lager. Fri fragt på ordrer over 599 kr." -%}
+      {%- assign block_text = block.settings.in_stock_text | default: default_text -%}
+      {{ block_text | replace: '[count]', qty | replace: '[antal]', qty }}
     {%- endif -%}
   </p>
 </div>
@@ -107,10 +113,20 @@
       if (show) {
         sectionEl.style.display = "";
         if (state === 'low-stock') {
-          textEl.textContent = urgencyData.urgencyText;
+          const qty = targetVariant.inventory_quantity;
+          let text = urgencyData.urgencyText;
+          text = text.replace(/få/g, qty)
+                     .replace(/Få/g, qty)
+                     .replace(/\[count\]/g, qty)
+                     .replace(/\[antal\]/g, qty);
+          textEl.textContent = text;
           textEl.className = "text-sm font-semibold text-red-700";
         } else {
-          textEl.textContent = urgencyData.inStockText;
+          const qty = targetVariant.inventory_quantity;
+          let text = urgencyData.inStockText;
+          text = text.replace(/\[count\]/g, qty)
+                     .replace(/\[antal\]/g, qty);
+          textEl.textContent = text;
           textEl.className = "text-sm font-semibold text-emerald-600";
         }
       } else {
