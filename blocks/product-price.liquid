@@ -51,17 +51,17 @@
     {%- if on_sale -%}
       <!-- Savings Tag Above Price -->
       <div class="product-savings-container flex items-center mb-1">
-        <span class="product-savings-badge inline-block text-[#c8102e] text-base font-normal">
-          Rabat {{ savings }}%
+        <span class="product-savings-badge inline-block text-[#c8102e] text-2xl font-bold leading-none">
+          Spar {{ savings }}%
         </span>
       </div>
       
       <!-- Price Display -->
-      <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
+      <div class="flex items-baseline gap-x-3 flex-nowrap overflow-hidden">
         <!-- Main Sale Price with superscript cents and currency -->
-        <span class="text-4xl font-black tracking-tight text-primary whitespace-nowrap flex items-start select-all">
+        <span class="text-5xl font-black tracking-tight text-primary whitespace-nowrap flex items-start select-all">
           <span>{{ price_main }}</span>
-          <sup class="text-base font-bold ml-0.5 mt-1 text-primary">{{ price_cents }} {{ cart.currency.iso_code }}</sup>
+          <sup class="text-base font-bold ml-0.5 mt-1.5 text-primary">{{ price_cents }} {{ cart.currency.iso_code }}</sup>
         </span>
         {%- if suffix != blank -%}
           <span class="text-sm text-primary/85 font-medium whitespace-nowrap pb-0.5 ml-0.5">{{ suffix }}</span>
@@ -155,15 +155,15 @@
         container.innerHTML = `
           <!-- Savings Tag Above Price -->
           <div class="product-savings-container flex items-center mb-1">
-            <span class="product-savings-badge inline-block text-[#c8102e] text-base font-normal">
-              Rabat ${savings}%
+            <span class="product-savings-badge inline-block text-[#c8102e] text-2xl font-bold leading-none">
+              Spar ${savings}%
             </span>
           </div>
           <!-- Price Display -->
-          <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
-            <span class="text-4xl font-black tracking-tight text-primary whitespace-nowrap flex items-start select-all">
+          <div class="flex items-baseline gap-x-3 flex-nowrap overflow-hidden">
+            <span class="text-5xl font-black tracking-tight text-primary whitespace-nowrap flex items-start select-all">
               <span>${priceMain}</span>
-              <sup class="text-base font-bold ml-0.5 mt-1 text-primary">${priceCents} ${currencyCode}</sup>
+              <sup class="text-base font-bold ml-0.5 mt-1.5 text-primary">${priceCents} ${currencyCode}</sup>
             </span>
             ${suffixHtml}
           </div>
