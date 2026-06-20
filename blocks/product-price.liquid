@@ -152,32 +152,32 @@
         container.innerHTML = `
           <div class="flex items-baseline gap-3 flex-nowrap overflow-hidden">
             <span class="text-3xl font-extrabold text-[#e11d48] tracking-tight whitespace-nowrap">
-              -\${savings} %
+              -${savings} %
             </span>
             <span class="text-4xl font-black tracking-tight text-primary whitespace-nowrap flex items-start select-all">
-              <span>\${priceMain}</span>
-              <sup class="text-base font-bold ml-0.5 mt-1 text-primary">\${priceCents} \${currencyCode}</sup>
+              <span>${priceMain}</span>
+              <sup class="text-base font-bold ml-0.5 mt-1 text-primary">${priceCents} ${currencyCode}</sup>
             </span>
-            \${suffixHtml}
+            ${suffixHtml}
           </div>
           <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
             <span>Listepris:</span>
-            <span class="line-through">\${variant.compare_at_price_formatted}</span>
+            <span class="line-through">${variant.compare_at_price_formatted}</span>
             <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
           </div>
         `;
       } else {
         let suffixHtml = '';
         if (suffix) {
-          suffixHtml = `<span class="text-sm text-primary/85 font-medium whitespace-nowrap">\${suffix}</span>`;
+          suffixHtml = `<span class="text-sm text-primary/85 font-medium whitespace-nowrap">${suffix}</span>`;
         }
 
         container.innerHTML = `
           <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
             <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
-              \${variant.price_formatted}
+              ${variant.price_formatted}
             </span>
-            \${suffixHtml}
+            ${suffixHtml}
           </div>
         `;
       }
