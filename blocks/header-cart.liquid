@@ -1,0 +1,25 @@
+<div class="flex items-center" {{ block.shopify_attributes }}>
+  <a
+    href="{{ routes.cart_url }}"
+    onclick="event.preventDefault(); toggleCartDrawer(true);"
+    class="relative cursor-pointer text-primary no-underline flex items-center justify-center hover:opacity-80 transition-opacity"
+  >
+    <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
+    <span
+      id="cart-counter"
+      class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}"
+    >{{ cart.item_count }}</span>
+  </a>
+</div>
+
+{% schema %}
+{
+  "name": "Cart Icon",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Cart Icon"
+    }
+  ]
+}
+{% endschema %}

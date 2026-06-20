@@ -1,0 +1,31 @@
+<div class="flex items-center" {{ block.shopify_attributes }}>
+  <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
+    <div class="relative w-full">
+      <input
+        type="text"
+        name="q"
+        class="w-full h-10 pl-4 pr-24 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all"
+        placeholder="Søg..."
+      >
+      <button
+        type="submit"
+        class="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 rounded-full bg-primary text-on-primary hover:opacity-90 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-xs"
+      >
+        <span class="material-symbols-outlined text-[15px]">search</span>
+        <span>Søg</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+{% schema %}
+{
+  "name": "Search Bar",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Search Bar"
+    }
+  ]
+}
+{% endschema %}

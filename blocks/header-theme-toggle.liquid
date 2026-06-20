@@ -1,0 +1,23 @@
+<div class="flex items-center" {{ block.shopify_attributes }}>
+  <button
+    type="button"
+    id="theme-toggle"
+    onclick="toggleTheme()"
+    class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-80 transition-opacity duration-200"
+    aria-label="Skift tema"
+  >
+    <span class="material-symbols-outlined text-2xl text-primary block theme-toggle-icon">dark_mode</span>
+  </button>
+</div>
+
+{% schema %}
+{
+  "name": "Theme Toggle",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Theme Toggle"
+    }
+  ]
+}
+{% endschema %}

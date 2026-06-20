@@ -1,0 +1,28 @@
+<div class="flex items-center" {{ block.shopify_attributes }}>
+  <button
+    id="menu-toggle"
+    class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity"
+    aria-label="Menu"
+    onclick="toggleMobileMenu(true)"
+  >
+    <span class="material-symbols-outlined text-2xl text-primary block">menu</span>
+  </button>
+</div>
+
+{% schema %}
+{
+  "name": "Mobile Hamburger Menu",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "mobile_menu",
+      "label": "Mobile Menu Override"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mobile Hamburger Menu"
+    }
+  ]
+}
+{% endschema %}

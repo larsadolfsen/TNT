@@ -1,0 +1,45 @@
+<div class="flex items-center" {{ block.shopify_attributes }}>
+  <style>
+    .header-logo-link--{{ block.id }} {
+      font-size: {{ block.settings.logo_height }}px;
+    }
+  </style>
+  <a
+    href="{{ routes.root_url }}"
+    class="header-logo-link--{{ block.id }} font-serif font-bold text-primary tracking-tight no-underline block hover:opacity-90 transition-opacity"
+  >
+    {%- if block.settings.logo_text != blank -%}
+      {{ block.settings.logo_text }}
+    {%- else -%}
+      {{ shop.name }}
+    {%- endif -%}
+  </a>
+</div>
+
+{% schema %}
+{
+  "name": "Logo",
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text Override"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 12,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 24,
+      "label": "Height"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo"
+    }
+  ]
+}
+{% endschema %}
