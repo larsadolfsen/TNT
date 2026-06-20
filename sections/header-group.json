@@ -118,16 +118,34 @@
     "header_2_XQzWTW": {
       "type": "header-2",
       "blocks": {
-        "header_group_L3iNKV": {
+        "header_group_9fgBYq": {
+          "type": "header-group",
+          "name": "Header Group",
+          "settings": {
+            "alignment": "left"
+          },
+          "blocks": {}
+        },
+        "header_group_Gc3zbg": {
           "type": "header-group",
           "name": "Header Group",
           "settings": {
             "alignment": "center"
           },
           "blocks": {}
+        },
+        "header_group_L3iNKV": {
+          "type": "header-group",
+          "name": "Header Group",
+          "settings": {
+            "alignment": "right"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
+        "header_group_9fgBYq",
+        "header_group_Gc3zbg",
         "header_group_L3iNKV"
       ],
       "name": "Header 2",
