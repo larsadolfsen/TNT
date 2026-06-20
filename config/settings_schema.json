@@ -69,6 +69,12 @@
         "label": "Tekst på rabatmærkat",
         "default": "[savings] % rabat",
         "info": "Brug '[savings]' til at indsætte rabatprocenten. F.eks. '[savings] % rabat'"
+      },
+      {
+        "type": "text",
+        "id": "compare_at_price_label",
+        "label": "Tekst for før-pris (Normalpris / Listepris)",
+        "default": "Normalpris"
       }
     ]
   },
