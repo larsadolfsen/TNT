@@ -513,7 +513,7 @@
         <span class="text-primary/85">Subtotal</span>
         <span id="cart-subtotal" class="font-bold text-primary text-lg">0,00 Kr.</span>
       </div>
-      <p id="cart-shipping-message" class="text-xs text-primary/85">Fragt beregnes ved kassen. Fri fragt ved køb over {{ cart_block.settings.free_shipping_threshold | default: 499 }} kr.</p>
+      <p id="cart-shipping-message" class="text-xs text-primary/85">{{ cart_block.settings.free_shipping_default_message | default: "Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr." }}</p>
       <div class="flex flex-col gap-2">
         <a href="/checkout" class="w-full py-3 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all no-underline block">Gå til betaling</a>
         <button onclick="toggleCartDrawer(false)" class="w-full py-2 text-sm text-primary font-semibold hover:underline bg-transparent border-0 cursor-pointer">Fortsæt med at handle</button>
@@ -1481,6 +1481,12 @@
           "id": "free_shipping_success_message",
           "label": "Besked ved opnået fri fragt",
           "default": "Du har opnået fri fragt!"
+        },
+        {
+          "type": "text",
+          "id": "free_shipping_default_message",
+          "label": "Standard fragtbesked",
+          "default": "Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr."
         }
       ]
     },
