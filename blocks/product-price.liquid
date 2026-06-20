@@ -51,8 +51,8 @@
     {%- if on_sale -%}
       <!-- Savings Tag Above Price -->
       <div class="product-savings-container flex items-center mb-1">
-        <span class="product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase">
-          {{ savings }}% rabat
+        <span class="product-savings-badge inline-block text-[#c8102e] text-base font-normal">
+          Rabat {{ savings }}%
         </span>
       </div>
       
@@ -70,7 +70,7 @@
       
       <!-- List price row -->
       <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
-        <span>Listepris:</span>
+        <span>{{ block.settings.compare_at_price_label | default: 'Normalpris' }}:</span>
         <span class="line-through">{{ compare_price | money }}</span>
         <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
       </div>
@@ -155,8 +155,8 @@
         container.innerHTML = `
           <!-- Savings Tag Above Price -->
           <div class="product-savings-container flex items-center mb-1">
-            <span class="product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase">
-              ${savings}% rabat
+            <span class="product-savings-badge inline-block text-[#c8102e] text-base font-normal">
+              Rabat ${savings}%
             </span>
           </div>
           <!-- Price Display -->
@@ -168,7 +168,7 @@
             ${suffixHtml}
           </div>
           <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
-            <span>Listepris:</span>
+            <span>{{ block.settings.compare_at_price_label | default: 'Normalpris' }}:</span>
             <span class="line-through">${variant.compare_at_price_formatted}</span>
             <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
           </div>
@@ -208,6 +208,12 @@
       "id": "price_suffix",
       "label": "Price suffix",
       "default": "pr. meter inkl. moms"
+    },
+    {
+      "type": "text",
+      "id": "compare_at_price_label",
+      "label": "Listepris label",
+      "default": "Normalpris"
     },
     {
       "type": "text",
