@@ -67,27 +67,11 @@
                 "padding_sides": 0
               },
               "blocks": {}
-            },
-            "badge_jAGwAH": {
-              "type": "badge",
-              "name": "Badge",
-              "settings": {
-                "text": "BESTSELLER",
-                "only_if_in_stock": false,
-                "alignment": "left",
-                "background_color": "#000000",
-                "text_color": "#ffffff",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
-              },
-              "blocks": {}
             }
           },
           "block_order": [
             "page_title_pYrpGw",
-            "product_trust_zFKJtn",
-            "badge_jAGwAH"
+            "product_trust_zFKJtn"
           ]
         }
       },
