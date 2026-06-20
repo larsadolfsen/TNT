@@ -1,5 +1,5 @@
 {% doc %}
-  Renders a header group container with alignment settings (left, center, right).
+  Renders a header row 2 container with alignment settings (left, center, right).
 {% enddoc %}
 
 {%- style -%}
@@ -29,13 +29,13 @@
   {%- endif -%}
 {%- endstyle -%}
 
-<div class="header-group flex items-center gap-4 w-full" style="height: 48px; justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};" {{ block.shopify_attributes }}>
+<div class="header-row-2-group flex items-center gap-4 w-full" style="height: 48px; justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};" {{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 
 {% schema %}
 {
-  "name": "Header Group",
+  "name": "Header Row 2",
   "blocks": [{ "type": "@theme" }],
   "settings": [
     {
@@ -52,7 +52,7 @@
   ],
   "presets": [
     {
-      "name": "Header Group"
+      "name": "Header Row 2"
     }
   ]
 }
