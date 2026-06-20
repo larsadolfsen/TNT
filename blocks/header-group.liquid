@@ -6,6 +6,7 @@
   #shopify-block-{{ block.id }}.shopify-block {
     display: flex;
     align-items: center;
+    height: 48px;
   }
 
   {%- if block.settings.alignment == 'left' -%}
@@ -28,7 +29,7 @@
   {%- endif -%}
 {%- endstyle -%}
 
-<div class="header-group flex items-center gap-4 w-full" style="justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};" {{ block.shopify_attributes }}>
+<div class="header-group flex items-center gap-4 w-full" style="height: 48px; justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};" {{ block.shopify_attributes }}>
   {% content_for 'blocks' %}
 </div>
 
