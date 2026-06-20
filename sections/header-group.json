@@ -117,15 +117,38 @@
     },
     "header_2_XQzWTW": {
       "type": "header-2",
+      "blocks": {
+        "header_group_L3iNKV": {
+          "type": "header-group",
+          "name": "Header Group",
+          "settings": {
+            "alignment": "center"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "header_group_L3iNKV"
+      ],
       "name": "Header 2",
       "settings": {
         "menu": "main-menu"
+      }
+    },
+    "breadcrumbs_wVhjrQ": {
+      "type": "breadcrumbs",
+      "name": "Brødkrummer",
+      "settings": {
+        "max_width": "none",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     }
   },
   "order": [
     "header",
     "header_hygWBY",
-    "header_2_XQzWTW"
+    "header_2_XQzWTW",
+    "breadcrumbs_wVhjrQ"
   ]
 }

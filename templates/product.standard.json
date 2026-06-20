@@ -9,15 +9,6 @@
  */
 {
   "sections": {
-    "breadcrumbs_KPbdBM": {
-      "type": "breadcrumbs",
-      "name": "Brødkrummer",
-      "settings": {
-        "max_width": "none",
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
     "section_DegQzi": {
       "type": "section",
       "blocks": {
@@ -895,7 +886,6 @@
     }
   },
   "order": [
-    "breadcrumbs_KPbdBM",
     "section_DegQzi",
     "section_hhUykJ",
     "section_CjVmWk",
