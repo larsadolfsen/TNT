@@ -129,7 +129,29 @@
               "settings": {
                 "alignment": "left"
               },
-              "blocks": {}
+              "blocks": {
+                "header_hamburger_eijMgC": {
+                  "type": "header-hamburger",
+                  "name": "Mobile Hamburger Menu",
+                  "settings": {
+                    "mobile_menu": "main-menu"
+                  },
+                  "blocks": {}
+                },
+                "header_logo_AAwJzr": {
+                  "type": "header-logo",
+                  "name": "Logo",
+                  "settings": {
+                    "logo_text": "Textil & Voksdug",
+                    "logo_height": 20
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "header_hamburger_eijMgC",
+                "header_logo_AAwJzr"
+              ]
             },
             "header_group_bwCwM3": {
               "type": "header-group",
@@ -137,7 +159,17 @@
               "settings": {
                 "alignment": "center"
               },
-              "blocks": {}
+              "blocks": {
+                "header_search_ghDpRc": {
+                  "type": "header-search",
+                  "name": "Search Bar",
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "header_search_ghDpRc"
+              ]
             },
             "header_group_RaiAYV": {
               "type": "header-group",
@@ -145,7 +177,24 @@
               "settings": {
                 "alignment": "right"
               },
-              "blocks": {}
+              "blocks": {
+                "header_theme_toggle_z9f7eF": {
+                  "type": "header-theme-toggle",
+                  "name": "Theme Toggle",
+                  "settings": {},
+                  "blocks": {}
+                },
+                "header_cart_4wAidd": {
+                  "type": "header-cart",
+                  "name": "Cart Icon",
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "header_theme_toggle_z9f7eF",
+                "header_cart_4wAidd"
+              ]
             }
           },
           "block_order": [
