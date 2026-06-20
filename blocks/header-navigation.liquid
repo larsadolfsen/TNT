@@ -1,0 +1,62 @@
+{% doc %}
+  A navigation menu block for use inside a Header Group or directly in a Header Row 2.
+{% enddoc %}
+
+{%- assign menu_handle = block.settings.menu -%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+    height: 100%;
+  }
+{%- endstyle -%}
+
+{%- if menu_handle != blank -%}
+  <nav
+    class="flex items-stretch overflow-x-auto hide-scrollbar w-full h-full"
+    aria-label="Hovedmenu"
+    {{ block.shopify_attributes }}
+    data-block-id="{{ block.id }}"
+  >
+    <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full justify-start">
+      {%- for link in linklists[menu_handle].links -%}
+        <li class="nav-menu-item transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}">
+          <a href="{{ link.url }}" class="text-base font-semibold text-primary no-underline" style="padding-inline: {{ block.settings.item_padding | default: 12 }}px;">
+            <span>{{ link.title }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Navigation Menu",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "range",
+      "id": "item_padding",
+      "label": "Spacing between items",
+      "min": 0,
+      "max": 72,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Navigation Menu"
+    }
+  ]
+}
+{% endschema %}

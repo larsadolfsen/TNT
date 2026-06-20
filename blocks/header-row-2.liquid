@@ -1,6 +1,6 @@
 {% doc %}
-  A horizontal row inside Header 2. Add Header Group blocks inside to arrange
-  items to the left, center, or right.
+  A horizontal row inside Header 2. Add Header Group blocks to arrange items
+  left/center/right. Any other block added directly will span full width.
 {% enddoc %}
 
 {%- style -%}
@@ -15,6 +15,12 @@
     padding-left: 0;
     padding-right: 0;
   }
+
+  /* Direct children that are NOT a header-group take full width */
+  #shopify-block-{{ block.id }} > .shopify-block:not(.header-group-block) {
+    flex: 1 1 100%;
+    width: 100%;
+  }
 {%- endstyle -%}
 
 <div
@@ -28,9 +34,7 @@
 {
   "name": "Header Row 2",
   "blocks": [
-    {
-      "type": "header-group"
-    }
+    { "type": "@theme" }
   ],
   "settings": [],
   "presets": [
