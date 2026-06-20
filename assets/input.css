@@ -942,4 +942,14 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   display: block !important;
 }
 
+/* Fix z-index stacking context for mobile sticky buy/customize bars so they display on top of other page sections but behind the sticky header */
+@media (max-width: 767px) {
+  .shopify-section:has(#mobile-sticky-buy-bar),
+  .shopify-section:has(#mobile-sticky-customize-bar) {
+    position: relative;
+    z-index: 99;
+  }
+}
+
+
 

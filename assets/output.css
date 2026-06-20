@@ -911,6 +911,9 @@
   .self-start {
     align-self: flex-start;
   }
+  .self-stretch {
+    align-self: stretch;
+  }
   .truncate {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -3115,6 +3118,12 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 }
 .filter-checkbox:checked ~ div span {
   display: block !important;
+}
+@media (max-width: 767px) {
+  .shopify-section:has(#mobile-sticky-buy-bar), .shopify-section:has(#mobile-sticky-customize-bar) {
+    position: relative;
+    z-index: 99;
+  }
 }
 @property --tw-translate-x {
   syntax: "*";

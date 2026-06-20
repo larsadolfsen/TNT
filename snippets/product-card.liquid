@@ -46,10 +46,10 @@
       endif
     endfor
 
-    # Check if this is a meter product based on title, type, or tags/options
+    # Check if this is a meter product based on title, type, tags/options, or metafield
     assign is_meter_product = false
     assign product_title_down = product.title | downcase
-    if product.type == 'Metervare' or product_title_down contains 'voksdug' or product_title_down contains 'bordbeskytter' or product_title_down contains 'meter' or thickness != blank or width != blank or form != blank
+    if product.type == 'Metervare' or product_title_down contains 'voksdug' or product_title_down contains 'bordbeskytter' or product_title_down contains 'meter' or thickness != blank or width != blank or form != blank or product.metafields.custom.metervare.value == true or product.metafields.custom.metervare == true
       assign is_meter_product = true
     endif
 
@@ -69,6 +69,13 @@
     assign variant = product.first_available_variant | default: product.variants[0]
     assign price = product.price
     assign original_price = product.compare_at_price
+
+    if is_meter_product
+      assign price = product.price | times: 100
+      if original_price != blank and original_price > 0
+        assign original_price = product.compare_at_price | times: 100
+      endif
+    endif
 
     # Let's mock a rating if metafields are not present, or use product rating metafields if they are
     assign rating = product.metafields.reviews.rating.value | default: 4.8
@@ -236,23 +243,7 @@
             {%- endfor -%}
           </div>
         {%- endif -%}
- 
-        {%- if is_meter_product -%}
-          <!-- Shape swatches -->
-          {%- assign current_form = form | default: 'Firkantet' | downcase -%}
-          <div class="product-shape-swatches mt-3 space-y-2 border-t border-outline-variant/40 pt-2">
-            <div class="flex flex-col gap-0.5">
-              <span class="text-[9px] font-bold text-primary/70 uppercase tracking-wider">Form: <span class="text-primary font-semibold font-sans normal-case text-[10px]">{{ form | default: 'Firkantet' }}</span></span>
-              <div class="flex flex-wrap gap-1.5 mt-0.5">
-                <a href="/products/firkantet-dug-1" class="px-2.5 py-1 text-[11px] rounded-full border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center {% if current_form == 'firkantet' %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}">Firkantet</a>
-                <a href="/products/afrunding" class="px-2.5 py-1 text-[11px] rounded-full border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center {% if current_form == 'rund' %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}">Rund</a>
-                <a href="/products/oval-dug" class="px-2.5 py-1 text-[11px] rounded-full border bg-card-high cursor-pointer transition-all no-underline text-center flex items-center justify-center {% if current_form == 'oval' %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}">Oval</a>
-              </div>
-            </div>
-          </div>
-        {%- endif -%}
- 
-        <script type="application/json" class="product-variants-json">
+         <script type="application/json" class="product-variants-json">
           {
             "id": {{ product.id | json }},
             "title": {{ product.title | json }},
@@ -273,7 +264,7 @@
                   assign v_display_price = v.price
                   assign v_display_orig_price = v.compare_at_price
                   
-                  if product.type == 'Metervare'
+                  if is_meter_product
                     assign v_display_price = v.price | times: 100
                     if v.compare_at_price != blank and v.compare_at_price > 0
                       assign v_display_orig_price = v.compare_at_price | times: 100
