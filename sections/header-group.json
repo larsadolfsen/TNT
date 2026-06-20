@@ -114,10 +114,18 @@
         "hide_on_tablet": false,
         "hide_on_desktop": false
       }
+    },
+    "header_2_XQzWTW": {
+      "type": "header-2",
+      "name": "Header 2",
+      "settings": {
+        "menu": "main-menu"
+      }
     }
   },
   "order": [
     "header",
-    "header_hygWBY"
+    "header_hygWBY",
+    "header_2_XQzWTW"
   ]
 }
