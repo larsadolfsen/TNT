@@ -505,16 +505,20 @@
         <!-- Indsættes dynamisk via JavaScript -->
       </div>
     </div>
-    <div class="pt-6 border-t border-outline-variant space-y-4">
+    <div class="pt-6 border-t border-outline-variant space-y-4" id="cart-drawer-footer"
+         data-threshold="{{ cart_block.settings.free_shipping_threshold | default: 499 }}"
+         data-move-to-bottom="{% if cart_block.settings.move_free_shipping_to_bottom != null %}{{ cart_block.settings.move_free_shipping_to_bottom }}{% else %}true{% endif %}"
+         data-success-message="{{ cart_block.settings.free_shipping_success_message | default: 'Du har opnået fri fragt!' | escape }}">
       <div class="flex justify-between items-center text-sm">
         <span class="text-primary/85">Subtotal</span>
         <span id="cart-subtotal" class="font-bold text-primary text-lg">0,00 Kr.</span>
       </div>
-      <p class="text-xs text-primary/85">Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr.</p>
+      <p id="cart-shipping-message" class="text-xs text-primary/85">Fragt beregnes ved kassen. Fri fragt ved køb over {{ cart_block.settings.free_shipping_threshold | default: 499 }} kr.</p>
       <div class="flex flex-col gap-2">
         <a href="/checkout" class="w-full py-3 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all no-underline block">Gå til betaling</a>
         <button onclick="toggleCartDrawer(false)" class="w-full py-2 text-sm text-primary font-semibold hover:underline bg-transparent border-0 cursor-pointer">Fortsæt med at handle</button>
       </div>
+      <p id="cart-shipping-message-bottom" class="text-xs text-center text-emerald-600 font-semibold hidden"></p>
     </div>
   </div>
 </div>
@@ -767,6 +771,28 @@
     });
 
     cartSubtotal.innerText = formatMoney(calculatedTotalPrice);
+
+    // Update shipping messages based on subtotal and free shipping settings
+    const cartFooter = document.getElementById("cart-drawer-footer");
+    if (cartFooter) {
+      const threshold = parseInt(cartFooter.getAttribute("data-threshold") || "499", 10) * 100;
+      const moveToBottom = cartFooter.getAttribute("data-move-to-bottom") === "true";
+      const successMessage = cartFooter.getAttribute("data-success-message") || "Du har opnået fri fragt!";
+      
+      const shippingMessageEl = document.getElementById("cart-shipping-message");
+      const shippingMessageBottomEl = document.getElementById("cart-shipping-message-bottom");
+      
+      if (shippingMessageEl && shippingMessageBottomEl) {
+        if (calculatedTotalPrice >= threshold && moveToBottom) {
+          shippingMessageEl.classList.add("hidden");
+          shippingMessageBottomEl.textContent = successMessage;
+          shippingMessageBottomEl.classList.remove("hidden");
+        } else {
+          shippingMessageEl.classList.remove("hidden");
+          shippingMessageBottomEl.classList.add("hidden");
+        }
+      }
+    }
   }
 
   async function updateCartUI() {
@@ -1433,6 +1459,28 @@
           "id": "hide_on_desktop",
           "label": "Hide on Desktop",
           "default": false
+        },
+        {
+          "type": "header",
+          "content": "Fri Fragt Indstillinger"
+        },
+        {
+          "type": "checkbox",
+          "id": "move_free_shipping_to_bottom",
+          "label": "Flyt fri fragt meddelelse til bunden ved opnåelse",
+          "default": true
+        },
+        {
+          "type": "number",
+          "id": "free_shipping_threshold",
+          "label": "Fri fragt grænse (DKK)",
+          "default": 499
+        },
+        {
+          "type": "text",
+          "id": "free_shipping_success_message",
+          "label": "Besked ved opnået fri fragt",
+          "default": "Du har opnået fri fragt!"
         }
       ]
     },
