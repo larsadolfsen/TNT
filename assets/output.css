@@ -1526,10 +1526,6 @@
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
   }
-  .font-extrabold {
-    --tw-font-weight: var(--font-weight-extrabold);
-    font-weight: var(--font-weight-extrabold);
-  }
   .font-medium {
     --tw-font-weight: var(--font-weight-medium);
     font-weight: var(--font-weight-medium);
@@ -1573,9 +1569,6 @@
   }
   .text-\[\#FFB800\] {
     color: #FFB800;
-  }
-  .text-\[\#e11d48\] {
-    color: #e11d48;
   }
   .text-accent {
     color: var(--color-accent);

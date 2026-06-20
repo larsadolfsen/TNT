@@ -47,14 +47,17 @@
 {%- endstyle -%}
 
 <div {{ block.shopify_attributes }}>
-  <div id="product-price-container-{{ block.id }}" class="flex flex-col gap-1">
+  <div id="product-price-container-{{ block.id }}" class="flex flex-col gap-1.5">
     {%- if on_sale -%}
-      <!-- Sale layout -->
-      <div class="flex items-baseline gap-3 flex-nowrap overflow-hidden">
-        <!-- Percentage Discount -->
-        <span class="text-3xl font-extrabold text-[#e11d48] tracking-tight whitespace-nowrap">
-          -{{ savings }} %
+      <!-- Savings Tag Above Price -->
+      <div class="product-savings-container flex items-center mb-1">
+        <span class="product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase">
+          {{ savings }}% rabat
         </span>
+      </div>
+      
+      <!-- Price Display -->
+      <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
         <!-- Main Sale Price with superscript cents and currency -->
         <span class="text-4xl font-black tracking-tight text-primary whitespace-nowrap flex items-start select-all">
           <span>{{ price_main }}</span>
@@ -150,10 +153,14 @@
         }
 
         container.innerHTML = `
-          <div class="flex items-baseline gap-3 flex-nowrap overflow-hidden">
-            <span class="text-3xl font-extrabold text-[#e11d48] tracking-tight whitespace-nowrap">
-              -${savings} %
+          <!-- Savings Tag Above Price -->
+          <div class="product-savings-container flex items-center mb-1">
+            <span class="product-savings-badge inline-block bg-[#c8102e] text-white text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase">
+              ${savings}% rabat
             </span>
+          </div>
+          <!-- Price Display -->
+          <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
             <span class="text-4xl font-black tracking-tight text-primary whitespace-nowrap flex items-start select-all">
               <span>${priceMain}</span>
               <sup class="text-base font-bold ml-0.5 mt-1 text-primary">${priceCents} ${currencyCode}</sup>
