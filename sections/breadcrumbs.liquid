@@ -19,22 +19,26 @@
       margin-right: auto !important;
       padding-left: 0 !important;
       padding-right: 1rem !important;
-    {%- elsif section.settings.max_width != 'none' and section.settings.max_width != blank -%}
-      max-width: {{ section.settings.max_width }} !important;
-      margin-left: 0 !important;
-      margin-right: auto !important;
-      padding-left: 0 !important;
-      padding-right: 1rem !important;
-    {%- else -%}
+    {%- elsif section.settings.max_width == 'none' or section.settings.max_width == blank -%}
       max-width: 100% !important;
       margin-left: 0 !important;
       margin-right: 0 !important;
       padding-left: 0 !important;
       padding-right: 0 !important;
+    {%- else -%}
+      max-width: {{ section.settings.max_width }} !important;
+      margin-left: 0 !important;
+      margin-right: auto !important;
+      padding-left: 0 !important;
+      padding-right: 1rem !important;
     {%- endif -%}
   }
 
   @media screen and (max-width: 839px) {
+    #shopify-section-{{ section.id }} {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
     #shopify-section-{{ section.id }} + .shopify-section {
       margin-top: -12px !important;
     }
