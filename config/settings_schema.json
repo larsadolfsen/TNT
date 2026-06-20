@@ -73,6 +73,17 @@
     ]
   },
   {
+    "name": "Logo & Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon-billede / Favicon image",
+        "info": "Bliver skaleret til 32x32px / Will be scaled to 32x32px"
+      }
+    ]
+  },
+  {
     "name": "Lys Tema / Light Theme",
     "settings": [
       {
