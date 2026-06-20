@@ -168,7 +168,7 @@
           {%- endunless -%}
           <div class="flex items-baseline gap-1.5 flex-wrap">
             <span class="{% if is_minimal %}text-xs sm:text-sm md:text-base{% else %}text-sm sm:text-base md:text-lg{% endif %} font-bold text-primary leading-none">
-              {%- if product.price_varies or is_meter_product -%}Fra {% endif -%}{{ price | money }}
+              {%- if product.price_varies or is_meter_product -%}Fra {%- endif -%}{{ price | money }}
             </span>
             {%- if original_price > price -%}
               <span class="text-[12px] text-primary/70 line-through leading-none">{{ original_price | money }}</span>
@@ -181,7 +181,68 @@
           </div>
         </div>
 
-
+        {%- if product.variants.size > 1 -%}
+          <div class="product-variant-swatches mt-3 space-y-{% if is_minimal %}2{% else %}2.5{% endif %} border-t border-outline-variant/40 pt-2{% unless is_minimal %}.5{% endunless %}">
+            {%- for option in product.options_with_values -%}
+              {%- assign option_name_down = option.name | downcase -%}
+              {%- assign is_color = false -%}
+              {%- if option_name_down contains 'farve' or option_name_down contains 'mønster' or option_name_down contains 'color' or option_name_down contains 'colour' -%}
+                {%- assign is_color = true -%}
+              {%- endif -%}
+              
+              <div class="flex flex-col gap-1">
+                <span class="text-[9px] font-bold text-primary/70 uppercase tracking-wider">
+                  {{ option.name }}: <span class="text-primary font-semibold font-sans normal-case text-[10px]" data-selected-option-label="{{ product.id }}-{{ option.name }}">{{ variant.options[forloop.index0] }}</span>
+                </span>
+                <div class="flex flex-wrap gap-{% if is_minimal %}1{% else %}1.5{% endif %} mt-0.5">
+                  {%- for value in option.values -%}
+                    {%- assign is_selected = false -%}
+                    {%- if variant.options[forloop.parentloop.index0] == value -%}
+                      {%- assign is_selected = true -%}
+                    {%- endif -%}
+                    
+                    {%- if is_color -%}
+                      {%- assign swatch_img = product.featured_image -%}
+                      {%- for v in product.variants -%}
+                        {%- if v.options[forloop.parentloop.parentloop.index0] == value -%}
+                          {%- if v.featured_image != blank -%}
+                            {%- assign swatch_img = v.featured_image -%}
+                          {%- endif -%}{%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      
+                      <button 
+                        type="button"
+                        class="inline-flex items-center gap-1.5 {% if is_minimal %}px-2 py-0.5 text-[9px] sm:text-[11px]{% else %}px-2.5 py-1 text-[11px]{% endif %} rounded-full border bg-card-high cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}"
+                        data-product-id="{{ product.id }}"
+                        data-option-name="{{ option.name }}"
+                        data-option-value="{{ value | escape }}"
+                        onclick="onCardVariantClick(this)"
+                        title="{{ value | escape }}"
+                      >
+                        <span class="{% if is_minimal %}w-3 h-3 sm:w-3.5 sm:h-3.5{% else %}w-3.5 h-3.5{% endif %} rounded-full overflow-hidden flex-shrink-0 border border-black/10">
+                          <img src="{{ swatch_img | image_url: width: 50 }}" alt="{{ value | escape }}" class="w-full h-full object-cover" />
+                        </span>
+                        <span>{{ value }}</span>
+                      </button>
+                    {%- else -%}
+                      <button 
+                        type="button"
+                        class="{% if is_minimal %}px-2 py-0.5 text-[9px] sm:text-[11px]{% else %}px-2.5 py-1 text-[11px]{% endif %} rounded-full border bg-card-high cursor-pointer transition-all {% if is_selected %}border-[var(--color-accent)] bg-[var(--color-accent)]/5 text-primary font-bold{% else %}border-outline-variant hover:border-[var(--color-accent)]/60 text-primary/80{% endif %}"
+                        data-product-id="{{ product.id }}"
+                        data-option-name="{{ option.name }}"
+                        data-option-value="{{ value | escape }}"
+                        onclick="onCardVariantClick(this)"
+                      >
+                        {{ value }}
+                      </button>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
          <script type="application/json" class="product-variants-json">
           {
             "id": {{ product.id | json }},
