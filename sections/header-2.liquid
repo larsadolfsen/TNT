@@ -1,0 +1,524 @@
+{%- liquid
+  # Header 2 builder section
+-%}
+
+<header class="header-2 bg-white border-b border-outline-variant py-4 px-4">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="header-row flex items-center justify-between w-full gap-4">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu Slide-out Drawer -->
+<div id="mobile-menu-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-start transition-opacity duration-300 opacity-0">
+  <div class="bg-white w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 -translate-x-full">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
+        <span class="font-serif text-xl font-bold text-primary tracking-tight">Menu</span>
+        <button onclick="toggleMobileMenu(false)" class="material-symbols-outlined text-2xl text-primary bg-transparent border-0 cursor-pointer" aria-label="Luk menu">close</button>
+      </div>
+      <nav class="space-y-4 flex flex-col">
+        <a href="{{ routes.root_url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">Forside</a>
+        {%- if section.settings.menu != blank -%}
+          {%- for link in linklists[section.settings.menu].links -%}
+            <a href="{{ link.url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">{{ link.title }}</a>
+          {%- endfor -%}
+        {%- endif -%}
+      </nav>
+    </div>
+    <div class="pt-6 border-t border-outline-variant text-xs text-primary/85 space-y-2">
+      <p class="font-semibold text-primary">Brug for hjælp?</p>
+      <p>Ring til os: +45 70 20 10 30</p>
+      <p>E-mail: support@textilogvoksdug.dk</p>
+    </div>
+  </div>
+</div>
+
+<!-- Shopping Cart Slide-out Drawer -->
+<div id="cart-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end transition-opacity duration-300 opacity-0">
+  <div class="bg-white w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
+        <span class="font-serif text-xl font-bold text-primary tracking-tight">Din Indkøbskurv</span>
+        <button onclick="toggleCartDrawer(false)" class="material-symbols-outlined text-2xl text-primary bg-transparent border-0 cursor-pointer" aria-label="Luk kurv">close</button>
+      </div>
+      <!-- Cart Items List -->
+      <div id="cart-items" class="space-y-4 overflow-y-auto max-h-[calc(100vh-280px)] pr-2 hide-scrollbar">
+        <!-- Indsættes dynamisk via JavaScript -->
+      </div>
+    </div>
+    <div class="pt-6 border-t border-outline-variant space-y-4">
+      <div class="flex justify-between items-center text-sm">
+        <span class="text-primary/85">Subtotal</span>
+        <span id="cart-subtotal" class="font-bold text-primary text-lg">0,00 Kr.</span>
+      </div>
+      <p class="text-xs text-primary/85">Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr.</p>
+      <div class="flex flex-col gap-2">
+        <a href="/checkout" class="w-full py-3 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all no-underline block">Gå til betaling</a>
+        <button onclick="toggleCartDrawer(false)" class="w-full py-2 text-sm text-primary font-semibold hover:underline bg-transparent border-0 cursor-pointer">Fortsæt med at handle</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function formatMoney(cents) {
+    const kr = cents / 100;
+    return kr.toFixed(2).replace('.', ',') + ' Kr.';
+  }
+
+  function toggleMobileMenu(open) {
+    const drawer = document.getElementById("mobile-menu-drawer");
+    if (!drawer) return;
+    const panel = drawer.querySelector("div");
+    if (open) {
+      drawer.classList.remove("hidden");
+      setTimeout(() => {
+        drawer.classList.remove("opacity-0");
+        panel.classList.remove("-translate-x-full");
+      }, 10);
+    } else {
+      drawer.classList.add("opacity-0");
+      panel.classList.add("-translate-x-full");
+      setTimeout(() => {
+        drawer.classList.add("hidden");
+      }, 300);
+    }
+  }
+
+  function toggleSearchInput() {
+    const searchForm = document.getElementById("header-search-form");
+    if (!searchForm) return;
+    searchForm.classList.toggle("hidden");
+    if (!searchForm.classList.contains("hidden")) {
+      const searchInput = document.getElementById("search-input");
+      if (searchInput) {
+        searchInput.focus();
+      }
+    }
+  }
+
+  function toggleCartDrawer(open) {
+    const drawer = document.getElementById("cart-drawer");
+    if (!drawer) return;
+    const panel = drawer.querySelector("div");
+    if (open) {
+      drawer.classList.remove("hidden");
+      updateCartUI(); // Opdater elementer ved åbning
+      setTimeout(() => {
+        drawer.classList.remove("opacity-0");
+        panel.classList.remove("translate-x-full");
+      }, 10);
+    } else {
+      drawer.classList.add("opacity-0");
+      panel.classList.add("translate-x-full");
+      setTimeout(() => {
+        drawer.classList.add("hidden");
+      }, 300);
+    }
+  }
+
+  let currentCart = null;
+
+  function renderCart(cart) {
+    currentCart = cart;
+
+    // Opdater kurve-tællere
+    const counters = document.querySelectorAll('#cart-counter');
+    counters.forEach(counter => {
+      counter.innerText = cart.item_count;
+      if (cart.item_count > 0) {
+        counter.classList.remove("scale-0");
+        counter.classList.add("scale-100");
+      } else {
+        counter.classList.remove("scale-100");
+        counter.classList.add("scale-0");
+      }
+    });
+
+    // Opdater kurveskuffen
+    const cartItemsContainer = document.getElementById("cart-items");
+    const cartSubtotal = document.getElementById("cart-subtotal");
+    if (!cartItemsContainer || !cartSubtotal) return;
+
+    cartItemsContainer.innerHTML = "";
+
+    if (cart.item_count === 0) {
+      cartItemsContainer.innerHTML = `
+        <div class="py-12 text-center text-primary/85 flex flex-col items-center justify-center">
+          <span class="material-symbols-outlined text-4xl mb-2 text-primary/40">shopping_basket</span>
+          <p class="text-sm font-semibold">Din indkøbskurv er tom.</p>
+        </div>
+      `;
+      cartSubtotal.innerText = "0,00 Kr.";
+      return;
+    }
+
+    let calculatedTotalPrice = 0;
+
+    cart.items.forEach(item => {
+      let subtitle = item.variant_title || "";
+      if (item.properties && Object.keys(item.properties).length > 0) {
+        const props = Object.entries(item.properties)
+          .map(([k, v]) => {
+            if (k.startsWith('_')) return null; // Skjul interne data
+            return `${k}: ${v}`;
+          })
+          .filter(Boolean)
+          .join(' • ');
+        if (props) {
+          subtitle = subtitle ? subtitle + " • " + props : props;
+        }
+      }
+
+      let imgUrl = item.image ? item.image : "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=150&q=80";
+      if (item.properties && item.properties._image) {
+        imgUrl = item.properties._image;
+      }
+
+      let linePrice = item.final_line_price;
+      if (item.properties && item.properties._unit_price) {
+        const customUnitPrice = parseInt(item.properties._unit_price, 10);
+        const expectedUntransformedPrice = item.price * item.quantity;
+        
+        if (item.final_line_price === expectedUntransformedPrice) {
+          linePrice = customUnitPrice * item.quantity;
+        }
+      }
+
+      calculatedTotalPrice += linePrice;
+
+      const isCustom = item.properties && item.properties._base_price;
+      let detailsHtml = '';
+
+      if (isCustom) {
+        const basePriceCents = parseInt(item.properties._base_price, 10);
+        const shapeSurchargeCents = parseInt(item.properties._shape_surcharge || "0", 10);
+        const widthSurchargeCents = parseInt(item.properties._width_surcharge || "0", 10);
+        const unitPriceCents = basePriceCents + shapeSurchargeCents + widthSurchargeCents;
+
+        let shapeName = "Form: Firkantet";
+        if (item.properties._shape === "rund") {
+          shapeName = "Form: Rund";
+        } else if (item.properties._shape === "oval") {
+          shapeName = "Form: Oval";
+        }
+
+        const width = item.properties._width || "";
+        const length = item.properties._length || "";
+        let labelText = item.properties._shape === "rund" ? "Diameter" : "Længde";
+
+        const shapeLine = item.properties._shape ? `
+            <div class="flex justify-between gap-2">
+              <span>${shapeName}</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatMoney(shapeSurchargeCents)}</span>
+            </div>
+        ` : '';
+
+        const widthLine = item.properties._shape !== "rund" ? `
+            <div class="flex justify-between gap-2">
+              <span>Bredde: ${width} cm</span>
+              <span class="text-primary font-medium flex-shrink-0">${formatMoney(widthSurchargeCents)}</span>
+            </div>
+        ` : '';
+
+        const customProductTitle = (item.properties && item.properties._metervare_title) ? item.properties._metervare_title : item.product_title;
+
+        detailsHtml = `
+          <div>
+            <h4 class="text-sm sm:text-base font-semibold text-primary mb-1.5" style="white-space: normal; overflow: visible;" title="${customProductTitle}">${customProductTitle}</h4>
+            <div class="space-y-1 text-xs sm:text-sm text-primary/85 font-normal leading-normal">
+              <div class="flex justify-between gap-2">
+                <span>${labelText}: ${length} cm</span>
+                <span class="text-primary font-medium flex-shrink-0">${formatMoney(basePriceCents)}</span>
+              </div>
+              ${shapeLine}
+              ${widthLine}
+              <div class="flex justify-between border-t border-outline-variant/60 pt-1 mt-1">
+                <span>Pris pr. dug.</span>
+                <span class="flex-shrink-0">${formatMoney(unitPriceCents)}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        const isLengthCustomized = item.properties && item.properties._length;
+        const displayName = isLengthCustomized ? item.title : item.product_title;
+        const displaySubtitle = isLengthCustomized ? "" : subtitle;
+
+        detailsHtml = `
+          <div>
+            <h4 class="text-sm sm:text-base font-semibold text-primary" style="white-space: normal; overflow: visible;" title="${displayName}">${displayName}</h4>
+            ${displaySubtitle ? `<p class="text-xs sm:text-sm text-primary/85 truncate">${displaySubtitle}</p>` : ''}
+          </div>
+        `;
+      }
+
+      const itemHtml = `
+        <div class="group relative flex gap-4 border-b border-outline-variant/60 pb-4">
+          <img src="${imgUrl}" alt="${item.product_title}" class="w-16 h-16 object-cover rounded-xl bg-surface-container flex-shrink-0" />
+          <div class="flex-1 min-w-0 flex flex-col justify-between">
+            ${detailsHtml}
+            <div class="flex justify-between items-center mt-2">
+              <div class="flex items-center gap-2">
+                <div class="flex items-center border border-outline-variant rounded-full bg-surface-container overflow-hidden">
+                  <button onclick="changeQuantity('${item.key}', -1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">-</button>
+                  <span class="w-6 text-center text-xs sm:text-sm text-primary font-bold">${item.quantity}</span>
+                  <button onclick="changeQuantity('${item.key}', 1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">+</button>
+                </div>
+                <button onclick="removeItem('${item.key}')" class="w-8 h-8 flex items-center justify-center text-black hover:text-red-600 bg-transparent border-0 cursor-pointer transition-opacity duration-200 md:opacity-0 md:group-hover:opacity-100 opacity-100" aria-label="Fjern vare">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
+                </button>
+              </div>
+              <span class="text-sm sm:text-base font-bold text-primary">${formatMoney(linePrice)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+      cartItemsContainer.insertAdjacentHTML("beforeend", itemHtml);
+    });
+
+    cartSubtotal.innerText = formatMoney(calculatedTotalPrice);
+  }
+
+  async function updateCartUI() {
+    try {
+      const response = await fetch('/cart.js');
+      const cart = await response.json();
+      renderCart(cart);
+    } catch (error) {
+      console.error("Fejl ved opdatering af kurv:", error);
+    }
+  }
+
+  async function addToCart(variantId, qty = 1) {
+    const counters = document.querySelectorAll('#cart-counter');
+    const originalCounts = [];
+    counters.forEach(counter => {
+      const currentCount = parseInt(counter.innerText) || 0;
+      originalCounts.push({ counter, text: counter.innerText, hasScale0: counter.classList.contains("scale-0") });
+      const newCount = currentCount + qty;
+      counter.innerText = newCount;
+      if (newCount > 0) {
+        counter.classList.remove("scale-0");
+        counter.classList.add("scale-100");
+      }
+    });
+
+    try {
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: qty
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Kunne ikke tilføje produkt');
+      }
+
+      const item = await response.json();
+      toggleCartDrawer(true);
+    } catch (error) {
+      console.error("Fejl ved tilføjelse til kurv:", error);
+      originalCounts.forEach(item => {
+        item.counter.innerText = item.text;
+        if (item.hasScale0) {
+          item.counter.classList.add("scale-0");
+          item.counter.classList.remove("scale-100");
+        } else {
+          item.counter.classList.remove("scale-0");
+          item.counter.classList.add("scale-100");
+        }
+      });
+      alert("Der opstod en fejl ved tilføjelse til kurv.");
+    }
+  }
+
+  async function changeQuantity(itemKey, change) {
+    if (!currentCart) return;
+
+    const existingItem = currentCart.items.find(item => item.key === itemKey);
+    if (!existingItem) return;
+
+    const newQty = existingItem.quantity + change;
+    if (newQty < 0) return;
+
+    const originalCart = JSON.parse(JSON.stringify(currentCart));
+
+    if (newQty === 0) {
+      currentCart.items = currentCart.items.filter(item => item.key !== itemKey);
+    } else {
+      existingItem.quantity = newQty;
+      const unitPrice = (existingItem.properties && existingItem.properties._unit_price)
+        ? parseInt(existingItem.properties._unit_price, 10)
+        : existingItem.price;
+      existingItem.final_line_price = unitPrice * newQty;
+    }
+    
+    currentCart.item_count = currentCart.items.reduce((sum, item) => sum + item.quantity, 0);
+    
+    currentCart.total_price = currentCart.items.reduce((sum, item) => {
+      let linePrice = item.final_line_price;
+      if (item.properties && item.properties._unit_price) {
+        const customUnitPrice = parseInt(item.properties._unit_price, 10);
+        const expectedUntransformedPrice = item.price * item.quantity;
+        if (item.final_line_price === expectedUntransformedPrice) {
+          linePrice = customUnitPrice * item.quantity;
+        }
+      }
+      return sum + linePrice;
+    }, 0);
+
+    renderCart(currentCart);
+
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: itemKey,
+          quantity: newQty
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Kunne ikke ændre antal på serveren');
+      }
+
+      const updatedCart = await response.json();
+      renderCart(updatedCart);
+    } catch (error) {
+      console.error("Fejl ved ændring af antal:", error);
+      renderCart(originalCart);
+      alert("Kunne ikke ændre antal. Prøv igen.");
+    }
+  }
+
+  async function removeItem(itemKey) {
+    if (!currentCart) return;
+
+    const existingItem = currentCart.items.find(item => item.key === itemKey);
+    if (!existingItem) return;
+
+    const originalCart = JSON.parse(JSON.stringify(currentCart));
+
+    currentCart.items = currentCart.items.filter(item => item.key !== itemKey);
+    currentCart.item_count = currentCart.items.reduce((sum, item) => sum + item.quantity, 0);
+    
+    currentCart.total_price = currentCart.items.reduce((sum, item) => {
+      let linePrice = item.final_line_price;
+      if (item.properties && item.properties._unit_price) {
+        const customUnitPrice = parseInt(item.properties._unit_price, 10);
+        const expectedUntransformedPrice = item.price * item.quantity;
+        if (item.final_line_price === expectedUntransformedPrice) {
+          linePrice = customUnitPrice * item.quantity;
+        }
+      }
+      return sum + linePrice;
+    }, 0);
+
+    renderCart(currentCart);
+
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: itemKey,
+          quantity: 0
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Kunne ikke fjerne vare på serveren');
+      }
+
+      const updatedCart = await response.json();
+      renderCart(updatedCart);
+    } catch (error) {
+      console.error("Fejl ved fjernelse af vare:", error);
+      renderCart(originalCart);
+      alert("Kunne ikke fjerne varen. Prøv igen.");
+    }
+  }
+
+  window.addToCart = addToCart;
+  window.changeQuantity = changeQuantity;
+  window.removeItem = removeItem;
+  window.updateCartUI = updateCartUI;
+  window.toggleCartDrawer = toggleCartDrawer;
+  window.toggleMobileMenu = toggleMobileMenu;
+  window.toggleSearchInput = toggleSearchInput;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("search-input");
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        const grid = document.getElementById("product-grid");
+        if (grid && typeof window.filterProducts === "function") {
+          window.filterProducts();
+        }
+      });
+      
+      const searchForm = searchInput.closest("form");
+      if (searchForm) {
+        searchForm.addEventListener("submit", (e) => {
+          const grid = document.getElementById("product-grid");
+          if (grid && typeof window.filterProducts === "function") {
+            e.preventDefault();
+          }
+        });
+      }
+    }
+    
+    const menuDrawer = document.getElementById("mobile-menu-drawer");
+    if (menuDrawer) {
+      menuDrawer.addEventListener("click", (e) => {
+        if (e.target === menuDrawer) {
+          toggleMobileMenu(false);
+        }
+      });
+    }
+
+    const cartDrawer = document.getElementById("cart-drawer");
+    if (cartDrawer) {
+      cartDrawer.addEventListener("click", (e) => {
+        if (e.target === cartDrawer) {
+          toggleCartDrawer(false);
+        }
+      });
+    }
+    
+    updateCartUI();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Header 2",
+  "blocks": [{ "type": "@theme" }],
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu list (for mobile drawer)",
+      "default": "main-menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header 2"
+    }
+  ]
+}
+{% endschema %}
