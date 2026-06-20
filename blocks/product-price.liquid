@@ -6,6 +6,7 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign display_price = current_variant.price
+  assign compare_price = current_variant.compare_at_price
   assign suffix = block.settings.price_suffix
   
   assign is_metervare = false
@@ -15,7 +16,24 @@
 
   if is_metervare
     assign display_price = current_variant.price | times: 100
+    if compare_price != blank
+      assign compare_price = compare_price | times: 100
+    endif
     assign suffix = 'pr. meter inkl. moms'
+  endif
+
+  assign on_sale = false
+  if compare_price != blank and compare_price > display_price
+    assign on_sale = true
+  endif
+
+  if on_sale
+    assign savings = compare_price | minus: display_price | times: 100 | divided_by: compare_price
+    assign price_main = display_price | divided_by: 100
+    assign price_cents = display_price | modulo: 100
+    if price_cents < 10
+      assign price_cents = '0' | append: price_cents
+    endif
   endif
 -%}
 
@@ -29,19 +47,149 @@
 {%- endstyle -%}
 
 <div {{ block.shopify_attributes }}>
-  <!-- Pricing -->
-  <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
-    <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
-      {{ display_price | money }}
-    </span>
-    {%- if suffix != blank -%}
-      <span class="text-sm text-primary/85 font-medium whitespace-nowrap">{{ suffix }}</span>
+  <div id="product-price-container-{{ block.id }}" class="flex flex-col gap-1">
+    {%- if on_sale -%}
+      <!-- Sale layout -->
+      <div class="flex items-baseline gap-3 flex-nowrap overflow-hidden">
+        <!-- Percentage Discount -->
+        <span class="text-3xl font-extrabold text-[#e11d48] tracking-tight whitespace-nowrap">
+          -{{ savings }} %
+        </span>
+        <!-- Main Sale Price with superscript cents and currency -->
+        <span class="text-4xl font-black tracking-tight text-primary whitespace-nowrap flex items-start select-all">
+          <span>{{ price_main }}</span>
+          <sup class="text-base font-bold ml-0.5 mt-1 text-primary">{{ price_cents }} {{ cart.currency.iso_code }}</sup>
+        </span>
+        {%- if suffix != blank -%}
+          <span class="text-sm text-primary/85 font-medium whitespace-nowrap pb-0.5 ml-0.5">{{ suffix }}</span>
+        {%- endif -%}
+      </div>
+      
+      <!-- List price row -->
+      <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
+        <span>Listepris:</span>
+        <span class="line-through">{{ compare_price | money }}</span>
+        <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
+      </div>
+    {%- else -%}
+      <!-- Standard layout -->
+      <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
+        <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
+          {{ display_price | money }}
+        </span>
+        {%- if suffix != blank -%}
+          <span class="text-sm text-primary/85 font-medium whitespace-nowrap">{{ suffix }}</span>
+        {%- endif -%}
+      </div>
     {%- endif -%}
   </div>
+
   {%- if block.settings.price_subtext != blank -%}
     <p class="text-sm text-primary/85 mt-1.5">{{ block.settings.price_subtext }}</p>
   {%- endif -%}
 </div>
+
+<script id="product-price-variant-data-{{ block.id }}" type="application/json">
+  [
+    {%- for variant in product.variants -%}
+      {%- liquid
+        assign v_price = variant.price
+        assign v_compare = variant.compare_at_price
+        if is_metervare
+          assign v_price = v_price | times: 100
+          if v_compare != blank
+            assign v_compare = v_compare | times: 100
+          endif
+        endif
+      -%}
+      {
+        "id": {{ variant.id }},
+        "price": {{ v_price }},
+        "compare_at_price": {% if v_compare != blank %}{{ v_compare }}{% else %}null{% endif %},
+        "price_formatted": {{ v_price | money | json }},
+        "compare_at_price_formatted": {% if v_compare != blank %}{{ v_compare | money | json }}{% else %}null{% endif %}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("product-price-container-{{ block.id }}");
+    if (!container) return;
+
+    let priceVariants = [];
+    try {
+      priceVariants = JSON.parse(document.getElementById("product-price-variant-data-{{ block.id }}").textContent);
+    } catch (e) {
+      console.error("Failed to parse product price variant data", e);
+      return;
+    }
+
+    function formatCents(cents) {
+      return cents < 10 ? '0' + cents : cents;
+    }
+
+    function updatePrice(variantId) {
+      const variant = priceVariants.find(v => v.id === parseInt(variantId));
+      if (!variant) return;
+
+      const suffix = {{ suffix | json }};
+      const currencyCode = {{ cart.currency.iso_code | json }};
+
+      const isOnSale = variant.compare_at_price && variant.compare_at_price > variant.price;
+
+      if (isOnSale) {
+        const savings = Math.round(((variant.compare_at_price - variant.price) * 100) / variant.compare_at_price);
+        const priceMain = Math.floor(variant.price / 100);
+        const priceCents = formatCents(variant.price % 100);
+        
+        let suffixHtml = '';
+        if (suffix) {
+          suffixHtml = `<span class="text-sm text-primary/85 font-medium whitespace-nowrap pb-0.5 ml-0.5">${suffix}</span>`;
+        }
+
+        container.innerHTML = `
+          <div class="flex items-baseline gap-3 flex-nowrap overflow-hidden">
+            <span class="text-3xl font-extrabold text-[#e11d48] tracking-tight whitespace-nowrap">
+              -\${savings} %
+            </span>
+            <span class="text-4xl font-black tracking-tight text-primary whitespace-nowrap flex items-start select-all">
+              <span>\${priceMain}</span>
+              <sup class="text-base font-bold ml-0.5 mt-1 text-primary">\${priceCents} \${currencyCode}</sup>
+            </span>
+            \${suffixHtml}
+          </div>
+          <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
+            <span>Listepris:</span>
+            <span class="line-through">\${variant.compare_at_price_formatted}</span>
+            <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
+          </div>
+        `;
+      } else {
+        let suffixHtml = '';
+        if (suffix) {
+          suffixHtml = `<span class="text-sm text-primary/85 font-medium whitespace-nowrap">\${suffix}</span>`;
+        }
+
+        container.innerHTML = `
+          <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
+            <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
+              \${variant.price_formatted}
+            </span>
+            \${suffixHtml}
+          </div>
+        `;
+      }
+    }
+
+    document.addEventListener("variant-changed", (e) => {
+      if (e.detail && e.detail.variantId) {
+        updatePrice(e.detail.variantId);
+      }
+    });
+  });
+</script>
 
 {% schema %}
 {
