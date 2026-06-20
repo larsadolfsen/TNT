@@ -337,58 +337,67 @@
   {%- endif -%}
 
   {%- if show_mobile_header -%}
+    {%- assign has_mobile_top_row = false -%}
+    {%- if hamburger_block or logo_block or theme_toggle_block or cart_block -%}
+      {%- assign has_mobile_top_row = true -%}
+    {%- elsif search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
+      {%- assign has_mobile_top_row = true -%}
+    {%- endif -%}
+
     <header class="block md:hidden bg-background border-b border-outline-variant py-3 px-4">
       <div class="w-full flex flex-col gap-3">
-        <div class="relative flex items-center justify-between w-full min-h-[44px]">
-          <!-- Left Slot -->
-          <div class="flex justify-start items-center gap-3 z-10 min-w-0">
-            {%- if hamburger_block -%}
-              <div class="{{ hamburger_visibility }} shrink-0" {{ hamburger_block.shopify_attributes }}>
-                {{ hamburger_html }}
-              </div>
-            {%- endif -%}
-            {%- if logo_block and logo_block.settings.placement == 'left' -%}
-              <div class="{{ logo_visibility }} min-w-0" {{ logo_block.shopify_attributes }}>
-                {{ logo_html }}
-              </div>
-            {%- endif -%}
-          </div>
+        {%- if has_mobile_top_row -%}
+          <div class="relative flex items-center justify-between w-full min-h-[44px]">
+            <!-- Left Slot -->
+            <div class="flex justify-start items-center gap-3 z-10 min-w-0">
+              {%- if hamburger_block -%}
+                <div class="{{ hamburger_visibility }} shrink-0" {{ hamburger_block.shopify_attributes }}>
+                  {{ hamburger_html }}
+                </div>
+              {%- endif -%}
+              {%- if logo_block and logo_block.settings.placement == 'left' -%}
+                <div class="{{ logo_visibility }} min-w-0" {{ logo_block.shopify_attributes }}>
+                  {{ logo_html }}
+                </div>
+              {%- endif -%}
+            </div>
 
-          <!-- Center Slot -->
-          <div class="absolute inset-x-0 flex justify-center items-center pointer-events-none z-0">
-            {%- if logo_block and logo_block.settings.placement != 'left' -%}
-              <div class="{{ logo_visibility }} pointer-events-auto" {{ logo_block.shopify_attributes }}>
-                {{ logo_html }}
-              </div>
-            {%- endif -%}
-          </div>
+            <!-- Center Slot -->
+            <div class="absolute inset-x-0 flex justify-center items-center pointer-events-none z-0">
+              {%- if logo_block and logo_block.settings.placement != 'left' -%}
+                <div class="{{ logo_visibility }} pointer-events-auto" {{ logo_block.shopify_attributes }}>
+                  {{ logo_html }}
+                </div>
+              {%- endif -%}
+            </div>
 
-          <!-- Right Slot -->
-          <div class="flex justify-end items-center gap-3 z-10 shrink-0">
-            {%- if search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
-              <div class="{{ search_visibility }}" {{ search_block.shopify_attributes }}>
-                <button 
-                  type="button" 
-                  onclick="toggleSearchInput('mobile', '{{ section.id }}')" 
-                  class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-85 transition-opacity" 
-                  aria-label="Søg"
-                >
-                  <span class="material-symbols-outlined text-2xl text-primary block">search</span>
-                </button>
-              </div>
-            {%- endif -%}
-            {%- if theme_toggle_block -%}
-              <div class="{{ theme_toggle_visibility }}" {{ theme_toggle_block.shopify_attributes }}>
-                {{ theme_toggle_button_html }}
-              </div>
-            {%- endif -%}
-            {%- if cart_block -%}
-              <div class="{{ cart_visibility }}" {{ cart_block.shopify_attributes }}>
-                {{ cart_icon_html }}
-              </div>
-            {%- endif -%}
+            <!-- Right Slot -->
+            <div class="flex justify-end items-center gap-3 z-10 shrink-0">
+              {%- if search_block and search_block.settings.mobile_search_style == 'icon_toggle' -%}
+                <div class="{{ search_visibility }}" {{ search_block.shopify_attributes }}>
+                  <button 
+                    type="button" 
+                    onclick="toggleSearchInput('mobile', '{{ section.id }}')" 
+                    class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer text-primary flex items-center justify-center hover:opacity-85 transition-opacity" 
+                    aria-label="Søg"
+                  >
+                    <span class="material-symbols-outlined text-2xl text-primary block">search</span>
+                  </button>
+                </div>
+              {%- endif -%}
+              {%- if theme_toggle_block -%}
+                <div class="{{ theme_toggle_visibility }}" {{ theme_toggle_block.shopify_attributes }}>
+                  {{ theme_toggle_button_html }}
+                </div>
+              {%- endif -%}
+              {%- if cart_block -%}
+                <div class="{{ cart_visibility }}" {{ cart_block.shopify_attributes }}>
+                  {{ cart_icon_html }}
+                </div>
+              {%- endif -%}
+            </div>
           </div>
-        </div>
+        {%- endif -%}
 
         <!-- Mobile Search Form (if under logo bar) -->
         {%- if search_block and search_block.settings.mobile_search_style == 'under_logo_bar' -%}
@@ -448,6 +457,7 @@
   {%- endif -%}
 </div>
 <!-- Mobile Menu Drawer -->
+{%- if hamburger_block -%}
 <div id="mobile-menu-drawer" class="fixed inset-0 bg-black/50 z-[200] hidden flex justify-start transition-opacity duration-300 opacity-0">
   <div class="bg-card-light w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 -translate-x-full">
     <div>
@@ -479,8 +489,10 @@
     </div>
   </div>
 </div>
+{%- endif -%}
 
 <!-- Shopping Cart Slide-out Drawer -->
+{%- if cart_block -%}
 <div id="cart-drawer" class="fixed inset-0 bg-black/50 z-[200] hidden flex justify-end transition-opacity duration-300 opacity-0">
   <div class="bg-card-light w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
     <div>
@@ -506,6 +518,7 @@
     </div>
   </div>
 </div>
+{%- endif -%}
 
 
 <script>
@@ -1031,12 +1044,42 @@
     });
   }
 
+  function syncMobileMenuDrawer() {
+    const desktopNav = document.querySelector('nav[aria-label="Hovedmenu"]');
+    if (!desktopNav) return;
+    const desktopLinks = desktopNav.querySelectorAll('ul li a');
+    if (desktopLinks.length === 0) return;
+
+    const drawerNavs = document.querySelectorAll('#mobile-menu-drawer nav');
+    drawerNavs.forEach(drawerNav => {
+      const firstLink = drawerNav.firstElementChild ? drawerNav.firstElementChild.cloneNode(true) : null;
+      
+      drawerNav.innerHTML = '';
+      
+      if (firstLink) {
+        drawerNav.appendChild(firstLink);
+      }
+      
+      desktopLinks.forEach(link => {
+        const clonedLink = link.cloneNode(true);
+        clonedLink.className = 'block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline';
+        clonedLink.style.paddingInline = '';
+        const span = clonedLink.querySelector('span');
+        if (span) {
+          clonedLink.textContent = span.textContent;
+        }
+        drawerNav.appendChild(clonedLink);
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     const rootEl = document.documentElement;
     updateThemeToggleIcons(rootEl.classList.contains('dark'));
 
     initHeaderSticky();
     initHeaderSearchSync();
+    syncMobileMenuDrawer();
     
     // Luk skuffer når der klikkes udenfor
     const menuDrawer = document.getElementById("mobile-menu-drawer");
@@ -1065,6 +1108,7 @@
     if (e.target.id.includes('header')) {
       initHeaderSticky();
       initHeaderSearchSync();
+      syncMobileMenuDrawer();
       updateCartUI();
       const rootEl = document.documentElement;
       updateThemeToggleIcons(rootEl.classList.contains('dark'));
