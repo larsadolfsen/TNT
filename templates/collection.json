@@ -9,6 +9,15 @@
  */
 {
   "sections": {
+    "breadcrumbs_JbJ6he": {
+      "type": "breadcrumbs",
+      "name": "Brødkrummer",
+      "settings": {
+        "max_width": "none",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "collection-header": {
       "type": "section",
       "blocks": {
@@ -45,8 +54,8 @@
         "align_self": "auto",
         "padding_top": 0,
         "padding_bottom": 0,
-        "padding_left": 24,
-        "padding_right": 24,
+        "padding_left": 0,
+        "padding_right": 0,
         "use_global_gap": true,
         "block_spacing": 16,
         "border_top": false,
@@ -146,15 +155,6 @@
         "columns_tablet": 3,
         "columns_desktop": 4,
         "filter_width_desktop": 3
-      }
-    },
-    "breadcrumbs_JbJ6he": {
-      "type": "breadcrumbs",
-      "name": "Brødkrummer",
-      "settings": {
-        "max_width": "none",
-        "padding_top": 0,
-        "padding_bottom": 0
       }
     }
   },
