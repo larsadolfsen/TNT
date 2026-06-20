@@ -95,7 +95,8 @@
         "title": {{ variant.title | json }},
         "options": {{ variant.options | json }},
         "price": {{ variant.price }},
-        "price_formatted": {{ variant.price | money | json }}
+        "price_formatted": {{ variant.price | money | json }},
+        "compare_at_price": {% if variant.compare_at_price != blank %}{{ variant.compare_at_price }}{% else %}null{% endif %}
       }{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
   ]
@@ -465,12 +466,57 @@
         }
       }
 
-      if (stickyConfigSummary) {
-        stickyConfigSummary.textContent = summaryText || "Standard";
+      // Determine if this is a standard/default variant representation
+      const isStandard = !summaryText || summaryText.toLowerCase() === 'standard' || summaryText.toLowerCase() === 'default title';
+
+      // Parse variant data to check if active variant is on sale
+      let simpleVariants = [];
+      try {
+        const dataEl = document.getElementById('simple-variant-data');
+        if (dataEl) {
+          simpleVariants = JSON.parse(dataEl.textContent);
+        }
+      } catch (e) {}
+
+      let selectedId = null;
+      const variantInput = document.querySelector('select[name="id"], input[name="id"]');
+      if (variantInput) {
+        selectedId = parseInt(variantInput.value);
+      } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        selectedId = parseInt(urlParams.get('variant') || "{{ product.selected_or_first_available_variant.id }}");
       }
+
+      const currentVariant = simpleVariants.find(v => v.id === selectedId);
+      const isOnSale = currentVariant && currentVariant.compare_at_price && currentVariant.compare_at_price > currentVariant.price;
+      let savings = 0;
+      if (isOnSale) {
+        savings = Math.round(((currentVariant.compare_at_price - currentVariant.price) * 100) / currentVariant.compare_at_price);
+      }
+
+      if (stickyConfigSummary) {
+        if (isStandard) {
+          if (isOnSale && savings > 0) {
+            stickyConfigSummary.innerHTML = `<span class="text-[#c8102e]" style="color: #c8102e; font-weight: 600;">Rabat ${savings} %</span>`;
+          } else {
+            stickyConfigSummary.textContent = "";
+          }
+        } else {
+          stickyConfigSummary.textContent = summaryText;
+        }
+      }
+
       const stickyConfigSummaryCustomize = document.getElementById("sticky-config-summary-customize");
       if (stickyConfigSummaryCustomize) {
-        stickyConfigSummaryCustomize.textContent = summaryText || "Standard";
+        if (isStandard) {
+          if (isOnSale && savings > 0) {
+            stickyConfigSummaryCustomize.innerHTML = `<span class="text-[#c8102e]" style="color: #c8102e; font-weight: 600;">Rabat ${savings} %</span>`;
+          } else {
+            stickyConfigSummaryCustomize.textContent = "";
+          }
+        } else {
+          stickyConfigSummaryCustomize.textContent = summaryText;
+        }
       }
     }
 
