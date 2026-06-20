@@ -199,10 +199,17 @@
             "header_group_bwCwM3",
             "header_group_RaiAYV"
           ]
+        },
+        "header_row_2_kFiGAN": {
+          "type": "header-row-2",
+          "name": "Header Row 2",
+          "settings": {},
+          "blocks": {}
         }
       },
       "block_order": [
-        "header_row_2_7y9NnW"
+        "header_row_2_7y9NnW",
+        "header_row_2_kFiGAN"
       ],
       "name": "Header 2",
       "settings": {
