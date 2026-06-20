@@ -62,7 +62,11 @@
             "placement": "right",
             "hide_on_mobile": false,
             "hide_on_tablet": false,
-            "hide_on_desktop": false
+            "hide_on_desktop": false,
+            "show_free_shipping_success": true,
+            "free_shipping_threshold": 499,
+            "free_shipping_success_message": "Du har opnået fri fragt!",
+            "free_shipping_default_message": "Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr."
           }
         }
       },
@@ -91,7 +95,7 @@
             "placement": "center",
             "menu": "main-menu",
             "item_padding": 8,
-            "show_on_mobile_bar": false,
+            "show_on_mobile_bar": true,
             "hide_on_mobile": false,
             "hide_on_tablet": false,
             "hide_on_desktop": false
