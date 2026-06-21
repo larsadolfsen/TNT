@@ -46,7 +46,7 @@
   {{ block.shopify_attributes }}
 >
   <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
-    <div class="flex w-full items-stretch border border-outline-variant rounded-full bg-surface-container overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all">
+    <div class="flex w-full items-stretch border border-outline-variant rounded-full bg-card-light shadow-sm overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all">
       <input
         type="text"
         name="q"
@@ -56,7 +56,7 @@
       >
       <button
         type="submit"
-        class="px-5 bg-accent text-on-accent hover:brightness-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-xs shrink-0 border-l border-outline-variant"
+        class="px-3 bg-accent text-on-accent hover:brightness-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1 font-semibold text-xs shrink-0 border-l border-outline-variant"
       >
         <span class="material-symbols-outlined text-[15px]">search</span>
         <span>Søg</span>
