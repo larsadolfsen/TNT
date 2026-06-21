@@ -2,8 +2,8 @@
   {%- if section.settings.disable_block_padding_vertical_mobile -%}
     @media screen and (max-width: 767px) {
       #shopify-section-{{ section.id }} .shopify-block {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
+        --block-padding-top: 0px;
+        --block-padding-bottom: 0px;
       }
     }
   {%- endif -%}
@@ -11,8 +11,8 @@
   {%- if section.settings.disable_block_padding_horizontal_mobile -%}
     @media screen and (max-width: 767px) {
       #shopify-section-{{ section.id }} .shopify-block {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        --block-padding-left: 0px;
+        --block-padding-right: 0px;
       }
     }
   {%- endif -%}

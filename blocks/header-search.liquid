@@ -7,22 +7,22 @@
     {%- endif -%}
 
     {%- if block.settings.hide_on_mobile -%}
-      display: none !important;
+      display: none;
     {%- endif -%}
   }
 
   {%- if block.settings.start_hidden -%}
     #shopify-block-{{ block.id }}.shopify-block:has(#header-search-form.hidden) {
-      display: none !important;
+      display: none;
     }
   {%- endif -%}
 
   @media screen and (min-width: 840px) {
     #shopify-block-{{ block.id }}.shopify-block {
       {%- if block.settings.hide_on_tablet -%}
-        display: none !important;
+        display: none;
       {%- elsif block.settings.hide_on_mobile -%}
-        display: block !important;
+        display: block;
       {%- endif -%}
     }
   }
@@ -30,9 +30,9 @@
   @media screen and (min-width: 1200px) {
     #shopify-block-{{ block.id }}.shopify-block {
       {%- if block.settings.hide_on_desktop -%}
-        display: none !important;
+        display: none;
       {%- elsif block.settings.hide_on_tablet or block.settings.hide_on_mobile -%}
-        display: block !important;
+        display: block;
       {%- endif -%}
     }
   }

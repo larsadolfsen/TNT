@@ -7,11 +7,11 @@
   #shopify-section-{{ section.id }} {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
-    width: 100% !important;
-    text-align: left !important;
+    width: 100%;
+    text-align: left;
     /* Always place breadcrumbs above the grid: row 1, full width */
-    grid-column: 1 / -1 !important;
-    grid-row-start: 1 !important;
+    grid-column: 1 / -1;
+    grid-row-start: 1;
 
     {%- if section.settings.max_width == 'page-width' -%}
       max-width: var(--page-width, 1440px);
@@ -30,11 +30,11 @@
 
   @media screen and (max-width: 839px) {
     #shopify-section-{{ section.id }} {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
+      padding-left: 0;
+      padding-right: 0;
     }
     #shopify-section-{{ section.id }} + .shopify-section {
-      margin-top: -12px !important;
+      margin-top: -12px;
     }
   }
 
@@ -47,8 +47,8 @@
 
   @media screen and (min-width: 1600px) {
     #shopify-section-{{ section.id }} {
-      padding-left: 16px !important;
-      padding-right: 16px !important;
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 {%- endstyle -%}
@@ -184,8 +184,8 @@
       cursor: grab;
     }
     .breadcrumbs-nav.active-dragging {
-      cursor: grabbing !important;
-      scroll-behavior: auto !important;
+      cursor: grabbing;
+      scroll-behavior: auto;
     }
     .breadcrumbs-nav > * {
       flex-shrink: 0;
@@ -208,30 +208,30 @@
       right: 0;
       background: linear-gradient(to left, var(--color-background, #ffffff), transparent);
     }
-
+ 
     /* Ellipsis collapse/expand styles */
     .breadcrumbs-nav .breadcrumb-ellipsis {
       display: inline-flex;
       align-items: center;
     }
     .breadcrumbs-nav .breadcrumb-collapsed-item {
-      display: none !important;
+      display: none;
     }
     .breadcrumbs-nav.is-expanded .breadcrumb-ellipsis {
-      display: none !important;
+      display: none;
     }
     .breadcrumbs-nav.is-expanded .breadcrumb-collapsed-item {
-      display: inline-flex !important;
+      display: inline-flex;
       align-items: center;
     }
-
+ 
     /* Do not abbreviate breadcrumbs on desktop */
     @media screen and (min-width: 1200px) {
       .breadcrumbs-nav .breadcrumb-ellipsis {
-        display: none !important;
+        display: none;
       }
       .breadcrumbs-nav .breadcrumb-collapsed-item {
-        display: inline-flex !important;
+        display: inline-flex;
         align-items: center;
       }
     }

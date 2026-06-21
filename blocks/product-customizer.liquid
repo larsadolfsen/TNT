@@ -179,30 +179,24 @@
   }
 
   /* Align spacing: remove bottom padding from customizer container and top padding from buy buttons block */
-  #voksdug-customizer-container {
-    padding-bottom: 0 !important;
-  }
   .shopify-block-product-customizer {
-    padding-bottom: 0 !important;
+    --block-padding-bottom: 0px;
   }
   .shopify-block-product-customizer + .shopify-block {
-    padding-top: 0 !important;
-  }
-  .shopify-block-product-customizer + .shopify-block-product-buy-buttons {
-    padding-top: 0 !important;
+    --block-padding-top: 0px;
   }
   
   /* Make form stepper fields use the page background color (side bg) */
-  .stepper-pill,
+  #voksdug-customizer-container .stepper-pill,
   #buy-buttons-quantity-container {
-    background-color: var(--color-background) !important;
+    background-color: var(--color-background);
   }
 </style>
 
 <!-- Hidden element to signal to product-buy-buttons that customizer is active -->
 <div id="shape-selector" style="display: none;"></div>
 
-<div id="voksdug-customizer-container" class="w-full pb-3" {{ block.shopify_attributes }}>
+<div id="voksdug-customizer-container" class="w-full" {{ block.shopify_attributes }}>
   {%- if block.settings.heading != blank -%}
     <div class="h2 text-xl md:text-2xl font-bold text-primary mb-2 leading-tight">{{ block.settings.heading }}</div>
   {%- endif -%}

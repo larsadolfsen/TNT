@@ -1,16 +1,16 @@
 {%- style -%}
   {%- if block.settings.hide_on_mobile -%}
     #shopify-block-{{ block.id }} {
-      display: none !important;
+      display: none;
     }
   {%- endif -%}
 
   @media screen and (min-width: 840px) {
     #shopify-block-{{ block.id }} {
       {%- if block.settings.hide_on_tablet -%}
-        display: none !important;
+        display: none;
       {%- elsif block.settings.hide_on_mobile -%}
-        display: block !important;
+        display: block;
       {%- endif -%}
     }
   }
@@ -18,9 +18,9 @@
   @media screen and (min-width: 1200px) {
     #shopify-block-{{ block.id }} {
       {%- if block.settings.hide_on_desktop -%}
-        display: none !important;
+        display: none;
       {%- elsif block.settings.hide_on_tablet or block.settings.hide_on_mobile -%}
-        display: block !important;
+        display: block;
       {%- endif -%}
     }
   }
