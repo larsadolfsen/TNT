@@ -2395,14 +2395,9 @@
       gap: calc(var(--spacing) * 6);
     }
   }
-  .lg\:pr-6 {
+  .lg\:px-6 {
     @media (width >= 1200px) {
-      padding-right: calc(var(--spacing) * 6);
-    }
-  }
-  .lg\:pl-0 {
-    @media (width >= 1200px) {
-      padding-left: calc(var(--spacing) * 0);
+      padding-inline: calc(var(--spacing) * 6);
     }
   }
   .dark\:border-amber-900\/50 {
