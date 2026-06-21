@@ -1,0 +1,73 @@
+{%- style -%}
+  {%- if block.settings.hide_on_mobile -%}
+    #shopify-block-{{ block.id }} {
+      display: none !important;
+    }
+  {%- endif -%}
+
+  @media screen and (min-width: 840px) {
+    #shopify-block-{{ block.id }} {
+      {%- if block.settings.hide_on_tablet -%}
+        display: none !important;
+      {%- elsif block.settings.hide_on_mobile -%}
+        display: block !important;
+      {%- endif -%}
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-block-{{ block.id }} {
+      {%- if block.settings.hide_on_desktop -%}
+        display: none !important;
+      {%- elsif block.settings.hide_on_tablet or block.settings.hide_on_mobile -%}
+        display: block !important;
+      {%- endif -%}
+    }
+  }
+{%- endstyle -%}
+
+<div class="flex items-center" {{ block.shopify_attributes }}>
+  <button
+    type="button"
+    onclick="toggleSearchInput()"
+    class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity"
+    aria-label="Søg"
+  >
+    <span class="material-symbols-outlined text-2xl text-primary block">search</span>
+  </button>
+</div>
+
+{% schema %}
+{
+  "name": "Search Icon",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Visibility Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Hide on Mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_tablet",
+      "label": "Hide on Tablet",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_desktop",
+      "label": "Hide on Desktop",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Search Icon"
+    }
+  ]
+}
+{% endschema %}

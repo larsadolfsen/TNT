@@ -92,6 +92,10 @@
     const searchForm = document.getElementById("header-search-form");
     if (!searchForm) return;
     searchForm.classList.toggle("hidden");
+    const shopifyBlock = searchForm.closest('.shopify-block');
+    if (shopifyBlock) {
+      shopifyBlock.classList.toggle("hidden", searchForm.classList.contains("hidden"));
+    }
     if (!searchForm.classList.contains("hidden")) {
       const searchInput = document.getElementById("search-input");
       if (searchInput) {

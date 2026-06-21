@@ -54,6 +54,13 @@
       {%- endif -%}
     }
   }
+
+  @media screen and (min-width: 1600px) {
+    #shopify-section-{{ section.id }} {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+  }
 {%- endstyle -%}
 
 {%- unless template == 'index' or template == 'cart' or template == 'list-collections' or template == '404' -%}

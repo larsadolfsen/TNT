@@ -1,9 +1,55 @@
-<div class="flex items-center" {{ block.shopify_attributes }}>
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    width: 100%;
+    {%- if block.settings.max_width != 'none' and block.settings.max_width != blank -%}
+      max-width: {{ block.settings.max_width }};
+    {%- endif -%}
+
+    {%- if block.settings.hide_on_mobile -%}
+      display: none !important;
+    {%- endif -%}
+  }
+
+  {%- if block.settings.start_hidden -%}
+    #shopify-block-{{ block.id }}.shopify-block:has(#header-search-form.hidden) {
+      display: none !important;
+    }
+  {%- endif -%}
+
+  @media screen and (min-width: 840px) {
+    #shopify-block-{{ block.id }}.shopify-block {
+      {%- if block.settings.hide_on_tablet -%}
+        display: none !important;
+      {%- elsif block.settings.hide_on_mobile -%}
+        display: block !important;
+      {%- endif -%}
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-block-{{ block.id }}.shopify-block {
+      {%- if block.settings.hide_on_desktop -%}
+        display: none !important;
+      {%- elsif block.settings.hide_on_tablet or block.settings.hide_on_mobile -%}
+        display: block !important;
+      {%- endif -%}
+    }
+  }
+{%- endstyle -%}
+
+<div
+  {% if block.settings.start_hidden %}
+    id="header-search-form"
+  {% endif %}
+  class="flex items-center w-full{% if block.settings.start_hidden %} hidden{% endif %}"
+  {{ block.shopify_attributes }}
+>
   <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
     <div class="relative w-full">
       <input
         type="text"
         name="q"
+        id="search-input"
         class="w-full h-10 pl-4 pr-24 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all"
         placeholder="Søg..."
       >
@@ -21,7 +67,72 @@
 {% schema %}
 {
   "name": "Search Bar",
-  "settings": [],
+  "settings": [
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Max width",
+      "options": [
+        {
+          "value": "none",
+          "label": "Full width (100%)"
+        },
+        {
+          "value": "300px",
+          "label": "300px"
+        },
+        {
+          "value": "400px",
+          "label": "400px"
+        },
+        {
+          "value": "500px",
+          "label": "500px"
+        },
+        {
+          "value": "600px",
+          "label": "600px"
+        },
+        {
+          "value": "700px",
+          "label": "700px"
+        },
+        {
+          "value": "800px",
+          "label": "800px"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "start_hidden",
+      "label": "Start hidden (Toggleable by Search Icon)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Visibility Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Hide on Mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_tablet",
+      "label": "Hide on Tablet",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_desktop",
+      "label": "Hide on Desktop",
+      "default": false
+    }
+  ],
   "presets": [
     {
       "name": "Search Bar"
