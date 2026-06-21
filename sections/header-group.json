@@ -11,110 +11,6 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
-    "header": {
-      "type": "header",
-      "blocks": {
-        "hamburger_dtii4V": {
-          "type": "hamburger",
-          "settings": {
-            "placement": "left",
-            "mobile_menu": "",
-            "hide_on_mobile": false,
-            "hide_on_tablet": false,
-            "hide_on_desktop": true
-          }
-        },
-        "logo_9F9jxg": {
-          "type": "logo",
-          "settings": {
-            "placement": "left",
-            "logo_text": "Textil & Voksdug",
-            "logo_height": 20,
-            "hide_on_mobile": false,
-            "hide_on_tablet": false,
-            "hide_on_desktop": false
-          }
-        },
-        "search_VaTtKF": {
-          "type": "search",
-          "settings": {
-            "placement": "right",
-            "desktop_search_style": "always_visible",
-            "desktop_width": "max-w-md w-full",
-            "mobile_search_style": "icon_toggle",
-            "hide_on_mobile": false,
-            "hide_on_tablet": false,
-            "hide_on_desktop": false
-          }
-        },
-        "theme_toggle_KhWjWz": {
-          "type": "theme_toggle",
-          "settings": {
-            "placement": "right",
-            "hide_on_mobile": false,
-            "hide_on_tablet": false,
-            "hide_on_desktop": false
-          }
-        },
-        "cart_FwjJjD": {
-          "type": "cart",
-          "settings": {
-            "placement": "right",
-            "hide_on_mobile": false,
-            "hide_on_tablet": false,
-            "hide_on_desktop": false,
-            "show_free_shipping_success": true,
-            "free_shipping_threshold": 499,
-            "free_shipping_success_message": "Du har opnået fri fragt!",
-            "free_shipping_default_message": "Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr."
-          }
-        }
-      },
-      "block_order": [
-        "hamburger_dtii4V",
-        "logo_9F9jxg",
-        "search_VaTtKF",
-        "theme_toggle_KhWjWz",
-        "cart_FwjJjD"
-      ],
-      "settings": {
-        "content_width": "theme",
-        "desktop_sticky": "none",
-        "mobile_sticky": "none",
-        "hide_on_mobile": false,
-        "hide_on_tablet": false,
-        "hide_on_desktop": false
-      }
-    },
-    "header_hygWBY": {
-      "type": "header",
-      "blocks": {
-        "navigation_HkBNQW": {
-          "type": "navigation",
-          "settings": {
-            "placement": "center",
-            "menu": "main-menu",
-            "item_padding": 8,
-            "show_on_mobile_bar": true,
-            "hide_on_mobile": false,
-            "hide_on_tablet": false,
-            "hide_on_desktop": false
-          }
-        }
-      },
-      "block_order": [
-        "navigation_HkBNQW"
-      ],
-      "name": "Header Row",
-      "settings": {
-        "content_width": "full",
-        "desktop_sticky": "none",
-        "mobile_sticky": "none",
-        "hide_on_mobile": false,
-        "hide_on_tablet": false,
-        "hide_on_desktop": false
-      }
-    },
     "header_2_XQzWTW": {
       "type": "header-2",
       "blocks": {
@@ -226,7 +122,7 @@
       ],
       "name": "Header 2",
       "settings": {
-        "content_width": "content",
+        "content_width": "full",
         "menu": "main-menu"
       }
     },
@@ -241,8 +137,6 @@
     }
   },
   "order": [
-    "header",
-    "header_hygWBY",
     "header_2_XQzWTW",
     "breadcrumbs_wVhjrQ"
   ]
