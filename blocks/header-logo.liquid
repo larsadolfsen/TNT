@@ -3,14 +3,7 @@
     .header-logo-link--{{ block.id }} {
       font-size: {{ block.settings.logo_height }}px;
     }
-    {% if block.settings.desktop_align == 'left' %}
-    @media (min-width: 768px) {
-      .header-group-block:has(#shopify-block-{{ block.id }}) {
-        justify-content: flex-start !important;
-        flex-grow: 0 !important;
-      }
-    }
-    {% endif %}
+
   </style>
   <a
     href="{{ routes.root_url }}"
