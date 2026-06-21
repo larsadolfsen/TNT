@@ -1,6 +1,7 @@
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
     width: 100%;
+    flex-grow: 1;
     {%- if block.settings.max_width != 'none' and block.settings.max_width != blank -%}
       max-width: {{ block.settings.max_width }};
     {%- endif -%}
