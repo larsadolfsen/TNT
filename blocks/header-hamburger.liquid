@@ -1,3 +1,11 @@
+{%- style -%}
+  @media (min-width: 768px) {
+    #shopify-block-{{ block.id }} {
+      display: none !important;
+    }
+  }
+{%- endstyle -%}
+
 <div class="flex items-center md:hidden" {{ block.shopify_attributes }}>
   <button
     id="menu-toggle"
@@ -8,26 +16,6 @@
     <span class="material-symbols-outlined text-2xl text-primary block">menu</span>
   </button>
 </div>
-
-<script>
-  (function() {
-    var blockEl = document.getElementById('shopify-block-{{ block.id }}');
-    function fixGroupAlignment() {
-      if (!blockEl) return;
-      var group = blockEl.closest('.header-group-block');
-      if (!group) return;
-      if (window.innerWidth >= 768) {
-        group.style.justifyContent = 'flex-start';
-        group.style.flexGrow = '0';
-      } else {
-        group.style.justifyContent = '';
-        group.style.flexGrow = '';
-      }
-    }
-    document.addEventListener('DOMContentLoaded', fixGroupAlignment);
-    window.addEventListener('resize', fixGroupAlignment);
-  })();
-</script>
 
 {% schema %}
 {
