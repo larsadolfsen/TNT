@@ -17,7 +17,9 @@
         "header_row_2_7y9NnW": {
           "type": "header-row-2",
           "name": "Header Row 2",
-          "settings": {},
+          "settings": {
+            "row_height": "56"
+          },
           "blocks": {
             "header_group_fteJh4": {
               "type": "header-group",
@@ -39,7 +41,8 @@
                   "name": "Logo",
                   "settings": {
                     "logo_text": "Textil & Voksdug",
-                    "logo_height": 20
+                    "logo_height": 20,
+                    "desktop_align": "left"
                   },
                   "blocks": {}
                 }
@@ -99,7 +102,9 @@
         "header_row_2_kFiGAN": {
           "type": "header-row-2",
           "name": "Header Row 2",
-          "settings": {},
+          "settings": {
+            "row_height": "40"
+          },
           "blocks": {
             "header_navigation_jztJXy": {
               "type": "header-navigation",
