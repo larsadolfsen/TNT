@@ -5,12 +5,9 @@
     }
     {% if block.settings.desktop_align == 'left' %}
     @media (min-width: 768px) {
-      #shopify-block-{{ block.id }} {
+      .header-group-block:has(#shopify-block-{{ block.id }}) {
         justify-content: flex-start !important;
-      }
-      /* Also fix the parent group so the logo doesn't stay centered */
-      #shopify-block-{{ block.id }}.shopify-block {
-        justify-content: flex-start !important;
+        flex-grow: 0 !important;
       }
     }
     {% endif %}
