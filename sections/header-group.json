@@ -62,7 +62,13 @@
                 "header_search_TgXRt8": {
                   "type": "header-search",
                   "name": "Search Bar",
-                  "settings": {},
+                  "settings": {
+                    "max_width": "none",
+                    "start_hidden": false,
+                    "hide_on_mobile": false,
+                    "hide_on_tablet": false,
+                    "hide_on_desktop": false
+                  },
                   "blocks": {}
                 }
               },
@@ -77,12 +83,6 @@
                 "alignment": "right"
               },
               "blocks": {
-                "header_search_rdG43p": {
-                  "type": "header-search",
-                  "name": "Search Bar",
-                  "settings": {},
-                  "blocks": {}
-                },
                 "header_theme_toggle_z9f7eF": {
                   "type": "header-theme-toggle",
                   "name": "Theme Toggle",
@@ -97,7 +97,6 @@
                 }
               },
               "block_order": [
-                "header_search_rdG43p",
                 "header_theme_toggle_z9f7eF",
                 "header_cart_4wAidd"
               ]
