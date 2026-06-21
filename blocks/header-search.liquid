@@ -46,17 +46,17 @@
   {{ block.shopify_attributes }}
 >
   <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
-    <div class="relative w-full">
+    <div class="flex w-full items-stretch border border-outline-variant rounded-full bg-surface-container overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all">
       <input
         type="text"
         name="q"
         id="search-input"
-        class="w-full h-10 pl-4 pr-24 rounded-full border border-outline-variant text-sm focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container text-primary placeholder:text-primary/60 focus:outline-none transition-all"
+        class="w-full h-10 pl-4 pr-4 bg-transparent border-0 text-sm text-primary placeholder:text-primary/60 focus:outline-none focus:ring-0"
         placeholder="Søg..."
       >
       <button
         type="submit"
-        class="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-3 rounded-full bg-primary text-on-primary hover:opacity-90 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-xs"
+        class="px-5 bg-accent text-on-accent hover:brightness-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-xs shrink-0 border-l border-outline-variant"
       >
         <span class="material-symbols-outlined text-[15px]">search</span>
         <span>Søg</span>

@@ -14,17 +14,17 @@
     grid-row-start: 1 !important;
 
     {%- if section.settings.max_width == 'page-width' -%}
-      max-width: var(--page-width, 1440px) !important;
-      margin-left: 0 !important;
-      margin-right: auto !important;
+      max-width: var(--page-width, 1440px);
+      margin-left: auto;
+      margin-right: auto;
     {%- elsif section.settings.max_width == 'none' or section.settings.max_width == blank -%}
-      max-width: 100% !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
     {%- else -%}
-      max-width: {{ section.settings.max_width }} !important;
-      margin-left: 0 !important;
-      margin-right: auto !important;
+      max-width: {{ section.settings.max_width }};
+      margin-left: auto;
+      margin-right: auto;
     {%- endif -%}
   }
 
@@ -686,7 +686,7 @@
 {% schema %}
 {
   "name": "Brødkrummer",
-  "class": "shopify-section-breadcrumbs max-w-screen-xl mr-auto px-4 lg:px-6",
+  "class": "shopify-section-breadcrumbs max-w-screen-xl mx-auto px-4 lg:px-6",
   "settings": [
     {
       "type": "select",

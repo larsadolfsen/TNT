@@ -8,17 +8,17 @@
 <h1 class="font-serif text-3xl font-bold text-primary mb-6">{{ 'search.title' | t }}</h1>
 
 <form action="{{ routes.search_url }}" method="get" role="search" class="relative max-w-xl mb-8">
-  <div class="relative w-full">
+  <div class="flex w-full items-stretch border border-outline-variant rounded-full bg-[#f1f5f9] dark:bg-[#1e293b] overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all">
     <input
       type="search"
       name="q"
       value="{{ search.terms | escape }}"
       placeholder="{{ 'search.placeholder' | t }}"
-      class="w-full h-12 pl-5 pr-28 rounded-full border border-outline-variant text-base focus:ring-1 focus:ring-primary focus:border-primary bg-[#f1f5f9] dark:bg-[#1e293b] text-primary placeholder:text-primary/60 focus:outline-none transition-all"
+      class="w-full h-12 pl-5 pr-4 bg-transparent border-0 text-base text-primary placeholder:text-primary/60 focus:outline-none focus:ring-0"
     >
     <button 
       type="submit" 
-      class="absolute right-1.5 top-1/2 -translate-y-1/2 h-9 px-4 rounded-full bg-primary text-on-primary hover:opacity-90 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-sm"
+      class="px-6 bg-accent text-on-accent hover:brightness-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1.5 font-semibold text-sm shrink-0 border-l border-outline-variant"
       aria-label="{{ 'search.submit' | t }}"
     >
       <span class="material-symbols-outlined text-base">search</span>
