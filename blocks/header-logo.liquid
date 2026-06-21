@@ -3,6 +3,17 @@
     .header-logo-link--{{ block.id }} {
       font-size: {{ block.settings.logo_height }}px;
     }
+    {% if block.settings.desktop_align == 'left' %}
+    @media (min-width: 768px) {
+      #shopify-block-{{ block.id }} {
+        justify-content: flex-start !important;
+      }
+      /* Also fix the parent group so the logo doesn't stay centered */
+      #shopify-block-{{ block.id }}.shopify-block {
+        justify-content: flex-start !important;
+      }
+    }
+    {% endif %}
   </style>
   <a
     href="{{ routes.root_url }}"
@@ -34,6 +45,16 @@
       "unit": "px",
       "default": 24,
       "label": "Height"
+    },
+    {
+      "type": "select",
+      "id": "desktop_align",
+      "label": "Desktop alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ]
     }
   ],
   "presets": [
