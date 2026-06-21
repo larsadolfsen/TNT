@@ -11,6 +11,27 @@
     padding: 0;
     height: 100%;
   }
+
+  #shopify-block-{{ block.id }} .nav-link-pill {
+    position: relative;
+  }
+
+  #shopify-block-{{ block.id }} .nav-link-pill::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 32px;
+    border-radius: 6px;
+    background-color: transparent;
+    transition: background-color 150ms ease;
+    pointer-events: none;
+  }
+
+  #shopify-block-{{ block.id }} .nav-link-pill:hover::before {
+    background-color: var(--color-surface-container, rgba(0,0,0,0.06));
+  }
 {%- endstyle -%}
 
 {%- if menu_handle != blank -%}
@@ -23,8 +44,8 @@
     <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full justify-start">
       {%- for link in linklists[menu_handle].links -%}
         <li class="nav-menu-item transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}">
-          <a href="{{ link.url }}" class="flex items-center text-base font-semibold text-primary no-underline h-full px-3 mx-1 rounded hover:bg-surface-container transition-colors duration-150" style="padding-inline: {{ block.settings.item_padding | default: 12 }}px;">
-            <span>{{ link.title }}</span>
+          <a href="{{ link.url }}" class="nav-link-pill flex items-center text-base font-semibold text-primary no-underline h-full px-3 mx-1" style="padding-inline: {{ block.settings.item_padding | default: 12 }}px;">
+            <span style="position: relative; z-index: 1;">{{ link.title }}</span>
           </a>
         </li>
       {%- endfor -%}
