@@ -47,14 +47,22 @@
                 </div>
               </div>
             {%- else -%}
-              <img 
-                alt="{{ media.alt | default: product.title }}" 
-                class="w-full h-full object-cover select-none" 
-                src="{{ media.preview_image.src | image_url: width: 1200 }}"
-                width="1200"
-                height="800"
-                draggable="false"
-              />
+              {%- if forloop.first -%}
+                {%- assign loading_strategy = 'eager' -%}
+                {%- assign fetch_priority = 'high' -%}
+              {%- else -%}
+                {%- assign loading_strategy = 'lazy' -%}
+                {%- assign fetch_priority = 'auto' -%}
+              {%- endif -%}
+              {{ media.preview_image.src | image_url: width: 1200 | image_tag:
+                widths: '360, 480, 720, 960, 1200, 1600',
+                sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px',
+                class: 'w-full h-full object-cover select-none',
+                loading: loading_strategy,
+                fetchpriority: fetch_priority,
+                alt: media.alt | default: product.title,
+                draggable: 'false'
+              }}
             {%- endif -%}
           </div>
         {%- endfor -%}
