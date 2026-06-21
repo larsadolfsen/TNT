@@ -65,7 +65,7 @@
                   "settings": {
                     "max_width": "none",
                     "start_hidden": false,
-                    "hide_on_mobile": false,
+                    "hide_on_mobile": true,
                     "hide_on_tablet": false,
                     "hide_on_desktop": false
                   },
