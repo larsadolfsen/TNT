@@ -12,7 +12,7 @@
 {%- endstyle -%}
 
 <header class="header-2 bg-white border-b border-outline-variant px-4">
-  <div class="max-w-screen-xl mx-auto">
+  <div class="{% if section.settings.content_width == 'content' %}max-w-screen-xl mx-auto{% endif %}">
     <div class="flex flex-col w-full">
       {% content_for 'blocks' %}
     </div>
@@ -521,6 +521,22 @@
     }
   ],
   "settings": [
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Header width",
+      "options": [
+        {
+          "value": "content",
+          "label": "Content width"
+        },
+        {
+          "value": "full",
+          "label": "Full width"
+        }
+      ],
+      "default": "content"
+    },
     {
       "type": "link_list",
       "id": "menu",
