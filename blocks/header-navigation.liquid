@@ -44,7 +44,7 @@
     <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full justify-start">
       {%- for link in linklists[menu_handle].links -%}
         <li class="nav-menu-item transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}">
-          <a href="{{ link.url }}" class="nav-link-pill flex items-center text-base font-semibold text-primary no-underline h-full px-3 mx-1" style="padding-inline: {{ block.settings.item_padding | default: 12 }}px;">
+          <a href="{{ link.url }}" class="nav-link-pill flex items-center text-base font-medium text-primary no-underline h-full px-3 mx-1" style="padding-inline: {{ block.settings.item_padding | default: 12 }}px;">
             <span style="position: relative; z-index: 1;">{{ link.title }}</span>
           </a>
         </li>
