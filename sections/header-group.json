@@ -115,18 +115,30 @@
             "row_height": "40"
           },
           "blocks": {
-            "header_navigation_jztJXy": {
-              "type": "header-navigation",
-              "name": "Navigation Menu",
+            "header_group_ftkNYf": {
+              "type": "header-group",
+              "name": "Header Group",
               "settings": {
-                "menu": "main-menu",
-                "item_padding": 12
+                "alignment": "center"
               },
-              "blocks": {}
+              "blocks": {
+                "header_navigation_WcyfHw": {
+                  "type": "header-navigation",
+                  "name": "Navigation Menu",
+                  "settings": {
+                    "menu": "main-menu",
+                    "item_padding": 12
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "header_navigation_WcyfHw"
+              ]
             }
           },
           "block_order": [
-            "header_navigation_jztJXy"
+            "header_group_ftkNYf"
           ]
         }
       },
