@@ -7,7 +7,7 @@
   #shopify-block-{{ block.id }}.shopify-block {
     display: flex;
     align-items: center;
-    height: {{ section.settings.row_height | minus: 8 }}px;
+    height: calc(var(--row-height, 56px) - 8px);
     padding: 0;
   }
 
@@ -33,7 +33,7 @@
 
 <div
   class="header-group header-group-block flex items-center"
-  style="height: {{ section.settings.row_height | minus: 8 }}px; justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};"
+  style="height: calc(var(--row-height, 56px) - 8px); justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};"
   {{ block.shopify_attributes }}
 >
   {% content_for 'blocks' %}

@@ -8,7 +8,8 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: {{ section.settings.row_height }}px;
+    height: {{ block.settings.row_height }}px;
+    --row-height: {{ block.settings.row_height }}px;
     padding-top: 4px;
     padding-bottom: 4px;
     box-sizing: border-box;
@@ -25,6 +26,7 @@
 
 <div
   class="header-row-2 flex items-center w-full gap-4"
+  style="height: {{ block.settings.row_height }}px; --row-height: {{ block.settings.row_height }}px;"
   {{ block.shopify_attributes }}
 >
   {% content_for 'blocks' %}
@@ -42,7 +44,24 @@
     { "type": "header-theme-toggle" },
     { "type": "header-hamburger" }
   ],
-  "settings": [],
+  "settings": [
+    {
+      "type": "select",
+      "id": "row_height",
+      "label": "Row height",
+      "options": [
+        {
+          "value": "56",
+          "label": "56px (Default)"
+        },
+        {
+          "value": "40",
+          "label": "40px (Compact)"
+        }
+      ],
+      "default": "56"
+    }
+  ],
   "presets": [
     {
       "name": "Header Row 2"
