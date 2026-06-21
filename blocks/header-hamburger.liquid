@@ -9,6 +9,26 @@
   </button>
 </div>
 
+<script>
+  (function() {
+    var blockEl = document.getElementById('shopify-block-{{ block.id }}');
+    function fixGroupAlignment() {
+      if (!blockEl) return;
+      var group = blockEl.closest('.header-group-block');
+      if (!group) return;
+      if (window.innerWidth >= 768) {
+        group.style.justifyContent = 'flex-start';
+        group.style.flexGrow = '0';
+      } else {
+        group.style.justifyContent = '';
+        group.style.flexGrow = '';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', fixGroupAlignment);
+    window.addEventListener('resize', fixGroupAlignment);
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Mobile Hamburger Menu",
