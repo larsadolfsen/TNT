@@ -63,7 +63,7 @@
                   "type": "header-search",
                   "name": "Search Bar",
                   "settings": {
-                    "max_width": "none",
+                    "max_width": "700px",
                     "start_hidden": false,
                     "hide_on_mobile": true,
                     "hide_on_tablet": false,
