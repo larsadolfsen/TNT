@@ -11,8 +11,8 @@
   }
 {%- endstyle -%}
 
-<header class="header-2 bg-white border-b border-outline-variant px-4">
-  <div class="{% if section.settings.content_width == 'content' %}max-w-screen-xl mx-auto{% endif %}">
+<header class="header-2 bg-white border-b border-outline-variant{% if section.settings.content_width == 'content' %} px-4{% endif %}">
+  <div class="{% if section.settings.content_width == 'content' %}max-w-screen-xl mx-auto px-0{% endif %} w-full">
     <div class="flex flex-col w-full">
       {% content_for 'blocks' %}
     </div>
