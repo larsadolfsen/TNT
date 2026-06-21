@@ -3137,6 +3137,16 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
     z-index: 99;
   }
 }
+@media (min-width: 1600px) {
+  main {
+    padding-left: calc(var(--grid-gap) + 24px);
+    padding-right: calc(var(--grid-gap) + 24px);
+  }
+  .header-2 {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;
