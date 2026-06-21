@@ -171,7 +171,7 @@
               "type": "product-price",
               "name": "Product Price",
               "settings": {
-                "price_suffix": "pr. meter inkl. moms",
+                "price_suffix": "inkl. moms",
                 "compare_at_price_label": "Normalpris",
                 "price_subtext": "30 dages fuld returret, også på tilpassede duge.",
                 "padding_top": 0,
