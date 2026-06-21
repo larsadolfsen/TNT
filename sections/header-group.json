@@ -78,7 +78,7 @@
         "cart_FwjJjD"
       ],
       "settings": {
-        "content_width": "full",
+        "content_width": "theme",
         "desktop_sticky": "none",
         "mobile_sticky": "none",
         "hide_on_mobile": false,
@@ -226,6 +226,7 @@
       ],
       "name": "Header 2",
       "settings": {
+        "content_width": "content",
         "menu": "main-menu"
       }
     },
