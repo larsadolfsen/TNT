@@ -273,7 +273,7 @@
 
   <div class="breadcrumbs-wrapper hidden md:block text-left">
     <div class="breadcrumbs-fade-left opacity-0"></div>
-    <nav data-breadcrumbs-nav class="breadcrumbs-nav text-xs sm:text-sm text-primary/85 flex items-center justify-start gap-0.5 overflow-x-auto whitespace-nowrap h-12 hide-scrollbar" aria-label="Brødkrummer">
+    <nav data-breadcrumbs-nav class="breadcrumbs-nav text-[12px] text-primary/85 flex items-center justify-start gap-0.5 overflow-x-auto whitespace-nowrap h-12 hide-scrollbar" aria-label="Brødkrummer">
         
         {%- comment -%} Forside (root) {%- endcomment -%}
         {%- assign forside_class = "" -%}
@@ -284,7 +284,7 @@
         <span class="{{ forside_class }} material-symbols-outlined text-[16px]">chevron_right</span>
 
         {%- if has_ellipsis -%}
-          <button type="button" onclick="this.closest('[data-breadcrumbs-nav]').classList.add('is-expanded')" class="breadcrumb-ellipsis hover:underline text-primary/85 cursor-pointer border-none bg-transparent p-0 text-sm font-normal" aria-label="Vis hele stien">...</button>
+          <button type="button" onclick="this.closest('[data-breadcrumbs-nav]').classList.add('is-expanded')" class="breadcrumb-ellipsis hover:underline text-primary/85 cursor-pointer border-none bg-transparent p-0 text-[12px] font-normal" aria-label="Vis hele stien">...</button>
           <span class="breadcrumb-ellipsis material-symbols-outlined text-[16px] select-none">chevron_right</span>
         {%- endif -%}
 
