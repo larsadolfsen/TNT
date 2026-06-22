@@ -526,7 +526,7 @@
               "type": "text",
               "name": "t:general.text",
               "settings": {
-                "text": "<p>{{ closest.product.metafields.custom.short_description | metafield_tag }}</p>",
+                "text": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
                 "alignment": "left",
                 "padding_top": 0,
                 "padding_bottom": 0,
@@ -605,7 +605,7 @@
         "row_start_tablet": "auto",
         "hide_on_tablet": false,
         "column_span_desktop": "1",
-        "column_start_desktop": "3",
+        "column_start_desktop": "2",
         "row_span_desktop": "auto",
         "row_start_desktop": "3",
         "hide_on_desktop": false,
