@@ -8,6 +8,13 @@
 
     const sections = Array.from(mainContent.children).filter(el => el.classList.contains('shopify-section'));
 
+    // Sort sections by their computed CSS order property
+    sections.sort((a, b) => {
+      const orderA = parseInt(getComputedStyle(a).order) || 0;
+      const orderB = parseInt(getComputedStyle(b).order) || 0;
+      return orderA - orderB;
+    });
+
     if (!isTablet && !isDesktop) {
       // Reset mobile layout
       mainContent.style.position = '';

@@ -125,6 +125,7 @@
   #shopify-section-{{ section.id }} {
     --col-span: 4;
     grid-column-end: span var(--col-span);
+    order: {{ section.settings.order_mobile | default: 1 }};
 
     {%- if section.settings.background_color == 'dark' -%}
       --color-primary: #ffffff;
@@ -141,6 +142,7 @@
     #shopify-section-{{ section.id }} {
       --col-span: {{ span_tb }};
       grid-column-end: span var(--col-span);
+      order: {{ section.settings.order_tablet | default: 1 }};
 
       {%- if start_tb != 'auto' and start_tb != blank -%}
         --col-start: {{ start_tb }};
@@ -161,6 +163,7 @@
     #shopify-section-{{ section.id }} {
       --col-span: {{ span_lg }};
       grid-column-end: span var(--col-span);
+      order: {{ section.settings.order_desktop | default: 1 }};
 
       {%- if start_lg != 'auto' and start_lg != blank -%}
         --col-start: {{ start_lg }};
@@ -285,6 +288,15 @@
       "default": false
     },
     {
+      "type": "range",
+      "id": "order_mobile",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Rækkefølge (Mobil)",
+      "default": 1
+    },
+    {
       "type": "header",
       "content": "Tablet"
     },
@@ -314,6 +326,15 @@
       "id": "hide_on_tablet",
       "label": "Skjul på tablet",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "order_tablet",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Rækkefølge (Tablet)",
+      "default": 1
     },
     {
       "type": "header",
@@ -347,6 +368,15 @@
       "id": "hide_on_desktop",
       "label": "Skjul på desktop",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "order_desktop",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Rækkefølge (Desktop)",
+      "default": 1
     },
     {
       "type": "header",
