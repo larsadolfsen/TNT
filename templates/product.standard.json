@@ -411,7 +411,7 @@
         "hide_on_tablet": false,
         "column_span_desktop": "1",
         "column_start_desktop": "3",
-        "row_span_desktop": "1",
+        "row_span_desktop": "2",
         "row_start_desktop": "3",
         "hide_on_desktop": false,
         "justify_self": "auto",
