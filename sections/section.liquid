@@ -8,6 +8,44 @@
   if is_full_width
     assign section_classes = section_classes | append: ' section-content--full-width'
   endif
+
+  # Clamp columns and starting positions dynamically based on global grid settings
+  assign cols_tb = settings.grid_cols_tablet | default: 2 | plus: 0
+  assign cols_lg = settings.grid_cols_desktop | default: 3 | plus: 0
+
+  assign span_tb = section.settings.column_span_tablet | default: cols_tb | plus: 0
+  if span_tb > cols_tb
+    assign span_tb = cols_tb
+  endif
+
+  assign start_tb = section.settings.column_start_tablet | default: 'auto'
+  if start_tb != 'auto' and start_tb != blank
+    assign start_tb_num = start_tb | plus: 0
+    if start_tb_num > cols_tb
+      assign start_tb = cols_tb
+    endif
+    assign max_span = cols_tb | minus: start_tb | plus: 1
+    if span_tb > max_span
+      assign span_tb = max_span
+    endif
+  endif
+
+  assign span_lg = section.settings.column_span_desktop | default: cols_lg | plus: 0
+  if span_lg > cols_lg
+    assign span_lg = cols_lg
+  endif
+
+  assign start_lg = section.settings.column_start_desktop | default: 'auto'
+  if start_lg != 'auto' and start_lg != blank
+    assign start_lg_num = start_lg | plus: 0
+    if start_lg_num > cols_lg
+      assign start_lg = cols_lg
+    endif
+    assign max_span_lg = cols_lg | minus: start_lg | plus: 1
+    if span_lg > max_span_lg
+      assign span_lg = max_span_lg
+    endif
+  endif
 -%}
 
 {%- style -%}
@@ -53,15 +91,15 @@
 
   .section-{{ section.id }}-inner-padding .section-content {
     --section-span-mb: {{ settings.grid_cols_mobile | default: 2 }};
-    --section-span-tb: {{ section.settings.column_span_tablet | default: 2 }};
-    --section-span-lg: {{ section.settings.column_span_desktop | default: 3 }};
+    --section-span-tb: {{ span_tb }};
+    --section-span-lg: {{ span_lg }};
     --span-mb: var(--section-span-mb);
     --span-tb: var(--section-span-tb);
     --span-lg: var(--section-span-lg);
 
     --section-span-mobile: {{ settings.grid_cols_mobile | default: 2 }};
-    --section-span-expanded: {{ section.settings.column_span_tablet | default: 2 }};
-    --section-span-large: {{ section.settings.column_span_desktop | default: 3 }};
+    --section-span-expanded: {{ span_tb }};
+    --section-span-large: {{ span_lg }};
     --span-mobile: var(--section-span-mobile);
     --span-expanded: var(--section-span-expanded);
     --span-large: var(--section-span-large);
@@ -69,18 +107,18 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    max-width: calc((var(--span-mb) / 4) * 100%);
+    max-width: calc((var(--span-mb) / {{ settings.grid_cols_mobile | default: 2 }}) * 100%);
   }
 
   @media screen and (min-width: 840px) {
     .section-{{ section.id }}-inner-padding .section-content {
-      max-width: min(calc((var(--span-tb) / 8) * var(--page-width, 1440px)), 100%);
+      max-width: min(calc((var(--span-tb) / {{ settings.grid_cols_tablet | default: 2 }}) * var(--page-width, 1440px)), 100%);
     }
   }
 
   @media screen and (min-width: 1200px) {
     .section-{{ section.id }}-inner-padding .section-content {
-      max-width: min(calc((var(--span-lg) / 12) * var(--page-width, 1440px)), 100%);
+      max-width: min(calc((var(--span-lg) / {{ settings.grid_cols_desktop | default: 3 }}) * var(--page-width, 1440px)), 100%);
     }
   }
 
@@ -109,11 +147,11 @@
 
   @media screen and (min-width: 840px) {
     #shopify-section-{{ section.id }} {
-      --col-span: {{ section.settings.column_span_tablet | default: 8 }};
+      --col-span: {{ span_tb }};
       grid-column-end: span var(--col-span);
 
-      {%- if section.settings.column_start_tablet != 'auto' and section.settings.column_start_tablet != blank -%}
-        --col-start: {{ section.settings.column_start_tablet }};
+      {%- if start_tb != 'auto' and start_tb != blank -%}
+        --col-start: {{ start_tb }};
         grid-column-start: var(--col-start);
       {%- endif -%}
 
@@ -139,14 +177,14 @@
 
   @media screen and (min-width: 1200px) {
     #shopify-section-{{ section.id }} {
-      --col-span: {{ section.settings.column_span_desktop | default: 12 }};
+      --col-span: {{ span_lg }};
       grid-column-end: span var(--col-span);
 
-      {%- if section.settings.column_start_desktop != 'auto' and section.settings.column_start_desktop != blank -%}
-        --col-start: {{ section.settings.column_start_desktop }};
+      {%- if start_lg != 'auto' and start_lg != blank -%}
+        --col-start: {{ start_lg }};
         grid-column-start: var(--col-start);
       {%- else -%}
-        {%- if section.settings.column_start_tablet != 'auto' and section.settings.column_start_tablet != blank -%}
+        {%- if start_tb != 'auto' and start_tb != blank -%}
           grid-column-start: auto;
         {%- endif -%}
       {%- endif -%}
