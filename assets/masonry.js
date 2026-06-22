@@ -125,6 +125,31 @@
 
     console.log(`[Masonry Debug] Final colHeights:`, colHeights);
     mainContent.style.height = `${Math.max(...colHeights)}px`;
+
+    // Render visual debug overlay on screen
+    let overlay = document.getElementById('masonry-debug-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'masonry-debug-overlay';
+      overlay.style.cssText = 'position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);color:#fff;padding:12px;font-family:monospace;font-size:10px;z-index:99999;max-width:320px;border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,0.3);line-height:1.4;';
+      document.body.appendChild(overlay);
+    }
+    
+    let sectionsLog = '';
+    sections.forEach((sec, idx) => {
+      sectionsLog += `<br>Sec ${idx}: left=${sec.style.left} width=${sec.style.width} h=${Math.round(sec.getBoundingClientRect().height)}px`;
+    });
+
+    overlay.innerHTML = `
+      <b>Masonry Debug Panel</b><br>
+      IsDesktop: ${isDesktop} | IsTablet: ${isTablet}<br>
+      Cols: ${cols} | Gap: ${gap}px<br>
+      ContainerWidth: ${Math.round(containerWidth)}px<br>
+      ColWidth: ${Math.round(colWidth)}px<br>
+      --grid-gap (:root): "${styleRoot.getPropertyValue('--grid-gap')}"<br>
+      --grid-gap (#MainContent): "${styleMain.getPropertyValue('--grid-gap')}"<br>
+      ${sectionsLog}
+    `;
   }
 
   // Event Listeners
