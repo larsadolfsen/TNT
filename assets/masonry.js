@@ -42,7 +42,18 @@
 
     const styleRoot = getComputedStyle(document.documentElement);
     const styleMain = getComputedStyle(mainContent);
-    const gap = parseInt(styleRoot.getPropertyValue('--grid-gap')) || parseInt(styleMain.getPropertyValue('--grid-gap')) || 24;
+    
+    let gap = 24;
+    const mainGap = parseInt(styleMain.getPropertyValue('--grid-gap'));
+    if (!isNaN(mainGap)) {
+      gap = mainGap;
+    } else {
+      const rootGap = parseInt(styleRoot.getPropertyValue('--grid-gap'));
+      if (!isNaN(rootGap)) {
+        gap = rootGap;
+      }
+    }
+
     const cols = isDesktop 
       ? (parseInt(styleRoot.getPropertyValue('--grid-cols-desktop')) || parseInt(styleMain.getPropertyValue('--grid-cols-desktop')) || 3) 
       : (parseInt(styleRoot.getPropertyValue('--grid-cols-tablet')) || parseInt(styleMain.getPropertyValue('--grid-cols-tablet')) || 2);
@@ -151,7 +162,7 @@
     });
 
     overlay.innerHTML = `
-      <b>Masonry Debug Panel (v1.0.71)</b><br>
+      <b>Masonry Debug Panel (v1.0.72)</b><br>
       IsDesktop: ${isDesktop} | IsTablet: ${isTablet}<br>
       Cols: ${cols} | Gap: ${gap}px<br>
       ContainerWidth: ${Math.round(containerWidth)}px<br>

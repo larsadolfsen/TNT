@@ -73,13 +73,8 @@
 
   @media screen and (min-width: 840px) {
     .section-{{ section.id }}-inner-padding {
-      {%- if layout_style == 'full_width_bg' -%}
-        padding-left: calc({{ section.settings.padding_left | default: 0 }}px + 1rem);
-        padding-right: calc({{ section.settings.padding_right | default: 0 }}px + 1rem);
-      {%- else -%}
-        padding-left: {{ section.settings.padding_left | default: 0 }}px;
-        padding-right: {{ section.settings.padding_right | default: 0 }}px;
-      {%- endif -%}
+      padding-left: {{ section.settings.padding_left | default: 0 }}px;
+      padding-right: {{ section.settings.padding_right | default: 0 }}px;
     }
   }
 

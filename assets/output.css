@@ -2675,10 +2675,17 @@ h4, .h4 {
     display: block;
     padding-left: 0;
     padding-right: 0;
+    --grid-gap: 0px !important;
   }
   #MainContent > .shopify-section {
     box-sizing: border-box;
     display: block;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  #MainContent > .shopify-section:has(.section-content--full-width) {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 @media (min-width: 840px) {
