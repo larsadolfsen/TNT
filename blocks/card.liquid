@@ -77,12 +77,12 @@
 
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
-    --span-mb: {{ block.settings.span_mobile | default: 4 }};
-    --span-tb: {{ block.settings.span_tablet | default: 8 }};
-    --span-lg: {{ block.settings.span_desktop | default: 12 }};
-    --span-mobile: {{ block.settings.span_mobile | default: 4 }};
-    --span-expanded: {{ block.settings.span_tablet | default: 8 }};
-    --span-large: {{ block.settings.span_desktop | default: 12 }};
+    --span-mb: {{ block.settings.span_mobile | default: 2 }};
+    --span-tb: {{ block.settings.span_tablet | default: 2 }};
+    --span-lg: {{ block.settings.span_desktop | default: 3 }};
+    --span-mobile: {{ block.settings.span_mobile | default: 2 }};
+    --span-expanded: {{ block.settings.span_tablet | default: 2 }};
+    --span-large: {{ block.settings.span_desktop | default: 3 }};
     {%- liquid
       assign padding_top = block.settings.padding_top | default: 24
       assign padding_bottom = block.settings.padding_bottom | default: 24
@@ -307,9 +307,11 @@
         { "value": "1", "label": "1" },
         { "value": "2", "label": "2" },
         { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" }
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" }
       ],
-      "default": "4"
+      "default": "2"
     },
     {
       "type": "select",
@@ -325,7 +327,7 @@
         { "value": "7", "label": "7" },
         { "value": "8", "label": "8" }
       ],
-      "default": "8"
+      "default": "2"
     },
     {
       "type": "select",
@@ -345,7 +347,7 @@
         { "value": "11", "label": "11" },
         { "value": "12", "label": "12" }
       ],
-      "default": "12"
+      "default": "3"
     },
     {
       "type": "header",

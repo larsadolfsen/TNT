@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Skeleton",
-    "theme_version": "1.0.56",
+    "theme_version": "1.0.57",
     "theme_author": "Shopify",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
@@ -50,6 +50,33 @@
         "unit": "px",
         "label": "t:labels.page_margin",
         "default": 20
+      },
+      {
+        "type": "range",
+        "id": "grid_cols_mobile",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "label": "Antal layout-kolonner på mobil",
+        "default": 2
+      },
+      {
+        "type": "range",
+        "id": "grid_cols_tablet",
+        "min": 1,
+        "max": 8,
+        "step": 1,
+        "label": "Antal layout-kolonner på tablet",
+        "default": 2
+      },
+      {
+        "type": "range",
+        "id": "grid_cols_desktop",
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "label": "Antal layout-kolonner på desktop",
+        "default": 3
       },
       {
         "type": "checkbox",

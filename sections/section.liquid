@@ -52,16 +52,16 @@
   {%- endunless -%}
 
   .section-{{ section.id }}-inner-padding .section-content {
-    --section-span-mb: 4;
-    --section-span-tb: {{ section.settings.column_span_tablet | default: 8 }};
-    --section-span-lg: {{ section.settings.column_span_desktop | default: 12 }};
+    --section-span-mb: {{ settings.grid_cols_mobile | default: 2 }};
+    --section-span-tb: {{ section.settings.column_span_tablet | default: 2 }};
+    --section-span-lg: {{ section.settings.column_span_desktop | default: 3 }};
     --span-mb: var(--section-span-mb);
     --span-tb: var(--section-span-tb);
     --span-lg: var(--section-span-lg);
 
-    --section-span-mobile: 4;
-    --section-span-expanded: {{ section.settings.column_span_tablet | default: 8 }};
-    --section-span-large: {{ section.settings.column_span_desktop | default: 12 }};
+    --section-span-mobile: {{ settings.grid_cols_mobile | default: 2 }};
+    --section-span-expanded: {{ section.settings.column_span_tablet | default: 2 }};
+    --section-span-large: {{ section.settings.column_span_desktop | default: 3 }};
     --span-mobile: var(--section-span-mobile);
     --span-expanded: var(--section-span-expanded);
     --span-large: var(--section-span-large);
@@ -271,7 +271,7 @@
         { "value": "7", "label": "7" },
         { "value": "8", "label": "8" }
       ],
-      "default": "8"
+      "default": "2"
     },
     {
       "type": "select",
@@ -360,7 +360,7 @@
         { "value": "11", "label": "11" },
         { "value": "12", "label": "12" }
       ],
-      "default": "12"
+      "default": "3"
     },
     {
       "type": "select",

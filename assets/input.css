@@ -56,7 +56,7 @@ main {
   color: var(--color-text);
 
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--grid-cols-mobile, 2), minmax(0, 1fr));
   column-gap: var(--grid-gap);
   row-gap: var(--grid-row-gap);
   width: 100%;
@@ -67,30 +67,30 @@ main {
 
 @media (min-width: --theme(--breakpoint-md)) {
   main {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--grid-cols-tablet, 2), minmax(0, 1fr));
   }
 }
 
 @media (min-width: --theme(--breakpoint-lg)) {
   main {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--grid-cols-desktop, 3), minmax(0, 1fr));
   }
 }
 
 main > .shopify-section {
   grid-column-start: auto;
-  grid-column-end: span 4;
+  grid-column-end: span var(--grid-cols-mobile, 2);
 }
 
 @media (min-width: --theme(--breakpoint-md)) {
   main > .shopify-section {
-    grid-column-end: span 8;
+    grid-column-end: span var(--grid-cols-tablet, 2);
   }
 }
 
 @media (min-width: --theme(--breakpoint-lg)) {
   main > .shopify-section {
-    grid-column-end: span 12;
+    grid-column-end: span var(--grid-cols-desktop, 3);
   }
 }
 
@@ -389,7 +389,7 @@ h4,
   #MainContent:has(.product-media),
   #MainContent:has(.shopify-block-product-media) {
     display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--grid-cols-tablet, 2), minmax(0, 1fr));
     grid-template-rows: repeat(5, auto) minmax(0, 1fr);
     column-gap: var(--grid-gap);
     row-gap: 0;
@@ -518,7 +518,7 @@ h4,
   .template-product #MainContent,
   #MainContent:has(.product-media),
   #MainContent:has(.shopify-block-product-media) {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--grid-cols-desktop, 3), minmax(0, 1fr));
 
     /* Product Media (Gallery) in Left Column (Column 1-8) spanning rows 1-2 */
     .shopify-section:has(.product-media),

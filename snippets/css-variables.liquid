@@ -54,6 +54,10 @@
     --page-margin: {{ settings.min_page_margin }}px;
     --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
 
+    --grid-cols-mobile: {{ settings.grid_cols_mobile | default: 2 }};
+    --grid-cols-tablet: {{ settings.grid_cols_tablet | default: 2 }};
+    --grid-cols-desktop: {{ settings.grid_cols_desktop | default: 3 }};
+
     /* Light Theme Settings */
     --color-primary: {{ settings.primary_color_light | default: '#0e1a28' }};
     --color-on-primary: {{ settings.primary_foreground_color_light | default: '#ffffff' }};
