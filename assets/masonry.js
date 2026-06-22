@@ -71,12 +71,32 @@
           targetCol = cols - colSpan;
         }
       } else {
-        // Find column with min height
-        targetCol = colHeights.indexOf(Math.min(...colHeights));
+        // Find the starting column index (from 0 to cols - colSpan)
+        // that minimizes the maximum height among the spanned columns.
+        let minSpanHeight = Infinity;
+        let bestCol = 0;
+        for (let c = 0; c <= cols - colSpan; c++) {
+          let maxH = 0;
+          for (let i = 0; i < colSpan; i++) {
+            maxH = Math.max(maxH, colHeights[c + i]);
+          }
+          if (maxH < minSpanHeight) {
+            minSpanHeight = maxH;
+            bestCol = c;
+          }
+        }
+        targetCol = bestCol;
       }
 
       const leftPos = targetCol * (colWidth + gap);
-      const topPos = colHeights[targetCol];
+      
+      // Find the maximum height among all columns spanned by this section
+      let topPos = 0;
+      for (let i = 0; i < colSpan; i++) {
+        if (targetCol + i < cols) {
+          topPos = Math.max(topPos, colHeights[targetCol + i]);
+        }
+      }
 
       sec.style.position = 'absolute';
       sec.style.left = `${leftPos}px`;
@@ -86,10 +106,11 @@
       // Get section height
       const sectionHeight = sec.getBoundingClientRect().height;
       
-      // Update heights for all spanned columns
+      // Update heights for all spanned columns to the new end position
+      const newHeight = topPos + sectionHeight + gap;
       for (let i = 0; i < colSpan; i++) {
         if (targetCol + i < cols) {
-          colHeights[targetCol + i] = topPos + sectionHeight + gap;
+          colHeights[targetCol + i] = newHeight;
         }
       }
     });
