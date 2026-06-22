@@ -47,7 +47,10 @@
       ? (parseInt(styleRoot.getPropertyValue('--grid-cols-desktop')) || parseInt(styleMain.getPropertyValue('--grid-cols-desktop')) || 3) 
       : (parseInt(styleRoot.getPropertyValue('--grid-cols-tablet')) || parseInt(styleMain.getPropertyValue('--grid-cols-tablet')) || 2);
 
-    const containerWidth = mainContent.getBoundingClientRect().width;
+    const paddingLeft = parseFloat(styleMain.paddingLeft) || 0;
+    const paddingRight = parseFloat(styleMain.paddingRight) || 0;
+    const containerWidthFull = mainContent.getBoundingClientRect().width;
+    const containerWidth = containerWidthFull - paddingLeft - paddingRight;
     const colWidth = (containerWidth - (cols - 1) * gap) / cols;
 
     const colHeights = Array(cols).fill(0);
@@ -88,7 +91,14 @@
         targetCol = bestCol;
       }
 
-      const leftPos = targetCol * (colWidth + gap);
+      let leftPos, widthPos;
+      if (colSpan === cols) {
+        leftPos = 0;
+        widthPos = containerWidthFull;
+      } else {
+        leftPos = paddingLeft + targetCol * (colWidth + gap);
+        widthPos = colWidth * colSpan + gap * (colSpan - 1);
+      }
       
       // Find the maximum height among all columns spanned by this section
       let topPos = 0;
@@ -101,7 +111,7 @@
       sec.style.position = 'absolute';
       sec.style.left = `${leftPos}px`;
       sec.style.top = `${topPos}px`;
-      sec.style.width = `${colWidth * colSpan + gap * (colSpan - 1)}px`;
+      sec.style.width = `${widthPos}px`;
 
       // Get section height
       const sectionHeight = sec.getBoundingClientRect().height;
