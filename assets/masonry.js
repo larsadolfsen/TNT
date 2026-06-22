@@ -8,10 +8,22 @@
 
     const sections = Array.from(mainContent.children).filter(el => el.classList.contains('shopify-section'));
 
-    // Sort sections by their computed CSS order property
+    // Assign original DOM indices to sections
+    sections.forEach((sec, idx) => {
+      sec.originalIndex = idx;
+    });
+
+    // Sort sections by computed CSS order with DOM index fallback
     sections.sort((a, b) => {
-      const orderA = parseInt(getComputedStyle(a).order) || 0;
-      const orderB = parseInt(getComputedStyle(b).order) || 0;
+      const styleOrderA = getComputedStyle(a).order;
+      const orderA = (styleOrderA === '0' || styleOrderA === 'auto') ? a.originalIndex : parseInt(styleOrderA);
+      
+      const styleOrderB = getComputedStyle(b).order;
+      const orderB = (styleOrderB === '0' || styleOrderB === 'auto') ? b.originalIndex : parseInt(styleOrderB);
+
+      if (orderA === orderB) {
+        return a.originalIndex - b.originalIndex;
+      }
       return orderA - orderB;
     });
 

@@ -125,7 +125,9 @@
   #shopify-section-{{ section.id }} {
     --col-span: 4;
     grid-column-end: span var(--col-span);
-    order: {{ section.settings.order_mobile | default: 1 }};
+    {%- if section.settings.order_mobile != 'auto' and section.settings.order_mobile != blank -%}
+      order: {{ section.settings.order_mobile }};
+    {%- endif -%}
 
     {%- if section.settings.background_color == 'dark' -%}
       --color-primary: #ffffff;
@@ -142,7 +144,9 @@
     #shopify-section-{{ section.id }} {
       --col-span: {{ span_tb }};
       grid-column-end: span var(--col-span);
-      order: {{ section.settings.order_tablet | default: 1 }};
+      {%- if section.settings.order_tablet != 'auto' and section.settings.order_tablet != blank -%}
+        order: {{ section.settings.order_tablet }};
+      {%- endif -%}
 
       {%- if start_tb != 'auto' and start_tb != blank -%}
         --col-start: {{ start_tb }};
@@ -163,7 +167,9 @@
     #shopify-section-{{ section.id }} {
       --col-span: {{ span_lg }};
       grid-column-end: span var(--col-span);
-      order: {{ section.settings.order_desktop | default: 1 }};
+      {%- if section.settings.order_desktop != 'auto' and section.settings.order_desktop != blank -%}
+        order: {{ section.settings.order_desktop }};
+      {%- endif -%}
 
       {%- if start_lg != 'auto' and start_lg != blank -%}
         --col-start: {{ start_lg }};
@@ -288,13 +294,25 @@
       "default": false
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "order_mobile",
-      "min": 1,
-      "max": 20,
-      "step": 1,
       "label": "Rækkefølge (Mobil)",
-      "default": 1
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" },
+        { "value": "9", "label": "9" },
+        { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }
+      ],
+      "default": "auto"
     },
     {
       "type": "header",
@@ -313,13 +331,12 @@
     {
       "type": "select",
       "id": "column_start_tablet",
-      "label": "Kolonne start",
+      "label": "Kolonne",
       "options": [
-        { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1" },
         { "value": "2", "label": "2" }
       ],
-      "default": "auto"
+      "default": "1"
     },
     {
       "type": "checkbox",
@@ -328,13 +345,25 @@
       "default": false
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "order_tablet",
-      "min": 1,
-      "max": 20,
-      "step": 1,
-      "label": "Rækkefølge (Tablet)",
-      "default": 1
+      "label": "Række",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" },
+        { "value": "9", "label": "9" },
+        { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }
+      ],
+      "default": "auto"
     },
     {
       "type": "header",
@@ -354,14 +383,13 @@
     {
       "type": "select",
       "id": "column_start_desktop",
-      "label": "Kolonne start",
+      "label": "Kolonne",
       "options": [
-        { "value": "auto", "label": "Auto" },
         { "value": "1", "label": "1" },
         { "value": "2", "label": "2" },
         { "value": "3", "label": "3" }
       ],
-      "default": "auto"
+      "default": "1"
     },
     {
       "type": "checkbox",
@@ -370,13 +398,25 @@
       "default": false
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "order_desktop",
-      "min": 1,
-      "max": 20,
-      "step": 1,
-      "label": "Rækkefølge (Desktop)",
-      "default": 1
+      "label": "Række",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" },
+        { "value": "8", "label": "8" },
+        { "value": "9", "label": "9" },
+        { "value": "10", "label": "10" },
+        { "value": "11", "label": "11" },
+        { "value": "12", "label": "12" }
+      ],
+      "default": "auto"
     },
     {
       "type": "header",
