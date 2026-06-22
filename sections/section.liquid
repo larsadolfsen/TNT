@@ -131,14 +131,6 @@
       --color-text: #e2e8f0;
       --color-border: rgba(255, 255, 255, 0.2);
     {%- endif -%}
-    
-    {%- if section.settings.justify_self != 'auto' and section.settings.justify_self != blank -%}
-      justify-self: {{ section.settings.justify_self }};
-    {%- endif -%}
-
-    {%- if section.settings.align_self != 'auto' and section.settings.align_self != blank -%}
-      align-self: {{ section.settings.align_self }};
-    {%- endif -%}
 
     {%- if section.settings.hide_on_mobile -%}
       display: none;
@@ -153,16 +145,6 @@
       {%- if start_tb != 'auto' and start_tb != blank -%}
         --col-start: {{ start_tb }};
         grid-column-start: var(--col-start);
-      {%- endif -%}
-
-      {%- if section.settings.row_span_tablet != 'auto' and section.settings.row_span_tablet != blank -%}
-        --row-span: {{ section.settings.row_span_tablet }};
-        grid-row-end: span var(--row-span);
-      {%- endif -%}
-
-      {%- if section.settings.row_start_tablet != 'auto' and section.settings.row_start_tablet != blank -%}
-        --row-start: {{ section.settings.row_start_tablet }};
-        grid-row-start: var(--row-start);
       {%- endif -%}
 
       {%- if section.settings.hide_on_tablet -%}
@@ -189,24 +171,6 @@
         {%- endif -%}
       {%- endif -%}
 
-      {%- if section.settings.row_span_desktop != 'auto' and section.settings.row_span_desktop != blank -%}
-        --row-span: {{ section.settings.row_span_desktop }};
-        grid-row-end: span var(--row-span);
-      {%- else -%}
-        {%- if section.settings.row_span_tablet != 'auto' and section.settings.row_span_tablet != blank -%}
-          grid-row-end: auto;
-        {%- endif -%}
-      {%- endif -%}
-
-      {%- if section.settings.row_start_desktop != 'auto' and section.settings.row_start_desktop != blank -%}
-        --row-start: {{ section.settings.row_start_desktop }};
-        grid-row-start: var(--row-start);
-      {%- else -%}
-        {%- if section.settings.row_start_tablet != 'auto' and section.settings.row_start_tablet != blank -%}
-          grid-row-start: auto;
-        {%- endif -%}
-      {%- endif -%}
-
       {%- if section.settings.hide_on_desktop -%}
         display: none;
       {%- else -%}
@@ -229,6 +193,28 @@
 {%- assign bg_class = bg_class | strip -%}
 
 {%- liquid
+  assign float_right_lg = false
+  if start_lg != 'auto' and start_lg != blank
+    assign start_lg_num = start_lg | plus: 0
+    assign span_lg_num = span_lg | plus: 0
+    assign cols_lg_num = settings.grid_cols_desktop | default: 3 | plus: 0
+    assign end_lg = start_lg_num | plus: span_lg_num | minus: 1
+    if end_lg >= cols_lg_num
+      assign float_right_lg = true
+    endif
+  endif
+
+  assign float_right_tb = false
+  if start_tb != 'auto' and start_tb != blank
+    assign start_tb_num = start_tb | plus: 0
+    assign span_tb_num = span_tb | plus: 0
+    assign cols_tb_num = settings.grid_cols_tablet | default: 2 | plus: 0
+    assign end_tb = start_tb_num | plus: span_tb_num | minus: 1
+    if end_tb >= cols_tb_num
+      assign float_right_tb = true
+    endif
+  endif
+
   if layout_style == 'full_width_bg'
     assign outer_class = 'section-section w-full ' | append: bg_class | append: ' section-' | append: section.id | append: '-padding section-section--full-width'
     if is_full_width
@@ -243,6 +229,13 @@
       assign outer_class = 'section-section max-w-[var(--page-width)] mx-auto px-4 expanded:px-8 section-' | append: section.id | append: '-padding'
     endif
     assign inner_class = 'w-full ' | append: bg_class | append: ' rounded-3xl py-10 expanded:py-16 shadow-md section-' | append: section.id | append: '-inner-padding'
+  endif
+
+  if float_right_lg
+    assign outer_class = outer_class | append: ' float-right-desktop'
+  endif
+  if float_right_tb
+    assign outer_class = outer_class | append: ' float-right-tablet'
   endif
 -%}
 
@@ -317,48 +310,6 @@
       "default": "auto"
     },
     {
-      "type": "select",
-      "id": "row_span_tablet",
-      "label": "Højde",
-      "options": [
-        { "value": "auto", "label": "Auto" },
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },
-        { "value": "6", "label": "6" },
-        { "value": "7", "label": "7" },
-        { "value": "8", "label": "8" },
-        { "value": "9", "label": "9" },
-        { "value": "10", "label": "10" },
-        { "value": "11", "label": "11" },
-        { "value": "12", "label": "12" }
-      ],
-      "default": "auto"
-    },
-    {
-      "type": "select",
-      "id": "row_start_tablet",
-      "label": "Række start",
-      "options": [
-        { "value": "auto", "label": "Auto" },
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },
-        { "value": "6", "label": "6" },
-        { "value": "7", "label": "7" },
-        { "value": "8", "label": "8" },
-        { "value": "9", "label": "9" },
-        { "value": "10", "label": "10" },
-        { "value": "11", "label": "11" },
-        { "value": "12", "label": "12" }
-      ],
-      "default": "auto"
-    },
-    {
       "type": "checkbox",
       "id": "hide_on_tablet",
       "label": "Skjul på tablet",
@@ -392,82 +343,10 @@
       "default": "auto"
     },
     {
-      "type": "select",
-      "id": "row_span_desktop",
-      "label": "Højde",
-      "options": [
-        { "value": "auto", "label": "Auto" },
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },
-        { "value": "6", "label": "6" },
-        { "value": "7", "label": "7" },
-        { "value": "8", "label": "8" },
-        { "value": "9", "label": "9" },
-        { "value": "10", "label": "10" },
-        { "value": "11", "label": "11" },
-        { "value": "12", "label": "12" }
-      ],
-      "default": "auto"
-    },
-    {
-      "type": "select",
-      "id": "row_start_desktop",
-      "label": "Række start",
-      "options": [
-        { "value": "auto", "label": "Auto" },
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" },
-        { "value": "6", "label": "6" },
-        { "value": "7", "label": "7" },
-        { "value": "8", "label": "8" },
-        { "value": "9", "label": "9" },
-        { "value": "10", "label": "10" },
-        { "value": "11", "label": "11" },
-        { "value": "12", "label": "12" }
-      ],
-      "default": "auto"
-    },
-    {
       "type": "checkbox",
       "id": "hide_on_desktop",
       "label": "Skjul på desktop",
       "default": false
-    },
-    {
-      "type": "header",
-      "content": "Grid Placering (Alignment)"
-    },
-    {
-      "type": "select",
-      "id": "justify_self",
-      "label": "Justify Self (Horisontal placering i celle)",
-      "options": [
-        { "value": "auto", "label": "Auto" },
-        { "value": "start", "label": "Start / Venstre" },
-        { "value": "end", "label": "End / Højre" },
-        { "value": "center", "label": "Center / Centreret" },
-        { "value": "stretch", "label": "Stretch / Stræk" }
-      ],
-      "default": "auto"
-    },
-    {
-      "type": "select",
-      "id": "align_self",
-      "label": "Align Self (Vertikal placering i celle)",
-      "options": [
-        { "value": "auto", "label": "Auto" },
-        { "value": "start", "label": "Start / Top" },
-        { "value": "end", "label": "End / Bund" },
-        { "value": "center", "label": "Center / Centreret" },
-        { "value": "stretch", "label": "Stretch / Stræk" }
-      ],
-      "default": "auto"
     },
     {
       "type": "header",

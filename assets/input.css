@@ -383,74 +383,46 @@ h4,
 }
 
 
-/* Product Page Desktop Grid Layout with Column Wrappers */
+/* Site-Wide Desktop & Tablet Float Layout */
 @media (min-width: --theme(--breakpoint-md)) {
-  .product-page-columns-grid {
-    display: grid;
-    grid-template-columns: repeat(var(--grid-cols-tablet, 2), minmax(0, 1fr));
-    column-gap: var(--grid-gap);
-    row-gap: var(--grid-gap);
+  #MainContent {
+    display: block;
     width: 100%;
     max-width: var(--page-width, 1440px);
     margin: 0 auto;
-    align-items: start;
+    padding-left: calc(var(--grid-gap) / 2);
+    padding-right: calc(var(--grid-gap) / 2);
+    padding-top: 0;
+    padding-bottom: var(--grid-padding-y);
   }
 
-  .product-page-col-1 {
-    grid-column: 1;
-    grid-row: 1 / span 2;
+  #MainContent::after {
+    content: "";
+    display: table;
+    clear: both;
   }
 
-  .product-page-col-2 {
-    grid-column: 2;
-    grid-row: 1;
+  #MainContent > .shopify-section {
+    box-sizing: border-box;
+    width: calc((var(--col-span, var(--grid-cols-tablet, 2)) / var(--grid-cols-tablet, 2)) * 100%);
+    padding-left: calc(var(--grid-gap) / 2);
+    padding-right: calc(var(--grid-gap) / 2);
+    float: left;
   }
 
-  .product-page-col-3 {
-    grid-column: 2;
-    grid-row: 2;
+  #MainContent > .shopify-section:has(.float-right-tablet) {
+    float: right;
   }
 }
 
 @media (min-width: --theme(--breakpoint-lg)) {
-  .product-page-columns-grid {
-    grid-template-columns: repeat(var(--grid-cols-desktop, 3), minmax(0, 1fr));
+  #MainContent > .shopify-section {
+    width: calc((var(--col-span, var(--grid-cols-desktop, 3)) / var(--grid-cols-desktop, 3)) * 100%);
+    float: left;
   }
 
-  .product-page-col-1 {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .product-page-col-2 {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .product-page-col-3 {
-    grid-column: 3;
-    grid-row: 1;
-  }
-}
-
-/* Ensure sections stack naturally with grid-row-gap inside their columns */
-.product-page-col {
-  display: flex;
-  flex-direction: column;
-  gap: var(--grid-row-gap, 12px);
-}
-
-.product-page-col > .shopify-section {
-  width: 100%;
-}
-
-/* Prevent flash of unstyled content (FOUC) before JS runs */
-@media (min-width: 840px) {
-  .template-product #MainContent > .shopify-section:not(.breadcrumbs) {
-    display: none;
-  }
-  .template-product #MainContent > .product-page-columns-grid .shopify-section {
-    display: block;
+  #MainContent > .shopify-section:has(.float-right-desktop) {
+    float: right;
   }
 }
 @media (min-width: --theme(--breakpoint-md)) {
