@@ -645,7 +645,7 @@
         "column_span_desktop": "3",
         "column_start_desktop": "1",
         "hide_on_desktop": false,
-        "order_desktop": "1",
+        "order_desktop": "auto",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_left": 24,
