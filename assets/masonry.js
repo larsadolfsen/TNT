@@ -106,8 +106,8 @@
       // Get section height
       const sectionHeight = sec.getBoundingClientRect().height;
       
-      // Update heights for all spanned columns to the new end position
-      const newHeight = topPos + sectionHeight + gap;
+      // Update heights for all spanned columns to the new end position (0 gap between rows)
+      const newHeight = topPos + sectionHeight;
       for (let i = 0; i < colSpan; i++) {
         if (targetCol + i < cols) {
           colHeights[targetCol + i] = newHeight;
