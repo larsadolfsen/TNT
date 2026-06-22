@@ -11,9 +11,9 @@
   "current": {
     "max_page_width": 1460,
     "min_page_margin": 24,
-    "grid_cols_mobile": 6,
-    "grid_cols_tablet": 8,
-    "grid_cols_desktop": 12,
+    "grid_cols_mobile": 1,
+    "grid_cols_tablet": 2,
+    "grid_cols_desktop": 3,
     "show_breadcrumbs": true,
     "disable_savings_badge": false,
     "savings_badge_text": "[savings] % rabat",
