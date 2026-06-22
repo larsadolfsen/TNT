@@ -58,6 +58,76 @@
       {{ content_for_layout }}
     </main>
 
+    {%- if template.name == 'product' -%}
+      <script>
+        (function() {
+          function initProductLayout() {
+            if (!document.body.classList.contains('template-product')) return;
+
+            const mainContent = document.getElementById('MainContent');
+            if (!mainContent) return;
+
+            // 1. Unwrap existing columns if already wrapped (important for Customizer updates)
+            const existingGrid = mainContent.querySelector('.product-page-columns-grid');
+            if (existingGrid) {
+              const wrappedSections = Array.from(existingGrid.querySelectorAll('.product-page-col > .shopify-section'));
+              wrappedSections.forEach(sec => {
+                mainContent.insertBefore(sec, existingGrid);
+              });
+              existingGrid.remove();
+            }
+
+            // 2. Find all sections that should be wrapped (col-span < 3)
+            const sections = Array.from(mainContent.children).filter(el => {
+              if (!el.classList.contains('shopify-section')) return false;
+              const style = getComputedStyle(el);
+              const colSpan = parseInt(style.getPropertyValue('--col-span')) || 3;
+              return colSpan < 3;
+            });
+
+            if (sections.length === 0) return;
+
+            // 3. Create grid container and column wrappers
+            const gridContainer = document.createElement('div');
+            gridContainer.className = 'product-page-columns-grid';
+
+            const col1 = document.createElement('div');
+            col1.className = 'product-page-col product-page-col-1';
+            const col2 = document.createElement('div');
+            col2.className = 'product-page-col product-page-col-2';
+            const col3 = document.createElement('div');
+            col3.className = 'product-page-col product-page-col-3';
+
+            // Insert grid container before the first section
+            const firstSection = sections[0];
+            mainContent.insertBefore(gridContainer, firstSection);
+
+            // 4. Distribute sections into their corresponding columns based on --col-start style variable
+            sections.forEach(sec => {
+              const style = getComputedStyle(sec);
+              const colStartVal = style.getPropertyValue('--col-start').trim();
+              if (colStartVal === '2') {
+                col2.appendChild(sec);
+              } else if (colStartVal === '3') {
+                col3.appendChild(sec);
+              } else {
+                col1.appendChild(sec);
+              }
+            });
+
+            gridContainer.appendChild(col1);
+            gridContainer.appendChild(col2);
+            gridContainer.appendChild(col3);
+          }
+
+          document.addEventListener('DOMContentLoaded', initProductLayout);
+          document.addEventListener('shopify:section:load', initProductLayout);
+          document.addEventListener('shopify:section:unload', initProductLayout);
+          document.addEventListener('shopify:section:reorder', initProductLayout);
+        })();
+      </script>
+    {%- endif -%}
+
     {% sections 'footer-group' %}
   </body>
 </html>
