@@ -151,7 +151,7 @@
     });
 
     overlay.innerHTML = `
-      <b>Masonry Debug Panel</b><br>
+      <b>Masonry Debug Panel (v1.0.71)</b><br>
       IsDesktop: ${isDesktop} | IsTablet: ${isTablet}<br>
       Cols: ${cols} | Gap: ${gap}px<br>
       ContainerWidth: ${Math.round(containerWidth)}px<br>
