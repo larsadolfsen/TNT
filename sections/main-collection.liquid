@@ -10,13 +10,13 @@
 
   @media screen and (min-width: 768px) {
     #product-grid {
-      grid-template-columns: repeat({{ section.settings.columns_tablet | default: 3 }}, minmax(0, 1fr));
+      grid-template-columns: repeat({{ section.settings.columns_tablet | default: 2 }}, minmax(0, 1fr));
     }
   }
 
   @media screen and (min-width: 1024px) {
     #product-grid {
-      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, minmax(0, 1fr));
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, minmax(0, 1fr));
     }
   }
 
@@ -756,7 +756,7 @@
       "type": "range",
       "id": "columns_mobile",
       "min": 1,
-      "max": 3,
+      "max": 6,
       "step": 1,
       "label": "Antal kolonner på mobil",
       "default": 2
@@ -765,19 +765,19 @@
       "type": "range",
       "id": "columns_tablet",
       "min": 2,
-      "max": 5,
+      "max": 8,
       "step": 1,
       "label": "Antal kolonner på tablet",
-      "default": 3
+      "default": 2
     },
     {
       "type": "range",
       "id": "columns_desktop",
       "min": 2,
-      "max": 6,
+      "max": 12,
       "step": 1,
       "label": "Antal kolonner på desktop",
-      "default": 4
+      "default": 3
     },
     {
       "type": "range",
