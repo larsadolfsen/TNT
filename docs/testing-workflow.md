@@ -15,8 +15,20 @@ acceptable (see `optimization-master-plan.md`, principle 2).
 
 ## From this remote environment (no CLI auth available)
 
-Push changed files to the store via the Admin GraphQL API
-(`themeFilesUpsert`), verified working 2026-08-05:
+**Writes to the published (MAIN) theme are hard-blocked by the MCP server's
+safety policy — `themeFilesUpsert` works on unpublished themes only**
+(verified 2026-08-05: upsert to the unpublished Horizon theme succeeded;
+upsert to TNT/main was refused). The working flow is therefore:
+
+1. One-time manual step: in Shopify admin → Online Store → Themes,
+   **duplicate TNT/main** to create an unpublished staging copy (e.g.
+   "TNT/staging"). Record its theme ID here when created.
+2. Each task pushes its changed files to the staging theme via
+   `themeFilesUpsert` and verifies on the staging theme's preview URL.
+3. Publishing the staging theme (when desired) is a manual admin action —
+   theme-publish mutations are also blocked from here.
+
+Push changed files via the Admin GraphQL API (`themeFilesUpsert`):
 
 ```graphql
 mutation {
