@@ -1,6 +1,8 @@
 {% comment %}
   Product Price Section
-  Renders the product price and base price per meter display.
+  Renders the product price. When the selected variant has native Shopify
+  unit pricing (unit_price_measurement), the unit price is the headline and
+  the raw per-unit price is suppressed; otherwise unchanged.
 {% endcomment %}
 
 {%- liquid
@@ -8,18 +10,29 @@
   assign display_price = current_variant.price
   assign compare_price = current_variant.compare_at_price
   assign suffix = block.settings.price_suffix
-  
-  assign is_metervare = false
-  if product.metafields.custom.metervare.value == true or product.metafields.custom.metervare == true
-    assign is_metervare = true
+
+  # Surface 12: unit pricing — data-driven, no per-block setting; gated by the
+  # theme-wide `settings.show_unit_pricing` toggle, defaulting to on.
+  assign show_unit_pricing = settings.show_unit_pricing | default: true
+
+  # Headline rule: when the selected variant carries native Shopify unit
+  # pricing (unit_price_measurement), its unit price is the headline price
+  # and the raw per-unit price is suppressed. No product-type/metafield
+  # gating — presence of unit pricing is the only signal, so this stays
+  # correct for any merchant who configures it, not just this catalog.
+  assign unit_measurement = current_variant.unit_price_measurement
+  assign has_unit_price = false
+  if unit_measurement != blank and show_unit_pricing
+    assign has_unit_price = true
   endif
 
-  if is_metervare
-    assign display_price = current_variant.price | times: 100
-    if compare_price != blank
-      assign compare_price = compare_price | times: 100
+  assign headline_price = display_price
+  if has_unit_price
+    assign headline_price = current_variant.unit_price
+    assign unit_suffix = unit_measurement.reference_unit
+    if unit_measurement.reference_value != 1
+      assign unit_suffix = unit_measurement.reference_value | append: ' ' | append: unit_measurement.reference_unit
     endif
-    assign suffix = 'pr. meter inkl. moms'
   endif
 
   assign on_sale = false
@@ -29,8 +42,8 @@
 
   if on_sale
     assign savings = compare_price | minus: display_price | times: 100 | divided_by: compare_price
-    assign price_main = display_price | divided_by: 100
-    assign price_cents = display_price | modulo: 100
+    assign price_main = headline_price | divided_by: 100
+    assign price_cents = headline_price | modulo: 100
     if price_cents < 10
       assign price_cents = '0' | append: price_cents
     endif
@@ -38,11 +51,6 @@
 
   # Surface 11: Shop Pay Installments — placement/spacing only, native element.
   assign show_installments = block.settings.show_installments | default: true
-
-  # Surface 12: unit pricing — data-driven, no per-block setting; gated by the
-  # (not-yet-added) theme-wide `settings.show_unit_pricing` toggle, defaulting
-  # to on so this keeps working once that global setting exists.
-  assign show_unit_pricing = settings.show_unit_pricing | default: true
 -%}
 
 {%- style -%}
@@ -71,34 +79,49 @@
           <span>{{ price_main }}</span>
           <sup class="text-base font-bold ml-0.5 mt-1.5 text-primary">{{ price_cents }} {{ cart.currency.iso_code }}</sup>
         </span>
+        {%- if has_unit_price -%}
+          <span class="text-sm text-primary/85 font-medium whitespace-nowrap pb-0.5 ml-0.5">/ {{ unit_suffix }}</span>
+        {%- endif -%}
         {%- if suffix != blank -%}
           <span class="text-sm text-primary/85 font-medium whitespace-nowrap pb-0.5 ml-0.5">{{ suffix }}</span>
         {%- endif -%}
       </div>
       
       <!-- List price row -->
-      <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
-        <span>{{ block.settings.compare_at_price_label | default: settings.compare_at_price_label | default: 'Normalpris' }}:</span>
-        <span class="line-through">{{ compare_price | money }}</span>
-        {% render 'icon', name: 'info', class: 'text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center', attributes: 'title="Vejledende udsalgspris"' %}
-      </div>
+      {%- comment -%}
+        Suppressed when has_unit_price: compare_price is the raw per-unit
+        compare-at price (Shopify has no unit-price equivalent for it), and
+        showing it crossed out next to a per-reference-unit headline would be
+        as misleading as the raw headline price this rule exists to fix. The
+        "Spar X%" badge above is a ratio and stays correct either way.
+      {%- endcomment -%}
+      {%- unless has_unit_price -%}
+        <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
+          <span>{{ block.settings.compare_at_price_label | default: settings.compare_at_price_label | default: 'Normalpris' }}:</span>
+          <span class="line-through">{{ compare_price | money }}</span>
+          {% render 'icon', name: 'info', class: 'text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center', attributes: 'title="Vejledende udsalgspris"' %}
+        </div>
+      {%- endunless -%}
     {%- else -%}
       <!-- Standard layout -->
       <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
         <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
-          {{ display_price | money }}
+          {{ headline_price | money }}
         </span>
+        {%- if has_unit_price -%}
+          <span class="text-sm text-primary/85 font-medium whitespace-nowrap">/ {{ unit_suffix }}</span>
+        {%- endif -%}
         {%- if suffix != blank -%}
           <span class="text-sm text-primary/85 font-medium whitespace-nowrap">{{ suffix }}</span>
         {%- endif -%}
       </div>
     {%- endif -%}
 
-    {%- if show_unit_pricing -%}
-      <div class="mt-1" id="unit-price-row-{{ block.id }}">
-        {% render 'unit-price', variant: current_variant, size: 'base' %}
-      </div>
-    {%- endif -%}
+    {%- comment -%}
+      No separate unit-price sub-line here: whenever unit_price_measurement is
+      present it's already the headline above, so a smaller render 'unit-price'
+      call below it would only duplicate the same value.
+    {%- endcomment -%}
   </div>
 
   {%- if show_installments -%}
@@ -122,17 +145,19 @@
       {%- liquid
         assign v_price = variant.price
         assign v_compare = variant.compare_at_price
-        if is_metervare
-          assign v_price = v_price | times: 100
-          if v_compare != blank
-            assign v_compare = v_compare | times: 100
-          endif
+
+        # Headline rule, same signal as the initial render above: a variant
+        # with unit_price_measurement gets its unit price as the headline
+        # (raw v_price/v_compare travel unmultiplied either way).
+        assign v_measurement = variant.unit_price_measurement
+        assign v_has_unit_price = false
+        if v_measurement != blank and show_unit_pricing
+          assign v_has_unit_price = true
         endif
 
-        # Surface 12: unit pricing — same reference_value-omission rule as
-        # snippets/unit-price.liquid ("40,00 kr / g" when reference_value is 1).
-        assign v_measurement = variant.unit_price_measurement
-        if v_measurement != blank
+        if v_has_unit_price
+          # Surface 12: same reference_value-omission rule as
+          # snippets/unit-price.liquid ("40,00 kr / g" when reference_value is 1).
           assign v_unit_suffix = v_measurement.reference_unit
           if v_measurement.reference_value != 1
             assign v_unit_suffix = v_measurement.reference_value | append: ' ' | append: v_measurement.reference_unit
@@ -145,8 +170,10 @@
         "compare_at_price": {% if v_compare != blank %}{{ v_compare }}{% else %}null{% endif %},
         "price_formatted": {{ v_price | money | json }},
         "compare_at_price_formatted": {% if v_compare != blank %}{{ v_compare | money | json }}{% else %}null{% endif %},
-        "unit_price_formatted": {% if v_measurement != blank %}{{ variant.unit_price | money | json }}{% else %}null{% endif %},
-        "unit_price_suffix": {% if v_measurement != blank %}{{ v_unit_suffix | json }}{% else %}null{% endif %}
+        "has_unit_price": {{ v_has_unit_price | json }},
+        "unit_price": {% if v_has_unit_price %}{{ variant.unit_price }}{% else %}null{% endif %},
+        "unit_price_formatted": {% if v_has_unit_price %}{{ variant.unit_price | money | json }}{% else %}null{% endif %},
+        "unit_price_suffix": {% if v_has_unit_price %}{{ v_unit_suffix | json }}{% else %}null{% endif %}
       }{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
   ]
@@ -169,9 +196,13 @@
       return cents < 10 ? '0' + cents : cents;
     }
 
-    function unitPriceHtml(variant) {
-      if (!variant.unit_price_formatted || !{{ show_unit_pricing | json }}) return '';
-      return `<div class="mt-1"><span class="unit-price text-sm text-primary/70">${variant.unit_price_formatted} / ${variant.unit_price_suffix}</span></div>`;
+    // Headline rule, kept in sync with the initial Liquid render: a variant
+    // with unit pricing shows its unit price as the headline (raw price
+    // suppressed) and no separate unit-price sub-line — that would just
+    // duplicate the headline.
+    function unitSuffixHtml(variant, extraClass) {
+      if (!variant.has_unit_price) return '';
+      return `<span class="text-sm text-primary/85 font-medium whitespace-nowrap${extraClass}">/ ${variant.unit_price_suffix}</span>`;
     }
 
     function updatePrice(variantId) {
@@ -180,18 +211,33 @@
 
       const suffix = {{ suffix | json }};
       const currencyCode = {{ cart.currency.iso_code | json }};
-      const unitPriceRow = unitPriceHtml(variant);
+      const headlineRaw = variant.has_unit_price ? variant.unit_price : variant.price;
+      const headlineFormatted = variant.has_unit_price ? variant.unit_price_formatted : variant.price_formatted;
 
       const isOnSale = variant.compare_at_price && variant.compare_at_price > variant.price;
 
       if (isOnSale) {
         const savings = Math.round(((variant.compare_at_price - variant.price) * 100) / variant.compare_at_price);
-        const priceMain = Math.floor(variant.price / 100);
-        const priceCents = formatCents(variant.price % 100);
-        
-        let suffixHtml = '';
+        const priceMain = Math.floor(headlineRaw / 100);
+        const priceCents = formatCents(headlineRaw % 100);
+
+        let suffixHtml = unitSuffixHtml(variant, ' pb-0.5 ml-0.5');
         if (suffix) {
-          suffixHtml = `<span class="text-sm text-primary/85 font-medium whitespace-nowrap pb-0.5 ml-0.5">${suffix}</span>`;
+          suffixHtml += `<span class="text-sm text-primary/85 font-medium whitespace-nowrap pb-0.5 ml-0.5">${suffix}</span>`;
+        }
+
+        // Suppressed when has_unit_price: compare_at_price is the raw
+        // per-unit compare price (no unit-price equivalent exists for it),
+        // and showing it crossed out next to a per-reference-unit headline
+        // would be as misleading as the raw headline price this rule fixes.
+        let listPriceRow = '';
+        if (!variant.has_unit_price) {
+          listPriceRow = `
+          <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
+            <span>{{ block.settings.compare_at_price_label | default: settings.compare_at_price_label | default: 'Normalpris' }}:</span>
+            <span class="line-through">${variant.compare_at_price_formatted}</span>
+            <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
+          </div>`;
         }
 
         container.innerHTML = `
@@ -209,27 +255,21 @@
             </span>
             ${suffixHtml}
           </div>
-          <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
-            <span>{{ block.settings.compare_at_price_label | default: settings.compare_at_price_label | default: 'Normalpris' }}:</span>
-            <span class="line-through">${variant.compare_at_price_formatted}</span>
-            <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
-          </div>
-          ${unitPriceRow}
+          ${listPriceRow}
         `;
       } else {
-        let suffixHtml = '';
+        let suffixHtml = unitSuffixHtml(variant, '');
         if (suffix) {
-          suffixHtml = `<span class="text-sm text-primary/85 font-medium whitespace-nowrap">${suffix}</span>`;
+          suffixHtml += `<span class="text-sm text-primary/85 font-medium whitespace-nowrap">${suffix}</span>`;
         }
 
         container.innerHTML = `
           <div class="flex items-baseline gap-2 flex-nowrap overflow-hidden">
             <span id="base-price-display" class="text-3xl font-bold tracking-tight text-primary whitespace-nowrap">
-              ${variant.price_formatted}
+              ${headlineFormatted}
             </span>
             ${suffixHtml}
           </div>
-          ${unitPriceRow}
         `;
       }
     }
