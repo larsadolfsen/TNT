@@ -1,0 +1,72 @@
+{% doc %}
+  Contact page supporting-content card: an embedded map, or a static
+  fallback image with a "Get directions" link (Surface 16). Renders nothing
+  (no empty card) when neither an embed URL nor a fallback image is set.
+
+  @example
+  {% content_for 'block', type: 'contact-map', id: 'contact-map' %}
+{% enddoc %}
+
+{%- liquid
+  assign has_embed = false
+  if block.settings.embed_url != blank
+    assign has_embed = true
+  endif
+  assign has_image = false
+  if block.settings.map_image != blank
+    assign has_image = true
+  endif
+-%}
+
+{%- if has_embed or has_image -%}
+  <div class="rounded-2xl overflow-hidden border border-outline-variant aspect-[4/3] relative" {{ block.shopify_attributes }}>
+    {%- if has_embed -%}
+      <iframe
+        src="{{ block.settings.embed_url | escape }}"
+        class="w-full h-full border-0 block"
+        loading="lazy"
+        title="{{ 'contact.map_title' | t: shop_name: shop.name }}"
+      ></iframe>
+    {%- else -%}
+      {% render 'image', image: block.settings.map_image, fill: true, width: 800, height: 600, crop: 'center' %}
+      {%- if block.settings.map_link != blank -%}
+        <a
+          href="{{ block.settings.map_link }}"
+          class="absolute bottom-3 left-3 h-9 px-3 rounded-full bg-card-light/95 border border-outline-variant flex items-center gap-1.5 text-xs font-bold text-primary no-underline"
+        >
+          {% render 'icon', name: 'location_on', class: 'text-[16px]' %}
+          {{ 'contact.get_directions' | t }}
+        </a>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Contact map",
+  "settings": [
+    {
+      "type": "text",
+      "id": "embed_url",
+      "label": "Map embed URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "map_image",
+      "label": "Fallback static map image",
+      "info": "Used if no embed URL is set, or if you prefer a static image for performance."
+    },
+    {
+      "type": "url",
+      "id": "map_link",
+      "label": "\"Get directions\" link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact map"
+    }
+  ]
+}
+{% endschema %}

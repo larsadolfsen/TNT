@@ -9,38 +9,62 @@
 
   @param {string} id - required. id attribute; also used for the <label for> association.
   @param {string} [name] - name attribute. Defaults to `id`.
-  @param {string} [type] - input type. Defaults to 'text'.
+  @param {string} [type] - input type. Defaults to 'text'. Pass 'textarea' to render a <textarea> instead of an <input> — every other parameter (label, value, placeholder, required, class, attributes) behaves the same either way.
   @param {string} [label] - Visible label text rendered above the input. Omit to render an unlabeled input.
-  @param {string} [value] - Initial value.
+  @param {string} [value] - Initial value. For type: 'textarea' this becomes the element's text content.
   @param {string} [placeholder] - Placeholder text.
   @param {boolean} [required] - Marks the input required.
   @param {string} [autocomplete] - autocomplete attribute value.
-  @param {string} [class] - Extra CSS classes appended to the input element.
+  @param {number} [rows] - Only used when type: 'textarea'. Defaults to 4.
+  @param {string} [class] - Extra CSS classes appended to the input/textarea element.
   @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. data-*, pattern, inputmode).
 
   @example
   {% render 'input', id: 'password-input', type: 'password', label: 'password.password' | t, required: true, autocomplete: 'current-password' %}
   {% render 'input', id: 'search-input', name: 'q', placeholder: 'Søg...', class: 'border-0 bg-transparent' %}
+  {% render 'input', id: 'contact-body', type: 'textarea', name: 'contact[body]', label: 'contact.message_label' | t, required: true, rows: 5 %}
 {% enddoc %}
 
 {%- liquid
   assign input_name = name | default: id
   assign input_type = type | default: 'text'
+  assign is_textarea = false
+  if input_type == 'textarea'
+    assign is_textarea = true
+  endif
+  assign field_class = 'w-full px-4 py-3.5 bg-card-high border border-outline-variant text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/60 transition-all duration-200'
+  if class
+    assign field_class = field_class | append: ' ' | append: class
+  endif
 -%}
 <div class="space-y-2">
   {%- if label -%}
     <label for="{{ id }}" class="block text-xs font-bold uppercase tracking-wider text-primary/60 pl-4">{{ label }}</label>
   {%- endif -%}
-  <input
-    type="{{ input_type }}"
-    id="{{ id }}"
-    name="{{ input_name }}"
-    {%- if value %} value="{{ value }}"{% endif %}
-    {%- if placeholder %} placeholder="{{ placeholder }}"{% endif %}
-    {%- if required %} required{% endif %}
-    {%- if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}
-    class="w-full px-4 py-3.5 bg-card-high border border-outline-variant text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/60 transition-all duration-200{% if class %} {{ class }}{% endif %}"
-    style="border-radius: var(--style-border-radius-inputs, 9999px);"
-    {%- if attributes %} {{ attributes }}{% endif -%}
-  >
+  {%- if is_textarea -%}
+    <textarea
+      id="{{ id }}"
+      name="{{ input_name }}"
+      rows="{{ rows | default: 4 }}"
+      {%- if placeholder %} placeholder="{{ placeholder }}"{% endif %}
+      {%- if required %} required{% endif %}
+      {%- if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}
+      class="{{ field_class }}"
+      style="border-radius: var(--style-border-radius-inputs, 1rem);"
+      {%- if attributes %} {{ attributes }}{% endif -%}
+    >{{ value }}</textarea>
+  {%- else -%}
+    <input
+      type="{{ input_type }}"
+      id="{{ id }}"
+      name="{{ input_name }}"
+      {%- if value %} value="{{ value }}"{% endif %}
+      {%- if placeholder %} placeholder="{{ placeholder }}"{% endif %}
+      {%- if required %} required{% endif %}
+      {%- if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}
+      class="{{ field_class }}"
+      style="border-radius: var(--style-border-radius-inputs, 9999px);"
+      {%- if attributes %} {{ attributes }}{% endif -%}
+    >
+  {%- endif -%}
 </div>

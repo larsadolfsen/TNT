@@ -1,0 +1,224 @@
+{% comment %}
+  Contact page main section (Surface 16): heading + optional intro copy,
+  the native {% form 'contact' %} (name/email/optional phone/message), and
+  a supporting-content column (address / hours / map blocks) that a
+  merchant composes from sections/contact-form.liquid's own @theme block
+  list. See docs/missing-surface-designs.md Surface 16.
+
+  Field-level validation (missing required field / invalid email) is
+  progressive enhancement: the inline script below takes over from the
+  browser's native constraint validation so invalid fields get the
+  border-important + text-important helper text + aria-invalid treatment
+  used elsewhere in the theme (see snippets/newsletter-form.liquid for the
+  same pattern on a single field). The actual submission is never
+  intercepted — this is still Shopify's standard full-page POST/redirect
+  contact-form flow; the script only blocks submission while a required
+  field is empty/invalid and applies a brief "Sending…" affordance once the
+  fields are valid and the browser is already submitting.
+{% endcomment %}
+
+{%- assign contact_form_id = 'ContactForm-' | append: section.id -%}
+{%- assign required_suffix = ' *' -%}
+{%- assign name_id = contact_form_id | append: '-name' -%}
+{%- assign email_id = contact_form_id | append: '-email' -%}
+{%- assign phone_id = contact_form_id | append: '-phone' -%}
+{%- assign body_id = contact_form_id | append: '-body' -%}
+
+<div class="max-w-screen-xl mx-auto px-4 md:px-6 py-10 md:py-12">
+  {%- if section.settings.heading != blank -%}
+    <h1 class="section-section__heading text-2xl md:text-3xl font-bold text-primary">{{ section.settings.heading }}</h1>
+  {%- endif -%}
+  {%- if section.settings.description != blank -%}
+    <div class="rte text-sm text-primary/70 max-w-lg mb-6">{{ section.settings.description }}</div>
+  {%- endif -%}
+
+  <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-6 md:gap-8 lg:gap-12">
+    <div>
+      {% form 'contact', id: contact_form_id, class: 'flex flex-col gap-4' %}
+        {%- if form.posted_successfully? -%}
+          <div id="{{ contact_form_id }}-success" tabindex="-1" class="flex flex-col gap-1">
+            {% render 'icon', name: 'check_circle', class: 'text-primary text-2xl' %}
+            <p class="text-base font-bold text-primary">{{ 'contact.success_heading' | t }}</p>
+            <p class="text-sm text-primary/70">{{ 'contact.success_body' | t }}</p>
+          </div>
+          <script>
+            (function () {
+              var heading = document.getElementById({{ contact_form_id | append: '-success' | json }});
+              if (heading) heading.focus();
+            })();
+          </script>
+        {%- else -%}
+          {%- if form.errors -%}
+            <div role="alert" class="flex items-center gap-1.5">
+              {% render 'icon', name: 'error', class: 'text-important text-[16px]' %}
+              <p class="text-sm text-important">{{ 'contact.error_generic' | t }}</p>
+            </div>
+          {%- endif -%}
+
+          <div>
+            {% render 'input',
+              id: name_id,
+              name: 'contact[name]',
+              label: 'contact.name_label' | t | append: required_suffix,
+              value: form.name,
+              required: true,
+              autocomplete: 'name',
+              attributes: 'data-contact-field aria-describedby="' | append: name_id | append: '-error"'
+            %}
+            <p id="{{ name_id }}-error" class="hidden text-xs text-important pl-4 mt-1" data-contact-field-error></p>
+          </div>
+
+          <div>
+            {% render 'input',
+              id: email_id,
+              name: 'contact[email]',
+              type: 'email',
+              label: 'contact.email_label' | t | append: required_suffix,
+              value: form.email,
+              required: true,
+              autocomplete: 'email',
+              attributes: 'data-contact-field aria-describedby="' | append: email_id | append: '-error"'
+            %}
+            <p id="{{ email_id }}-error" class="hidden text-xs text-important pl-4 mt-1" data-contact-field-error></p>
+          </div>
+
+          {%- if section.settings.show_phone_field -%}
+            {% render 'input', id: phone_id, name: 'contact[phone]', type: 'tel', label: 'contact.phone_label' | t, value: form.phone, autocomplete: 'tel' %}
+          {%- endif -%}
+
+          <div>
+            {% render 'input',
+              id: body_id,
+              name: 'contact[body]',
+              type: 'textarea',
+              label: 'contact.message_label' | t | append: required_suffix,
+              value: form.body,
+              required: true,
+              rows: 5,
+              attributes: 'data-contact-field aria-describedby="' | append: body_id | append: '-error"'
+            %}
+            <p id="{{ body_id }}-error" class="hidden text-xs text-important pl-4 mt-1" data-contact-field-error></p>
+          </div>
+
+          {% render 'button',
+            label: 'contact.submit' | t,
+            variant: 'primary',
+            as: 'submit',
+            class: 'h-12 px-8 w-full md:w-auto md:self-start',
+            attributes: 'data-contact-submit'
+          %}
+
+          <script>
+            (function () {
+              var form = document.getElementById({{ contact_form_id | json }});
+              if (!form || form.dataset.contactInitialized) return;
+              form.dataset.contactInitialized = 'true';
+              form.noValidate = true;
+
+              var requiredFields = Array.prototype.slice.call(form.querySelectorAll('[data-contact-field]'));
+              var allFields = Array.prototype.slice.call(form.querySelectorAll('input, textarea'));
+              var submit = form.querySelector('[data-contact-submit]');
+              var submittingLabel = {{ 'contact.submitting' | t | json }};
+              var requiredMessage = {{ 'contact.error_required' | t | json }};
+              var emailInvalidMessage = {{ 'contact.error_email_invalid' | t | json }};
+
+              function fieldMessage(field) {
+                if (field.validity.valueMissing) return requiredMessage;
+                if (field.type === 'email' && field.validity.typeMismatch) return emailInvalidMessage;
+                return requiredMessage;
+              }
+
+              function setFieldInvalid(field, isInvalid) {
+                field.classList.toggle('border-important', isInvalid);
+                if (isInvalid) {
+                  field.setAttribute('aria-invalid', 'true');
+                } else {
+                  field.removeAttribute('aria-invalid');
+                }
+                var errorEl = document.getElementById(field.id + '-error');
+                if (!errorEl) return;
+                if (isInvalid) {
+                  errorEl.textContent = fieldMessage(field);
+                  errorEl.classList.remove('hidden');
+                } else {
+                  errorEl.textContent = '';
+                  errorEl.classList.add('hidden');
+                }
+              }
+
+              requiredFields.forEach(function (field) {
+                field.addEventListener('input', function () {
+                  if (field.validity.valid) setFieldInvalid(field, false);
+                });
+              });
+
+              form.addEventListener('submit', function (event) {
+                var firstInvalid = null;
+                requiredFields.forEach(function (field) {
+                  var valid = field.validity.valid;
+                  setFieldInvalid(field, !valid);
+                  if (!valid && !firstInvalid) firstInvalid = field;
+                });
+
+                if (firstInvalid) {
+                  event.preventDefault();
+                  firstInvalid.focus();
+                  return;
+                }
+
+                if (!submit) return;
+                // Deferred so the browser has already read the (still-enabled)
+                // field values into the outgoing request before we disable
+                // them — disabling synchronously here would drop their values
+                // from the submitted form data.
+                setTimeout(function () {
+                  allFields.forEach(function (field) { field.disabled = true; });
+                  submit.disabled = true;
+                  submit.classList.add('opacity-70');
+                  submit.textContent = submittingLabel;
+                }, 0);
+              });
+            })();
+          </script>
+        {%- endif -%}
+      {% endform %}
+    </div>
+
+    <div class="flex flex-col gap-6 md:gap-4">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "blocks": [
+    { "type": "@theme" }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Contact us"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description (optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone_field",
+      "label": "Show optional phone field",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact form"
+    }
+  ]
+}
+{% endschema %}
