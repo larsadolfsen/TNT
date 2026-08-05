@@ -192,6 +192,10 @@
               </span>
             {%- endif -%}
           </div>
+          {%- comment -%} Surface 12: unit price, collection-card context — omitted on minimal-layout cards per spec {%- endcomment -%}
+          {%- unless is_minimal -%}
+            {%- render 'unit-price', variant: variant, size: 'sm' -%}
+          {%- endunless -%}
         </div>
 
 
