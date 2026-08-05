@@ -1,0 +1,64 @@
+{% doc %}
+  Contact page supporting-content card: address + phone + email (Surface 16).
+  Renders nothing (no empty card) when none of address/phone/email are set.
+
+  @example
+  {% content_for 'block', type: 'contact-address', id: 'contact-address' %}
+{% enddoc %}
+
+{%- liquid
+  assign block_email = block.settings.email | default: shop.email
+  assign has_content = false
+  if block.settings.address != blank or block.settings.phone != blank or block_email != blank
+    assign has_content = true
+  endif
+-%}
+
+{%- if has_content -%}
+  <div class="p-4 rounded-2xl bg-card-light border border-outline-variant flex flex-col gap-3" {{ block.shopify_attributes }}>
+    {%- if block.settings.address != blank -%}
+      <p class="text-sm text-primary whitespace-pre-line">{{ block.settings.address }}</p>
+    {%- endif -%}
+    {%- if block.settings.phone != blank -%}
+      <a href="tel:{{ block.settings.phone | remove: ' ' }}" class="flex items-center gap-2 text-sm text-primary no-underline hover:underline">
+        {% render 'icon', name: 'call', class: 'text-[16px] text-primary/60' %}
+        {{ block.settings.phone }}
+      </a>
+    {%- endif -%}
+    {%- if block_email != blank -%}
+      <a href="mailto:{{ block_email }}" class="flex items-center gap-2 text-sm text-primary no-underline hover:underline">
+        {% render 'icon', name: 'mail', class: 'text-[16px] text-primary/60' %}
+        {{ block_email }}
+      </a>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Contact address",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Address (one line per row)"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone number"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "info": "Defaults to the shop's email address when left blank."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact address"
+    }
+  ]
+}
+{% endschema %}

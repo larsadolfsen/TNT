@@ -47,6 +47,23 @@
   "collections": {
     "title": "Kollektioner"
   },
+  "contact": {
+    "heading": "Kontakt os",
+    "name_label": "Navn",
+    "email_label": "E-mail",
+    "phone_label": "Telefon (valgfri)",
+    "message_label": "Besked",
+    "submit": "Send besked",
+    "submitting": "Sender…",
+    "success_heading": "Besked sendt",
+    "success_body": "Tak — vi vender tilbage til dig snarest.",
+    "error_generic": "Noget gik galt — prøv igen.",
+    "error_required": "Dette felt er påkrævet.",
+    "error_email_invalid": "Indtast en gyldig e-mailadresse.",
+    "hours_heading": "Åbningstider",
+    "get_directions": "Få vejvisning",
+    "map_title": "Kort til {{ shop_name }}"
+  },
   "gift_card": {
     "add_to_apple_wallet": "Føj til Apple Wallet",
     "card": "Gavekort",

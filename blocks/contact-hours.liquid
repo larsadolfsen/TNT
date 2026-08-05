@@ -1,0 +1,35 @@
+{% doc %}
+  Contact page supporting-content card: opening hours (Surface 16). Renders
+  nothing (no empty card) when no hours text is set.
+
+  @example
+  {% content_for 'block', type: 'contact-hours', id: 'contact-hours' %}
+{% enddoc %}
+
+{%- if block.settings.hours_text != blank -%}
+  <div class="p-4 rounded-2xl bg-card-light border border-outline-variant flex flex-col gap-3" {{ block.shopify_attributes }}>
+    <div class="flex items-center gap-2 mb-1">
+      {% render 'icon', name: 'schedule', class: 'text-[16px] text-primary/60' %}
+      <p class="text-sm font-bold text-primary">{{ 'contact.hours_heading' | t }}</p>
+    </div>
+    <p class="text-sm text-primary/85 whitespace-pre-line">{{ block.settings.hours_text }}</p>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Contact hours",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "hours_text",
+      "label": "Hours (one line per row, e.g. \"Mon–Fri: 9–17\")"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact hours"
+    }
+  ]
+}
+{% endschema %}

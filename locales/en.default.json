@@ -47,6 +47,23 @@
   "collections": {
     "title": "Collections"
   },
+  "contact": {
+    "heading": "Contact us",
+    "name_label": "Name",
+    "email_label": "Email",
+    "phone_label": "Phone (optional)",
+    "message_label": "Message",
+    "submit": "Send message",
+    "submitting": "Sending…",
+    "success_heading": "Message sent",
+    "success_body": "Thanks — we'll get back to you soon.",
+    "error_generic": "Something went wrong — please try again.",
+    "error_required": "This field is required.",
+    "error_email_invalid": "Enter a valid email address.",
+    "hours_heading": "Opening hours",
+    "get_directions": "Get directions",
+    "map_title": "Map to {{ shop_name }}"
+  },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
     "card": "Gift card",

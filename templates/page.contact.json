@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact-form",
+      "blocks": {
+        "address": {
+          "type": "contact-address",
+          "settings": {}
+        },
+        "hours": {
+          "type": "contact-hours",
+          "settings": {}
+        },
+        "map": {
+          "type": "contact-map",
+          "settings": {}
+        }
+      },
+      "block_order": ["address", "hours", "map"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

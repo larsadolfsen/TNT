@@ -1668,6 +1668,9 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
+  .whitespace-pre-line {
+    white-space: pre-line;
+  }
   .text-\[\#1a1c1c\] {
     color: #1a1c1c;
   }
@@ -2639,14 +2642,29 @@
       gap: calc(var(--spacing) * 1);
     }
   }
+  .md\:gap-4 {
+    @media (width >= 840px) {
+      gap: calc(var(--spacing) * 4);
+    }
+  }
   .md\:gap-6 {
     @media (width >= 840px) {
       gap: calc(var(--spacing) * 6);
     }
   }
+  .md\:gap-8 {
+    @media (width >= 840px) {
+      gap: calc(var(--spacing) * 8);
+    }
+  }
   .md\:gap-12 {
     @media (width >= 840px) {
       gap: calc(var(--spacing) * 12);
+    }
+  }
+  .md\:self-start {
+    @media (width >= 840px) {
+      align-self: flex-start;
     }
   }
   .md\:p-8 {
@@ -2781,6 +2799,11 @@
   .lg\:gap-6 {
     @media (width >= 1200px) {
       gap: calc(var(--spacing) * 6);
+    }
+  }
+  .lg\:gap-12 {
+    @media (width >= 1200px) {
+      gap: calc(var(--spacing) * 12);
     }
   }
   .lg\:px-6 {
