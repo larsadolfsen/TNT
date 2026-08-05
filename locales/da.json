@@ -73,6 +73,10 @@
     "addresses": "Adresser",
     "sign_out": "Log ud",
     "mobile_cta": "Log ind / Opret konto"
+  },
+  "navigation": {
+    "main": "Hovedmenu",
+    "show_submenu": "Vis undermenu for {{ title }}"
   }
 }
 

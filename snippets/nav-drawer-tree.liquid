@@ -1,0 +1,105 @@
+{% doc %}
+  Mobile accordion navigation tree (Surface 3), up to 3 levels deep. Renders
+  inside the existing #mobile-menu-drawer <nav> in sections/header-2.liquid,
+  in place of the old flat single-level link loop. Behavior (expand/collapse,
+  single-open-per-level, scroll-into-view) lives in assets/navigation.js.
+
+  @param {string} menu_handle - required. A linklists handle, e.g. section.settings.menu.
+
+  @example
+  {% render 'nav-drawer-tree', menu_handle: section.settings.menu %}
+{% enddoc %}
+
+<style>
+  .nav-drawer-chevron {
+    transition: transform 200ms ease;
+  }
+  [data-nav-drawer-disclosure][aria-expanded="true"] .nav-drawer-chevron {
+    transform: rotate(180deg);
+  }
+  .nav-drawer-panel {
+    transition: max-height 250ms ease, opacity 250ms ease;
+    opacity: 0;
+  }
+  .nav-drawer-panel[data-nav-drawer-open] {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-drawer-chevron,
+    .nav-drawer-panel {
+      transition-duration: 0.01ms;
+    }
+  }
+</style>
+
+{%- if menu_handle != blank -%}
+  {%- for link1 in linklists[menu_handle].links -%}
+    {%- assign panel1_id = 'mobile-nav-' | append: menu_handle | append: '-' | append: forloop.index -%}
+    {%- if link1.links.size > 0 -%}
+      <div class="border-b border-outline-variant/40" data-nav-drawer-item data-nav-drawer-level="1">
+        <div class="flex items-center w-full">
+          {%- if link1.url != blank and link1.url != '#' -%}
+            <a href="{{ link1.url }}" class="flex-1 min-h-[48px] flex items-center text-base font-semibold text-primary no-underline py-2 focus-ring{% if link1.active %} border-l-2 border-primary pl-2{% endif %}">
+              {{ link1.title }}
+            </a>
+          {%- else -%}
+            <span class="flex-1 min-h-[48px] flex items-center text-base font-semibold text-primary py-2">{{ link1.title }}</span>
+          {%- endif -%}
+          <button
+            type="button"
+            class="w-12 h-12 shrink-0 flex items-center justify-center bg-transparent border-0 cursor-pointer focus-ring"
+            aria-expanded="false"
+            aria-controls="{{ panel1_id }}"
+            aria-label="{{ 'navigation.show_submenu' | t: title: link1.title }}"
+            data-nav-drawer-disclosure
+          >
+            {% render 'icon', name: 'expand_more', class: 'nav-drawer-chevron text-2xl text-primary' %}
+          </button>
+        </div>
+        <div id="{{ panel1_id }}" class="nav-drawer-panel pl-4 border-l-2 border-outline-variant ml-1 flex flex-col overflow-hidden" style="max-height: 0;" inert data-nav-drawer-panel data-nav-drawer-panel-level="1">
+          {%- for link2 in link1.links -%}
+            {%- assign panel2_id = panel1_id | append: '-' | append: forloop.index -%}
+            {%- if link2.links.size > 0 -%}
+              <div data-nav-drawer-item data-nav-drawer-level="2">
+                <div class="flex items-center w-full">
+                  {%- if link2.url != blank and link2.url != '#' -%}
+                    <a href="{{ link2.url }}" class="flex-1 min-h-[48px] flex items-center text-sm font-medium text-primary no-underline py-2 focus-ring">
+                      {{ link2.title }}
+                    </a>
+                  {%- else -%}
+                    <span class="flex-1 min-h-[48px] flex items-center text-sm font-medium text-primary py-2">{{ link2.title }}</span>
+                  {%- endif -%}
+                  <button
+                    type="button"
+                    class="w-12 h-12 shrink-0 flex items-center justify-center bg-transparent border-0 cursor-pointer focus-ring"
+                    aria-expanded="false"
+                    aria-controls="{{ panel2_id }}"
+                    aria-label="{{ 'navigation.show_submenu' | t: title: link2.title }}"
+                    data-nav-drawer-disclosure
+                  >
+                    {% render 'icon', name: 'expand_more', class: 'nav-drawer-chevron text-xl text-primary' %}
+                  </button>
+                </div>
+                <div id="{{ panel2_id }}" class="nav-drawer-panel pl-4 border-l-2 border-outline-variant ml-1 flex flex-col overflow-hidden" style="max-height: 0;" inert data-nav-drawer-panel data-nav-drawer-panel-level="2">
+                  {%- for link3 in link2.links -%}
+                    <a href="{{ link3.url }}" class="min-h-[48px] flex items-center text-sm font-medium text-primary no-underline py-2 focus-ring">
+                      {{ link3.title }}
+                    </a>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- else -%}
+              <a href="{{ link2.url }}" class="min-h-[48px] flex items-center text-sm font-medium text-primary no-underline py-2 focus-ring">
+                {{ link2.title }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- else -%}
+      <a href="{{ link1.url }}" class="block min-h-[48px] flex items-center text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline focus-ring{% if link1.active %} border-l-2 border-primary pl-2{% endif %}">
+        {{ link1.title }}
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

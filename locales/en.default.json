@@ -73,6 +73,10 @@
     "addresses": "Addresses",
     "sign_out": "Sign out",
     "mobile_cta": "Sign in / Create account"
+  },
+  "navigation": {
+    "main": "Main navigation",
+    "show_submenu": "Show submenu for {{ title }}"
   }
 }
 

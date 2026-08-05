@@ -23,8 +23,8 @@
 
 <!-- Mobile Menu Slide-out Drawer -->
 <div id="mobile-menu-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-start transition-opacity duration-300 opacity-0">
-  <div class="bg-white w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 -translate-x-full">
-    <div>
+  <div class="bg-card-light w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 -translate-x-full">
+    <div class="overflow-y-auto hide-scrollbar flex-1 min-h-0">
       <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
         <span class="font-serif text-xl font-bold text-primary tracking-tight">Menu</span>
         <button type="button" onclick="toggleMobileMenu(false)" class="text-primary bg-transparent border-0 cursor-pointer w-12 h-12 flex items-center justify-center hover:opacity-80 transition-opacity focus-ring" aria-label="Luk menu">
@@ -32,13 +32,9 @@
         </button>
       </div>
       {% render 'header-account-mobile-row' %}
-      <nav class="space-y-4 flex flex-col">
-        <a href="{{ routes.root_url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">Forside</a>
-        {%- if section.settings.menu != blank -%}
-          {%- for link in linklists[section.settings.menu].links -%}
-            <a href="{{ link.url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">{{ link.title }}</a>
-          {%- endfor -%}
-        {%- endif -%}
+      <nav class="space-y-4 flex flex-col" aria-label="{{ 'navigation.main' | t }}">
+        <a href="{{ routes.root_url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline focus-ring">Forside</a>
+        {% render 'nav-drawer-tree', menu_handle: section.settings.menu %}
       </nav>
     </div>
     <div class="pt-6 border-t border-outline-variant text-xs text-primary/85 space-y-2">
