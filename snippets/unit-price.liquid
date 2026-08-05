@@ -1,0 +1,33 @@
+{% doc %}
+  Renders a Shopify-native unit price (e.g. "40,00 kr / 100 g").
+  Single source of truth for unit-price formatting (design spec: Surface 12).
+
+  Accepts:
+  - variant: {Object} variant or cart line item exposing unit_price /
+    unit_price_measurement (required)
+  - size: {String} 'xs' (11px floor) | 'sm' (12px) | 'base' (14px), default 'sm'
+
+  Renders nothing when the variant has no unit_price_measurement or the
+  global setting show_unit_pricing is disabled.
+
+  Usage:
+  {% render 'unit-price', variant: current_variant, size: 'base' %}
+{% enddoc %}
+
+{%- if variant.unit_price_measurement != blank and settings.show_unit_pricing != false -%}
+  {%- liquid
+    assign size_class = 'text-xs'
+    if size == 'xs'
+      assign size_class = 'text-[11px]'
+    elsif size == 'base'
+      assign size_class = 'text-sm'
+    endif
+  -%}
+  <span class="{{ size_class }} text-primary/70 whitespace-nowrap">
+    {{- variant.unit_price | money }} /
+    {%- if variant.unit_price_measurement.reference_value != 1 -%}
+      {{- ' ' -}}{{ variant.unit_price_measurement.reference_value }}
+    {%- endif -%}
+    {{- ' ' -}}{{ variant.unit_price_measurement.reference_unit -}}
+  </span>
+{%- endif -%}
