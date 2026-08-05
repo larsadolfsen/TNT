@@ -76,6 +76,23 @@
   "recommendations": {
     "related_eyebrow": "Related products",
     "complementary_eyebrow": "Complete the look"
+  },
+  "account": {
+    "account": "Account",
+    "account_signed_in": "Account — {{ name }}",
+    "sign_in_title": "Sign in",
+    "reassurance": "Faster checkout and your order history.",
+    "sign_in": "Sign in",
+    "create_account": "Create account",
+    "forgot_password": "Forgot password?",
+    "orders": "Orders",
+    "addresses": "Addresses",
+    "sign_out": "Sign out",
+    "mobile_cta": "Sign in / Create account"
+  },
+  "navigation": {
+    "main": "Main navigation",
+    "show_submenu": "Show submenu for {{ title }}"
   }
 }
 

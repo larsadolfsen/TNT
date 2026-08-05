@@ -1,0 +1,74 @@
+{% doc %}
+  Desktop level-2/3 dropdown for one top-level navigation link (Surface 3).
+  Rendered inside the <li> for every top-level link that has children;
+  visibility is controlled purely by CSS (.nav-menu-item--open) so the panel
+  markup always exists in the DOM — see blocks/header-navigation.liquid.
+
+  @param {object} link - required. The top-level link list item (has .links).
+  @param {string} panel_id - required. id to match the trigger's aria-controls.
+  @param {string} [style] - 'list' (default) | 'panel'.
+  @param {number} [columns] - max columns for 'panel' style. Default 4.
+
+  @example
+  {% render 'nav-dropdown-panel', link: link, panel_id: panel_id, style: 'panel', columns: 4 %}
+{% enddoc %}
+
+{%- liquid
+  assign style = style | default: 'list'
+  assign columns = columns | default: 4
+  assign col_count = columns | at_most: link.links.size
+  if col_count < 1
+    assign col_count = 1
+  endif
+-%}
+
+{%- if style == 'list' -%}
+  <div
+    id="{{ panel_id }}"
+    class="nav-dropdown-panel absolute rounded-2xl border border-outline-variant bg-card-light shadow-md p-2 min-w-[240px] max-w-[320px]"
+    style="top: 100%; left: 0; z-index: 50;"
+    hidden
+    data-nav-panel
+    data-nav-panel-style="list"
+  >
+    <ul class="list-none p-0 m-0 flex flex-col">
+      {%- for l2 in link.links -%}
+        <li>
+          <a href="{{ l2.url }}" class="h-11 flex items-center px-3 rounded-md text-sm text-primary no-underline hover:bg-card-high focus-ring">
+            {{ l2.title }}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- else -%}
+  <div
+    id="{{ panel_id }}"
+    class="nav-dropdown-panel absolute border-t border-b border-outline-variant bg-card-light shadow-md rounded-b-2xl px-6 py-8 lg:px-8 lg:py-10 overflow-y-auto hide-scrollbar"
+    style="top: 100%; left: 0; right: 0; z-index: 50; max-height: calc(100vh - var(--header-height, 96px) - 24px);"
+    hidden
+    data-nav-panel
+    data-nav-panel-style="panel"
+  >
+    <div class="grid gap-x-8 gap-y-6" style="grid-template-columns: repeat({{ col_count }}, minmax(0, 1fr));">
+      {%- for l2 in link.links -%}
+        <div>
+          {%- if l2.url != blank and l2.url != '#' -%}
+            <a href="{{ l2.url }}" class="block text-sm font-bold text-primary no-underline hover:underline mb-3 focus-ring">{{ l2.title }}</a>
+          {%- else -%}
+            <span class="block text-sm font-bold text-primary mb-3">{{ l2.title }}</span>
+          {%- endif -%}
+          {%- if l2.links.size > 0 -%}
+            <ul class="list-none p-0 m-0 flex flex-col gap-2">
+              {%- for l3 in l2.links -%}
+                <li>
+                  <a href="{{ l3.url }}" class="text-sm text-primary/85 no-underline hover:text-primary focus-ring">{{ l3.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

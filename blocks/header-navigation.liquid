@@ -1,8 +1,14 @@
 {% doc %}
   A navigation menu block for use inside a Header Group or directly in a Header Row 2.
+  Renders up to 3 levels of a Shopify link list (Surface 3): desktop
+  hover/click dropdowns (single-column "list" or multi-column "panel"), with
+  keyboard support and hover-intent timing handled by assets/navigation.js.
 {% enddoc %}
 
 {%- assign menu_handle = block.settings.menu -%}
+{%- assign dropdown_style = block.settings.dropdown_style | default: 'panel' -%}
+{%- assign dropdown_columns = block.settings.dropdown_columns | default: 4 -%}
+{%- assign open_on = block.settings.open_on | default: 'hover' -%}
 
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
@@ -10,6 +16,20 @@
     align-items: stretch;
     padding: 0;
     height: 100%;
+  }
+
+  #shopify-block-{{ block.id }} nav {
+    overflow-x: auto;
+  }
+
+  @media screen and (min-width: 840px) {
+    #shopify-block-{{ block.id }} nav {
+      overflow: visible;
+    }
+  }
+
+  #shopify-block-{{ block.id }} .nav-menu-item {
+    position: relative;
   }
 
   #shopify-block-{{ block.id }} .nav-link-pill {
@@ -32,25 +52,128 @@
   #shopify-block-{{ block.id }} .nav-link-pill:hover::before {
     background-color: var(--color-surface-container, rgba(0,0,0,0.06));
   }
+
+  #shopify-block-{{ block.id }} .nav-menu-item--open .nav-link-pill::before {
+    background-color: var(--color-card-high);
+  }
+
+  #shopify-block-{{ block.id }} .nav-chevron {
+    transition: transform 200ms ease;
+  }
+
+  #shopify-block-{{ block.id }} .nav-menu-item--open .nav-chevron {
+    transform: rotate(180deg);
+  }
+
+  #shopify-block-{{ block.id }} .nav-menu-item--active .nav-link-pill {
+    font-weight: 600;
+  }
+
+  #shopify-block-{{ block.id }} .nav-menu-item--active .nav-link-pill::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: 2px;
+    background-color: var(--color-primary);
+  }
+
+  @media (pointer: coarse) {
+    #shopify-block-{{ block.id }} .nav-link-pill {
+      min-height: 48px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-block-{{ block.id }} .nav-chevron,
+    #shopify-block-{{ block.id }} .nav-link-pill::before {
+      transition-duration: 0.01ms;
+    }
+  }
 {%- endstyle -%}
 
 {%- if menu_handle != blank -%}
   <nav
-    class="flex items-stretch overflow-x-auto hide-scrollbar w-full h-full"
-    aria-label="Hovedmenu"
+    class="flex items-stretch hide-scrollbar w-full h-full"
+    aria-label="{{ 'navigation.main' | t }}"
     {{ block.shopify_attributes }}
     data-block-id="{{ block.id }}"
+    data-nav-root
+    data-open-on="{{ open_on }}"
   >
     <ul class="flex items-stretch whitespace-nowrap list-none p-0 m-0 w-full h-full justify-start">
       {%- for link in linklists[menu_handle].links -%}
-        <li class="nav-menu-item transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}">
-          <a href="{{ link.url }}" class="nav-link-pill flex items-center text-sm font-medium text-primary no-underline h-full px-3 mx-1" style="padding-inline: {{ block.settings.item_padding | default: 12 }}px;">
-            <span style="position: relative; z-index: 1;">{{ link.title }}</span>
-          </a>
+        {%- assign has_children = false -%}
+        {%- if link.links.size > 0 -%}
+          {%- assign has_children = true -%}
+        {%- endif -%}
+
+        {%- assign panel_id = 'nav-panel-' | append: block.id | append: '-' | append: forloop.index -%}
+
+        <li class="nav-menu-item transition-all duration-200{% if link.active %} nav-menu-item--active{% endif %}" data-nav-item>
+          {%- if has_children -%}
+            {%- assign has_grandchildren = false -%}
+            {%- for l2 in link.links -%}
+              {%- if l2.links.size > 0 -%}
+                {%- assign has_grandchildren = true -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- assign item_style = 'panel' -%}
+            {%- if dropdown_style == 'list' -%}
+              {%- assign item_style = 'list' -%}
+            {%- elsif link.links.size <= 5 and has_grandchildren == false -%}
+              {%- assign item_style = 'list' -%}
+            {%- endif -%}
+
+            {%- if link.url != blank and link.url != '#' -%}
+              <span class="flex items-stretch h-full">
+                <a
+                  href="{{ link.url }}"
+                  class="nav-link-pill flex items-center text-sm font-medium text-primary no-underline h-full pl-3 mx-1 focus-ring"
+                  style="padding-inline-start: {{ block.settings.item_padding | default: 12 }}px;"
+                >
+                  <span style="position: relative; z-index: 1;">{{ link.title }}</span>
+                </a>
+                <button
+                  type="button"
+                  class="flex items-center justify-center h-full pr-3 -ml-1 bg-transparent border-0 cursor-pointer focus-ring"
+                  aria-expanded="false"
+                  aria-controls="{{ panel_id }}"
+                  aria-haspopup="true"
+                  aria-label="{{ 'navigation.show_submenu' | t: title: link.title }}"
+                  data-nav-trigger
+                >
+                  {% render 'icon', name: 'expand_more', class: 'nav-chevron text-[18px] text-primary/70' %}
+                </button>
+              </span>
+            {%- else -%}
+              <button
+                type="button"
+                class="nav-link-pill flex items-center text-sm font-medium text-primary h-full px-3 mx-1 bg-transparent border-0 cursor-pointer focus-ring"
+                style="padding-inline: {{ block.settings.item_padding | default: 12 }}px;"
+                aria-expanded="false"
+                aria-controls="{{ panel_id }}"
+                aria-haspopup="true"
+                data-nav-trigger
+              >
+                <span style="position: relative; z-index: 1;">{{ link.title }}</span>
+                {% render 'icon', name: 'expand_more', class: 'nav-chevron text-[18px] text-primary/70 ml-1' %}
+              </button>
+            {%- endif -%}
+
+            {% render 'nav-dropdown-panel', link: link, panel_id: panel_id, style: item_style, columns: dropdown_columns %}
+          {%- else -%}
+            <a href="{{ link.url }}" class="nav-link-pill flex items-center text-sm font-medium text-primary no-underline h-full px-3 mx-1 focus-ring" style="padding-inline: {{ block.settings.item_padding | default: 12 }}px;">
+              <span style="position: relative; z-index: 1;">{{ link.title }}</span>
+            </a>
+          {%- endif -%}
         </li>
       {%- endfor -%}
     </ul>
   </nav>
+  <script src="{{ 'navigation.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}
@@ -72,6 +195,35 @@
       "step": 2,
       "default": 12,
       "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "dropdown_style",
+      "label": "Dropdown style",
+      "options": [
+        { "value": "panel", "label": "Panel (auto column layout)" },
+        { "value": "list", "label": "List (single column)" }
+      ],
+      "default": "panel"
+    },
+    {
+      "type": "range",
+      "id": "dropdown_columns",
+      "label": "Max columns in panel",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "open_on",
+      "label": "Desktop open behavior",
+      "options": [
+        { "value": "hover", "label": "Hover" },
+        { "value": "click", "label": "Click" }
+      ],
+      "default": "hover"
     }
   ],
   "presets": [

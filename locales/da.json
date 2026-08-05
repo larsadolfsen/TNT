@@ -76,6 +76,22 @@
   "recommendations": {
     "related_eyebrow": "Relaterede produkter",
     "complementary_eyebrow": "Komplet looket"
+  },
+  "account": {
+    "account": "Konto",
+    "account_signed_in": "Konto — {{ name }}",
+    "sign_in_title": "Log ind",
+    "reassurance": "Hurtigere kassegang og din ordrehistorik.",
+    "sign_in": "Log ind",
+    "create_account": "Opret konto",
+    "forgot_password": "Glemt adgangskode?",
+    "orders": "Ordrer",
+    "addresses": "Adresser",
+    "sign_out": "Log ud",
+    "mobile_cta": "Log ind / Opret konto"
+  },
+  "navigation": {
+    "main": "Hovedmenu",
+    "show_submenu": "Vis undermenu for {{ title }}"
   }
 }
-
