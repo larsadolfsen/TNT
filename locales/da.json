@@ -62,3 +62,4 @@
     "results_for_html": "{{ count }} resultater fundet for {{ terms }}"
   }
 }
+

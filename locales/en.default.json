@@ -53,3 +53,4 @@
     "results_for_html": "{{ count }} results found for {{ terms }}"
   }
 }
+

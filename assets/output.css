@@ -257,9 +257,6 @@
   .collapse {
     visibility: collapse;
   }
-  .invisible {
-    visibility: hidden;
-  }
   .visible {
     visibility: visible;
   }
@@ -1063,9 +1060,6 @@
   .bg-\[\#f1f5f9\] {
     background-color: #f1f5f9;
   }
-  .bg-\[\#f9f9f9\] {
-    background-color: #f9f9f9;
-  }
   .bg-\[\#fffbeb\] {
     background-color: #fffbeb;
   }
@@ -1083,6 +1077,9 @@
   }
   .bg-background-dark {
     background-color: var(--color-background-dark);
+  }
+  .bg-background-shade {
+    background-color: var(--color-background-shade);
   }
   .bg-black {
     background-color: var(--color-black);
@@ -1483,9 +1480,6 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
-  .text-\[\#0e1a28\] {
-    color: #0e1a28;
-  }
   .text-\[\#1a1c1c\] {
     color: #1a1c1c;
   }
@@ -1878,6 +1872,14 @@
       color: #1a1c1c;
     }
   }
+  .placeholder\:text-primary\/40 {
+    &::placeholder {
+      color: var(--color-primary);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+      }
+    }
+  }
   .placeholder\:text-primary\/60 {
     &::placeholder {
       color: var(--color-primary);
@@ -2118,6 +2120,14 @@
       border-radius: 0.25rem;
     }
   }
+  .focus\:border-primary\/60 {
+    &:focus {
+      border-color: var(--color-primary);
+      @supports (color: color-mix(in lab, red, red)) {
+        border-color: color-mix(in oklab, var(--color-primary) 60%, transparent);
+      }
+    }
+  }
   .focus\:border-slate-400 {
     &:focus {
       border-color: var(--color-slate-400);
@@ -2158,6 +2168,14 @@
   .focus\:ring-primary {
     &:focus {
       --tw-ring-color: var(--color-primary);
+    }
+  }
+  .focus\:ring-primary\/60 {
+    &:focus {
+      --tw-ring-color: var(--color-primary);
+      @supports (color: color-mix(in lab, red, red)) {
+        --tw-ring-color: color-mix(in oklab, var(--color-primary) 60%, transparent);
+      }
     }
   }
   .focus\:ring-slate-400 {
