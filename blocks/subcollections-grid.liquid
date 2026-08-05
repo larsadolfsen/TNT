@@ -1,6 +1,9 @@
 {% doc %}
-  Renders a collections grid block.
-  Merchant can choose a specific collection, or it defaults to the template's current collection.
+  Renders a grid of SUB-COLLECTIONS of the current/given collection, sourced
+  from the collection.metafields.custom.child metafield (not to be confused
+  with blocks/collection-products-grid.liquid, which renders a collection's
+  products). Card-style layout with image, title and description - for the
+  simpler "image + title only" variant see blocks/collection-children.liquid.
 {% enddoc %}
 
 {%- liquid
@@ -87,7 +90,7 @@
 {% schema %}
 {
   "name": "t:general.collections_grid",
-  "class": "shopify-block-collections-grid-wrapper",
+  "class": "shopify-block-subcollections-grid-wrapper",
   "settings": [
     {
       "type": "range",

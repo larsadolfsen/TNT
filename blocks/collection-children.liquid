@@ -2,6 +2,12 @@
   Renders a block showing the children/subcollections of the current collection.
   The children are retrieved from the collection metafield `custom.child`.
   It displays the first 6 child collections in a simple 2-column grid showing only the image and the name.
+
+  Simpler sibling of blocks/subcollections-grid.liquid (same metafield
+  source, but that one is configurable-columns and shows a description too).
+  See also blocks/collection-products-grid.liquid (renders a collection's
+  PRODUCTS, not its sub-collections) and blocks/collection-subcollections.liquid
+  (a pill/chip filter row, not a card grid).
 {% enddoc %}
 
 {%- liquid

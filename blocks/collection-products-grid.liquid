@@ -1,5 +1,7 @@
 {% doc %}
-  Renders a collection grid block.
+  Renders a grid of PRODUCTS belonging to a collection (not to be confused
+  with blocks/subcollections-grid.liquid, which renders sub-collections via
+  a metafield).
   Merchant can choose a specific collection, or it defaults to the template's current collection.
 {% enddoc %}
 
@@ -36,7 +38,7 @@
   }
 {%- endstyle -%}
 
-<div class="shopify-block-collection-grid w-full" {{ block.shopify_attributes }}>
+<div class="shopify-block-collection-products-grid w-full" {{ block.shopify_attributes }}>
   {%- if block.settings.title != blank -%}
     <h2 class="font-serif text-lg md:text-xl font-semibold mb-4 text-primary">
       {{ block.settings.title }}
@@ -67,8 +69,8 @@
 
 {% schema %}
 {
-  "name": "Kollektion Grid",
-  "class": "shopify-block-collection-grid-wrapper",
+  "name": "Produkter i kollektion",
+  "class": "shopify-block-collection-products-grid-wrapper",
   "settings": [
     {
       "type": "text",
@@ -173,7 +175,7 @@
   ],
   "presets": [
     {
-      "name": "Kollektion Grid",
+      "name": "Produkter i kollektion",
       "category": "t:general.collection_category"
     }
   ]

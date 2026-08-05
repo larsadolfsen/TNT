@@ -1,3 +1,13 @@
+{% doc %}
+  Renders a horizontally-scrollable row of PILL/CHIP links for the current
+  collection's sub-collections (sourced from a configurable metafield,
+  default custom.child), with an active-state highlight and AJAX-swapped
+  product grid navigation. Distinct from the grid-of-cards blocks in the
+  collection-grid naming cluster (collection-products-grid.liquid,
+  subcollections-grid.liquid, collection-children.liquid) - this one is a
+  filter/navigation control, not a content grid.
+{% enddoc %}
+
 {%- style -%}
   #shopify-block-{{ block.id }} {
     padding-top: {{ block.settings.padding_top | times: 0.75 | round }}px;
