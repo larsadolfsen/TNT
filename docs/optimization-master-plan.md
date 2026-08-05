@@ -13,13 +13,14 @@ Theme Store compliance features (`theme-store-compliance-brainstorm.md`,
    a task that needs a file owned by an active task waits or joins that
    track. This is the only serialization rule — everything else runs
    concurrently.
-2. **Every step is testable on the live server.** All work is pushed to an
-   **unpublished preview theme** on the store (`shopify theme push
-   --unpublished` / `shopify theme dev`), never to the published theme.
-   Each task below names its concrete verification. Features that require
-   store configuration the client store doesn't have (selling plans, local
-   pickup locations, markets/multi-currency) verify on a **dev store** with
-   test data, plus a visual check on the live-store preview theme.
+2. **Every step is testable on the live server.** The store is not serving
+   customers yet, so work is pushed directly to the store's theme
+   (`shopify theme push` / `shopify theme dev`) and verified there — no
+   preview-theme indirection needed. Each task below names its concrete
+   verification. Features that require store configuration not yet set up
+   (selling plans, local pickup locations, markets/multi-currency) get that
+   test data configured on the store as part of the task. Revisit this and
+   switch to unpublished preview themes the moment the store goes live.
 3. **Cheapest capable model per task.** Tier legend:
    - **[H]** = Haiku, low effort — mechanical, fully specified, low blast
      radius. Safe to delegate once a spec exists.
@@ -35,10 +36,11 @@ Theme Store compliance features (`theme-store-compliance-brainstorm.md`,
 
 ## Branching
 
-- `main` = client production. Untouched until the client migration (A4).
-- `generic` = long-lived integration branch for the sellable theme. All
-  tracks branch from and merge back into `generic`.
-- Client-relevant fixes cherry-pick from `generic` to `main`.
+The project is not live, so all work runs directly on `main`. Parallel
+tracks may use short-lived feature branches purely to avoid stepping on
+each other mid-task, merging back to `main` as soon as their step is
+verified on the store. No production/integration branch split until the
+store launches.
 
 ---
 
@@ -46,9 +48,8 @@ Theme Store compliance features (`theme-store-compliance-brainstorm.md`,
 
 | ID | Task | Tier | Test on live server |
 |----|------|------|---------------------|
-| T0.1 | Wire branch → unpublished preview theme; document the push/preview flow | [S] | Preview URL renders current theme identically to production |
-| T0.2 | Create `generic` branch; document branch policy | [H] | n/a (git only) |
-| T0.3 | Record baselines: Lighthouse (home/collection/product, mobile+desktop) + `theme-check` output | [H] | Baseline numbers captured from the preview theme |
+| T0.1 | Wire repo → store theme push (`shopify theme push`/`theme dev`); document the flow | [S] | Store renders the theme from a fresh push |
+| T0.2 | Record baselines: Lighthouse (home/collection/product, mobile+desktop) + `theme-check` output | [H] | Baseline numbers captured from the store |
 
 ## Wave 1 — Independent parallel tracks (no shared files)
 
@@ -83,7 +84,8 @@ touched by Wave 2)
 
 | ID | Task | Tier | Test |
 |----|------|------|------|
-| D1 | Trust-checkmark → one shared snippet (3 call sites) | [H] | Preview product page: visually identical |
+| D0 | Atomic primitives library: `snippets/icon.liquid` (wraps Material Symbols usage), `snippets/button.liquid`, `snippets/input.liquid`, shared price-display snippet. API spec by [S], then mechanical call-site migration by [H]. **Soft-gates Wave 2**: all new surfaces must be built from these primitives (per AGENTS.md rule) | [S]+[H] | Store renders identically after call-site migration; grep confirms no raw primitive markup remains |
+| D1 | Trust-checkmark → one shared snippet (3 call sites) | [H] | Store product page: visually identical |
 | D2 | Badge consolidation: 3 implementations → 1 configurable block | [S] | Editor presets migrate; preview identical |
 | D3 | Rename `collection-grid` / `collections-grid` for clarity (incl. template refs) | [H] (spec: [S]) | Editor loads both blocks; existing templates unbroken |
 | D4 | Hex→token sweep in `search.liquid`, `password.liquid`, `section.liquid` (fixed mapping table written once by [S]) | [H] | Preview light + dark mode: identical rendering |
@@ -95,7 +97,10 @@ touched by Wave 2)
 |----|------|------|------|
 | E1 | Produce designs for all 16 missing surfaces per the brief (Baymard-grounded, token-based) | [O] | Review artifact; gates Wave 2 |
 
-## Wave 2 — Compliance build-out (needs E1; parallel by page area)
+## Wave 2 — Compliance build-out (needs E1 + D0; parallel by page area)
+
+All new surfaces are composed from the D0 primitives (icon/button/input/price
+snippets) — no re-inlined primitive markup, per the AGENTS.md rule.
 
 Each track owns its page area's files; no cross-track overlap by
 construction. Within a track, tasks run serially (same files).
@@ -182,5 +187,6 @@ Custom Liquid section, `sections/footer.liquid`, `footer-group.json`)
   up to 6 agents; within-track tasks serial.
 - **Wave 3:** R1's three sections, R3's five files, and R4–R6 partition by
   file — up to ~6 concurrent.
-- Critical path: T0.1 → E1 → P1 (largest track) → S1/S2 → S3 → S4, with
-  A1→A2→A3→A4→B4 as the second-longest chain, running fully parallel to it.
+- Critical path: T0.1 → (E1 ∥ D0) → P1 (largest track) → S1/S2 → S3 → S4,
+  with A1→A2→A3→A4→B4 as the second-longest chain, running fully parallel
+  to it.

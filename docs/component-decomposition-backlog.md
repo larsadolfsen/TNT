@@ -65,6 +65,16 @@ not the exception.
 
 Roughly in priority order, smallest/lowest-risk first:
 
+- **A0. Atomic primitives library** — componentization goes all the way down:
+  create `snippets/icon.liquid` (wrapping the Material Symbols usage
+  currently inlined as raw `<span class="material-symbols-outlined">` across
+  files), `snippets/button.liquid`, `snippets/input.liquid`, and a shared
+  price-display snippet. All larger components compose from these via
+  `{% render %}`; no call site re-inlines primitive markup. Do this slice
+  FIRST — it defines the vocabulary every other slice (and all new Theme
+  Store feature work) builds with, and the icon snippet is also the pivot
+  point for the Material Symbols → self-hosted/SVG decision in the
+  font-loading fix.
 - **A. Badge consolidation** — merge the 3 badge implementations into 1
   configurable component.
 - **B. Trust-checkmark → shared snippet** — dedupe the 3 copies into one

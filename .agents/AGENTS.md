@@ -4,4 +4,5 @@
 - Do not use `!important` in CSS styles.
 - Do not use `[!IMPORTANT]` alert boxes in markdown artifacts.
 - Each file (section, block, snippet, JS/CSS asset) should have a single, clear purpose. Don't grow one file to handle multiple unrelated concerns — e.g. keep UI markup, cart/JS behavior, and pricing/business logic in separate files rather than combining them. When a component needs several concerns (layout, interaction, data formatting), split it into small composable pieces (a block per UI element, JS extracted to its own asset or snippet, etc.) instead of one large file. This applies from the start to new components, not just as a later cleanup pass.
+- Componentize all the way down to the smallest UI primitives: icons, buttons, form inputs, badges, price displays, etc. each live in their own snippet and are used via `{% render %}` — never re-inline their markup at call sites. Example: icon usage goes through a single `snippets/icon.liquid` (`{% render 'icon', name: 'search' %}`), not a raw `<span class="material-symbols-outlined">` scattered through files. Larger components (cards, drawers, sections) must be composed from these primitives.
 
