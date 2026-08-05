@@ -18,9 +18,9 @@
 <div class="relative w-full product-media" {{ block.shopify_attributes }}>
   <!-- Hidden dummy image for third-party cart compatibility -->
   {%- if featured_image -%}
-    <img id="main-product-img" src="{{ featured_image | image_url: width: 1200 }}" class="hidden" alt="" />
+    <img id="main-product-img" src="{{ featured_image | image_url: width: 1200 }}" class="hidden" alt="" width="{{ featured_image.width | default: 1200 }}" height="{{ featured_image.height | default: 1200 }}" />
   {%- else -%}
-    <img id="main-product-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT6v3nHI941v3VLOOVZi6aiIWU9Bk0oFqdFrpEO7HFKCiZVZWAkbZafIRHYpjXJ-vkib7-EqYsE-5f6cnWn3VaO92Upxnr3Udg0oV4LbzaJlQitsTts1KuFfq1PU0VMG5FNT1Mx8PjaQZMPzcPs3QUaHTsVPYlxETHQLH5N6-GqTQnIQ63D-Wyjal17RpHnqDmyEDHeA5W9mgHscm42-_bB9kfmytEfumkgNPSNYbcZvTfvcT4xd6XZB0EuIRQ-DmyrVWWdxzFyBaa" class="hidden" alt="" />
+    <img id="main-product-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT6v3nHI941v3VLOOVZi6aiIWU9Bk0oFqdFrpEO7HFKCiZVZWAkbZafIRHYpjXJ-vkib7-EqYsE-5f6cnWn3VaO92Upxnr3Udg0oV4LbzaJlQitsTts1KuFfq1PU0VMG5FNT1Mx8PjaQZMPzcPs3QUaHTsVPYlxETHQLH5N6-GqTQnIQ63D-Wyjal17RpHnqDmyEDHeA5W9mgHscm42-_bB9kfmytEfumkgNPSNYbcZvTfvcT4xd6XZB0EuIRQ-DmyrVWWdxzFyBaa" class="hidden" alt="" width="1200" height="800" />
   {%- endif -%}
 
   <div class="product-media-gallery aspect-square bg-surface-container overflow-hidden relative rounded-2xl">
@@ -45,6 +45,10 @@
                     {% render 'icon', name: 'play_arrow', class: 'text-white text-5xl', style: "font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;" %}
                   </div>
                 </div>
+              </div>
+            {%- elsif media.media_type == 'model' -%}
+              <div class="w-full h-full relative">
+                {{ media | model_viewer_tag: image: media.preview_image, camera-controls: true, ar: true, ar-modes: 'webxr scene-viewer quick-look', class: 'w-full h-full object-cover select-none' }}
               </div>
             {%- else -%}
               {%- if forloop.first -%}
@@ -104,10 +108,12 @@
             data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
             aria-label="Skift billede {{ forloop.index }}"
           >
-            <img 
-              src="{{ media.preview_image.src | image_url: width: 200, height: 200, crop: 'center' }}" 
-              alt="{{ media.alt | default: product.title }}" 
+            <img
+              src="{{ media.preview_image.src | image_url: width: 200, height: 200, crop: 'center' }}"
+              alt="{{ media.alt | default: product.title }}"
               loading="lazy"
+              width="200"
+              height="200"
             />
             {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
               <div class="video-thumbnail-overlay">
@@ -117,6 +123,8 @@
           </button>
           {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
             <span class="video-thumbnail-label">Video</span>
+          {%- elsif media.media_type == 'model' -%}
+            <span class="video-thumbnail-label">3D</span>
           {%- endif -%}
         </div>
       {%- endfor -%}
