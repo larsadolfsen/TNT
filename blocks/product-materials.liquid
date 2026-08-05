@@ -22,15 +22,15 @@
     display: inline-flex;
   }
 
-  /* If it has material-badge blocks, use the 3-column grid layout */
-  .product-materials-grid-{{ block.id }}:has(.shopify-block-material-badge) {
+  /* If it has icon-style badge blocks (badge.liquid, style: icon), use the 3-column grid layout */
+  .product-materials-grid-{{ block.id }}:has([data-badge-style="icon"]) {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: {{ block.settings.gap | default: 8 }}px;
     justify-items: center;
   }
   @media (min-width: 768px) {
-    .product-materials-grid-{{ block.id }}:has(.shopify-block-material-badge) {
+    .product-materials-grid-{{ block.id }}:has([data-badge-style="icon"]) {
       gap: {{ block.settings.gap | default: 8 | times: 2 }}px;
     }
   }

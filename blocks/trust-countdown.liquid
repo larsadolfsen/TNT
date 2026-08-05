@@ -1,34 +1,35 @@
-<div class="flex items-center gap-2.5 text-primary font-medium" 
-     id="trust-countdown-{{ block.id }}"
-     data-legacy-text="{{ block.settings.text | escape }}"
-     data-legacy-suffix="{{ block.settings.suffix | escape }}"
-     data-shipping-sunday-active="{{ settings.shipping_sunday_active | default: false }}"
-     data-shipping-sunday-cutoff="{{ settings.shipping_sunday_cutoff | default: '12:00' }}"
-     data-shipping-sunday-delivery="{{ settings.shipping_sunday_delivery | default: 'tirsdag' }}"
-     data-shipping-monday-active="{{ settings.shipping_monday_active | default: true }}"
-     data-shipping-monday-cutoff="{{ settings.shipping_monday_cutoff | default: '12:00' }}"
-     data-shipping-monday-delivery="{{ settings.shipping_monday_delivery | default: 'onsdag' }}"
-     data-shipping-tuesday-active="{{ settings.shipping_tuesday_active | default: true }}"
-     data-shipping-tuesday-cutoff="{{ settings.shipping_tuesday_cutoff | default: '12:00' }}"
-     data-shipping-tuesday-delivery="{{ settings.shipping_tuesday_delivery | default: 'torsdag' }}"
-     data-shipping-wednesday-active="{{ settings.shipping_wednesday_active | default: true }}"
-     data-shipping-wednesday-cutoff="{{ settings.shipping_wednesday_cutoff | default: '12:00' }}"
-     data-shipping-wednesday-delivery="{{ settings.shipping_wednesday_delivery | default: 'fredag' }}"
-     data-shipping-thursday-active="{{ settings.shipping_thursday_active | default: true }}"
-     data-shipping-thursday-cutoff="{{ settings.shipping_thursday_cutoff | default: '12:00' }}"
-     data-shipping-thursday-delivery="{{ settings.shipping_thursday_delivery | default: 'fredag' }}"
-     data-shipping-friday-active="{{ settings.shipping_friday_active | default: true }}"
-     data-shipping-friday-cutoff="{{ settings.shipping_friday_cutoff | default: '12:00' }}"
-     data-shipping-friday-delivery="{{ settings.shipping_friday_delivery | default: 'mandag' }}"
-     data-shipping-saturday-active="{{ settings.shipping_saturday_active | default: false }}"
-     data-shipping-saturday-cutoff="{{ settings.shipping_saturday_cutoff | default: '12:00' }}"
-     data-shipping-saturday-delivery="{{ settings.shipping_saturday_delivery | default: 'tirsdag' }}"
-     {{ block.shopify_attributes }}>
-  <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+{%- capture countdown_attributes -%}
+  data-legacy-text="{{ block.settings.text | escape }}"
+  data-legacy-suffix="{{ block.settings.suffix | escape }}"
+  data-shipping-sunday-active="{{ settings.shipping_sunday_active | default: false }}"
+  data-shipping-sunday-cutoff="{{ settings.shipping_sunday_cutoff | default: '12:00' }}"
+  data-shipping-sunday-delivery="{{ settings.shipping_sunday_delivery | default: 'tirsdag' }}"
+  data-shipping-monday-active="{{ settings.shipping_monday_active | default: true }}"
+  data-shipping-monday-cutoff="{{ settings.shipping_monday_cutoff | default: '12:00' }}"
+  data-shipping-monday-delivery="{{ settings.shipping_monday_delivery | default: 'onsdag' }}"
+  data-shipping-tuesday-active="{{ settings.shipping_tuesday_active | default: true }}"
+  data-shipping-tuesday-cutoff="{{ settings.shipping_tuesday_cutoff | default: '12:00' }}"
+  data-shipping-tuesday-delivery="{{ settings.shipping_tuesday_delivery | default: 'torsdag' }}"
+  data-shipping-wednesday-active="{{ settings.shipping_wednesday_active | default: true }}"
+  data-shipping-wednesday-cutoff="{{ settings.shipping_wednesday_cutoff | default: '12:00' }}"
+  data-shipping-wednesday-delivery="{{ settings.shipping_wednesday_delivery | default: 'fredag' }}"
+  data-shipping-thursday-active="{{ settings.shipping_thursday_active | default: true }}"
+  data-shipping-thursday-cutoff="{{ settings.shipping_thursday_cutoff | default: '12:00' }}"
+  data-shipping-thursday-delivery="{{ settings.shipping_thursday_delivery | default: 'fredag' }}"
+  data-shipping-friday-active="{{ settings.shipping_friday_active | default: true }}"
+  data-shipping-friday-cutoff="{{ settings.shipping_friday_cutoff | default: '12:00' }}"
+  data-shipping-friday-delivery="{{ settings.shipping_friday_delivery | default: 'mandag' }}"
+  data-shipping-saturday-active="{{ settings.shipping_saturday_active | default: false }}"
+  data-shipping-saturday-cutoff="{{ settings.shipping_saturday_cutoff | default: '12:00' }}"
+  data-shipping-saturday-delivery="{{ settings.shipping_saturday_delivery | default: 'tirsdag' }}"
+  {{ block.shopify_attributes }}
+{%- endcapture -%}
+{%- capture countdown_content -%}
   <span id="countdown-content-{{ block.id }}">
     {{ block.settings.text }} <span class="font-bold">12.00</span>{{ block.settings.suffix }}
   </span>
-</div>
+{%- endcapture -%}
+{% render 'trust-checkmark-item', id: 'trust-countdown-' | append: block.id, content: countdown_content, attributes: countdown_attributes %}
 
 <script>
   (function() {

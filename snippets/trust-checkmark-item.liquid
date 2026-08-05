@@ -1,0 +1,17 @@
+{% doc %}
+  Renders a single trust-checkmark list item: a filled green check_circle
+  icon followed by arbitrary content, wrapped in the flex layout shared by
+  blocks/trust-checkmark.liquid and blocks/trust-countdown.liquid.
+
+  @param {string} content - required. Raw HTML/text rendered after the icon (a label, or a dynamic countdown fragment).
+  @param {string} [id] - id attribute for the outer wrapper div (used by trust-countdown for JS targeting of its live countdown text).
+  @param {string} [attributes] - Raw additional HTML attributes appended to the wrapper div (e.g. block.shopify_attributes, data-* attributes).
+
+  @example
+  {% render 'trust-checkmark-item', content: block.settings.text, attributes: block.shopify_attributes %}
+{% enddoc %}
+
+<div class="flex items-center gap-2.5 text-primary font-medium"{% if id %} id="{{ id }}"{% endif %}{% if attributes %} {{ attributes }}{% endif %}>
+  {% render 'icon', name: 'check_circle', class: 'text-lg text-emerald-600', style: "font-variation-settings: 'FILL' 1;" %}
+  {{ content }}
+</div>

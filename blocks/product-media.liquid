@@ -33,7 +33,7 @@
                 {{ media | video_tag: class: 'w-full h-full object-cover select-none', autoplay: false, loop: true, muted: true, controls: true }}
                 <div class="absolute inset-0 flex items-center justify-center bg-black/10 custom-play-overlay transition-opacity duration-300 cursor-pointer">
                   <div class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-black/20">
-                    <span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;">play_arrow</span>
+                    {% render 'icon', name: 'play_arrow', class: 'text-white text-5xl', style: "font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;" %}
                   </div>
                 </div>
               </div>
@@ -42,7 +42,7 @@
                 {{ media | external_video_tag: class: 'w-full h-full object-cover select-none' }}
                 <div class="absolute inset-0 flex items-center justify-center bg-black/10 custom-play-overlay transition-opacity duration-300 cursor-pointer">
                   <div class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-black/20">
-                    <span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;">play_arrow</span>
+                    {% render 'icon', name: 'play_arrow', class: 'text-white text-5xl', style: "font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;" %}
                   </div>
                 </div>
               </div>
@@ -111,7 +111,7 @@
             />
             {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
               <div class="video-thumbnail-overlay">
-                <span class="material-symbols-outlined text-white text-3xl">play_circle</span>
+                {% render 'icon', name: 'play_circle', class: 'text-white text-3xl' %}
               </div>
             {%- endif -%}
           </button>

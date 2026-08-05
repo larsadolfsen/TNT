@@ -1,0 +1,31 @@
+{% doc %}
+  Renders a Material Symbols icon.
+
+  Icon usage should always go through this snippet instead of inlining
+  `<span class="material-symbols-outlined">` markup at call sites.
+
+  @param {string} name - required. The Material Symbols icon name (e.g. "search", "close", "check_circle").
+  @param {string} [class] - Extra CSS classes appended to the icon span.
+  @param {string} [label] - Accessible label. When given, renders aria-label with this text and the icon is treated as meaningful to assistive tech (no aria-hidden). When omitted, the icon is treated as decorative and gets aria-hidden="true".
+  @param {string} [style] - Raw inline style attribute value (e.g. for font-variation-settings or a fixed font-size override).
+  @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. title="...").
+
+  @example
+  {% render 'icon', name: 'search' %}
+  {% render 'icon', name: 'close', class: 'text-2xl text-primary', label: 'Luk' %}
+  {% render 'icon', name: 'star', class: 'text-[14px] filled-star', style: "font-variation-settings: 'FILL' 1;" %}
+{% enddoc %}
+<span
+  class="material-symbols-outlined{% if class %} {{ class }}{% endif %}"
+  {%- if label %}
+    aria-label="{{ label }}"
+  {%- else %}
+    aria-hidden="true"
+  {%- endif %}
+  {%- if style %}
+    style="{{ style }}"
+  {%- endif %}
+  {%- if attributes %}
+    {{ attributes }}
+  {%- endif -%}
+>{{ name }}</span>

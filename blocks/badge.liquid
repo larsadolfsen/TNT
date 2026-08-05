@@ -1,79 +1,136 @@
+{% doc %}
+  Renders a badge block. Two styles, chosen via `block.settings.style`:
+
+  - "text" (default): a colored uppercase text pill (e.g. "BESTSELLER"),
+    with configurable background/text color and alignment. Can optionally
+    only render while the current variant is in stock, live-updating on
+    variant change. This is the union of the old blocks/badge.liquid and
+    blocks/product-badges.liquid item behavior.
+  - "icon": an icon + label feature badge (e.g. a material property callout
+    like "100% Phthalatfri"), sized by a column-width fraction for grid
+    layouts. This replaces the old blocks/material-badge.liquid.
+{% enddoc %}
+
+{%- liquid
+  assign badge_style = block.settings.style | default: 'text'
+
+  assign cols_mb = settings.grid_cols_mobile | default: 2 | plus: 0.0
+  assign cols_tb = settings.grid_cols_tablet | default: 2 | plus: 0.0
+  assign cols_lg = settings.grid_cols_desktop | default: 3 | plus: 0.0
+
+  case block.settings.width_cols
+    when '1'
+      assign fraction = 0.25
+    when '2'
+      assign fraction = 0.50
+    when '3'
+      assign fraction = 0.75
+    else
+      assign fraction = 1.00
+  endcase
+
+  assign span_mb = cols_mb | times: fraction | round | at_least: 1
+  assign span_tb = cols_tb | times: fraction | round | at_least: 1
+  assign span_lg = cols_lg | times: fraction | round | at_least: 1
+
+  assign current_variant = product.selected_or_first_available_variant
+  assign show_badge = true
+  if block.settings.only_if_in_stock
+    if current_variant == nil or current_variant.available == false
+      assign show_badge = false
+    endif
+  endif
+-%}
+
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
     --block-padding-top: {{ block.settings.padding_top | default: 0 }}px;
     --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
     --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
     --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
-    text-align: {{ block.settings.alignment | default: 'left' }};
+    {%- if badge_style == 'text' -%}
+      text-align: {{ block.settings.alignment | default: 'left' }};
+    {%- endif -%}
   }
+
+  {%- if badge_style == 'icon' -%}
+    #shopify-block-{{ block.id }}.shopify-block {
+      --span-mb: {{ span_mb }};
+      --span-tb: {{ span_tb }};
+      --span-lg: {{ span_lg }};
+      --span-mobile: {{ span_mb }};
+      --span-expanded: {{ span_tb }};
+      --span-large: {{ span_lg }};
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
-{%- assign current_variant = product.selected_or_first_available_variant -%}
-{%- assign show_badge = true -%}
-{%- if block.settings.only_if_in_stock -%}
-  {%- if current_variant == nil or current_variant.available == false -%}
-    {%- assign show_badge = false -%}
+{%- if badge_style == 'icon' -%}
+  <div class="flex flex-col items-center text-center space-y-2" data-badge-style="icon" {{ block.shopify_attributes }}>
+    {%- if block.settings.icon != blank -%}
+      {% render 'icon', name: block.settings.icon, class: 'text-2xl text-primary/70' %}
+    {%- endif -%}
+    {%- if block.settings.title != blank -%}
+      <span class="text-xs font-bold text-primary/80 leading-tight uppercase tracking-wider">{{ block.settings.title }}</span>
+    {%- endif -%}
+  </div>
+{%- else -%}
+  <span
+    id="badge-container-{{ block.id }}"
+    class="inline-block text-[11px] font-bold px-1.5 py-0.5 rounded-md tracking-widest border uppercase"
+    style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; border-color: {{ block.settings.background_color }};{% unless show_badge %} display: none;{% endunless %}"
+    data-badge-style="text"
+    {{ block.shopify_attributes }}
+  >
+    {{ block.settings.text | default: "BESTSELLER" }}
+  </span>
+
+  {%- if block.settings.only_if_in_stock and product -%}
+  <script id="product-badge-variant-data-{{ block.id }}" type="application/json">
+    {
+      "variants": [
+        {%- for variant in product.variants -%}
+          {
+            "id": {{ variant.id }},
+            "available": {{ variant.available | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const dataEl = document.getElementById("product-badge-variant-data-{{ block.id }}");
+      const containerEl = document.getElementById("badge-container-{{ block.id }}");
+      if (!dataEl || !containerEl) return;
+
+      let badgeData = { variants: [] };
+      try {
+        badgeData = JSON.parse(dataEl.textContent);
+      } catch (e) {
+        console.error("Failed to parse stock badge data", e);
+      }
+
+      function updateBadge(variantId) {
+        const variant = badgeData.variants.find(v => v.id === parseInt(variantId));
+        if (!variant) return;
+
+        if (variant.available) {
+          containerEl.style.display = "";
+        } else {
+          containerEl.style.display = "none";
+        }
+      }
+
+      document.addEventListener("variant-changed", (e) => {
+        if (e.detail && e.detail.variantId) {
+          updateBadge(e.detail.variantId);
+        }
+      });
+    });
+  </script>
   {%- endif -%}
 {%- endif -%}
-
-<span 
-  id="badge-container-{{ block.id }}"
-  class="inline-block text-[11px] font-bold px-1.5 py-0.5 rounded-md tracking-widest border uppercase"
-  style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; border-color: {{ block.settings.background_color }};{% unless show_badge %} display: none;{% endunless %}" 
-  {{ block.shopify_attributes }}
->
-  {{ block.settings.text | default: "BESTSELLER" }}
-</span>
-
-{%- if block.settings.only_if_in_stock and product -%}
-<script id="product-badge-variant-data-{{ block.id }}" type="application/json">
-  {
-    "variants": [
-      {%- for variant in product.variants -%}
-        {
-          "id": {{ variant.id }},
-          "available": {{ variant.available | json }}
-        }{%- unless forloop.last -%},{%- endunless -%}
-      {%- endfor -%}
-    ]
-  }
-</script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const dataEl = document.getElementById("product-badge-variant-data-{{ block.id }}");
-    const containerEl = document.getElementById("badge-container-{{ block.id }}");
-    if (!dataEl || !containerEl) return;
-
-    let badgeData = { variants: [] };
-    try {
-      badgeData = JSON.parse(dataEl.textContent);
-    } catch (e) {
-      console.error("Failed to parse stock badge data", e);
-    }
-
-    function updateBadge(variantId) {
-      const variant = badgeData.variants.find(v => v.id === parseInt(variantId));
-      if (!variant) return;
-
-      if (variant.available) {
-        containerEl.style.display = "";
-      } else {
-        containerEl.style.display = "none";
-      }
-    }
-
-    document.addEventListener("variant-changed", (e) => {
-      if (e.detail && e.detail.variantId) {
-        updateBadge(e.detail.variantId);
-      }
-    });
-  });
-</script>
-{%- endif -%}
-
-<script>
-  console.log("Antigravity: Badge block rendered (ID: {{ block.id }})");
-</script>
 
 {% schema %}
 {
@@ -81,34 +138,84 @@
   "class": "shopify-block-badge",
   "settings": [
     {
+      "type": "select",
+      "id": "style",
+      "label": "Badge-type",
+      "options": [
+        { "value": "text", "label": "Tekst (farvet pille)" },
+        { "value": "icon", "label": "Ikon + label" }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "header",
+      "content": "Tekst-badge indstillinger"
+    },
+    {
       "type": "text",
       "id": "text",
       "label": "Badge Tekst",
-      "default": "BESTSELLER"
+      "default": "BESTSELLER",
+      "visible_if": "{{ block.settings.style == 'text' }}"
     },
     {
       "type": "checkbox",
       "id": "only_if_in_stock",
       "label": "Vis kun hvis varen er på lager",
-      "default": false
+      "default": false,
+      "visible_if": "{{ block.settings.style == 'text' }}"
     },
     {
       "type": "text_alignment",
       "id": "alignment",
       "label": "Justering",
-      "default": "left"
+      "default": "left",
+      "visible_if": "{{ block.settings.style == 'text' }}"
     },
     {
       "type": "color",
       "id": "background_color",
       "label": "Baggrundsfarve",
-      "default": "#000000"
+      "default": "#000000",
+      "visible_if": "{{ block.settings.style == 'text' }}"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Tekstfarve",
-      "default": "#ffffff"
+      "default": "#ffffff",
+      "visible_if": "{{ block.settings.style == 'text' }}"
+    },
+    {
+      "type": "header",
+      "content": "Ikon-badge indstillinger"
+    },
+    {
+      "type": "text",
+      "id": "icon",
+      "label": "Material Symbol Ikon",
+      "default": "eco",
+      "visible_if": "{{ block.settings.style == 'icon' }}"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titel",
+      "default": "100% Phthalatfri",
+      "visible_if": "{{ block.settings.style == 'icon' }}"
+    },
+    {
+      "type": "select",
+      "id": "width_cols",
+      "label": "t:labels.width_cols",
+      "options": [
+        { "value": "1", "label": "t:options.width_cols.1" },
+        { "value": "2", "label": "t:options.width_cols.2" },
+        { "value": "3", "label": "t:options.width_cols.3" },
+        { "value": "4", "label": "t:options.width_cols.4" }
+      ],
+      "default": "4",
+      "visible_if": "{{ block.settings.style == 'icon' }}"
     },
     {
       "type": "header",
@@ -153,4 +260,3 @@
   ]
 }
 {% endschema %}
-

@@ -1,7 +1,5 @@
-<div class="flex items-center gap-2.5 text-primary font-medium" {{ block.shopify_attributes }}>
-  <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-  <span>{{ block.settings.text }}</span>
-</div>
+{%- capture checkmark_content -%}<span>{{ block.settings.text }}</span>{%- endcapture -%}
+{% render 'trust-checkmark-item', content: checkmark_content, attributes: block.shopify_attributes %}
 
 {% schema %}
 {
