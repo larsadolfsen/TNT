@@ -4,15 +4,27 @@
   When `width`, `height` and `crop` are provided, the image will be rendered
   with a fixed aspect ratio.
 
+  Respects a merchant-set focal point (`image.presentation.focal_point`) when
+  present: the crop is anchored to that point via CSS `object-position`
+  instead of a fixed named crop. When no focal point is set, behavior is
+  unchanged — `crop` (or Shopify's default center crop) is used exactly as
+  before.
+
   Serves as an example of how to use the `image_url` filter and `image_tag` filter
   as well as how you can use LiquidDoc to document your code.
 
   @param {image} image - The image to be rendered
   @param {string} [url] - An optional destination URL for the image
   @param {string} [class] - Optional class to be added to the image wrapper
+  @param {string} [img_class] - Optional class to be added to the rendered `<img>` itself
   @param {number} [width] - The highest resolution width of the image to be rendered
   @param {number} [height] - The highest resolution height of the image to be rendered
-  @param {string} [crop] - The crop position of the image
+  @param {string} [crop] - The crop position of the image. Only used when the image has no merchant-set focal point.
+  @param {boolean} [fill] - When true, the image and its wrapper fill 100% of their parent's box (width + height) with `object-fit: cover`, via inline style. Needed for callers that crop into a parent-controlled aspect ratio (e.g. a `aspect-ratio` box) — the base `.image`/`.image > img` rules in `assets/input.css` are unlayered and always win over `w-full`/`h-full` utility classes, so this must be inline style, not a class.
+  @param {string} [alt] - Alt text override; defaults to the image's own alt text when omitted
+  @param {string} [loading] - The `loading` attribute value (e.g. 'lazy', 'eager')
+  @param {string} [widths] - Comma-separated list of widths for the responsive `srcset`
+  @param {string} [sizes] - The `sizes` attribute for the responsive `srcset`
 
   @example
   {% render 'image', image: product.featured_image %}
@@ -25,6 +37,7 @@
     height: 800,
     crop: 'center',
   %}
+  {% render 'image', image: product.featured_image, fill: true, img_class: 'group-hover:scale-105 transition-transform duration-500' %}
 {% enddoc %}
 
 {% liquid
@@ -37,14 +50,47 @@
   else
     assign wrapper = 'div'
   endif
+
+  assign has_focal_point = false
+  if image.presentation.focal_point.x != blank and image.presentation.focal_point.y != blank
+    assign has_focal_point = true
+    assign focal_x = image.presentation.focal_point.x
+    assign focal_y = image.presentation.focal_point.y
+  endif
+
+  assign image_style = ''
+  if fill
+    assign image_style = 'width: 100%; height: 100%; object-fit: cover;'
+  endif
+
+  if has_focal_point
+    assign image_crop = nil
+    unless fill
+      assign image_style = 'object-fit: cover;'
+    endunless
+    assign image_style = image_style | append: ' object-position: ' | append: focal_x | append: '% ' | append: focal_y | append: '%;'
+  else
+    assign image_crop = crop
+  endif
 %}
 
 <{{ wrapper }}
   class="image {{ class }}"
+  {% if fill %}
+    style="height: 100%;"
+  {% endif %}
   {% if url %}
     href="{{ url }}"
   {% endif %}
 >
-  {{ image | image_url: width: width, height: height, crop: crop | image_tag }}
+  {{ image
+    | image_url: width: width, height: height, crop: image_crop
+    | image_tag:
+        class: img_class,
+        style: image_style,
+        alt: alt,
+        loading: loading,
+        widths: widths,
+        sizes: sizes
+  }}
 </{{ wrapper }}>
-

@@ -89,18 +89,21 @@
       <a href="{{ product.url }}" class="block w-full h-full">
         {%- if product.featured_image != blank -%}
           {%- capture img_classes -%}
-            product-card-image w-full h-full object-cover{% if is_minimal %} group-hover:scale-103 transition-transform duration-1000 ease-out{% else %} group-hover:scale-105 transition-transform duration-500{% endif %}
+            product-card-image{% if is_minimal %} group-hover:scale-103 transition-transform duration-1000 ease-out{% else %} group-hover:scale-105 transition-transform duration-500{% endif %}
           {%- endcapture -%}
-          {{ product.featured_image | image_url: width: 480 | image_tag: 
+          {%- render 'image',
+            image: product.featured_image,
+            fill: true,
+            img_class: img_classes,
+            width: 480,
             widths: '180, 360, 480, 720',
             sizes: '(max-width: 640px) 180px, 320px',
-            class: img_classes,
             alt: product.title,
             loading: 'lazy'
-          }}
+          -%}
         {%- else -%}
           <div class="w-full h-full flex items-center justify-center bg-outline-variant text-primary/85">
-            <span class="material-symbols-outlined text-4xl">image</span>
+            {%- render 'icon', name: 'image', class: 'text-4xl' -%}
           </div>
         {%- endif -%}
       </a>
