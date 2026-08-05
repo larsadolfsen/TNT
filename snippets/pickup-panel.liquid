@@ -1,0 +1,45 @@
+{% doc %}
+  Renders the expanded pickup-availability panel: one row per location where
+  a variant's `store_availabilities` shows stock, with address, ready-time
+  copy, and (optionally) hours. Disclosed by the trigger button in
+  blocks/product-pickup-availability.liquid.
+
+  @param {string} panel_id - required. Element id; must match the trigger button's `aria-controls`.
+  @param {object} available_locations - required. Array of `store_availability` objects where `.available` is true.
+  @param {boolean} [show_hours] - Whether to render a location's hours line, when available via a `custom.hours` metafield on the location (not part of Shopify's core location object — degrades to not rendering when absent).
+
+  @example
+  {% render 'pickup-panel', panel_id: panel_id, available_locations: available_locations, show_hours: block.settings.show_hours %}
+{% enddoc %}
+
+<div id="{{ panel_id }}" class="pickup-panel mt-2 rounded-2xl border border-outline-variant bg-card-light divide-y divide-outline-variant" hidden>
+  {%- for availability in available_locations -%}
+    {%- liquid
+      assign addr = availability.location.address
+    -%}
+    {%- capture address_line -%}
+      {{- addr.address1 -}}
+      {%- if addr.address2 != blank %}, {{ addr.address2 }}{% endif -%}
+      {%- if addr.city != blank %}, {{ addr.city }}{% endif -%}
+      {%- if addr.zip != blank %} {{ addr.zip }}{% endif -%}
+    {%- endcapture -%}
+    {%- assign address_line = address_line | strip -%}
+    <div class="flex items-start gap-3 p-4">
+      {% render 'icon', name: 'check_circle', class: 'text-[18px] text-primary/70 mt-0.5' %}
+      <div class="flex-1 flex flex-col gap-1 min-w-0">
+        <span class="text-sm font-bold text-primary">{{ availability.location.name }}</span>
+        {%- if address_line != blank -%}
+          <span class="text-sm text-primary/70">{{ address_line }}</span>
+        {%- endif -%}
+        {%- if availability.pick_up_time != blank -%}
+          <span class="text-xs text-primary/60">{{ availability.pick_up_time }}</span>
+        {%- endif -%}
+        {%- if show_hours and availability.location.metafields.custom.hours != blank -%}
+          <span class="flex items-center gap-1.5 mt-1 text-xs text-primary/60">
+            {% render 'icon', name: 'schedule', class: 'text-[14px] text-primary/45' %}{{ availability.location.metafields.custom.hours }}
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
+</div>

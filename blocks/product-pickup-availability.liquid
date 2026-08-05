@@ -1,0 +1,155 @@
+{% comment %}
+  Product Pickup Availability (Surface 8)
+  Shows whether the selected variant is available for local pickup, using
+  Shopify's native `variant.store_availabilities`. Renders nothing when local
+  pickup isn't enabled anywhere on the shop.
+
+  Every variant's row/panel is pre-rendered and toggled via the shared
+  "variant-changed" custom event already dispatched by
+  blocks/product-buy-buttons.liquid and blocks/product-variant-picker.liquid,
+  matching this theme's existing pattern for variant-dependent content
+  (see blocks/product-price.liquid) rather than fetching over the network.
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign has_any_pickup = false
+  for variant in product.variants
+    if variant.store_availabilities.size > 0
+      assign has_any_pickup = true
+      break
+    endif
+  endfor
+-%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    --block-padding-top: {{ block.settings.padding_top | default: 12 }}px;
+    --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
+    --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
+    --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
+  }
+{%- endstyle -%}
+
+{%- if has_any_pickup -%}
+  <div id="pickup-availability-{{ block.id }}" {{ block.shopify_attributes }}>
+    {%- for variant in product.variants -%}
+      {%- assign available_locations = variant.store_availabilities | where: 'available' -%}
+      {%- assign panel_id = 'pickup-panel-' | append: block.id | append: '-' | append: variant.id -%}
+      <div class="pickup-variant-state" data-variant-id="{{ variant.id }}" {% unless variant.id == current_variant.id %}hidden{% endunless %}>
+        {%- if available_locations.size > 0 -%}
+          <button
+            type="button"
+            class="pickup-row-trigger flex items-center gap-2 h-12 px-3 rounded-2xl border border-outline-variant bg-card-light w-full text-left cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--color-primary)]"
+            aria-expanded="false"
+            aria-controls="{{ panel_id }}"
+          >
+            {% render 'icon', name: 'storefront', class: 'text-[20px] text-primary/70' %}
+            <span class="text-sm font-medium text-primary flex-1 truncate">
+              {%- if available_locations.size == 1 -%}
+                {{ 'pickup.available_single' | t: location: available_locations.first.location.name }}
+              {%- else -%}
+                {{ 'pickup.available_multiple' | t: count: available_locations.size }}
+              {%- endif -%}
+            </span>
+            {% render 'icon', name: 'expand_more', class: 'pickup-chevron text-[20px] text-primary/60 transition-transform duration-200' %}
+          </button>
+          {% render 'pickup-panel', panel_id: panel_id, available_locations: available_locations, show_hours: block.settings.show_hours %}
+        {%- else -%}
+          <div class="flex items-center gap-2 h-12 px-3 rounded-2xl border border-outline-variant bg-card-light w-full">
+            {% render 'icon', name: 'error', class: 'text-[20px] text-primary/60' %}
+            <span class="text-sm font-medium text-primary flex-1 truncate">{{ block.settings.unavailable_text }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <script>
+    (() => {
+      const container = document.getElementById("pickup-availability-{{ block.id }}");
+      if (!container) return;
+
+      container.addEventListener("click", (e) => {
+        const trigger = e.target.closest(".pickup-row-trigger");
+        if (!trigger || !container.contains(trigger)) return;
+
+        const panel = document.getElementById(trigger.getAttribute("aria-controls"));
+        if (!panel) return;
+
+        const willOpen = trigger.getAttribute("aria-expanded") !== "true";
+        trigger.setAttribute("aria-expanded", String(willOpen));
+        panel.hidden = !willOpen;
+        trigger.classList.toggle("bg-card-high", willOpen);
+        trigger.classList.toggle("bg-card-light", !willOpen);
+
+        const chevron = trigger.querySelector(".pickup-chevron");
+        if (chevron) chevron.style.transform = willOpen ? "rotate(180deg)" : "";
+      });
+
+      document.addEventListener("variant-changed", (e) => {
+        if (!e.detail || !e.detail.variantId) return;
+        container.querySelectorAll(".pickup-variant-state").forEach((el) => {
+          el.hidden = el.dataset.variantId !== String(e.detail.variantId);
+        });
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Pickup Availability",
+  "class": "shopify-block-product-pickup-availability",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_hours",
+      "label": "Vis butikkens åbningstider i den udvidede visning",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "unavailable_text",
+      "label": "Tekst når ingen lokation har varen på lager",
+      "default": "Afhentning ikke mulig for denne vare"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_sides",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Afstand i siderne",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Pickup Availability",
+      "category": "t:general.product_category"
+    }
+  ]
+}
+{% endschema %}

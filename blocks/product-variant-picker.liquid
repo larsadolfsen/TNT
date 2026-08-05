@@ -58,7 +58,7 @@
                     data-option-value="{{ value | escape }}"
                     title="{{ value | escape }}"
                   >
-                    <img src="{{ swatch_img | image_url: width: 120 }}" alt="{{ value | escape }}" class="w-full h-full object-cover rounded-[14px]" />
+                    <img src="{{ swatch_img | image_url: width: 120 }}" alt="{{ value | escape }}" class="w-full h-full object-cover rounded-[14px]" width="120" height="120" />
                   </button>
                 {%- else -%}
                   <button 

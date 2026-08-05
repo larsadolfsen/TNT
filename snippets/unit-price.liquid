@@ -1,33 +1,37 @@
 {% doc %}
-  Renders a Shopify-native unit price (e.g. "40,00 kr / 100 g").
-  Single source of truth for unit-price formatting (design spec: Surface 12).
+  Renders the native "$X.XX / unit" unit-price line (Surface 12), built from
+  Shopify's `unit_price` / `unit_price_measurement` fields. Works with any
+  object exposing those two fields — a product variant or a cart line item.
 
-  Accepts:
-  - variant: {Object} variant or cart line item exposing unit_price /
-    unit_price_measurement (required)
-  - size: {String} 'xs' (11px floor) | 'sm' (12px) | 'base' (14px), default 'sm'
+  Renders nothing when the object has no unit-price data, or when the
+  theme-wide `settings.show_unit_pricing` toggle is off (defaults to on).
 
-  Renders nothing when the variant has no unit_price_measurement or the
-  global setting show_unit_pricing is disabled.
+  @param {object} variant - required. A variant or cart line item exposing `unit_price` and `unit_price_measurement`.
+  @param {string} [size] - 'xs' (11px, dense contexts e.g. predictive search) | 'sm' (12px, default — collection card, cart line) | 'base' (14px — product page, beside the hero price).
 
-  Usage:
+  @example
   {% render 'unit-price', variant: current_variant, size: 'base' %}
+  {% render 'unit-price', variant: item, size: 'sm' %}
 {% enddoc %}
 
-{%- if variant.unit_price_measurement != blank and settings.show_unit_pricing != false -%}
-  {%- liquid
-    assign size_class = 'text-xs'
-    if size == 'xs'
-      assign size_class = 'text-[11px]'
-    elsif size == 'base'
-      assign size_class = 'text-sm'
-    endif
-  -%}
-  <span class="{{ size_class }} text-primary/70 whitespace-nowrap">
-    {{- variant.unit_price | money }} /
-    {%- if variant.unit_price_measurement.reference_value != 1 -%}
-      {{- ' ' -}}{{ variant.unit_price_measurement.reference_value }}
-    {%- endif -%}
-    {{- ' ' -}}{{ variant.unit_price_measurement.reference_unit -}}
-  </span>
+{%- liquid
+  assign show_unit_pricing = settings.show_unit_pricing | default: true
+  assign measurement = variant.unit_price_measurement
+-%}
+{%- if measurement != blank and show_unit_pricing -%}
+  {%- case size -%}
+    {%- when 'xs' -%}
+      {%- assign unit_price_size_class = 'text-[11px]' -%}
+    {%- when 'base' -%}
+      {%- assign unit_price_size_class = 'text-sm' -%}
+    {%- else -%}
+      {%- assign unit_price_size_class = 'text-xs' -%}
+  {%- endcase -%}
+
+  {%- assign unit_suffix = measurement.reference_unit -%}
+  {%- if measurement.reference_value != 1 -%}
+    {%- assign unit_suffix = measurement.reference_value | append: ' ' | append: measurement.reference_unit -%}
+  {%- endif -%}
+
+  <span class="unit-price {{ unit_price_size_class }} text-primary/70">{{ variant.unit_price | money }} / {{ unit_suffix }}</span>
 {%- endif -%}

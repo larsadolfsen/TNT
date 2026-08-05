@@ -36,21 +36,29 @@
 {%- endstyle -%}
 
 <div class="flex flex-col gap-4" {{ block.shopify_attributes }}>
-  
-  {%- if product.variants.size <= 1 -%}
-    <input type="hidden" name="id" id="product-variant-id" value="{{ product.selected_or_first_available_variant.id }}">
-  {%- endif -%}
+  {%- form 'product', product, id: 'product-form-buy-buttons' -%}
+  {%- comment -%}
+    Always render an "id" field inside the form so `{{ form | payment_button }}`
+    (Surface 5) and `{{ form | payment_terms }}` reference a real variant even
+    on multi-variant products. When a product-variant-picker block is also on
+    the page, its own hidden input renders earlier in the DOM and remains the
+    one this block's own JS reads via `querySelector('input[name="id"]')`
+    (first match wins) — this field is kept in sync with it via the
+    variant-changed event below, purely so Shopify's own dynamic-checkout
+    script (which watches this form's field) stays current.
+  {%- endcomment -%}
+  <input type="hidden" name="id" id="product-variant-id" value="{{ product.selected_or_first_available_variant.id }}">
 
     <!-- Right: Button and Payment Badges -->
     <div class="flex flex-col items-center gap-3 w-full">
       <!-- Quantity Selector (Only visible for simple products when no customizer is present) -->
       <div id="buy-buttons-quantity-container" class="w-full flex items-center bg-card-high rounded-full border border-outline-variant overflow-hidden mb-1">
         <button type="button" id="btn-buy-qty-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer border-r border-outline-variant">
-          <span class="material-symbols-outlined text-[16px] select-none" style="font-size: 16px;">remove</span>
+          {% render 'icon', name: 'remove', class: 'text-[16px] select-none', style: 'font-size: 16px;' %}
         </button>
-        <input id="input-buy-qty" class="w-full h-12 text-center border-none focus:ring-0 text-[16px] font-bold text-primary bg-transparent focus:outline-none" type="text" inputmode="numeric" pattern="[0-9]*" value="1" style="border: none; padding: 0; margin: 0; box-shadow: none; outline: none; text-align: center; font-size: 16px; font-weight: 700; color: var(--color-primary); min-height: unset; line-height: 1;" />
+        <input id="input-buy-qty" name="quantity" class="w-full h-12 text-center border-none focus:ring-0 text-[16px] font-bold text-primary bg-transparent focus:outline-none" type="text" inputmode="numeric" pattern="[0-9]*" value="1" style="border: none; padding: 0; margin: 0; box-shadow: none; outline: none; text-align: center; font-size: 16px; font-weight: 700; color: var(--color-primary); min-height: unset; line-height: 1;" />
         <button type="button" id="btn-buy-qty-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer border-l border-outline-variant">
-          <span class="material-symbols-outlined text-[16px] select-none" style="font-size: 16px;">add</span>
+          {% render 'icon', name: 'add', class: 'text-[16px] select-none', style: 'font-size: 16px;' %}
         </button>
       </div>
 
@@ -58,13 +66,23 @@
         <span>{{ text_before_price }}</span>
         <span id="btn-price-display" class="ml-1">{{ product.selected_or_first_available_variant.price | money }}</span>
       </button>
-      
+
+      {%- if block.settings.show_dynamic_checkout -%}
+        <!-- Accelerated checkout (Shop Pay / PayPal / etc.) — Shopify-rendered, do not restyle -->
+        <div class="checkout-divider flex items-center gap-3 my-1 w-full">
+          <span class="flex-1 border-t border-outline-variant"></span>
+          <span class="text-xs font-bold uppercase tracking-widest text-primary/50 shrink-0">{{ 'checkout.or_divider' | t }}</span>
+          <span class="flex-1 border-t border-outline-variant"></span>
+        </div>
+        <div class="dynamic-checkout-wrapper w-full">{{ form | payment_button }}</div>
+      {%- endif -%}
+
       <p class="text-xs text-primary/80 text-center mt-3 font-medium leading-relaxed max-w-[90%]">
         {{ block.settings.sticky_info_text | default: "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug." }}
       </p>
-      
 
-      
+
+
       <!-- Payment Badges -->
       {%- if block.settings.custom_payment_icons_image != blank -%}
         <div class="flex justify-center items-center mt-1 w-full">
@@ -85,7 +103,20 @@
         </div>
       {%- endif -%}
   </div>
+  {%- endform -%}
 </div>
+
+<style>
+  /* Surface 5: accelerated checkout — hide the "or" divider and its container
+     together when Shopify renders no dynamic checkout button (no payment
+     methods configured for this shop/variant). */
+  .dynamic-checkout-wrapper:empty {
+    display: none;
+  }
+  .checkout-divider:has(+ .dynamic-checkout-wrapper:empty) {
+    display: none;
+  }
+</style>
 
 <script id="simple-variant-data" type="application/json">
   [
@@ -256,6 +287,18 @@
       if (e.target && (e.target.name === "id" || e.target.classList.contains("single-option-selector"))) {
         if (hasCustomizer) return;
         setTimeout(recalculateBuyPrice, 50); // slight delay to allow other scripts to set variant value
+      }
+    });
+
+    // Keep this form's own "id" field in sync with the active variant so
+    // Shopify's dynamic checkout button (Surface 5) and Shop Pay Installments
+    // messaging (Surface 11) reflect the currently selected variant even when
+    // a separate product-variant-picker block is the one the shopper interacts with.
+    const formVariantIdInput = document.getElementById("product-variant-id");
+    document.addEventListener("variant-changed", (e) => {
+      if (formVariantIdInput && e.detail && e.detail.variantId) {
+        formVariantIdInput.value = e.detail.variantId;
+        formVariantIdInput.dispatchEvent(new Event("change", { bubbles: true }));
       }
     });
 
@@ -695,6 +738,16 @@
       "unit": "px",
       "label": "Afstand i siderne",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Hurtig betaling"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Vis hurtige betalingsknapper (Shop Pay / PayPal m.fl.) under Læg i kurv",
+      "default": true
     },
     {
       "type": "header",

@@ -68,6 +68,14 @@
   },
   "checkout": {
     "or_divider": "or"
+  },
+  "pickup": {
+    "available_single": "Available for pickup at {{ location }}",
+    "available_multiple": "Available for pickup at {{ count }} locations"
+  },
+  "recommendations": {
+    "related_eyebrow": "Related products",
+    "complementary_eyebrow": "Complete the look"
   }
 }
 
