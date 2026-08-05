@@ -117,6 +117,21 @@
     ]
   },
   {
+    "name": "Kontakt / Contact",
+    "settings": [
+      {
+        "type": "text",
+        "id": "contact_phone",
+        "label": "Telefon / Phone"
+      },
+      {
+        "type": "text",
+        "id": "contact_email",
+        "label": "Email"
+      }
+    ]
+  },
+  {
     "name": "Lys Tema / Light Theme",
     "settings": [
       {
