@@ -64,6 +64,7 @@
                   "name": "Search Bar",
                   "settings": {
                     "max_width": "700px",
+                    "predictive_search": true,
                     "start_hidden": false,
                     "hide_on_mobile": true,
                     "hide_on_tablet": false,
@@ -75,6 +76,7 @@
                   "type": "header-search-icon",
                   "name": "Search Icon",
                   "settings": {
+                    "predictive_search": true,
                     "hide_on_mobile": false,
                     "hide_on_tablet": true,
                     "hide_on_desktop": true
