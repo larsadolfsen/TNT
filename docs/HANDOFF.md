@@ -43,7 +43,7 @@ Fixed today:
   `flex-shrink: 0`, so the row overflowed and swallowed whatever sat last.
   Latent since v1.0.47; adding the account block in Wave 2 exposed it.
 
-## In flight when this was written
+## Fixed late in the session — verify in a browser
 
 **Filters do not evaluate inside `{% render %}` keyword arguments.** The
 literal unfiltered string is passed. Confirmed from live rendered HTML, not
@@ -60,9 +60,17 @@ It causes at least three visible failures:
 - ~16 call sites total across product-card, localization-picker,
   account-panel, contact-form, trust-countdown, product-description.
 
-An agent was fixing these. **Check `git log` and any
-`.claude/worktrees/agent-*` branches** — if the work is uncommitted or
-partial, finish it. Detection grep:
+**FIXED and merged** (v1.0.100) across 9 files — newsletter-form,
+header-search-icon, product-card, localization-picker, account-panel,
+product-description, trust-countdown, plus 5 further call sites found in
+contact-form that weren't in the original list. `input.liquid`'s doc example
+was rewritten too, since it was teaching the broken pattern. Detection grep
+now returns nothing; theme-check went 8 errors / 34 warnings → 8 / 26.
+
+**Not yet verified in a browser** — confirm the newsletter button reads
+Danish rather than `newsletter.submit`, the error message is hidden until
+validation fails, and predictive search returns results. Detection grep, to
+re-run after any future work:
 
 ```
 grep -rn "render '" --include="*.liquid" sections/ blocks/ snippets/ layout/ \
