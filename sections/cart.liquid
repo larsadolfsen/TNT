@@ -71,6 +71,16 @@
                 </div>
               {%- endif -%}
             </div>
+            {%- if item.selling_plan_allocation -%}
+              <div class="flex items-center gap-1.5 mt-1 text-xs text-primary/70">
+                {%- render 'icon', name: 'autorenew', class: 'text-[14px]' -%}
+                <span class="font-medium text-primary/85">{{ item.selling_plan_allocation.selling_plan.name }}</span>
+                {%- if item.selling_plan_allocation.compare_at_price > item.selling_plan_allocation.price -%}
+                  <span class="text-primary/50 line-through">{{ item.selling_plan_allocation.compare_at_price | money }}</span>
+                {%- endif -%}
+                <span class="font-semibold text-primary">{{ item.selling_plan_allocation.price | money }}</span>
+              </div>
+            {%- endif -%}
             {%- render 'unit-price', variant: item, size: 'sm' -%}
             {%- if item.line_level_discount_allocations.size > 0 -%}
               <div class="flex items-baseline gap-2 mt-1">
@@ -96,6 +106,16 @@
               {%- if item.variant.title != 'Default Title' -%}
                 <p class="text-xs sm:text-sm text-primary/85 truncate">{{ item.variant.title }}</p>
               {%- endif -%}
+            {%- endif -%}
+            {%- if item.selling_plan_allocation -%}
+              <div class="flex items-center gap-1.5 mt-1 text-xs text-primary/70">
+                {%- render 'icon', name: 'autorenew', class: 'text-[14px]' -%}
+                <span class="font-medium text-primary/85">{{ item.selling_plan_allocation.selling_plan.name }}</span>
+                {%- if item.selling_plan_allocation.compare_at_price > item.selling_plan_allocation.price -%}
+                  <span class="text-primary/50 line-through">{{ item.selling_plan_allocation.compare_at_price | money }}</span>
+                {%- endif -%}
+                <span class="font-semibold text-primary">{{ item.selling_plan_allocation.price | money }}</span>
+              </div>
             {%- endif -%}
             {%- render 'unit-price', variant: item, size: 'sm' -%}
             {%- if item.line_level_discount_allocations.size > 0 -%}
