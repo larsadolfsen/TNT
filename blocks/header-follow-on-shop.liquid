@@ -1,0 +1,48 @@
+{% doc %}
+  Follow on Shop button (Surface 2), header placement. Off by default —
+  merchants opt in by adding this block to a header group. Renders
+  Shopify's native follow button via the `login_button` filter; its colors,
+  corner radius and typography are fixed by Shopify and must never be
+  restyled or wrapped in anything that clips it.
+
+  Hidden below 840px — a 56px header row has no room for it on mobile. Per
+  docs/missing-surface-designs.md Surface 2, the recommended primary
+  placement is the footer's trust-badge row (a separate track's ownership,
+  out of scope here); this block is the opt-in header alternative only.
+{% enddoc %}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    display: flex;
+    align-items: center;
+    height: 48px;
+  }
+
+  /* Collapse the whole slot if the Shop app / follow-on-shop isn't
+     available so nothing empty sits in the header. */
+  #shopify-block-{{ block.id }}.shopify-block:has(follow-on-shop:not(:defined)) {
+    display: none;
+  }
+
+  @media screen and (max-width: 839px) {
+    #shopify-block-{{ block.id }}.shopify-block {
+      display: none;
+    }
+  }
+{%- endstyle -%}
+
+<div class="flex items-center h-12" {{ block.shopify_attributes }}>
+  {{ shop | login_button: action: 'follow' }}
+</div>
+
+{% schema %}
+{
+  "name": "Follow on Shop",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Follow on Shop"
+    }
+  ]
+}
+{% endschema %}
