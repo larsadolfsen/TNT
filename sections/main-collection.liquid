@@ -33,7 +33,7 @@
       <div class="filter-block border-b border-outline-variant/40 pb-4 last:border-0">
         <div class="flex justify-between items-center cursor-pointer mb-3 mt-0 group/header" onclick="toggleFilterBlock(this)">
           <h3 class="text-sm font-semibold text-primary m-0 select-none font-sans">{{ filter.label }}</h3>
-          <span class="material-symbols-outlined text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors">remove</span>
+          {%- render 'icon', name: 'remove', class: 'text-sm select-none toggle-icon text-primary/60 group-hover/header:text-primary transition-colors' -%}
         </div>
         
         <div class="filter-content space-y-2">
@@ -46,7 +46,7 @@
                     <label class="relative group cursor-pointer filter-label select-none flex items-center justify-center" title="{{ value.label }}" data-color-name="{{ value.label }}">
                       <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} class="filter-checkbox sr-only peer"/>
                       <div class="swatch-circle w-8 h-8 rounded-full border border-outline-variant/65 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-[var(--color-accent)]/80 transition-all flex items-center justify-center relative shadow-sm hover:scale-105">
-                        <span class="material-symbols-outlined text-xs font-bold text-white hidden peer-checked:block select-none pointer-events-none" style="font-size: 14px;">check</span>
+                        {%- render 'icon', name: 'check', class: 'text-xs font-bold text-white hidden peer-checked:block select-none pointer-events-none', style: 'font-size: 14px;' -%}
                       </div>
                       <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-surface-container-high text-primary text-[10px] font-semibold rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md border border-outline-variant z-20">
                         {{ value.label }} <span class="filter-count text-[9px] text-primary/60 ml-0.5">({{ value.count }})</span>
@@ -115,7 +115,7 @@
     <!-- Desktop Sidebar Filters -->
     <aside class="hidden lg:block {{ filter_class }} bg-transparent sticky top-28 pr-6">
       <div class="flex items-center gap-2 pb-3.5 border-b border-outline-variant mb-5">
-        <span class="material-symbols-outlined text-lg text-primary select-none">filter_list</span>
+        {%- render 'icon', name: 'filter_list', class: 'text-lg text-primary select-none' -%}
         <h2 class="text-base font-semibold text-primary m-0 font-sans">Filtre</h2>
       </div>
 
@@ -137,7 +137,7 @@
           <div class="flex items-center gap-2">
             <div class="relative w-12 h-12 flex-shrink-0">
               <div class="absolute inset-0 flex flex-col items-center justify-center border border-outline-variant rounded-2xl bg-transparent text-primary pointer-events-none">
-                <span class="material-symbols-outlined text-lg">sort</span>
+                {%- render 'icon', name: 'sort', class: 'text-lg' -%}
                 <span class="text-[9px] font-semibold mt-0.5 leading-none">Sorter</span>
               </div>
               <select id="sort-select" onchange="filterProducts()" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer m-0 p-0 appearance-none" aria-label="Sortering">
@@ -150,7 +150,7 @@
 
             <!-- Mobil Filter Knap -->
             <button onclick="toggleMobileFilter(true)" class="lg:hidden flex flex-col items-center justify-center border border-outline-variant rounded-2xl bg-transparent w-12 h-12 text-primary cursor-pointer p-0">
-              <span class="material-symbols-outlined text-lg">filter_list</span>
+              {%- render 'icon', name: 'filter_list', class: 'text-lg' -%}
               <span class="text-[9px] font-semibold mt-0.5 leading-none">Filtrer</span>
             </button>
           </div>
@@ -172,7 +172,7 @@
                 <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-[11px] text-primary font-semibold transition-all">
                   <span>{{ filter.label }}: {{ value.label }}</span>
                   <a href="{{ value.url_to_remove }}" onclick="removeFilterChipUrl(event, this.href)" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern {{ value.label }}">
-                    <span class="material-symbols-outlined text-[10px]">close</span>
+                    {%- render 'icon', name: 'close', class: 'text-[10px]' -%}
                   </a>
                 </div>
               {%- endfor -%}
@@ -186,7 +186,7 @@
                       {%- if filter.max_value.value -%}{{ filter.max_value.value | money }}{%- else -%}Maks{%- endif -%}
                     </span>
                     <a href="{{ filter.url_to_remove }}" onclick="removeFilterChipUrl(event, this.href)" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern prisfilter">
-                      <span class="material-symbols-outlined text-[10px]">close</span>
+                      {%- render 'icon', name: 'close', class: 'text-[10px]' -%}
                     </a>
                   </div>
                 {%- endif -%}
@@ -204,7 +204,7 @@
             {%- render 'product-card', product: product, layout: 'minimal', disable_reviews: section.settings.disable_reviews -%}
           {%- else -%}
             <div class="col-span-full py-12 text-center">
-              <span class="material-symbols-outlined text-4xl text-primary/85 mb-2">sentiment_dissatisfied</span>
+              {%- render 'icon', name: 'sentiment_dissatisfied', class: 'text-4xl text-primary/85 mb-2' -%}
               <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
             </div>
           {%- endfor -%}
@@ -223,7 +223,9 @@
     <div>
       <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
         <span class="font-sans text-xl font-bold text-primary tracking-tight">Filtrer produkter</span>
-        <button onclick="toggleMobileFilter(false)" class="material-symbols-outlined text-2xl text-primary bg-transparent border-0 cursor-pointer" aria-label="Luk filtre">close</button>
+        <button onclick="toggleMobileFilter(false)" class="bg-transparent border-0 cursor-pointer" aria-label="Luk filtre">
+          {%- render 'icon', name: 'close', class: 'text-2xl text-primary' -%}
+        </button>
       </div>
       
       <div id="mobile-filters" class="space-y-6 overflow-y-auto max-h-[calc(100vh-200px)] pr-2 hide-scrollbar">

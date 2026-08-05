@@ -136,6 +136,14 @@
         
         <!-- Rating: 5 Stars -->
         {%- unless disable_reviews -%}
+          {%- liquid
+            assign star_size = 14
+            if is_minimal
+              assign star_size = 12
+            endif
+          -%}
+          {%- capture star_style -%}font-size: {{ star_size }}px; line-height: 1;{%- endcapture -%}
+          {%- capture star_size_class -%}text-[{{ star_size }}px]{%- endcapture -%}
           <div class="flex items-center gap-1 {% if is_minimal %}text-[10px]{% else %}text-xs sm:text-sm{% endif %} text-secondary mt-1">
             <div class="flex text-[#FFB800] gap-0.5">
               {%- assign rating_floor = rating | floor -%}
@@ -143,17 +151,17 @@
               {%- assign rating_floor_plus_1 = rating_floor | plus: 1 -%}
               {%- for i in (1..5) -%}
                 {%- if i <= rating_floor -%}
-                  <span class="material-symbols-outlined {% if is_minimal %}text-[12px]{% else %}text-[14px]{% endif %} filled-star select-none" style="font-size: {% if is_minimal %}12px{% else %}14px{% endif %}; line-height: 1;">star</span>
+                  {%- render 'icon', name: 'star', class: star_size_class | append: ' filled-star select-none', style: star_style -%}
                 {%- elsif i == rating_floor_plus_1 -%}
                   {%- if decimal >= 0.75 -%}
-                    <span class="material-symbols-outlined {% if is_minimal %}text-[12px]{% else %}text-[14px]{% endif %} filled-star select-none" style="font-size: {% if is_minimal %}12px{% else %}14px{% endif %}; line-height: 1;">star</span>
+                    {%- render 'icon', name: 'star', class: star_size_class | append: ' filled-star select-none', style: star_style -%}
                   {%- elsif decimal >= 0.25 -%}
-                    <span class="material-symbols-outlined {% if is_minimal %}text-[12px]{% else %}text-[14px]{% endif %} filled-star select-none" style="font-size: {% if is_minimal %}12px{% else %}14px{% endif %}; line-height: 1;">star_half</span>
+                    {%- render 'icon', name: 'star_half', class: star_size_class | append: ' filled-star select-none', style: star_style -%}
                   {%- else -%}
-                    <span class="material-symbols-outlined {% if is_minimal %}text-[12px]{% else %}text-[14px]{% endif %} text-outline-variant select-none" style="font-size: {% if is_minimal %}12px{% else %}14px{% endif %}; line-height: 1;">star</span>
+                    {%- render 'icon', name: 'star', class: star_size_class | append: ' text-outline-variant select-none', style: star_style -%}
                   {%- endif -%}
                 {%- else -%}
-                  <span class="material-symbols-outlined {% if is_minimal %}text-[12px]{% else %}text-[14px]{% endif %} text-outline-variant select-none" style="font-size: {% if is_minimal %}12px{% else %}14px{% endif %}; line-height: 1;">star</span>
+                  {%- render 'icon', name: 'star', class: star_size_class | append: ' text-outline-variant select-none', style: star_style -%}
                 {%- endif -%}
               {%- endfor -%}
             </div>
