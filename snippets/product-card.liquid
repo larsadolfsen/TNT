@@ -26,24 +26,25 @@
       endif
     endfor
 
-    # Products priced per centimeter, displayed per meter (x100 below).
-    # Gated strictly on the authoritative signals: the "Metervare" product type
-    # and the custom.metervare metafield. Do NOT reintroduce title/tag/option
-    # heuristics here — they previously matched ~30 already-per-meter products
-    # and multiplied their card prices a second time (69,00 kr shown as 6.900,00 kr).
-    assign is_meter_product = false
-    if product.type == 'Metervare' or product.metafields.custom.metervare.value == true or product.metafields.custom.metervare == true
-      assign is_meter_product = true
-    endif
-
     assign variant = product.first_available_variant | default: product.variants[0]
     assign price = product.price
     assign original_price = product.compare_at_price
 
-    if is_meter_product
-      assign price = product.price | times: 100
-      if original_price != blank and original_price > 0
-        assign original_price = product.compare_at_price | times: 100
+    # Headline rule: when the card's variant carries native Shopify unit
+    # pricing (unit_price_measurement), the unit price is the headline price
+    # and the raw per-unit price is suppressed. No product type/tag/metafield
+    # gating — presence of unit pricing is the only signal, so this stays
+    # correct for any merchant who configures it, not just this catalog.
+    assign unit_measurement = variant.unit_price_measurement
+    assign has_unit_price = false
+    if unit_measurement != blank
+      assign has_unit_price = true
+    endif
+
+    if has_unit_price
+      assign unit_suffix = unit_measurement.reference_unit
+      if unit_measurement.reference_value != 1
+        assign unit_suffix = unit_measurement.reference_value | append: ' ' | append: unit_measurement.reference_unit
       endif
     endif
 
@@ -143,37 +144,32 @@
         <!-- Price display (moved directly below rating/title) -->
         <div class="flex flex-col items-start gap-0.5 mt-1">
           {%- unless is_minimal -%}
-            <span class="text-xs sm:text-sm text-primary/85 leading-none">
-              {%- if is_meter_product -%}
-                Pris pr. meter
-              {%- else -%}
-                Pris
-              {%- endif -%}
-            </span>
+            <span class="text-xs sm:text-sm text-primary/85 leading-none">Pris</span>
           {%- endunless -%}
           <div class="flex items-baseline gap-1.5 flex-wrap">
             <span class="{% if is_minimal %}text-xs sm:text-sm md:text-base{% else %}text-sm sm:text-base md:text-lg{% endif %} font-bold text-primary leading-none">
               {%- assign show_fra = false -%}
-              {%- if product.variants.size > 1 -%}
-                {%- if product.price_varies or is_meter_product -%}
-                  {%- assign show_fra = true -%}
-                {%- endif -%}
+              {%- if product.variants.size > 1 and product.price_varies -%}
+                {%- assign show_fra = true -%}
               {%- endif -%}
-              {%- if show_fra -%}Fra {% endif %}{{ price | money }}
+              {%- if show_fra -%}Fra {% endif -%}
+              {%- if has_unit_price -%}{{ variant.unit_price | money }}{%- else -%}{{ price | money }}{%- endif -%}
             </span>
-            {%- if original_price > price -%}
-              <span class="text-[12px] text-primary/70 line-through leading-none">{{ original_price | money }}</span>
-            {%- endif -%}
-            {%- if is_minimal -%}
-              <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">
-                {%- if is_meter_product -%}pr. meter{%- endif -%}
-              </span>
+            {%- unless has_unit_price -%}
+              {%- if original_price > price -%}
+                <span class="text-[12px] text-primary/70 line-through leading-none">{{ original_price | money }}</span>
+              {%- endif -%}
+            {%- endunless -%}
+            {%- if has_unit_price -%}
+              <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">/ {{ unit_suffix }}</span>
             {%- endif -%}
           </div>
-          {%- comment -%} Surface 12: unit price, collection-card context — omitted on minimal-layout cards per spec {%- endcomment -%}
-          {%- unless is_minimal -%}
-            {%- render 'unit-price', variant: variant, size: 'sm' -%}
-          {%- endunless -%}
+          {%- comment -%}
+            Surface 12: unit price sub-line, collection-card context. Omitted
+            entirely here — when has_unit_price is true it's already the
+            headline above (would print the same value twice); when false
+            there's no unit-price data to show.
+          {%- endcomment -%}
         </div>
 
 
