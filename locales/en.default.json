@@ -34,7 +34,20 @@
     "discount": "Discount",
     "total": "Total",
     "shipping_note": "Shipping and taxes calculated at checkout",
-    "original_price_label": "Original price:"
+    "original_price_label": "Original price:",
+    "empty": "Your cart is empty.",
+    "remove_item": "Remove item",
+    "error_add": "Something went wrong while adding to the cart.",
+    "error_quantity": "Couldn't change the quantity. Please try again.",
+    "error_remove": "Couldn't remove the item. Please try again.",
+    "length_label": "Length",
+    "diameter_label": "Diameter",
+    "width_label": "Width",
+    "shape_label": "Shape",
+    "shape_square": "Square",
+    "shape_round": "Round",
+    "shape_oval": "Oval",
+    "price_per_item": "Price per item."
   },
   "customers": {
     "login": {

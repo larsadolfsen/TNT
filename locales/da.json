@@ -34,7 +34,20 @@
     "discount": "Rabat",
     "total": "Total",
     "shipping_note": "Fragt og moms beregnes ved kassen",
-    "original_price_label": "Oprindelig pris:"
+    "original_price_label": "Oprindelig pris:",
+    "empty": "Din indkøbskurv er tom.",
+    "remove_item": "Fjern vare",
+    "error_add": "Der opstod en fejl ved tilføjelse til kurv.",
+    "error_quantity": "Kunne ikke ændre antal. Prøv igen.",
+    "error_remove": "Kunne ikke fjerne varen. Prøv igen.",
+    "length_label": "Længde",
+    "diameter_label": "Diameter",
+    "width_label": "Bredde",
+    "shape_label": "Form",
+    "shape_square": "Firkantet",
+    "shape_round": "Rund",
+    "shape_oval": "Oval",
+    "price_per_item": "Pris pr. dug."
   },
   "customers": {
     "login": {
