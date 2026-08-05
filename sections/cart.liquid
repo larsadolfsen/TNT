@@ -7,7 +7,7 @@
 
 <h1>{{ 'cart.title' | t }}</h1>
 
-<form action="{{ routes.cart_url }}" method="post">
+{% form 'cart', cart %}
   <table>
     {% for item in cart.items %}
       <tr>
@@ -147,11 +147,41 @@
   <button type="submit" name="checkout" class="w-full md:w-96 md:ml-auto py-3.5 px-8 mt-6 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all cursor-pointer border-0 block focus:outline-none">
     {{ 'cart.checkout' | t }}
   </button>
-</form>
+
+  {%- if section.settings.show_dynamic_checkout -%}
+    <div class="checkout-divider flex items-center gap-3 my-1 w-full md:w-96 md:ml-auto mt-3">
+      <span class="flex-1 border-t border-outline-variant"></span>
+      <span class="text-xs font-bold uppercase tracking-widest text-primary/50 shrink-0">{{ 'checkout.or_divider' | t }}</span>
+      <span class="flex-1 border-t border-outline-variant"></span>
+    </div>
+    <div class="dynamic-checkout-wrapper w-full md:w-96 md:ml-auto">
+      {%- if additional_checkout_buttons -%}
+        {{ content_for_additional_checkout_buttons }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+{% endform %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .dynamic-checkout-wrapper:empty {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .checkout-divider:has(+ .dynamic-checkout-wrapper:empty) {
+    display: none;
+  }
+{%- endstyle -%}
 
 {% schema %}
 {
   "name": "t:general.cart",
-  "settings": []
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Vis hurtige betalingsknapper under Gå til kassen",
+      "default": true
+    }
+  ]
 }
 {% endschema %}
