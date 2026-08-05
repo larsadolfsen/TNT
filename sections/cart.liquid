@@ -71,6 +71,7 @@
                 </div>
               {%- endif -%}
             </div>
+            {%- render 'unit-price', variant: item, size: 'sm' -%}
             {%- if item.line_level_discount_allocations.size > 0 -%}
               <div class="flex items-baseline gap-2 mt-1">
                 <span class="text-sm text-primary/50 line-through">
@@ -96,6 +97,7 @@
                 <p class="text-xs sm:text-sm text-primary/85 truncate">{{ item.variant.title }}</p>
               {%- endif -%}
             {%- endif -%}
+            {%- render 'unit-price', variant: item, size: 'sm' -%}
             {%- if item.line_level_discount_allocations.size > 0 -%}
               <div class="flex items-baseline gap-2 mt-1">
                 <span class="text-sm text-primary/50 line-through">
