@@ -53,8 +53,10 @@
     <p class="text-sm text-primary/85 leading-relaxed m-0">{{ 'account.reassurance' | t }}</p>
 
     <div class="flex flex-col gap-2">
-      {% render 'button', label: 'account.sign_in' | t, variant: 'primary', as: 'a', url: routes.account_login_url, class: 'w-full h-12' %}
-      {% render 'button', label: 'account.create_account' | t, variant: 'secondary', as: 'a', url: routes.account_register_url, class: 'w-full h-12' %}
+      {%- assign account_sign_in_label = 'account.sign_in' | t -%}
+      {%- assign account_create_account_label = 'account.create_account' | t -%}
+      {% render 'button', label: account_sign_in_label, variant: 'primary', as: 'a', url: routes.account_login_url, class: 'w-full h-12' %}
+      {% render 'button', label: account_create_account_label, variant: 'secondary', as: 'a', url: routes.account_register_url, class: 'w-full h-12' %}
     </div>
 
     <div class="border-t border-outline-variant pt-4">

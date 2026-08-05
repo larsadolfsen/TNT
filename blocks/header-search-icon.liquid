@@ -112,7 +112,8 @@
       </div>
     </div>
 
-    {% render 'predictive-search-panel', id: 'mobile-' | append: block.id, variant: 'mobile' %}
+    {%- assign predictive_search_mobile_id = 'mobile-' | append: block.id -%}
+    {% render 'predictive-search-panel', id: predictive_search_mobile_id, variant: 'mobile' %}
   </div>
 {%- endif -%}
 

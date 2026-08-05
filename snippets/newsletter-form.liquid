@@ -49,13 +49,16 @@
 
       <div class="flex flex-col gap-2 sm:flex-row sm:max-w-md" data-newsletter-fields>
         <div id="{{ newsletter_email_id }}-wrapper" class="flex-1 [&_label]:sr-only">
-          {% render 'input', id: newsletter_email_id, name: 'contact[email]', type: 'email', label: 'newsletter.email_label' | t, required: true, autocomplete: 'email', class: 'h-12', attributes: 'data-newsletter-email aria-describedby="' | append: newsletter_error_id | append: '"' %}
+          {%- assign newsletter_email_label = 'newsletter.email_label' | t -%}
+          {%- capture newsletter_email_attributes -%}data-newsletter-email aria-describedby="{{ newsletter_error_id }}"{%- endcapture -%}
+          {% render 'input', id: newsletter_email_id, name: 'contact[email]', type: 'email', label: newsletter_email_label, required: true, autocomplete: 'email', class: 'h-12', attributes: newsletter_email_attributes %}
           <p id="{{ newsletter_error_id }}" class="hidden text-xs text-important pl-4 mt-1" data-newsletter-invalid-message>
             {{ 'newsletter.error_invalid' | t }}
           </p>
         </div>
+        {%- assign newsletter_submit_label = 'newsletter.submit' | t -%}
         {% render 'button',
-          label: 'newsletter.submit' | t,
+          label: newsletter_submit_label,
           variant: 'primary',
           as: 'submit',
           class: 'h-12 px-6 shrink-0 w-full sm:w-auto',

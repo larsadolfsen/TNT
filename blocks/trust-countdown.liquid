@@ -29,7 +29,8 @@
     {{ block.settings.text }} <span class="font-bold">12.00</span>{{ block.settings.suffix }}
   </span>
 {%- endcapture -%}
-{% render 'trust-checkmark-item', id: 'trust-countdown-' | append: block.id, content: countdown_content, attributes: countdown_attributes %}
+{%- assign trust_countdown_id = 'trust-countdown-' | append: block.id -%}
+{% render 'trust-checkmark-item', id: trust_countdown_id, content: countdown_content, attributes: countdown_attributes %}
 
 <script>
   (function() {

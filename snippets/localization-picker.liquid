@@ -29,6 +29,10 @@
   if option_count > 8
     assign show_filter = true
   endif
+  assign localization_filter_id = panel_id | append: '-filter'
+  assign localization_search_label = 'localization.search_label' | t
+  assign localization_search_placeholder = 'localization.search_placeholder' | t
+  assign localization_selected_label = 'localization.currently_selected' | t
 -%}
 
 <div
@@ -39,7 +43,7 @@
 >
   {%- if show_filter -%}
     <div class="m-4">
-      {% render 'input', id: panel_id | append: '-filter', type: 'search', label: 'localization.search_label' | t, placeholder: 'localization.search_placeholder' | t, class: 'h-11', attributes: 'data-localization-filter' %}
+      {% render 'input', id: localization_filter_id, type: 'search', label: localization_search_label, placeholder: localization_search_placeholder, class: 'h-11', attributes: 'data-localization-filter' %}
     </div>
   {%- endif -%}
 
@@ -83,7 +87,7 @@
           {%- endif -%}
           <span class="flex-1 text-left">{{ option_name }}</span>
           {%- if is_selected -%}
-            {% render 'icon', name: 'check_circle', class: 'text-primary text-[18px]', label: 'localization.currently_selected' | t %}
+            {% render 'icon', name: 'check_circle', class: 'text-primary text-[18px]', label: localization_selected_label %}
           {%- endif -%}
         </button>
       {%- endfor -%}

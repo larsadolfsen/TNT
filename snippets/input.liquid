@@ -20,9 +20,16 @@
   @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. data-*, pattern, inputmode).
 
   @example
-  {% render 'input', id: 'password-input', type: 'password', label: 'password.password' | t, required: true, autocomplete: 'current-password' %}
+  {% comment %}
+    Filters do not evaluate inside render keyword arguments — precompute
+    filtered values (like translations) into a variable first, then pass
+    the plain variable name.
+  {% endcomment %}
+  {% assign password_label = 'password.password' | t %}
+  {% render 'input', id: 'password-input', type: 'password', label: password_label, required: true, autocomplete: 'current-password' %}
   {% render 'input', id: 'search-input', name: 'q', placeholder: 'Søg...', class: 'border-0 bg-transparent' %}
-  {% render 'input', id: 'contact-body', type: 'textarea', name: 'contact[body]', label: 'contact.message_label' | t, required: true, rows: 5 %}
+  {% assign contact_body_label = 'contact.message_label' | t %}
+  {% render 'input', id: 'contact-body', type: 'textarea', name: 'contact[body]', label: contact_body_label, required: true, rows: 5 %}
 {% enddoc %}
 
 {%- liquid

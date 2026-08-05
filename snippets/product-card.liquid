@@ -121,18 +121,20 @@
               {%- assign decimal = rating | minus: rating_floor -%}
               {%- assign rating_floor_plus_1 = rating_floor | plus: 1 -%}
               {%- for i in (1..5) -%}
+                {%- assign star_class_filled = star_size_class | append: ' filled-star select-none' -%}
+                {%- assign star_class_outline = star_size_class | append: ' text-outline-variant select-none' -%}
                 {%- if i <= rating_floor -%}
-                  {%- render 'icon', name: 'star', class: star_size_class | append: ' filled-star select-none', style: star_style -%}
+                  {%- render 'icon', name: 'star', class: star_class_filled, style: star_style -%}
                 {%- elsif i == rating_floor_plus_1 -%}
                   {%- if decimal >= 0.75 -%}
-                    {%- render 'icon', name: 'star', class: star_size_class | append: ' filled-star select-none', style: star_style -%}
+                    {%- render 'icon', name: 'star', class: star_class_filled, style: star_style -%}
                   {%- elsif decimal >= 0.25 -%}
-                    {%- render 'icon', name: 'star_half', class: star_size_class | append: ' filled-star select-none', style: star_style -%}
+                    {%- render 'icon', name: 'star_half', class: star_class_filled, style: star_style -%}
                   {%- else -%}
-                    {%- render 'icon', name: 'star', class: star_size_class | append: ' text-outline-variant select-none', style: star_style -%}
+                    {%- render 'icon', name: 'star', class: star_class_outline, style: star_style -%}
                   {%- endif -%}
                 {%- else -%}
-                  {%- render 'icon', name: 'star', class: star_size_class | append: ' text-outline-variant select-none', style: star_style -%}
+                  {%- render 'icon', name: 'star', class: star_class_outline, style: star_style -%}
                 {%- endif -%}
               {%- endfor -%}
             </div>

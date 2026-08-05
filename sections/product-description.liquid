@@ -102,7 +102,8 @@
       <ul class="grid grid-cols-2 gap-y-3 gap-x-4 pl-0 list-none">
         {%- for block in section.blocks -%}
           <li class="flex items-center gap-2 text-sm text-primary" {{ block.shopify_attributes }}>
-            {% render 'icon', name: block.settings.icon | default: 'check', class: 'text-sm text-emerald-600' %}
+            {%- assign block_icon_name = block.settings.icon | default: 'check' -%}
+            {% render 'icon', name: block_icon_name, class: 'text-sm text-emerald-600' %}
             {{ block.settings.text }}
           </li>
         {%- endfor -%}
