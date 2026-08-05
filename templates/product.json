@@ -282,9 +282,10 @@
               "blocks": {}
             },
             "material_badge_bRWLTf": {
-              "type": "material-badge",
-              "name": "Material Badge",
+              "type": "badge",
+              "name": "Badge",
               "settings": {
+                "style": "icon",
                 "width_cols": "2",
                 "icon": "cycle",
                 "title": "Genanvendt læder"
@@ -292,9 +293,10 @@
               "blocks": {}
             },
             "material_badge_Uy6wfE": {
-              "type": "material-badge",
-              "name": "Material Badge",
+              "type": "badge",
+              "name": "Badge",
               "settings": {
+                "style": "icon",
                 "width_cols": "2",
                 "icon": "eco",
                 "title": "100% Phthalatfri"

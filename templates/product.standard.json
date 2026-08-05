@@ -543,9 +543,10 @@
               },
               "blocks": {
                 "material_badge_6r4PpC": {
-                  "type": "material-badge",
-                  "name": "Material Badge",
+                  "type": "badge",
+                  "name": "Badge",
                   "settings": {
+                    "style": "icon",
                     "width_cols": "1",
                     "icon": "eco",
                     "title": "Bæredygtig"
@@ -553,9 +554,10 @@
                   "blocks": {}
                 },
                 "material_badge_WYTNrA": {
-                  "type": "material-badge",
-                  "name": "Material Badge",
+                  "type": "badge",
+                  "name": "Badge",
                   "settings": {
+                    "style": "icon",
                     "width_cols": "1",
                     "icon": "eco",
                     "title": "Bæredygtig"
