@@ -61,6 +61,8 @@ store launches.
 | A2 | Generalize cart-transform function (remove client product assumptions) | [S] | Function fires correctly on a dev-store test product |
 | A3 | Build theme app extension: by-the-meter app block, schema-driven (configurable SKU/handle/unit price) | [O] | Install on dev store; add block in theme editor; complete an end-to-end test order |
 | A4 | Client migration: install app on client store; swap `product.Metervare.json` to the app block; verify | [S] | Preview theme on **client store** + real test order; only then publish |
+| A5 | App owns its data model: create the `custom.metervare` definition and its `metervare_*` siblings via `metafieldDefinitionCreate` on install, instead of the README's manual admin steps. Needs `write_products` added to `access_scopes` (currently `write_cart_transforms,read_cart_transforms`) | [S] | Fresh install on a dev store: definitions appear in Settings → Custom data with no manual setup |
+| A6 | When a merchant enables metervare on a product, the app also writes native `unitPriceMeasurement` (`1 cm` / `1 m`) + `showUnitPrice` via `productVariantsBulkUpdate`. Removes double configuration: merchant sets it once in the app, and both app behavior and theme display light up. Depends on A5's `write_products` scope | [S] | Enable metervare on a test product → admin shows "Stykpris 79,00 kr./m" without the merchant touching it; theme card leads with the per-meter price |
 
 **Track B — Genericization** (owns: `config/settings_schema.json` [branding
 sections], `sections/header-2.liquid` [contact markup only],
@@ -239,6 +241,25 @@ Net split — display signal drives display, explicit opt-in drives behavior:
 |---|---|
 | Theme (cards, price block) | `unit_price_measurement` presence — no metervare knowledge, keeps the theme sellable |
 | App block + cart-transform | `custom.metervare` metafield — same flag in both, cannot drift |
+
+**Why not let `custom.metervare` drive the theme too** (considered 2026-08-05,
+rejected): it would put `product.metafields.custom.metervare` — a key belonging
+to one specific app — inside a theme being prepared for Theme Store sale. That
+is dead code for essentially every merchant who buys it, and precisely the kind
+of app-specific dependency Theme Store review scrutinizes (§1 exclusivity, §2
+uniqueness: a theme must stand on its own).
+
+They are also genuinely different facts, not one fact with two flags:
+
+- **Unit pricing** — "display this price per meter." A pricing attribute; EU
+  rules require it for some goods. A merchant can legitimately want it with no
+  cutting at all (fixed 1 m pieces priced per cm).
+- **`custom.metervare`** — "this product can be cut to an arbitrary length." A
+  behavioral capability, and the only signal the Function API can even see.
+
+The double-configuration burden that motivated the question is removed by **A6**
+instead: the app writes native unit pricing itself when metervare is enabled, so
+the merchant configures once and the theme still reads only native data.
 
 Sequencing note: B5.2–B5.5 need neither the app deploy nor a fully consistent catalog, **not** the app deploy. The
 `×100` display and the customizer's cart math are independent concerns — the
