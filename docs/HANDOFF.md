@@ -85,8 +85,23 @@ now returns nothing; theme-check went 8 errors / 34 warnings → 8 / 26.
 
 **Not yet verified in a browser** — confirm the newsletter button reads
 Danish rather than `newsletter.submit`, the error message is hidden until
-validation fails, and predictive search returns results. Detection grep, to
-re-run after any future work:
+validation fails, and predictive search returns results.
+
+**The grep was not a sufficient detector — use `theme-check` instead.** The
+grep below is line-based, so it structurally cannot see a `{% render %}` tag
+that spans multiple lines with the filter on a later line. It reported clean
+while two live instances remained in `footer-localization.liquid` (the
+country/language panel ids), found on 2026-08-05 by `theme-check`'s
+`UnsupportedFilterArguments` check and fixed in v1.0.102.
+
+Detect this class with:
+
+```
+npx shopify theme check
+```
+
+and look for `UnsupportedFilterArguments`. The old grep is kept only as a
+quick single-line smoke test — a clean result from it means nothing:
 
 ```
 grep -rn "render '" --include="*.liquid" sections/ blocks/ snippets/ layout/ \

@@ -142,17 +142,19 @@
 
     <div class="flex-1 flex flex-col min-h-0">
       {%- if multi_country -%}
+        {%- assign country_panel_id = 'localization-panel-country-' | append: section.id -%}
         {% render 'localization-picker',
           type: 'country',
           show_flags: section.settings.localization_show_flags,
-          panel_id: 'localization-panel-country-' | append: section.id,
+          panel_id: country_panel_id,
           hidden: false
         %}
       {%- endif -%}
       {%- if multi_language -%}
+        {%- assign language_panel_id = 'localization-panel-language-' | append: section.id -%}
         {% render 'localization-picker',
           type: 'language',
-          panel_id: 'localization-panel-language-' | append: section.id,
+          panel_id: language_panel_id,
           hidden: multi_country
         %}
       {%- endif -%}
