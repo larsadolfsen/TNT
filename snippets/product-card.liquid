@@ -17,53 +17,23 @@
       assign is_minimal = true
     endif
 
-    assign thickness = ''
-    assign width = ''
-    assign form = ''
     assign badge = ''
-    
+
     for tag in product.tags
       assign tag_down = tag | downcase
-      if tag_down contains 'tykkelse:'
-        assign thickness = tag | remove_first: 'tykkelse:' | remove_first: 'Tykkelse:' | strip
-      elsif tag_down contains 'bredde:'
-        assign width = tag | remove_first: 'bredde:' | remove_first: 'Bredde:' | strip
-      elsif tag_down contains 'form:'
-        assign form = tag | remove_first: 'form:' | remove_first: 'Form:' | strip
-      elsif tag_down contains 'badge:'
+      if tag_down contains 'badge:'
         assign badge = tag | remove_first: 'badge:' | remove_first: 'Badge:' | strip
       endif
     endfor
 
-    for option in product.options_with_values
-      assign option_name = option.name | downcase
-      if option_name contains 'tykkelse' or option_name contains 'thickness'
-        assign thickness = option.values | first
-      elsif option_name contains 'bredde' or option_name contains 'width' or option_name contains 'størrelse'
-        assign width = option.values | first
-      elsif option_name contains 'form' or option_name contains 'type'
-        assign form = option.values | first
-      endif
-    endfor
-
-    # Check if this is a meter product based on title, type, tags/options, or metafield
+    # Products priced per centimeter, displayed per meter (x100 below).
+    # Gated strictly on the authoritative signals: the "Metervare" product type
+    # and the custom.metervare metafield. Do NOT reintroduce title/tag/option
+    # heuristics here — they previously matched ~30 already-per-meter products
+    # and multiplied their card prices a second time (69,00 kr shown as 6.900,00 kr).
     assign is_meter_product = false
-    assign product_title_down = product.title | downcase
-    if product.type == 'Metervare' or product_title_down contains 'voksdug' or product_title_down contains 'bordbeskytter' or product_title_down contains 'meter' or thickness != blank or width != blank or form != blank or product.metafields.custom.metervare.value == true or product.metafields.custom.metervare == true
+    if product.type == 'Metervare' or product.metafields.custom.metervare.value == true or product.metafields.custom.metervare == true
       assign is_meter_product = true
-    endif
-
-    # If it is a meter product, apply default fallbacks for missing values
-    if is_meter_product
-      if thickness == blank
-        assign thickness = '1,2 mm'
-      endif
-      if width == blank
-        assign width = '140 cm'
-      endif
-      if form == blank
-        assign form = 'Firkantet'
-      endif
     endif
 
     assign variant = product.first_available_variant | default: product.variants[0]
