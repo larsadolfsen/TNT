@@ -1,0 +1,186 @@
+# Optimization master plan
+
+Covers everything scoped so far: app extraction, theme genericization,
+Theme Store compliance features (`theme-store-compliance-brainstorm.md`,
+`missing-designs-brief.md`), component decomposition
+(`component-decomposition-backlog.md`), and the grid→flex migration
+(`grid-to-flexbox-migration.md`).
+
+## Operating principles
+
+1. **Maximum parallelism via file ownership.** Tasks run in parallel only
+   when their file sets don't overlap. Every task lists the files it owns;
+   a task that needs a file owned by an active task waits or joins that
+   track. This is the only serialization rule — everything else runs
+   concurrently.
+2. **Every step is testable on the live server.** All work is pushed to an
+   **unpublished preview theme** on the store (`shopify theme push
+   --unpublished` / `shopify theme dev`), never to the published theme.
+   Each task below names its concrete verification. Features that require
+   store configuration the client store doesn't have (selling plans, local
+   pickup locations, markets/multi-currency) verify on a **dev store** with
+   test data, plus a visual check on the live-store preview theme.
+3. **Cheapest capable model per task.** Tier legend:
+   - **[H]** = Haiku, low effort — mechanical, fully specified, low blast
+     radius. Safe to delegate once a spec exists.
+   - **[S]** = Sonnet, medium effort — integration work, some judgment.
+   - **[S+]** = Sonnet, high effort — cross-cutting or risky refactors.
+   - **[O]** = Opus, high effort — design judgment, bespoke builds,
+     quality-bar work.
+   **Spec-first delegation:** where a task is [H] but underspecified, a
+   stronger model writes the spec once (cheap, one file) and [H] executes.
+   Never send an underspecified task to [H].
+4. Existing project rules apply to every task: version bump on every push,
+   single-purpose files, no `!important`.
+
+## Branching
+
+- `main` = client production. Untouched until the client migration (A4).
+- `generic` = long-lived integration branch for the sellable theme. All
+  tracks branch from and merge back into `generic`.
+- Client-relevant fixes cherry-pick from `generic` to `main`.
+
+---
+
+## Wave 0 — Setup (serial, fast; blocks everything)
+
+| ID | Task | Tier | Test on live server |
+|----|------|------|---------------------|
+| T0.1 | Wire branch → unpublished preview theme; document the push/preview flow | [S] | Preview URL renders current theme identically to production |
+| T0.2 | Create `generic` branch; document branch policy | [H] | n/a (git only) |
+| T0.3 | Record baselines: Lighthouse (home/collection/product, mobile+desktop) + `theme-check` output | [H] | Baseline numbers captured from the preview theme |
+
+## Wave 1 — Independent parallel tracks (no shared files)
+
+**Track A — App extraction** (owns: `shopify-app/**`, new repo)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| A1 | New repo; move `shopify-app/`; delete `test_*.js`/`get_*.js`; strip shop domain, `client_id`, package name | [H] | App builds; `shopify app dev` deploys to dev store |
+| A2 | Generalize cart-transform function (remove client product assumptions) | [S] | Function fires correctly on a dev-store test product |
+| A3 | Build theme app extension: by-the-meter app block, schema-driven (configurable SKU/handle/unit price) | [O] | Install on dev store; add block in theme editor; complete an end-to-end test order |
+| A4 | Client migration: install app on client store; swap `product.Metervare.json` to the app block; verify | [S] | Preview theme on **client store** + real test order; only then publish |
+
+**Track B — Genericization** (owns: `config/settings_schema.json` [branding
+sections], `sections/header-2.liquid` [contact markup only],
+`sections/footer.liquid` [defaults], `ai.md`, `scratch/`, root docs)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| B1 | Hardcoded phone/email in `header-2.liquid` → theme settings | [H] (spec: [S]) | Editor shows new settings; preview renders values; blank = hidden |
+| B2 | Branding sweep: `theme_name`/`theme_author`, favicon rename, footer default copy, `ai.md` cleanup, delete `scratch/` | [H] | Editor + preview inspection; `theme-check` passes |
+| B3 | Rewrite README / CONTRIBUTING / CODE_OF_CONDUCT as own product docs; no designer-credit links in theme files | [H] | Docs only; `theme-check` passes |
+
+**Track C — `layout/theme.liquid`** (owns: `theme.liquid`,
+`snippets/css-variables.liquid` if needed)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| C1 | Skip-to-content link + font-loading fix: drop hardcoded Google Fonts, route via native font_picker; decide Material Symbols strategy (self-host or SVG sprite) | [S] | Preview: fonts follow merchant settings; keyboard tab shows skip link; Lighthouse perf ≥ baseline |
+
+**Track D — Cheap refactor slices** (owns: the named files only — none are
+touched by Wave 2)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| D1 | Trust-checkmark → one shared snippet (3 call sites) | [H] | Preview product page: visually identical |
+| D2 | Badge consolidation: 3 implementations → 1 configurable block | [S] | Editor presets migrate; preview identical |
+| D3 | Rename `collection-grid` / `collections-grid` for clarity (incl. template refs) | [H] (spec: [S]) | Editor loads both blocks; existing templates unbroken |
+| D4 | Hex→token sweep in `search.liquid`, `password.liquid`, `section.liquid` (fixed mapping table written once by [S]) | [H] | Preview light + dark mode: identical rendering |
+
+**Track E — Design pass** (no repo files; consumes
+`docs/missing-designs-brief.md`)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| E1 | Produce designs for all 16 missing surfaces per the brief (Baymard-grounded, token-based) | [O] | Review artifact; gates Wave 2 |
+
+## Wave 2 — Compliance build-out (needs E1; parallel by page area)
+
+Each track owns its page area's files; no cross-track overlap by
+construction. Within a track, tasks run serially (same files).
+
+**P1 — Header** (owns: `sections/header-2.liquid`, `header-group.json`,
+`blocks/header-*.liquid`)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| P1.1 | `<shopify-account>` component, desktop + mobile (known styling-control gotchas — scope around them) | [S+] | Preview: visible both breakpoints; sign-in flow works |
+| P1.2 | Multi-level nav (desktop dropdown + mobile drawer accordions per design) | [S] | Preview with a 3-level test menu; keyboard + touch |
+| P1.3 | Predictive search panel | [S] | Preview: live suggestions against real products; empty/loading states |
+| P1.4 | Follow on Shop button (placement per design; unmodified branded colors) | [H] | Renders on preview; Shop-app follow flow |
+
+**P2 — Product page** (owns: `blocks/product-*.liquid`, `sections/product*.liquid`, `templates/product.json`)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| P2.1 | Accelerated checkout buttons (`payment_button`) | [H] | Dynamic checkout button renders on preview; test checkout |
+| P2.2 | Shop Pay Installments banner | [H] | Renders near price on preview (Shop Pay enabled store) |
+| P2.3 | Native unit pricing (product side) per design | [H] (spec from E1) | Dev-store product with unit price set; renders per design |
+| P2.4 | Pickup availability | [S] | Dev store with a pickup location; both availability states |
+| P2.5 | Related recommendations (native API section) | [S] | Preview: recommendations populate on live products |
+| P2.6 | Complementary products (native API; verify/replace bespoke cross-sell) | [S] | Dev store with Search & Discovery complementary set |
+| P2.7 | Variant images + 3D model (`model_viewer`) verify/fix | [S] | Dev-store product with variant images + a 3D model |
+
+**P3 — Cart** (owns: `sections/cart.liquid`, `templates/cart.json`)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| P3.1 | Discount display (line-item + order-level) | [S] | Dev-store discount codes; both types render |
+| P3.2 | Selling plans in cart | [S] | Dev store with a subscription selling plan |
+| P3.3 | Unit pricing (cart side) | [H] | Same product as P2.3; cart line matches |
+
+**P4 — Collection/search** (owns: `snippets/product-card.liquid`,
+`snippets/image.liquid`, `sections/main-collection.liquid` [card markup only])
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| P4.1 | Unit pricing on cards | [H] | Collection preview shows unit price per design |
+| P4.2 | Image focal-point support in `image.liquid` (propagates everywhere) | [S] | Set focal point in admin; verify crops on cards/heroes |
+
+**P5 — Structural + footer** (owns: `templates/page.contact.json`, new
+Custom Liquid section, `sections/footer.liquid`, `footer-group.json`)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| P5.1 | `page.contact.json` + contact form page | [H] (spec from E1) | Submit test message on preview; arrives in admin |
+| P5.2 | Custom Liquid section (`type: liquid` setting) | [H] | Add section in editor; paste test Liquid; renders |
+| P5.3 | Newsletter signup form (footer) | [H] | Submit on preview; customer appears with consent in admin |
+| P5.4 | Country + language selectors | [S] | Dev store with 2 markets/languages; switch both on preview |
+
+**B4 — Customizer removal** (needs A4; owns: `blocks/product-customizer.liquid`,
+`templates/product.Metervare.json`, footer textile badges)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| B4 | Delete customizer block, Metervare template, OEKO-TEX/Phthalat badges | [H] | Preview product pages unaffected; `theme-check` passes |
+
+## Wave 3 — Deep refactor + flex (after Wave 2; parallel by file ownership)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| R1 | Extract inline `<script>` → `assets/*.js` (one task per section: header, breadcrumbs, main-collection) | [S] | All interactions work on preview (cart drawer, filters, breadcrumbs) |
+| R2 | Card markup consolidation onto `product-card.liquid` (or a small card-snippet set) | [S+] | Visual sweep of every card surface, light + dark |
+| R3 | Split oversized files (one task per file: `main-collection`, `breadcrumbs`, `product-buy-buttons`, `product-media`, `header-2`) | [S+] | Per-file before/after preview regression |
+| R4 | Grid→flex: safe swaps (listing grids, testimonials, per-block `order`); product page per the pending user decision in `grid-to-flexbox-migration.md` | [S] | Preview at mobile/tablet/desktop breakpoints |
+| R5 | Shared padding-CSS boilerplate → snippet | [H] | Spot-check blocks render identically |
+| R6 | Full hex→token sweep of remaining files | [H] | Light + dark preview sweep |
+
+## Wave 4 — Submission package (serial at the end)
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| S1 | Accessibility remediation to Lighthouse ≥90 (audit first, then fix per component) | [S+] | Lighthouse a11y ≥90 mobile+desktop, all 3 page types |
+| S2 | Performance tuning to ≥60 | [S+] | Lighthouse perf ≥60 mobile+desktop, all 3 page types |
+| S3 | Demo store content, presets, `/listings` folder | [O] | Demo store review against Theme Store demo requirements |
+| S4 | Final `theme-check`, exclusivity grep (no credits/affiliate links), package + submit | [S] | Clean check; submission accepted into review |
+
+## Parallelism summary
+
+- **Wave 1:** five tracks (A, B, C, D, E) fully concurrent — up to 5 agents.
+- **Wave 2:** five page-area tracks (P1–P5) concurrent + B4 when A4 lands —
+  up to 6 agents; within-track tasks serial.
+- **Wave 3:** R1's three sections, R3's five files, and R4–R6 partition by
+  file — up to ~6 concurrent.
+- Critical path: T0.1 → E1 → P1 (largest track) → S1/S2 → S3 → S4, with
+  A1→A2→A3→A4→B4 as the second-longest chain, running fully parallel to it.
