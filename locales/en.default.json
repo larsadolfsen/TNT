@@ -29,7 +29,12 @@
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "total": "Total",
+    "shipping_note": "Shipping and taxes calculated at checkout",
+    "original_price_label": "Original price:"
   },
   "customers": {
     "login": {

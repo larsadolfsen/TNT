@@ -71,6 +71,19 @@
                 </div>
               {%- endif -%}
             </div>
+            {%- if item.line_level_discount_allocations.size > 0 -%}
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="text-sm text-primary/50 line-through">
+                  <span class="sr-only">{{ 'cart.original_price_label' | t }}</span>{{ item.original_line_price | money }}
+                </span>
+                <span class="text-sm sm:text-base font-bold text-primary">{{ item.final_line_price | money }}</span>
+              </div>
+              <div class="flex flex-wrap gap-1.5 mt-1">
+                {%- for allocation in item.line_level_discount_allocations -%}
+                  {%- render 'cart-discount-chip', title: allocation.discount_application.title -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
             <div class="mt-2 text-sm">
               {{ 'cart.remove' | t | link_to: item.url_to_remove, class: 'text-red-600 hover:underline font-medium' }}
             </div>
@@ -82,6 +95,19 @@
               {%- if item.variant.title != 'Default Title' -%}
                 <p class="text-xs sm:text-sm text-primary/85 truncate">{{ item.variant.title }}</p>
               {%- endif -%}
+            {%- endif -%}
+            {%- if item.line_level_discount_allocations.size > 0 -%}
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="text-sm text-primary/50 line-through">
+                  <span class="sr-only">{{ 'cart.original_price_label' | t }}</span>{{ item.original_line_price | money }}
+                </span>
+                <span class="text-sm sm:text-base font-bold text-primary">{{ item.final_line_price | money }}</span>
+              </div>
+              <div class="flex flex-wrap gap-1.5 mt-1">
+                {%- for allocation in item.line_level_discount_allocations -%}
+                  {%- render 'cart-discount-chip', title: allocation.discount_application.title -%}
+                {%- endfor -%}
+              </div>
             {%- endif -%}
             <div class="mt-2 text-sm">
               {{ 'cart.remove' | t | link_to: item.url_to_remove, class: 'text-red-600 hover:underline font-medium' }}
@@ -96,7 +122,29 @@
     {% endfor %}
   </table>
 
-  <button type="submit" name="checkout" class="w-full md:w-96 py-3.5 px-8 mt-6 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all cursor-pointer border-0 block focus:outline-none">
+  <dl class="w-full md:w-96 md:ml-auto mt-6 p-4 rounded-2xl bg-card-high flex flex-col gap-2">
+    <div class="flex items-center justify-between gap-4 text-sm">
+      <dt class="text-primary/70">{{ 'cart.subtotal' | t }}</dt>
+      <dd class="text-primary">{{ cart.original_total_price | money }}</dd>
+    </div>
+    {%- for discount_application in cart.cart_level_discount_applications -%}
+      <div class="flex items-center justify-between gap-4 text-sm">
+        <dt class="flex items-center gap-2 text-primary/70">
+          {{ 'cart.discount' | t }}
+          {%- render 'cart-discount-chip', title: discount_application.title -%}
+        </dt>
+        <dd class="text-primary font-semibold">-{{ discount_application.total_allocated_amount | money }}</dd>
+      </div>
+    {%- endfor -%}
+    <div class="border-t border-outline-variant my-1"></div>
+    <div class="flex items-center justify-between gap-4 text-sm">
+      <dt class="text-primary font-bold">{{ 'cart.total' | t }}</dt>
+      <dd class="text-lg font-bold text-primary"><strong>{{ cart.total_price | money }}</strong></dd>
+    </div>
+    <p class="text-xs text-primary/60">{{ 'cart.shipping_note' | t }}</p>
+  </dl>
+
+  <button type="submit" name="checkout" class="w-full md:w-96 md:ml-auto py-3.5 px-8 mt-6 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all cursor-pointer border-0 block focus:outline-none">
     {{ 'cart.checkout' | t }}
   </button>
 </form>

@@ -29,7 +29,12 @@
     "checkout": "Gå til kassen",
     "title": "Indkøbskurv",
     "update": "Opdater",
-    "remove": "Fjern"
+    "remove": "Fjern",
+    "subtotal": "Subtotal",
+    "discount": "Rabat",
+    "total": "Total",
+    "shipping_note": "Fragt og moms beregnes ved kassen",
+    "original_price_label": "Oprindelig pris:"
   },
   "customers": {
     "login": {

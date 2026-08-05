@@ -1,0 +1,17 @@
+{% doc %}
+  Renders a single discount chip (icon + title). Used both inline under a
+  discounted cart line item and inside the cart summary panel's discount row,
+  so the two scopes visually rhyme without being identical (see
+  sections/cart.liquid).
+
+  @param {string} title - required. The discount application's title (e.g. `allocation.discount_application.title` or `discount_application.title`).
+  @param {string} [class] - Extra CSS classes appended to the chip.
+
+  @example
+  {% render 'cart-discount-chip', title: allocation.discount_application.title %}
+  {% render 'cart-discount-chip', title: discount_application.title, class: 'shrink-0' %}
+{% enddoc %}
+<span class="inline-flex items-center gap-1 h-6 px-2 rounded-full border border-outline-variant bg-card-high text-[11px] font-bold uppercase tracking-wide text-primary truncate max-w-[160px]{% if class %} {{ class }}{% endif %}">
+  {%- render 'icon', name: 'sell', class: 'text-[12px]' -%}
+  {{- title -}}
+</span>
