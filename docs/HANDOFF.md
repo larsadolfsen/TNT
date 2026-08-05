@@ -25,11 +25,27 @@ atomic primitives library, and all 16 missing Theme Store surfaces.
 theme-check sits at **8 errors / 34 warnings** — below the original 12-error
 baseline. Don't let it regress.
 
-## The lesson from today: theme-check proves nothing
+## Process rule — read this before writing any code
+
+**Build in parallel, land one at a time, verify each before the next.**
+Now codified in `.agents/AGENTS.md`; it is not optional.
+
+Waves 0–2 were built the wrong way: five agents worked concurrently (fine),
+but all sixteen surfaces were merged and pushed in a single batch with
+`theme-check` as the only gate (not fine). Every bug listed below passed
+theme-check cleanly, and one systemic mistake — filters in `{% render %}`
+arguments — was replicated into six files before anyone opened a page.
+Landing one surface at a time would have caught it on the first.
+
+So: develop concurrently in worktrees, but merge to `main` as a **queue**.
+Push one feature, ask the user to confirm it in a browser, then push the
+next. Say exactly what to open and what to look for, then stop and wait.
+Never stack unverified merges.
 
 A browser pass found four real bugs in ten minutes that theme-check was
 blind to, because valid Liquid can still produce broken pages. Anything not
-opened in a browser should be assumed unverified.
+opened in a browser is unverified — including everything in Waves 0–2 that
+is not explicitly ticked off below.
 
 Fixed today:
 - **100× card pricing** — an eight-way `or` chain multiplied ~30
