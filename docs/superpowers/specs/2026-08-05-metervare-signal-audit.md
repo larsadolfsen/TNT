@@ -25,6 +25,12 @@ Verified against the live store on 2026-08-05 via the Admin API:
 The same 4 products carry all three. **The metafield holds no information
 `product.type` does not already hold.**
 
+**Update 2026-08-05 (post-audit):** only
+`voksdug-gra-jeanslook-med-hvid-bladranke-160-cm` is a **real** product. The
+three `klar-`/`kraftig-gennemsigtig-voksdug-*` entries are test products. The
+data migration below is therefore one variant, not eight — see
+`optimization-master-plan.md` B5.
+
 | Handle | Prices (per cm) |
 | --- | --- |
 | `klar-gennemsigtig-voksdug-140-cm-bred-2mm-tyk-phthalatfri-oko-tex-standard-100` | 0,59 |
@@ -72,6 +78,14 @@ are parsed from tags and variant options and given hardcoded fallbacks
 effect is feeding the `or` chain in defect (a). `badge` (lines 23, 33-34) *is*
 rendered at line 110 and must stay.
 
+**Resolved 2026-08-05:** native unit pricing *is* configurable for this case —
+set the variant's **Samlet mængde `1 cm` / Basismål `1 m`** (API:
+`unitPriceMeasurement { quantityValue: 1, quantityUnit: CM, referenceValue: 1,
+referenceUnit: M }` plus `showUnitPrice: true`, both settable via
+`productVariantsBulkUpdate`). Shopify then computes 0,89 kr ÷ 1 cm × 100 cm =
+**89,00 kr/m**. Confirmed working in admin on the real product. This makes §4's
+blocker moot without restating any prices — see the note at the end of §4.
+
 ## 4. Why the ×100 exists, and why it can't just be deleted
 
 Prices are stored **per centimeter** so the customizer can add an arbitrary cut
@@ -83,6 +97,13 @@ meter with native unit pricing until something else owns the per-cm cart math. T
 something is the app's cart-transform function (`optimization-master-plan.md` A2).
 Until then the `×100` has to stay, because with prices at 0,59 and no
 `unitPriceMeasurement` configured, deleting the math would make cards read "0,59 kr".
+
+**Superseded 2026-08-05.** This constraint applies to *restating prices per
+meter* (which was ruled out — the cart math depends on per-cm quantities).
+Native unit pricing takes a third path: prices stay stored per cm, and Shopify
+computes the per-meter display itself. Nothing needs to own the cart math
+first, so the theme cleanup is unblocked immediately — it does **not** wait for
+the app migration. Tracked as B5 in `optimization-master-plan.md`.
 
 ## 5. Where each piece of metervare behaviour belongs
 

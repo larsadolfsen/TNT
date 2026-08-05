@@ -160,6 +160,35 @@ Custom Liquid section, `sections/footer.liquid`, `footer-group.json`)
 |----|------|------|------|
 | B4 | Delete customizer block, Metervare template, OEKO-TEX/Phthalat badges | [H] | Preview product pages unaffected; `theme-check` passes |
 
+**B5 — Retire the metervare per-meter display** (independent of A4/B4; owns:
+`blocks/product-price.liquid`, `snippets/product-card.liquid`)
+
+Replaces the client-specific `×100` per-meter math with Shopify's native unit
+pricing, removing the last metervare trigger from the theme. Background and
+signal analysis: `docs/superpowers/specs/2026-08-05-metervare-signal-audit.md`.
+
+**Product data reality (verified 2026-08-05):** of the 4 products carrying
+`productType: "Metervare"`, only **`voksdug-gra-jeanslook-med-hvid-bladranke-160-cm`
+is a real product**. The other three (`klar-gennemsigtig-voksdug-*`,
+`kraftig-gennemsigtig-voksdug-1-3-mm`) are test products. So the data migration
+is one variant, not eight — and it was configured manually in admin on
+2026-08-05 (Samlet mængde `1 cm` / Basismål `1 m` → renders "89,00 kr./m").
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| B5.1 | Confirm unit pricing is saved on the real product; decide whether the 3 test products get the same treatment, get unpublished, or get deleted | [H] | Admin shows "89,00 kr./m" on the real variant; `unitPriceMeasurement` non-null via API |
+| B5.2 | Delete `is_meter_product` + `×100` from `snippets/product-card.liquid`; render `{% render 'unit-price', size: 'sm' %}` instead (the P4 call site already exists) | [H] | Real product's card shows 89,00 kr./m; no other card's price changes |
+| B5.3 | Delete the `is_metervare` branch, `×100`, and `pr. meter inkl. moms` suffix from `blocks/product-price.liquid`, including the per-variant JSON payload and `updatePrice()` JS path; `unit-price` at `size: 'base'` takes over | [S] | Real product page shows 0,89 kr with "89,00 kr./m" beneath; variant switching keeps both correct |
+| B5.4 | Verify no metervare trigger remains: grep for `metervare`, `Metervare`, `times: 100`, `pr. meter` across the theme | [H] | Only hits are the app-owned line-item properties in cart/header, if any |
+| B5.5 | Check in admin whether an app, Flow, or product feed reads `custom.metervare` before deleting the metafield definition (MCP lacks `appInstallations` scope — must be manual) | — | Manual admin check; then delete definition `gid://shopify/MetafieldDefinition/369929847117` |
+
+Sequencing note: B5.2–B5.4 only need B5.1, **not** the app deploy. The
+`×100` display and the customizer's cart math are independent concerns — the
+audit's §4 constraint ("can't delete the math until something else owns the
+per-cm cart total") applies to *restating prices per meter*, which was ruled
+out. Native unit pricing leaves prices stored per cm, so the cart math is
+untouched and B5 can ship before A4/B4.
+
 ## Wave 3 — Deep refactor + flex (after Wave 2; parallel by file ownership)
 
 | ID | Task | Tier | Test |
