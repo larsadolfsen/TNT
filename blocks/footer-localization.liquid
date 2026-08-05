@@ -1,0 +1,170 @@
+{% doc %}
+  Footer country / language selector (Surface 14): a trigger
+  chip showing the current country + language, opening a centered modal with
+  Shopify's native localization forms. Rendered statically from
+  sections/footer.liquid via `{% content_for 'block', type: 'footer-localization' %}`,
+  gated by the section's own `show_localization` setting — see
+  docs/missing-surface-designs.md Surface 14. Reads `section.settings.*`
+  directly (a static block shares its parent section's context) rather than
+  declaring its own settings, matching how the spec places
+  `show_localization` / `localization_show_flags` on the footer section.
+
+  Renders nothing when the shop has only one available country and one
+  available language — a trigger that opens a picker with exactly one,
+  already-selected option isn't a control.
+
+  @example
+  {% content_for 'block', type: 'footer-localization', id: 'footer-localization' %}
+{% enddoc %}
+
+{%- liquid
+  assign multi_country = false
+  if localization.available_countries.size > 1
+    assign multi_country = true
+  endif
+
+  assign multi_language = false
+  if localization.available_languages.size > 1
+    assign multi_language = true
+  endif
+-%}
+
+{%- if multi_country or multi_language -%}
+  {%- assign modal_id = 'localization-modal-' | append: section.id -%}
+  {%- assign heading_id = 'localization-modal-heading-' | append: section.id -%}
+  {%- assign language_endonym = localization.language.endonym_name | capitalize -%}
+
+  {%- capture trigger_label -%}
+    {%- if multi_language -%}
+      {{ 'localization.trigger_label_full' | t: country: localization.country.name, language: language_endonym }}
+    {%- else -%}
+      {{ 'localization.trigger_label_country_only' | t: country: localization.country.name }}
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- assign trigger_label = trigger_label | strip -%}
+
+  {%- style -%}
+    #{{ modal_id }} {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 200ms ease, transform 200ms ease, overlay 200ms allow-discrete, display 200ms allow-discrete;
+    }
+    #{{ modal_id }}[open] {
+      opacity: 1;
+      transform: scale(1);
+    }
+    @starting-style {
+      #{{ modal_id }}[open] {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+    }
+    #{{ modal_id }}::backdrop {
+      background-color: rgba(0, 0, 0, 0);
+      transition: background-color 200ms ease, overlay 200ms allow-discrete, display 200ms allow-discrete;
+    }
+    #{{ modal_id }}[open]::backdrop {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    @starting-style {
+      #{{ modal_id }}[open]::backdrop {
+        background-color: rgba(0, 0, 0, 0);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #{{ modal_id }} {
+        transition: opacity 100ms ease;
+        transform: none;
+      }
+      @starting-style {
+        #{{ modal_id }}[open] {
+          transform: none;
+        }
+      }
+    }
+  {%- endstyle -%}
+
+  <button
+    type="button"
+    class="localization-trigger inline-flex items-center gap-2 h-10 px-3 rounded-full border border-outline-variant bg-card-light text-sm font-medium text-primary hover:bg-card-high transition-colors"
+    aria-haspopup="dialog"
+    aria-controls="{{ modal_id }}"
+    data-localization-trigger
+    aria-label="{{ trigger_label }}"
+  >
+    {% render 'icon', name: 'language', class: 'text-[18px] text-primary/70' %}
+    <span>
+      {{ localization.country.name }}{% if multi_language %} · {{ language_endonym }}{% endif %}
+    </span>
+    {% render 'icon', name: 'expand_more', class: 'text-[16px] text-primary/70' %}
+  </button>
+
+  <dialog
+    id="{{ modal_id }}"
+    class="localization-modal p-0 m-auto border border-outline-variant bg-card-light rounded-3xl shadow-2xl w-full max-w-md mx-4 md:mx-auto max-h-[85vh] md:max-h-[80vh] hidden open:flex flex-col"
+    aria-labelledby="{{ heading_id }}"
+  >
+    <div class="flex items-center justify-between p-6 border-b border-outline-variant">
+      <h2 id="{{ heading_id }}" class="text-lg font-bold text-primary">{{ 'localization.title' | t }}</h2>
+      <button
+        type="button"
+        class="w-12 h-12 -mr-2 flex items-center justify-center bg-transparent border-0 cursor-pointer hover:opacity-80 transition-opacity"
+        data-localization-close
+        aria-label="{{ 'localization.close' | t }}"
+      >
+        {% render 'icon', name: 'close', class: 'text-2xl text-primary' %}
+      </button>
+    </div>
+
+    {%- if multi_country and multi_language -%}
+      <div class="flex border-b border-outline-variant" role="tablist" aria-label="{{ 'localization.title' | t }}">
+        <button
+          type="button"
+          id="localization-tab-country-{{ section.id }}"
+          role="tab"
+          aria-selected="true"
+          aria-controls="localization-panel-country-{{ section.id }}"
+          class="flex-1 h-11 text-sm font-semibold text-primary border-b-2 border-primary"
+          data-localization-tab="country"
+        >{{ 'localization.country_tab' | t }}</button>
+        <button
+          type="button"
+          id="localization-tab-language-{{ section.id }}"
+          role="tab"
+          aria-selected="false"
+          tabindex="-1"
+          aria-controls="localization-panel-language-{{ section.id }}"
+          class="flex-1 h-11 text-sm font-semibold text-primary/60"
+          data-localization-tab="language"
+        >{{ 'localization.language_tab' | t }}</button>
+      </div>
+    {%- endif -%}
+
+    <div class="flex-1 flex flex-col min-h-0">
+      {%- if multi_country -%}
+        {% render 'localization-picker',
+          type: 'country',
+          show_flags: section.settings.localization_show_flags,
+          panel_id: 'localization-panel-country-' | append: section.id,
+          hidden: false
+        %}
+      {%- endif -%}
+      {%- if multi_language -%}
+        {% render 'localization-picker',
+          type: 'language',
+          panel_id: 'localization-panel-language-' | append: section.id,
+          hidden: multi_country
+        %}
+      {%- endif -%}
+    </div>
+  </dialog>
+
+  <script src="{{ 'localization.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Footer localization",
+  "settings": []
+}
+{% endschema %}

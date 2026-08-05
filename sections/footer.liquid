@@ -78,6 +78,9 @@
     {%- endif -%}
 
     <div class="pt-8 border-t border-outline-variant flex flex-col items-center gap-4 text-center">
+      {%- if section.settings.show_localization -%}
+        {% content_for 'block', type: 'footer-localization', id: 'footer-localization' %}
+      {%- endif -%}
       <div class="flex gap-4">
         <span class="text-[10px] border border-outline-variant px-2 py-1 rounded text-primary/70">OEKO-TEX®</span>
         <span class="text-[10px] border border-outline-variant px-2 py-1 rounded text-primary/70">Phthalat-fri</span>
@@ -152,6 +155,22 @@
       "type": "text",
       "id": "newsletter_description",
       "label": "Supporting line (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Country / language selector"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_localization",
+      "label": "Show country/language selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "localization_show_flags",
+      "label": "Show flag icons next to country names",
+      "default": true
     }
   ]
 }

@@ -1,0 +1,92 @@
+{% doc %}
+  Renders one localization picker list — country OR language — inside the
+  footer localization modal (blocks/footer-localization.liquid). Shared
+  markup shape for both, since both are "a form, a filter, a list of
+  submit-button rows" with the same interaction pattern.
+
+  @param {string} type - required. 'country' or 'language'.
+  @param {boolean} [show_flags] - Show a flag glyph before each country name. Ignored when type is 'language'.
+  @param {string} panel_id - required. id attribute for the list's outer wrapper; also used to build the filter input's id.
+  @param {boolean} [hidden] - Whether this panel starts hidden (the tabbed two-list case starts one panel hidden).
+
+  @example
+  {% render 'localization-picker', type: 'country', show_flags: true, panel_id: 'localization-panel-country-123' %}
+{% enddoc %}
+
+{%- liquid
+  assign is_country = false
+  if type == 'country'
+    assign is_country = true
+  endif
+
+  if is_country
+    assign options = localization.available_countries
+  else
+    assign options = localization.available_languages
+  endif
+  assign option_count = options.size
+  assign show_filter = false
+  if option_count > 8
+    assign show_filter = true
+  endif
+-%}
+
+<div
+  id="{{ panel_id }}"
+  role="tabpanel"
+  class="flex-1 flex flex-col min-h-0{% if hidden %} hidden{% endif %}"
+  data-localization-panel
+>
+  {%- if show_filter -%}
+    <div class="m-4">
+      {% render 'input', id: panel_id | append: '-filter', type: 'search', label: 'localization.search_label' | t, placeholder: 'localization.search_placeholder' | t, class: 'h-11', attributes: 'data-localization-filter' %}
+    </div>
+  {%- endif -%}
+
+  <p class="hidden py-8 px-4 text-center text-sm text-primary/70" data-localization-no-matches data-template="{{ 'localization.no_matches' | t }}"></p>
+
+  <div class="flex-1 overflow-y-auto p-2" data-localization-list>
+    {% form 'localization' %}
+      <input type="hidden" name="return_to" value="{{ request.path }}">
+      {%- for option in options -%}
+        {%- if is_country -%}
+          {%- assign option_name = option.name -%}
+          {%- assign is_selected = false -%}
+          {%- if option.iso_code == localization.country.iso_code -%}
+            {%- assign is_selected = true -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- assign option_name = option.endonym_name | capitalize -%}
+          {%- assign is_selected = false -%}
+          {%- if option.iso_code == localization.language.iso_code -%}
+            {%- assign is_selected = true -%}
+          {%- endif -%}
+        {%- endif -%}
+        <button
+          type="submit"
+          name="{% if is_country %}country_code{% else %}locale_code{% endif %}"
+          value="{{ option.iso_code }}"
+          class="w-full flex items-center gap-3 h-12 px-3 rounded-md text-sm text-primary hover:bg-card-high transition-colors{% if is_selected %} bg-card-high{% endif %}"
+          data-localization-row
+          data-localization-name="{{ option_name | downcase }}"
+          {%- if is_selected %}
+            aria-current="true"
+          {%- endif %}
+        >
+          {%- if is_country and show_flags -%}
+            <span
+              class="w-5 h-[15px] shrink-0 rounded-sm border border-outline-variant/50 overflow-hidden flex items-center justify-center text-[11px] leading-none"
+              data-localization-flag
+              data-iso="{{ option.iso_code }}"
+              aria-hidden="true"
+            ></span>
+          {%- endif -%}
+          <span class="flex-1 text-left">{{ option_name }}</span>
+          {%- if is_selected -%}
+            {% render 'icon', name: 'check_circle', class: 'text-primary text-[18px]', label: 'localization.currently_selected' | t %}
+          {%- endif -%}
+        </button>
+      {%- endfor -%}
+    {% endform %}
+  </div>
+</div>
