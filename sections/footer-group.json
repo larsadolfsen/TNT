@@ -13,7 +13,15 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "settings": {}
+      "settings": {
+        "footer_title": "Textil & Voksdug",
+        "footer_description": "Textil & Voksdug har siden 2004 leveret skandinavisk designede duge og metervarer i højeste kvalitet. Vi sikrer altid præcis udskæring og hurtig, sikker forsendelse.",
+        "menu_1": "",
+        "menu_1_title": "Hjælp",
+        "menu_2": "",
+        "menu_2_title": "Info",
+        "copyright_text": "Textil & Voksdug. CVR: 12345678"
+      }
     }
   },
   "order": [
