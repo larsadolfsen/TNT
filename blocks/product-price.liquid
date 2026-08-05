@@ -35,6 +35,14 @@
       assign price_cents = '0' | append: price_cents
     endif
   endif
+
+  # Surface 11: Shop Pay Installments — placement/spacing only, native element.
+  assign show_installments = block.settings.show_installments | default: true
+
+  # Surface 12: unit pricing — data-driven, no per-block setting; gated by the
+  # (not-yet-added) theme-wide `settings.show_unit_pricing` toggle, defaulting
+  # to on so this keeps working once that global setting exists.
+  assign show_unit_pricing = settings.show_unit_pricing | default: true
 -%}
 
 {%- style -%}
@@ -85,7 +93,23 @@
         {%- endif -%}
       </div>
     {%- endif -%}
+
+    {%- if show_unit_pricing -%}
+      <div class="mt-1" id="unit-price-row-{{ block.id }}">
+        {% render 'unit-price', variant: current_variant, size: 'base' %}
+      </div>
+    {%- endif -%}
   </div>
+
+  {%- if show_installments -%}
+    <div class="installments-wrapper mt-2" id="installments-wrapper-{{ block.id }}">
+      {%- for variant in product.variants -%}
+        <div class="installments-variant" data-variant-id="{{ variant.id }}" {% unless variant.id == current_variant.id %}hidden{% endunless %}>
+          {{ variant.price | payment_terms }}
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
 
   {%- if block.settings.price_subtext != blank -%}
     <p class="text-sm text-primary/85 mt-1.5">{{ block.settings.price_subtext }}</p>
@@ -104,13 +128,25 @@
             assign v_compare = v_compare | times: 100
           endif
         endif
+
+        # Surface 12: unit pricing — same reference_value-omission rule as
+        # snippets/unit-price.liquid ("40,00 kr / g" when reference_value is 1).
+        assign v_measurement = variant.unit_price_measurement
+        if v_measurement != blank
+          assign v_unit_suffix = v_measurement.reference_unit
+          if v_measurement.reference_value != 1
+            assign v_unit_suffix = v_measurement.reference_value | append: ' ' | append: v_measurement.reference_unit
+          endif
+        endif
       -%}
       {
         "id": {{ variant.id }},
         "price": {{ v_price }},
         "compare_at_price": {% if v_compare != blank %}{{ v_compare }}{% else %}null{% endif %},
         "price_formatted": {{ v_price | money | json }},
-        "compare_at_price_formatted": {% if v_compare != blank %}{{ v_compare | money | json }}{% else %}null{% endif %}
+        "compare_at_price_formatted": {% if v_compare != blank %}{{ v_compare | money | json }}{% else %}null{% endif %},
+        "unit_price_formatted": {% if v_measurement != blank %}{{ variant.unit_price | money | json }}{% else %}null{% endif %},
+        "unit_price_suffix": {% if v_measurement != blank %}{{ v_unit_suffix | json }}{% else %}null{% endif %}
       }{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
   ]
@@ -133,12 +169,18 @@
       return cents < 10 ? '0' + cents : cents;
     }
 
+    function unitPriceHtml(variant) {
+      if (!variant.unit_price_formatted || !{{ show_unit_pricing | json }}) return '';
+      return `<div class="mt-1"><span class="unit-price text-sm text-primary/70">${variant.unit_price_formatted} / ${variant.unit_price_suffix}</span></div>`;
+    }
+
     function updatePrice(variantId) {
       const variant = priceVariants.find(v => v.id === parseInt(variantId));
       if (!variant) return;
 
       const suffix = {{ suffix | json }};
       const currencyCode = {{ cart.currency.iso_code | json }};
+      const unitPriceRow = unitPriceHtml(variant);
 
       const isOnSale = variant.compare_at_price && variant.compare_at_price > variant.price;
 
@@ -172,6 +214,7 @@
             <span class="line-through">${variant.compare_at_price_formatted}</span>
             <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
           </div>
+          ${unitPriceRow}
         `;
       } else {
         let suffixHtml = '';
@@ -186,6 +229,7 @@
             </span>
             ${suffixHtml}
           </div>
+          ${unitPriceRow}
         `;
       }
     }
@@ -195,8 +239,31 @@
         updatePrice(e.detail.variantId);
       }
     });
+
+    // Surface 11: Shop Pay Installments — every variant's messaging is
+    // pre-rendered by Liquid (payment_terms is a server-only filter with no
+    // client-side reformatting API); on variant change we just toggle which
+    // one is visible so the amount always matches the selected variant.
+    const installmentsWrapper = document.getElementById("installments-wrapper-{{ block.id }}");
+    if (installmentsWrapper) {
+      document.addEventListener("variant-changed", (e) => {
+        if (!e.detail || !e.detail.variantId) return;
+        installmentsWrapper.querySelectorAll(".installments-variant").forEach((el) => {
+          el.hidden = el.dataset.variantId !== String(e.detail.variantId);
+        });
+      });
+    }
   });
 </script>
+
+<style>
+  /* Surface 11: hide the installments wrapper entirely when Shop Pay
+     Installments is unavailable (feature disabled or product ineligible) for
+     the currently visible variant, rather than leaving a stray mt-2 gap. */
+  .installments-wrapper:has(.installments-variant:not([hidden]):empty) {
+    display: none;
+  }
+</style>
 
 {% schema %}
 {
@@ -220,6 +287,16 @@
       "id": "price_subtext",
       "label": "Price subtext",
       "default": "Skæres efter mål, så du kun betaler for den længde, du vælger."
+    },
+    {
+      "type": "header",
+      "content": "Shop Pay-afdrag"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_installments",
+      "label": "Vis \"fra X kr./md.\" med Shop Pay under prisen",
+      "default": true
     },
     {
       "type": "range",
