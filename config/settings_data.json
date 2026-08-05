@@ -18,6 +18,8 @@
     "disable_savings_badge": false,
     "savings_badge_text": "[savings] % rabat",
     "favicon": "shopify://shop_images/TNT_Favicon_32x32_40294af4-1c3c-40e9-b2cd-1f513ef0d73f.png",
+    "contact_phone": "+45 70 20 10 30",
+    "contact_email": "support@textilogvoksdug.dk",
     "primary_color_light": "#0e1a28",
     "primary_foreground_color_light": "#ffffff",
     "accent_color_light": "#ffd814",

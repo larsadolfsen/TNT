@@ -43,13 +43,12 @@ Our theme uses a three-tier elevation system to prevent visual blending in dark 
 
 ## 4. Git and Deployment Workflow
 - **Compilation**: Always build Tailwind CSS after changing styling classes in liquid files by running `cmd /c npm run tailwind:build`.
-- **Theme Sync**: Commits pushed to the `main` branch of the remote Git repository (`https://github.com/larsadolfsen/TNT.git`) are automatically deployed to the live Shopify theme (`TNT/main`) via Shopify webhooks.
 - **Workflow**:
   1. Make modifications and verify locally.
   2. Run `cmd /c npm run tailwind:build` to compile.
   3. Run `git add .` and commit changes.
   4. Run `git pull --rebase` to integrate remote changes.
-  5. Run `git push origin main` to deploy.
+  5. Push commits to the remote repository to deploy.
 
 ## 5. CSS Customization & Specificity Guidelines
 - **Global CSS Variables & Defaults**: Define core style values as CSS variables globally (on `:root` or `.dark` in `snippets/css-variables.liquid`). Component stylesheets should reference these variables (with optional fallbacks).
