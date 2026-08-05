@@ -60,6 +60,19 @@
     "submit": "Søg",
     "no_results_html": "Ingen resultater fundet for {{ terms }}",
     "results_for_html": "{{ count }} resultater fundet for {{ terms }}"
+  },
+  "account": {
+    "account": "Konto",
+    "account_signed_in": "Konto — {{ name }}",
+    "sign_in_title": "Log ind",
+    "reassurance": "Hurtigere kassegang og din ordrehistorik.",
+    "sign_in": "Log ind",
+    "create_account": "Opret konto",
+    "forgot_password": "Glemt adgangskode?",
+    "orders": "Ordrer",
+    "addresses": "Adresser",
+    "sign_out": "Log ud",
+    "mobile_cta": "Log ind / Opret konto"
   }
 }
 

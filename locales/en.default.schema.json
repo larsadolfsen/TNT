@@ -100,5 +100,8 @@
       "3": "3 columns",
       "4": "4 columns"
     }
+  },
+  "account": {
+    "account": "Account"
   }
 }

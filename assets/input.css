@@ -11,6 +11,7 @@
   --color-card-shade: var(--color-card-shade);
   --color-accent: var(--color-accent);
   --color-on-accent: var(--color-on-accent);
+  --color-important: var(--color-important);
   --color-secondary: var(--color-accent);
   --color-secondary-container: var(--color-accent);
   --color-on-secondary-container: #1a1c1c;
@@ -453,6 +454,27 @@ html, body {
 
 body {
   background-color: var(--color-background);
+}
+
+/* Visible keyboard focus indicator (mandatory per docs/missing-surface-designs.md
+   Shared foundations — the theme applies focus:outline-none almost everywhere
+   with no replacement, which this rule provides). Scoped away from
+   <follow-on-shop> and its descendants, which manage their own focus styling. */
+.focus-ring:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
+follow-on-shop :focus-visible {
+  outline: revert;
+  outline-offset: revert;
 }
 
 /* Breakout styles for truly full-width section sections and testimonials */

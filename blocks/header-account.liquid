@@ -1,0 +1,166 @@
+{% doc %}
+  Header account access (Surface 1). Wraps Shopify's <shopify-account> element
+  around a trigger that reflects signed-in/signed-out state from the `customer`
+  object. Visible on both desktop and mobile:
+  - Mobile (<840px): icon-only, navigates straight to routes.account_url.
+  - Desktop (>=840px): if `panel_enabled`, opens a dropdown panel
+    (snippets/account-panel.liquid); otherwise also navigates directly.
+{% enddoc %}
+
+{%- liquid
+  assign show_label = block.settings.show_label
+  assign label_text = block.settings.label_text
+  if label_text == blank
+    assign label_text = 'account.account' | t
+  endif
+  assign panel_enabled = block.settings.panel_enabled
+
+  if customer
+    assign first_initial = customer.first_name | slice: 0, 1
+    assign last_initial = customer.last_name | slice: 0, 1
+    if first_initial != blank
+      assign initials = first_initial | append: last_initial
+    else
+      assign initials = customer.email | slice: 0, 1
+    endif
+    assign initials = initials | upcase
+    assign accessible_name = 'account.account_signed_in' | t: name: customer.first_name
+  else
+    assign accessible_name = 'account.account' | t
+  endif
+-%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+
+  /* Suppress <shopify-account>'s own default UI; only our trigger markup renders. */
+  #shopify-block-{{ block.id }} shopify-account > :not(.account-trigger-wrap) {
+    display: none;
+  }
+
+  #shopify-block-{{ block.id }} .account-trigger-desktop {
+    display: none;
+  }
+
+  #shopify-block-{{ block.id }} .account-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 288px;
+    max-width: calc(100vw - 32px);
+    z-index: 50;
+  }
+
+  @media screen and (min-width: 840px) {
+    #shopify-block-{{ block.id }} .account-trigger-mobile {
+      display: none;
+    }
+
+    #shopify-block-{{ block.id }} .account-trigger-desktop {
+      display: flex;
+    }
+  }
+{%- endstyle -%}
+
+<div {{ block.shopify_attributes }}>
+  <shopify-account>
+    <div class="account-trigger-wrap relative flex items-center">
+      {%- if panel_enabled -%}
+        <a
+          href="{{ routes.account_url }}"
+          class="account-trigger-mobile w-12 h-12 flex items-center justify-center rounded-full hover:opacity-80 active:scale-95 transition-all no-underline focus-ring"
+          aria-label="{{ accessible_name }}"
+        >
+          {%- if customer -%}
+            <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider" aria-hidden="true">{{ initials }}</span>
+          {%- else -%}
+            {% render 'icon', name: 'person', class: 'text-2xl text-primary' %}
+          {%- endif -%}
+        </a>
+
+        <button
+          type="button"
+          class="account-trigger-desktop items-center justify-center rounded-full hover:opacity-80 active:scale-95 transition-all cursor-pointer bg-transparent border-0 focus-ring h-12{% if show_label %} px-3 gap-1{% else %} w-12{% endif %}"
+          aria-expanded="false"
+          aria-haspopup="true"
+          aria-controls="account-panel-{{ block.id }}"
+          aria-label="{{ accessible_name }}"
+          data-account-trigger
+        >
+          {%- if customer -%}
+            <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider shrink-0" aria-hidden="true">{{ initials }}</span>
+          {%- else -%}
+            {% render 'icon', name: 'person', class: 'text-2xl text-primary shrink-0' %}
+          {%- endif -%}
+          {%- if show_label -%}
+            <span class="text-sm font-medium text-primary ml-1">{{ label_text }}</span>
+          {%- endif -%}
+        </button>
+
+        <div
+          id="account-panel-{{ block.id }}"
+          class="account-panel rounded-2xl border border-outline-variant bg-card-light shadow-md p-6"
+          role="dialog"
+          aria-label="{{ 'account.account' | t }}"
+          hidden
+        >
+          {% render 'account-panel', customer: customer %}
+        </div>
+      {%- else -%}
+        <a
+          href="{{ routes.account_url }}"
+          class="w-12 h-12 flex items-center justify-center rounded-full hover:opacity-80 active:scale-95 transition-all no-underline focus-ring{% if show_label %} md:w-auto md:px-3 md:gap-1{% endif %}"
+          aria-label="{{ accessible_name }}"
+        >
+          {%- if customer -%}
+            <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider shrink-0" aria-hidden="true">{{ initials }}</span>
+          {%- else -%}
+            {% render 'icon', name: 'person', class: 'text-2xl text-primary shrink-0' %}
+          {%- endif -%}
+          {%- if show_label -%}
+            <span class="hidden md:inline text-sm font-medium text-primary ml-1">{{ label_text }}</span>
+          {%- endif -%}
+        </a>
+      {%- endif -%}
+    </div>
+  </shopify-account>
+</div>
+
+{%- if panel_enabled -%}
+  <script src="{{ 'header-account.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Account",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_label",
+      "label": "Show text label next to icon (desktop only)",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Label text",
+      "default": "t:account.account"
+    },
+    {
+      "type": "checkbox",
+      "id": "panel_enabled",
+      "label": "Open a panel on click instead of navigating straight to /account",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Account"
+    }
+  ]
+}
+{% endschema %}

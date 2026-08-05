@@ -94,10 +94,21 @@
                   "name": "Cart Icon",
                   "settings": {},
                   "blocks": {}
+                },
+                "header_account_hd2K91": {
+                  "type": "header-account",
+                  "name": "Account",
+                  "settings": {
+                    "show_label": false,
+                    "label_text": "t:account.account",
+                    "panel_enabled": true
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
                 "header_theme_toggle_z9f7eF",
+                "header_account_hd2K91",
                 "header_cart_4wAidd"
               ]
             }

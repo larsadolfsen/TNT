@@ -1,0 +1,66 @@
+{% doc %}
+  Signed-out / signed-in contents of the header account dropdown panel
+  (Surface 1). Rendered inside blocks/header-account.liquid's panel shell,
+  which supplies the `role="dialog"` wrapper, border, background and shadow.
+
+  @param {object} [customer] - The signed-in customer, or blank when signed out.
+
+  @example
+  {% render 'account-panel', customer: customer %}
+{% enddoc %}
+
+{%- if customer -%}
+  {%- liquid
+    assign first_initial = customer.first_name | slice: 0, 1
+    assign last_initial = customer.last_name | slice: 0, 1
+    if first_initial != blank
+      assign initials = first_initial | append: last_initial
+    else
+      assign initials = customer.email | slice: 0, 1
+    endif
+    assign initials = initials | upcase
+  -%}
+  <div class="flex flex-col gap-4">
+    <div class="flex items-center gap-3 pb-4 border-b border-outline-variant">
+      <span
+        class="w-8 h-8 shrink-0 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider"
+        aria-hidden="true"
+      >{{ initials }}</span>
+      <div class="min-w-0">
+        <p class="text-sm font-bold text-primary m-0">{{ customer.name | default: customer.first_name }}</p>
+        <p class="text-xs text-primary/70 truncate m-0">{{ customer.email }}</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col">
+      <a href="{{ routes.account_url }}" class="h-12 flex items-center px-2 -mx-2 rounded-md text-sm text-primary hover:bg-card-high no-underline focus-ring">
+        {{ 'account.orders' | t }}
+      </a>
+      <a href="{{ routes.account_addresses_url }}" class="h-12 flex items-center px-2 -mx-2 rounded-md text-sm text-primary hover:bg-card-high no-underline focus-ring">
+        {{ 'account.addresses' | t }}
+      </a>
+    </div>
+
+    <div class="border-t border-outline-variant pt-4">
+      <a href="{{ routes.account_logout_url }}" class="text-sm text-primary font-semibold no-underline hover:underline focus-ring">
+        {{ 'account.sign_out' | t }}
+      </a>
+    </div>
+  </div>
+{%- else -%}
+  <div class="flex flex-col gap-4">
+    <h4 class="text-base font-bold text-primary m-0">{{ 'account.sign_in_title' | t }}</h4>
+    <p class="text-sm text-primary/85 leading-relaxed m-0">{{ 'account.reassurance' | t }}</p>
+
+    <div class="flex flex-col gap-2">
+      {% render 'button', label: 'account.sign_in' | t, variant: 'primary', as: 'a', url: routes.account_login_url, class: 'w-full h-12' %}
+      {% render 'button', label: 'account.create_account' | t, variant: 'secondary', as: 'a', url: routes.account_register_url, class: 'w-full h-12' %}
+    </div>
+
+    <div class="border-t border-outline-variant pt-4">
+      <a href="{{ routes.account_recover_url }}" class="text-sm text-primary font-semibold no-underline hover:underline focus-ring">
+        {{ 'account.forgot_password' | t }}
+      </a>
+    </div>
+  </div>
+{%- endif -%}

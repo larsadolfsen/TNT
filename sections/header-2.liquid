@@ -1,5 +1,15 @@
 {%- liquid
   # Header 2 builder section
+
+  # Pre-render icon markup for interpolation into JS template strings below
+  # (icon.liquid can only be rendered at Liquid compile time, not from the
+  # dynamically-generated cart HTML) — see .agents/AGENTS.md icon rule.
+  capture icon_shopping_basket_html
+    render 'icon', name: 'shopping_basket', class: 'text-4xl mb-2 text-primary/40'
+  endcapture
+  capture icon_delete_html
+    render 'icon', name: 'delete', class: 'text-base'
+  endcapture
 -%}
 
 
@@ -17,8 +27,11 @@
     <div>
       <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
         <span class="font-serif text-xl font-bold text-primary tracking-tight">Menu</span>
-        <button onclick="toggleMobileMenu(false)" class="material-symbols-outlined text-2xl text-primary bg-transparent border-0 cursor-pointer" aria-label="Luk menu">close</button>
+        <button type="button" onclick="toggleMobileMenu(false)" class="text-primary bg-transparent border-0 cursor-pointer w-12 h-12 flex items-center justify-center hover:opacity-80 transition-opacity focus-ring" aria-label="Luk menu">
+          {% render 'icon', name: 'close', class: 'text-2xl' %}
+        </button>
       </div>
+      {% render 'header-account-mobile-row' %}
       <nav class="space-y-4 flex flex-col">
         <a href="{{ routes.root_url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline">Forside</a>
         {%- if section.settings.menu != blank -%}
@@ -46,7 +59,9 @@
     <div>
       <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
         <span class="font-serif text-xl font-bold text-primary tracking-tight">Din Indkøbskurv</span>
-        <button onclick="toggleCartDrawer(false)" class="material-symbols-outlined text-2xl text-primary bg-transparent border-0 cursor-pointer" aria-label="Luk kurv">close</button>
+        <button type="button" onclick="toggleCartDrawer(false)" class="text-primary bg-transparent border-0 cursor-pointer w-12 h-12 flex items-center justify-center hover:opacity-80 transition-opacity focus-ring" aria-label="Luk kurv">
+          {% render 'icon', name: 'close', class: 'text-2xl' %}
+        </button>
       </div>
       <!-- Cart Items List -->
       <div id="cart-items" class="space-y-4 overflow-y-auto max-h-[calc(100vh-280px)] pr-2 hide-scrollbar">
@@ -156,7 +171,7 @@
     if (cart.item_count === 0) {
       cartItemsContainer.innerHTML = `
         <div class="py-12 text-center text-primary/85 flex flex-col items-center justify-center">
-          <span class="material-symbols-outlined text-4xl mb-2 text-primary/40">shopping_basket</span>
+          {{ icon_shopping_basket_html | strip_newlines }}
           <p class="text-sm font-semibold">Din indkøbskurv er tom.</p>
         </div>
       `;
@@ -276,8 +291,8 @@
                   <span class="w-6 text-center text-xs sm:text-sm text-primary font-bold">${item.quantity}</span>
                   <button onclick="changeQuantity('${item.key}', 1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">+</button>
                 </div>
-                <button onclick="removeItem('${item.key}')" class="w-8 h-8 flex items-center justify-center text-black hover:text-red-600 bg-transparent border-0 cursor-pointer transition-opacity duration-200 md:opacity-0 md:group-hover:opacity-100 opacity-100" aria-label="Fjern vare">
-                  <span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
+                <button onclick="removeItem('${item.key}')" class="w-8 h-8 flex items-center justify-center text-primary hover:opacity-80 bg-transparent border-0 cursor-pointer transition-opacity duration-200 md:opacity-0 md:group-hover:opacity-100 opacity-100 focus-ring" aria-label="Fjern vare">
+                  {{ icon_delete_html | strip_newlines }}
                 </button>
               </div>
               <span class="text-sm sm:text-base font-bold text-primary">${formatMoney(linePrice)}</span>
