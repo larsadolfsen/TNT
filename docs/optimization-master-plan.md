@@ -195,14 +195,31 @@ if it ever becomes one.)
 
 | ID | Task | Tier | Test |
 |----|------|------|------|
-| B5.1 | Data: ensure every per-cm product has unit pricing set (`1 cm` / `1 m`). **Catalog is mid-migration** — verified 2026-08-05 that `beige-voksdug-...-retro-trekanter-i-brun-140-cm` is 0,79/cm with unit pricing, while its two visually identical siblings (`gra-voksdug-...-i-bla-140-cm`, `gra-voksdug-...-140-cm`) are still 79,00/m with none. Until this is consistent, near-identical products show wildly different prices side by side. Decide the fate of the 3 test Metervare products too (configure / unpublish / delete) | [H] | API: every per-cm variant returns non-null `unitPriceMeasurement`; no product priced <10 kr lacks it |
+| B5.1 | Data: per-cm products need unit pricing set (`1 cm` / `1 m`) for their price to render correctly. **Not a blocker** — this is a development store, so mid-migration inconsistency is expected and fine; the catalog gets tidied as products are converted. Verified 2026-08-05: `beige-voksdug-...-i-brun-140-cm` is 0,79/cm with unit pricing, its two visually identical siblings still 79,00/m with none. A per-cm product missing unit pricing simply renders its raw price until configured — no code change depends on catalog-wide consistency | [H] | Spot-check one converted product shows its per-meter price |
 | B5.2 | `snippets/product-card.liquid`: delete `is_meter_product` + `×100`. When `unit_price_measurement` is present, render the **unit price as the headline** and suppress the raw per-cm price; otherwise unchanged | [S] | Beige product's card shows "79,00 kr/m" as the main price, no "0,79 kr" anywhere; a normal product's card is untouched |
 | B5.3 | `blocks/product-price.liquid`: delete the `is_metervare` branch, `×100`, and `pr. meter inkl. moms` suffix (incl. the per-variant JSON payload and `updatePrice()` JS path). Same headline rule as B5.2 for non-app-owned templates | [S] | Cut-to-length product page shows the per-meter price as headline; variant switching keeps it correct; normal products unchanged |
 | B5.4 | Product template: remove the theme price block from the cut-to-length product template so the app block owns product-page pricing (needs A4) | [H] | Product page shows only the app block's pricing, no duplicate price row |
 | B5.5 | Verify no metervare trigger remains: grep `metervare`, `Metervare`, `times: 100`, `pr. meter` across the theme | [H] | Only hits are app-owned line-item properties in cart/header, if any |
-| B5.6 | Check in admin whether an app, Flow, or product feed reads `custom.metervare` before deleting the metafield definition (MCP lacks `appInstallations` scope — must be manual) | — | Manual admin check; then delete definition `gid://shopify/MetafieldDefinition/369929847117` |
+| B5.6 | Remove `product.type == 'Metervare'` from the theme. Verified 2026-08-05: exactly one live call site (`snippets/product-card.liquid:35`), deleted by B5.2; other hits are inside `product-customizer.liquid`, deleted by B4. `templateSuffix` is a separate per-product admin setting and is unaffected | [H] | grep for `'Metervare'` returns nothing outside the customizer |
 
-Sequencing note: B5.2–B5.4 only need B5.1, **not** the app deploy. The
+**⚠️ Do NOT delete the `custom.metervare` metafield.** An earlier revision of
+this plan listed deleting definition `gid://shopify/MetafieldDefinition/369929847117`,
+following the audit's note that removal is "safe from the theme's side." That
+was written before the app existed and is now wrong — the app depends on it:
+
+- `cart-transform/src/run.js:34` — the metafield is what sets `isMetervare`,
+  i.e. whether the cart bundle is built at all.
+- `by-the-meter-block` — the same flag gates whether the block renders, plus a
+  whole `metervare_*` family (`metervare_width_option`, `metervare_min_length`,
+  `metervare_shape_variants`, `metervare_price_variant`, …) carrying the
+  per-product configuration.
+
+The metafield stops being a theme concern (B5.2/B5.3 remove the last theme
+reads) and becomes the **app's opt-in API**. It gets more load-bearing, not
+less. The audit's §2 "unverified external-consumer check" now has an answer:
+yes — our own app reads it.
+
+Sequencing note: B5.2–B5.5 need neither the app deploy nor a fully consistent catalog, **not** the app deploy. The
 `×100` display and the customizer's cart math are independent concerns — the
 audit's §4 constraint ("can't delete the math until something else owns the
 per-cm cart total") applies to *restating prices per meter*, which was ruled
