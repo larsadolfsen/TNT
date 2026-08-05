@@ -174,13 +174,33 @@ is a real product**. The other three (`klar-gennemsigtig-voksdug-*`,
 is one variant, not eight — and it was configured manually in admin on
 2026-08-05 (Samlet mængde `1 cm` / Basismål `1 m` → renders "89,00 kr./m").
 
+**The per-cm price must never be the headline.** A variant priced 0,79 kr/cm
+renders as "0,79 kr" today, which reads as 79 øre and is actively misleading —
+nobody buys 1 cm. Where the corrected price comes from depends on the surface:
+
+| Surface | Owner | Why |
+|---|---|---|
+| Product page price for a cut-to-length product | **App block** | The app already computes the cut price (its summary shows per-meter rate, unit total, total). Merchant removes the theme's price block from that product template and the app block owns the display. |
+| Collection card / search result price | **Theme** | No app-block slot exists inside a collection grid — a theme app extension cannot render per card. Unavoidably theme code. |
+
+**Theme-side signal: presence of `unit_price_measurement`, not any metervare
+trigger.** Unit pricing is configured on exactly the per-cm products and
+nothing else, so for this catalog "has unit pricing" ≡ "is metervare" — but the
+theme never learns the client-specific concept, which keeps it sellable. A
+merchant selling rope or cable gets identical behaviour by configuring unit
+pricing. (Known limitation: a catalog that *also* sells pack-priced goods with
+unit pricing — a 500 g coffee showing "50 kr/kg" — would wrongly lead with the
+per-kg figure. Not the case here; add a generic per-product metafield override
+if it ever becomes one.)
+
 | ID | Task | Tier | Test |
 |----|------|------|------|
-| B5.1 | Confirm unit pricing is saved on the real product; decide whether the 3 test products get the same treatment, get unpublished, or get deleted | [H] | Admin shows "89,00 kr./m" on the real variant; `unitPriceMeasurement` non-null via API |
-| B5.2 | Delete `is_meter_product` + `×100` from `snippets/product-card.liquid`; render `{% render 'unit-price', size: 'sm' %}` instead (the P4 call site already exists) | [H] | Real product's card shows 89,00 kr./m; no other card's price changes |
-| B5.3 | Delete the `is_metervare` branch, `×100`, and `pr. meter inkl. moms` suffix from `blocks/product-price.liquid`, including the per-variant JSON payload and `updatePrice()` JS path; `unit-price` at `size: 'base'` takes over | [S] | Real product page shows 0,89 kr with "89,00 kr./m" beneath; variant switching keeps both correct |
-| B5.4 | Verify no metervare trigger remains: grep for `metervare`, `Metervare`, `times: 100`, `pr. meter` across the theme | [H] | Only hits are the app-owned line-item properties in cart/header, if any |
-| B5.5 | Check in admin whether an app, Flow, or product feed reads `custom.metervare` before deleting the metafield definition (MCP lacks `appInstallations` scope — must be manual) | — | Manual admin check; then delete definition `gid://shopify/MetafieldDefinition/369929847117` |
+| B5.1 | Data: ensure every per-cm product has unit pricing set (`1 cm` / `1 m`). **Catalog is mid-migration** — verified 2026-08-05 that `beige-voksdug-...-retro-trekanter-i-brun-140-cm` is 0,79/cm with unit pricing, while its two visually identical siblings (`gra-voksdug-...-i-bla-140-cm`, `gra-voksdug-...-140-cm`) are still 79,00/m with none. Until this is consistent, near-identical products show wildly different prices side by side. Decide the fate of the 3 test Metervare products too (configure / unpublish / delete) | [H] | API: every per-cm variant returns non-null `unitPriceMeasurement`; no product priced <10 kr lacks it |
+| B5.2 | `snippets/product-card.liquid`: delete `is_meter_product` + `×100`. When `unit_price_measurement` is present, render the **unit price as the headline** and suppress the raw per-cm price; otherwise unchanged | [S] | Beige product's card shows "79,00 kr/m" as the main price, no "0,79 kr" anywhere; a normal product's card is untouched |
+| B5.3 | `blocks/product-price.liquid`: delete the `is_metervare` branch, `×100`, and `pr. meter inkl. moms` suffix (incl. the per-variant JSON payload and `updatePrice()` JS path). Same headline rule as B5.2 for non-app-owned templates | [S] | Cut-to-length product page shows the per-meter price as headline; variant switching keeps it correct; normal products unchanged |
+| B5.4 | Product template: remove the theme price block from the cut-to-length product template so the app block owns product-page pricing (needs A4) | [H] | Product page shows only the app block's pricing, no duplicate price row |
+| B5.5 | Verify no metervare trigger remains: grep `metervare`, `Metervare`, `times: 100`, `pr. meter` across the theme | [H] | Only hits are app-owned line-item properties in cart/header, if any |
+| B5.6 | Check in admin whether an app, Flow, or product feed reads `custom.metervare` before deleting the metafield definition (MCP lacks `appInstallations` scope — must be manual) | — | Manual admin check; then delete definition `gid://shopify/MetafieldDefinition/369929847117` |
 
 Sequencing note: B5.2–B5.4 only need B5.1, **not** the app deploy. The
 `×100` display and the customizer's cart math are independent concerns — the
