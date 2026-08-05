@@ -93,7 +93,7 @@
       -%}
       <a href="{{ sub_col.url }}" data-collection-chip="true" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
         {%- if is_pill_active -%}
-          <span class="material-symbols-outlined text-xs mr-1 select-none pointer-events-none" style="font-size: 14px; font-weight: 900;">check</span>
+          {% render 'icon', name: 'check', class: 'text-xs mr-1 select-none pointer-events-none', style: 'font-size: 14px; font-weight: 900;' %}
         {%- endif -%}
         {{ pill_label }}
       </a>

@@ -72,7 +72,7 @@
       <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
         <span>{{ block.settings.compare_at_price_label | default: settings.compare_at_price_label | default: 'Normalpris' }}:</span>
         <span class="line-through">{{ compare_price | money }}</span>
-        <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
+        {% render 'icon', name: 'info', class: 'text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center', attributes: 'title="Vejledende udsalgspris"' %}
       </div>
     {%- else -%}
       <!-- Standard layout -->

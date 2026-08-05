@@ -32,7 +32,7 @@
 
 <div class="flex flex-col items-center text-center space-y-2" {{ block.shopify_attributes }}>
   {%- if block.settings.icon != blank -%}
-    <span class="material-symbols-outlined text-2xl text-primary/70">{{ block.settings.icon }}</span>
+    {% render 'icon', name: block.settings.icon, class: 'text-2xl text-primary/70' %}
   {%- endif -%}
   {%- if block.settings.title != blank -%}
     <span class="text-xs font-bold text-primary/80 leading-tight uppercase tracking-wider">{{ block.settings.title }}</span>

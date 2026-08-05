@@ -24,7 +24,7 @@
      data-shipping-saturday-cutoff="{{ settings.shipping_saturday_cutoff | default: '12:00' }}"
      data-shipping-saturday-delivery="{{ settings.shipping_saturday_delivery | default: 'tirsdag' }}"
      {{ block.shopify_attributes }}>
-  <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+  {% render 'icon', name: 'check_circle', class: 'text-lg text-emerald-600', style: "font-variation-settings: 'FILL' 1;" %}
   <span id="countdown-content-{{ block.id }}">
     {{ block.settings.text }} <span class="font-bold">12.00</span>{{ block.settings.suffix }}
   </span>

@@ -1,5 +1,5 @@
 <div class="flex items-center gap-2.5 text-primary font-medium" {{ block.shopify_attributes }}>
-  <span class="material-symbols-outlined text-lg text-emerald-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+  {% render 'icon', name: 'check_circle', class: 'text-lg text-emerald-600', style: "font-variation-settings: 'FILL' 1;" %}
   <span>{{ block.settings.text }}</span>
 </div>
 
