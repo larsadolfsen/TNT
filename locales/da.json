@@ -60,6 +60,10 @@
     "submit": "Søg",
     "no_results_html": "Ingen resultater fundet for {{ terms }}",
     "results_for_html": "{{ count }} resultater fundet for {{ terms }}"
+  },
+  "custom_liquid": {
+    "empty_title": "Brugerdefineret Liquid",
+    "empty_description": "Tilføj kode i sektionens indstillinger for at vise indhold her."
   }
 }
 

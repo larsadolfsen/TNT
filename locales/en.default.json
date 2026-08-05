@@ -60,6 +60,10 @@
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "custom_liquid": {
+    "empty_title": "Custom Liquid",
+    "empty_description": "Add code in the section settings to render content here."
   }
 }
 
