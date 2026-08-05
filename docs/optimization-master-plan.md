@@ -312,13 +312,75 @@ untouched and B5 can ship before A4/B4.
 | S3 | Demo store content, presets, `/listings` folder | [O] | Demo store review against Theme Store demo requirements |
 | S4 | Final `theme-check`, exclusivity grep (no credits/affiliate links), package + submit | [S] | Clean check; submission accepted into review |
 
-## Parallelism summary
+## Status and remaining sequence
 
-- **Wave 1:** five tracks (A, B, C, D, E) fully concurrent — up to 5 agents.
-- **Wave 2:** five page-area tracks (P1–P5) concurrent + B4 when A4 lands —
-  up to 6 agents; within-track tasks serial.
-- **Wave 3:** R1's three sections, R3's five files, and R4–R6 partition by
-  file — up to ~6 concurrent.
-- Critical path: T0.1 → (E1 ∥ D0) → P1 (largest track) → S1/S2 → S3 → S4,
-  with A1→A2→A3→A4→B4 as the second-longest chain, running fully parallel
-  to it.
+_Last re-sequenced 2026-08-05 (v1.0.94). Waves 0–2 are complete; the sections
+above are kept as the record of what each task delivered._
+
+**Done:** Wave 0 (T0.1, T0.2) · Wave 1 (A1–A3, B1–B3, C1, D0–D4, E1) ·
+Wave 2 (P1–P5, all 16 surfaces) · the collection-card 100× pricing fix.
+theme-check sits at 8 errors, below the 12-error baseline.
+
+**Not done, and blocked on a human:** the app has never been deployed —
+`shopify app config link` + `shopify app deploy` need Partner access. Nothing
+in the app has ever executed; expect first-run bugs.
+
+### Remaining sequence
+
+**Stage 1 — app rename, before any deploy** (A4.5). Free now, a data
+migration later: the app has never shipped, so only one dev-store definition
+and four values carry the Danish names. Must precede A5, which would otherwise
+create definitions under names we intend to replace.
+
+**Stage 2 — app self-setup** (A5 → A6, serial; A6 needs A5's `write_products`
+scope). A5 makes the app create its own metafield definitions; A6 makes it
+write native unit pricing when a merchant enables cut-to-length, so the
+merchant configures once and the theme still reads only native data.
+
+**Stage 3 — deploy and verify** (A4, human). Link, deploy, install, configure
+a real product, place a test cut order. Everything downstream waits on this
+because it is the first time any app code runs.
+
+**Stage 4 — post-deploy theme cleanup** (A4.6, B4; both need Stage 3).
+A4.6 removes the theme's `_metervare_title` reads once the cart-transform's
+bundle title is confirmed. B4 deletes the customizer block (2 680 lines), the
+Metervare template, and the textile badges. Together these take the theme to
+zero metervare references.
+
+**Runs in parallel with Stages 1–4, no dependency on any of them:**
+
+- **B5.2, B5.3, B5.5** — unit price as the headline on cards and the price
+  block, then grep-verify. Independent of the app: the theme's signal is
+  native `unit_price_measurement`, which is already configured on the real
+  product. *This is the fix for "0,79 kr" showing as a headline price.*
+- **Wave 3 (R1–R6)** — refactor and grid→flex. Partitioned by file, ~6
+  concurrent. **R4 still blocked on the product-page mobile-ordering decision
+  in `grid-to-flexbox-migration.md`** — R1, R2, R3, R5, R6 are not.
+- **B5.1** — configure unit pricing on further per-cm products as they are
+  converted. Not a blocker; a product without it renders its raw price.
+
+**Stage 5 — submission** (S1 → S2 → S3 → S4, after Wave 3 settles). Note S1/S2
+need a Lighthouse baseline that still does not exist — the storefront is not
+reachable from the build container, so it must be captured from a local
+machine before remediation can be measured.
+
+### Critical path
+
+`A4.5 → A5 → A6 → A4 (human deploy) → A4.6/B4 → S1/S2 → S3 → S4`
+
+The app chain is now the long pole, because the theme work that used to sit on
+the critical path (Wave 2) is finished. B5.2/B5.3 and Wave 3 run fully
+alongside it and should be started immediately rather than queued behind the
+deploy.
+
+### Open decisions blocking work
+
+1. **Product-page mobile ordering** (`grid-to-flexbox-migration.md`) — blocks
+   R4 only. Accept Title/Trust moving below the gallery on mobile in exchange
+   for deleting the duplicate-block hack, or keep that component on Grid.
+2. **The 3 test Metervare products** — configure, unpublish, or delete.
+3. **Wave 2 has never been seen in a browser.** Predictive search, mega menu,
+   cart summary, recommendations, contact page and the localization selectors
+   were verified only by theme-check, which is a linter. Refactoring on top of
+   unverified code (Wave 3) means a later regression cannot be attributed to
+   its cause.
