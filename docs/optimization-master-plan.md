@@ -61,8 +61,32 @@ store launches.
 | A2 | Generalize cart-transform function (remove client product assumptions) | [S] | Function fires correctly on a dev-store test product |
 | A3 | Build theme app extension: by-the-meter app block, schema-driven (configurable SKU/handle/unit price) | [O] | Install on dev store; add block in theme editor; complete an end-to-end test order |
 | A4 | Client migration: install app on client store; swap `product.Metervare.json` to the app block; verify | [S] | Preview theme on **client store** + real test order; only then publish |
-| A5 | App owns its data model: create the `custom.metervare` definition and its `metervare_*` siblings via `metafieldDefinitionCreate` on install, instead of the README's manual admin steps. Needs `write_products` added to `access_scopes` (currently `write_cart_transforms,read_cart_transforms`) | [S] | Fresh install on a dev store: definitions appear in Settings → Custom data with no manual setup |
+| A4.5 | **Rename the metafield family to English before A5 ships** — see table below. Do it now: the app has never been deployed, so nothing in production depends on the current names. Only the store's existing definition (`gid://shopify/MetafieldDefinition/369929847117`) and its 4 values need updating, on a dev store, for one real product. After deploy this becomes a data migration | [S] | Fresh grep for `metervare` returns nothing in either repo except changelog/plan history; test cut still bundles correctly |
+| A5 | App owns its data model: create the `custom.cut_to_length` definition and its `cut_to_length_*` siblings via `metafieldDefinitionCreate` on install, instead of the README's manual admin steps. Needs `write_products` added to `access_scopes` (currently `write_cart_transforms,read_cart_transforms`) | [S] | Fresh install on a dev store: definitions appear in Settings → Custom data with no manual setup |
 | A6 | When a merchant enables metervare on a product, the app also writes native `unitPriceMeasurement` (`1 cm` / `1 m`) + `showUnitPrice` via `productVariantsBulkUpdate`. Removes double configuration: merchant sets it once in the app, and both app behavior and theme display light up. Depends on A5's `write_products` scope | [S] | Enable metervare on a test product → admin shows "Stykpris 79,00 kr./m" without the merchant touching it; theme card leads with the per-meter price |
+
+**A4.5 rename map** — `metervare` is Danish and should not ship in an app that
+may be sold. `cut_to_length` chosen over `by_the_meter` because it is
+unit-agnostic (a merchant selling by the yard or foot gets sensible names).
+
+| Current | English |
+|---|---|
+| `custom.metervare` | `custom.cut_to_length` |
+| `metervare_min_length` / `_max_length` / `_length_step` | `cut_to_length_min` / `_max` / `_step` |
+| `metervare_width` / `_width_option` | `cut_to_length_width` / `_width_option` |
+| `metervare_shape_variants` | `cut_to_length_shape_variants` |
+| `metervare_width_surcharge_variant` | `cut_to_length_width_surcharge_variant` |
+| `metervare_price_variant` / `_carrier_variant` | `cut_to_length_price_variant` / `_carrier_variant` |
+| `_metervare_variant_id` (line property) | `_cut_variant_id` |
+| `_metervare_title` (line property) | see A4.6 — likely deleted, not renamed |
+
+Touch points: `extensions/cart-transform/src/run.graphql` + `run.js`,
+`extensions/by-the-meter-block/**`, the app README, and the store's metafield
+definition + values.
+
+| ID | Task | Tier | Test |
+|----|------|------|------|
+| A4.6 | Theme reads app data via `item.properties._metervare_title` in `sections/cart.liquid:38` and `sections/header-2.liquid:246` — app coupling that B5 does not remove. The cart-transform already sets the bundle title (`{product} ({Shape} {w}x{l} cm)`), so the theme should render `item.title` natively and drop the special-casing entirely. Verify at deploy, then delete both reads | [S] | Cart and cart drawer show the bundle title with no `_`-property special-casing; theme grep for `metervare` returns nothing |
 
 **Track B — Genericization** (owns: `config/settings_schema.json` [branding
 sections], `sections/header-2.liquid` [contact markup only],
