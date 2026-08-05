@@ -48,8 +48,8 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 
 | # | Task | Files | Status |
 |---|------|-------|--------|
-| 1 | Mobile menu: remove accordions | `sections/header-2.liquid` | pending |
-| 2 | R1a — extract header inline script | `sections/header-2.liquid` → `assets/` | pending |
+| 1 | Mobile menu: remove accordions | `sections/header-2.liquid` | **done** (4059943) |
+| 2 | R1a — extract header inline script | `sections/header-2.liquid` → `assets/header.js` | **done** (e75250c), 2 open findings |
 | 3 | R1b — extract main-collection inline script | `sections/main-collection.liquid` → `assets/` | pending |
 | 4 | R1c — extract breadcrumbs inline scripts (2) | `sections/breadcrumbs.liquid` → `assets/` | pending |
 | 5 | R3a — split `main-collection.liquid` (878 lines) | `sections/main-collection.liquid` | pending |
@@ -78,6 +78,15 @@ hover/focus. Cart icon opens the cart drawer. Search icon opens the search
 field and predictive results appear. Check the browser console for errors on
 load — an extraction that drops a Liquid-dependent value usually shows up as
 `undefined` there.
+
+Then exercise the cart drawer specifically, since 443 lines of it moved:
+add a product, change its quantity with `+` and `−`, remove it, and empty the
+cart completely. **Watch the prices.** Every price in the drawer must match
+the product page, and the subtotal must match the line totals. The formatter
+was rewritten to read `shop.money_format`, and there is a known open gap
+(`amount_with_space_separator`, see `.superpowers/sdd/progress.md`) that would
+show as `1,234.56` where the rest of the site says `1.234,56`. Also confirm
+the empty-cart message reads Danish and not a raw `cart.…` key.
 
 ### 3 — R1b, collection script extraction
 Open a collection page. Filters apply and clear; sort dropdown reorders;
