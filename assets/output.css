@@ -254,6 +254,9 @@
   .pointer-events-none {
     pointer-events: none;
   }
+  .collapse {
+    visibility: collapse;
+  }
   .invisible {
     visibility: hidden;
   }
@@ -2078,9 +2081,66 @@
       }
     }
   }
+  .focus\:not-sr-only {
+    &:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+      clip-path: none;
+      white-space: normal;
+    }
+  }
+  .focus\:fixed {
+    &:focus {
+      position: fixed;
+    }
+  }
+  .focus\:top-2 {
+    &:focus {
+      top: calc(var(--spacing) * 2);
+    }
+  }
+  .focus\:left-2 {
+    &:focus {
+      left: calc(var(--spacing) * 2);
+    }
+  }
+  .focus\:z-\[100\] {
+    &:focus {
+      z-index: 100;
+    }
+  }
+  .focus\:rounded {
+    &:focus {
+      border-radius: 0.25rem;
+    }
+  }
   .focus\:border-slate-400 {
     &:focus {
       border-color: var(--color-slate-400);
+    }
+  }
+  .focus\:bg-primary {
+    &:focus {
+      background-color: var(--color-primary);
+    }
+  }
+  .focus\:px-4 {
+    &:focus {
+      padding-inline: calc(var(--spacing) * 4);
+    }
+  }
+  .focus\:py-2 {
+    &:focus {
+      padding-block: calc(var(--spacing) * 2);
+    }
+  }
+  .focus\:text-on-primary {
+    &:focus {
+      color: var(--color-on-primary);
     }
   }
   .focus\:ring-0 {

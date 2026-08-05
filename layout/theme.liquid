@@ -52,6 +52,10 @@
   </head>
 
   <body class="template-{{ template.name | handle }} flex flex-col min-h-screen">
+    <a href="#MainContent" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary focus:text-on-primary focus:px-4 focus:py-2 focus:rounded">
+      {{ 'accessibility.skip_to_text' | t }}
+    </a>
+
     {% sections 'header-group' %}
 
     <main id="MainContent" class="focus-none grow" role="main" tabindex="-1">

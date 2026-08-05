@@ -8,6 +8,9 @@
  * ------------------------------------------------------------
  */
 {
+  "accessibility": {
+    "skip_to_text": "Spring til indhold"
+  },
   "404": {
     "title": "404",
     "not_found": "Siden blev ikke fundet.",
