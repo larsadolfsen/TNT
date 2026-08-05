@@ -26,14 +26,19 @@
   {%- else -%}
     #shopify-block-{{ block.id }}.shopify-block {
       justify-content: center;
-      flex-grow: 1;
-      width: 100%;
+      /* Grow to fill the row, but stay shrinkable: the left/right groups are
+         flex-shrink: 0, so a fixed width: 100% here overflows the row on
+         narrow screens and clips whatever sits last in the right group.
+         min-width: 0 overrides the flex default of min-width: auto, which
+         would otherwise refuse to shrink below the content's width. */
+      flex: 1 1 0%;
+      min-width: 0;
     }
   {%- endif -%}
 {%- endstyle -%}
 
 <div
-  class="header-group header-group-block flex items-center{% if block.settings.alignment == 'center' or block.settings.alignment == blank %} w-full{% endif %}"
+  class="header-group header-group-block flex items-center{% if block.settings.alignment == 'center' or block.settings.alignment == blank %} w-full min-w-0{% endif %}"
   style="height: calc(var(--row-height, 56px) - 8px); justify-content: {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};"
   {{ block.shopify_attributes }}
 >
