@@ -12,8 +12,18 @@
  * #search-input to a client-side collection filter (window.filterProducts)
  * and must not be fought here. See docs/missing-surface-designs.md
  * Surface 4, Open question 4.
+ *
+ * Both blocks/header-search.liquid and blocks/header-search-icon.liquid can
+ * each emit a <script src="predictive-search.js"> tag on the same page (the
+ * icon block always loads it, independent of its own predictive_search
+ * setting, so its mobile-trigger fallback works even when the desktop bar's
+ * predictive search is off). Guard against running init() twice, which
+ * would double-bind the mobile overlay's open/close listeners.
  */
 (function () {
+  if (window.__tntPredictiveSearchLoaded) return;
+  window.__tntPredictiveSearchLoaded = true;
+
   if (document.getElementById('product-grid')) return;
 
   var DEBOUNCE_MS = 200;
@@ -41,6 +51,60 @@
     });
   }
 
+  /* ---------------------------------------------------------------------
+   * Money formatting
+   *
+   * /search/suggest.json returns product prices as plain decimal strings
+   * in the shop's major currency unit (e.g. "199.00"), with no currency
+   * symbol and no locale formatting applied server-side — unlike Liquid's
+   * `money` filter, which is unavailable here since these rows are built
+   * from client-fetched JSON, not re-rendered through Liquid per result.
+   * This replicates the shop's configured money_format (passed through
+   * via data-ps-strings, see snippets/predictive-search-panel.liquid)
+   * client-side, the same way Shopify's own money.js does.
+   * ------------------------------------------------------------------- */
+  function centsFromDecimalString(value) {
+    var n = parseFloat(value);
+    if (isNaN(n)) return 0;
+    return Math.round(n * 100);
+  }
+
+  function formatWithDelimiters(cents, precision, thousands, decimal) {
+    precision = typeof precision === 'undefined' ? 2 : precision;
+    thousands = typeof thousands === 'undefined' ? ',' : thousands;
+    decimal = typeof decimal === 'undefined' ? '.' : decimal;
+    if (isNaN(cents) || cents === null) return '0';
+    var amount = (cents / 100).toFixed(precision);
+    var parts = amount.split('.');
+    var dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands);
+    var decimals = parts[1] ? decimal + parts[1] : '';
+    return dollars + decimals;
+  }
+
+  function formatMoney(cents, format) {
+    var formatString = format || '${{amount}}';
+    var match = formatString.match(/\{\{\s*(\w+)\s*\}\}/);
+    if (!match) return formatString;
+    var value;
+    switch (match[1]) {
+      case 'amount_no_decimals':
+        value = formatWithDelimiters(cents, 0);
+        break;
+      case 'amount_with_comma_separator':
+        value = formatWithDelimiters(cents, 2, '.', ',');
+        break;
+      case 'amount_no_decimals_with_comma_separator':
+        value = formatWithDelimiters(cents, 0, '.', ',');
+        break;
+      case 'amount_with_space_separator':
+        value = formatWithDelimiters(cents, 2, ' ', ',');
+        break;
+      default:
+        value = formatWithDelimiters(cents, 2);
+    }
+    return formatString.replace(/\{\{\s*\w+\s*\}\}/, value);
+  }
+
   function buildUrl(query, productsLimit, otherLimit, showQueries) {
     var limit = Math.max(productsLimit, otherLimit, 1);
     var types = ['product', 'collection', 'page', 'article'];
@@ -65,6 +129,7 @@
     if (!this.panel) return;
 
     this.strings = getStrings(this.panel.getAttribute('data-ps-panel'));
+    this.moneyFormat = this.strings.moneyFormat || '${{amount}}';
     this.productsLimit = parseInt(input.getAttribute('data-ps-results-products'), 10) || 5;
     this.otherLimit = parseInt(input.getAttribute('data-ps-results-other'), 10) || 3;
     this.showQueries = input.getAttribute('data-ps-show-queries') !== 'false';
@@ -290,14 +355,22 @@
     this.hideAllStates();
     this.lastRenderedQuery = query;
 
-    var products = results.products || [];
+    // The endpoint is asked for max(productsLimit, otherLimit) results PER
+    // TYPE (resources[limit_scope]=each applies one number to every type in
+    // the same request — /search/suggest.json has no per-type limit), so
+    // each group is re-trimmed to its own setting here.
+    var products = (results.products || []).slice(0, this.productsLimit);
     var collections = results.collections || [];
     var pages = results.pages || [];
     var articles = results.articles || [];
     var queries = results.queries || [];
-    var others = collections.concat(pages, articles);
+    var othersTagged = collections
+      .map(function (item) { return { item: item, kind: 'collection' }; })
+      .concat(pages.map(function (item) { return { item: item, kind: 'page' }; }))
+      .concat(articles.map(function (item) { return { item: item, kind: 'page' }; }))
+      .slice(0, this.otherLimit);
 
-    var totalCount = products.length + others.length + queries.length;
+    var totalCount = products.length + othersTagged.length + queries.length;
 
     if (totalCount === 0) {
       this.renderNoResults(query, queries);
@@ -344,18 +417,21 @@
     }
 
     // Collections & pages
-    if (others.length && this.otherListEl) {
+    if (othersTagged.length && this.otherListEl) {
       this.otherListEl.innerHTML = '';
-      others.forEach(function (item) {
-        var kind = collections.indexOf(item) !== -1 ? 'collection' : 'page';
-        var row = this.buildOtherRow(item, kind);
+      var hasCollection = false;
+      var hasPage = false;
+      othersTagged.forEach(function (entry) {
+        if (entry.kind === 'collection') hasCollection = true;
+        else hasPage = true;
+        var row = this.buildOtherRow(entry.item, entry.kind);
         this.otherListEl.appendChild(row);
         this.rows.push(row);
       }, this);
       if (this.otherHeadingEl) {
-        var heading = collections.length && pages.concat(articles).length
+        var heading = hasCollection && hasPage
           ? this.strings.collectionsAndPages
-          : collections.length
+          : hasCollection
           ? this.strings.collections
           : this.strings.pages;
         this.otherHeadingEl.textContent = heading;
@@ -447,7 +523,11 @@
       contextEl.classList.remove('hidden');
     }
 
-    var imageUrl = product.image || (product.featured_image && product.featured_image.url) || '';
+    // /search/suggest.json's documented product resource exposes the
+    // thumbnail as a plain `image` URL string — there is no `featured_image`
+    // object on this endpoint (that shape belongs to the Liquid `product`
+    // object, not the JSON one).
+    var imageUrl = product.image || '';
     var imageEl = node.querySelector('[data-field="image"]');
     var fallbackEl = node.querySelector('[data-field="thumb-fallback"]');
     if (imageUrl && imageEl) {
@@ -459,23 +539,48 @@
     var priceEl = node.querySelector('[data-field="price"]');
     var compareEl = node.querySelector('[data-field="compare"]');
     var soldOutEl = node.querySelector('[data-field="sold-out"]');
+    var unitPriceEl = node.querySelector('[data-field="unit-price"]');
 
     if (product.available === false) {
       if (priceEl) priceEl.classList.add('hidden');
       if (soldOutEl) soldOutEl.classList.remove('hidden');
     } else if (priceEl) {
-      var priceText = product.price != null ? String(product.price) : '';
+      var priceText = formatMoney(centsFromDecimalString(product.price), this.moneyFormat);
       if (product.price_varies) priceText = this.strings.fromPrefix + priceText;
       priceEl.textContent = priceText;
 
-      if (
-        compareEl &&
-        product.compare_at_price &&
-        product.compare_at_price_min !== product.price_min &&
-        String(product.compare_at_price) !== String(product.price)
-      ) {
-        compareEl.textContent = String(product.compare_at_price);
+      // The endpoint has no singular `compare_at_price` field — only
+      // `compare_at_price_min`/`_max`, which come back as "0.0" (not null)
+      // when no compare-at price is set, so a genuine discount is only
+      // present when the compare-at minimum is actually higher than price.
+      var compareAtMin = product.compare_at_price_min != null ? parseFloat(product.compare_at_price_min) : 0;
+      var priceMinValue = product.price_min != null ? parseFloat(product.price_min) : parseFloat(product.price);
+      if (compareEl && compareAtMin > 0 && compareAtMin > priceMinValue) {
+        compareEl.textContent = formatMoney(centsFromDecimalString(product.compare_at_price_min), this.moneyFormat);
         compareEl.classList.remove('hidden');
+      }
+
+      // Unit pricing (Surface 12) can't be rendered via
+      // {% render 'unit-price' %} here — these rows are cloned from client-
+      // fetched JSON, not re-rendered through Liquid per result, and
+      // /search/suggest.json's documented product schema does not expose
+      // unit_price / unit_price_measurement (see docs/missing-surface-designs.md
+      // Surface 4, Open question 3). This mirrors snippets/unit-price.liquid's
+      // 'xs' output/classes and populates only if that data is ever present
+      // on the response, staying hidden otherwise rather than showing
+      // nothing where a render call would have silently done the same. Only
+      // considered when the item is purchasable — sold-out rows show the
+      // "Sold out" label in the same slot instead.
+      if (unitPriceEl) {
+        var measurement = product.unit_price_measurement;
+        if (measurement && product.unit_price != null) {
+          var unitSuffix = measurement.reference_unit;
+          if (measurement.reference_value && measurement.reference_value !== 1) {
+            unitSuffix = measurement.reference_value + ' ' + unitSuffix;
+          }
+          unitPriceEl.textContent = formatMoney(centsFromDecimalString(product.unit_price), this.moneyFormat) + ' / ' + unitSuffix;
+          unitPriceEl.classList.remove('hidden');
+        }
       }
     }
 
@@ -526,11 +631,25 @@
   };
 
   PredictiveSearch.prototype.onKeydown = function (event) {
-    var self = this;
-    if (this.panel.hidden || !this.rows || !this.rows.length) {
-      if (event.key === 'Escape' && this.input.value) {
-        // no open panel — let Escape fall through to clear on second press below
+    // Escape must work regardless of whether the panel is currently open —
+    // "first press closes the panel, second press (panel already closed)
+    // clears the input" — so it is handled before the guard below, which
+    // would otherwise return early and make the second press a no-op.
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      if (this.highlightIndex >= 0) {
+        this.setHighlight(-1);
+      } else if (!this.panel.hidden) {
+        this.closePanel();
+      } else if (this.input.value) {
+        this.input.value = '';
+        this.currentQuery = '';
+        this.hasResults = false;
       }
+      return;
+    }
+
+    if (this.panel.hidden || !this.rows || !this.rows.length) {
       return;
     }
 
@@ -558,31 +677,25 @@
         }
         // else: let the form submit normally.
         break;
-      case 'Escape':
-        event.preventDefault();
-        if (this.highlightIndex >= 0) {
-          this.setHighlight(-1);
-        } else if (!this.panel.hidden) {
-          this.closePanel();
-        } else {
-          this.input.value = '';
-          this.currentQuery = '';
-        }
-        break;
       case 'Tab':
         this.closePanel();
         break;
       default:
         break;
     }
-    void self;
   };
 
   /* ---------------------------------------------------------------------
    * Mobile full-screen takeover
    * ------------------------------------------------------------------- */
   function initMobileOverlay(trigger) {
-    var overlay = document.querySelector('[data-ps-mobile-overlay]');
+    // Scoped to this trigger's own block instance (both the trigger button
+    // and its overlay are rendered inside the same Shopify block wrapper by
+    // blocks/header-search-icon.liquid) so multiple header-search-icon
+    // blocks on one page each open their own overlay rather than all
+    // triggers reaching for the first overlay found in the document.
+    var scope = trigger.closest('[id^="shopify-block-"]') || document;
+    var overlay = scope.querySelector('[data-ps-mobile-overlay]');
     if (!overlay) {
       // Predictive search disabled for this search-icon block — fall back
       // to legacy inline-bar toggle behavior.
@@ -596,6 +709,26 @@
     var closeBtn = overlay.querySelector('[data-ps-mobile-close]');
     var clearBtn = overlay.querySelector('[data-ps-mobile-clear]');
     var lastFocused = null;
+    var inertTargets = null;
+
+    // Everything NOT on the overlay's own ancestor chain — i.e. the rest of
+    // the page — gets `inert` (+ aria-hidden as a fallback for browsers
+    // without it) while the takeover is open, per the modal pattern the
+    // spec calls for. Walking from the overlay up to <body> and collecting
+    // siblings at each level covers the whole page without having to know
+    // its layout in advance.
+    function collectOutsideSiblings(el) {
+      var outside = [];
+      var node = el;
+      while (node && node.parentElement && node !== document.body) {
+        var parent = node.parentElement;
+        Array.prototype.forEach.call(parent.children, function (sibling) {
+          if (sibling !== node) outside.push(sibling);
+        });
+        node = parent;
+      }
+      return outside;
+    }
 
     function open() {
       var isMobile = window.matchMedia('(max-width: 839px)').matches;
@@ -606,6 +739,13 @@
       lastFocused = document.activeElement;
       overlay.classList.add('is-open');
       document.body.style.overflow = 'hidden';
+
+      inertTargets = collectOutsideSiblings(overlay);
+      inertTargets.forEach(function (el) {
+        if ('inert' in el) el.inert = true;
+        el.setAttribute('aria-hidden', 'true');
+      });
+
       if (input) input.focus();
       document.addEventListener('keydown', onKeydown, true);
     }
@@ -614,6 +754,15 @@
       overlay.classList.remove('is-open');
       document.body.style.overflow = '';
       document.removeEventListener('keydown', onKeydown, true);
+
+      if (inertTargets) {
+        inertTargets.forEach(function (el) {
+          if ('inert' in el) el.inert = false;
+          el.removeAttribute('aria-hidden');
+        });
+        inertTargets = null;
+      }
+
       if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
     }
 

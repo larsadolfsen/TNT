@@ -18,7 +18,14 @@
 
 <a href="#" class="predictive-search-row flex items-center gap-3 px-4 py-2 min-h-[64px] no-underline hover:bg-card-high focus-ring" data-field="url" role="option">
   <span class="w-12 h-12 rounded-md overflow-hidden bg-surface-container border border-outline-variant shrink-0 flex items-center justify-center" data-field="thumb-wrap">
-    <img data-field="image" class="hidden w-full h-full object-cover" loading="lazy" alt="" />
+    {%- comment -%}
+      width/height are a static CLS hint only — the wrapper's `w-full h-full`
+      (and the mobile-variant 56x56 override in
+      snippets/predictive-search-panel.liquid) always governs actual
+      rendered size, since the real image dimensions aren't known until
+      assets/predictive-search.js sets `src` from the fetched JSON.
+    {%- endcomment -%}
+    <img data-field="image" class="hidden w-full h-full object-cover" loading="lazy" alt="" width="48" height="48" />
     <span data-field="thumb-fallback">
       {% render 'icon', name: 'image', class: 'text-primary/45 text-xl' %}
     </span>
@@ -30,6 +37,13 @@
   <span class="flex flex-col items-end gap-0.5 shrink-0 pl-2">
     <span class="text-sm font-bold text-primary whitespace-nowrap" data-field="price"></span>
     <span class="text-xs text-primary/60 line-through hidden" data-field="compare"></span>
+    {%- comment -%}
+      Mirrors snippets/unit-price.liquid's 'xs' size classes. Populated by
+      assets/predictive-search.js only when the endpoint's response happens
+      to carry unit-price data (it does not, by documented default — see
+      that file's buildProductRow comment); stays hidden otherwise.
+    {%- endcomment -%}
+    <span class="unit-price text-[11px] text-primary/70 hidden" data-field="unit-price"></span>
     <span class="text-[11px] font-bold uppercase tracking-wider text-primary/60 hidden" data-field="sold-out">{{ 'predictive_search.sold_out' | t }}</span>
   </span>
 </a>

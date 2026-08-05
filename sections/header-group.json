@@ -70,9 +70,20 @@
                     "hide_on_desktop": false
                   },
                   "blocks": {}
+                },
+                "header_search_icon_mQ3fXk": {
+                  "type": "header-search-icon",
+                  "name": "Search Icon",
+                  "settings": {
+                    "hide_on_mobile": false,
+                    "hide_on_tablet": true,
+                    "hide_on_desktop": true
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
+                "header_search_icon_mQ3fXk",
                 "header_search_TgXRt8"
               ]
             },

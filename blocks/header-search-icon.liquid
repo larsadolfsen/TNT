@@ -24,23 +24,136 @@
       {%- endif -%}
     }
   }
+
+  /* The overlay needs display:flex when open, which a plain `hidden`
+     attribute can't express alongside a `.flex` utility class (author
+     rules of equal origin beat the UA [hidden] default regardless of
+     specificity) — so visibility is a dedicated class instead. */
+  [data-ps-mobile-overlay] {
+    display: none;
+  }
+  [data-ps-mobile-overlay].is-open {
+    display: flex;
+  }
 {%- endstyle -%}
 
 <div class="flex items-center" {{ block.shopify_attributes }}>
   <button
     type="button"
-    onclick="toggleSearchInput()"
-    class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity"
-    aria-label="Søg"
+    class="w-12 h-12 focus:outline-none bg-transparent border-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity focus-ring"
+    aria-label="{{ 'search.submit' | t }}"
+    data-predictive-search-mobile-trigger
   >
     {% render 'icon', name: 'search', class: 'text-2xl text-primary block' %}
   </button>
 </div>
 
+{%- comment -%}
+  Always loaded, independent of the `predictive_search` checkbox above: the
+  trigger button's only click handler now lives in predictive-search.js
+  (data-predictive-search-mobile-trigger), replacing the old inline
+  onclick="toggleSearchInput()". Even with predictive search off here, the
+  script must still be present to wire the fallback that calls
+  toggleSearchInput() itself (see assets/predictive-search.js
+  initMobileOverlay). The script guards its own init against running twice
+  when blocks/header-search.liquid also loads it on the same page.
+{%- endcomment -%}
+<script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+
+{%- if block.settings.predictive_search -%}
+  {%- comment -%}
+    Mobile full-screen predictive search takeover (Surface 4). Rendered once
+    per header-search-icon instance; opened/closed by
+    assets/predictive-search.js. Below 840px this is the only search entry
+    point (blocks/header-search.liquid's inline bar is hidden on mobile in
+    the shipped preset).
+  {%- endcomment -%}
+  <div
+    id="predictive-search-mobile-{{ block.id }}"
+    class="fixed inset-0 z-50 bg-background flex-col"
+    data-ps-mobile-overlay="{{ block.id }}"
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'predictive_search.results_label' | t }}"
+  >
+    <div class="h-14 px-4 flex items-center gap-2 border-b border-outline-variant bg-background sticky top-0 shrink-0">
+      <button
+        type="button"
+        class="w-12 h-12 shrink-0 flex items-center justify-center bg-transparent border-0 cursor-pointer focus-ring"
+        aria-label="{{ 'predictive_search.close' | t }}"
+        data-ps-mobile-close
+      >
+        {% render 'icon', name: 'arrow_back', class: 'text-2xl text-primary' %}
+      </button>
+      <div class="relative flex-1">
+        <input
+          type="text"
+          id="predictive-search-mobile-input-{{ block.id }}"
+          class="w-full h-12 rounded-full bg-card-high border border-outline-variant pl-4 pr-10 text-base text-primary placeholder:text-primary/60 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+          placeholder="{{ 'predictive_search.placeholder' | t }}"
+          autocomplete="off"
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="predictive-results-mobile-{{ block.id }}"
+          aria-autocomplete="list"
+          data-ps-input
+          data-ps-results-products="{{ block.settings.results_products | default: 5 }}"
+          data-ps-results-other="{{ block.settings.results_other | default: 3 }}"
+          data-ps-show-queries="{{ block.settings.show_queries | default: true }}"
+        >
+        <button
+          type="button"
+          class="hidden absolute right-0 top-0 w-11 h-12 flex items-center justify-center bg-transparent border-0 cursor-pointer focus-ring"
+          aria-label="{{ 'predictive_search.clear' | t }}"
+          data-ps-mobile-clear
+        >
+          {% render 'icon', name: 'close', class: 'text-[18px] text-primary' %}
+        </button>
+      </div>
+    </div>
+
+    {% render 'predictive-search-panel', id: 'mobile-' | append: block.id, variant: 'mobile' %}
+  </div>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Search Icon",
   "settings": [
+    {
+      "type": "header",
+      "content": "Predictive search"
+    },
+    {
+      "type": "checkbox",
+      "id": "predictive_search",
+      "label": "Show suggestions as you type (mobile full-screen search)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "results_products",
+      "label": "Max product suggestions",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "results_other",
+      "label": "Max collection/page suggestions",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_queries",
+      "label": "Show query suggestions",
+      "default": true
+    },
     {
       "type": "header",
       "content": "Visibility Settings"

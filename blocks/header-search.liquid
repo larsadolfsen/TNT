@@ -38,6 +38,8 @@
   }
 {%- endstyle -%}
 
+{%- assign predictive_search = block.settings.predictive_search -%}
+
 <div
   {% if block.settings.start_hidden %}
     id="header-search-form"
@@ -45,25 +47,44 @@
   class="flex items-center w-full{% if block.settings.start_hidden %} hidden{% endif %}"
   {{ block.shopify_attributes }}
 >
-  <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full">
+  <form action="{{ routes.search_url }}" method="get" class="relative m-0 w-full" data-ps-form>
     <div class="flex w-full items-stretch border border-outline-variant rounded-full bg-card-light shadow-sm overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all">
       <input
         type="text"
         name="q"
         id="search-input"
         class="w-full h-10 pl-4 pr-4 bg-transparent border-0 text-sm text-primary placeholder:text-primary/60 focus:outline-none focus:ring-0"
-        placeholder="Søg..."
+        placeholder="{{ 'predictive_search.placeholder' | t }}"
+        autocomplete="off"
+        {% if predictive_search %}
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="predictive-results-{{ block.id }}"
+          aria-autocomplete="list"
+          data-ps-input
+          data-ps-results-products="{{ block.settings.results_products | default: 5 }}"
+          data-ps-results-other="{{ block.settings.results_other | default: 3 }}"
+          data-ps-show-queries="{{ block.settings.show_queries | default: true }}"
+        {% endif %}
       >
       <button
         type="submit"
         class="px-3 bg-accent text-on-accent hover:brightness-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1 font-semibold text-xs shrink-0 border-l border-outline-variant"
       >
         {% render 'icon', name: 'search', class: 'text-[15px]' %}
-        <span>Søg</span>
+        <span>{{ 'search.submit' | t }}</span>
       </button>
     </div>
+
+    {%- if predictive_search -%}
+      {% render 'predictive-search-panel', id: block.id, variant: 'dropdown' %}
+    {%- endif -%}
   </form>
 </div>
+
+{%- if predictive_search -%}
+  <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -110,6 +131,40 @@
       "id": "start_hidden",
       "label": "Start hidden (Toggleable by Search Icon)",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Predictive search"
+    },
+    {
+      "type": "checkbox",
+      "id": "predictive_search",
+      "label": "Show suggestions as you type",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "results_products",
+      "label": "Max product suggestions",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "results_other",
+      "label": "Max collection/page suggestions",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_queries",
+      "label": "Show query suggestions",
+      "default": true
     },
     {
       "type": "header",

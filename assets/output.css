@@ -541,6 +541,9 @@
   .aspect-video {
     aspect-ratio: var(--aspect-video);
   }
+  .h-0\.5 {
+    height: calc(var(--spacing) * 0.5);
+  }
   .h-2 {
     height: calc(var(--spacing) * 2);
   }
@@ -582,6 +585,12 @@
   }
   .h-20 {
     height: calc(var(--spacing) * 20);
+  }
+  .h-\[10px\] {
+    height: 10px;
+  }
+  .h-\[12px\] {
+    height: 12px;
   }
   .h-\[15px\] {
     height: 15px;
@@ -648,6 +657,9 @@
   }
   .w-10 {
     width: calc(var(--spacing) * 10);
+  }
+  .w-11 {
+    width: calc(var(--spacing) * 11);
   }
   .w-12 {
     width: calc(var(--spacing) * 12);
@@ -1386,6 +1398,9 @@
   .px-0 {
     padding-inline: calc(var(--spacing) * 0);
   }
+  .px-1 {
+    padding-inline: calc(var(--spacing) * 1);
+  }
   .px-1\.5 {
     padding-inline: calc(var(--spacing) * 1.5);
   }
@@ -1604,6 +1619,12 @@
   }
   .text-\[20px\] {
     font-size: 20px;
+  }
+  .text-\[24px\] {
+    font-size: 24px;
+  }
+  .text-\[32px\] {
+    font-size: 32px;
   }
   .leading-\[1\.2\] {
     --tw-leading: 1.2;
@@ -2338,6 +2359,11 @@
   .focus\:rounded {
     &:focus {
       border-radius: 0.25rem;
+    }
+  }
+  .focus\:border-primary {
+    &:focus {
+      border-color: var(--color-primary);
     }
   }
   .focus\:border-primary\/60 {

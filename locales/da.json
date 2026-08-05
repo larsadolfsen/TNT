@@ -66,6 +66,30 @@
     "no_results_html": "Ingen resultater fundet for {{ terms }}",
     "results_for_html": "{{ count }} resultater fundet for {{ terms }}"
   },
+  "predictive_search": {
+    "placeholder": "Søg...",
+    "clear": "Ryd søgning",
+    "close": "Luk søgning",
+    "results_label": "Søgeresultater",
+    "products": "Produkter",
+    "queries": "Søgeforslag",
+    "collections": "Kollektioner",
+    "pages": "Sider",
+    "collections_and_pages": "Kollektioner & sider",
+    "did_you_mean": "Mente du",
+    "from_price": "Fra ",
+    "sold_out": "Udsolgt",
+    "no_matches_for": "Ingen resultater for \"{query}\"",
+    "no_results_found": "Ingen resultater fundet",
+    "no_results_hint": "Tjek stavningen, eller prøv et kortere ord.",
+    "results_found": "{count} produkter fundet",
+    "see_all_results": "Se alle resultater",
+    "see_all_results_for": "Se alle resultater for \"{query}\"",
+    "unavailable": "Søgning er ikke tilgængelig lige nu.",
+    "search_unavailable": "Søgning utilgængelig",
+    "offline": "Du ser ud til at være offline.",
+    "try_again": "Prøv igen"
+  },
   "checkout": {
     "or_divider": "eller"
   },
