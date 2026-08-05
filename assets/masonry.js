@@ -148,7 +148,12 @@
     mainContent.style.height = `${Math.max(...colHeights)}px`;
 
     // Render visual debug overlay on screen
+    const SHOW_DEBUG_OVERLAY = false;
     let overlay = document.getElementById('masonry-debug-overlay');
+    if (!SHOW_DEBUG_OVERLAY) {
+      if (overlay) overlay.remove();
+      return;
+    }
     if (!overlay) {
       overlay = document.createElement('div');
       overlay.id = 'masonry-debug-overlay';
