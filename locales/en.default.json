@@ -64,6 +64,15 @@
   "custom_liquid": {
     "empty_title": "Custom Liquid",
     "empty_description": "Add code in the section settings to render content here."
+  },
+  "newsletter": {
+    "heading": "Sign up for our newsletter",
+    "email_label": "Email address",
+    "submit": "Subscribe",
+    "submitting": "Signing up…",
+    "success": "You're subscribed — thanks!",
+    "error_invalid": "Enter a valid email address",
+    "error_generic": "Something went wrong — try again."
   }
 }
 

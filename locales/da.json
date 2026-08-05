@@ -64,6 +64,15 @@
   "custom_liquid": {
     "empty_title": "Brugerdefineret Liquid",
     "empty_description": "Tilføj kode i sektionens indstillinger for at vise indhold her."
+  },
+  "newsletter": {
+    "heading": "Tilmeld dig vores nyhedsbrev",
+    "email_label": "E-mailadresse",
+    "submit": "Tilmeld",
+    "submitting": "Tilmelder…",
+    "success": "Du er tilmeldt — tak!",
+    "error_invalid": "Indtast en gyldig e-mailadresse",
+    "error_generic": "Noget gik galt — prøv igen."
   }
 }
 
