@@ -1,0 +1,106 @@
+{% comment %}
+  Custom Liquid section (Surface 15).
+
+  A raw-code insertion point for merchants/apps: a single `liquid`-type
+  setting whose value is rendered verbatim. This is a compliance/developer
+  utility surface, not a content surface — see docs/missing-surface-designs.md
+  Surface 15 for the full spec. No custom error handling for invalid Liquid;
+  that is a platform concern.
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
+    padding-left: {{ section.settings.padding_left | times: 0.75 | round }}px;
+    padding-right: {{ section.settings.padding_right | times: 0.75 | round }}px;
+  }
+
+  @media screen and (min-width: 840px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      padding-left: {{ section.settings.padding_left }}px;
+      padding-right: {{ section.settings.padding_right }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="custom-liquid-section">
+  {%- if section.settings.liquid_code != blank -%}
+    {{ section.settings.liquid_code }}
+  {%- else -%}
+    {%- comment %} Empty state — theme-editor only, never shown on the live storefront. {% endcomment %}
+    {%- if request.design_mode -%}
+      <div class="flex items-center gap-3 p-6 rounded-2xl border border-dashed border-outline-variant bg-card-high">
+        {% render 'icon', name: 'code', class: 'text-2xl text-primary/45' %}
+        <div class="flex flex-col gap-0.5">
+          <p class="text-sm font-bold text-primary">{{ 'custom_liquid.empty_title' | t }}</p>
+          <p class="text-xs text-primary/60">{{ 'custom_liquid.empty_description' | t }}</p>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Custom Liquid",
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "liquid_code",
+      "label": "Custom code"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i toppen",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i bunden",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i venstre side",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Afstand i højre side",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Liquid"
+    }
+  ]
+}
+{% endschema %}

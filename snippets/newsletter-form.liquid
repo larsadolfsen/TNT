@@ -1,0 +1,108 @@
+{% doc %}
+  Renders the footer newsletter signup form (Surface 7): a single-field
+  Shopify native customer form (`contact[tags]=newsletter`) with default,
+  submitting, success and error states.
+
+  Uses Shopify's own `form.posted_successfully?` / `form.errors` after the
+  native full-page POST/redirect to decide which state to render — no AJAX
+  interception of the submission itself, only a light client-side
+  "submitting" cue and inline-email-validity styling before that POST fires.
+
+  Reads the enclosing `section` object (available since this snippet is
+  always rendered from within a section) to scope the form/field ids to the
+  section instance, so multiple newsletter forms on one page never collide.
+
+  @param {section} [section] - implicit; the section this snippet is rendered from.
+
+  @example
+  {% render 'newsletter-form' %}
+{% enddoc %}
+
+{%- assign newsletter_form_id = 'newsletter-form-' | append: section.id -%}
+{%- assign newsletter_email_id = newsletter_form_id | append: '-email' -%}
+{%- assign newsletter_error_id = newsletter_form_id | append: '-invalid' -%}
+
+<div class="newsletter-form">
+  {% form 'customer', id: newsletter_form_id, class: 'flex flex-col gap-2' %}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+
+    {%- if form.posted_successfully? -%}
+      <div role="status" aria-live="polite" aria-atomic="true" class="flex items-center gap-2">
+        {% render 'icon', name: 'check_circle', class: 'text-primary text-[20px]' %}
+        <p class="text-sm font-medium text-primary">{{ 'newsletter.success' | t }}</p>
+      </div>
+    {%- else -%}
+      <div role="status" aria-live="polite" aria-atomic="true">
+        {%- if form.errors -%}
+          <div class="flex items-center gap-1.5 mb-1" role="alert">
+            {% render 'icon', name: 'error', class: 'text-important text-[16px]' %}
+            <p class="text-sm text-important">
+              {%- if form.errors.messages['email'] -%}
+                {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+              {%- else -%}
+                {{ 'newsletter.error_generic' | t }}
+              {%- endif -%}
+            </p>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="flex flex-col gap-2 sm:flex-row sm:max-w-md" data-newsletter-fields>
+        <div id="{{ newsletter_email_id }}-wrapper" class="flex-1 [&_label]:sr-only">
+          {% render 'input', id: newsletter_email_id, name: 'contact[email]', type: 'email', label: 'newsletter.email_label' | t, required: true, autocomplete: 'email', class: 'h-12', attributes: 'data-newsletter-email aria-describedby="' | append: newsletter_error_id | append: '"' %}
+          <p id="{{ newsletter_error_id }}" class="hidden text-xs text-important pl-4 mt-1" data-newsletter-invalid-message>
+            {{ 'newsletter.error_invalid' | t }}
+          </p>
+        </div>
+        {% render 'button',
+          label: 'newsletter.submit' | t,
+          variant: 'primary',
+          as: 'submit',
+          class: 'h-12 px-6 shrink-0 w-full sm:w-auto',
+          attributes: 'data-newsletter-submit'
+        %}
+      </div>
+    {%- endif -%}
+  {% endform %}
+</div>
+
+<script>
+  (function () {
+    var form = document.getElementById({{ newsletter_form_id | json }});
+    if (!form || form.dataset.newsletterInitialized) return;
+    form.dataset.newsletterInitialized = 'true';
+
+    var email = form.querySelector('[data-newsletter-email]');
+    var submit = form.querySelector('[data-newsletter-submit]');
+    var invalidMessage = form.querySelector('[data-newsletter-invalid-message]');
+    var submittingLabel = {{ 'newsletter.submitting' | t | json }};
+
+    if (!email || !submit) return;
+
+    function setInvalid(isInvalid) {
+      email.classList.toggle('border-important', isInvalid);
+      email.setAttribute('aria-invalid', isInvalid ? 'true' : 'false');
+      if (invalidMessage) {
+        invalidMessage.classList.toggle('hidden', !isInvalid);
+      }
+    }
+
+    email.addEventListener('input', function () {
+      if (email.validity.valid) setInvalid(false);
+    });
+
+    form.addEventListener('submit', function (event) {
+      if (!email.validity.valid) {
+        event.preventDefault();
+        setInvalid(true);
+        email.focus();
+        return;
+      }
+      setInvalid(false);
+      submit.disabled = true;
+      submit.classList.add('opacity-70');
+      submit.textContent = submittingLabel;
+      email.disabled = true;
+    });
+  })();
+</script>

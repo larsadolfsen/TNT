@@ -93,5 +93,30 @@
   "navigation": {
     "main": "Hovedmenu",
     "show_submenu": "Vis undermenu for {{ title }}"
+  },
+  "custom_liquid": {
+    "empty_title": "Brugerdefineret Liquid",
+    "empty_description": "Tilføj kode i sektionens indstillinger for at vise indhold her."
+  },
+  "newsletter": {
+    "heading": "Tilmeld dig vores nyhedsbrev",
+    "email_label": "E-mailadresse",
+    "submit": "Tilmeld",
+    "submitting": "Tilmelder…",
+    "success": "Du er tilmeldt — tak!",
+    "error_invalid": "Indtast en gyldig e-mailadresse",
+    "error_generic": "Noget gik galt — prøv igen."
+  },
+  "localization": {
+    "title": "Region & sprog",
+    "trigger_label_full": "Region og sprog, aktuelt {{ country }}, {{ language }}.",
+    "trigger_label_country_only": "Region, aktuelt {{ country }}.",
+    "country_tab": "Land/region",
+    "language_tab": "Sprog",
+    "search_label": "Søg",
+    "search_placeholder": "Skriv for at filtrere listen",
+    "no_matches": "Ingen resultater for \"{query}\"",
+    "close": "Luk",
+    "currently_selected": "Aktuelt valgt"
   }
 }

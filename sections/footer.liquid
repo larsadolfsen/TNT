@@ -59,7 +59,28 @@
       </div>
     </div>
     
+    {%- if section.settings.show_newsletter -%}
+      <div class="flex flex-col gap-3 pt-10 border-t border-outline-variant">
+        <div class="space-y-1 max-w-sm">
+          <h4 class="text-base font-bold text-primary">
+            {%- if section.settings.newsletter_heading != blank -%}
+              {{ section.settings.newsletter_heading }}
+            {%- else -%}
+              {{ 'newsletter.heading' | t }}
+            {%- endif -%}
+          </h4>
+          {%- if section.settings.newsletter_description != blank -%}
+            <p class="text-sm text-primary/70">{{ section.settings.newsletter_description }}</p>
+          {%- endif -%}
+        </div>
+        {% render 'newsletter-form' %}
+      </div>
+    {%- endif -%}
+
     <div class="pt-8 border-t border-outline-variant flex flex-col items-center gap-4 text-center">
+      {%- if section.settings.show_localization -%}
+        {% content_for 'block', type: 'footer-localization', id: 'footer-localization' %}
+      {%- endif -%}
       <div class="flex gap-4">
         <span class="text-[10px] border border-outline-variant px-2 py-1 rounded text-primary/70">OEKO-TEX®</span>
         <span class="text-[10px] border border-outline-variant px-2 py-1 rounded text-primary/70">Phthalat-fri</span>
@@ -114,6 +135,42 @@
       "id": "copyright_text",
       "label": "Copyright Text",
       "default": "Textil & Voksdug. CVR: 12345678"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter signup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_description",
+      "label": "Supporting line (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Country / language selector"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_localization",
+      "label": "Show country/language selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "localization_show_flags",
+      "label": "Show flag icons next to country names",
+      "default": true
     }
   ]
 }
