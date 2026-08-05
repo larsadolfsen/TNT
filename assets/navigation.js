@@ -1,12 +1,10 @@
 /**
- * Multi-level navigation (Surface 3).
+ * Desktop navigation (Surface 3).
  *
- * Two independent pieces, both driven by this one file per .agents/AGENTS.md
- * (behavior does not live inline in the block):
- *  1. Desktop dropdown/mega-menu — hover-intent timers + keyboard, wired to
- *     blocks/header-navigation.liquid + snippets/nav-dropdown-panel.liquid.
- *  2. Mobile drawer accordion — expand/collapse, wired to
- *     snippets/nav-drawer-tree.liquid inside sections/header-2.liquid.
+ * Desktop dropdown/mega-menu — hover-intent timers + keyboard, wired to
+ * blocks/header-navigation.liquid + snippets/nav-dropdown-panel.liquid.
+ * (Mobile drawer navigation is a flat link list with no JS behaviour; see
+ * snippets/nav-drawer-tree.liquid.)
  */
 (function () {
   // Single tunable constant, per docs/missing-surface-designs.md Surface 3
@@ -172,85 +170,8 @@
     });
   }
 
-  /* ---------------------------------------------------------------------
-   * Mobile drawer accordion
-   * ------------------------------------------------------------------- */
-  function initDrawerAccordion(container) {
-    var disclosures = Array.prototype.slice.call(
-      container.querySelectorAll('[data-nav-drawer-disclosure]')
-    );
-
-    function panelFor(button) {
-      var id = button.getAttribute('aria-controls');
-      return id ? document.getElementById(id) : null;
-    }
-
-    function siblingPanels(button, panel) {
-      // Siblings = other disclosure buttons at the same level sharing the
-      // same immediate parent container as this one.
-      var group = button.closest('[data-nav-drawer-item]');
-      var parent = group ? group.parentElement : null;
-      if (!parent) return [];
-      return Array.prototype.slice
-        .call(parent.children)
-        .filter(function (child) {
-          return child !== group && child.matches && child.matches('[data-nav-drawer-item]');
-        })
-        .map(function (child) {
-          return child.querySelector('[data-nav-drawer-disclosure]');
-        })
-        .filter(Boolean);
-    }
-
-    function openPanel(button, panel) {
-      button.setAttribute('aria-expanded', 'true');
-      panel.removeAttribute('inert');
-      panel.setAttribute('data-nav-drawer-open', '');
-      panel.style.maxHeight = panel.scrollHeight + 'px';
-
-      var rect = panel.getBoundingClientRect();
-      var drawerScroll = container.closest('#mobile-menu-drawer') || container;
-      var viewportH = window.innerHeight || document.documentElement.clientHeight;
-      if (rect.bottom > viewportH) {
-        panel.scrollIntoView({ block: 'start' });
-      }
-      void drawerScroll;
-    }
-
-    function closePanel(button, panel) {
-      button.setAttribute('aria-expanded', 'false');
-      panel.style.maxHeight = '0px';
-      panel.removeAttribute('data-nav-drawer-open');
-      panel.setAttribute('inert', '');
-    }
-
-    disclosures.forEach(function (button) {
-      var panel = panelFor(button);
-      if (!panel) return;
-
-      button.addEventListener('click', function () {
-        var isOpen = button.getAttribute('aria-expanded') === 'true';
-        if (isOpen) {
-          closePanel(button, panel);
-          return;
-        }
-        // Auto-close open siblings at this level (level-2 exclusivity).
-        siblingPanels(button, panel).forEach(function (siblingButton) {
-          var siblingPanel = panelFor(siblingButton);
-          if (siblingPanel && siblingButton.getAttribute('aria-expanded') === 'true') {
-            closePanel(siblingButton, siblingPanel);
-          }
-        });
-        openPanel(button, panel);
-      });
-    });
-  }
-
   function init() {
     document.querySelectorAll('[data-nav-root]').forEach(initDesktopNav);
-
-    var drawerNav = document.querySelector('#mobile-menu-drawer nav');
-    if (drawerNav) initDrawerAccordion(drawerNav);
   }
 
   if (document.readyState === 'loading') {
