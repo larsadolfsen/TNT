@@ -60,6 +60,17 @@
     "submit": "Søg",
     "no_results_html": "Ingen resultater fundet for {{ terms }}",
     "results_for_html": "{{ count }} resultater fundet for {{ terms }}"
+  },
+  "checkout": {
+    "or_divider": "eller"
+  },
+  "pickup": {
+    "available_single": "Kan afhentes i {{ location }}",
+    "available_multiple": "Kan afhentes på {{ count }} lokationer"
+  },
+  "recommendations": {
+    "related_eyebrow": "Relaterede produkter",
+    "complementary_eyebrow": "Komplet looket"
   }
 }
 
