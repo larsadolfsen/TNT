@@ -219,6 +219,27 @@ reads) and becomes the **app's opt-in API**. It gets more load-bearing, not
 less. The audit's §2 "unverified external-consumer check" now has an answer:
 yes — our own app reads it.
 
+**Why the app can't switch to unit pricing as its trigger** (asked and
+verified 2026-08-05, recorded so it isn't re-litigated): the Cart Transform
+Function's input schema does not expose unit pricing. Its `ProductVariant`
+type offers only `id`, `metafield`, `product`, `requiresShipping`, `sku`,
+`title`, `weight`, `weightUnit`, and the string `unitPrice` appears nowhere in
+`extensions/cart-transform/schema.graphql`. Shopify Functions run on a minimal
+input schema by design, with `metafield()` as the sanctioned extension point.
+
+The app block *could* read `unit_price_measurement` (it's storefront Liquid),
+but must not: if the block rendered on unit-pricing presence while the function
+fired on the metafield, a product with one and not the other would let a
+shopper configure a cut, add it to cart, and receive no bundle — a broken order
+surfacing only at checkout. Block and function therefore read the same flag.
+
+Net split — display signal drives display, explicit opt-in drives behavior:
+
+| Consumer | Trigger |
+|---|---|
+| Theme (cards, price block) | `unit_price_measurement` presence — no metervare knowledge, keeps the theme sellable |
+| App block + cart-transform | `custom.metervare` metafield — same flag in both, cannot drift |
+
 Sequencing note: B5.2–B5.5 need neither the app deploy nor a fully consistent catalog, **not** the app deploy. The
 `×100` display and the customizer's cart math are independent concerns — the
 audit's §4 constraint ("can't delete the math until something else owns the
