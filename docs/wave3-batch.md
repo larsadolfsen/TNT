@@ -54,7 +54,7 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 | 4 | R1c — extract breadcrumbs inline scripts (2) | `sections/breadcrumbs.liquid` → `assets/` | **done**, unverified in browser |
 | 5 | R3a — split `main-collection.liquid` (878 lines) | `sections/main-collection.liquid` | **done**, unverified in browser |
 | 6 | R3b — split `breadcrumbs.liquid` (746) | `sections/breadcrumbs.liquid` | **done**, unverified in browser |
-| 7 | R3c — split `product-buy-buttons.liquid` (796) | `blocks/product-buy-buttons.liquid` | pending |
+| 7 | R3c — split `product-buy-buttons.liquid` (796) | `blocks/product-buy-buttons.liquid` | **done**, unverified in browser |
 | 8 | R3d — split `product-media.liquid` (620) | `blocks/product-media.liquid` | pending |
 | 9 | R3e — split `header-2.liquid` (565) | `sections/header-2.liquid` | pending |
 | 10 | R2 — card markup consolidation | `snippets/product-card.liquid` + card surfaces | pending |
@@ -109,6 +109,14 @@ owns before and after, at mobile and desktop, and compare: collection page
 (5), breadcrumb trail (6), product page buy buttons incl. quantity and
 add-to-cart (7), product gallery incl. thumbnails, zoom and variant image
 switching (8), header at both widths (9).
+
+Note on task 7: unlike 5/6, this block never got an R1 pass in this batch's
+original plan, so it still had ~537 lines of inline `<script>`. Extracted
+both to `assets/product-buy-buttons.js` before splitting the markup (same
+`#..-config` JSON-island pattern as R1a/b/c) — verify the same things R1b/c
+called out: quantity stepper +/−, add-to-cart (watch the price and the
+optimistic cart-counter bump), the mobile sticky bar's price/text sync and
+its show/hide on scroll and on cart-drawer open/close, console clean.
 
 ### 10 — R2, card consolidation
 Every surface that renders a product card: collection grid, search results,

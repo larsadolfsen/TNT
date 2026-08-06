@@ -1,0 +1,31 @@
+{% doc %}
+  Payment method badges below the buy buttons: a merchant-uploaded image if
+  configured, otherwise a text-badge fallback (Visa/Mastercard/MobilePay/
+  Apple Pay).
+
+  @param {image} [custom_payment_icons_image] - block.settings.custom_payment_icons_image.
+  @param {number} payment_icons_height - required. block.settings.payment_icons_height, in px.
+
+  @example
+  {% render 'product-buy-payment-badges', custom_payment_icons_image: block.settings.custom_payment_icons_image, payment_icons_height: block.settings.payment_icons_height %}
+{% enddoc %}
+
+<!-- Payment Badges -->
+{%- if custom_payment_icons_image != blank -%}
+  <div class="flex justify-center items-center mt-1 w-full">
+    <img src="{{ custom_payment_icons_image | image_url: width: 400 }}"
+         alt="{{ custom_payment_icons_image.alt | escape | default: 'Betalingsmetoder' }}"
+         loading="lazy"
+         style="height: {{ payment_icons_height }}px; width: auto; object-fit: contain;"
+         width="{{ custom_payment_icons_image.width }}"
+         height="{{ custom_payment_icons_image.height }}"
+         class="max-w-full">
+  </div>
+{%- else -%}
+  <div class="flex justify-center items-center gap-2 text-primary/85 font-medium text-xs mt-1">
+    <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-card-high font-bold tracking-wider">VISA</span>
+    <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-card-high font-bold tracking-wider">MASTERCARD</span>
+    <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-card-high font-bold tracking-wider">MOBILEPAY</span>
+    <span class="border border-outline-variant rounded px-2 py-0.5 text-xs bg-card-high font-bold tracking-wider">APPLE PAY</span>
+  </div>
+{%- endif -%}
