@@ -1,0 +1,18 @@
+{% doc %}
+  Mobile breadcrumb: a single "back to parent" link (md:hidden), shown
+  instead of the full desktop trail. The parent is one level up the
+  ancestry chain resolved by sections/breadcrumbs.liquid.
+
+  @param {string} parent_url - required. URL of the parent page/collection.
+  @param {string} parent_title - required. Display title of the parent.
+
+  @example
+  {% render 'breadcrumbs-mobile-link', parent_url: parent_url, parent_title: parent_title %}
+{% enddoc %}
+
+<div class="mobile-breadcrumb md:hidden flex items-center justify-start h-12 text-left">
+  <a href="{{ parent_url }}" class="flex items-center justify-start gap-1 hover:underline text-primary/85 no-underline text-sm">
+    <span class="material-symbols-outlined text-[18px] select-none">chevron_left</span>
+    <span>{{ parent_title }}</span>
+  </a>
+</div>

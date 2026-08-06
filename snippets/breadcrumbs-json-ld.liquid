@@ -1,0 +1,211 @@
+{% doc %}
+  BreadcrumbList structured data (schema.org) mirroring the visible trail.
+  Pure Liquid-rendered JSON with no JS logic — kept server-rendered
+  (not moved to assets/breadcrumbs.js) so it's present in the initial HTML
+  for SEO, rather than client-injected.
+
+  @param {string} t - required. Template type ('product' | 'collection' | 'blog' | 'article' | 'page' | other).
+  @param {object} [c_level_0] - Nearest ancestor collection (product/collection templates).
+  @param {object} [c_level_1] - Next ancestor collection.
+  @param {object} [c_level_2] - Next ancestor collection.
+  @param {object} [c_level_3] - Next ancestor collection.
+  @param {object} [c_level_4] - Next ancestor collection.
+  @param {object} [c_level_5] - Next ancestor collection.
+  @param {object} [c_level_6] - Furthest ancestor collection.
+
+  @example
+  {% render 'breadcrumbs-json-ld', t: t, c_level_0: c_level_0, c_level_1: c_level_1, c_level_2: c_level_2, c_level_3: c_level_3, c_level_4: c_level_4, c_level_5: c_level_5, c_level_6: c_level_6 %}
+{% enddoc %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Forside",
+      "item": "{{ shop.url }}{{ routes.root_url }}"
+    }
+    {%- assign position = 2 -%}
+    {%- case t -%}
+      {%- when 'page' -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ position }},
+          "name": {{ page.title | json }},
+          "item": "{{ shop.url }}{{ page.url }}"
+        }
+      {%- when 'blog' -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ position }},
+          "name": {{ blog.title | json }},
+          "item": "{{ shop.url }}{{ blog.url }}"
+        }
+        {%- if current_tags -%}
+          {%- assign position = position | plus: 1 -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ current_tags | join: " + " | json }},
+            "item": "{{ shop.url }}{{ blog.url }}/tagged/{{ current_tags | join: '+' }}"
+          }
+        {%- endif -%}
+      {%- when 'article' -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ position }},
+          "name": {{ blog.title | json }},
+          "item": "{{ shop.url }}{{ blog.url }}"
+        }
+        {%- assign position = position | plus: 1 -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ position }},
+          "name": {{ article.title | json }},
+          "item": "{{ shop.url }}{{ article.url }}"
+        }
+      {%- when 'collection' and collection.handle -%}
+        {%- if c_level_6 != blank -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ c_level_6.title | json }},
+            "item": "{{ shop.url }}{{ c_level_6.url }}"
+          }
+          {%- assign position = position | plus: 1 -%}
+        {%- endif -%}
+        {%- if c_level_5 != blank -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ c_level_5.title | json }},
+            "item": "{{ shop.url }}{{ c_level_5.url }}"
+          }
+          {%- assign position = position | plus: 1 -%}
+        {%- endif -%}
+        {%- if c_level_4 != blank -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ c_level_4.title | json }},
+            "item": "{{ shop.url }}{{ c_level_4.url }}"
+          }
+          {%- assign position = position | plus: 1 -%}
+        {%- endif -%}
+        {%- if c_level_3 != blank -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ c_level_3.title | json }},
+            "item": "{{ shop.url }}{{ c_level_3.url }}"
+          }
+          {%- assign position = position | plus: 1 -%}
+        {%- endif -%}
+        {%- if c_level_2 != blank -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ c_level_2.title | json }},
+            "item": "{{ shop.url }}{{ c_level_2.url }}"
+          }
+          {%- assign position = position | plus: 1 -%}
+        {%- endif -%}
+        {%- if c_level_1 != blank -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ c_level_1.title | json }},
+            "item": "{{ shop.url }}{{ c_level_1.url }}"
+          }
+          {%- assign position = position | plus: 1 -%}
+        {%- endif -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ position }},
+          "name": {{ collection.title | json }},
+          "item": "{{ shop.url }}{{ collection.url }}"
+        }
+      {%- when 'product' -%}
+        {%- if c_level_0 != blank -%}
+          {%- if c_level_6 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_6.title | json }},
+              "item": "{{ shop.url }}{{ c_level_6.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_5 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_5.title | json }},
+              "item": "{{ shop.url }}{{ c_level_5.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_4 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_4.title | json }},
+              "item": "{{ shop.url }}{{ c_level_4.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_3 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_3.title | json }},
+              "item": "{{ shop.url }}{{ c_level_3.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_2 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_2.title | json }},
+              "item": "{{ shop.url }}{{ c_level_2.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          {%- if c_level_1 != blank -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ position }},
+              "name": {{ c_level_1.title | json }},
+              "item": "{{ shop.url }}{{ c_level_1.url }}"
+            }
+            {%- assign position = position | plus: 1 -%}
+          {%- endif -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ position }},
+            "name": {{ c_level_0.title | json }},
+            "item": "{{ shop.url }}{{ c_level_0.url }}"
+          }
+          {%- assign position = position | plus: 1 -%}
+        {%- endif -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ position }},
+          "name": {{ product.title | json }},
+          "item": "{{ shop.url }}{{ product.url }}"
+        }
+      {%- else -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ position }},
+          "name": {{ page_title | json }},
+          "item": "{{ shop.url }}{{ request.path }}"
+        }
+    {%- endcase -%}
+  ]
+}
+</script>
