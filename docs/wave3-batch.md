@@ -52,7 +52,7 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 | 2 | R1a — extract header inline script | `sections/header-2.liquid` → `assets/header.js` | **done** (e75250c), 2 open findings |
 | 3 | R1b — extract main-collection inline script | `sections/main-collection.liquid` → `assets/` | **done**, unverified in browser |
 | 4 | R1c — extract breadcrumbs inline scripts (2) | `sections/breadcrumbs.liquid` → `assets/` | **done**, unverified in browser |
-| 5 | R3a — split `main-collection.liquid` (878 lines) | `sections/main-collection.liquid` | pending |
+| 5 | R3a — split `main-collection.liquid` (878 lines) | `sections/main-collection.liquid` | **done**, unverified in browser |
 | 6 | R3b — split `breadcrumbs.liquid` (746) | `sections/breadcrumbs.liquid` | pending |
 | 7 | R3c — split `product-buy-buttons.liquid` (796) | `blocks/product-buy-buttons.liquid` | pending |
 | 8 | R3d — split `product-media.liquid` (620) | `blocks/product-media.liquid` | pending |

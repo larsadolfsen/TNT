@@ -1,0 +1,24 @@
+{% doc %}
+  Paginated product-card grid for the collection page, with the "no matches"
+  empty state and pagination controls.
+
+  @param {object} products - required. collection.products.
+  @param {boolean} disable_reviews - required. section.settings.disable_reviews.
+
+  @example
+  {% render 'collection-product-grid', products: collection.products, disable_reviews: section.settings.disable_reviews %}
+{% enddoc %}
+
+{%- paginate products by 24 -%}
+  {%- for product in products -%}
+    {%- render 'product-card', product: product, layout: 'minimal', disable_reviews: disable_reviews -%}
+  {%- else -%}
+    <div class="col-span-full py-12 text-center">
+      {%- render 'icon', name: 'sentiment_dissatisfied', class: 'text-4xl text-primary/85 mb-2' -%}
+      <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
+    </div>
+  {%- endfor -%}
+  {%- if paginate.pages > 1 -%}
+    {%- render 'pagination', paginate: paginate -%}
+  {%- endif -%}
+{%- endpaginate -%}
