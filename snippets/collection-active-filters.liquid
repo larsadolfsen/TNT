@@ -1,0 +1,50 @@
+{% doc %}
+  "Active filters" chip bar shown below the collection toolbar once at least
+  one filter is applied — one removable chip per active value plus one for
+  the price range, and a "Ryd alle" link that clears everything.
+
+  @param {object} filters - required. collection.filters.
+  @param {string} collection_url - required. collection.url, for "Ryd alle".
+
+  @example
+  {% render 'collection-active-filters', filters: collection.filters, collection_url: collection.url %}
+{% enddoc %}
+
+{%- assign has_active_filters = false -%}
+{%- for filter in filters -%}
+  {%- if filter.active_values.size > 0 or filter.min_value.value != blank or filter.max_value.value != blank -%}
+    {%- assign has_active_filters = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<div id="applied-filters-container" class="flex flex-wrap gap-2 items-center {% unless has_active_filters %}hidden{% endunless %} border-t border-outline-variant/40 pt-3">
+  <span class="text-xs font-bold text-primary/70 uppercase tracking-wider mr-1">Aktive filtre:</span>
+  <div id="applied-filters-list" class="flex flex-wrap gap-1.5">
+    {%- for filter in filters -%}
+      {%- for value in filter.active_values -%}
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-[11px] text-primary font-semibold transition-all">
+          <span>{{ filter.label }}: {{ value.label }}</span>
+          <a href="{{ value.url_to_remove }}" onclick="removeFilterChipUrl(event, this.href)" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern {{ value.label }}">
+            {%- render 'icon', name: 'close', class: 'text-[10px]' -%}
+          </a>
+        </div>
+      {%- endfor -%}
+      {%- if filter.type == 'price_range' -%}
+        {%- if filter.min_value.value != blank or filter.max_value.value != blank -%}
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-[11px] text-primary font-semibold transition-all">
+            <span>
+              Pris:
+              {%- if filter.min_value.value -%}{{ filter.min_value.value | money }}{%- else -%}0 Kr.{%- endif -%}
+              -
+              {%- if filter.max_value.value -%}{{ filter.max_value.value | money }}{%- else -%}Maks{%- endif -%}
+            </span>
+            <a href="{{ filter.url_to_remove }}" onclick="removeFilterChipUrl(event, this.href)" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern prisfilter">
+              {%- render 'icon', name: 'close', class: 'text-[10px]' -%}
+            </a>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <a href="{{ collection_url }}" onclick="clearAllFiltersUrl(event, this.href)" class="text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0 ml-2 font-semibold no-underline">Ryd alle</a>
+</div>
