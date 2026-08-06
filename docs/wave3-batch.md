@@ -50,7 +50,7 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 |---|------|-------|--------|
 | 1 | Mobile menu: remove accordions | `sections/header-2.liquid` | **done** (4059943) |
 | 2 | R1a — extract header inline script | `sections/header-2.liquid` → `assets/header.js` | **done** (e75250c), 2 open findings |
-| 3 | R1b — extract main-collection inline script | `sections/main-collection.liquid` → `assets/` | pending |
+| 3 | R1b — extract main-collection inline script | `sections/main-collection.liquid` → `assets/` | **done**, unverified in browser |
 | 4 | R1c — extract breadcrumbs inline scripts (2) | `sections/breadcrumbs.liquid` → `assets/` | pending |
 | 5 | R3a — split `main-collection.liquid` (878 lines) | `sections/main-collection.liquid` | pending |
 | 6 | R3b — split `breadcrumbs.liquid` (746) | `sections/breadcrumbs.liquid` | pending |

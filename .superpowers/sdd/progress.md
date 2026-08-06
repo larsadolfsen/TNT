@@ -24,26 +24,43 @@ first task not marked complete.
   locale keys under `cart` in both locale files; `formatMoney` now driven by
   `shop.money_format`. theme-check 8 errors / 25 warnings, unchanged.
 
-## OPEN — fix these first in the next session
+## Fixed — the two Task 2 findings, this session
 
-Both from the Task 2 review. Neither is committed as fixed.
+Checked the shop's actual `shop.currencyFormats.moneyFormat` via the Shopify
+Admin GraphQL API first, per the brief: it is
+`{{amount_with_comma_separator}} kr` — not the space variant, and it carries
+no HTML. Both findings were therefore **latent, not live**, on this store
+today, but both are now fixed defensively since either format could be
+changed in Settings → General at any time.
 
-1. **`amount_with_space_separator` is unhandled in `assets/header.js:66-78`**
-   (Important). The money formatter covers four placeholders; the sibling
-   `assets/predictive-search.js:84-105` also handles this fifth one, and it is
-   a plausible DKK format (`1 234,56 kr`). If the shop uses it, cart-drawer
-   prices fall through to `default:` and render `1,234.56` — wrong prices —
-   while `{{ 0 | money }}` in the same drawer renders correctly, so the
-   subtotal and the line prices visibly disagree. Fix is one extra `case`.
-   Check the shop's actual `money_format` first: if it is not the space
-   variant, this is latent rather than live.
+1. **`amount_with_space_separator` unhandled** — added the missing `case` to
+   `formatMoney` in `assets/header.js` (mirrors
+   `assets/predictive-search.js:99-101`).
+2. **HTML inconsistency on subtotal** — `assets/header.js`'s two
+   `cartSubtotal.innerText = ...` assignments changed to `innerHTML`, matching
+   how line prices already render and how `{{ 0 | money }}` would render if
+   the format ever carries markup.
 
-2. **HTML inside `money_format` renders inconsistently** (Important). The
-   subtotal is written with `innerText` so a `<span class="money">` wrapper
-   shows as raw text, while line prices are interpolated into an HTML
-   template string and render. `{{ 0 | money }}` renders it too, so the
-   markup subtotal and the JS subtotal can disagree. Pre-exists in
-   `predictive-search.js`; the cart subtotal is higher-traffic.
+Not committed as fixed: `predictive-search.js`'s own subtotal-adjacent
+rendering, if any — out of scope, not part of the Task 2 review.
+
+## Task 3 (R1b) — done, this session
+
+`sections/main-collection.liquid`'s inline `<script>` (478 lines: color
+swatch styling, filter-list truncation, price-filter sync, AJAX
+filter/sort/paginate/collection-chip swapping) extracted to
+`assets/main-collection.js`. Only Liquid interpolation in the script was
+`{{ section.id }}` (3 call sites, all for the `section_id` fetch param) — now
+passed through a `#main-collection-config` JSON island, same pattern as
+Task 2's `#header-cart-config`. `window.toggleMobileFilter` /
+`toggleFilterBlock` / `filterProducts` / `syncPriceFilters` /
+`removeFilterChipUrl` / `clearAllFiltersUrl` exposed on `window` for the
+section's inline `onclick`/`onchange`/`oninput` handlers.
+`sections/main-collection.liquid` is now 405 lines (was 878).
+theme-check: 8 errors / 25 warnings, unchanged.
+
+Not yet verified in a browser — needs task 3's checklist below run against
+the live storefront.
 
 ## Minor findings deferred to final review
 
