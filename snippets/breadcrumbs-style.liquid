@@ -1,0 +1,60 @@
+{% doc %}
+  Section-level layout CSS for the breadcrumbs section: grid placement (row 1,
+  full width, above the rest of the page grid), responsive padding driven by
+  section.settings, and the max-width options (page-width / none / fixed).
+
+  @param {section} [section] - implicit; the section this snippet is rendered from.
+
+  @example
+  {% render 'breadcrumbs-style' %}
+{% enddoc %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;
+    width: 100%;
+    text-align: left;
+    /* Always place breadcrumbs above the grid: row 1, full width */
+    grid-column: 1 / -1;
+    grid-row-start: 1;
+
+    {%- if section.settings.max_width == 'page-width' -%}
+      max-width: var(--page-width, 1440px);
+      margin-left: auto;
+      margin-right: auto;
+    {%- elsif section.settings.max_width == 'none' or section.settings.max_width == blank -%}
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    {%- else -%}
+      max-width: {{ section.settings.max_width }};
+      margin-left: auto;
+      margin-right: auto;
+    {%- endif -%}
+  }
+
+  @media screen and (max-width: 839px) {
+    #shopify-section-{{ section.id }} {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    #shopify-section-{{ section.id }} + .shopify-section {
+      margin-top: -12px;
+    }
+  }
+
+  @media screen and (min-width: 840px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  @media screen and (min-width: 1600px) {
+    #shopify-section-{{ section.id }} {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+{%- endstyle -%}

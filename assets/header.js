@@ -73,6 +73,9 @@
       case 'amount_no_decimals_with_comma_separator':
         value = formatWithDelimiters(cents, 0, '.', ',');
         break;
+      case 'amount_with_space_separator':
+        value = formatWithDelimiters(cents, 2, ' ', ',');
+        break;
       default:
         value = formatWithDelimiters(cents, 2);
     }
@@ -166,7 +169,7 @@
           <p class="text-sm font-semibold">${text('cartEmpty')}</p>
         </div>
       `;
-      cartSubtotal.innerText = formatMoney(0);
+      cartSubtotal.innerHTML = formatMoney(0);
       return;
     }
 
@@ -294,7 +297,7 @@
       cartItemsContainer.insertAdjacentHTML("beforeend", itemHtml);
     });
 
-    cartSubtotal.innerText = formatMoney(calculatedTotalPrice);
+    cartSubtotal.innerHTML = formatMoney(calculatedTotalPrice);
   }
 
   async function updateCartUI() {

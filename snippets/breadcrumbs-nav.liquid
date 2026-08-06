@@ -1,0 +1,190 @@
+{% doc %}
+  Desktop breadcrumb trail (hidden md:block): "Forside" + the resolved
+  ancestor chain + the current page, with horizontal-scroll fade edges and
+  an ellipsis that collapses the middle of long chains below 1200px
+  (assets/breadcrumbs.js drives the scroll/drag/fade behaviour and the
+  ellipsis expand-on-click; a plain <button onclick> already toggles the
+  is-expanded class so that specific interaction needs no JS).
+
+  @param {string} t - required. Template type ('product' | 'collection' | 'blog' | 'article' | 'page' | other).
+  @param {boolean} has_ellipsis - required. Whether the middle of the chain collapses behind "...".
+  @param {object} [c_level_0] - Nearest ancestor collection (product/collection templates).
+  @param {object} [c_level_1] - Next ancestor collection.
+  @param {object} [c_level_2] - Next ancestor collection.
+  @param {object} [c_level_3] - Next ancestor collection.
+  @param {object} [c_level_4] - Next ancestor collection.
+  @param {object} [c_level_5] - Next ancestor collection.
+  @param {object} [c_level_6] - Furthest ancestor collection.
+
+  @example
+  {% render 'breadcrumbs-nav', t: t, has_ellipsis: has_ellipsis, c_level_0: c_level_0, c_level_1: c_level_1, c_level_2: c_level_2, c_level_3: c_level_3, c_level_4: c_level_4, c_level_5: c_level_5, c_level_6: c_level_6 %}
+{% enddoc %}
+
+<style>
+  /* Smooth horizontal scrolling for breadcrumbs */
+  .breadcrumbs-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .breadcrumbs-nav {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    user-select: none;
+  }
+  .breadcrumbs-nav.is-overflowing {
+    cursor: grab;
+  }
+  .breadcrumbs-nav.active-dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+  }
+  .breadcrumbs-nav > * {
+    flex-shrink: 0;
+  }
+  .breadcrumbs-fade-left,
+  .breadcrumbs-fade-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 32px;
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+  }
+  .breadcrumbs-fade-left {
+    left: 0;
+    background: linear-gradient(to right, var(--color-background, #ffffff), transparent);
+  }
+  .breadcrumbs-fade-right {
+    right: 0;
+    background: linear-gradient(to left, var(--color-background, #ffffff), transparent);
+  }
+
+  /* Ellipsis collapse/expand styles */
+  .breadcrumbs-nav .breadcrumb-ellipsis {
+    display: inline-flex;
+    align-items: center;
+  }
+  .breadcrumbs-nav .breadcrumb-collapsed-item {
+    display: none;
+  }
+  .breadcrumbs-nav.is-expanded .breadcrumb-ellipsis {
+    display: none;
+  }
+  .breadcrumbs-nav.is-expanded .breadcrumb-collapsed-item {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Do not abbreviate breadcrumbs on desktop */
+  @media screen and (min-width: 1200px) {
+    .breadcrumbs-nav .breadcrumb-ellipsis {
+      display: none;
+    }
+    .breadcrumbs-nav .breadcrumb-collapsed-item {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+</style>
+
+<div class="breadcrumbs-wrapper hidden md:block text-left">
+  <div class="breadcrumbs-fade-left opacity-0"></div>
+  <nav data-breadcrumbs-nav class="breadcrumbs-nav text-[12px] text-primary/85 flex items-center justify-start gap-0.5 overflow-x-auto whitespace-nowrap h-12 hide-scrollbar" aria-label="Brødkrummer">
+
+      {%- comment -%} Forside (root) {%- endcomment -%}
+      {%- assign forside_class = "" -%}
+      {%- if has_ellipsis -%}
+        {%- assign forside_class = "breadcrumb-collapsed-item" -%}
+      {%- endif -%}
+      <a href="{{ routes.root_url }}" class="{{ forside_class }} hover:underline text-primary/85 no-underline">Forside</a>
+      <span class="{{ forside_class }} material-symbols-outlined text-[16px]">chevron_right</span>
+
+      {%- if has_ellipsis -%}
+        <button type="button" onclick="this.closest('[data-breadcrumbs-nav]').classList.add('is-expanded')" class="breadcrumb-ellipsis hover:underline text-primary/85 cursor-pointer border-none bg-transparent p-0 text-[12px] font-normal" aria-label="Vis hele stien">...</button>
+        <span class="breadcrumb-ellipsis material-symbols-outlined text-[16px] select-none">chevron_right</span>
+      {%- endif -%}
+
+      {%- case t -%}
+        {%- when 'page' -%}
+          <span class="text-primary/85 font-medium" aria-current="page">{{ page.title }}</span>
+
+        {%- when 'product' -%}
+          {%- if c_level_0 != blank -%}
+            {%- if c_level_6 != blank -%}
+              <a href="{{ c_level_6.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_6.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_5 != blank -%}
+              <a href="{{ c_level_5.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_5.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_4 != blank -%}
+              <a href="{{ c_level_4.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_4.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_3 != blank -%}
+              <a href="{{ c_level_3.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_3.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_2 != blank -%}
+              <a href="{{ c_level_2.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_2.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {%- endif -%}
+            {%- if c_level_1 != blank -%}
+              <a href="{{ c_level_1.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_1.title }}</a>
+              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {%- endif -%}
+            <a href="{{ c_level_0.url }}" class="hover:underline text-primary/85 no-underline">{{ c_level_0.title }}</a>
+            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+          {%- endif -%}
+          <span class="text-primary/85 font-medium" aria-current="page">{{ product.title }}</span>
+
+        {%- when 'collection' and collection.handle -%}
+          {%- if c_level_6 != blank -%}
+            <a href="{{ c_level_6.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_6.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_5 != blank -%}
+            <a href="{{ c_level_5.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_5.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_4 != blank -%}
+            <a href="{{ c_level_4.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_4.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_3 != blank -%}
+            <a href="{{ c_level_3.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_3.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_2 != blank -%}
+            <a href="{{ c_level_2.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_2.title }}</a>
+            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+          {%- endif -%}
+          {%- if c_level_1 != blank -%}
+            <a href="{{ c_level_1.url }}" class="hover:underline text-primary/85 no-underline">{{ c_level_1.title }}</a>
+            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+          {%- endif -%}
+          <span class="text-primary/85 font-medium" aria-current="page">{{ collection.title }}</span>
+
+        {%- when 'blog' -%}
+          {%- if current_tags -%}
+            <a href="{{ blog.url }}" class="hover:underline text-primary/85 no-underline">{{ blog.title }}</a>
+            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+            {%- assign tag_title = current_tags | join: " + " -%}
+            <span class="text-primary/85 font-medium" aria-current="page">{{ tag_title }}</span>
+          {%- else -%}
+            <span class="text-primary/85 font-medium" aria-current="page">{{ blog.title }}</span>
+          {%- endif -%}
+
+        {%- when 'article' -%}
+          <a href="{{ blog.url }}" class="hover:underline text-primary/85 no-underline">{{ blog.title }}</a>
+          <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+          <span class="text-primary/85 font-medium" aria-current="page">{{ article.title }}</span>
+
+        {%- else -%}
+          <span class="text-primary/85 font-medium" aria-current="page">{{ page_title }}</span>
+      {%- endcase -%}
+    </nav>
+    <div class="breadcrumbs-fade-right opacity-0"></div>
+  </div>
