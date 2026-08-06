@@ -1,0 +1,39 @@
+{% doc %}
+  Mobile-only sticky buy bar (md:hidden) pinned to the viewport bottom,
+  mirroring the main Add to Cart button's price/text and forwarding clicks
+  to it. assets/product-buy-buttons.js keeps it in sync (price, variant
+  summary, disabled state) and hides it while the cart drawer is open or a
+  product customizer is scrolled into view.
+
+  @param {boolean} enable_sticky_buy_button - required. block.settings.enable_sticky_buy_button; renders nothing when false.
+  @param {string} sticky_buy_button_text - required. Button label, already defaulted by the caller.
+
+  @example
+  {% render 'product-buy-sticky-bar', enable_sticky_buy_button: block.settings.enable_sticky_buy_button, sticky_buy_button_text: sticky_buy_button_text %}
+{% enddoc %}
+
+{%- if enable_sticky_buy_button -%}
+<div id="mobile-sticky-buy-bar" class="fixed bottom-0 left-0 right-0 z-[150] bg-card-light border-t border-slate-100/50 px-5 pt-4 pb-4 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:hidden transition-all duration-300 rounded-t-[32px]">
+  <div class="max-w-[var(--page-width)] mx-auto w-full">
+    <!-- Standard Buy Sheet Content (State 2: Below Customizer / "nederst") -->
+    <div id="sticky-bar-standard-content" class="flex items-center justify-between gap-4 w-full">
+      <!-- Left: Configuration Info -->
+      <div class="flex flex-col text-left overflow-hidden min-w-0 flex-1">
+        <span id="sticky-title" class="font-bold text-primary text-[15px] leading-tight block line-clamp-2">{{ product.title }}</span>
+        <div id="sticky-config-summary" class="text-[12px] text-slate-500 font-medium truncate mt-1 leading-normal"></div>
+      </div>
+      <!-- Right: Purchase Button -->
+      <button id="btn-sticky-buy" class="bg-accent hover:brightness-95 text-on-accent font-bold px-3 h-12 rounded-full text-[15px] shadow-[0_4px_12px_rgba(14,26,40,0.08)] active:scale-95 transition-all cursor-pointer focus:outline-none shrink-0 flex items-center justify-center gap-1 min-w-[125px]">
+        <span id="btn-sticky-buy-text">{{ sticky_buy_button_text }}</span>
+        <span id="btn-sticky-buy-price"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  #mobile-sticky-buy-bar {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
+</style>
+{%- endif -%}

@@ -1,0 +1,46 @@
+{% doc %}
+  Primary purchase CTA stack: the Add to Cart button (price text kept in
+  sync by assets/product-buy-buttons.js via #btn-price-display), the
+  Shopify-rendered accelerated checkout button (Shop Pay / PayPal / etc,
+  hidden automatically via :has() when Shopify renders none), and the
+  reassurance text below it.
+
+  @param {string} text_before_price - required. Label rendered before the price on the button.
+  @param {boolean} show_dynamic_checkout - required. block.settings.show_dynamic_checkout.
+  @param {object} form - required. The enclosing {% form 'product' %} object, for payment_button.
+  @param {string} [sticky_info_text] - Reassurance text below the button; falls back to a default.
+
+  @example
+  {% render 'product-buy-cta', text_before_price: text_before_price, show_dynamic_checkout: block.settings.show_dynamic_checkout, form: form, sticky_info_text: block.settings.sticky_info_text %}
+{% enddoc %}
+
+<button id="btn-add-to-cart" data-text-before-price="{{ text_before_price }}" class="w-full bg-accent hover:brightness-95 text-on-accent font-bold h-14 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center">
+  <span>{{ text_before_price }}</span>
+  <span id="btn-price-display" class="ml-1">{{ product.selected_or_first_available_variant.price | money }}</span>
+</button>
+
+{%- if show_dynamic_checkout -%}
+  <!-- Accelerated checkout (Shop Pay / PayPal / etc.) — Shopify-rendered, do not restyle -->
+  <div class="checkout-divider flex items-center gap-3 my-1 w-full">
+    <span class="flex-1 border-t border-outline-variant"></span>
+    <span class="text-xs font-bold uppercase tracking-widest text-primary/50 shrink-0">{{ 'checkout.or_divider' | t }}</span>
+    <span class="flex-1 border-t border-outline-variant"></span>
+  </div>
+  <div class="dynamic-checkout-wrapper w-full">{{ form | payment_button }}</div>
+{%- endif -%}
+
+<p class="text-xs text-primary/80 text-center mt-3 font-medium leading-relaxed max-w-[90%]">
+  {{ sticky_info_text | default: "Skæres efter mål og sendes på rulle. 30 dages fuld returret, også på din dug." }}
+</p>
+
+<style>
+  /* Surface 5: accelerated checkout — hide the "or" divider and its container
+     together when Shopify renders no dynamic checkout button (no payment
+     methods configured for this shop/variant). */
+  .dynamic-checkout-wrapper:empty {
+    display: none;
+  }
+  .checkout-divider:has(+ .dynamic-checkout-wrapper:empty) {
+    display: none;
+  }
+</style>
