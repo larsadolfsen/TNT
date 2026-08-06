@@ -51,7 +51,7 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 | 1 | Mobile menu: remove accordions | `sections/header-2.liquid` | **done** (4059943) |
 | 2 | R1a — extract header inline script | `sections/header-2.liquid` → `assets/header.js` | **done** (e75250c), 2 open findings |
 | 3 | R1b — extract main-collection inline script | `sections/main-collection.liquid` → `assets/` | **done**, unverified in browser |
-| 4 | R1c — extract breadcrumbs inline scripts (2) | `sections/breadcrumbs.liquid` → `assets/` | pending |
+| 4 | R1c — extract breadcrumbs inline scripts (2) | `sections/breadcrumbs.liquid` → `assets/` | **done**, unverified in browser |
 | 5 | R3a — split `main-collection.liquid` (878 lines) | `sections/main-collection.liquid` | pending |
 | 6 | R3b — split `breadcrumbs.liquid` (746) | `sections/breadcrumbs.liquid` | pending |
 | 7 | R3c — split `product-buy-buttons.liquid` (796) | `blocks/product-buy-buttons.liquid` | pending |
@@ -95,6 +95,13 @@ pagination or infinite scroll advances. Console clean.
 ### 4 — R1c, breadcrumbs script extraction
 Open a product inside a nested collection. The breadcrumb trail renders the
 full path and each crumb navigates. Console clean.
+
+Note: of the section's two `<script>` tags, only the scroll/drag/fade
+behaviour script moved to `assets/breadcrumbs.js` (it had no Liquid
+dependency, so no config island was needed). The JSON-LD block is pure
+Liquid-rendered structured data with no JS logic to extract — moving it to a
+JS file would make it client-injected instead of present in the initial
+HTML, a real SEO tradeoff, so by decision it stays inline.
 
 ### 5–9 — R3 file splits
 Per file, the test is *no visible change at all*. Open the surface the file
