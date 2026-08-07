@@ -98,11 +98,12 @@
         {%- assign forside_class = "breadcrumb-collapsed-item" -%}
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="{{ forside_class }} hover:underline text-primary/85 no-underline">Forside</a>
-      <span class="{{ forside_class }} material-symbols-outlined text-[16px]">chevron_right</span>
+      {%- capture icon_class -%}{{ forside_class }}{% unless forside_class == blank %} {% endunless %}text-[16px]{%- endcapture -%}
+      {% render 'icon', name: 'chevron_right', class: icon_class %}
 
       {%- if has_ellipsis -%}
         <button type="button" onclick="this.closest('[data-breadcrumbs-nav]').classList.add('is-expanded')" class="breadcrumb-ellipsis hover:underline text-primary/85 cursor-pointer border-none bg-transparent p-0 text-[12px] font-normal" aria-label="Vis hele stien">...</button>
-        <span class="breadcrumb-ellipsis material-symbols-outlined text-[16px] select-none">chevron_right</span>
+        {% render 'icon', name: 'chevron_right', class: 'breadcrumb-ellipsis text-[16px] select-none' %}
       {%- endif -%}
 
       {%- case t -%}
@@ -113,64 +114,64 @@
           {%- if c_level_0 != blank -%}
             {%- if c_level_6 != blank -%}
               <a href="{{ c_level_6.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_6.title }}</a>
-              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+              {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
             {%- endif -%}
             {%- if c_level_5 != blank -%}
               <a href="{{ c_level_5.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_5.title }}</a>
-              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+              {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
             {%- endif -%}
             {%- if c_level_4 != blank -%}
               <a href="{{ c_level_4.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_4.title }}</a>
-              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+              {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
             {%- endif -%}
             {%- if c_level_3 != blank -%}
               <a href="{{ c_level_3.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_3.title }}</a>
-              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+              {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
             {%- endif -%}
             {%- if c_level_2 != blank -%}
               <a href="{{ c_level_2.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_2.title }}</a>
-              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+              {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
             {%- endif -%}
             {%- if c_level_1 != blank -%}
               <a href="{{ c_level_1.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_1.title }}</a>
-              <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+              {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
             {%- endif -%}
             <a href="{{ c_level_0.url }}" class="hover:underline text-primary/85 no-underline">{{ c_level_0.title }}</a>
-            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+            {% render 'icon', name: 'chevron_right', class: 'text-[16px]' %}
           {%- endif -%}
           <span class="text-primary/85 font-medium" aria-current="page">{{ product.title }}</span>
 
         {%- when 'collection' and collection.handle -%}
           {%- if c_level_6 != blank -%}
             <a href="{{ c_level_6.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_6.title }}</a>
-            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
           {%- endif -%}
           {%- if c_level_5 != blank -%}
             <a href="{{ c_level_5.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_5.title }}</a>
-            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
           {%- endif -%}
           {%- if c_level_4 != blank -%}
             <a href="{{ c_level_4.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_4.title }}</a>
-            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
           {%- endif -%}
           {%- if c_level_3 != blank -%}
             <a href="{{ c_level_3.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_3.title }}</a>
-            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
           {%- endif -%}
           {%- if c_level_2 != blank -%}
             <a href="{{ c_level_2.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_2.title }}</a>
-            <span class="breadcrumb-collapsed-item material-symbols-outlined text-[16px]">chevron_right</span>
+            {% render 'icon', name: 'chevron_right', class: 'breadcrumb-collapsed-item text-[16px]' %}
           {%- endif -%}
           {%- if c_level_1 != blank -%}
             <a href="{{ c_level_1.url }}" class="hover:underline text-primary/85 no-underline">{{ c_level_1.title }}</a>
-            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+            {% render 'icon', name: 'chevron_right', class: 'text-[16px]' %}
           {%- endif -%}
           <span class="text-primary/85 font-medium" aria-current="page">{{ collection.title }}</span>
 
         {%- when 'blog' -%}
           {%- if current_tags -%}
             <a href="{{ blog.url }}" class="hover:underline text-primary/85 no-underline">{{ blog.title }}</a>
-            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+            {% render 'icon', name: 'chevron_right', class: 'text-[16px]' %}
             {%- assign tag_title = current_tags | join: " + " -%}
             <span class="text-primary/85 font-medium" aria-current="page">{{ tag_title }}</span>
           {%- else -%}
@@ -179,7 +180,7 @@
 
         {%- when 'article' -%}
           <a href="{{ blog.url }}" class="hover:underline text-primary/85 no-underline">{{ blog.title }}</a>
-          <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+          {% render 'icon', name: 'chevron_right', class: 'text-[16px]' %}
           <span class="text-primary/85 font-medium" aria-current="page">{{ article.title }}</span>
 
         {%- else -%}

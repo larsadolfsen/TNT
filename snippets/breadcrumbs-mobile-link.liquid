@@ -12,7 +12,7 @@
 
 <div class="mobile-breadcrumb md:hidden flex items-center justify-start h-12 text-left">
   <a href="{{ parent_url }}" class="flex items-center justify-start gap-1 hover:underline text-primary/85 no-underline text-sm">
-    <span class="material-symbols-outlined text-[18px] select-none">chevron_left</span>
+    {% render 'icon', name: 'chevron_left', class: 'text-[18px] select-none' %}
     <span>{{ parent_title }}</span>
   </a>
 </div>
