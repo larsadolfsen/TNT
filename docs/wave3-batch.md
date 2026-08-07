@@ -61,7 +61,7 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 | 9 | R3e — split `header-2.liquid` + `assets/header.js` | `sections/header-2.liquid`, `assets/header.js`, `assets/header-cart.js` | **done, verified in browser** (2026-08-07) |
 | 10 | R2 — card markup consolidation | `snippets/product-card.liquid` + card surfaces | **done**, unverified in browser |
 | 11 | R5 — shared padding-CSS boilerplate → snippet | blocks with repeated padding CSS | **done**, unverified in browser |
-| 12 | R6 — hex→token sweep | all remaining files | **done** (3a48088), theme-check clean (8 errors/26 warnings, no regression); live-site visual check pending — asset CDN was still serving stale `output.css` ~15 min after sync, user verifying directly |
+| 12 | R6 — hex→token sweep | all remaining files | **done** (16db5c1), theme-check clean (8 errors/26 warnings, no regression). Live browser verification **blocked**: Shopify's edge/page cache kept serving the pre-deploy `output.css` well after the admin panel confirmed the theme synced to 1.0.118 — reproduced with cache-busting query params and `cache: 'no-store'` fetches, on both the homepage and a collection page, so this isn't a normal propagation delay. A follow-up session should re-check the live site before trusting this as visually verified. |
 
 ## Per-task browser verification
 
