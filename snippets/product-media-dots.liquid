@@ -1,0 +1,21 @@
+{% doc %}
+  Mobile-only (hidden md:up via CSS) gallery indicator dots, one per media
+  item. assets/product-media.js drives active-state styling and click
+  navigation; only rendered when there's more than one media item.
+
+  @example
+  {% render 'product-media-dots' %}
+{% enddoc %}
+
+<!-- Indicator Dots (Mobile Only) -->
+<div id="gallery-dots">
+  {%- if product.media.size > 1 -%}
+    {%- for media in product.media -%}
+      <button
+        class="dot-btn w-2.5 h-2.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-slate-300{% endif %} focus:outline-none transition-colors cursor-pointer"
+        data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
+        aria-label="Skift billede {{ forloop.index }}"
+      ></button>
+    {%- endfor -%}
+  {%- endif -%}
+</div>

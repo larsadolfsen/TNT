@@ -1,0 +1,42 @@
+{% doc %}
+  Desktop/tablet-only (hidden below md via CSS) thumbnail strip, one per
+  media item, with a play/3D badge overlay for non-image media.
+  assets/product-media.js drives active-state styling and click navigation;
+  only rendered when there's more than one media item.
+
+  @example
+  {% render 'product-media-thumbnails' %}
+{% enddoc %}
+
+<!-- Thumbnails Container (Desktop/Tablet Only) -->
+<div id="gallery-thumbnails">
+  {%- if product.media.size > 1 -%}
+    {%- for media in product.media -%}
+      <div class="thumbnail-wrapper">
+        <button
+          class="thumbnail-btn {% if forloop.first %}border-primary{% endif %}"
+          data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
+          aria-label="Skift billede {{ forloop.index }}"
+        >
+          <img
+            src="{{ media.preview_image.src | image_url: width: 200, height: 200, crop: 'center' }}"
+            alt="{{ media.alt | default: product.title }}"
+            loading="lazy"
+            width="200"
+            height="200"
+          />
+          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+            <div class="video-thumbnail-overlay">
+              {% render 'icon', name: 'play_circle', class: 'text-white text-3xl' %}
+            </div>
+          {%- endif -%}
+        </button>
+        {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+          <span class="video-thumbnail-label">Video</span>
+        {%- elsif media.media_type == 'model' -%}
+          <span class="video-thumbnail-label">3D</span>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  {%- endif -%}
+</div>
