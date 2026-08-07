@@ -7,24 +7,30 @@ original prompt have already changed.
 
 ## Git state — do this first
 
-Worktree: `C:\Users\adolf\Documents\GitHub\TNT\.claude\worktrees\basis-map-7d9c81`
-Branch: `claude/wave3-tasks-5-9-verify-862312`, currently at `8f7ce5c`.
+You are most likely in your own worktree
+(`C:\Users\adolf\Documents\GitHub\TNT\.claude\worktrees\wave3-tasks-5-10-8695ee`,
+branch `claude/wave3-tasks-5-10-8695ee`), **not** the worktree that produced
+this handoff (`…\basis-map-7d9c81`, branch
+`claude/wave3-tasks-5-9-verify-862312`). Work in your own; do not check out
+the other branch — git will refuse, it is checked out elsewhere.
 
-`origin/main` (`f1c974e`, v1.0.110) has **already been merged into this
-branch**. Do not merge it again — check with:
+**Pull main before anything else.** The originating session's work is merged
+there and your worktree branched before it:
 
 ```powershell
-cd C:\Users\adolf\Documents\GitHub\TNT\.claude\worktrees\basis-map-7d9c81; git log --oneline -3
+cd C:\Users\adolf\Documents\GitHub\TNT\.claude\worktrees\wave3-tasks-5-10-8695ee; git fetch origin; git merge origin/main --no-edit; git log --oneline -4
 ```
 
-Two commits exist on this branch:
+After that merge you have all of the following already on your branch:
 
-- `776137d` — the storefront-blocker note. **Already merged to main.** Its
-  content is now false and step 1 below deletes it.
+- `776137d` — the storefront-blocker note. Its content is now false; step 1
+  below deletes it.
 - `acb1a95` — `docs/superpowers/specs/2026-08-07-r2-card-consolidation-design.md`,
   a design spec for task 10 (R2). Written before the user said task 10 gets
-  its own session. **Leave it alone** — it is committed, it is not task 10
-  implementation, and it is worth keeping. Mention it to the user at the end.
+  its own session. **Leave it alone** — it is a spec, not implementation, and
+  it records a real pre-existing bug (see the last section). Mention it to the
+  user at the end.
+- `eadbd33` — this handoff.
 
 ## Environment gotchas — these cost time to rediscover
 
@@ -45,13 +51,15 @@ Two commits exist on this branch:
 
 ## Untracked artifacts to clean up before committing
 
+Playwright drops a `.playwright-mcp\` directory and a `*.png` per screenshot
+at your worktree root. Neither is covered by `.gitignore`, so clear them
+before you stage anything:
+
 ```powershell
-cd C:\Users\adolf\Documents\GitHub\TNT\.claude\worktrees\basis-map-7d9c81; Remove-Item -Recurse -Force .playwright-mcp; Remove-Item -Force t9-desktop-home.png, t9-desktop-cartdrawer-empty.png
+cd C:\Users\adolf\Documents\GitHub\TNT\.claude\worktrees\wave3-tasks-5-10-8695ee; Remove-Item -Recurse -Force .playwright-mcp -ErrorAction SilentlyContinue; Get-ChildItem -Filter *.png | Remove-Item -Force
 ```
 
-Add more `Remove-Item` entries for any screenshots you take. Nothing under
-`.playwright-mcp/` or any `*.png` at the worktree root should be committed —
-`.gitignore` does not cover either.
+Check with `git status --short` that only intended files are staged.
 
 ## Step status against the user's four instructions
 
