@@ -54,7 +54,7 @@
 main {
   font-size: 16px;
   font-family: var(--font-sans);
-  --color-text: #595959;
+  --color-text: var(--color-foreground, #595959);
   color: var(--color-text);
 
   display: grid;
@@ -732,7 +732,7 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   border-width: 2px;
   border-style: solid;
   border-color: var(--color-border, #cbd5e1);
-  background-color: #ffffff;
+  background-color: var(--color-card-light, #ffffff);
   width: 18px;
   height: 18px;
   display: flex;
@@ -754,7 +754,7 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 .custom-checkbox-box svg {
   width: 0;
   height: 0;
-  color: #ffffff;
+  color: var(--color-on-primary, #ffffff);
   opacity: 0;
   transform: scale(0.5);
   transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -977,7 +977,7 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 .welcome {
   display: grid;
   grid-template-columns: var(--content-grid);
-  background-color: #f6f6f7;
+  background-color: var(--color-background-shade, #f6f6f7);
   padding: 72px 0;
 }
 .welcome-content {
@@ -1014,7 +1014,7 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   height: 100%;
   padding: 24px;
   border-radius: 8px;
-  background-color: #eef3ff;
+  background-color: var(--color-card-high, #eef3ff);
   color: rgb(92, 95, 98);
   line-height: 1.4;
 }

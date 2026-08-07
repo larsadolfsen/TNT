@@ -125,8 +125,8 @@
     {%- endif -%}
 
     {%- if section.settings.background_color == 'dark' -%}
-      --color-primary: #ffffff;
-      --color-text: #e2e8f0;
+      --color-primary: {{ settings.primary_color_dark | default: '#ffffff' }};
+      --color-text: {{ settings.foreground_color_dark | default: '#e2e8f0' }};
       --color-border: rgba(255, 255, 255, 0.2);
     {%- endif -%}
 
