@@ -1,20 +1,12 @@
+{%- comment -%}
+  Header 2 builder section: the header row block area plus the mobile menu
+  drawer, cart drawer and cart config island (all snippets/header-*.liquid).
+  Behaviour lives in assets/header.js and assets/header-cart.js.
+{%- endcomment -%}
+
 {%- liquid
-  # Header 2 builder section: header row blocks, the mobile menu drawer and the
-  # cart drawer shell. All behaviour lives in assets/header.js; this section
-  # only feeds it icons, localized strings and shop.money_format through the
-  # #header-cart-config JSON island rendered below.
-
-  # Pre-render icon markup for interpolation into JS template strings below
-  # (icon.liquid can only be rendered at Liquid compile time, not from the
-  # dynamically-generated cart HTML) — see .agents/AGENTS.md icon rule.
-  capture icon_shopping_basket_html
-    render 'icon', name: 'shopping_basket', class: 'text-4xl mb-2 text-primary/40'
-  endcapture
-  capture icon_delete_html
-    render 'icon', name: 'delete', class: 'text-base'
-  endcapture
+  assign mobile_menu_handle = section.settings.menu
 -%}
-
 
 <header class="header-2 bg-white border-b border-outline-variant{% if section.settings.content_width == 'content' %} px-4{% endif %}">
   <div class="{% if section.settings.content_width == 'content' %}max-w-screen-xl mx-auto px-0{% endif %} w-full">
@@ -24,87 +16,12 @@
   </div>
 </header>
 
-<!-- Mobile Menu Slide-out Drawer -->
-<div id="mobile-menu-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-start transition-opacity duration-300 opacity-0">
-  <div class="bg-card-light w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 -translate-x-full">
-    <div class="overflow-y-auto hide-scrollbar flex-1 min-h-0">
-      <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
-        <span class="font-serif text-xl font-bold text-primary tracking-tight">Menu</span>
-        <button type="button" onclick="toggleMobileMenu(false)" class="text-primary bg-transparent border-0 cursor-pointer w-12 h-12 flex items-center justify-center hover:opacity-80 transition-opacity focus-ring" aria-label="Luk menu">
-          {% render 'icon', name: 'close', class: 'text-2xl' %}
-        </button>
-      </div>
-      {% render 'header-account-mobile-row' %}
-      <nav class="space-y-4 flex flex-col" aria-label="{{ 'navigation.main' | t }}">
-        <a href="{{ routes.root_url }}" class="block text-base font-semibold text-primary hover:text-secondary py-2 border-b border-outline-variant/40 no-underline focus-ring">Forside</a>
-        {% render 'nav-drawer-tree', menu_handle: section.settings.menu %}
-      </nav>
-    </div>
-    <div class="pt-6 border-t border-outline-variant text-xs text-primary/85 space-y-2">
-      <p class="font-semibold text-primary">Brug for hjælp?</p>
-      {%- if settings.contact_phone != blank -%}
-        <p><a href="tel:{{ settings.contact_phone | remove: ' ' }}" class="text-primary hover:text-secondary no-underline">Ring til os: {{ settings.contact_phone }}</a></p>
-      {%- endif -%}
-      {%- if settings.contact_email != blank -%}
-        <p><a href="mailto:{{ settings.contact_email }}" class="text-primary hover:text-secondary no-underline">E-mail: {{ settings.contact_email }}</a></p>
-      {%- endif -%}
-    </div>
-  </div>
-</div>
-
-<!-- Shopping Cart Slide-out Drawer -->
-<div id="cart-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end transition-opacity duration-300 opacity-0">
-  <div class="bg-white w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
-    <div>
-      <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
-        <span class="font-serif text-xl font-bold text-primary tracking-tight">Din Indkøbskurv</span>
-        <button type="button" onclick="toggleCartDrawer(false)" class="text-primary bg-transparent border-0 cursor-pointer w-12 h-12 flex items-center justify-center hover:opacity-80 transition-opacity focus-ring" aria-label="Luk kurv">
-          {% render 'icon', name: 'close', class: 'text-2xl' %}
-        </button>
-      </div>
-      <!-- Cart Items List -->
-      <div id="cart-items" class="space-y-4 overflow-y-auto max-h-[calc(100vh-280px)] pr-2 hide-scrollbar">
-        <!-- Indsættes dynamisk via JavaScript -->
-      </div>
-    </div>
-    <div class="pt-6 border-t border-outline-variant space-y-4">
-      <div class="flex justify-between items-center text-sm">
-        <span class="text-primary/85">Subtotal</span>
-        <span id="cart-subtotal" class="font-bold text-primary text-lg">{{ 0 | money }}</span>
-      </div>
-      <p class="text-xs text-primary/85">Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr.</p>
-      <div class="flex flex-col gap-2">
-        <a href="/checkout" class="w-full py-3 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all no-underline block">Gå til betaling</a>
-        <button onclick="toggleCartDrawer(false)" class="w-full py-2 text-sm text-primary font-semibold hover:underline bg-transparent border-0 cursor-pointer">Fortsæt med at handle</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script type="application/json" id="header-cart-config">
-{
-  "moneyFormat": {{ shop.money_format | json }},
-  "iconShoppingBasket": {{ icon_shopping_basket_html | strip_newlines | json }},
-  "iconDelete": {{ icon_delete_html | strip_newlines | json }},
-  "strings": {
-    "cartEmpty": {{ 'cart.empty' | t | json }},
-    "removeItem": {{ 'cart.remove_item' | t | json }},
-    "errorAdd": {{ 'cart.error_add' | t | json }},
-    "errorQuantity": {{ 'cart.error_quantity' | t | json }},
-    "errorRemove": {{ 'cart.error_remove' | t | json }},
-    "lengthLabel": {{ 'cart.length_label' | t | json }},
-    "diameterLabel": {{ 'cart.diameter_label' | t | json }},
-    "widthLabel": {{ 'cart.width_label' | t | json }},
-    "shapeLabel": {{ 'cart.shape_label' | t | json }},
-    "shapeSquare": {{ 'cart.shape_square' | t | json }},
-    "shapeRound": {{ 'cart.shape_round' | t | json }},
-    "shapeOval": {{ 'cart.shape_oval' | t | json }},
-    "pricePerItem": {{ 'cart.price_per_item' | t | json }}
-  }
-}
-</script>
+{% render 'header-mobile-drawer', menu_handle: mobile_menu_handle %}
+{% render 'header-cart-drawer' %}
+{% render 'header-cart-config' %}
 
 <script src="{{ 'header.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'header-cart.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

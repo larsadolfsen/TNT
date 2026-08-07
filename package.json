@@ -1,6 +1,6 @@
 {
   "name": "shopify-skeleton-tailwind",
-  "version": "1.0.109",
+  "version": "1.0.110",
   "description": "Shopify Skeleton Theme with Tailwind CSS v4",
   "main": "index.js",
   "scripts": {

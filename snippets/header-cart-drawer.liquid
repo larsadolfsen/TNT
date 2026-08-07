@@ -1,0 +1,33 @@
+{%- comment -%}
+  Cart slide-out drawer shell for the Header 2 section. The #cart-items list is
+  filled client-side by renderCart() in assets/header-cart.js; open/close runs
+  through toggleCartDrawer(). Takes no arguments.
+{%- endcomment -%}
+
+<div id="cart-drawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end transition-opacity duration-300 opacity-0">
+  <div class="bg-white w-5/6 max-w-sm h-full flex flex-col justify-between shadow-2xl p-6 transition-transform duration-300 translate-x-full">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-6">
+        <span class="font-serif text-xl font-bold text-primary tracking-tight">Din Indkøbskurv</span>
+        <button type="button" onclick="toggleCartDrawer(false)" class="text-primary bg-transparent border-0 cursor-pointer w-12 h-12 flex items-center justify-center hover:opacity-80 transition-opacity focus-ring" aria-label="Luk kurv">
+          {% render 'icon', name: 'close', class: 'text-2xl' %}
+        </button>
+      </div>
+      <!-- Cart Items List -->
+      <div id="cart-items" class="space-y-4 overflow-y-auto max-h-[calc(100vh-280px)] pr-2 hide-scrollbar">
+        <!-- Indsættes dynamisk via JavaScript -->
+      </div>
+    </div>
+    <div class="pt-6 border-t border-outline-variant space-y-4">
+      <div class="flex justify-between items-center text-sm">
+        <span class="text-primary/85">Subtotal</span>
+        <span id="cart-subtotal" class="font-bold text-primary text-lg">{{ 0 | money }}</span>
+      </div>
+      <p class="text-xs text-primary/85">Fragt beregnes ved kassen. Fri fragt ved køb over 499 kr.</p>
+      <div class="flex flex-col gap-2">
+        <a href="/checkout" class="w-full py-3 bg-accent hover:brightness-95 text-primary font-bold rounded-full text-sm text-center shadow-sm active:scale-95 transition-all no-underline block">Gå til betaling</a>
+        <button onclick="toggleCartDrawer(false)" class="w-full py-2 text-sm text-primary font-semibold hover:underline bg-transparent border-0 cursor-pointer">Fortsæt med at handle</button>
+      </div>
+    </div>
+  </div>
+</div>
