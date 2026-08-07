@@ -42,23 +42,70 @@
     return window.themeMoney.formatMoney(cents, moneyFormat);
   }
 
+  /* ---------------------------------------------------------------------
+   * Dialog accessibility (focus capture/restore, Escape-to-close, Tab trap)
+   *
+   * Mirrors the mobile predictive-search takeover in assets/predictive-search.js
+   * (see onKeydown/open/close there). Focusables are queried at keydown-time,
+   * not cached at open-time, since renderCart() rewrites #cart-items via
+   * innerHTML while the drawer is open and a cached list would go stale.
+   * ------------------------------------------------------------------- */
+  let lastFocusedBeforeCartDrawer = null;
+
+  function onCartDrawerKeydown(event) {
+    const drawer = document.getElementById("cart-drawer");
+    if (!drawer) return;
+    const panel = drawer.querySelector("div");
+    if (event.key === "Escape") {
+      event.preventDefault();
+      toggleCartDrawer(false);
+      return;
+    }
+    if (event.key === "Tab" && panel) {
+      const focusables = Array.prototype.slice.call(
+        panel.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])')
+      );
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
   function toggleCartDrawer(open) {
     const drawer = document.getElementById("cart-drawer");
     if (!drawer) return;
     const panel = drawer.querySelector("div");
     if (open) {
+      lastFocusedBeforeCartDrawer = document.activeElement;
       drawer.classList.remove("hidden");
       updateCartUI(); // Refresh contents when opening
       setTimeout(() => {
         drawer.classList.remove("opacity-0");
         panel.classList.remove("translate-x-full");
       }, 10);
+      if (panel) {
+        const firstFocusable = panel.querySelector('a[href], button:not([disabled]), input:not([disabled])');
+        if (firstFocusable) firstFocusable.focus();
+      }
+      document.addEventListener("keydown", onCartDrawerKeydown, true);
     } else {
       drawer.classList.add("opacity-0");
       panel.classList.add("translate-x-full");
       setTimeout(() => {
         drawer.classList.add("hidden");
       }, 300);
+      document.removeEventListener("keydown", onCartDrawerKeydown, true);
+      if (lastFocusedBeforeCartDrawer && typeof lastFocusedBeforeCartDrawer.focus === "function") {
+        lastFocusedBeforeCartDrawer.focus();
+      }
+      lastFocusedBeforeCartDrawer = null;
     }
   }
 
