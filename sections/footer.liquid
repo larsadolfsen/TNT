@@ -81,10 +81,6 @@
       {%- if section.settings.show_localization -%}
         {% content_for 'block', type: 'footer-localization', id: 'footer-localization' %}
       {%- endif -%}
-      <div class="flex gap-4">
-        <span class="text-[10px] border border-outline-variant px-2 py-1 rounded text-primary/70">OEKO-TEX®</span>
-        <span class="text-[10px] border border-outline-variant px-2 py-1 rounded text-primary/70">Phthalat-fri</span>
-      </div>
       <p class="text-[10px] text-primary/50 italic">
         &copy; {{ 'now' | date: '%Y' }} {% if section.settings.copyright_text != blank %}{{ section.settings.copyright_text }}{% else %}{{ shop.name }}{% endif %}. {{ powered_by_link }}
       </p>

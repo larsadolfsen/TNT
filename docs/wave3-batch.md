@@ -60,7 +60,7 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 | 8 | R3d — split `product-media.liquid` (620) | `blocks/product-media.liquid` | **done, verified in browser** (2026-08-07) |
 | 9 | R3e — split `header-2.liquid` + `assets/header.js` | `sections/header-2.liquid`, `assets/header.js`, `assets/header-cart.js` | **done, verified in browser** (2026-08-07) |
 | 10 | R2 — card markup consolidation | `snippets/product-card.liquid` + card surfaces | **done**, unverified in browser |
-| 11 | R5 — shared padding-CSS boilerplate → snippet | blocks with repeated padding CSS | pending |
+| 11 | R5 — shared padding-CSS boilerplate → snippet | blocks with repeated padding CSS | **done**, unverified in browser |
 | 12 | R6 — hex→token sweep | all remaining files | pending |
 
 ## Per-task browser verification

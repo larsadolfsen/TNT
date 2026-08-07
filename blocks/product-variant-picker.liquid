@@ -6,10 +6,7 @@
 {%- if product.variants.size > 1 -%}
   {%- style -%}
     #shopify-block-{{ block.id }}.shopify-block {
-      --block-padding-top: {{ block.settings.padding_top | default: 12 }}px;
-      --block-padding-bottom: {{ block.settings.padding_bottom | default: 12 }}px;
-      --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
-      --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
+      {%- render 'block-padding-vars', block: block, top_default: 12, bottom_default: 12 -%}
       
       padding-top: var(--block-padding-top);
       padding-bottom: var(--block-padding-bottom);

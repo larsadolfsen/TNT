@@ -44,10 +44,7 @@
 
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
-    --block-padding-top: {{ block.settings.padding_top | default: 0 }}px;
-    --block-padding-bottom: {{ block.settings.padding_bottom | default: 0 }}px;
-    --block-padding-left: {{ block.settings.padding_sides | default: 0 }}px;
-    --block-padding-right: {{ block.settings.padding_sides | default: 0 }}px;
+    {%- render 'block-padding-vars', block: block -%}
   }
   #shopify-block-{{ block.id }} #shipping-amount-ticker {
     display: inline-flex;
