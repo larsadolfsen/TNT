@@ -49,19 +49,7 @@
     "shape_oval": "Oval",
     "price_per_item": "Price per item."
   },
-  "customers": {
-    "login": {
-      "email": "Email",
-      "password": "Password",
-      "submit": "Sign in",
-      "title": "Login"
-    }
-  },
-  "collections": {
-    "title": "Collections"
-  },
   "contact": {
-    "heading": "Contact us",
     "name_label": "Name",
     "email_label": "Email",
     "phone_label": "Phone (optional)",

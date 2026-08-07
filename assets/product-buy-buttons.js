@@ -225,18 +225,18 @@
         }
 
         // Optimistic update of cart-counter
-        const counters = document.querySelectorAll('#cart-counter');
+        const cartCounter = document.getElementById('cart-counter');
         const originalCounts = [];
-        counters.forEach(counter => {
-          const currentCount = parseInt(counter.innerText) || 0;
-          originalCounts.push({ counter, text: counter.innerText, hasScale0: counter.classList.contains("scale-0") });
+        if (cartCounter) {
+          const currentCount = parseInt(cartCounter.innerText) || 0;
+          originalCounts.push({ counter: cartCounter, text: cartCounter.innerText, hasScale0: cartCounter.classList.contains("scale-0") });
           const newCount = currentCount + buyQty;
-          counter.innerText = newCount;
+          cartCounter.innerText = newCount;
           if (newCount > 0) {
-            counter.classList.remove("scale-0");
-            counter.classList.add("scale-100");
+            cartCounter.classList.remove("scale-0");
+            cartCounter.classList.add("scale-100");
           }
-        });
+        }
 
         fetch('/cart/add.js', {
           method: 'POST',

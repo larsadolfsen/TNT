@@ -34,46 +34,12 @@
   /* ---------------------------------------------------------------------
    * Money formatting
    *
-   * Cart rows are built from client-fetched /cart.js JSON, so Liquid's `money`
-   * filter is out of reach. Replicate the shop's configured money_format
-   * client-side, the same way Shopify's own money.js does (mirrors the
-   * implementation in assets/predictive-search.js). With no money_format
-   * available, fall back to a plain two-decimal amount with comma decimals.
+   * Uses shared formatter from assets/money.js (window.themeMoney.formatMoney)
+   * Wraps it to maintain the existing interface where moneyFormat comes from
+   * the config closure.
    * ------------------------------------------------------------------- */
-  function formatWithDelimiters(cents, precision, thousands, decimal) {
-    precision = typeof precision === 'undefined' ? 2 : precision;
-    thousands = typeof thousands === 'undefined' ? ',' : thousands;
-    decimal = typeof decimal === 'undefined' ? '.' : decimal;
-    if (isNaN(cents) || cents === null) return '0';
-    var amount = (cents / 100).toFixed(precision);
-    var parts = amount.split('.');
-    var dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands);
-    var decimals = parts[1] ? decimal + parts[1] : '';
-    return dollars + decimals;
-  }
-
   function formatMoney(cents) {
-    if (!moneyFormat) return formatWithDelimiters(cents, 2, '.', ',');
-    var match = moneyFormat.match(/\{\{\s*(\w+)\s*\}\}/);
-    if (!match) return moneyFormat;
-    var value;
-    switch (match[1]) {
-      case 'amount_no_decimals':
-        value = formatWithDelimiters(cents, 0);
-        break;
-      case 'amount_with_comma_separator':
-        value = formatWithDelimiters(cents, 2, '.', ',');
-        break;
-      case 'amount_no_decimals_with_comma_separator':
-        value = formatWithDelimiters(cents, 0, '.', ',');
-        break;
-      case 'amount_with_space_separator':
-        value = formatWithDelimiters(cents, 2, ' ', ',');
-        break;
-      default:
-        value = formatWithDelimiters(cents, 2);
-    }
-    return moneyFormat.replace(/\{\{\s*\w+\s*\}\}/, value);
+    return window.themeMoney.formatMoney(cents, moneyFormat);
   }
 
   function toggleCartDrawer(open) {
@@ -102,17 +68,17 @@
     currentCart = cart;
 
     // Update the cart counters
-    const counters = document.querySelectorAll('#cart-counter');
-    counters.forEach(counter => {
-      counter.innerText = cart.item_count;
+    const cartCounter = document.getElementById('cart-counter');
+    if (cartCounter) {
+      cartCounter.innerText = cart.item_count;
       if (cart.item_count > 0) {
-        counter.classList.remove("scale-0");
-        counter.classList.add("scale-100");
+        cartCounter.classList.remove("scale-0");
+        cartCounter.classList.add("scale-100");
       } else {
-        counter.classList.remove("scale-100");
-        counter.classList.add("scale-0");
+        cartCounter.classList.remove("scale-100");
+        cartCounter.classList.add("scale-0");
       }
-    });
+    }
 
     // Update the cart drawer
     const cartItemsContainer = document.getElementById("cart-items");
@@ -270,18 +236,18 @@
   }
 
   async function addToCart(variantId, qty = 1) {
-    const counters = document.querySelectorAll('#cart-counter');
+    const cartCounter = document.getElementById('cart-counter');
     const originalCounts = [];
-    counters.forEach(counter => {
-      const currentCount = parseInt(counter.innerText) || 0;
-      originalCounts.push({ counter, text: counter.innerText, hasScale0: counter.classList.contains("scale-0") });
+    if (cartCounter) {
+      const currentCount = parseInt(cartCounter.innerText) || 0;
+      originalCounts.push({ counter: cartCounter, text: cartCounter.innerText, hasScale0: cartCounter.classList.contains("scale-0") });
       const newCount = currentCount + qty;
-      counter.innerText = newCount;
+      cartCounter.innerText = newCount;
       if (newCount > 0) {
-        counter.classList.remove("scale-0");
-        counter.classList.add("scale-100");
+        cartCounter.classList.remove("scale-0");
+        cartCounter.classList.add("scale-100");
       }
-    });
+    }
 
     try {
       const response = await fetch('/cart/add.js', {
