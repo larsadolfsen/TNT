@@ -302,6 +302,7 @@ untouched and B5 can ship before A4/B4.
 | R4 | Grid→flex: safe swaps (listing grids, testimonials, per-block `order`); product page per the pending user decision in `grid-to-flexbox-migration.md` | [S] | Preview at mobile/tablet/desktop breakpoints |
 | R5 | Shared padding-CSS boilerplate → snippet | [H] | Spot-check blocks render identically |
 | R6 | Full hex→token sweep of remaining files | [H] | Light + dark preview sweep |
+| R7 | Text style standardization: build the 11-style CSS class catalog + `snippets/text.liquid` per `docs/superpowers/specs/2026-08-07-text-style-standardization-design.md`, then mechanical call-site migration across ~30 files replacing the 42 audited utility-class combos. `cart.liquid:39,68,103,105` needs a manual (non-mechanical) split — same class currently covers both line-item title and price | [S]+[H] | Grep confirms none of the 42 removed class combos remain in `*.liquid`; visual sweep of homepage/PDP/cart/collection/account/search, light + dark |
 
 ## Wave 4 — Submission package (serial at the end)
 
@@ -353,9 +354,9 @@ zero metervare references.
   block, then grep-verify. Independent of the app: the theme's signal is
   native `unit_price_measurement`, which is already configured on the real
   product. *This is the fix for "0,79 kr" showing as a headline price.*
-- **Wave 3 (R1–R6)** — refactor and grid→flex. Partitioned by file, ~6
+- **Wave 3 (R1–R7)** — refactor and grid→flex. Partitioned by file, ~6
   concurrent. **R4 still blocked on the product-page mobile-ordering decision
-  in `grid-to-flexbox-migration.md`** — R1, R2, R3, R5, R6 are not.
+  in `grid-to-flexbox-migration.md`** — R1, R2, R3, R5, R6, R7 are not.
 - **B5.1** — configure unit pricing on further per-cm products as they are
   converted. Not a blocker; a product without it renders its raw price.
 
