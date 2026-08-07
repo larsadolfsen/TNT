@@ -91,6 +91,22 @@ stale — corrected in `docs/wave3-batch.md`).
 
 Not yet verified in a browser. Tasks 5–8 were also never browser-verified.
 
+## Browser verification of tasks 5–9 — attempted, blocked (2026-08-07)
+
+Ran at v1.0.110 (main, `a4f148e`). Could not execute a single checklist item:
+`https://shopify.textilogvoksdug.dk` is password-protected and serves the
+"Butikken åbner snart" lock page — no theme asset loads. `shopify theme dev`
+is not a workaround; the CLI is authenticated (lists `TNT/main [live]
+#191515623757`) but demands the same store password before serving.
+
+Only check that could be made without a browser: `sections/header-2.liquid:23-24`
+does reference both `header.js` and `header-cart.js` with `defer`. That proves
+the tags exist, nothing about runtime behaviour.
+
+Tasks 5–9 stay **unverified in browser**. User's explicit call was to skip and
+start task 10. Unblock options are recorded in `docs/wave3-batch.md` under
+"Blocked — storefront is password-protected".
+
 ## Minor findings deferred to final review
 
 - ~~`assets/header.js` is 519 lines covering three concerns~~ — **fixed in
