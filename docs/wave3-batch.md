@@ -22,8 +22,10 @@ guess.
 - Bump the patch in **both** `package.json` and `config/settings_schema.json`
   on every push.
 - No `!important` in CSS.
-- `theme-check` must not regress from the **8 errors / 26 warnings** baseline
-  at v1.0.102. Run `npx shopify theme check`.
+- `theme-check` must not regress from the current baseline — **9 errors / 28
+  warnings** as measured at v1.0.109 (see "Known-good baseline" below). Run
+  `npx shopify theme check` *before* touching anything and diff against that
+  run, not against a number quoted in this file.
 - **Never put a filter inside a `{% render %}` argument.** Precompute with
   `assign`/`capture` immediately before the render and pass the plain
   variable; inside a `{% for %}` loop the assign goes in the loop body.
@@ -56,7 +58,7 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 | 6 | R3b — split `breadcrumbs.liquid` (746) | `sections/breadcrumbs.liquid` | **done**, unverified in browser |
 | 7 | R3c — split `product-buy-buttons.liquid` (796) | `blocks/product-buy-buttons.liquid` | **done**, unverified in browser |
 | 8 | R3d — split `product-media.liquid` (620) | `blocks/product-media.liquid` | **done**, unverified in browser |
-| 9 | R3e — split `header-2.liquid` (565) | `sections/header-2.liquid` | pending |
+| 9 | R3e — split `header-2.liquid` + `assets/header.js` | `sections/header-2.liquid`, `assets/header.js` | **done**, unverified in browser |
 | 10 | R2 — card markup consolidation | `snippets/product-card.liquid` + card surfaces | pending |
 | 11 | R5 — shared padding-CSS boilerplate → snippet | blocks with repeated padding CSS | pending |
 | 12 | R6 — hex→token sweep | all remaining files | pending |
@@ -118,6 +120,22 @@ called out: quantity stepper +/−, add-to-cart (watch the price and the
 optimistic cart-counter bump), the mobile sticky bar's price/text sync and
 its show/hide on scroll and on cart-drawer open/close, console clean.
 
+Note on task 9: the "565 lines" in the table was stale — task 2 (R1a) had
+already moved 443 lines of inline `<script>` out, leaving the section at 148
+lines. So R3e split what was actually left: the mobile drawer, cart drawer and
+`#header-cart-config` island became `snippets/header-mobile-drawer.liquid`,
+`snippets/header-cart-drawer.liquid` and `snippets/header-cart-config.liquid`
+(section is now a 65-line shell + schema), and `assets/header.js` — 522 lines
+covering three concerns, flagged for R3 by task 2's own review — split into
+`assets/header.js` (mobile menu + search toggle, 76 lines) and
+`assets/header-cart.js` (cart drawer, money formatting, add/change/remove, 450
+lines). The two JS files share nothing and call nothing in each other; the
+config island belongs entirely to the cart half. Both are loaded `defer` from
+the section. Verify on top of the header checks below: hamburger opens/closes
+the drawer, search icon opens the field, cart icon opens the drawer, add /
+`+` / `−` / remove / empty-cart all work with correct prices and subtotal, the
+cart counter bumps, clicking either backdrop closes its drawer, console clean.
+
 Note on task 8: also never got an R1 pass, so its ~299-line inline
 `<script>` (gallery carousel/swipe/dots/thumbnails/video-overlay) moved to
 `assets/product-media.js` too — but it had no Liquid dependency (like
@@ -150,3 +168,15 @@ that is a hex that was tokenised to the wrong token.
   `ImgWidthAndHeight` (`sections/cart.liquid:17`,
   `sections/collection-subcategories.liquid` ×6) and 1×
   `ParserBlockingScript` (`layout/theme.liquid:72`). All pre-existing.
+
+## Current baseline, re-measured at v1.0.109 (start of task 9)
+
+The figure above had drifted — measure, don't quote it. At v1.0.109, 522 files
+inspected, **9 errors / 28 warnings**:
+
+- errors: 7× `ImgWidthAndHeight`, 1× `ParserBlockingScript`, 1×
+  `JSONMissingBlock` (the by-the-meter app block referenced by
+  `templates/product.Metervare.json` — an app-block reference, not theme code).
+- warnings: 16× `RemoteAsset`, 9× `UnusedAssign`, 3× `UndefinedObject`.
+
+Task 9 landed at exactly these counts, 525 files inspected, no new offenses.

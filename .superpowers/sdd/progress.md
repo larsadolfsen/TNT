@@ -62,18 +62,50 @@ theme-check: 8 errors / 25 warnings, unchanged.
 Not yet verified in a browser — needs task 3's checklist below run against
 the live storefront.
 
+## Task 9 (R3e) — done, this session
+
+The plan's "565 lines" was stale: task 2 had already pulled 443 lines of
+inline `<script>` out, so `sections/header-2.liquid` stood at 148 lines. Split
+along the conceptual seams that were left rather than by line count.
+
+Markup → `snippets/header-mobile-drawer.liquid` (takes `menu_handle`),
+`snippets/header-cart-drawer.liquid` and `snippets/header-cart-config.liquid`
+(the icon captures moved with the island they feed). Section is now a 65-line
+shell: header row block area, three renders, two script tags, schema.
+
+JS → `assets/header.js` keeps the mobile menu toggle and search toggle (76
+lines, exposes `toggleMobileMenu` / `toggleSearchInput`); `assets/header-cart.js`
+takes the cart drawer, config island, money formatter and add/change/remove
+(450 lines, exposes `addToCart` / `changeQuantity` / `removeItem` /
+`updateCartUI` / `toggleCartDrawer`). Clean seam — the two files share no
+state and neither calls into the other; the config island is cart-only. Both
+loaded `defer` from the section, so document order is preserved.
+
+Verified by diffing the old file's non-blank lines against the union of the
+two new ones: every code line accounted for, differences are comments and the
+duplicated IIFE/`DOMContentLoaded` scaffolding only. Same check on the Liquid.
+
+theme-check: 9 errors / 28 warnings, identical to the v1.0.109 baseline
+measured at the start of this session (the docs' "8 errors / 26 warnings" was
+stale — corrected in `docs/wave3-batch.md`).
+
+Not yet verified in a browser. Tasks 5–8 were also never browser-verified.
+
 ## Minor findings deferred to final review
 
-- `assets/header.js` is 519 lines covering three concerns (mobile menu,
-  search toggle, cart drawer) — the project's one-purpose-per-file rule points
-  at a split. Natural fit for the R3 stage of this batch.
-- The money formatter is now duplicated in `header.js` and
-  `predictive-search.js`. Should become one shared asset.
-- Island-missing fallback (`assets/header.js:62`) emits a bare number with no
-  currency at all; the old code at least appended `Kr.`.
+- ~~`assets/header.js` is 519 lines covering three concerns~~ — **fixed in
+  task 9**, split into `header.js` + `header-cart.js`.
+- The money formatter is duplicated in `header-cart.js` and
+  `predictive-search.js`. Should become one shared asset. (Line refs below are
+  post-task-9; the cart half now lives in `assets/header-cart.js`.)
+- Island-missing fallback (`assets/header-cart.js:56`) emits a bare number with
+  no currency at all; the old code at least appended `Kr.`.
 - `text('removeItem')` is interpolated unescaped into an `aria-label`
-  (`assets/header.js:285`); a `"` in a translation would break the attribute.
-- `assets/header.js` header comment is 12 lines against the stated 2-3.
-- Still-hardcoded Danish in `sections/header-2.liquid` markup, including a
-  `"Fri fragt ved køb over 499 kr."` policy line, plus an Unsplash
-  placeholder URL. Genericisation blockers, out of scope for Task 2.
+  (`assets/header-cart.js:247`); a `"` in a translation would break the
+  attribute.
+- Still-hardcoded Danish, now in `snippets/header-mobile-drawer.liquid`
+  ("Menu", "Forside", "Brug for hjælp?", "Ring til os", "Luk menu") and
+  `snippets/header-cart-drawer.liquid` ("Din Indkøbskurv", "Subtotal", "Gå til
+  betaling", and the `"Fri fragt ved køb over 499 kr."` policy line), plus the
+  Unsplash placeholder URL in `assets/header-cart.js`. Genericisation
+  blockers, out of scope for tasks 2 and 9.

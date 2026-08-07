@@ -1,0 +1,40 @@
+{%- comment -%}
+  #header-cart-config JSON island: the shop's money_format, pre-rendered icon
+  markup and the localized cart strings that assets/header-cart.js needs but
+  cannot read from Liquid. Takes no arguments.
+{%- endcomment -%}
+
+{%- liquid
+  # Icons are captured here because icon.liquid can only be rendered at Liquid
+  # compile time, not from the dynamically-generated cart HTML — see
+  # .agents/AGENTS.md icon rule.
+  capture icon_shopping_basket_html
+    render 'icon', name: 'shopping_basket', class: 'text-4xl mb-2 text-primary/40'
+  endcapture
+  capture icon_delete_html
+    render 'icon', name: 'delete', class: 'text-base'
+  endcapture
+-%}
+
+<script type="application/json" id="header-cart-config">
+{
+  "moneyFormat": {{ shop.money_format | json }},
+  "iconShoppingBasket": {{ icon_shopping_basket_html | strip_newlines | json }},
+  "iconDelete": {{ icon_delete_html | strip_newlines | json }},
+  "strings": {
+    "cartEmpty": {{ 'cart.empty' | t | json }},
+    "removeItem": {{ 'cart.remove_item' | t | json }},
+    "errorAdd": {{ 'cart.error_add' | t | json }},
+    "errorQuantity": {{ 'cart.error_quantity' | t | json }},
+    "errorRemove": {{ 'cart.error_remove' | t | json }},
+    "lengthLabel": {{ 'cart.length_label' | t | json }},
+    "diameterLabel": {{ 'cart.diameter_label' | t | json }},
+    "widthLabel": {{ 'cart.width_label' | t | json }},
+    "shapeLabel": {{ 'cart.shape_label' | t | json }},
+    "shapeSquare": {{ 'cart.shape_square' | t | json }},
+    "shapeRound": {{ 'cart.shape_round' | t | json }},
+    "shapeOval": {{ 'cart.shape_oval' | t | json }},
+    "pricePerItem": {{ 'cart.price_per_item' | t | json }}
+  }
+}
+</script>
