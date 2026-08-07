@@ -206,3 +206,71 @@ in `blocks/product-price.liquid` (its inline script rebuilds the price
 container's `innerHTML`, so the badge markup still exists twice in that file);
 the label divergence `"[savings] % rabat"` vs `"Spar X%"`; `#c8102e` and
 `#FFB800` → tokens, now one site each instead of three, for R6.
+
+### Task 10 — browser verification (2026-08-07, dev theme #194234384717)
+
+Pushed the branch to the existing development theme and compared it against
+live `TNT/main` (#191515623757) by pinning `preview_theme_id` per request.
+
+**Verified good:**
+
+- **R2a–R2d, collection grid**: rendered card HTML compared card-by-card
+  across four collections. `/collections/voksdug` (50 cards) and
+  `/collections/gennemsigtig-voksduge` (3) are byte-identical to v1.0.110.
+  The two collections with a sale badge differ by **exactly two whitespace
+  characters** (a space either side of the badge `<span>`, 2360 → 2362 bytes);
+  the span's classes and text are identical. Proved harmless: the parent is
+  `display:flex`, the whitespace text nodes return 0 client rects, and
+  `container.children.length` stays 1.
+  A 1.2px price-row difference seen early on was **font-load timing, not
+  markup** — proved by injecting live's price markup into the dev page and
+  getting the same height for both markups in the same page state.
+- **R2e contrast fix**, measured against live tokens with `.dark` applied:
+  old `text-primary` on `bg-accent` = **1.39:1**, new `text-on-accent` =
+  **12.6:1**. Confirms the design doc's estimate numerically.
+- **R2g product grid**: 3 columns / 397.6px at 1280px, 2 columns / 163.6px at
+  375px, no horizontal overflow — matches the collection page.
+
+**Two real bugs found and fixed during verification** (both mine, both in
+R2g, both silent):
+
+1. `.search-results` (`assets/input.css:1044`) is an auto-fill grid left over
+   from the per-item rows R2g replaced. Both new wrappers were single children
+   of it, so each was squeezed into one 200px cell instead of the full 1241px.
+2. `lg:grid-cols-3` **is not in `assets/output.css`** — it is a prebuilt
+   Tailwind file and no file used that class before, so it was purged and did
+   nothing. Desktop silently stayed at 2 columns. Same for
+   `group-hover:text-secondary` on the row title.
+
+Fixed with a `{% style %}` block in `sections/search.liquid` (the convention
+`blocks/collection-products-grid.liquid` already uses) setting the columns and
+`grid-column: 1 / -1`, and by dropping the dead `group-hover` class. Added a
+check that scans for classes not present anywhere before the commit —
+it now reports NONE. **Do not add a Tailwind class to this theme without
+checking `output.css`, or rebuild it.**
+
+**Open — must be resolved before merge:**
+
+- The new `search-result-row` renders `bg-card-light` as `#F8F9FD` (light) in
+  dark mode while `--color-card-light` correctly resolves to `#1a2635` on
+  `<html>`, giving ~1.05:1 title-on-background. Most other `bg-card-light`
+  elements (footer, nav panels, drawer) render `#1a2635` correctly on the same
+  page; the search form's own input wrapper shows the same wrong value, so it
+  may be scoped to this section rather than to R2g. Root cause not yet found —
+  a scan of all matching stylesheet rules returned no `background-color` rule
+  matching the element, so the winning declaration has not been identified.
+  Not claimed fixed.
+
+**Could not be verified at all:** every product-page surface — related
+products, complementary products (R2f), the R2e button in situ, star-rating,
+and R2a's `lg` badge. `shopify theme push` rejects three files for
+**pre-existing** reasons (`product-price.liquid` `price_suffix` needs a
+default; `product-buy-buttons.liquid` has a >70-char setting label;
+`product-recommendations.liquid:36` puts a filter inside the
+`{% recommendations %}` tag argument, so the CLI reports "Unknown tag"). All
+three are unchanged on `main` and fail identically there. Because
+`templates/product*.json` reference those blocks, they fail too and the dev
+theme returns **404 for every product page**. The live theme renders them
+fine, so the GitHub-connection deploy path is more lenient than `theme push`.
+Verifying those surfaces needs either those three pre-existing errors fixed
+(their own task) or a merge to main.

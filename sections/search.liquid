@@ -1,9 +1,33 @@
 {% comment %}
   This section is used in the search template to render search results for
-  products, articles, and pages.
+  products, articles, and pages. Products render through snippets/product-card,
+  articles and pages through snippets/search-result-row.
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/search
 {% endcomment %}
+
+{%- style -%}
+  /* `.search-results` (assets/input.css) is an auto-fill grid left over from
+     the per-item rows this section used to emit. Both zones below are single
+     children of it, so each must span the whole track list instead of
+     landing in one 200px cell. Columns are set here rather than with
+     `lg:grid-cols-3` because assets/output.css is a prebuilt Tailwind file
+     and that class is not in it. */
+  #search-products-{{ section.id }},
+  #search-rows-{{ section.id }} {
+    grid-column: 1 / -1;
+  }
+
+  #search-products-{{ section.id }} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media screen and (min-width: 1024px) {
+    #search-products-{{ section.id }} {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+{%- endstyle -%}
 
 <h1 class="font-serif text-3xl font-bold text-primary mb-6">{{ 'search.title' | t }}</h1>
 
@@ -51,7 +75,7 @@
         -%}
 
         {%- if has_products -%}
-          <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div id="search-products-{{ section.id }}" class="grid gap-4 lg:gap-6">
             {%- for result in search.results -%}
               {%- if result.object_type == 'product' -%}
                 {%- render 'product-card', product: result, layout: 'minimal' -%}
@@ -61,7 +85,7 @@
         {%- endif -%}
 
         {%- if has_other -%}
-          <div class="flex flex-col gap-3{% if has_products %} mt-8{% endif %}">
+          <div id="search-rows-{{ section.id }}" class="flex flex-col gap-3{% if has_products %} mt-8{% endif %}">
             {%- for result in search.results -%}
               {%- unless result.object_type == 'product' -%}
                 {%- render 'search-result-row', result: result -%}

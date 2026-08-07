@@ -43,6 +43,11 @@
     {%- if type_label != blank -%}
       <span class="block text-[11px] font-semibold tracking-wider uppercase text-primary/70">{{ type_label }}</span>
     {%- endif -%}
-    <span class="block text-sm sm:text-base font-normal text-primary leading-tight group-hover:text-secondary">{{ result.title }}</span>
+    {%- comment -%}
+      No group-hover colour on the title: assets/output.css is a prebuilt
+      Tailwind file and `group-hover:text-secondary` is not in it. The row's
+      border and shadow hover carry the affordance instead.
+    {%- endcomment -%}
+    <span class="block text-sm sm:text-base font-normal text-primary leading-tight">{{ result.title }}</span>
   </div>
 </a>
