@@ -65,7 +65,7 @@ npx shopify theme check
   isn't reachable through the container's proxy. Run from a local machine
   (`npx lighthouse` or PageSpeed Insights against the storefront URL,
   home/collection/product, mobile+desktop) and drop results in
-  `docs/baselines/`. The `psi` package in devDependencies can do this too.
+  `docs/baselines/`.
 
 ## Rules that apply to every push
 

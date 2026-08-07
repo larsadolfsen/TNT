@@ -1,11 +1,11 @@
 {
   "name": "shopify-skeleton-tailwind",
-  "version": "1.0.115",
+  "version": "1.0.116",
   "description": "Shopify Skeleton Theme with Tailwind CSS v4",
   "main": "index.js",
   "scripts": {
-    "tailwind:build": "tailwindcss -i ./assets/input.css -o ./assets/output.css --content \"./**/*.{js,json,liquid}\"",
-    "tailwind:watch": "tailwindcss -i ./assets/input.css -o ./assets/output.css --content \"./**/*.{js,json,liquid}\" --watch",
+    "tailwind:build": "tailwindcss -i ./assets/input.css -o ./assets/output.css --content \"./**/*.{js,json,liquid}\" --minify",
+    "tailwind:watch": "tailwindcss -i ./assets/input.css -o ./assets/output.css --content \"./**/*.{js,json,liquid}\" --minify --watch",
     "shopify:dev": "shopify theme dev",
     "dev": "concurrently \"npm run tailwind:watch\" \"npm run shopify:dev\"",
     "build": "npm run tailwind:build"
@@ -17,7 +17,6 @@
     "@shopify/cli": "^3.69.0",
     "@tailwindcss/cli": "^4.0.0",
     "concurrently": "^9.1.2",
-    "psi": "^4.1.0",
     "tailwindcss": "^4.0.0"
   }
 }
