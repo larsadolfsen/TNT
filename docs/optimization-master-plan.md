@@ -314,6 +314,10 @@ files it names; no cross-task overlap by construction.
 clean):** Q7+Q15 (41bd92c), Q10+Q12 (0c982c1), Q13 (Admin-API check, no code
 change), Q14 (b081da9). Q1–Q6, Q8, Q9, Q11 wait for R6 to land.
 
+**Batch 2 IN PROGRESS (started 2026-08-07, branch `claude/wave35-batch2`,
+R6 landed on main):** Q1, Q3, Q8. Remaining for batch 3: Q2, Q4, Q5, Q6, Q9,
+Q11 (check R7's file list before starting those).
+
 | ID | Task | Tier | Test on live server |
 |----|------|------|---------------------|
 | Q1 | Remove hardcoded third-party fallback images (`lh3.googleusercontent.com/aida-public/...` prototype mockup URLs) in `snippets/product-media-hidden-image.liquid:17` and `snippets/product-media-gallery-track.liquid:65`; replace with a real placeholder or remove the fallback | [H] | Preview a product with no media: no request to `googleusercontent.com` in network tab |
