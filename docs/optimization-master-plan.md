@@ -341,11 +341,16 @@ merchant configures once and the theme still reads only native data.
 a real product, place a test cut order. Everything downstream waits on this
 because it is the first time any app code runs.
 
-**Stage 4 — post-deploy theme cleanup** (A4.6, B4; both need Stage 3).
+**Stage 4 — post-deploy theme cleanup** (A4.6; needs Stage 3).
 A4.6 removes the theme's `_metervare_title` reads once the cart-transform's
-bundle title is confirmed. B4 deletes the customizer block (2 680 lines), the
-Metervare template, and the textile badges. Together these take the theme to
-zero metervare references.
+bundle title is confirmed.
+
+**B4 — done 2026-08-07, ahead of schedule.** User decided the app should own
+cut-to-length UI outright rather than waiting on deploy: deleted
+`blocks/product-customizer.liquid` (2 680 lines, already dead — no template
+instantiated it), `templates/product.Metervare.json` (its product-page
+section already used the app's by-the-meter block), and the hardcoded
+OEKO-TEX/Phthalat-fri footer badge row. Not gated on A4 after all.
 
 **Runs in parallel with Stages 1–4, no dependency on any of them:**
 
@@ -366,7 +371,7 @@ machine before remediation can be measured.
 
 ### Critical path
 
-`A4.5 → A5 → A6 → A4 (human deploy) → A4.6/B4 → S1/S2 → S3 → S4`
+`A4.5 → A5 → A6 → A4 (human deploy) → A4.6 → S1/S2 → S3 → S4`
 
 The app chain is now the long pole, because the theme work that used to sit on
 the critical path (Wave 2) is finished. B5.2/B5.3 and Wave 3 run fully
@@ -379,6 +384,9 @@ deploy.
    R4 only. Accept Title/Trust moving below the gallery on mobile in exchange
    for deleting the duplicate-block hack, or keep that component on Grid.
 2. **The 3 test Metervare products** — configure, unpublish, or delete.
+   Note: `templates/product.Metervare.json` no longer exists (deleted with
+   B4), so any product still assigned that template suffix now falls back to
+   the default product template until reassigned in admin.
 3. **Wave 2 has never been seen in a browser.** Predictive search, mega menu,
    cart summary, recommendations, contact page and the localization selectors
    were verified only by theme-check, which is a linter. Refactoring on top of
