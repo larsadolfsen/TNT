@@ -151,3 +151,58 @@ No regressions found. Tasks 5–9 flipped to verified in `docs/wave3-batch.md`.
   betaling", and the `"Fri fragt ved køb over 499 kr."` policy line), plus the
   Unsplash placeholder URL in `assets/header-cart.js`. Genericisation
   blockers, out of scope for tasks 2 and 9.
+
+## Task 10 — R2 card consolidation — done (2026-08-07, v1.0.111)
+
+Implemented per `docs/superpowers/specs/2026-08-07-r2-card-consolidation-design.md`,
+all seven sub-tasks R2a–R2g. `snippets/product-card.liquid` drops 196 → 130
+lines and is now composition + data resolution only.
+
+**New snippets**: `savings-badge.liquid` (sizes `sm`/`lg`, replaces the badge
+duplicated between `product-card` and `blocks/product-price.liquid`),
+`star-rating.liquid`, `product-card-image.liquid`, `product-card-price.liquid`,
+`search-result-row.liquid`. `snippets/button.liquid` gained a `size` param
+(`md` default / `sm`); the `md` output is byte-identical to before, so no
+existing caller changes.
+
+**Deviation from the design, recorded**: the design's snippet table lists
+`product-card-image.liquid` as taking `product` + `is_minimal`, but its prose
+keeps the badge-from-tags loop in `product-card`'s setup block. Those are
+inconsistent — the badge has to cross the boundary somehow. Kept the loop in
+the setup block (as the prose says) and added `badge` as a third param.
+
+**Verification, and its limits.** theme-check went 9 errors / 28 warnings →
+9 errors / **26** warnings, the two removed being the `RemoteAsset` offenses
+on the mock cross-sell images R2f deleted. Diffed offense-by-offense, not by
+totals. Code-identity check for R2a–R2d: extracted every `class="…"` string
+from the pre-change `product-card.liquid` and confirmed all but three appear
+byte-identical in the new files — the three are the rating wrapper (now
+`{{ wrapper_class }}`, caller passes the same two values), the savings pill
+(now the `sm` branch, same string) and the buy button (R2e's intended change).
+Confirmed theme-wide that no `{% render %}` tag contains a filter, via a
+multiline scan, not a line-based grep.
+
+Two things this does **not** establish, and both matter:
+
+1. Nothing here rendered a page. R2e and R2g change appearance on purpose and
+   have no lint-level argument at all. Browser checklist for task 10 in
+   `docs/wave3-batch.md` was rewritten with the real surface list.
+2. theme-check does **not** validate render args against `{% doc %}` params —
+   verified by injecting a bogus param and getting zero offenses. So the clean
+   run says nothing about whether the five new snippets' parameter contracts
+   are correct; that rests on reading. Recorded in `docs/wave3-batch.md`,
+   along with the fact that the "Global constraints" section names the wrong
+   check for filters-in-render-args (`UnsupportedFilterArguments` never fires;
+   it shows up as `UnusedAssign`).
+
+**Pre-existing bug fixed (R2e)**: card buy buttons were `text-primary` on
+`bg-accent`, which in dark mode is `#ffffff` on `#ffd814` — ~1.4:1, against a
+4.5:1 AA floor. Adopting `button.liquid` makes it `text-on-accent` (~12.6:1).
+Side effect accepted: the button also gains `shadow-sm` / `active:scale-95`
+and `transition-all` instead of `transition-colors`.
+
+**Backlog untouched, from the design doc**: the JS half of the savings badge
+in `blocks/product-price.liquid` (its inline script rebuilds the price
+container's `innerHTML`, so the badge markup still exists twice in that file);
+the label divergence `"[savings] % rabat"` vs `"Spar X%"`; `#c8102e` and
+`#FFB800` → tokens, now one site each instead of three, for R6.

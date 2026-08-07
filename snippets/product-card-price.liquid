@@ -1,0 +1,47 @@
+{% doc %}
+  Renders the price zone of a product card: the "Pris" label (standard layout
+  only), the headline price with an optional "Fra " prefix, the crossed-out
+  compare-at price, and the unit-price suffix.
+  Pure markup — the caller resolves the unit-pricing rule and passes the result.
+
+  @param {object} product - required. Shopify Product object; used only to decide the "Fra " prefix.
+  @param {object} variant - required. The card's variant; its `unit_price` is the headline when `has_unit_price`.
+  @param {number} price - required. The product's price in cents.
+  @param {number} [original_price] - Compare-at price in cents. Shown struck through when higher than `price`.
+  @param {boolean} [has_unit_price] - True when the variant carries native Shopify unit pricing.
+  @param {string} [unit_suffix] - Reference unit shown after the headline, e.g. 'm' or '100 g'. Only used when `has_unit_price`.
+  @param {boolean} [is_minimal] - True for the 'minimal' card layout (no "Pris" label, smaller type).
+
+  @example
+  {% render 'product-card-price', product: product, variant: variant, price: price, original_price: original_price, has_unit_price: has_unit_price, unit_suffix: unit_suffix, is_minimal: is_minimal %}
+{% enddoc %}
+
+<div class="flex flex-col items-start gap-0.5 mt-1">
+  {%- unless is_minimal -%}
+    <span class="text-xs sm:text-sm text-primary/85 leading-none">Pris</span>
+  {%- endunless -%}
+  <div class="flex items-baseline gap-1.5 flex-wrap">
+    <span class="{% if is_minimal %}text-xs sm:text-sm md:text-base{% else %}text-sm sm:text-base md:text-lg{% endif %} font-bold text-primary leading-none">
+      {%- assign show_fra = false -%}
+      {%- if product.variants.size > 1 and product.price_varies -%}
+        {%- assign show_fra = true -%}
+      {%- endif -%}
+      {%- if show_fra -%}Fra {% endif -%}
+      {%- if has_unit_price -%}{{ variant.unit_price | money }}{%- else -%}{{ price | money }}{%- endif -%}
+    </span>
+    {%- unless has_unit_price -%}
+      {%- if original_price > price -%}
+        <span class="text-[12px] text-primary/70 line-through leading-none">{{ original_price | money }}</span>
+      {%- endif -%}
+    {%- endunless -%}
+    {%- if has_unit_price -%}
+      <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">/ {{ unit_suffix }}</span>
+    {%- endif -%}
+  </div>
+  {%- comment -%}
+    Surface 12: unit price sub-line, collection-card context. Omitted
+    entirely here — when has_unit_price is true it's already the
+    headline above (would print the same value twice); when false
+    there's no unit-price data to show.
+  {%- endcomment -%}
+</div>

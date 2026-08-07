@@ -36,22 +36,39 @@
     <div class="search-results">
       {% paginate search.results by 20 %}
         {% # Search result items may be an article, a page, or a product. %}
-        {% for result in search.results %}
-          <div class="search-result">
-            {% assign featured_image = result.featured_image | default: result.image %}
-            {% if featured_image %}
-              {% render 'image', class: 'search-result__image', image: featured_image, url: result.url, width: 400 %}
-            {% endif %}
-            <div class="search-result__content">
-              <p>
-                {{ result.title | link_to: result.url }}
-                {% if result.price %}
-                  {{ result.price | money_with_currency }}
-                {% endif %}
-              </p>
-            </div>
+        {% # Products render as the same card the collection grid uses; %}
+        {% # articles and pages render as link rows below them. %}
+        {%- liquid
+          assign has_products = false
+          assign has_other = false
+          for result in search.results
+            if result.object_type == 'product'
+              assign has_products = true
+            else
+              assign has_other = true
+            endif
+          endfor
+        -%}
+
+        {%- if has_products -%}
+          <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            {%- for result in search.results -%}
+              {%- if result.object_type == 'product' -%}
+                {%- render 'product-card', product: result, layout: 'minimal' -%}
+              {%- endif -%}
+            {%- endfor -%}
           </div>
-        {% endfor %}
+        {%- endif -%}
+
+        {%- if has_other -%}
+          <div class="flex flex-col gap-3{% if has_products %} mt-8{% endif %}">
+            {%- for result in search.results -%}
+              {%- unless result.object_type == 'product' -%}
+                {%- render 'search-result-row', result: result -%}
+              {%- endunless -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
 
         {{ paginate | default_pagination }}
       {% endpaginate %}

@@ -1,0 +1,48 @@
+{% doc %}
+  Renders one non-product search result (an article or a page) as a single
+  link row: thumbnail, type label and title. Product results use
+  snippets/product-card.liquid instead.
+  Depends on snippets/image.liquid and snippets/icon.liquid.
+
+  @param {object} result - required. A search result whose `object_type` is 'article' or 'page'.
+
+  @example
+  {% render 'search-result-row', result: result %}
+{% enddoc %}
+
+{%- liquid
+  assign result_image = result.featured_image | default: result.image
+
+  case result.object_type
+    when 'article'
+      assign type_label = 'Artikel'
+    when 'page'
+      assign type_label = 'Side'
+    else
+      assign type_label = ''
+  endcase
+-%}
+<a href="{{ result.url }}" class="group flex items-center gap-4 p-3 rounded-2xl bg-card-light border border-outline-variant no-underline transition-all duration-300 hover:shadow-md hover:border-primary/40">
+  <div class="relative w-16 h-16 flex-shrink-0 bg-surface-container rounded-xl overflow-hidden">
+    {%- if result_image != blank -%}
+      {%- render 'image',
+        image: result_image,
+        fill: true,
+        img_class: 'group-hover:scale-105 transition-transform duration-500',
+        width: 128,
+        alt: result.title,
+        loading: 'lazy'
+      -%}
+    {%- else -%}
+      <div class="w-full h-full flex items-center justify-center text-primary/85">
+        {%- render 'icon', name: 'description', class: 'text-2xl' -%}
+      </div>
+    {%- endif -%}
+  </div>
+  <div class="min-w-0">
+    {%- if type_label != blank -%}
+      <span class="block text-[11px] font-semibold tracking-wider uppercase text-primary/70">{{ type_label }}</span>
+    {%- endif -%}
+    <span class="block text-sm sm:text-base font-normal text-primary leading-tight group-hover:text-secondary">{{ result.title }}</span>
+  </div>
+</a>

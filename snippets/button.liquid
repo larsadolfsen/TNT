@@ -7,6 +7,7 @@
   @param {string} label - required. Visible button text.
   @param {string} [variant] - 'primary' (default) | 'secondary'. Primary uses the accent color (bg-accent/text-on-accent), matching the main CTA convention. Secondary uses the card-high surface with an outline border, matching the convention for buttons that sit inside a card (see ai.md section 2).
   @param {string} [as] - 'button' (default) | 'a' | 'submit'. 'a' renders an anchor tag (requires `url`); 'submit' renders a <button type="submit">.
+  @param {string} [size] - 'md' (default, fixed h-12 and text-base) | 'sm' (compact py-2/px-3, text-xs sm:text-sm, no fixed height — for buttons inside a product card).
   @param {string} [url] - Destination URL. Used when as: 'a'.
   @param {string} [class] - Extra CSS classes appended to the base variant style.
   @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. id="...", data-*, aria-label="...", onclick="...").
@@ -15,18 +16,32 @@
   {% render 'button', label: 'Læg i kurv' %}
   {% render 'button', label: 'Se alle produkter', variant: 'secondary', as: 'a', url: collection.url %}
   {% render 'button', label: 'Send', as: 'submit', attributes: 'id="btn-submit"' %}
+  {% render 'button', label: 'Køb', size: 'sm', class: 'w-full' %}
 {% enddoc %}
 
 {%- liquid
   assign variant = variant | default: 'primary'
   assign as = as | default: 'button'
+  assign size = size | default: 'md'
 
-  if variant == 'secondary'
-    assign base_class = 'bg-card-high hover:bg-surface-container text-primary border border-outline-variant font-bold h-12 px-6 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1'
+  if size == 'sm'
+    assign size_box = 'py-2 px-3'
+    assign size_text = 'text-xs sm:text-sm'
   else
-    assign base_class = 'bg-accent hover:brightness-95 text-on-accent font-bold h-12 px-6 rounded-full text-base shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1'
+    assign size_box = 'h-12 px-6'
+    assign size_text = 'text-base'
   endif
 
+  if variant == 'secondary'
+    assign color_class = 'bg-card-high hover:bg-surface-container text-primary border border-outline-variant'
+  else
+    assign color_class = 'bg-accent hover:brightness-95 text-on-accent'
+  endif
+-%}
+{%- capture base_class -%}
+{{ color_class }} font-bold {{ size_box }} rounded-full {{ size_text }} shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1
+{%- endcapture -%}
+{%- liquid
   assign full_class = base_class
   if class
     assign full_class = full_class | append: ' ' | append: class

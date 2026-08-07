@@ -9,7 +9,9 @@
 
 {% comment %}
   Product Cross-sell Section
-  Renders up to 2 cross-sell product cards with quick-add buttons.
+  Renders up to 2 merchant-picked cross-sell products as horizontally
+  scrollable cards. Each card is snippets/product-card.liquid; an unset
+  product slot renders nothing.
 {% endcomment %}
 
 <section class="p-4 border-t border-outline-variant" {{ block.shopify_attributes }}>
@@ -19,76 +21,12 @@
     {%- assign cs_prod_1 = block.settings.cross_sell_1 -%}
     {%- if cs_prod_1 != blank -%}
       {% render 'product-card', product: cs_prod_1, class: 'w-44 flex-shrink-0' %}
-    {%- else -%}
-      <div class="product-card flex flex-col bg-card-light border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative w-44 flex-shrink-0">
-        <div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden" style="aspect-ratio: 1/1;">
-          <img alt="Dugholdere i stål" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3q8voEmliO4VwxQb6kInoHXYV4yQ44zu38WSBUJ6infMVqpD0TLdCN7S8v49YIXOfNU0tjjru5XoGEltxlA4uk60WqVoJvFCQsi9IOpT4uAi-IhDeAr7aQN6rqdGxwWJDC-S90tuJvMIEWGLTmgi5WOwrGjCF_xxnZYgVxSKYOzTu57p_vCIyMdptx4s4NHwo_WWVSLrGjtvfuTiqnRJcQZdipeP2LFKWtPPZDBpBRGesbjvCfbI__yH4D43N3l9x5uLHkrQhhK0a" width="300" height="300"/>
-        </div>
-        <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
-          <div class="space-y-1">
-            <h3 class="text-sm font-bold text-primary leading-tight hover:text-secondary mb-1 truncate">
-              Dugholdere i stål
-            </h3>
-            <!-- Rating: 5 Stars -->
-            <div class="flex items-center gap-1 text-xs text-secondary mt-1">
-              <div class="flex text-[#FFB800] gap-0.5">
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-              </div>
-              <span class="font-bold text-primary ml-1">4.8</span>
-              <span class="text-primary/85">(142)</span>
-            </div>
-          </div>
-          <div class="mt-3 space-y-3">
-            <div class="flex flex-col items-start gap-1">
-              <span class="text-xs text-primary/85 leading-none">Pris</span>
-              <span class="text-sm sm:text-base font-bold text-primary leading-none">49,00 kr.</span>
-            </div>
-            <button data-id="holdere-mock" data-navn="Dugholdere i stål" data-pris="49" class="btn-cross-sell w-full bg-accent hover:brightness-95 text-primary py-2 px-3 rounded-full flex items-center justify-center gap-1 transition-colors focus:outline-none text-xs sm:text-sm font-bold border-0 cursor-pointer">Køb</button>
-          </div>
-        </div>
-      </div>
     {%- endif -%}
 
     <!-- Card 2 -->
     {%- assign cs_prod_2 = block.settings.cross_sell_2 -%}
     {%- if cs_prod_2 != blank -%}
       {% render 'product-card', product: cs_prod_2, class: 'w-44 flex-shrink-0' %}
-    {%- else -%}
-      <div class="product-card flex flex-col bg-card-light border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40 transition-all duration-300 group relative w-44 flex-shrink-0">
-        <div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden" style="aspect-ratio: 1/1;">
-          <img alt="Opbevaringspose" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG8LJSBQCnrrQMlodcn5g-wgXMzOiKvuBRaV3mhi75TiUQignYncFT-v1fsBZJmKDw7UOdeTcQTICqryNUb6qtV7_Sgrg22dqm_ca3chJl6Qzx1z_4VgpmGVP-1ZV3FXIVJ7IcUusZ79HARWIQYpsv4MjFgduq8ZKJmsZhqe4W1bHbDDKdDFWZR8Eduskzguzv-rXcY4zaiicuXI9GC92QlDp_snd-jC-uLyKHYWK64-MY78i88VsnxE_IwcGCHvFnGhSEgW9BS95J" width="300" height="300"/>
-        </div>
-        <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
-          <div class="space-y-1">
-            <h3 class="text-sm font-bold text-primary leading-tight hover:text-secondary mb-1 truncate">
-              Opbevaringspose
-            </h3>
-            <!-- Rating: 5 Stars -->
-            <div class="flex items-center gap-1 text-xs text-secondary mt-1">
-              <div class="flex text-[#FFB800] gap-0.5">
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-                {% render 'icon', name: 'star', class: 'text-[14px] filled-star select-none', style: 'font-size: 14px; line-height: 1;' %}
-              </div>
-              <span class="font-bold text-primary ml-1">4.8</span>
-              <span class="text-primary/85">(142)</span>
-            </div>
-          </div>
-          <div class="mt-3 space-y-3">
-            <div class="flex flex-col items-start gap-1">
-              <span class="text-xs text-primary/85 leading-none">Pris</span>
-              <span class="text-sm sm:text-base font-bold text-primary leading-none">89,00 kr.</span>
-            </div>
-            <button data-id="pose-mock" data-navn="Opbevaringspose" data-pris="89" class="btn-cross-sell w-full bg-accent hover:brightness-95 text-primary py-2 px-3 rounded-full flex items-center justify-center gap-1 transition-colors focus:outline-none text-xs sm:text-sm font-bold border-0 cursor-pointer">Køb</button>
-          </div>
-        </div>
-      </div>
     {%- endif -%}
   </div>
   </div>

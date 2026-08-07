@@ -59,7 +59,7 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 | 7 | R3c — split `product-buy-buttons.liquid` (796) | `blocks/product-buy-buttons.liquid` | **done, verified in browser** (2026-08-07) |
 | 8 | R3d — split `product-media.liquid` (620) | `blocks/product-media.liquid` | **done, verified in browser** (2026-08-07) |
 | 9 | R3e — split `header-2.liquid` + `assets/header.js` | `sections/header-2.liquid`, `assets/header.js`, `assets/header-cart.js` | **done, verified in browser** (2026-08-07) |
-| 10 | R2 — card markup consolidation | `snippets/product-card.liquid` + card surfaces | pending |
+| 10 | R2 — card markup consolidation | `snippets/product-card.liquid` + card surfaces | **done**, unverified in browser |
 | 11 | R5 — shared padding-CSS boilerplate → snippet | blocks with repeated padding CSS | pending |
 | 12 | R6 — hex→token sweep | all remaining files | pending |
 
@@ -146,11 +146,45 @@ play-overlay and it hides on play, switching variants (if the product has
 variant-specific images) slides to the matching image, console clean.
 
 ### 10 — R2, card consolidation
-Every surface that renders a product card: collection grid, search results,
-related products, complementary products, cart recommendations, homepage
-featured collection. Check price, badge, image aspect and hover state on
-each, in **both light and dark mode**. This is the task most likely to
-produce a subtle visual regression.
+Every surface that renders a product card. Check price, badge, image aspect
+and hover state on each, in **both light and dark mode**. This is the task
+most likely to produce a subtle visual regression.
+
+**Correction to the surface list.** Two surfaces named in the original
+checklist do not exist in this theme, verified at v1.0.110 and again at
+v1.0.111: there is no **cart recommendations** block (`sections/cart.liquid`
+renders cart *line items*, a different component), and no **homepage featured
+collection** (`templates/index.json` contains only `hello-world` and
+`collections`). Nothing to check on either. `snippets/predictive-search-
+product.liquid` is deliberately excluded too — it is a `<template>` hydrated
+per keystroke from `/search/suggest.json`, so it cannot be a Liquid render.
+
+The four surfaces that do exist, plus one that is new:
+
+1. **Collection grid** — `blocks/collection-products-grid.liquid`. The
+   `minimal` layout. Cards must be pixel-identical to v1.0.110.
+2. **Related products** — `blocks/product-recommendations.liquid`.
+3. **Complementary products** — `blocks/product-cross-sell.liquid`, on a
+   product page. Must still show **both** cards (R2f deleted only the
+   `{% else %}` placeholder branches, which never rendered because both live
+   templates populate `cross_sell_1`/`cross_sell_2`).
+4. **Search results** — `sections/search.liquid`. **New appearance, not a
+   regression check.** This page was unstyled before R2g (its
+   `search-result__*` classes had no CSS rule anywhere). Search a term that
+   matches products *and* an article or page: products must render as the
+   same card grid as the collection page (2 columns mobile/tablet, 3
+   desktop), articles/pages as styled rows below them with a "Artikel"/"Side"
+   label, and every row must navigate. Pagination unchanged.
+5. **The "Køb" button in dark mode** — R2e's deliberate fix. On a *standard*
+   layout card (the minimal layout has no buy button), the label must be dark
+   navy on yellow and clearly readable. Before R2e it was white on yellow,
+   ~1.4:1, well under the 4.5:1 AA floor. Confirm light mode is unchanged.
+
+Note the button also picked up `shadow-sm` and `active:scale-95` and moved
+from `transition-colors` to `transition-all` by adopting `snippets/
+button.liquid`. Those are the shared button's standard press/elevation
+treatment, accepted deliberately so the card stops carrying its own copy —
+but they are a real visual delta, so look at the button, not just its colour.
 
 ### 11 — R5, padding snippet
 Spot-check blocks that had custom padding settings: change a block's padding
@@ -180,3 +214,28 @@ inspected, **9 errors / 28 warnings**:
 - warnings: 16× `RemoteAsset`, 9× `UnusedAssign`, 3× `UndefinedObject`.
 
 Task 9 landed at exactly these counts, 525 files inspected, no new offenses.
+
+## Baseline re-measured at v1.0.110 (start of task 10)
+
+Unchanged from v1.0.109: 525 files, **9 errors / 28 warnings**, same
+breakdown. Task 10 landed at 530 files (525 + the 5 new snippets), **9 errors
+/ 26 warnings** — the two
+removed warnings are the `RemoteAsset` offenses at
+`blocks/product-cross-sell.liquid:24` and `:62`, the `lh3.googleusercontent`
+images in the mock cards R2f deleted. Nothing else changed; no new offenses.
+
+### What theme-check does and does not detect here
+
+Worth recording, because task 10 tested it rather than assuming. On this CLI
+version, with `extends: theme-check:recommended`:
+
+- It does **not** validate `{% render %}` arguments against the snippet's
+  `{% doc %}` params. A deliberately injected `bogus_param: 1` produced zero
+  offenses. So "no new offenses" is **not** evidence that a snippet's
+  parameter contract is right — that still needs reading.
+- A filter inside a `{% render %}` argument does **not** raise
+  `UnsupportedFilterArguments`, contrary to the claim in "Global constraints"
+  above. It surfaces *indirectly* as `UnusedAssign` on the precomputed
+  variable, which the injected-filter test confirmed fires. That detector is
+  real but named wrong in this doc; treat `UnusedAssign` on a variable you
+  precomputed for a render as the signal.

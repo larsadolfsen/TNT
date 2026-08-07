@@ -1,11 +1,15 @@
 {%- comment %}
-  Renders a reusable product card.
+  Renders a reusable product card. This file resolves the card's data (badge
+  tag, variant, price, unit-pricing rule, rating) and composes the zones; the
+  zones themselves live in product-card-image / product-card-price /
+  star-rating / savings-badge / button.
+
   Accepts:
   - product: {Object} Shopify Product object (required)
   - class: {String} Extra classes to apply to the card (optional)
   - layout: {String} 'minimal' or 'standard' (optional)
   - disable_reviews: {Boolean} Disable reviews display (optional)
-  
+
   Usage:
   {% render 'product-card', product: product, layout: 'minimal', disable_reviews: section.settings.disable_reviews %}
 {% endcomment -%}
@@ -56,32 +60,7 @@
   <div class="product-card flex flex-col transition-all duration-300 group relative {{ class }}{% if is_minimal %} bg-transparent max-h-[420px] sm:max-h-none{% else %} bg-card-light border border-outline-variant rounded-2xl overflow-hidden hover:shadow-md hover:border-primary/40{% endif %}" data-product-id="{{ product.id }}" data-layout="{% if is_minimal %}minimal{% else %}standard{% endif %}">
     
     <!-- Image Zone -->
-    <div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden{% if is_minimal %} rounded-2xl border border-outline-variant{% endif %}" style="aspect-ratio: 1/1;">
-      <a href="{{ product.url }}" class="block w-full h-full">
-        {%- if product.featured_image != blank -%}
-          {%- capture img_classes -%}
-            product-card-image{% if is_minimal %} group-hover:scale-103 transition-transform duration-1000 ease-out{% else %} group-hover:scale-105 transition-transform duration-500{% endif %}
-          {%- endcapture -%}
-          {%- render 'image',
-            image: product.featured_image,
-            fill: true,
-            img_class: img_classes,
-            width: 480,
-            widths: '180, 360, 480, 720',
-            sizes: '(max-width: 640px) 180px, 320px',
-            alt: product.title,
-            loading: 'lazy'
-          -%}
-        {%- else -%}
-          <div class="w-full h-full flex items-center justify-center bg-outline-variant text-primary/85">
-            {%- render 'icon', name: 'image', class: 'text-4xl' -%}
-          </div>
-        {%- endif -%}
-      </a>
-      {%- if badge != blank -%}
-        <span class="absolute top-2 left-2 bg-primary text-on-primary {% if is_minimal %}text-[9px] sm:text-[11px]{% else %}text-[11px]{% endif %} font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">{{ badge }}</span>
-      {%- endif -%}
-    </div>
+    {%- render 'product-card-image', product: product, is_minimal: is_minimal, badge: badge -%}
     <!-- Info Zone -->
     <div class="p-3 flex flex-col justify-start flex-1 min-w-0">
       <div class="space-y-1">
@@ -99,8 +78,7 @@
           {%- unless settings.disable_savings_badge -%}
             {%- if original_price > price -%}
               {%- assign savings = original_price | minus: price | times: 100 | divided_by: original_price -%}
-              {%- assign badge_text = settings.savings_badge_text | default: "[savings] % rabat" | replace: "[savings]", savings -%}
-              <span class="product-savings-badge inline-block bg-[#c8102e] text-white text-[11px] font-semibold px-2 py-0.5 rounded-md uppercase">{{ badge_text }}</span>
+              {%- render 'savings-badge', savings: savings -%}
             {%- endif -%}
           {%- endunless -%}
         </div>
@@ -109,84 +87,39 @@
         {%- unless disable_reviews -%}
           {%- liquid
             assign star_size = 14
+            assign rating_wrapper_class = 'text-xs sm:text-sm'
             if is_minimal
               assign star_size = 12
+              assign rating_wrapper_class = 'text-[10px]'
             endif
           -%}
-          {%- capture star_style -%}font-size: {{ star_size }}px; line-height: 1;{%- endcapture -%}
-          {%- capture star_size_class -%}text-[{{ star_size }}px]{%- endcapture -%}
-          <div class="flex items-center gap-1 {% if is_minimal %}text-[10px]{% else %}text-xs sm:text-sm{% endif %} text-secondary mt-1">
-            <div class="flex text-[#FFB800] gap-0.5">
-              {%- assign rating_floor = rating | floor -%}
-              {%- assign decimal = rating | minus: rating_floor -%}
-              {%- assign rating_floor_plus_1 = rating_floor | plus: 1 -%}
-              {%- for i in (1..5) -%}
-                {%- assign star_class_filled = star_size_class | append: ' filled-star select-none' -%}
-                {%- assign star_class_outline = star_size_class | append: ' text-outline-variant select-none' -%}
-                {%- if i <= rating_floor -%}
-                  {%- render 'icon', name: 'star', class: star_class_filled, style: star_style -%}
-                {%- elsif i == rating_floor_plus_1 -%}
-                  {%- if decimal >= 0.75 -%}
-                    {%- render 'icon', name: 'star', class: star_class_filled, style: star_style -%}
-                  {%- elsif decimal >= 0.25 -%}
-                    {%- render 'icon', name: 'star_half', class: star_class_filled, style: star_style -%}
-                  {%- else -%}
-                    {%- render 'icon', name: 'star', class: star_class_outline, style: star_style -%}
-                  {%- endif -%}
-                {%- else -%}
-                  {%- render 'icon', name: 'star', class: star_class_outline, style: star_style -%}
-                {%- endif -%}
-              {%- endfor -%}
-            </div>
-            <span class="font-bold text-primary ml-1">{{ rating }}</span>
-            <span class="text-primary/85">({{ reviews_count }})</span>
-          </div>
+          {%- render 'star-rating',
+            rating: rating,
+            reviews_count: reviews_count,
+            star_size: star_size,
+            wrapper_class: rating_wrapper_class
+          -%}
         {%- endunless -%}
 
         <!-- Price display (moved directly below rating/title) -->
-        <div class="flex flex-col items-start gap-0.5 mt-1">
-          {%- unless is_minimal -%}
-            <span class="text-xs sm:text-sm text-primary/85 leading-none">Pris</span>
-          {%- endunless -%}
-          <div class="flex items-baseline gap-1.5 flex-wrap">
-            <span class="{% if is_minimal %}text-xs sm:text-sm md:text-base{% else %}text-sm sm:text-base md:text-lg{% endif %} font-bold text-primary leading-none">
-              {%- assign show_fra = false -%}
-              {%- if product.variants.size > 1 and product.price_varies -%}
-                {%- assign show_fra = true -%}
-              {%- endif -%}
-              {%- if show_fra -%}Fra {% endif -%}
-              {%- if has_unit_price -%}{{ variant.unit_price | money }}{%- else -%}{{ price | money }}{%- endif -%}
-            </span>
-            {%- unless has_unit_price -%}
-              {%- if original_price > price -%}
-                <span class="text-[12px] text-primary/70 line-through leading-none">{{ original_price | money }}</span>
-              {%- endif -%}
-            {%- endunless -%}
-            {%- if has_unit_price -%}
-              <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">/ {{ unit_suffix }}</span>
-            {%- endif -%}
-          </div>
-          {%- comment -%}
-            Surface 12: unit price sub-line, collection-card context. Omitted
-            entirely here — when has_unit_price is true it's already the
-            headline above (would print the same value twice); when false
-            there's no unit-price data to show.
-          {%- endcomment -%}
-        </div>
-
-
+        {%- render 'product-card-price',
+          product: product,
+          variant: variant,
+          price: price,
+          original_price: original_price,
+          has_unit_price: has_unit_price,
+          unit_suffix: unit_suffix,
+          is_minimal: is_minimal
+        -%}
       </div>
  
       <!-- Buy Button (No divider border) -->
       {%- unless is_minimal -%}
         <div class="mt-3">
-          <button 
-            onclick="window.addToCart('{{ variant.id }}')" 
-            class="w-full bg-accent hover:brightness-95 text-primary py-2 px-3 rounded-full flex items-center justify-center gap-1 transition-colors focus:outline-none text-xs sm:text-sm font-bold border-0 cursor-pointer" 
-            aria-label="Køb {{ product.title | escape }}"
-          >
-            <span>Køb</span>
-          </button>
+          {%- capture buy_attributes -%}
+            onclick="window.addToCart('{{ variant.id }}')" aria-label="Køb {{ product.title | escape }}"
+          {%- endcapture -%}
+          {%- render 'button', label: 'Køb', size: 'sm', class: 'w-full', attributes: buy_attributes -%}
         </div>
       {%- endunless -%}
     </div>

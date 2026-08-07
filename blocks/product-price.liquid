@@ -67,9 +67,7 @@
     {%- if on_sale -%}
       <!-- Savings Tag Above Price -->
       <div class="product-savings-container flex items-center mb-1">
-        <span class="product-savings-badge inline-block text-[#c8102e] text-2xl font-bold leading-none">
-          Spar {{ savings }}%
-        </span>
+        {%- render 'savings-badge', savings: savings, size: 'lg' -%}
       </div>
       
       <!-- Price Display -->

@@ -1,0 +1,40 @@
+{% doc %}
+  Renders the image zone of a product card: the square, link-wrapped product
+  image (or an icon placeholder when the product has none) plus the optional
+  tag badge overlaid top-left.
+  Depends on snippets/image.liquid and snippets/icon.liquid.
+
+  @param {object} product - required. Shopify Product object.
+  @param {boolean} [is_minimal] - True for the 'minimal' card layout (rounded, bordered image box, smaller badge).
+  @param {string} [badge] - Badge label derived from the product's `badge:` tag by the caller. Omitted or blank renders no badge.
+
+  @example
+  {% render 'product-card-image', product: product, is_minimal: is_minimal, badge: badge %}
+{% enddoc %}
+
+<div class="relative w-full flex-shrink-0 bg-surface-container overflow-hidden{% if is_minimal %} rounded-2xl border border-outline-variant{% endif %}" style="aspect-ratio: 1/1;">
+  <a href="{{ product.url }}" class="block w-full h-full">
+    {%- if product.featured_image != blank -%}
+      {%- capture img_classes -%}
+        product-card-image{% if is_minimal %} group-hover:scale-103 transition-transform duration-1000 ease-out{% else %} group-hover:scale-105 transition-transform duration-500{% endif %}
+      {%- endcapture -%}
+      {%- render 'image',
+        image: product.featured_image,
+        fill: true,
+        img_class: img_classes,
+        width: 480,
+        widths: '180, 360, 480, 720',
+        sizes: '(max-width: 640px) 180px, 320px',
+        alt: product.title,
+        loading: 'lazy'
+      -%}
+    {%- else -%}
+      <div class="w-full h-full flex items-center justify-center bg-outline-variant text-primary/85">
+        {%- render 'icon', name: 'image', class: 'text-4xl' -%}
+      </div>
+    {%- endif -%}
+  </a>
+  {%- if badge != blank -%}
+    <span class="absolute top-2 left-2 bg-primary text-on-primary {% if is_minimal %}text-[9px] sm:text-[11px]{% else %}text-[11px]{% endif %} font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">{{ badge }}</span>
+  {%- endif -%}
+</div>

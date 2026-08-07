@@ -1,0 +1,30 @@
+{% doc %}
+  Renders the percentage-off badge shown when a product is on sale.
+  Exposes two sizes: 'sm' (the pill on product cards) and 'lg' (the headline
+  on the product page). Callers compute `savings` themselves; no dependencies.
+
+  The label wording differs per size on purpose — 'sm' uses the merchant's
+  `settings.savings_badge_text`, 'lg' uses the product page's fixed "Spar X%".
+  Unifying them is a content decision, deliberately out of scope here.
+
+  @param {number} savings - required. Whole-percent discount, already computed by the caller.
+  @param {string} [size] - 'sm' (default) card pill | 'lg' product-page headline.
+
+  @example
+  {% assign savings = 25 %}
+  {% render 'savings-badge', savings: savings %}
+  {% render 'savings-badge', savings: savings, size: 'lg' %}
+{% enddoc %}
+
+{%- liquid
+  assign size = size | default: 'sm'
+
+  if size == 'lg'
+    assign badge_class = 'text-[#c8102e] text-2xl font-bold leading-none'
+    assign badge_text = savings | prepend: 'Spar ' | append: '%'
+  else
+    assign badge_class = 'bg-[#c8102e] text-white text-[11px] font-semibold px-2 py-0.5 rounded-md uppercase'
+    assign badge_text = settings.savings_badge_text | default: '[savings] % rabat' | replace: '[savings]', savings
+  endif
+-%}
+<span class="product-savings-badge inline-block {{ badge_class }}">{{ badge_text }}</span>
