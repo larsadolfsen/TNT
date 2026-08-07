@@ -249,17 +249,60 @@ check that scans for classes not present anywhere before the commit —
 it now reports NONE. **Do not add a Tailwind class to this theme without
 checking `output.css`, or rebuild it.**
 
-**Open — must be resolved before merge:**
+**Resolved — was not a defect (2026-08-07, dev theme #194234384717):**
 
-- The new `search-result-row` renders `bg-card-light` as `#F8F9FD` (light) in
-  dark mode while `--color-card-light` correctly resolves to `#1a2635` on
-  `<html>`, giving ~1.05:1 title-on-background. Most other `bg-card-light`
-  elements (footer, nav panels, drawer) render `#1a2635` correctly on the same
-  page; the search form's own input wrapper shows the same wrong value, so it
-  may be scoped to this section rather than to R2g. Root cause not yet found —
-  a scan of all matching stylesheet rules returned no `background-color` rule
-  matching the element, so the winning declaration has not been identified.
-  Not claimed fixed.
+The reported `search-result-row` dark-mode contrast bug (`bg-card-light`
+painting `#F8F9FD` at ~1.05:1 while `--color-card-light` resolved to
+`#1a2635`) **does not exist**. It was an artifact of how it was measured. No
+theme file needed changing.
+
+Root cause of the false reading: the repro toggled dark mode at runtime with
+`document.documentElement.classList.add('dark')` in an automation tab whose
+`document.visibilityState` is `"hidden"`. A hidden tab composites no frames,
+so the animation clock never advances. The row carries `transition-all
+duration-300`, so the class change started a `background-color` CSSTransition
+that stayed `playState: "running"` at `currentTime: 0` — pinned at the *start*
+(light) colour indefinitely. `getComputedStyle` faithfully reports that
+in-flight value, which is why the variable read `#1a2635` while the paint read
+`#F8F9FD`. The same applies to the search form's input wrapper
+(`transition-all`, 0.15s) — also not a defect.
+
+That also explains why "most other `bg-card-light` elements were fine": the
+footer, nav panels, drawer and predictive-search panel have no colour
+transition, so they repaint instantly.
+
+Evidence:
+
+- `row.getAnimations()` → `CSSTransition background-color, running,
+  currentTime: 0`. Calling `.finish()` on it immediately yields
+  `rgb(26, 38, 53)` = `#1a2635`.
+- A clone with the **identical class list in the same parent** renders
+  `#1a2635`, while the original renders `#F8F9FD` — so it is element state, not
+  CSS. Leave-one-out over all 14 classes never reproduced it on a fresh node.
+- On a genuine dark load (`localStorage.theme = 'dark'` set *before* reload, so
+  no transition ever runs): row background `rgb(26, 38, 53)` = `#1a2635`, zero
+  running transitions, title `#ffffff` at **15.30:1**, type label at 8.19:1,
+  icon at 11.40:1. The search form wrapper reads `rgb(30, 41, 59)` = `#1e293b`,
+  also correct.
+- Light mode: background `#F8F9FD`, title `#0e1a28`, **16.67:1**.
+
+**Two probe traps to avoid when debugging CSS on this theme:**
+
+1. Walking `document.styleSheets[i].cssRules` flatly finds **nothing** — the
+   whole of `assets/output.css` is inside `@layer theme/base/utilities`, so
+   every rule is nested one level down in a `CSSLayerBlockRule.cssRules`.
+   The earlier "no rule sets `background-color` on this element" result was
+   this false negative; recursing finds `.bg-card-light` in `@layer utilities`
+   exactly as expected. Recurse into any rule exposing `.cssRules`.
+2. Never toggle `.dark` at runtime to check colours in a headless/hidden tab.
+   Set `localStorage.setItem('theme','dark')` and reload, so the inline script
+   in `layout/theme.liquid` applies the class before first paint and no
+   transition is involved. (The `computer` screenshot action fails on a hidden
+   pane with "the page is not compositing frames" — same underlying cause.)
+
+Also confirmed while here: `dark:` compiles as a class variant
+(`&:where(.dark, .dark *)` in `output.css`), not a `prefers-color-scheme`
+media query, so `dark:` utilities do follow the manual toggle.
 
 **Could not be verified at all:** every product-page surface — related
 products, complementary products (R2f), the R2e button in situ, star-rating,
