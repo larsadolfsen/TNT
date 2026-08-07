@@ -14,7 +14,7 @@
     const track = document.getElementById("gallery-track");
     const dots = document.querySelectorAll(".dot-btn");
     const thumbnails = document.querySelectorAll(".thumbnail-btn");
-    if (!mainImg || !track) return;
+    if (!track) return;
 
     const container = track.parentElement;
     if (!container) return;
