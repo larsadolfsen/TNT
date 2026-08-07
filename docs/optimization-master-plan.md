@@ -310,6 +310,10 @@ Discovered while auditing the repo for optimization opportunities not already
 named in Waves 1–3 (see conversation log 2026-08-07). Each task owns only the
 files it names; no cross-task overlap by construction.
 
+**Batch 1 IN PROGRESS (started 2026-08-07, branch `claude/wave35-batch1`):**
+Q7+Q15, Q10+Q12, Q13, Q14 — the tasks touching no liquid files (safe
+alongside R6/R7). Q1–Q6, Q8, Q9, Q11 wait for R6 to land.
+
 | ID | Task | Tier | Test on live server |
 |----|------|------|---------------------|
 | Q1 | Remove hardcoded third-party fallback images (`lh3.googleusercontent.com/aida-public/...` prototype mockup URLs) in `snippets/product-media-hidden-image.liquid:17` and `snippets/product-media-gallery-track.liquid:65`; replace with a real placeholder or remove the fallback | [H] | Preview a product with no media: no request to `googleusercontent.com` in network tab |
