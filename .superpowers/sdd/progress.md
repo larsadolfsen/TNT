@@ -91,21 +91,47 @@ stale — corrected in `docs/wave3-batch.md`).
 
 Not yet verified in a browser. Tasks 5–8 were also never browser-verified.
 
-## Browser verification of tasks 5–9 — attempted, blocked (2026-08-07)
+## Browser verification of tasks 5–9 — done (2026-08-07)
 
-Ran at v1.0.110 (main, `a4f148e`). Could not execute a single checklist item:
-`https://shopify.textilogvoksdug.dk` is password-protected and serves the
-"Butikken åbner snart" lock page — no theme asset loads. `shopify theme dev`
-is not a workaround; the CLI is authenticated (lists `TNT/main [live]
-#191515623757`) but demands the same store password before serving.
+Password protection lifted; ran the full checklists in `docs/wave3-batch.md`
+against `https://shopify.textilogvoksdug.dk` (confirmed live theme via
+`window.Shopify.theme`: `TNT/main`, id `191515623757`, `schema_version
+1.0.110`), at mobile (375px) and desktop widths, console open throughout.
 
-Only check that could be made without a browser: `sections/header-2.liquid:23-24`
-does reference both `header.js` and `header-cart.js` with `defer`. That proves
-the tags exist, nothing about runtime behaviour.
+- **Task 5 (main-collection)**: collection grid, sort (price-ascending
+  re-ordered correctly), availability filter (`?filter.v.availability=1`
+  correctly narrowed 279 → 4 products with an active-filter chip), pagination
+  (`?page=2`) all work. Console clean.
+- **Task 6 (breadcrumbs)**: trail renders on collection and product pages
+  (`Forside > Duge > Voksdug > …`), all crumbs link correctly, "Vis hele
+  stien" present. Console clean.
+- **Task 7 (product-buy-buttons)**: quantity stepper +/− updates price
+  correctly (369 → 738 kr at qty 2); add-to-cart succeeded on an in-stock
+  product (200) and correctly surfaced the Danish error toast on an
+  out-of-stock one (422, "... er allerede udsolgt" — real inventory state,
+  not a bug: most catalog items in this store are out of stock). One thing
+  worth noting for whoever reads network traces later: Shopify's
+  `shopify-perf-kit` script inlines `assets/product-buy-buttons.js`'s content
+  directly into the page instead of leaving it as an external `<script src>` —
+  confirmed by diffing the served HTML (cache-busted, no-store) against the
+  repo file; content matches exactly. Not a stale deploy, just an edge
+  optimization — flagging so it isn't mistaken for one next time.
+- **Task 8 (product-media)**: gallery, thumbnails (desktop) and dots (mobile)
+  both switch the active image and update active-state styling correctly on
+  click. Console clean.
+- **Task 9 (R3e header split)**: both `assets/header.js` and
+  `assets/header-cart.js` load (200) and are wired correctly. Hamburger opens
+  the mobile drawer (flat link list, no accordions — matches task 1); search
+  icon opens the field with working predictive results on mobile and desktop;
+  cart icon opens the drawer. Full cart cycle verified against a real
+  in-stock product: add → drawer opens with correct item/price (79,00 kr);
+  `+` → qty 2, 158,00 kr; `−` → qty 1, 79,00 kr; delete → empty-cart Danish
+  message + 0,00 kr subtotal, all matching product-page prices exactly.
+  Backdrop click closes both the cart drawer and the mobile menu drawer
+  (verified via the `e.target === drawer` listener actually firing). Console
+  clean throughout.
 
-Tasks 5–9 stay **unverified in browser**. User's explicit call was to skip and
-start task 10. Unblock options are recorded in `docs/wave3-batch.md` under
-"Blocked — storefront is password-protected".
+No regressions found. Tasks 5–9 flipped to verified in `docs/wave3-batch.md`.
 
 ## Minor findings deferred to final review
 
