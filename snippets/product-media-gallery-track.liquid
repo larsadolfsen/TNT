@@ -1,0 +1,73 @@
+{% doc %}
+  The swipeable media track: one slide per product.media entry (image,
+  video, external video, or 3D model), each rendered at its natural type
+  via Shopify's media filters. Falls back to a static placeholder image
+  when the product has no media. assets/product-media.js turns this into
+  an infinite-loop carousel (clones first/last slide) and wires up
+  drag/swipe, the video play-overlay, and dot/thumbnail sync.
+
+  @example
+  {% render 'product-media-gallery-track' %}
+{% enddoc %}
+
+<div class="product-media-gallery aspect-square bg-surface-container overflow-hidden relative rounded-2xl">
+  <div id="gallery-track" class="flex h-full w-full" style="transform: translateX(0%); transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);">
+    {%- if product.media.size > 0 -%}
+      {%- for media in product.media -%}
+        <div class="w-full h-full flex-shrink-0 {% if media.media_type == 'video' or media.media_type == 'external_video' %}video-slide{% endif %}">
+          {%- if media.media_type == 'video' -%}
+            <div class="w-full h-full relative">
+              {{ media | video_tag: class: 'w-full h-full object-cover select-none', autoplay: false, loop: true, muted: true, controls: true }}
+              <div class="absolute inset-0 flex items-center justify-center bg-black/10 custom-play-overlay transition-opacity duration-300 cursor-pointer">
+                <div class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-black/20">
+                  {% render 'icon', name: 'play_arrow', class: 'text-white text-5xl', style: "font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;" %}
+                </div>
+              </div>
+            </div>
+          {%- elsif media.media_type == 'external_video' -%}
+            <div class="w-full h-full relative">
+              {{ media | external_video_tag: class: 'w-full h-full object-cover select-none' }}
+              <div class="absolute inset-0 flex items-center justify-center bg-black/10 custom-play-overlay transition-opacity duration-300 cursor-pointer">
+                <div class="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-black/20">
+                  {% render 'icon', name: 'play_arrow', class: 'text-white text-5xl', style: "font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;" %}
+                </div>
+              </div>
+            </div>
+          {%- elsif media.media_type == 'model' -%}
+            <div class="w-full h-full relative">
+              {{ media | model_viewer_tag: image: media.preview_image, camera-controls: true, ar: true, ar-modes: 'webxr scene-viewer quick-look', class: 'w-full h-full object-cover select-none' }}
+            </div>
+          {%- else -%}
+            {%- if forloop.first -%}
+              {%- assign loading_strategy = 'eager' -%}
+              {%- assign fetch_priority = 'high' -%}
+            {%- else -%}
+              {%- assign loading_strategy = 'lazy' -%}
+              {%- assign fetch_priority = 'auto' -%}
+            {%- endif -%}
+            {{ media.preview_image.src | image_url: width: 1200 | image_tag:
+              widths: '360, 480, 720, 960, 1200, 1600',
+              sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px',
+              class: 'w-full h-full object-cover select-none',
+              loading: loading_strategy,
+              fetchpriority: fetch_priority,
+              alt: media.alt | default: product.title,
+              draggable: 'false'
+            }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="w-full h-full flex-shrink-0">
+        <img
+          alt="Klar voksdug"
+          class="w-full h-full object-cover select-none"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT6v3nHI941v3VLOOVZi6aiIWU9Bk0oFqdFrpEO7HFKCiZVZWAkbZafIRHYpjXJ-vkib7-EqYsE-5f6cnWn3VaO92Upxnr3Udg0oV4LbzaJlQitsTts1KuFfq1PU0VMG5FNT1Mx8PjaQZMPzcPs3QUaHTsVPYlxETHQLH5N6-GqTQnIQ63D-Wyjal17RpHnqDmyEDHeA5W9mgHscm42-_bB9kfmytEfumkgNPSNYbcZvTfvcT4xd6XZB0EuIRQ-DmyrVWWdxzFyBaa"
+          width="1200"
+          height="800"
+          draggable="false"
+        />
+      </div>
+    {%- endif -%}
+  </div>
+</div>

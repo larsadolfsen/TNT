@@ -55,7 +55,7 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 | 5 | R3a — split `main-collection.liquid` (878 lines) | `sections/main-collection.liquid` | **done**, unverified in browser |
 | 6 | R3b — split `breadcrumbs.liquid` (746) | `sections/breadcrumbs.liquid` | **done**, unverified in browser |
 | 7 | R3c — split `product-buy-buttons.liquid` (796) | `blocks/product-buy-buttons.liquid` | **done**, unverified in browser |
-| 8 | R3d — split `product-media.liquid` (620) | `blocks/product-media.liquid` | pending |
+| 8 | R3d — split `product-media.liquid` (620) | `blocks/product-media.liquid` | **done**, unverified in browser |
 | 9 | R3e — split `header-2.liquid` (565) | `sections/header-2.liquid` | pending |
 | 10 | R2 — card markup consolidation | `snippets/product-card.liquid` + card surfaces | pending |
 | 11 | R5 — shared padding-CSS boilerplate → snippet | blocks with repeated padding CSS | pending |
@@ -117,6 +117,15 @@ both to `assets/product-buy-buttons.js` before splitting the markup (same
 called out: quantity stepper +/−, add-to-cart (watch the price and the
 optimistic cart-counter bump), the mobile sticky bar's price/text sync and
 its show/hide on scroll and on cart-drawer open/close, console clean.
+
+Note on task 8: also never got an R1 pass, so its ~299-line inline
+`<script>` (gallery carousel/swipe/dots/thumbnails/video-overlay) moved to
+`assets/product-media.js` too — but it had no Liquid dependency (like
+breadcrumbs' behaviour script), so no config island was needed. Verify:
+swipe/drag through all media on mobile, dot clicks and thumbnail clicks on
+desktop both navigate and highlight correctly, video slides show the
+play-overlay and it hides on play, switching variants (if the product has
+variant-specific images) slides to the matching image, console clean.
 
 ### 10 — R2, card consolidation
 Every surface that renders a product card: collection grid, search results,
