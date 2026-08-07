@@ -59,14 +59,7 @@
       {%- endfor -%}
     {%- else -%}
       <div class="w-full h-full flex-shrink-0">
-        <img
-          alt="Klar voksdug"
-          class="w-full h-full object-cover select-none"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT6v3nHI941v3VLOOVZi6aiIWU9Bk0oFqdFrpEO7HFKCiZVZWAkbZafIRHYpjXJ-vkib7-EqYsE-5f6cnWn3VaO92Upxnr3Udg0oV4LbzaJlQitsTts1KuFfq1PU0VMG5FNT1Mx8PjaQZMPzcPs3QUaHTsVPYlxETHQLH5N6-GqTQnIQ63D-Wyjal17RpHnqDmyEDHeA5W9mgHscm42-_bB9kfmytEfumkgNPSNYbcZvTfvcT4xd6XZB0EuIRQ-DmyrVWWdxzFyBaa"
-          width="1200"
-          height="800"
-          draggable="false"
-        />
+        {{ 'product-apparel-1' | placeholder_svg_tag: 'w-full h-full object-cover select-none text-secondary' }}
       </div>
     {%- endif -%}
   </div>

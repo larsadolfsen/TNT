@@ -4,7 +4,7 @@
   apps that read a product image from the DOM rather than the Shopify API —
   never shown (class="hidden").
 
-  @param {image} [featured_image] - Variant/product featured image; falls back to a placeholder when blank.
+  @param {image} [featured_image] - Variant/product featured image; omitted when blank.
 
   @example
   {% render 'product-media-hidden-image', featured_image: featured_image %}
@@ -13,6 +13,4 @@
 <!-- Hidden dummy image for third-party cart compatibility -->
 {%- if featured_image -%}
   <img id="main-product-img" src="{{ featured_image | image_url: width: 1200 }}" class="hidden" alt="" width="{{ featured_image.width | default: 1200 }}" height="{{ featured_image.height | default: 1200 }}" />
-{%- else -%}
-  <img id="main-product-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT6v3nHI941v3VLOOVZi6aiIWU9Bk0oFqdFrpEO7HFKCiZVZWAkbZafIRHYpjXJ-vkib7-EqYsE-5f6cnWn3VaO92Upxnr3Udg0oV4LbzaJlQitsTts1KuFfq1PU0VMG5FNT1Mx8PjaQZMPzcPs3QUaHTsVPYlxETHQLH5N6-GqTQnIQ63D-Wyjal17RpHnqDmyEDHeA5W9mgHscm42-_bB9kfmytEfumkgNPSNYbcZvTfvcT4xd6XZB0EuIRQ-DmyrVWWdxzFyBaa" class="hidden" alt="" width="1200" height="800" />
 {%- endif -%}
