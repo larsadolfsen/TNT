@@ -310,9 +310,9 @@ Discovered while auditing the repo for optimization opportunities not already
 named in Waves 1–3 (see conversation log 2026-08-07). Each task owns only the
 files it names; no cross-task overlap by construction.
 
-**Batch 1 IN PROGRESS (started 2026-08-07, branch `claude/wave35-batch1`):**
-Q7+Q15, Q10+Q12, Q13, Q14 — the tasks touching no liquid files (safe
-alongside R6/R7). Q1–Q6, Q8, Q9, Q11 wait for R6 to land.
+**Batch 1 DONE (2026-08-07, branch `claude/wave35-batch1`, final review
+clean):** Q7+Q15 (41bd92c), Q10+Q12 (0c982c1), Q13 (Admin-API check, no code
+change), Q14 (b081da9). Q1–Q6, Q8, Q9, Q11 wait for R6 to land.
 
 | ID | Task | Tier | Test on live server |
 |----|------|------|---------------------|
@@ -328,7 +328,7 @@ alongside R6/R7). Q1–Q6, Q8, Q9, Q11 wait for R6 to land.
 | Q10 | Add `--minify` to the Tailwind build scripts in `package.json` (`tailwind:build` and its non-watch sibling) | [H] | `assets/output.css` shrinks; preview renders identically |
 | Q11 | Introduce a JS bundling/minification step for `assets/*.js` (currently shipped raw, 131KB across 11 files) | [S] | Build produces minified output; preview behavior unchanged |
 | Q12 | `psi` devDependency has no npm script wired to it — either add a `lighthouse`/`psi` script or drop the dependency | [H] | `npm run <script>` works, or `package.json` no longer lists `psi` |
-| Q13 | Verify `templates/product.standard.json` vs `templates/product.json` — **not** near-duplicates (diff shows structurally different content: page-title/product-trust vs a card wrapper); determine which is assigned to live products and which layout is intended, then remove or reconcile the other | [S] | Admin: no product references the removed template; assigned products render the intended layout |
+| Q13 | ~~Verify `templates/product.standard.json` vs `templates/product.json`~~ **Resolved 2026-08-07 via Admin API: `.standard` is LIVE** — at least 2 ACTIVE products assigned (`daekkeserviet-laeder-raw-organic-curve-sort`, `daekkeserviet-i-klar-plast-organic-raw`); both templates stay. Same check confirmed 3 ACTIVE products still carry the `Metervare` suffix whose template B4 deleted (open decision 2) — they currently fall back to the default template. Remaining user decision: is the `.standard` layout (card wrapper, no product-trust block) intentional for the placemat products? | [S] | Done (API check); layout-intent question logged under open decisions |
 | Q14 | 6 unused locale keys in `locales/en.default.json`: `collections.title`, `contact.heading`, and a `customers.login.*` cluster (`.email`/`.password`/`.submit`/`.title`). Check first whether the `customers.login.*` absence signals a missing accessible label on the customer login page (no `templates/customers/login` exists in the repo) before pruning as dead strings | [S] | Customer login page (if it exists/gets built) has accessible field labels; genuinely unused keys removed |
 | Q15 | `querySelectorAll('#cart-counter')` (plural query against a unique ID per `blocks/header-cart.liquid:9`) at **three** call sites: `assets/product-buy-buttons.js:228`, `assets/header-cart.js:105`, `assets/header-cart.js:273` — fix all to `getElementById` (`product-buy-buttons.js:274` already does it right) | [H] | Cart counter updates correctly on add-to-cart and cart-drawer changes |
 
