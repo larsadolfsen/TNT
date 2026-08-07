@@ -51,58 +51,11 @@
     });
   }
 
-  /* ---------------------------------------------------------------------
-   * Money formatting
-   *
-   * /search/suggest.json returns product prices as plain decimal strings
-   * in the shop's major currency unit (e.g. "199.00"), with no currency
-   * symbol and no locale formatting applied server-side — unlike Liquid's
-   * `money` filter, which is unavailable here since these rows are built
-   * from client-fetched JSON, not re-rendered through Liquid per result.
-   * This replicates the shop's configured money_format (passed through
-   * via data-ps-strings, see snippets/predictive-search-panel.liquid)
-   * client-side, the same way Shopify's own money.js does.
-   * ------------------------------------------------------------------- */
+  /* Money formatting uses shared formatter from assets/money.js */
   function centsFromDecimalString(value) {
     var n = parseFloat(value);
     if (isNaN(n)) return 0;
     return Math.round(n * 100);
-  }
-
-  function formatWithDelimiters(cents, precision, thousands, decimal) {
-    precision = typeof precision === 'undefined' ? 2 : precision;
-    thousands = typeof thousands === 'undefined' ? ',' : thousands;
-    decimal = typeof decimal === 'undefined' ? '.' : decimal;
-    if (isNaN(cents) || cents === null) return '0';
-    var amount = (cents / 100).toFixed(precision);
-    var parts = amount.split('.');
-    var dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands);
-    var decimals = parts[1] ? decimal + parts[1] : '';
-    return dollars + decimals;
-  }
-
-  function formatMoney(cents, format) {
-    var formatString = format || '${{amount}}';
-    var match = formatString.match(/\{\{\s*(\w+)\s*\}\}/);
-    if (!match) return formatString;
-    var value;
-    switch (match[1]) {
-      case 'amount_no_decimals':
-        value = formatWithDelimiters(cents, 0);
-        break;
-      case 'amount_with_comma_separator':
-        value = formatWithDelimiters(cents, 2, '.', ',');
-        break;
-      case 'amount_no_decimals_with_comma_separator':
-        value = formatWithDelimiters(cents, 0, '.', ',');
-        break;
-      case 'amount_with_space_separator':
-        value = formatWithDelimiters(cents, 2, ' ', ',');
-        break;
-      default:
-        value = formatWithDelimiters(cents, 2);
-    }
-    return formatString.replace(/\{\{\s*\w+\s*\}\}/, value);
   }
 
   function buildUrl(query, productsLimit, otherLimit, showQueries) {
@@ -545,7 +498,7 @@
       if (priceEl) priceEl.classList.add('hidden');
       if (soldOutEl) soldOutEl.classList.remove('hidden');
     } else if (priceEl) {
-      var priceText = formatMoney(centsFromDecimalString(product.price), this.moneyFormat);
+      var priceText = window.themeMoney.formatMoney(centsFromDecimalString(product.price), this.moneyFormat);
       if (product.price_varies) priceText = this.strings.fromPrefix + priceText;
       priceEl.textContent = priceText;
 
@@ -556,7 +509,7 @@
       var compareAtMin = product.compare_at_price_min != null ? parseFloat(product.compare_at_price_min) : 0;
       var priceMinValue = product.price_min != null ? parseFloat(product.price_min) : parseFloat(product.price);
       if (compareEl && compareAtMin > 0 && compareAtMin > priceMinValue) {
-        compareEl.textContent = formatMoney(centsFromDecimalString(product.compare_at_price_min), this.moneyFormat);
+        compareEl.textContent = window.themeMoney.formatMoney(centsFromDecimalString(product.compare_at_price_min), this.moneyFormat);
         compareEl.classList.remove('hidden');
       }
 
@@ -578,7 +531,7 @@
           if (measurement.reference_value && measurement.reference_value !== 1) {
             unitSuffix = measurement.reference_value + ' ' + unitSuffix;
           }
-          unitPriceEl.textContent = formatMoney(centsFromDecimalString(product.unit_price), this.moneyFormat) + ' / ' + unitSuffix;
+          unitPriceEl.textContent = window.themeMoney.formatMoney(centsFromDecimalString(product.unit_price), this.moneyFormat) + ' / ' + unitSuffix;
           unitPriceEl.classList.remove('hidden');
         }
       }
