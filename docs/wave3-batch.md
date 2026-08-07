@@ -68,6 +68,27 @@ R3 targets. R6 (token sweep) runs last because it touches everything.
 Each entry is the script for the follow-up session that cleans up that task.
 Storefront: `https://shopify.textilogvoksdug.dk`.
 
+### Blocked — storefront is password-protected (2026-08-07)
+
+A session was dispatched to run the tasks 5–9 checklists below and could not
+reach the storefront. `https://shopify.textilogvoksdug.dk` serves Shopify's
+"Butikken åbner snart" lock page with a password field; no theme asset loads
+at all. `shopify theme dev` is not a way around it — the CLI is authenticated
+against the store (it lists `TNT/main [live] #191515623757`) but refuses to
+serve without the same store password.
+
+Any future session hitting this needs one of:
+
+- a **share-preview link** from Online Store → Themes → ⋯ → "Share preview"
+  (carries a bypass token, no password handling) — preferred;
+- the store password entered by the user directly into the browser;
+- password protection temporarily lifted in Online Store → Preferences.
+
+Tasks 5–9 therefore remain **unverified in browser** by explicit user
+decision to proceed to task 10 rather than unblock now. Task 10 (R2) touches
+card surfaces on the collection page, which is exactly what task 5 left
+unverified — when access is restored, run 5–9 *and* 10 together.
+
 ### 1 — Mobile menu: remove accordions
 Open any page at mobile width, tap the hamburger. Every drawer item must be a
 plain tappable link that navigates on tap. No expand/collapse chevrons, no
