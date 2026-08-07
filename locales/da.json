@@ -49,19 +49,7 @@
     "shape_oval": "Oval",
     "price_per_item": "Pris pr. dug."
   },
-  "customers": {
-    "login": {
-      "email": "E-mail",
-      "password": "Adgangskode",
-      "submit": "Log ind",
-      "title": "Log ind"
-    }
-  },
-  "collections": {
-    "title": "Kollektioner"
-  },
   "contact": {
-    "heading": "Kontakt os",
     "name_label": "Navn",
     "email_label": "E-mail",
     "phone_label": "Telefon (valgfri)",
