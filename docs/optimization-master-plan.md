@@ -322,6 +322,13 @@ kr"; zero googleusercontent references; icons render via the primitive.
 Remaining for batch 3: Q2, Q4, Q5, Q6, Q9, Q11 (check R7's file list before
 starting those).
 
+**Batch 3 IN PROGRESS (started 2026-08-09, branch `claude/wave-3-5-batch-3-2e8851`):**
+R7 checked — only its design doc has merged to main (`dabb7eb`), no
+implementation files landed, so no conflicts with Q2/Q4/Q5/Q6/Q9. Running
+Q2 (image loading spec then mechanical migration), Q4+Q5 (inline script
+extraction), Q6 (subcollections dedup, coordinated with Q5), Q9 (shared
+panel primitive), Q11 (JS minify step) via subagent-driven development.
+
 | ID | Task | Tier | Test on live server |
 |----|------|------|---------------------|
 | Q1 | Remove hardcoded third-party fallback images (`lh3.googleusercontent.com/aida-public/...` prototype mockup URLs) in `snippets/product-media-hidden-image.liquid:17` and `snippets/product-media-gallery-track.liquid:65`; replace with a real placeholder or remove the fallback | [H] | Preview a product with no media: no request to `googleusercontent.com` in network tab |
