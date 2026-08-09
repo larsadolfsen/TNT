@@ -95,37 +95,7 @@
       ]
     }
   </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const dataEl = document.getElementById("product-badge-variant-data-{{ block.id }}");
-      const containerEl = document.getElementById("badge-container-{{ block.id }}");
-      if (!dataEl || !containerEl) return;
-
-      let badgeData = { variants: [] };
-      try {
-        badgeData = JSON.parse(dataEl.textContent);
-      } catch (e) {
-        console.error("Failed to parse stock badge data", e);
-      }
-
-      function updateBadge(variantId) {
-        const variant = badgeData.variants.find(v => v.id === parseInt(variantId));
-        if (!variant) return;
-
-        if (variant.available) {
-          containerEl.style.display = "";
-        } else {
-          containerEl.style.display = "none";
-        }
-      }
-
-      document.addEventListener("variant-changed", (e) => {
-        if (e.detail && e.detail.variantId) {
-          updateBadge(e.detail.variantId);
-        }
-      });
-    });
-  </script>
+  <script src="{{ 'badge.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 {%- endif -%}
 

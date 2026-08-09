@@ -16,23 +16,7 @@
   </div>
 </div>
 
-<script>
-  (function() {
-    const trigger = document.querySelector('#accordion-{{ block.id }} .accordion-trigger');
-    if (!trigger) return;
-    trigger.addEventListener('click', function() {
-      const content = this.nextElementSibling;
-      const icon = this.querySelector('.material-symbols-outlined');
-      if (content.classList.contains('hidden')) {
-        content.classList.remove('hidden');
-        if (icon) icon.classList.add('rotate-180');
-      } else {
-        content.classList.add('hidden');
-        if (icon) icon.classList.remove('rotate-180');
-      }
-    });
-  })();
-</script>
+<script src="{{ 'accordion.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
