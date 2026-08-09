@@ -349,7 +349,29 @@ overlap with Wave 3.5 batch 3's remaining files.
 | W2 | `layout/password.liquid` independently hardcodes the same Google Fonts `<link>` tags (Playfair Display, Work Sans, Material Symbols) that C1 (Wave 1) removed from `layout/theme.liquid` in favor of the native font_picker — missed because it's a separate layout file | [H] | Preview the password page: fonts still render correctly via font_picker settings; Playfair Display and Work Sans `<link>` tags are gone — only the Material Symbols Google Fonts link remains, kept as a documented exception (not a font_picker-covered family) |
 | W3 | Fix the theme-check baseline errors carried as "known, don't regress" since Wave 0: 1× `ParserBlockingScript` (`layout/theme.liquid`'s `masonry.js` `script_tag`, fix via `defer`) — **done this wave.** The 7× `ImgWidthAndHeight` (`sections/cart.liquid:17`, `sections/collection-subcategories.liquid` ×6) were deliberately deferred: 6 are in a file Wave 3.5's Q6 may delete, and the 7th (cart.liquid) needs a sizing decision out of scope for this wave — see `docs/superpowers/plans/2026-08-09-wave-3-75-plan.md` Task 3's "Note". Follow-up needed. | [H] | `npx shopify theme check`: the `ParserBlockingScript` offense no longer appears; the 7 `ImgWidthAndHeight` offenses remain (expected, tracked as follow-up); preview unaffected |
 | W4 | Remove the leftover `console.log` in `assets/masonry.js` | [H] | Preview: masonry grid behaves identically, browser console has no log line from this file |
-| W5 | 3 standalone `UnusedAssign` dead-code sites, independent of the subcollections-trio duplication already covered by Q6: `blocks/product-buy-buttons.liquid:31` (`width`), `blocks/card.liquid:54` (`content_align_class`), `sections/breadcrumbs.liquid:100` (`visible_count`). For each, confirm whether it's dead refactor debris (delete the assign) or a half-wired feature (wire it in) before touching | [H] | `npx shopify theme check`: these 3 `UnusedAssign` offenses no longer appear; preview unaffected |
+| W5 | ~~3 standalone `UnusedAssign` dead-code sites, independent of the subcollections-trio duplication already covered by Q6: `blocks/product-buy-buttons.liquid:31` (`width`), `blocks/card.liquid:54` (`content_align_class`), `sections/breadcrumbs.liquid:100` (`visible_count`).~~ **Done 2026-08-09.** `width` and its dependent `base_variant` computation were confirmed dead (leftover pre-app-extraction cut-to-length logic) and deleted. `visible_count` was confirmed superseded by the working `has_ellipsis` truncation mechanism and deleted. `content_align_class` was the one half-wired feature: restored and wired into `card_content_classes` in the grid/vertical branch only (where `.grid-layout` had no `align-items` at all before), so `alignment`'s 4 values now vary cross-axis alignment there; the default (`left`/vertical) branch renders identically to before via an explicit `items-stretch`, and the horizontal branch keeps its original literal `items-center` unconditionally, since cross-axis alignment isn't what a horizontal text-alignment setting should drive — `flex_justify` already owns horizontal alignment on the main axis | [H] | `npx shopify theme check`: these 3 `UnusedAssign` offenses no longer appear; preview unaffected |
+
+**Wave 3.75 complete (2026-08-09), branch `claude/wave-3-75-planning-fb7f36`.**
+W1–W5 all done, task-reviewed individually and whole-branch reviewed twice
+(a Critical uncompiled-CSS-class bug and a version-bump miss were caught and
+fixed in the whole-branch pass — task-level review alone would have missed
+both since neither is visible from a single task's diff). Follow-ups logged,
+not fixed here (all pre-existing, discovered incidentally):
+- `assets/product-buy-buttons.js:405,418` — same untokenized `bg-[#c8102e]`
+  savings-badge pattern as W1, missed because W1 only covered `.liquid`
+  files. Needs the same `bg-important` swap plus a browser check of the
+  mobile sticky bar.
+- `text-amber-500` (star rating, `snippets/star-rating.liquid` +
+  `blocks/product-trust.liquid` + `blocks/product-testimonial.liquid`) is a
+  hardcoded Tailwind palette color, not a theme token — won't follow
+  merchant color settings. Works today because no merchant customization
+  exists for it yet; would need a `--color-rating`-style token to become
+  configurable.
+- `snippets/product-media-gallery-style.liquid:70` — the thumbnail hover
+  border now matches the `.border-primary` (selected) border exactly
+  (both `var(--color-primary)`), so hover no longer visually distinguishes
+  itself from selected beyond shadow depth. Low priority; strictly better
+  than the no-op it replaced.
 
 ## Wave 4 — Submission package (serial at the end)
 

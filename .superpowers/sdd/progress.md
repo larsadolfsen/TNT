@@ -330,3 +330,12 @@ Plan: `docs/superpowers/plans/2026-08-09-wave-3-75-plan.md`. Branch:
 - Task 5: removed 3 dead UnusedAssign vars; review found 2 Important gaps (base_variant cascade, content_align_class wired into wrong wrapper); fixed in 186113f; re-review clean (commit 62a7fa2 + 186113f) — complete.
 
 All 5 Wave 3.75 tasks complete. Next: final whole-branch review.
+
+Final whole-branch review found 1 Critical (uncompiled Tailwind classes) +
+4 Important + docs staleness; fixed in 7492810/7327b03. Re-review found 1
+remaining Important (card.liquid horizontal branch still had an undisclosed
+default-rendering change) — fixed directly in 4af9819 (one-line, low risk,
+theme-check confirmed clean: 7 errors/21 warnings, no new offenses).
+
+Wave 3.75 (W1-W5) complete. All 5 tasks done, individually reviewed, plus 2
+rounds of whole-branch review. Ready for user go-ahead to merge.
