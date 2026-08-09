@@ -336,6 +336,21 @@ Q11 (check R7's file list before starting those).
 | Q14 | 6 unused locale keys in `locales/en.default.json`: `collections.title`, `contact.heading`, and a `customers.login.*` cluster (`.email`/`.password`/`.submit`/`.title`). Check first whether the `customers.login.*` absence signals a missing accessible label on the customer login page (no `templates/customers/login` exists in the repo) before pruning as dead strings | [S] | Customer login page (if it exists/gets built) has accessible field labels; genuinely unused keys removed |
 | Q15 | `querySelectorAll('#cart-counter')` (plural query against a unique ID per `blocks/header-cart.liquid:9`) at **three** call sites: `assets/product-buy-buttons.js:228`, `assets/header-cart.js:105`, `assets/header-cart.js:273` — fix all to `getElementById` (`product-buy-buttons.js:274` already does it right) | [H] | Cart counter updates correctly on add-to-cart and cart-drawer changes |
 
+## Wave 3.75 — Findings from a fresh audit while Wave 3.5 batch 3 was in flight (2026-08-09)
+
+Discovered while planning the next wave, scoped deliberately to issues not
+already named in Wave 3.5's Q1–Q15 or any other tracked doc. Each task owns
+only the files it names; no cross-task overlap by construction, and no
+overlap with Wave 3.5 batch 3's remaining files.
+
+| ID | Task | Tier | Test on live server |
+|----|------|------|---------------------|
+| W1 | R6's hex→token sweep (Wave 3) was marked done but missed 12 hardcoded hex literals across 8 files that duplicate existing tokens: `snippets/savings-badge.liquid` (`#c8102e` ×2), `blocks/product-price.liquid` (`#c8102e`), `snippets/breadcrumbs-nav.liquid` (`#ffffff` ×2), `snippets/star-rating.liquid` (`#FFB800`), `snippets/product-media-gallery-style.liquid` (`#888888`, `#6b7280`), `sections/section.liquid` (`#ffffff`, `#e2e8f0`), `blocks/badge.liquid` (`#ffffff`, `#000000`) | [H] | Preview light + dark mode: identical rendering; grep for `#[0-9a-fA-F]{3,8}` outside `css-variables.liquid`/`settings_schema.json` returns nothing |
+| W2 | `layout/password.liquid` independently hardcodes the same Google Fonts `<link>` tags (Playfair Display, Work Sans, Material Symbols) that C1 (Wave 1) removed from `layout/theme.liquid` in favor of the native font_picker — missed because it's a separate layout file | [H] | Preview the password page: fonts still render correctly via font_picker settings; no request to `fonts.googleapis.com`/`fonts.gstatic.com` in network tab |
+| W3 | Fix the 8 theme-check baseline errors that have been carried as "known, don't regress" since Wave 0 without ever being fixed: 7× `ImgWidthAndHeight` (`sections/cart.liquid:17`, `sections/collection-subcategories.liquid` ×6) + 1× `ParserBlockingScript` (`layout/theme.liquid`'s `masonry.js` `script_tag`, fix via `defer`) | [H] | `npx shopify theme check`: these 8 offenses no longer appear; preview unaffected |
+| W4 | Remove the leftover `console.log` in `assets/masonry.js` | [H] | Preview: masonry grid behaves identically, browser console has no log line from this file |
+| W5 | 3 standalone `UnusedAssign` dead-code sites, independent of the subcollections-trio duplication already covered by Q6: `blocks/product-buy-buttons.liquid:31` (`width`), `blocks/card.liquid:54` (`content_align_class`), `sections/breadcrumbs.liquid:100` (`visible_count`). For each, confirm whether it's dead refactor debris (delete the assign) or a half-wired feature (wire it in) before touching | [H] | `npx shopify theme check`: these 3 `UnusedAssign` offenses no longer appear; preview unaffected |
+
 ## Wave 4 — Submission package (serial at the end)
 
 | ID | Task | Tier | Test |
