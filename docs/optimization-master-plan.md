@@ -347,6 +347,43 @@ panel primitive), Q11 (JS minify step) via subagent-driven development.
 | Q14 | 6 unused locale keys in `locales/en.default.json`: `collections.title`, `contact.heading`, and a `customers.login.*` cluster (`.email`/`.password`/`.submit`/`.title`). Check first whether the `customers.login.*` absence signals a missing accessible label on the customer login page (no `templates/customers/login` exists in the repo) before pruning as dead strings | [S] | Customer login page (if it exists/gets built) has accessible field labels; genuinely unused keys removed |
 | Q15 | `querySelectorAll('#cart-counter')` (plural query against a unique ID per `blocks/header-cart.liquid:9`) at **three** call sites: `assets/product-buy-buttons.js:228`, `assets/header-cart.js:105`, `assets/header-cart.js:273` — fix all to `getElementById` (`product-buy-buttons.js:274` already does it right) | [H] | Cart counter updates correctly on add-to-cart and cart-drawer changes |
 
+## Wave 3.75 — Findings from a fresh audit while Wave 3.5 batch 3 was in flight (2026-08-09)
+
+Discovered while planning the next wave, scoped deliberately to issues not
+already named in Wave 3.5's Q1–Q15 or any other tracked doc. Each task owns
+only the files it names; no cross-task overlap by construction, and no
+overlap with Wave 3.5 batch 3's remaining files.
+
+| ID | Task | Tier | Test on live server |
+|----|------|------|---------------------|
+| W1 | R6's hex→token sweep (Wave 3) was marked done but missed 6 hardcoded hex literals across 3 files that duplicate/bypass existing tokens: `snippets/star-rating.liquid:31` (`text-[#FFB800]`, inconsistent with `blocks/product-trust.liquid`'s `text-amber-500` for the same star-rating concept — align both to `text-amber-500`), `snippets/product-media-gallery-style.liquid:71,99` (`border-color: #888888` → `var(--color-border)`, `color: #6b7280` → `var(--color-foreground)` at reduced opacity or `--color-foreground)`), `snippets/savings-badge.liquid:23,26` + `blocks/product-price.liquid:241` (`#c8102e` ×3, a "savings badge" red distinct from `--color-important` — reuse `--color-important` rather than add a new token, since it's the theme's one attention/urgency color). **Excluded as false positives** (verified 2026-08-09, do not re-flag): `blocks/badge.liquid:176,183` (`"default": "#000000"/"#ffffff"` are color-picker schema defaults, the same pattern `important_color` uses in `settings_schema.json`), `sections/section.liquid:128-129` (`default: '#ffffff'`/`'#e2e8f0'` mirrors `css-variables.liquid`'s own dark-mode fallback literals verbatim), `snippets/breadcrumbs-nav.liquid:56,60` (`var(--color-background, #ffffff)` is a CSS custom-property fallback, same convention as `var(--page-width, 1440px)` in `section.liquid`) | [H] | Preview light + dark mode: identical rendering |
+| W2 | `layout/password.liquid` independently hardcodes the same Google Fonts `<link>` tags (Playfair Display, Work Sans, Material Symbols) that C1 (Wave 1) removed from `layout/theme.liquid` in favor of the native font_picker — missed because it's a separate layout file | [H] | Preview the password page: fonts still render correctly via font_picker settings; Playfair Display and Work Sans `<link>` tags are gone — only the Material Symbols Google Fonts link remains, kept as a documented exception (not a font_picker-covered family) |
+| W3 | Fix the theme-check baseline errors carried as "known, don't regress" since Wave 0: 1× `ParserBlockingScript` (`layout/theme.liquid`'s `masonry.js` `script_tag`, fix via `defer`) — **done this wave.** The 7× `ImgWidthAndHeight` (`sections/cart.liquid:17`, `sections/collection-subcategories.liquid` ×6) were deliberately deferred: 6 are in a file Wave 3.5's Q6 may delete, and the 7th (cart.liquid) needs a sizing decision out of scope for this wave — see `docs/superpowers/plans/2026-08-09-wave-3-75-plan.md` Task 3's "Note". Follow-up needed. | [H] | `npx shopify theme check`: the `ParserBlockingScript` offense no longer appears; the 7 `ImgWidthAndHeight` offenses remain (expected, tracked as follow-up); preview unaffected |
+| W4 | Remove the leftover `console.log` in `assets/masonry.js` | [H] | Preview: masonry grid behaves identically, browser console has no log line from this file |
+| W5 | ~~3 standalone `UnusedAssign` dead-code sites, independent of the subcollections-trio duplication already covered by Q6: `blocks/product-buy-buttons.liquid:31` (`width`), `blocks/card.liquid:54` (`content_align_class`), `sections/breadcrumbs.liquid:100` (`visible_count`).~~ **Done 2026-08-09.** `width` and its dependent `base_variant` computation were confirmed dead (leftover pre-app-extraction cut-to-length logic) and deleted. `visible_count` was confirmed superseded by the working `has_ellipsis` truncation mechanism and deleted. `content_align_class` was the one half-wired feature: restored and wired into `card_content_classes` in the grid/vertical branch only (where `.grid-layout` had no `align-items` at all before), so `alignment`'s 4 values now vary cross-axis alignment there; the default (`left`/vertical) branch renders identically to before via an explicit `items-stretch`, and the horizontal branch keeps its original literal `items-center` unconditionally, since cross-axis alignment isn't what a horizontal text-alignment setting should drive — `flex_justify` already owns horizontal alignment on the main axis | [H] | `npx shopify theme check`: these 3 `UnusedAssign` offenses no longer appear; preview unaffected |
+
+**Wave 3.75 complete (2026-08-09), branch `claude/wave-3-75-planning-fb7f36`.**
+W1–W5 all done, task-reviewed individually and whole-branch reviewed twice
+(a Critical uncompiled-CSS-class bug and a version-bump miss were caught and
+fixed in the whole-branch pass — task-level review alone would have missed
+both since neither is visible from a single task's diff). Follow-ups logged,
+not fixed here (all pre-existing, discovered incidentally):
+- `assets/product-buy-buttons.js:405,418` — same untokenized `bg-[#c8102e]`
+  savings-badge pattern as W1, missed because W1 only covered `.liquid`
+  files. Needs the same `bg-important` swap plus a browser check of the
+  mobile sticky bar.
+- `text-amber-500` (star rating, `snippets/star-rating.liquid` +
+  `blocks/product-trust.liquid` + `blocks/product-testimonial.liquid`) is a
+  hardcoded Tailwind palette color, not a theme token — won't follow
+  merchant color settings. Works today because no merchant customization
+  exists for it yet; would need a `--color-rating`-style token to become
+  configurable.
+- `snippets/product-media-gallery-style.liquid:70` — the thumbnail hover
+  border now matches the `.border-primary` (selected) border exactly
+  (both `var(--color-primary)`), so hover no longer visually distinguishes
+  itself from selected beyond shadow depth. Low priority; strictly better
+  than the no-op it replaced.
+
 ## Wave 4 — Submission package (serial at the end)
 
 | ID | Task | Tier | Test |
@@ -388,6 +425,12 @@ because it is the first time any app code runs.
 **Stage 4 — post-deploy theme cleanup** (A4.6; needs Stage 3).
 A4.6 removes the theme's `_metervare_title` reads once the cart-transform's
 bundle title is confirmed.
+
+**Wave 3.75 — done 2026-08-09.** All 5 tasks (W1–W5) complete: hex→token
+sweep, `layout/password.liquid` font-loading fix, `masonry.js` deferred
+(`ParserBlockingScript` fixed), `console.log` removal, and 3 dead
+`UnusedAssign` sites resolved. See `.superpowers/sdd/progress.md` for the
+per-task ledger and commit hashes.
 
 **B4 — done 2026-08-07, ahead of schedule.** User decided the app should own
 cut-to-length UI outright rather than waiting on deploy: deleted

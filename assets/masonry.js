@@ -126,14 +126,6 @@
 
       // Get section height
       const sectionHeight = sec.getBoundingClientRect().height;
-      
-      console.log(`[Masonry Debug] Section:`, sec.id || sec.className, {
-        colSpan,
-        targetCol,
-        topPos,
-        sectionHeight,
-        leftPos
-      });
 
       // Update heights for all spanned columns to the new end position (0 gap between rows)
       const newHeight = topPos + sectionHeight;
@@ -144,7 +136,6 @@
       }
     });
 
-    console.log(`[Masonry Debug] Final colHeights:`, colHeights);
     mainContent.style.height = `${Math.max(...colHeights)}px`;
 
     // Render visual debug overlay on screen

@@ -317,3 +317,25 @@ theme returns **404 for every product page**. The live theme renders them
 fine, so the GitHub-connection deploy path is more lenient than `theme push`.
 Verifying those surfaces needs either those three pre-existing errors fixed
 (their own task) or a merge to main.
+
+# Wave 3.75 progress ledger
+
+Plan: `docs/superpowers/plans/2026-08-09-wave-3-75-plan.md`. Branch:
+`claude/wave-3-75-planning-fb7f36`. Batch start: commit 3ad8c32.
+
+- Task 1: hex-token sweep (6 real hits, commit 0c408dc, review clean) — complete.
+- Task 2: password.liquid font-loading fix (commit dbc3ecf, review clean) — complete.
+- Task 3: masonry.js deferred, ParserBlockingScript fixed (commit 2649a43, review clean) — complete.
+- Task 4: removed console.log debug statements from masonry.js (commit d8a88d4, review clean) — complete.
+- Task 5: removed 3 dead UnusedAssign vars; review found 2 Important gaps (base_variant cascade, content_align_class wired into wrong wrapper); fixed in 186113f; re-review clean (commit 62a7fa2 + 186113f) — complete.
+
+All 5 Wave 3.75 tasks complete. Next: final whole-branch review.
+
+Final whole-branch review found 1 Critical (uncompiled Tailwind classes) +
+4 Important + docs staleness; fixed in 7492810/7327b03. Re-review found 1
+remaining Important (card.liquid horizontal branch still had an undisclosed
+default-rendering change) — fixed directly in 4af9819 (one-line, low risk,
+theme-check confirmed clean: 7 errors/21 warnings, no new offenses).
+
+Wave 3.75 (W1-W5) complete. All 5 tasks done, individually reviewed, plus 2
+rounds of whole-branch review. Ready for user go-ahead to merge.

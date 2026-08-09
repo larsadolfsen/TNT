@@ -28,7 +28,7 @@
 {%- assign star_class_filled = star_size_class | append: ' filled-star select-none' -%}
 {%- assign star_class_outline = star_size_class | append: ' text-outline-variant select-none' -%}
 <div class="flex items-center gap-1 {{ wrapper_class }} text-secondary mt-1">
-  <div class="flex text-[#FFB800] gap-0.5">
+  <div class="flex text-amber-500 gap-0.5">
     {%- for i in (1..5) -%}
       {%- if i <= rating_floor -%}
         {%- render 'icon', name: 'star', class: star_class_filled, style: star_style -%}

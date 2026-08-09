@@ -70,6 +70,6 @@
     </main>
 
     {% sections 'footer-group' %}
-    {{ 'masonry.js' | asset_url | script_tag }}
+    <script src="{{ 'masonry.js' | asset_url }}" defer></script>
   </body>
 </html>

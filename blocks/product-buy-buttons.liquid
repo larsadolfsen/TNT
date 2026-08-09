@@ -11,27 +11,6 @@
 {% endcomment %}
 
 {%- assign text_before_price = block.settings.text_before_price | default: "Læg i kurv – " -%}
-{%- liquid
-  assign base_variant = nil
-  for variant in product.variants
-    unless variant.title contains 'Tilpasset' or variant.title contains 'tilpasset'
-      assign base_variant = variant
-      break
-    endunless
-  endfor
-  if base_variant == nil
-    assign base_variant = product.selected_or_first_available_variant
-  endif
-
-  assign width = 140
-  if base_variant.title contains '140'
-    assign width = 140
-  elsif base_variant.title contains '120'
-    assign width = 120
-  elsif base_variant.title contains '100'
-    assign width = 100
-  endif
--%}
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
     {%- render 'block-padding-vars', block: block -%}

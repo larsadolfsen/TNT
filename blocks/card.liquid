@@ -43,16 +43,16 @@
   case block.settings.alignment
     when 'center'
       assign card_classes = card_classes | append: ' text-center items-center'
-      assign content_align_class = 'items-center text-center'
+      assign content_align_class = 'items-center'
     when 'right'
       assign card_classes = card_classes | append: ' text-right items-end'
-      assign content_align_class = 'items-end text-right'
+      assign content_align_class = 'items-end'
     when 'justify'
       assign card_classes = card_classes | append: ' text-justify'
-      assign content_align_class = 'items-stretch text-justify'
+      assign content_align_class = 'items-stretch'
     else
       assign card_classes = card_classes | append: ' text-left items-start'
-      assign content_align_class = 'items-start text-left'
+      assign content_align_class = 'items-stretch'
   endcase
 
   # Background image handling
@@ -182,7 +182,7 @@
       endcase
       assign card_content_classes = card_content_classes | append: ' flex flex-row flex-wrap items-center ' | append: flex_justify
     else
-      assign card_content_classes = card_content_classes | append: ' grid-layout'
+      assign card_content_classes = card_content_classes | append: ' grid-layout ' | append: content_align_class
     endif
   -%}
   <div class="{{ card_content_classes }}">
