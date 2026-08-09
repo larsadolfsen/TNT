@@ -11,6 +11,9 @@
       const containerEl = document.getElementById(`badge-container-${suffix}`);
       if (!containerEl) return;
 
+      if (containerEl.dataset.badgeBound === "true") return;
+      containerEl.dataset.badgeBound = "true";
+
       let badgeData = { variants: [] };
       try {
         badgeData = JSON.parse(dataEl.textContent);

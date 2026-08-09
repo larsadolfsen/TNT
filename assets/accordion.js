@@ -5,6 +5,9 @@
  */
 (function () {
   document.querySelectorAll('[id^="accordion-"] > .accordion-trigger').forEach((trigger) => {
+    if (trigger.dataset.accordionBound === 'true') return;
+    trigger.dataset.accordionBound = 'true';
+
     trigger.addEventListener('click', function () {
       const content = this.nextElementSibling;
       const icon = this.querySelector('.material-symbols-outlined');
