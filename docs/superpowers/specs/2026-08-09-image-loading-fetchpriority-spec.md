@@ -76,26 +76,45 @@ covered by this spec.
 Task 2 must make this change to `snippets/image.liquid` as its first step,
 then proceed with the 8 call-site edits below.
 
-## 1. Above-the-fold cutoff for grids: N = 4 (first 2 rows at 2 mobile columns)
+## 1. Above-the-fold cutoff for grids
 
 Three of the 8 call sites are card grids (product-collection grid, and two
-sub-collection grids). All three default to `columns_mobile: 2` (theme-wide
-convention — see `blocks/collection-products-grid.liquid`,
-`sections/collections.liquid`, `blocks/subcollections-grid.liquid`,
-`templates/collection.json`). At a 2-column mobile layout, a typical phone
-viewport (~390–430px wide, ~650–750px visible height below a sticky
-header/nav) shows roughly 1.5–2 full rows of square-ish cards before the
-user scrolls. Cutting off after **2 rows (N = 4 cards)** is a deliberately
-slightly-generous above-the-fold boundary: it guarantees every card that's
-actually visible on first paint gets `eager`/`high` priority, at the cost of
-at most one row of cards below the true fold also being prioritized (an
-acceptable trade — better to over-prioritize by one row than to leave a
-genuinely visible card lazy-loaded and slow to appear).
+sub-collection grids), but they do not all share the same mobile column
+count, so they do not all share the same cutoff.
 
-This N = 4 cutoff applies identically to all three grid call sites listed
-below (`sections/collection.liquid`, `sections/collections.liquid`,
-`blocks/subcollections-grid.liquid`), since they share the same
-`columns_mobile: 2` convention.
+**`sections/collections.liquid` and `blocks/subcollections-grid.liquid`: N =
+4 (first 2 rows at 2 mobile columns).** Both have their own `columns_mobile`
+schema setting (default 2) driving a `{%- style -%}` block that sets
+`grid-template-columns` for the card grid — theme-wide convention confirmed
+in both files' schema and style blocks. At a 2-column mobile layout, a
+typical phone viewport (~390–430px wide, ~650–750px visible height below a
+sticky header/nav) shows roughly 1.5–2 full rows of square-ish cards before
+the user scrolls. Cutting off after **2 rows (N = 4 cards)** is a
+deliberately slightly-generous above-the-fold boundary: it guarantees every
+card that's actually visible on first paint gets `eager`/`high` priority, at
+the cost of at most one row of cards below the true fold also being
+prioritized (an acceptable trade — better to over-prioritize by one row than
+to leave a genuinely visible card lazy-loaded and slow to appear).
+
+**`sections/collection.liquid`: N = 2 (first 2 rows at 1 mobile column) —
+see §2.4 for the full justification.** This section has no `columns_mobile`
+setting and no grid-specific CSS of its own; its `.collection-products`
+class is styled by the single global rule in `assets/input.css:941–944`:
+
+```css
+.collection-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+}
+```
+
+A `minmax(500px, 1fr)` floor means `auto-fill` cannot fit more than one
+column on any viewport narrower than ~500px — which covers every mobile
+phone. So this grid is genuinely **1 column** on mobile, not 2. Using the
+other sites' N = 4 here would prioritize roughly double the cards actually
+visible above the fold, directly undermining this task's LCP-optimization
+goal. N = 2 (2 rows × 1 column) is the correct mobile-first-paint boundary
+for this specific site.
 
 ## 2. Per-call-site values
 
@@ -115,21 +134,9 @@ below (`sections/collection.liquid`, `sections/collections.liquid`,
 
 ### 2.2 `blocks/subcollections-grid.liquid` (lines 46–52)
 
-```liquid
-{% render 'image',
-  class: 'collection-card__image',
-  image: col_item.featured_image,
-  width: 600,
-  height: 600,
-  crop: 'center',
-  loading: forloop.index <= 4 ? 'eager' : 'lazy',
-  fetchpriority: forloop.index <= 4 ? 'high' : nil
-%}
-```
-
-Since Liquid's `render` tag doesn't support inline ternaries as literal
-values inside a `{% render %}` call, express the condition with a `liquid`
-block before the render, then pass plain variables:
+Liquid's `render` tag doesn't support inline ternaries as literal values
+inside a `{% render %}` call, so express the condition with a `liquid` block
+before the render, then pass plain variables:
 
 ```liquid
 {% for col_item in display_collections %}
@@ -179,39 +186,58 @@ block before the render, then pass plain variables:
 ### 2.4 `sections/collection.liquid` (lines 15–22)
 
 ```liquid
-{% for product in collection.products %}
-  {%- liquid
-    if forloop.index <= 4
-      assign card_loading = 'eager'
-      assign card_fetchpriority = 'high'
-    else
-      assign card_loading = 'lazy'
-      assign card_fetchpriority = nil
-    endif
-  -%}
-  <div class="collection-product">
-    {% if product.featured_image %}
-      {% render 'image',
-        class: 'collection-product__image',
-        image: product.featured_image,
-        url: product.url,
-        width: 400,
-        height: 400,
-        crop: 'center',
-        loading: card_loading,
-        fetchpriority: card_fetchpriority
-      %}
-    {% endif %}
-    ...
+<div class="collection-products">
+  {% paginate collection.products by 20 %}
+    {% for product in collection.products %}
+      {%- liquid
+        if forloop.index <= 2
+          assign card_loading = 'eager'
+          assign card_fetchpriority = 'high'
+        else
+          assign card_loading = 'lazy'
+          assign card_fetchpriority = nil
+        endif
+      -%}
+      <div class="collection-product">
+        {% if product.featured_image %}
+          {% render 'image',
+            class: 'collection-product__image',
+            image: product.featured_image,
+            url: product.url,
+            width: 400,
+            height: 400,
+            crop: 'center',
+            loading: card_loading,
+            fetchpriority: card_fetchpriority
+          %}
+        {% endif %}
+        <div class="collection-product__content">
+          <p>{{ product.title | escape | link_to: product.url }}</p>
+          <p>{{ product.price | money }}</p>
+        </div>
+      </div>
+    {% endfor %}
+
+    {{ paginate | default_pagination }}
+  {% endpaginate %}
+</div>
 ```
 
-- First 4 products (`forloop.index <= 4`): `loading: 'eager'`,
+- First 2 products (`forloop.index <= 2`): `loading: 'eager'`,
   `fetchpriority: 'high'`.
 - Remaining products: `loading: 'lazy'`, no `fetchpriority`.
-- Reasoning: this is the collection product grid — no explicit
-  `columns_mobile` setting exists in this bare-bones section (it has no
-  grid CSS at all), so it inherits the theme-wide default of 2 mobile
-  columns used by every other grid section/block. N = 4 per §1.
+- Reasoning: this section has **no** `columns_mobile` setting and no
+  grid-specific CSS of its own — unlike `sections/collections.liquid` and
+  `blocks/subcollections-grid.liquid`, which each define their own
+  `columns_mobile` schema setting (default 2) driving a `{%- style -%}`
+  block. `sections/collection.liquid`'s `.collection-products` class is
+  styled only by the global rule at `assets/input.css:941–944`:
+  `display: grid; grid-template-columns: repeat(auto-fill, minmax(500px,
+  1fr));`. A 500px `minmax` floor collapses `auto-fill` to a single column
+  on any mobile viewport (~390–430px wide), so this grid is genuinely
+  1 column, not 2. Using this file's own N = 2 (2 rows × 1 column) keeps the
+  above-the-fold prioritization accurate for its actual mobile layout,
+  instead of over-prioritizing roughly double the visible cards.
 
 ### 2.5 `sections/collections.liquid` (lines 39–45)
 
@@ -248,19 +274,8 @@ block before the render, then pass plain variables:
 
 ### 2.6 `sections/product.liquid` (line 10) — PDP hero image
 
-```liquid
-{% for image in product.images %}
-  {% render 'image',
-    class: 'product-image',
-    image: image,
-    loading: forloop.first ? 'eager' : 'lazy',
-    fetchpriority: forloop.first ? 'high' : nil
-  %}
-{% endfor %}
-```
-
-As with §2.2, express via a `liquid` block since `render` doesn't accept
-inline ternaries as arguments:
+As with §2.2, `render` doesn't accept inline ternaries as arguments, so
+express the condition via a `liquid` block:
 
 ```liquid
 <div class="product-images">
@@ -361,7 +376,7 @@ inline ternaries as arguments:
 | Contact map fallback | `blocks/contact-map.liquid:31` | `'lazy'` | none | always |
 | Sub-collections grid (block) | `blocks/subcollections-grid.liquid:46-52` | `'eager'` / `'lazy'` | `'high'` / none | `forloop.index <= 4` |
 | Cart line-item image | `sections/cart.liquid:20` | `'lazy'` | none | always |
-| Collection product grid | `sections/collection.liquid:15-22` | `'eager'` / `'lazy'` | `'high'` / none | `forloop.index <= 4` |
+| Collection product grid | `sections/collection.liquid:15-22` | `'eager'` / `'lazy'` | `'high'` / none | `forloop.index <= 2` |
 | Collections (sub-collections) grid (section) | `sections/collections.liquid:39-45` | `'eager'` / `'lazy'` | `'high'` / none | `forloop.index <= 4` |
 | PDP product image loop | `sections/product.liquid:10` | `'eager'` / `'lazy'` | `'high'` / none | `forloop.first` |
 | Product card image | `snippets/product-card-image.liquid:21-30` | `'lazy'` | none | always (unchanged) |
