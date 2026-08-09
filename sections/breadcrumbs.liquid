@@ -56,57 +56,6 @@
     {%- endif -%}
   {%- endif -%}
 
-  {%- assign visible_count = 2 -%}
-  {%- case t -%}
-    {%- when 'blog' -%}
-      {%- if current_tags -%}
-        {%- assign visible_count = 3 -%}
-      {%- endif -%}
-    {%- when 'article' -%}
-      {%- assign visible_count = 3 -%}
-    {%- when 'product' -%}
-      {%- if c_level_0 != blank -%}
-        {%- assign visible_count = 3 -%}
-        {%- if c_level_1 != blank -%}
-          {%- assign visible_count = 4 -%}
-          {%- if c_level_2 != blank -%}
-            {%- assign visible_count = 5 -%}
-            {%- if c_level_3 != blank -%}
-              {%- assign visible_count = 6 -%}
-              {%- if c_level_4 != blank -%}
-                {%- assign visible_count = 7 -%}
-                {%- if c_level_5 != blank -%}
-                  {%- assign visible_count = 8 -%}
-                  {%- if c_level_6 != blank -%}
-                    {%- assign visible_count = 9 -%}
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endif -%}
-            {%- endif -%}
-          {%- endif -%}
-        {%- endif -%}
-      {%- endif -%}
-    {%- when 'collection' and collection.handle -%}
-      {%- if c_level_1 != blank -%}
-        {%- assign visible_count = 3 -%}
-        {%- if c_level_2 != blank -%}
-          {%- assign visible_count = 4 -%}
-          {%- if c_level_3 != blank -%}
-            {%- assign visible_count = 5 -%}
-            {%- if c_level_4 != blank -%}
-              {%- assign visible_count = 6 -%}
-              {%- if c_level_5 != blank -%}
-                {%- assign visible_count = 7 -%}
-                {%- if c_level_6 != blank -%}
-                  {%- assign visible_count = 8 -%}
-                {%- endif -%}
-              {%- endif -%}
-            {%- endif -%}
-          {%- endif -%}
-        {%- endif -%}
-      {%- endif -%}
-  {%- endcase -%}
-
   {%- assign has_ellipsis = false -%}
   {%- case t -%}
     {%- when 'product' -%}

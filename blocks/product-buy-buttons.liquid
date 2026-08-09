@@ -22,15 +22,6 @@
   if base_variant == nil
     assign base_variant = product.selected_or_first_available_variant
   endif
-
-  assign width = 140
-  if base_variant.title contains '140'
-    assign width = 140
-  elsif base_variant.title contains '120'
-    assign width = 120
-  elsif base_variant.title contains '100'
-    assign width = 100
-  endif
 -%}
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
