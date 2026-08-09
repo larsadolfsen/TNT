@@ -314,9 +314,13 @@ files it names; no cross-task overlap by construction.
 clean):** Q7+Q15 (41bd92c), Q10+Q12 (0c982c1), Q13 (Admin-API check, no code
 change), Q14 (b081da9). Q1–Q6, Q8, Q9, Q11 wait for R6 to land.
 
-**Batch 2 IN PROGRESS (started 2026-08-07, branch `claude/wave35-batch2`,
-R6 landed on main):** Q1, Q3, Q8. Remaining for batch 3: Q2, Q4, Q5, Q6, Q9,
-Q11 (check R7's file list before starting those).
+**Batch 2 DONE (2026-08-07, merged as 179dea9, v1.0.122, live-verified):**
+Q1 (fb1e258 + gallery-guard fix f81ceed), Q3 (2f4e846), Q8 (2019ce2).
+Live checks on the deployed theme: cart drawer opens with focus on the close
+button, Escape closes, aria-labelledby resolves; money.js formats "1.234,56
+kr"; zero googleusercontent references; icons render via the primitive.
+Remaining for batch 3: Q2, Q4, Q5, Q6, Q9, Q11 (check R7's file list before
+starting those).
 
 | ID | Task | Tier | Test on live server |
 |----|------|------|---------------------|
