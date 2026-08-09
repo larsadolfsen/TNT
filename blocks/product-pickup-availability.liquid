@@ -29,7 +29,7 @@
 {%- endstyle -%}
 
 {%- if has_any_pickup -%}
-  <div id="pickup-availability-{{ block.id }}" {{ block.shopify_attributes }}>
+  <div id="pickup-availability-{{ block.id }}" data-pickup-availability {{ block.shopify_attributes }}>
     {%- for variant in product.variants -%}
       {%- assign available_locations = variant.store_availabilities | where: 'available' -%}
       {%- assign panel_id = 'pickup-panel-' | append: block.id | append: '-' | append: variant.id -%}
@@ -62,36 +62,7 @@
     {%- endfor -%}
   </div>
 
-  <script>
-    (() => {
-      const container = document.getElementById("pickup-availability-{{ block.id }}");
-      if (!container) return;
-
-      container.addEventListener("click", (e) => {
-        const trigger = e.target.closest(".pickup-row-trigger");
-        if (!trigger || !container.contains(trigger)) return;
-
-        const panel = document.getElementById(trigger.getAttribute("aria-controls"));
-        if (!panel) return;
-
-        const willOpen = trigger.getAttribute("aria-expanded") !== "true";
-        trigger.setAttribute("aria-expanded", String(willOpen));
-        panel.hidden = !willOpen;
-        trigger.classList.toggle("bg-card-high", willOpen);
-        trigger.classList.toggle("bg-card-light", !willOpen);
-
-        const chevron = trigger.querySelector(".pickup-chevron");
-        if (chevron) chevron.style.transform = willOpen ? "rotate(180deg)" : "";
-      });
-
-      document.addEventListener("variant-changed", (e) => {
-        if (!e.detail || !e.detail.variantId) return;
-        container.querySelectorAll(".pickup-variant-state").forEach((el) => {
-          el.hidden = el.dataset.variantId !== String(e.detail.variantId);
-        });
-      });
-    })();
-  </script>
+  <script src="{{ 'product-pickup-availability.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}
