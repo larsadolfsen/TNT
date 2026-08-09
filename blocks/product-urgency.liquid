@@ -68,82 +68,12 @@
     ],
     "hideUnderLimit": {{ hide_under_limit }},
     "urgencyText": {{ block.settings.urgency_text | default: "Kun få på lager. Fri fragt på ordrer over 599 kr." | json }},
-    "inStockText": {{ block.settings.in_stock_text | default: "På lager. Fri fragt på ordrer over 599 kr." | json }}
+    "inStockText": {{ block.settings.in_stock_text | default: "På lager. Fri fragt på ordrer over 599 kr." | json }},
+    "showUrgency": {{ block.settings.show_urgency | json }}
   }
 </script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const dataEl = document.getElementById("product-urgency-variant-data-{{ block.id }}");
-    const sectionEl = document.getElementById("product-urgency-section-{{ block.id }}");
-    const textEl = document.getElementById("product-urgency-text-{{ block.id }}");
-    if (!dataEl || !sectionEl || !textEl) return;
-
-    let urgencyData = { variants: [], hideUnderLimit: 5, urgencyText: "", inStockText: "" };
-    try {
-      urgencyData = JSON.parse(dataEl.textContent);
-    } catch (e) {
-      console.error("Failed to parse stock urgency data", e);
-    }
-
-    function updateUrgency(variantId) {
-      {%- unless block.settings.show_urgency -%}
-        sectionEl.style.display = "none";
-        return;
-      {%- endunless -%}
-
-      const btmVariant = urgencyData.variants.find(v => v.sku === 'BTM001');
-      const targetVariant = btmVariant || urgencyData.variants.find(v => v.id === parseInt(variantId));
-      if (!targetVariant) return;
-
-      let show = true;
-      let state = 'in-stock';
-
-      if (targetVariant.inventory_management) {
-        if (targetVariant.inventory_quantity <= 0) {
-          show = false;
-        } else if (targetVariant.inventory_quantity < urgencyData.hideUnderLimit) {
-          state = 'low-stock';
-        }
-      }
-
-      if (show) {
-        sectionEl.style.display = "";
-        if (state === 'low-stock') {
-          const qty = targetVariant.inventory_quantity;
-          let text = urgencyData.urgencyText;
-          text = text.replace(/få/g, qty)
-                     .replace(/Få/g, qty)
-                     .replace(/\[count\]/g, qty)
-                     .replace(/\[antal\]/g, qty);
-          textEl.textContent = text;
-          textEl.className = "text-sm font-semibold text-red-700";
-        } else {
-          const qty = targetVariant.inventory_quantity;
-          let text = urgencyData.inStockText;
-          text = text.replace(/\[count\]/g, qty)
-                     .replace(/\[antal\]/g, qty);
-          textEl.textContent = text;
-          textEl.className = "text-sm font-semibold text-emerald-600";
-        }
-      } else {
-        sectionEl.style.display = "none";
-      }
-    }
-
-    const variantInput = document.querySelector('select[name="id"], input[name="id"]');
-    const initialVariantId = variantInput ? variantInput.value : (urgencyData.variants[0] ? urgencyData.variants[0].id : null);
-    if (initialVariantId) {
-      updateUrgency(initialVariantId);
-    }
-
-    document.addEventListener("variant-changed", (e) => {
-      if (e.detail && e.detail.variantId) {
-        updateUrgency(e.detail.variantId);
-      }
-    });
-  });
-</script>
+<script src="{{ 'product-urgency.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}
