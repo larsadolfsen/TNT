@@ -1,18 +1,20 @@
 /**
  * Product testimonial block (blocks/product-testimonial.liquid) mobile
  * slider: highlights the dot for whichever review card is centered and
- * scrolls to a review when its dot is clicked. Operates generically on any
- * `[data-testimonial-container]` found on the page via data-attribute hooks,
- * so it needs no Liquid-side block id.
+ * scrolls to a review when its dot is clicked. The slider is located by id
+ * prefix (blocks/product-testimonial.liquid renders at most one instance per
+ * page), matching assets/trust-countdown.js / assets/product-price.js; the
+ * block id embedded in that id is then reused to scope the dot/item class
+ * selectors, exactly as the original inline script did.
  */
 (function () {
-  function initContainer(container) {
-    if (container.dataset.testimonialInitialized) return;
-    container.dataset.testimonialInitialized = 'true';
+  document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.querySelector('[id^="testimonial-slider-"]');
+    if (!slider) return;
 
-    const slider = container.querySelector('[data-testimonial-slider]');
-    const dots = container.querySelectorAll('[data-testimonial-dot]');
-    if (!slider || dots.length === 0) return;
+    const blockId = slider.id.replace('testimonial-slider-', '');
+    const dots = document.querySelectorAll('.testimonial-dot-' + blockId);
+    if (dots.length === 0) return;
 
     const updateDots = () => {
       const sliderRect = slider.getBoundingClientRect();
@@ -21,7 +23,7 @@
       let closestIndex = 0;
       let minDistance = Infinity;
 
-      const items = slider.querySelectorAll('[data-testimonial-item]');
+      const items = slider.querySelectorAll('.testimonial-item-' + blockId);
       items.forEach((item, index) => {
         const itemRect = item.getBoundingClientRect();
         const itemCenter = itemRect.left + itemRect.width / 2;
@@ -47,7 +49,7 @@
 
     dots.forEach((dot, index) => {
       dot.addEventListener('click', () => {
-        const items = slider.querySelectorAll('[data-testimonial-item]');
+        const items = slider.querySelectorAll('.testimonial-item-' + blockId);
         const item = items[index];
         if (item) {
           const offset = item.offsetLeft - (slider.clientWidth - item.clientWidth) / 2;
@@ -61,15 +63,5 @@
 
     // Initial run to color the dots correctly
     updateDots();
-  }
-
-  function init() {
-    document.querySelectorAll('[data-testimonial-container]').forEach(initContainer);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  });
 })();

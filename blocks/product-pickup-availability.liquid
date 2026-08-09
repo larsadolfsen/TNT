@@ -29,7 +29,7 @@
 {%- endstyle -%}
 
 {%- if has_any_pickup -%}
-  <div id="pickup-availability-{{ block.id }}" data-pickup-availability {{ block.shopify_attributes }}>
+  <div id="pickup-availability-{{ block.id }}" {{ block.shopify_attributes }}>
     {%- for variant in product.variants -%}
       {%- assign available_locations = variant.store_availabilities | where: 'available' -%}
       {%- assign panel_id = 'pickup-panel-' | append: block.id | append: '-' | append: variant.id -%}

@@ -127,16 +127,15 @@
         {%- endif -%}
       </div>
     {%- elsif testimonial_count > 1 -%}
-      <div class="relative overflow-hidden" data-testimonial-container>
+      <div class="relative overflow-hidden">
         <!-- Slider / Grid wrapper -->
         <div
-          id="testimonial-slider-{{ block.id }}"
+          id="testimonial-slider-{{ block.id }}" 
           class="testimonial-slider-{{ block.id }} {% if testimonial_count == 2 %}testimonial-grid-2-{{ block.id }}{% elsif testimonial_count == 3 %}testimonial-grid-3-{{ block.id }}{% else %}testimonial-grid-4-{{ block.id }}{% endif %} md:px-0"
-          data-testimonial-slider
         >
           <!-- Review 1 -->
           {%- if block.settings.quote != blank -%}
-            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between" data-testimonial-item>
+            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars) -%}
@@ -153,7 +152,7 @@
 
           <!-- Review 2 -->
           {%- if block.settings.quote_2 != blank -%}
-            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between" data-testimonial-item>
+            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars_2) -%}
@@ -170,7 +169,7 @@
 
           <!-- Review 3 -->
           {%- if block.settings.quote_3 != blank -%}
-            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between" data-testimonial-item>
+            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars_3) -%}
@@ -187,7 +186,7 @@
 
           <!-- Review 4 -->
           {%- if block.settings.quote_4 != blank -%}
-            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between" data-testimonial-item>
+            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars_4) -%}
@@ -207,10 +206,9 @@
         <div class="flex justify-center gap-2 mt-4 md:hidden">
           {%- for i in (1..testimonial_count) -%}
             <button
-              type="button"
+              type="button" 
               class="testimonial-dot-btn-{{ block.id }} testimonial-dot-{{ block.id }}"
               aria-label="Gå til anmeldelse {{ i }}"
-              data-testimonial-dot
             ></button>
           {%- endfor -%}
         </div>
