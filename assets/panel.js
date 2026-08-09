@@ -19,6 +19,15 @@
  *   more `||`-separated candidate selectors, tried in order — the first one
  *   that matches an element inside the panel is focused; falls back to the
  *   first focusable element in the panel when none match.
+ * - optional `data-panel-restore-focus="escape-only"`: by default, closing
+ *   the panel by any path (Escape, outside-click, close button, trigger
+ *   re-click) refocuses whatever had focus before the panel opened. Set
+ *   this to restrict that refocus to the Escape-key path only — outside
+ *   clicks, close-button clicks and trigger re-click then leave focus
+ *   wherever it already is. Needed for panels with no backdrop and no
+ *   inert-siblings (e.g. header-account), where other page elements stay
+ *   reachable while the panel is open and an outside click should not yank
+ *   focus back to the trigger.
  * - optional `data-panel-trigger-open-class="class-a class-b"` on the
  *   trigger: classes toggled on the trigger while its panel is open.
  * - optional `[data-panel-backdrop="<panel id>"]`: a separate dimmed
@@ -65,6 +74,7 @@
     var lockScroll = panel.getAttribute('data-panel-lock-scroll') === 'true';
     var inertSiblings = panel.getAttribute('data-panel-inert-siblings') === 'true';
     var autofocusSelector = panel.getAttribute('data-panel-autofocus');
+    var escapeOnlyRestoreFocus = panel.getAttribute('data-panel-restore-focus') === 'escape-only';
     var openClass = trigger.getAttribute('data-panel-trigger-open-class');
     var openClasses = openClass ? openClass.split(/\s+/).filter(Boolean) : [];
     var backdrop = panelId ? document.querySelector('[data-panel-backdrop="' + panelId + '"]') : null;
@@ -75,7 +85,7 @@
     function onKeydown(event) {
       if (event.key === 'Escape') {
         event.preventDefault();
-        close();
+        close(true);
         return;
       }
       if (event.key === 'Tab') {
@@ -137,7 +147,7 @@
       document.addEventListener('click', onOutsideClick, true);
     }
 
-    function close() {
+    function close(viaEscape) {
       if (useHiddenAttr) panel.hidden = true;
       panel.classList.remove('is-open');
       if (backdrop) {
@@ -160,11 +170,14 @@
       document.removeEventListener('keydown', onKeydown, true);
       document.removeEventListener('click', onOutsideClick, true);
 
-      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+      var shouldRestoreFocus = escapeOnlyRestoreFocus ? viaEscape === true : true;
+      if (shouldRestoreFocus && lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
     }
 
     panel.querySelectorAll('[data-panel-close]').forEach(function (btn) {
-      btn.addEventListener('click', close);
+      btn.addEventListener('click', function () {
+        close();
+      });
     });
 
     trigger.addEventListener('click', function () {

@@ -108,6 +108,7 @@
           role="dialog"
           aria-label="{{ 'account.account' | t }}"
           data-panel
+          data-panel-restore-focus="escape-only"
           hidden
         >
           {% render 'account-panel', customer: customer %}
