@@ -17,7 +17,7 @@
               <img src="{{ item.properties._image }}" alt="{{ item.title }}" />
             </a>
           {%- else -%}
-            {% render 'image', image: item.image, url: item.url %}
+            {% render 'image', image: item.image, url: item.url, loading: 'lazy' %}
           {%- endif -%}
         </td>
         <td>

@@ -40,6 +40,15 @@
 {%- if display_collections != blank or request.design_mode -%}
 <div id="collections-grid-{{ block.id }}" class="collections">
   {% for col_item in display_collections %}
+    {%- liquid
+      if forloop.index <= 4
+        assign card_loading = 'eager'
+        assign card_fetchpriority = 'high'
+      else
+        assign card_loading = 'lazy'
+        assign card_fetchpriority = nil
+      endif
+    -%}
     <a class="collection-card group" href="{{ col_item.url }}">
       <div class="collection-card__image-wrapper">
         {% if col_item.featured_image %}
@@ -48,7 +57,9 @@
             image: col_item.featured_image,
             width: 600,
             height: 600,
-            crop: 'center'
+            crop: 'center',
+            loading: card_loading,
+            fetchpriority: card_fetchpriority
           %}
         {% else %}
           <div class="w-full h-full flex items-center justify-center bg-outline-variant text-primary/85 aspect-square rounded-2xl border border-outline-variant">
