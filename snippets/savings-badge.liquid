@@ -20,10 +20,10 @@
   assign size = size | default: 'sm'
 
   if size == 'lg'
-    assign badge_class = 'text-[#c8102e] text-2xl font-bold leading-none'
+    assign badge_class = 'text-[var(--color-important)] text-2xl font-bold leading-none'
     assign badge_text = savings | prepend: 'Spar ' | append: '%'
   else
-    assign badge_class = 'bg-[#c8102e] text-white text-[11px] font-semibold px-2 py-0.5 rounded-md uppercase'
+    assign badge_class = 'bg-[var(--color-important)] text-white text-[11px] font-semibold px-2 py-0.5 rounded-md uppercase'
     assign badge_text = settings.savings_badge_text | default: '[savings] % rabat' | replace: '[savings]', savings
   endif
 -%}
