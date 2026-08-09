@@ -45,39 +45,43 @@
 
   {%- style -%}
     #{{ modal_id }} {
+      display: none;
       opacity: 0;
       transform: scale(0.95);
-      transition: opacity 200ms ease, transform 200ms ease, overlay 200ms allow-discrete, display 200ms allow-discrete;
+      transition: opacity 200ms ease, transform 200ms ease, display 200ms allow-discrete;
     }
-    #{{ modal_id }}[open] {
+    #{{ modal_id }}.is-open {
+      display: flex;
       opacity: 1;
       transform: scale(1);
     }
     @starting-style {
-      #{{ modal_id }}[open] {
+      #{{ modal_id }}.is-open {
         opacity: 0;
         transform: scale(0.95);
       }
     }
-    #{{ modal_id }}::backdrop {
+    #{{ modal_id }}-backdrop {
+      display: none;
       background-color: rgba(0, 0, 0, 0);
-      transition: background-color 200ms ease, overlay 200ms allow-discrete, display 200ms allow-discrete;
+      transition: background-color 200ms ease, display 200ms allow-discrete;
     }
-    #{{ modal_id }}[open]::backdrop {
+    #{{ modal_id }}-backdrop.is-open {
+      display: block;
       background-color: rgba(0, 0, 0, 0.5);
     }
     @starting-style {
-      #{{ modal_id }}[open]::backdrop {
+      #{{ modal_id }}-backdrop.is-open {
         background-color: rgba(0, 0, 0, 0);
       }
     }
     @media (prefers-reduced-motion: reduce) {
       #{{ modal_id }} {
-        transition: opacity 100ms ease;
+        transition: opacity 100ms ease, display 100ms allow-discrete;
         transform: none;
       }
       @starting-style {
-        #{{ modal_id }}[open] {
+        #{{ modal_id }}.is-open {
           transform: none;
         }
       }
@@ -89,7 +93,9 @@
     class="localization-trigger inline-flex items-center gap-2 h-10 px-3 rounded-full border border-outline-variant bg-card-light text-sm font-medium text-primary hover:bg-card-high transition-colors"
     aria-haspopup="dialog"
     aria-controls="{{ modal_id }}"
+    aria-expanded="false"
     data-localization-trigger
+    data-panel-trigger
     aria-label="{{ trigger_label }}"
   >
     {% render 'icon', name: 'language', class: 'text-[18px] text-primary/70' %}
@@ -99,9 +105,22 @@
     {% render 'icon', name: 'expand_more', class: 'text-[16px] text-primary/70' %}
   </button>
 
-  <dialog
+  <div
+    id="{{ modal_id }}-backdrop"
+    class="localization-backdrop fixed inset-0 z-40"
+    data-panel-backdrop="{{ modal_id }}"
+  ></div>
+
+  <div
     id="{{ modal_id }}"
-    class="localization-modal p-0 m-auto border border-outline-variant bg-card-light rounded-3xl shadow-2xl w-full max-w-md mx-4 md:mx-auto max-h-[85vh] md:max-h-[80vh] hidden open:flex flex-col"
+    class="localization-modal fixed inset-0 z-50 m-auto p-0 border border-outline-variant bg-card-light rounded-3xl shadow-2xl w-full max-w-md mx-4 md:mx-auto max-h-[85vh] md:max-h-[80vh] flex-col"
+    role="dialog"
+    aria-modal="true"
+    data-panel
+    data-panel-display="class"
+    data-panel-lock-scroll="true"
+    data-panel-inert-siblings="true"
+    data-panel-autofocus="[data-localization-panel]:not([hidden]) [data-localization-filter]||[data-localization-panel]:not([hidden]) [data-localization-row]"
     aria-labelledby="{{ heading_id }}"
   >
     <div class="flex items-center justify-between p-6 border-b border-outline-variant">
@@ -110,6 +129,7 @@
         type="button"
         class="w-12 h-12 -mr-2 flex items-center justify-center bg-transparent border-0 cursor-pointer hover:opacity-80 transition-opacity"
         data-localization-close
+        data-panel-close
         aria-label="{{ 'localization.close' | t }}"
       >
         {% render 'icon', name: 'close', class: 'text-2xl text-primary' %}
@@ -159,8 +179,9 @@
         %}
       {%- endif -%}
     </div>
-  </dialog>
+  </div>
 
+  <script src="{{ 'panel.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'localization.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 

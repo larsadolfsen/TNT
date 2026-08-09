@@ -89,7 +89,8 @@
           aria-haspopup="true"
           aria-controls="account-panel-{{ block.id }}"
           aria-label="{{ accessible_name }}"
-          data-account-trigger
+          data-panel-trigger
+          data-panel-trigger-open-class="bg-card-high rounded-full"
         >
           {%- if customer -%}
             <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider shrink-0" aria-hidden="true">{{ initials }}</span>
@@ -106,6 +107,7 @@
           class="account-panel rounded-2xl border border-outline-variant bg-card-light shadow-md p-6"
           role="dialog"
           aria-label="{{ 'account.account' | t }}"
+          data-panel
           hidden
         >
           {% render 'account-panel', customer: customer %}
@@ -131,7 +133,7 @@
 </div>
 
 {%- if panel_enabled -%}
-  <script src="{{ 'header-account.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'panel.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}
