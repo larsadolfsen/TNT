@@ -1,4 +1,8 @@
 {%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    padding: 0;
+  }
+
   {%- if block.settings.hide_on_mobile -%}
     #shopify-block-{{ block.id }} {
       display: none;
