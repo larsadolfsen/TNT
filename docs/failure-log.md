@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-017](#f-017--empty-sections-still-reserved-a-grid-row-and-its-gaps) | 2026-08-13 | Live | Collection page | 42px of blank space between collection description and product grid |
 | [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks) | 2026-08-13 | Live | Header | Hamburger/logo/cart/search icons carried large unexplained padding |
 | [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it) | 2026-08-13 | Live | Header | Row padding setting had no visible effect |
 | [F-014](#f-014--liquid-comparison-in-a-render-argument-killed-the-cart) | 2026-08-13 | Live | Header / cart | Cart icon gone, add-to-cart dead site-wide |
@@ -32,6 +33,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-017 — Empty sections still reserved a grid row (and its gaps)
+
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** `pending`
+- **Symptom:** On collection pages (e.g. `/collections/tekstildug`, mobile 412px) there were 54px of blank space between the collection description and the product grid, where a single 12px gap was expected. DevTools showed the dead space as two grid-gap bands inside `main#MainContent`.
+- **Root cause:** Two of the four sections in `templates/collection.json` render nothing but still occupy a row of `main`'s CSS grid (`row-gap: 12px`). (1) `sections/collections.liquid` correctly suppresses its markup when `collection.metafields.custom.child` is blank — but Shopify still emits the `.shopify-section` wrapper `<div>`, which contains only the section's `<style>` tag. A 0-height grid item is still a grid item: it adds an empty row plus a second row-gap. (2) `section_eUpcwy` is a `sections/section.liquid` instance with zero blocks; it always renders its outer/inner divs, so its padding (18px mobile / 24px desktop) plus another row-gap became visible whitespace. Measured: header bottom 277 → product grid top 331 = 54px, of which only 12px was legitimate.
+- **Fix:** Two collapse rules, both keyed on "renders no content", not on this template's specific section ids. `assets/input.css`: `main > .shopify-section:not(:has(> :not(style):not(script):not(link):not(template))) { display: none; }` removes any wrapper holding only its own `<style>`/`<script>`. `sections/section.liquid`'s `{% style %}` adds `#shopify-section-{{ section.id }}:not(:has(.section-content > *)) { display: none; }`, guarded by `{%- unless request.design_mode -%}` so an empty Section stays visible (and droppable) in the theme editor. Verified live by injecting both rules on the real page: gap 54px → 12px, and a fetch-based sweep of `/`, `/cart`, `/search`, `/pages/kontakt`, `/collections/all` confirmed nothing else matches either selector.
+- **Prevention:** Suppressing a section's *markup* with `{% if %}` does not remove the section from the layout — Shopify's `.shopify-section` wrapper is always emitted, and in a gapped grid an empty wrapper costs a full row-gap. Any "render nothing" branch in a section must also collapse its wrapper (`display: none` on `#shopify-section-{{ section.id }}`, or a generic `:has()` rule), and any such rule must be guarded with `request.design_mode` if merchants need to select the section in the editor. Same family as [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks)/[F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it): the auto-generated wrapper box is a real box with its own layout effects, whatever the section's own markup does.
 
 ### F-016 — Default `.shopify-block` padding not overridden on header leaf blocks
 
@@ -176,7 +185,7 @@ Distilled from the entries above. These are the mistakes this codebase actually 
 7. **Blocks repeat; their scripts must be idempotent.** One `<script src>` per block instance means N executions ([F-006](#f-006--one-script-tag-per-block-instance-causes-duplicate-listeners)). Guard binding with a `dataset` flag.
 8. **Danish copy overflows single-row flex layouts.** Anything holding a sentence needs a wrap or shrink strategy, and `flex-grow: 1` + `width: 100%` on the same child is always a bug ([F-003](#f-003--mobile-header-icons-clipped-off-the-row), [F-012](#f-012--trust-bar-clipped-on-mobile)).
 9. **Delete a feature's CSS/JS with the feature.** Orphaned rules win the cascade on generic class names ([F-013](#f-013--dead-placeholder-css-stretched-every-icon-to-300px)), and stale JS keeps writing to a shape that no longer exists ([F-011](#f-011--textcontent-on-an-inline-svg-wiped-the-theme-toggle-icon)).
-10. **A theme block is two boxes, not one** — the auto-generated `#shopify-block-{{ block.id }}.shopify-block` wrapper (which carries the platform's own default padding unless overridden, [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks)) and the block's own root element inside it (which silently cancels the wrapper's padding if it duplicates the wrapper's size with a hardcoded pixel value instead of a relative one, [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it)). Every new block's `{% style %}` should account for both.
+10. **A theme block is two boxes, not one** — the auto-generated `#shopify-block-{{ block.id }}.shopify-block` wrapper (which carries the platform's own default padding unless overridden, [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks)) and the block's own root element inside it (which silently cancels the wrapper's padding if it duplicates the wrapper's size with a hardcoded pixel value instead of a relative one, [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it)). Every new block's `{% style %}` should account for both. The same holds one level up: Shopify always emits the `.shopify-section` wrapper even when the section's Liquid renders nothing, and in a gapped grid that empty wrapper still costs a row plus a row-gap ([F-017](#f-017--empty-sections-still-reserved-a-grid-row-and-its-gaps)) — a "render nothing" branch must collapse the wrapper too.
 
 ---
 
