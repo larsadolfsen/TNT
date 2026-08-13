@@ -54,7 +54,7 @@ npm run build
 
 ## Project rules
 
-Internal work follows the guidelines in [`.agents/AGENTS.md`](./.agents/AGENTS.md) and this repository's optimization master plan.
+Internal work follows the guidelines in [`CLAUDE.md`](./CLAUDE.md) and this repository's optimization master plan.
 
 ## License
 

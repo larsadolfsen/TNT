@@ -182,7 +182,7 @@ follow the shipped code (hardcoded card radius) and put
 ## Primitive snippets
 
 Built in a parallel track. Compose from these; never re-inline their markup.
-Per `.agents/AGENTS.md` this is mandatory, not stylistic.
+Per `CLAUDE.md` this is mandatory, not stylistic.
 
 ```liquid
 {% render 'icon', name: 'search', class: 'text-[20px]', label: 'Search' %}
@@ -323,7 +323,7 @@ nothing about it implies you must be signed in to shop.
   (which already accepts `@theme`, so it is automatically available there once the
   block file exists).
 - **New snippet:** `snippets/account-panel.liquid` — the signed-out dropdown panel
-  contents. Kept separate per `.agents/AGENTS.md` (markup vs. block wiring).
+  contents. Kept separate per `CLAUDE.md` (markup vs. block wiring).
 - Composed from `icon`, `button`.
 - Default placement: the right-aligned `header-group` in row 1, **between** the
   theme toggle and the cart icon — order becomes `theme-toggle → account → cart`.
@@ -681,7 +681,7 @@ Baymard findings applied:
   Rendered from `sections/header-2.liquid`'s existing `#mobile-menu-drawer`,
   **replacing** the current flat `{% for link in linklists[...].links %}` loop.
 - **New asset:** `assets/navigation.js` — hover-intent timers, keyboard handling,
-  accordion toggling. Per `.agents/AGENTS.md`, behavior does not live inline in the
+  accordion toggling. Per `CLAUDE.md`, behavior does not live inline in the
   block.
 - Composed from `icon` (`expand_more`, `chevron_right`), `button`.
 
