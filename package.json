@@ -10,7 +10,8 @@
     "js:watch": "node scripts/build-js.mjs --watch",
     "shopify:dev": "shopify theme dev",
     "dev": "concurrently \"npm run tailwind:watch\" \"npm run js:watch\" \"npm run shopify:dev\"",
-    "build": "npm run tailwind:build && npm run js:build"
+    "build": "npm run tailwind:build && npm run js:build",
+    "bump-version": "node scripts/bump-version.js"
   },
   "keywords": [],
   "author": "",
