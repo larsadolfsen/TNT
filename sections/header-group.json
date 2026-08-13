@@ -16,7 +16,7 @@
       "blocks": {
         "header_row_2_7y9NnW": {
           "type": "header-row-2",
-          "name": "Header Row 2",
+          "name": "Header Row 1",
           "settings": {
             "row_height": "56"
           },
@@ -59,27 +59,33 @@
                 "alignment": "center"
               },
               "blocks": {
-                "header_search_TgXRt8": {
-                  "type": "header-search",
-                  "name": "Search Bar",
-                  "settings": {
-                    "max_width": "700px",
-                    "predictive_search": true,
-                    "start_hidden": false,
-                    "hide_on_mobile": true,
-                    "hide_on_tablet": false,
-                    "hide_on_desktop": false
-                  },
-                  "blocks": {}
-                },
                 "header_search_icon_mQ3fXk": {
                   "type": "header-search-icon",
                   "name": "Search Icon",
                   "settings": {
                     "predictive_search": true,
+                    "results_products": 5,
+                    "results_other": 3,
+                    "show_queries": true,
                     "hide_on_mobile": false,
                     "hide_on_tablet": true,
                     "hide_on_desktop": true
+                  },
+                  "blocks": {}
+                },
+                "header_search_TgXRt8": {
+                  "type": "header-search",
+                  "name": "Search Bar",
+                  "settings": {
+                    "max_width": "700px",
+                    "start_hidden": false,
+                    "predictive_search": true,
+                    "results_products": 5,
+                    "results_other": 3,
+                    "show_queries": true,
+                    "hide_on_mobile": true,
+                    "hide_on_tablet": false,
+                    "hide_on_desktop": false
                   },
                   "blocks": {}
                 }
@@ -96,12 +102,6 @@
                 "alignment": "right"
               },
               "blocks": {
-                "header_cart_4wAidd": {
-                  "type": "header-cart",
-                  "name": "Cart Icon",
-                  "settings": {},
-                  "blocks": {}
-                },
                 "header_account_hd2K91": {
                   "type": "header-account",
                   "name": "Account",
@@ -110,6 +110,12 @@
                     "label_text": "t:account.account",
                     "panel_enabled": true
                   },
+                  "blocks": {}
+                },
+                "header_cart_4wAidd": {
+                  "type": "header-cart",
+                  "name": "Cart Icon",
+                  "settings": {},
                   "blocks": {}
                 }
               },
@@ -144,7 +150,10 @@
                   "name": "Navigation Menu",
                   "settings": {
                     "menu": "main-menu",
-                    "item_padding": 12
+                    "item_padding": 12,
+                    "dropdown_style": "panel",
+                    "dropdown_columns": 4,
+                    "open_on": "hover"
                   },
                   "blocks": {}
                 }
