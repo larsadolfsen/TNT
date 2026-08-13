@@ -12,7 +12,11 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+<<<<<<< HEAD
 | [F-018](#f-018--js-source-edit-made-on-a-branch-predating-the-minified-build) | 2026-08-13 | Caught | Collection / build | Sort-drawer close delay would have shipped dead |
+=======
+| [F-018](#f-018--nav-hover-highlight-was-a-fixed-32px-band-not-the-items-hit-area) | 2026-08-13 | Live | Header / navigation | Nav item hover highlight shorter than the item it belongs to |
+>>>>>>> claude/hover-effect-fill-area-e86f93
 | [F-017](#f-017--empty-sections-still-reserved-a-grid-row-and-its-gaps) | 2026-08-13 | Live | Collection page | 42px of blank space between collection description and product grid |
 | [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks) | 2026-08-13 | Live | Header | Hamburger/logo/cart/search icons carried large unexplained padding |
 | [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it) | 2026-08-13 | Live | Header | Row padding setting had no visible effect |
@@ -35,6 +39,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 ## Entries
 
+<<<<<<< HEAD
 ### F-018 — JS source edit made on a branch predating the minified build
 
 - **Date:** 2026-08-13 · **Reach:** Caught · **Fix:** this commit
@@ -42,6 +47,15 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 - **Root cause:** The branch was cut at `1.0.140`, when `sections/main-collection.liquid` still loaded `assets/main-collection.js` directly. While the branch was open, `main` gained an esbuild minify step (`scripts/build-js.mjs`, `npm run js:build`) and every section switched its `<script src>` to the `.min.js` build. Editing the source file was correct when the edit was made and wrong by the time it merged; `npm run tailwind:build` regenerates only `output.css`, so nothing rebuilt the stale `main-collection.min.js` that the page actually loads. `theme-check` cannot see this — both files parse fine.
 - **Fix:** Run `npm run js:build` (or `npm run build`, which does both) as part of resolving the merge, and commit the regenerated `assets/main-collection.min.js`.
 - **Prevention:** After merging `main` into a long-lived branch, run the full `npm run build` — not just the tailwind step — and check whether the section that loads your edited asset still points at the file you edited. Compiled artifacts (`output.css`, `*.min.js`) are tracked in this repo, so a merge that changes the build pipeline silently invalidates work done against the old one.
+=======
+### F-018 — Nav hover highlight was a fixed 32px band, not the item's hit area
+
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** `bcacdb3`
+- **Symptom:** Hovering a main-nav item in header row 2 drew a rounded highlight noticeably shorter than the item itself — DevTools showed the `a.nav-link-pill` at 48px tall while the highlight measured 32px, leaving 8px of un-highlighted pill above and below.
+- **Root cause:** `blocks/header-navigation.liquid`'s `.nav-link-pill::before` (the highlight layer, also used for the `--open` state) was positioned with `inset-inline: 0; top: 50%; transform: translateY(-50%);` and a hardcoded `height: 32px`. The pill's own height is not fixed — it is `h-full` of the row (`row_height: 44` for header row 2, per `sections/header-group.json`) and gains `min-height: 48px` under `@media (pointer: coarse)`. So the highlight was a constant 32px against a pill that is 44–48px depending on row setting and input type, and could never match it.
+- **Fix:** Replace the fixed-height centred band with `inset: 0`, so the pseudo-element fills the pill's box whatever height the row resolves to. Border radius unchanged.
+- **Prevention:** A decoration layer for an element whose size comes from a setting or a media query must be sized relative to that element (`inset: 0`, `100%`, `calc()` against a shared custom property) — never a hardcoded pixel height that happens to look right at one row height. Same family as [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it): a hardcoded pixel size placed alongside a height that is actually derived from a theme setting.
+>>>>>>> claude/hover-effect-fill-area-e86f93
 
 ### F-017 — Empty sections still reserved a grid row (and its gaps)
 
@@ -50,6 +64,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 - **Root cause:** Two of the four sections in `templates/collection.json` render nothing but still occupy a row of `main`'s CSS grid (`row-gap: 12px`). (1) `sections/collections.liquid` correctly suppresses its markup when `collection.metafields.custom.child` is blank — but Shopify still emits the `.shopify-section` wrapper `<div>`, which contains only the section's `<style>` tag. A 0-height grid item is still a grid item: it adds an empty row plus a second row-gap. (2) `section_eUpcwy` is a `sections/section.liquid` instance with zero blocks; it always renders its outer/inner divs, so its padding (18px mobile / 24px desktop) plus another row-gap became visible whitespace. Measured: header bottom 277 → product grid top 331 = 54px, of which only 12px was legitimate.
 - **Fix:** Two collapse rules, both keyed on "renders no content", not on this template's specific section ids. `assets/input.css`: `main > .shopify-section:not(:has(> :not(style):not(script):not(link):not(template))) { display: none; }` removes any wrapper holding only its own `<style>`/`<script>`. `sections/section.liquid`'s `{% style %}` adds `#shopify-section-{{ section.id }}:not(:has(.section-content > *)) { display: none; }`, guarded by `{%- unless request.design_mode -%}` so an empty Section stays visible (and droppable) in the theme editor. Verified live by injecting both rules on the real page: gap 54px → 12px, and a fetch-based sweep of `/`, `/cart`, `/search`, `/pages/kontakt`, `/collections/all` confirmed nothing else matches either selector.
 - **Prevention:** Suppressing a section's *markup* with `{% if %}` does not remove the section from the layout — Shopify's `.shopify-section` wrapper is always emitted, and in a gapped grid an empty wrapper costs a full row-gap. Any "render nothing" branch in a section must also collapse its wrapper (`display: none` on `#shopify-section-{{ section.id }}`, or a generic `:has()` rule), and any such rule must be guarded with `request.design_mode` if merchants need to select the section in the editor. Same family as [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks)/[F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it): the auto-generated wrapper box is a real box with its own layout effects, whatever the section's own markup does.
+- **Update 2026-08-13:** Half of this fix was silently lost minutes after it shipped. Merge `a8b9664` (branch `claude/button-circle-design-fd4a04`, one of several sessions pushing to `main` in parallel) resolved `assets/input.css` and `assets/output.css` to its own older copies, deleting the `main > .shopify-section:not(:has(...))` rule while leaving the `sections/section.liquid` half intact. Nothing failed: `theme-check` and CI stayed green on every run, so the storefront just kept showing the original gap. Restored in `1.0.146`. **Prevention:** when parallel sessions/branches are live on this repo, a merge that touches `assets/input.css` must be checked for lost rules afterwards (`git show origin/main:assets/input.css | grep <your rule>`), and `assets/output.css` — a generated artifact — should always be resolved by re-running `npm run tailwind:build` on the merged `input.css`, never by picking one side. A green CI is not evidence your change is still on `main`.
 
 ### F-016 — Default `.shopify-block` padding not overridden on header leaf blocks
 

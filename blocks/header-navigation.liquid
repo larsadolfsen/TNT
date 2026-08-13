@@ -38,13 +38,12 @@
     position: relative;
   }
 
+  /* Fills the pill's whole box (full row height), so the hover/open highlight
+     matches the item's real hit area instead of a shorter centred band. */
   #shopify-block-{{ block.id }} .nav-link-pill::before {
     content: '';
     position: absolute;
-    inset-inline: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 32px;
+    inset: 0;
     border-radius: 6px;
     background-color: transparent;
     transition: background-color 150ms ease;
