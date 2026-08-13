@@ -532,6 +532,26 @@
     fetchAndSwapUrl(urlStr);
   };
 
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileFilterDrawer = document.getElementById('mobile-filter-drawer');
+    if (mobileFilterDrawer) {
+      mobileFilterDrawer.addEventListener('click', (e) => {
+        if (e.target === mobileFilterDrawer) {
+          toggleMobileFilter(false);
+        }
+      });
+    }
+
+    const sortDrawer = document.getElementById('sort-drawer');
+    if (sortDrawer) {
+      sortDrawer.addEventListener('click', (e) => {
+        if (e.target === sortDrawer) {
+          toggleSortDrawer(false);
+        }
+      });
+    }
+  });
+
   enhanceColorSwatches();
   truncateFilterLists();
 })();
