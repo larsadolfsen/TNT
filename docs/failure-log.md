@@ -12,6 +12,9 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-017](#f-017--js-source-edit-made-on-a-branch-predating-the-minified-build) | 2026-08-13 | Caught | Collection / build | Sort-drawer close delay would have shipped dead |
+| [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks) | 2026-08-13 | Live | Header | Hamburger/logo/cart/search icons carried large unexplained padding |
+| [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it) | 2026-08-13 | Live | Header | Row padding setting had no visible effect |
 | [F-014](#f-014--liquid-comparison-in-a-render-argument-killed-the-cart) | 2026-08-13 | Live | Header / cart | Cart icon gone, add-to-cart dead site-wide |
 | [F-013](#f-013--dead-placeholder-css-stretched-every-icon-to-300px) | 2026-08-13 | Live | CSS | Every icon 300px wide |
 | [F-012](#f-012--trust-bar-clipped-on-mobile) | 2026-08-13 | Live | Homepage | Trust bar showed one stray checkmark on mobile |
@@ -30,6 +33,30 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-017 — JS source edit made on a branch predating the minified build
+
+- **Date:** 2026-08-13 · **Reach:** Caught · **Fix:** this commit
+- **Symptom:** A 250ms delay added to `selectSortOption` in `assets/main-collection.js` would have deployed with no effect at all — the sort drawer would still have closed instantly.
+- **Root cause:** The branch was cut at `1.0.140`, when `sections/main-collection.liquid` still loaded `assets/main-collection.js` directly. While the branch was open, `main` gained an esbuild minify step (`scripts/build-js.mjs`, `npm run js:build`) and every section switched its `<script src>` to the `.min.js` build. Editing the source file was correct when the edit was made and wrong by the time it merged; `npm run tailwind:build` regenerates only `output.css`, so nothing rebuilt the stale `main-collection.min.js` that the page actually loads. `theme-check` cannot see this — both files parse fine.
+- **Fix:** Run `npm run js:build` (or `npm run build`, which does both) as part of resolving the merge, and commit the regenerated `assets/main-collection.min.js`.
+- **Prevention:** After merging `main` into a long-lived branch, run the full `npm run build` — not just the tailwind step — and check whether the section that loads your edited asset still points at the file you edited. Compiled artifacts (`output.css`, `*.min.js`) are tracked in this repo, so a merge that changes the build pipeline silently invalidates work done against the old one.
+
+### F-016 — Default `.shopify-block` padding not overridden on header leaf blocks
+
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** `ed23469`
+- **Symptom:** The mobile hamburger button (and, latently, several other header icon blocks) had large, unexplained padding around it. DevTools showed the hamburger's `#shopify-block-*.shopify-block` wrapper at 76×68px around a 44×44px button.
+- **Root cause:** Shopify's platform CSS applies a default padding to every block wrapper — `.shopify-block, shopify-block, [class*=shopify-block-] { padding-left: 16px; padding-right: 16px; padding-top: 12px; padding-bottom: 12px; }` (76 = 44 + 16 + 16, 68 = 44 + 12 + 12, confirming the source). Only 4 of the header's 11 block types (`header-group`, `header-row-2`, `header-account`, `header-navigation`) had ever added their own `padding: 0` override to their `#shopify-block-{{ block.id }}.shopify-block` rule. `header-hamburger`, `header-logo`, `header-cart`, `header-search`, `header-search-icon`, `header-follow-on-shop` and `header-theme-toggle` never did, so each carried the platform's 16px/12px inset on top of the row's own padding.
+- **Fix:** Add `padding: 0;` to those 7 blocks' `#shopify-block-{{ block.id }}.shopify-block` rule in their `{% style %}` tag.
+- **Prevention:** Every theme block's `{% style %}` must explicitly set `padding` (even if `0`) on its own `.shopify-block` wrapper rule — the platform default is never zero, and it's invisible until someone measures the wrapper in DevTools. Same family as [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it): two different bugs from not fully accounting for the auto-generated wrapper box that theme-block markup sits inside. Non-header blocks with no wrapper-padding override at all (`accordion`, `contact-address`/`contact-hours`/`contact-map`, `footer-localization`, `trust-checkmark`, `trust-countdown`) likely carry the same latent padding and haven't been audited yet.
+
+### F-015 — Header row padding had zero effect because a child height cancelled it
+
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** `81e5406`
+- **Symptom:** `blocks/header-row-2.liquid`'s row padding (declared on the block wrapper) had no visible effect — content still touched the row's edges regardless of the padding value set.
+- **Root cause:** The wrapper (`#shopify-block-{{ block.id }}.shopify-block`) declared `padding-top/bottom` plus `box-sizing: border-box` and a fixed `height`. But the block's own root `<div>`, rendered as that wrapper's child, also set an inline `style="height: {{ row_height }}px"` — the exact same pixel height as the wrapper's total border-box. Centered via `align-items: center`, a child whose height equals the parent's full border-box height always renders flush to the border edges no matter what padding the parent declares: for symmetric padding `p` and total height `H`, the child's centered offset is `p - (H - (H - 2p)) / 2 = p - p = 0`, for any `p`. The padding was real CSS but structurally unable to ever do anything.
+- **Fix:** Change the inner div's height from the hardcoded pixel value to `height: 100%`, so it respects the wrapper's actual (now genuinely padded) content box instead of overriding it.
+- **Prevention:** When a theme block's own root markup duplicates a size the auto-wrapper already declares via `{% style %}`, use a relative unit (`100%`/`calc()` against a shared CSS custom property) — never a second hardcoded pixel value equal to the first. Two independent sizes that happen to be numerically equal will silently fight, and whichever wins erases the other's intent. Do the arithmetic (as above) before assuming padding + a fixed child height compose the way they look like they should.
 
 ### F-014 — Liquid comparison in a `render` argument killed the cart
 
@@ -158,6 +185,8 @@ Distilled from the entries above. These are the mistakes this codebase actually 
 7. **Blocks repeat; their scripts must be idempotent.** One `<script src>` per block instance means N executions ([F-006](#f-006--one-script-tag-per-block-instance-causes-duplicate-listeners)). Guard binding with a `dataset` flag.
 8. **Danish copy overflows single-row flex layouts.** Anything holding a sentence needs a wrap or shrink strategy, and `flex-grow: 1` + `width: 100%` on the same child is always a bug ([F-003](#f-003--mobile-header-icons-clipped-off-the-row), [F-012](#f-012--trust-bar-clipped-on-mobile)).
 9. **Delete a feature's CSS/JS with the feature.** Orphaned rules win the cascade on generic class names ([F-013](#f-013--dead-placeholder-css-stretched-every-icon-to-300px)), and stale JS keeps writing to a shape that no longer exists ([F-011](#f-011--textcontent-on-an-inline-svg-wiped-the-theme-toggle-icon)).
+10. **Compiled artifacts are tracked, so edits to sources need a rebuild in the same commit.** `output.css` after any Tailwind class change, and `*.min.js` after any JS change ([F-017](#f-017--js-source-edit-made-on-a-branch-predating-the-minified-build)) — `npm run build` covers both. Neither `theme-check` nor a source diff will tell you the artifact is stale.
+11. **A theme block is two boxes, not one** — the auto-generated `#shopify-block-{{ block.id }}.shopify-block` wrapper (which carries the platform's own default padding unless overridden, [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks)) and the block's own root element inside it (which silently cancels the wrapper's padding if it duplicates the wrapper's size with a hardcoded pixel value instead of a relative one, [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it)). Every new block's `{% style %}` should account for both.
 
 ---
 

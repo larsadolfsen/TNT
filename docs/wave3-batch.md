@@ -6,7 +6,7 @@ what a follow-up session must open in a browser to verify it**.
 
 ## How this batch was authorised
 
-The standing rule in `.agents/AGENTS.md` is "build in parallel, land one at a
+The standing rule in `CLAUDE.md` is "build in parallel, land one at a
 time, verify each before the next". For this batch the user explicitly chose
 the opposite trade: *implement everything, then clean up one feature at a
 time in a new session each*. That is a deliberate override, not a lapse.

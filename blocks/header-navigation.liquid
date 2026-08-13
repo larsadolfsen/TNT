@@ -9,6 +9,7 @@
 {%- assign dropdown_style = block.settings.dropdown_style | default: 'panel' -%}
 {%- assign dropdown_columns = block.settings.dropdown_columns | default: 4 -%}
 {%- assign open_on = block.settings.open_on | default: 'hover' -%}
+{%- assign link_count = linklists[menu_handle].links.size -%}
 
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
@@ -91,6 +92,22 @@
       transition-duration: 0.01ms;
     }
   }
+
+  {%- if link_count > 0 and link_count <= 4 -%}
+    /* Few enough items to share the row equally instead of shrinking to
+       content width and leaving empty space on narrow screens. */
+    @media screen and (max-width: 839px) {
+      #shopify-block-{{ block.id }} .nav-menu-item {
+        flex: 1 1 0%;
+      }
+
+      #shopify-block-{{ block.id }} .nav-link-pill {
+        flex: 1 1 auto;
+        justify-content: center;
+        font-weight: 700;
+      }
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
 {%- if menu_handle != blank -%}
@@ -173,7 +190,7 @@
       {%- endfor -%}
     </ul>
   </nav>
-  <script src="{{ 'navigation.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'navigation.min.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}

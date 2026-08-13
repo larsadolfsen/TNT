@@ -16,7 +16,7 @@ rebase before pushing, or you'll collide with "Update from Shopify" commits.
 
 Current version: see `package.json`. Bump the patch in **both**
 `package.json` and `config/settings_schema.json` on every push
-(`.agents/AGENTS.md`).
+(`CLAUDE.md`).
 
 ## State
 
@@ -28,7 +28,7 @@ baseline. Don't let it regress.
 ## Process rule — read this before writing any code
 
 **Build in parallel, land one at a time, verify each before the next.**
-Now codified in `.agents/AGENTS.md`; it is not optional.
+Now codified in `CLAUDE.md`; it is not optional.
 
 Waves 0–2 were built the wrong way: five agents worked concurrently (fine),
 but all sixteen surfaces were merged and pushed in a single batch with

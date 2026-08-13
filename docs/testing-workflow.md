@@ -71,6 +71,6 @@ npx shopify theme check
 
 - Bump the patch version in `package.json` AND
   `config/settings_schema.json` before every `git push` (see
-  `.agents/AGENTS.md`).
+  `CLAUDE.md`).
 - After merging parallel-track work, run `npx shopify theme check` and
   compare against the baseline — no new errors allowed.

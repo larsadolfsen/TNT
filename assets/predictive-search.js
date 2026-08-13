@@ -4,27 +4,41 @@
  * Wires every [data-ps-input] (the desktop inline bar's #search-input and
  * the mobile full-screen takeover's input) to Shopify's
  * /search/suggest.json endpoint: debounce, abort, timeout, out-of-order
- * guard, small in-memory cache, full combobox keyboard support, and the
- * mobile takeover's open/close/focus-trap.
+ * guard, small in-memory cache, full combobox keyboard support.
+ *
+ * The mobile full-screen takeover itself (open/close/Escape/focus-trap/
+ * inert/scroll-lock) is assets/panel.js — blocks/header-search-icon.liquid
+ * wires the trigger and overlay onto panel.js's data-panel-* contract
+ * directly. What stays here is only the search-specific behavior panel.js
+ * has no reason to know about: initMobileSearchTrigger() below listens for
+ * panel.js's cancelable `panel:beforeopen` event on the mobile trigger to
+ * (a) redirect to the desktop inline bar above the 840px breakpoint instead
+ * of opening the takeover, and (b) fall back to the legacy inline-bar
+ * toggle directly when predictive search is off for this block (so no
+ * overlay panel was even rendered for panel.js to bind to).
  *
  * Bails out entirely when a #product-grid exists on the page — an
  * unrelated legacy behavior in sections/header-2.liquid already wires
  * #search-input to a client-side collection filter (window.filterProducts)
  * and must not be fought here. See docs/missing-surface-designs.md
- * Surface 4, Open question 4.
+ * Surface 4, Open question 4. The mobile trigger is a special case: since
+ * assets/panel.js is a separate script with no knowledge of #product-grid,
+ * initMobileSearchTrigger() still runs in this case to register a
+ * panel:beforeopen veto that keeps the trigger fully inert, matching this
+ * file's historical behavior on those pages.
  *
  * Both blocks/header-search.liquid and blocks/header-search-icon.liquid can
  * each emit a <script src="predictive-search.js"> tag on the same page (the
  * icon block always loads it, independent of its own predictive_search
  * setting, so its mobile-trigger fallback works even when the desktop bar's
  * predictive search is off). Guard against running init() twice, which
- * would double-bind the mobile overlay's open/close listeners.
+ * would double-bind listeners.
  */
 (function () {
   if (window.__tntPredictiveSearchLoaded) return;
   window.__tntPredictiveSearchLoaded = true;
 
-  if (document.getElementById('product-grid')) return;
+  var hasProductGrid = !!document.getElementById('product-grid');
 
   var DEBOUNCE_MS = 200;
   var MIN_CHARS = 2;
@@ -639,132 +653,76 @@
   };
 
   /* ---------------------------------------------------------------------
-   * Mobile full-screen takeover
+   * Mobile trigger: search-specific behavior layered on assets/panel.js
    * ------------------------------------------------------------------- */
-  function initMobileOverlay(trigger) {
-    // Scoped to this trigger's own block instance (both the trigger button
-    // and its overlay are rendered inside the same Shopify block wrapper by
-    // blocks/header-search-icon.liquid) so multiple header-search-icon
-    // blocks on one page each open their own overlay rather than all
-    // triggers reaching for the first overlay found in the document.
-    var scope = trigger.closest('[id^="shopify-block-"]') || document;
-    var overlay = scope.querySelector('[data-ps-mobile-overlay]');
-    if (!overlay) {
-      // Predictive search disabled for this search-icon block — fall back
-      // to legacy inline-bar toggle behavior.
+  function initMobileSearchTrigger(trigger) {
+    var panelId = trigger.getAttribute('aria-controls');
+    var panel = panelId ? document.getElementById(panelId) : null;
+
+    if (hasProductGrid) {
+      // Historically this whole file bailed out before ever wiring the
+      // mobile trigger on #product-grid pages, leaving it fully inert.
+      // assets/panel.js is a separate script with no knowledge of
+      // #product-grid, so it would otherwise open the takeover panel here
+      // regardless — veto that via the same cancelable panel:beforeopen
+      // hook used for the breakpoint redirect below. This listener is
+      // registered here at DOMContentLoaded, long before a user could ever
+      // click the trigger, so it's in place no matter which of the two
+      // <script> tags in the block happened to run its init() first.
+      if (panel) {
+        trigger.addEventListener('panel:beforeopen', function (event) {
+          event.preventDefault();
+        });
+      }
+      return;
+    }
+
+    if (!panel) {
+      // Predictive search disabled for this search-icon block — panel.js
+      // has no overlay to bind to, so fall back to legacy inline-bar
+      // toggle behavior directly.
       trigger.addEventListener('click', function () {
         if (typeof window.toggleSearchInput === 'function') window.toggleSearchInput();
       });
       return;
     }
 
-    var input = overlay.querySelector('[data-ps-input]');
-    var closeBtn = overlay.querySelector('[data-ps-mobile-close]');
-    var clearBtn = overlay.querySelector('[data-ps-mobile-clear]');
-    var lastFocused = null;
-    var inertTargets = null;
-
-    // Everything NOT on the overlay's own ancestor chain — i.e. the rest of
-    // the page — gets `inert` (+ aria-hidden as a fallback for browsers
-    // without it) while the takeover is open, per the modal pattern the
-    // spec calls for. Walking from the overlay up to <body> and collecting
-    // siblings at each level covers the whole page without having to know
-    // its layout in advance.
-    function collectOutsideSiblings(el) {
-      var outside = [];
-      var node = el;
-      while (node && node.parentElement && node !== document.body) {
-        var parent = node.parentElement;
-        Array.prototype.forEach.call(parent.children, function (sibling) {
-          if (sibling !== node) outside.push(sibling);
-        });
-        node = parent;
-      }
-      return outside;
-    }
-
-    function open() {
+    // Below 840px the mobile full-screen takeover (panel.js) is the search
+    // entry point; at or above it, redirect to the desktop inline bar
+    // instead of opening the takeover.
+    trigger.addEventListener('panel:beforeopen', function (event) {
       var isMobile = window.matchMedia('(max-width: 839px)').matches;
       if (!isMobile) {
-        if (typeof window.toggleSearchInput === 'function') window.toggleSearchInput();
-        return;
-      }
-      lastFocused = document.activeElement;
-      overlay.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-
-      inertTargets = collectOutsideSiblings(overlay);
-      inertTargets.forEach(function (el) {
-        if ('inert' in el) el.inert = true;
-        el.setAttribute('aria-hidden', 'true');
-      });
-
-      if (input) input.focus();
-      document.addEventListener('keydown', onKeydown, true);
-    }
-
-    function close() {
-      overlay.classList.remove('is-open');
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', onKeydown, true);
-
-      if (inertTargets) {
-        inertTargets.forEach(function (el) {
-          if ('inert' in el) el.inert = false;
-          el.removeAttribute('aria-hidden');
-        });
-        inertTargets = null;
-      }
-
-      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-    }
-
-    function onKeydown(event) {
-      if (event.key === 'Escape') {
         event.preventDefault();
-        close();
-        return;
+        if (typeof window.toggleSearchInput === 'function') window.toggleSearchInput();
       }
-      if (event.key === 'Tab') {
-        var focusables = Array.prototype.slice.call(
-          overlay.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])')
-        );
-        if (!focusables.length) return;
-        var first = focusables[0];
-        var last = focusables[focusables.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
-      }
-    }
+    });
+  }
 
-    trigger.addEventListener('click', open);
-    if (closeBtn) closeBtn.addEventListener('click', close);
-    if (clearBtn) {
-      clearBtn.addEventListener('click', function () {
-        if (input) {
-          input.value = '';
-          input.dispatchEvent(new Event('input', { bubbles: true }));
-          input.focus();
-        }
-      });
-    }
-    if (input && clearBtn) {
-      input.addEventListener('input', function () {
-        clearBtn.classList.toggle('hidden', input.value.length === 0);
-      });
-    }
+  function bindMobileClear(clearBtn) {
+    var container = clearBtn.closest('[data-panel]');
+    var input = container ? container.querySelector('[data-ps-input]') : null;
+    if (!input) return;
+
+    clearBtn.addEventListener('click', function () {
+      input.value = '';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.focus();
+    });
+    input.addEventListener('input', function () {
+      clearBtn.classList.toggle('hidden', input.value.length === 0);
+    });
   }
 
   function init() {
+    document.querySelectorAll('[data-predictive-search-mobile-trigger]').forEach(initMobileSearchTrigger);
+
+    if (hasProductGrid) return;
+
     document.querySelectorAll('[data-ps-input]').forEach(function (input) {
       new PredictiveSearch(input);
     });
-    document.querySelectorAll('[data-predictive-search-mobile-trigger]').forEach(initMobileOverlay);
+    document.querySelectorAll('[data-ps-mobile-clear]').forEach(bindMobileClear);
   }
 
   if (document.readyState === 'loading') {

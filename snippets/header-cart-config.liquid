@@ -7,7 +7,7 @@
 {%- liquid
   # Icons are captured here because icon.liquid can only be rendered at Liquid
   # compile time, not from the dynamically-generated cart HTML — see
-  # .agents/AGENTS.md icon rule.
+  # CLAUDE.md icon rule.
   capture icon_shopping_basket_html
     render 'icon', name: 'shopping-basket', class: 'text-4xl mb-2 text-primary/40'
   endcapture

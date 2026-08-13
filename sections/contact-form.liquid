@@ -35,18 +35,21 @@
   <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-6 md:gap-8 lg:gap-12">
     <div>
       {% form 'contact', id: contact_form_id, class: 'flex flex-col gap-4' %}
+        <script type="application/json" data-contact-form-config>
+          {
+            "formId": {{ contact_form_id | json }},
+            "successId": {{ contact_form_id | append: '-success' | json }},
+            "submittingLabel": {{ 'contact.submitting' | t | json }},
+            "requiredMessage": {{ 'contact.error_required' | t | json }},
+            "emailInvalidMessage": {{ 'contact.error_email_invalid' | t | json }}
+          }
+        </script>
         {%- if form.posted_successfully? -%}
           <div id="{{ contact_form_id }}-success" tabindex="-1" class="flex flex-col gap-1">
             {% render 'icon', name: 'circle-check', class: 'text-primary text-2xl' %}
             <p class="text-base font-bold text-primary">{{ 'contact.success_heading' | t }}</p>
             <p class="text-sm text-primary/70">{{ 'contact.success_body' | t }}</p>
           </div>
-          <script>
-            (function () {
-              var heading = document.getElementById({{ contact_form_id | append: '-success' | json }});
-              if (heading) heading.focus();
-            })();
-          </script>
         {%- else -%}
           {%- if form.errors -%}
             <div role="alert" class="flex items-center gap-1.5">
@@ -115,81 +118,9 @@
             class: 'h-12 px-8 w-full md:w-auto md:self-start',
             attributes: 'data-contact-submit'
           %}
-
-          <script>
-            (function () {
-              var form = document.getElementById({{ contact_form_id | json }});
-              if (!form || form.dataset.contactInitialized) return;
-              form.dataset.contactInitialized = 'true';
-              form.noValidate = true;
-
-              var requiredFields = Array.prototype.slice.call(form.querySelectorAll('[data-contact-field]'));
-              var allFields = Array.prototype.slice.call(form.querySelectorAll('input, textarea'));
-              var submit = form.querySelector('[data-contact-submit]');
-              var submittingLabel = {{ 'contact.submitting' | t | json }};
-              var requiredMessage = {{ 'contact.error_required' | t | json }};
-              var emailInvalidMessage = {{ 'contact.error_email_invalid' | t | json }};
-
-              function fieldMessage(field) {
-                if (field.validity.valueMissing) return requiredMessage;
-                if (field.type === 'email' && field.validity.typeMismatch) return emailInvalidMessage;
-                return requiredMessage;
-              }
-
-              function setFieldInvalid(field, isInvalid) {
-                field.classList.toggle('border-important', isInvalid);
-                if (isInvalid) {
-                  field.setAttribute('aria-invalid', 'true');
-                } else {
-                  field.removeAttribute('aria-invalid');
-                }
-                var errorEl = document.getElementById(field.id + '-error');
-                if (!errorEl) return;
-                if (isInvalid) {
-                  errorEl.textContent = fieldMessage(field);
-                  errorEl.classList.remove('hidden');
-                } else {
-                  errorEl.textContent = '';
-                  errorEl.classList.add('hidden');
-                }
-              }
-
-              requiredFields.forEach(function (field) {
-                field.addEventListener('input', function () {
-                  if (field.validity.valid) setFieldInvalid(field, false);
-                });
-              });
-
-              form.addEventListener('submit', function (event) {
-                var firstInvalid = null;
-                requiredFields.forEach(function (field) {
-                  var valid = field.validity.valid;
-                  setFieldInvalid(field, !valid);
-                  if (!valid && !firstInvalid) firstInvalid = field;
-                });
-
-                if (firstInvalid) {
-                  event.preventDefault();
-                  firstInvalid.focus();
-                  return;
-                }
-
-                if (!submit) return;
-                // Deferred so the browser has already read the (still-enabled)
-                // field values into the outgoing request before we disable
-                // them — disabling synchronously here would drop their values
-                // from the submitted form data.
-                setTimeout(function () {
-                  allFields.forEach(function (field) { field.disabled = true; });
-                  submit.disabled = true;
-                  submit.classList.add('opacity-70');
-                  submit.textContent = submittingLabel;
-                }, 0);
-              });
-            })();
-          </script>
         {%- endif -%}
       {% endform %}
+      <script src="{{ 'contact-form.min.js' | asset_url }}" defer="defer"></script>
     </div>
 
     <div class="flex flex-col gap-6 md:gap-4">
