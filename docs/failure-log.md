@@ -37,7 +37,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 ### F-018 — Nav hover highlight was a fixed 32px band, not the item's hit area
 
-- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** _pending_
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** `bcacdb3`
 - **Symptom:** Hovering a main-nav item in header row 2 drew a rounded highlight noticeably shorter than the item itself — DevTools showed the `a.nav-link-pill` at 48px tall while the highlight measured 32px, leaving 8px of un-highlighted pill above and below.
 - **Root cause:** `blocks/header-navigation.liquid`'s `.nav-link-pill::before` (the highlight layer, also used for the `--open` state) was positioned with `inset-inline: 0; top: 50%; transform: translateY(-50%);` and a hardcoded `height: 32px`. The pill's own height is not fixed — it is `h-full` of the row (`row_height: 44` for header row 2, per `sections/header-group.json`) and gains `min-height: 48px` under `@media (pointer: coarse)`. So the highlight was a constant 32px against a pill that is 44–48px depending on row setting and input type, and could never match it.
 - **Fix:** Replace the fixed-height centred band with `inset: 0`, so the pseudo-element fills the pill's box whatever height the row resolves to. Border radius unchanged.
