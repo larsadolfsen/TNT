@@ -5,16 +5,30 @@
   star-rating / savings-badge / button.
 
   Accepts:
-  - product: {Object} Shopify Product object (required)
+  - product: {Object} Shopify Product object (required unless placeholder_index is set)
   - class: {String} Extra classes to apply to the card (optional)
   - layout: {String} 'minimal' or 'standard' (optional)
   - disable_reviews: {Boolean} Disable reviews display (optional)
+  - placeholder_index: {Number} Renders a numbered design-mode mockup card
+    instead, for editor previews when no real products are available yet.
+    Omit `product` when using this.
 
   Usage:
   {% render 'product-card', product: product, layout: 'minimal', disable_reviews: section.settings.disable_reviews %}
+  {% render 'product-card', placeholder_index: 1 %}
 {% endcomment -%}
 
-{%- if product != blank -%}
+{%- if product == blank and placeholder_index != blank -%}
+  <div class="product-card flex flex-col bg-transparent max-h-[420px] sm:max-h-none border border-outline-variant rounded-2xl p-3">
+    <div class="relative w-full aspect-square bg-surface-container rounded-2xl flex items-center justify-center overflow-hidden mb-2">
+      {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'w-full h-full bg-slate-100 opacity-50' }}
+    </div>
+    <div class="space-y-1">
+      <h3 class="font-sans text-xs sm:text-sm font-normal text-primary leading-tight">Eksempel produkt {{ placeholder_index }}</h3>
+      <p class="text-xs font-semibold text-primary">199,00 kr.</p>
+    </div>
+  </div>
+{%- elsif product != blank -%}
   {%- liquid
     assign is_minimal = false
     if layout == 'minimal'

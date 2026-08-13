@@ -37,54 +37,20 @@
           -%}
           
           {%- if block.settings.filter_type != 'none' and block.settings.filter_value != blank -%}
-            <button 
-              onclick="applyQuickFilter('{{ block.settings.filter_type }}', '{{ block.settings.filter_value | escape }}')" 
+            <button
+              onclick="applyQuickFilter('{{ block.settings.filter_type }}', '{{ block.settings.filter_value | escape }}')"
               class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer"
               {{ block.shopify_attributes }}
             >
-              <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
-                {%- if sub_image != blank -%}
-                  <img
-                    src="{{ sub_image | image_url: width: 400, height: 400, crop: 'center' }}"
-                    alt="{{ sub_title | escape }}"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                    width="400"
-                    height="400"
-                  />
-                {%- else -%}
-                  {{ 'image' | placeholder_svg_tag: 'w-full h-full bg-slate-200' }}
-                {%- endif -%}
-              </div>
-              <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">{{ sub_title }}</h3>
-              {%- if sub_desc != blank -%}
-                <p class="text-[10px] text-primary/85 m-0 mt-0.5">{{ sub_desc }}</p>
-              {%- endif -%}
+              {%- render 'subcategory-tile-content', image: sub_image, title: sub_title, subtitle: sub_desc -%}
             </button>
           {%- else -%}
-            <a 
-              href="{{ sub_url }}" 
+            <a
+              href="{{ sub_url }}"
               class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none no-underline block"
               {{ block.shopify_attributes }}
             >
-              <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
-                {%- if sub_image != blank -%}
-                  <img
-                    src="{{ sub_image | image_url: width: 400, height: 400, crop: 'center' }}"
-                    alt="{{ sub_title | escape }}"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                    width="400"
-                    height="400"
-                  />
-                {%- else -%}
-                  {{ 'image' | placeholder_svg_tag: 'w-full h-full bg-slate-200' }}
-                {%- endif -%}
-              </div>
-              <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">{{ sub_title }}</h3>
-              {%- if sub_desc != blank -%}
-                <p class="text-[10px] text-primary/85 m-0 mt-0.5">{{ sub_desc }}</p>
-              {%- endif -%}
+              {%- render 'subcategory-tile-content', image: sub_image, title: sub_title, subtitle: sub_desc -%}
             </a>
           {%- endif -%}
         {%- endfor -%}
@@ -93,62 +59,38 @@
         
         <!-- Underkategori 1 -->
         <button onclick="applyQuickFilter('tykkelse', '0,8 mm')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
-          <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
-            <img 
-              src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80"
-              alt="Soft Transparens"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              width="400"
-              height="400"
-            />
-          </div>
-          <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Soft Transparens</h3>
-          <p class="text-[10px] text-primary/85 m-0 mt-0.5">Let hverdagsbeskyttelse i 0,8 mm</p>
+          {%- render 'subcategory-tile-content',
+            image_src: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80',
+            title: 'Soft Transparens',
+            subtitle: 'Let hverdagsbeskyttelse i 0,8 mm'
+          -%}
         </button>
 
         <!-- Underkategori 2 -->
         <button onclick="applyQuickFilter('tykkelse', '2,0 mm')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
-          <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
-            <img 
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80"
-              alt="Pure Shield"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              width="400"
-              height="400"
-            />
-          </div>
-          <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Pure Shield</h3>
-          <p class="text-[10px] text-primary/85 m-0 mt-0.5">Tung bordbeskyttelse i 2,0 mm</p>
+          {%- render 'subcategory-tile-content',
+            image_src: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80',
+            title: 'Pure Shield',
+            subtitle: 'Tung bordbeskyttelse i 2,0 mm'
+          -%}
         </button>
 
         <!-- Underkategori 3 -->
         <button onclick="applyQuickFilter('form', 'Rund')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
-          <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
-            <img 
-              src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80"
-              alt="Cirkel-serien"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              width="400"
-              height="400"
-            />
-          </div>
-          <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Cirkel-serien</h3>
-          <p class="text-[10px] text-primary/85 m-0 mt-0.5">Runde udskæringer</p>
+          {%- render 'subcategory-tile-content',
+            image_src: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80',
+            title: 'Cirkel-serien',
+            subtitle: 'Runde udskæringer'
+          -%}
         </button>
 
         <!-- Underkategori 4 -->
         <button onclick="applyQuickFilter('form', 'Dækkeserviet')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
-          <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
-            <img 
-              src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80"
-              alt="Læder-serien"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              width="400"
-              height="400"
-            />
-          </div>
-          <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Eksklusivt Tilbehør</h3>
-          <p class="text-[10px] text-primary/85 m-0 mt-0.5">Organic Raw i recycled læder</p>
+          {%- render 'subcategory-tile-content',
+            image_src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80',
+            title: 'Eksklusivt Tilbehør',
+            subtitle: 'Organic Raw i recycled læder'
+          -%}
         </button>
 
       {%- endif -%}

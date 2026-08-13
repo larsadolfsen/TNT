@@ -1,0 +1,48 @@
+{% doc %}
+  Renders the inner content of a collection-subcategories tile: the square
+  image (or placeholder icon) plus title and optional subtitle. Callers wrap
+  this in whichever element fits the tile's behavior - a <button> for
+  quick-filter tiles, an <a> for plain collection links, since that's a real
+  semantic difference (click-to-filter vs navigation), not visual
+  duplication. Used both for the block-driven tiles and the hardcoded
+  design-mode fallback tiles in sections/collection-subcategories.liquid.
+
+  @param {object} [image] - Shopify image object, resolved via image_url.
+  @param {string} [image_src] - already-resolved image URL, for the
+    hardcoded fallback tiles whose images aren't Shopify image objects.
+    Takes precedence over `image` when both are present.
+  @param {string} title - required. Tile title.
+  @param {string} [subtitle] - optional description line.
+
+  @example
+  {% render 'subcategory-tile-content', image: sub_image, title: sub_title, subtitle: sub_desc %}
+  {% render 'subcategory-tile-content', image_src: 'https://...', title: 'Soft Transparens', subtitle: 'Let hverdagsbeskyttelse i 0,8 mm' %}
+{% enddoc %}
+
+<div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
+  {%- if image_src != blank -%}
+    <img
+      src="{{ image_src }}"
+      alt="{{ title | escape }}"
+      width="400"
+      height="400"
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      loading="lazy"
+    />
+  {%- elsif image != blank -%}
+    <img
+      src="{{ image | image_url: width: 400, height: 400, crop: 'center' }}"
+      alt="{{ title | escape }}"
+      width="400"
+      height="400"
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      loading="lazy"
+    />
+  {%- else -%}
+    {{ 'image' | placeholder_svg_tag: 'w-full h-full bg-slate-200' }}
+  {%- endif -%}
+</div>
+<h3 class="text-xs font-semibold text-primary group-hover:underline m-0">{{ title }}</h3>
+{%- if subtitle != blank -%}
+  <p class="text-[10px] text-primary/85 m-0 mt-0.5">{{ subtitle }}</p>
+{%- endif -%}
