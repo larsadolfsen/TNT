@@ -44,6 +44,10 @@
   --nav-block-height: 48px;
   --nav-menu-gap: 24px;
 
+  --radio-size: 20px;
+  --radio-gap: 3px;
+  --radio-ring-width: 2px;
+
   @media (min-width: --theme(--breakpoint-lg)) {
     --grid-gap: 24px;
     --grid-padding-y: 40px;
@@ -93,6 +97,13 @@ main > .shopify-section {
   main > .shopify-section {
     grid-column-end: span var(--grid-cols-desktop, 3);
   }
+}
+
+/* A section that renders no markup (its wrapper holds only the section's own
+   <style>/<script>) still counts as a grid item, so it adds an empty row plus a
+   row-gap above and below it. Collapse those wrappers so no content means no gap. */
+main > .shopify-section:not(:has(> :not(style):not(script):not(link):not(template))) {
+  display: none;
 }
 
 
@@ -799,6 +810,35 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 }
 
 /* Snippet/Section component styles migrated from {% stylesheet %} blocks */
+
+/* Radio snippet (snippets/radio.liquid) styles.
+   The ring is always drawn in --color-control-selected; selecting the option adds
+   the inner dot, which is the same colour clipped to the content box and held off
+   the ring by the padding. Declared here rather than as Tailwind utilities because
+   the unlayered global `* { border-color: ... }` reset outranks any layered
+   `border-*` utility. */
+.radio-input {
+  appearance: none;
+  width: var(--radio-size);
+  height: var(--radio-size);
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: var(--radio-ring-width) solid var(--color-control-selected);
+  padding: var(--radio-gap);
+  background-color: transparent;
+  background-clip: content-box;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.radio-input:checked {
+  background-color: var(--color-control-selected);
+}
+
+.radio-input:focus-visible {
+  outline: 2px solid var(--color-control-selected);
+  outline-offset: 2px;
+}
 
 /* Image snippet styles */
 .image {

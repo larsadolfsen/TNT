@@ -230,25 +230,31 @@
     }
   }
 
+  // Hold the drawer open briefly after a sort option is picked, so the radio's
+  // selected state is visible before the panel slides away.
+  const SORT_SELECT_CLOSE_DELAY = 250;
+
   function selectSortOption(value) {
     const select = document.getElementById('sort-select');
     if (select) {
       select.value = value;
     }
-    toggleSortDrawer(false);
-    filterProducts();
+    setTimeout(() => {
+      toggleSortDrawer(false);
+      filterProducts();
+    }, SORT_SELECT_CLOSE_DELAY);
   }
 
   function toggleFilterBlock(headerEl) {
     const block = headerEl.parentElement;
     const content = block.querySelector('.filter-content');
-    const icon = block.querySelector('.toggle-icon');
+    const use = block.querySelector('.toggle-icon use');
     if (content.classList.contains('hidden')) {
       content.classList.remove('hidden');
-      if (icon) icon.textContent = 'remove';
+      if (use) use.setAttribute('href', '#icon-minus');
     } else {
       content.classList.add('hidden');
-      if (icon) icon.textContent = 'add';
+      if (use) use.setAttribute('href', '#icon-plus');
     }
   }
 

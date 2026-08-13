@@ -102,7 +102,7 @@
 
   {%- render 'breadcrumbs-nav', t: t, has_ellipsis: has_ellipsis, c_level_0: c_level_0, c_level_1: c_level_1, c_level_2: c_level_2, c_level_3: c_level_3, c_level_4: c_level_4, c_level_5: c_level_5, c_level_6: c_level_6 -%}
 
-  <script src="{{ 'breadcrumbs.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'breadcrumbs.min.js' | asset_url }}" defer="defer"></script>
 
   {%- render 'breadcrumbs-json-ld', t: t, c_level_0: c_level_0, c_level_1: c_level_1, c_level_2: c_level_2, c_level_3: c_level_3, c_level_4: c_level_4, c_level_5: c_level_5, c_level_6: c_level_6 -%}
 {%- endunless -%}

@@ -1,0 +1,33 @@
+{% doc %}
+  Renders a single custom-styled radio input — a native `<input type="radio">` with the
+  browser appearance stripped, so the control follows the theme tokens instead of the OS
+  accent colour. Every option shows a ring in `--color-control-selected`; the selected
+  one adds a filled inner dot of the same colour, separated from the ring by a gap of
+  the surrounding surface, with no wrapper element or pseudo-element. Visuals live in
+  the `.radio-input` rule in assets/input.css (sized via the `--radio-size`,
+  `--radio-gap` and `--radio-ring-width` tokens).
+
+  @param {string} name - required. Shared name of the radio group.
+  @param {string} value - required. Value reported when this option is selected.
+  @param {boolean} [checked] - Marks this radio as the selected one.
+  @param {string} [class] - Extra CSS classes appended to the input.
+  @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. onchange, data-*, aria-*).
+
+  @example
+  {% render 'radio', name: 'sort-drawer-option', value: option.value, checked: is_active, attributes: 'onchange="selectSortOption(this.value)"' %}
+{% enddoc %}
+
+{%- liquid
+  assign radio_class = 'radio-input'
+  if class
+    assign radio_class = radio_class | append: ' ' | append: class
+  endif
+-%}
+<input
+  type="radio"
+  name="{{ name }}"
+  value="{{ value }}"
+  {%- if checked %} checked{% endif %}
+  class="{{ radio_class }}"
+  {%- if attributes %} {{ attributes }}{% endif -%}
+>

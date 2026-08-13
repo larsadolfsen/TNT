@@ -1,3 +1,10 @@
+{%- comment -%}
+  Generic content container section: a merchant-configurable box (background, grid
+  span/order per breakpoint, padding, borders) that theme blocks are nested into.
+  Exposes the `--section-span-*` / `--col-span` custom properties the page grid and
+  `assets/masonry.js` read. Renders its children via `{% content_for 'blocks' %}`.
+{%- endcomment -%}
+
 {%- liquid
   assign layout_style = 'full_width_bg'
   assign is_full_width = section.settings.full_width | default: false
@@ -50,6 +57,17 @@
 -%}
 
 {%- style -%}
+  {%- comment -%}
+    A section with no blocks renders an empty container that still occupies a row
+    (its own padding + the grid row-gap). Collapse it on the storefront — but keep
+    it visible in the theme editor so merchants can still drop blocks into it.
+  {%- endcomment -%}
+  {%- unless request.design_mode -%}
+    #shopify-section-{{ section.id }}:not(:has(.section-content > *)) {
+      display: none;
+    }
+  {%- endunless -%}
+
   #shopify-section-{{ section.id }} {
     --section-padding-top: {{ section.settings.padding_top | times: 0.75 | round }}px;
     --section-padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round }}px;

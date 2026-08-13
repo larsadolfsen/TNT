@@ -24,13 +24,20 @@ There is no unit test suite/JS test runner in this repo. "Testing" means `shopif
 
 This repo pushes directly from GitHub to the live Shopify store — `main` syncs to the published theme "TNT/main" on `textilogvoksdug.dk`. There is no staging theme or build/CI gate in front of the storefront; a push to `main` is a live deploy. `.github/workflows/ci.yml` only runs `theme-check` (lint) on push — it does not deploy and passing it is not evidence the page actually renders correctly (see rules below).
 
-## Project rules (`.agents/AGENTS.md`)
+## Project rules
 
-These are load-bearing, not suggestions:
+These are load-bearing, not suggestions. **This file is the single source of truth for them** — there is no separate `AGENTS.md`; rules live here and nowhere else.
 
-- **Version bump every push.** Bump the patch version in *both* `package.json` and `config/settings_schema.json`'s `theme_version` before every `git push` (e.g. `1.0.131` → `1.0.132` in both files, same commit). `theme_version` is what the Shopify dashboard shows.
+- **Version bump every push.** Bump the patch version in *all three* of `package.json`, `config/settings_schema.json`'s `theme_version`, and `package-lock.json` (its two root `version` fields) before every `git push` — same value, same commit (e.g. `1.0.141` → `1.0.142`). `theme_version` is what the Shopify dashboard shows.
 - **No `!important`** in CSS. Resolve specificity via CSS variable scoping or selector structure instead.
-- **Land one change at a time.** Push one feature/fix, then stop and let the user verify it live in the browser before pushing the next. `theme-check` passing is not verification — it only proves Liquid parses, not that the page works (real prior incidents: 100x pricing bug, clipped mobile header icons, broken newsletter HTML all passed theme-check clean). Batching unverified merges destroys attribution when something breaks.
+- **No `[!IMPORTANT]` alert boxes** in markdown artifacts.
+- **Build in parallel, land one at a time, verify each before the next.** Agents may develop many features concurrently in separate worktrees — that part is fine and fast. But merging to `main` is a queue, not a batch: push ONE feature, wait for the user to confirm it works in a browser, then push the next. Never merge several unverified features in one go.
+  - `theme-check` passing is **not** verification. It proves the Liquid parses, not that the page works. Every bug found on 2026-08-05 (100x pricing, clipped mobile header icons, broken newsletter HTML, dead predictive search) passed theme-check cleanly — all logged in `docs/failure-log.md`.
+  - The point is attribution: when one change lands at a time, a regression has exactly one possible cause. Batched, you cannot tell which of sixteen surfaces broke it — and a systemic mistake gets copied into every file before anyone notices.
+  - When something can only be verified by the user (anything visual, anything on the live storefront), say precisely what to open and what to look for, then stop and wait. Don't queue more merges behind an unverified one.
+- **Finished work does not sit stranded on a branch — but in this repo, merging needs the user's go-ahead.** The general rule is to end a job by merging its feature branch into `main` and pushing to `origin`, *as long as `main` is not the production/live theme*. Here that condition does not hold: per Deployment above, `main` **is** the live storefront, so a merge is a live deploy. Finish the work, push the branch, then say what to verify and wait for an explicit go-ahead before merging.
+- **Use your own git worktree.** Multiple sessions run against this repo concurrently. Never create or switch branches in the primary checkout — doing so yanks the working directory out from under another session and can land its commits on your branch. `git status` showing clean is not proof no session is active there.
+- **Log every bug in `docs/failure-log.md`.** Whenever a bug is found — reported by the user or spotted by an agent — add an entry in the *same commit as its fix*: take the next free `F-NNN`, insert it at the top of `## Entries`, add a row at the top of the index table, and fill all five fields (Symptom / Root cause / Fix + commit sha / Prevention, plus the date·reach·area line). "Root cause" means the actual mechanism, not a restatement of the symptom. Read the log *before* debugging anything that feels familiar — its `## Recurring patterns` section lists the mistakes this codebase repeats, and it is the reason the file exists, so extend it whenever a new entry is a pattern's second instance. Never delete an entry; if a fix is later reverted or superseded, append an `**Update YYYY-MM-DD:**` line to it.
 - **Single-purpose files.** Keep UI markup, JS behavior, and business/pricing logic in separate files rather than combined. Split a component (layout + interaction + data formatting) into small composable pieces instead of growing one file to do everything.
 - **Componentize down to primitives.** Icons, buttons, inputs, badges, price displays etc. each live in their own snippet, used via `{% render %}` — never re-inline their markup at call sites (e.g. all icons go through `{% render 'icon', name: '...' %}`, never a raw inline `<svg>`).
 - **No hardcoded user-facing text.** Copy/labels/headings should be theme settings (schema `settings`), not hardcoded strings, so merchants can translate/edit them from the theme editor.
@@ -67,7 +74,7 @@ Vanilla JS, one file per concern in `assets/` (e.g. `header.js` for header inter
 
 ## Docs worth knowing about
 
-- `docs/failure-log.md` — **maintained** record of every bug found, with root cause, fix and the rule that prevents a repeat. Check it when a symptom looks familiar; add an entry (next `F-NNN`, at the top) in the same commit as any bugfix.
+- `docs/failure-log.md` — maintained record of every bug found, with root cause, fix and the rule that prevents a repeat, plus a `Recurring patterns` digest. Maintaining it is a project rule (see above), not optional.
 - `docs/optimization-master-plan.md` — the active project plan (phases, parallelization rules, task tiers by model).
 - `docs/component-decomposition-backlog.md`, `docs/missing-designs-brief.md`, `docs/missing-surface-designs.md`, `docs/theme-store-compliance-brainstorm.md` — scoped work backlogs.
 - `docs/testing-workflow.md` — how live-server verification works for this store, and the (blocked) fallback path for pushing to a theme via the Admin GraphQL API (`themeFilesUpsert`) when no local Shopify CLI auth is available.
