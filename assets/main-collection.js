@@ -8,9 +8,9 @@
  * section's id (needed for the `section_id` param on filter fetches) arrives
  * through the #main-collection-config JSON island rendered by that section;
  * this file holds no Liquid. Exposes window.toggleMobileFilter /
- * toggleFilterBlock / filterProducts / syncPriceFilters / removeFilterChipUrl
- * / clearAllFiltersUrl, which the section's inline onclick/onchange/oninput
- * handlers depend on.
+ * toggleSortDrawer / selectSortOption / toggleFilterBlock / filterProducts /
+ * syncPriceFilters / removeFilterChipUrl / clearAllFiltersUrl, which the
+ * section's inline onclick/onchange/oninput handlers depend on.
  */
 (function () {
   function readConfig() {
@@ -208,6 +208,34 @@
     }
   }
 
+  function toggleSortDrawer(open) {
+    const drawer = document.getElementById("sort-drawer");
+    if (!drawer) return;
+    const panel = drawer.querySelector("div");
+    if (open) {
+      drawer.classList.remove("hidden");
+      setTimeout(() => {
+        drawer.classList.remove("opacity-0");
+        panel.classList.remove("translate-x-full");
+      }, 10);
+    } else {
+      drawer.classList.add("opacity-0");
+      panel.classList.add("translate-x-full");
+      setTimeout(() => {
+        drawer.classList.add("hidden");
+      }, 300);
+    }
+  }
+
+  function selectSortOption(value) {
+    const select = document.getElementById('sort-select');
+    if (select) {
+      select.value = value;
+    }
+    toggleSortDrawer(false);
+    filterProducts();
+  }
+
   function toggleFilterBlock(headerEl) {
     const block = headerEl.parentElement;
     const content = block.querySelector('.filter-content');
@@ -222,7 +250,7 @@
   }
 
   document.addEventListener('change', function(e) {
-    if (e.target.closest('#desktop-filters input, #mobile-filters input, #sort-select')) {
+    if (e.target.closest('#desktop-filters input, #mobile-filters input')) {
       if (e.target.classList.contains('filter-checkbox')) {
         const name = e.target.name;
         const value = e.target.value;
@@ -490,6 +518,8 @@
   }
 
   window.toggleMobileFilter = toggleMobileFilter;
+  window.toggleSortDrawer = toggleSortDrawer;
+  window.selectSortOption = selectSortOption;
   window.toggleFilterBlock = toggleFilterBlock;
   window.filterProducts = filterProducts;
   window.syncPriceFilters = syncPriceFilters;
