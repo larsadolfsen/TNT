@@ -15,10 +15,13 @@
   @param {string} [stroke_width] - Stroke thickness override (e.g. "3px"). Emitted as inline style because the `.icon` class rule would win over an SVG presentation attribute.
   @param {string} [style] - Raw inline style attribute value (e.g. for a fixed font-size override, which still controls the icon's 1em size).
   @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. title="...").
+  @param {boolean} [button] - When true, this is the icon for a clickable control: fixes the glyph at 20px (12px if `small` is also set) and adds padding so the total box is always a 44x44px touch target. The caller still needs to wrap this in a real `<button>`/`<a>` for semantics/href/click handling -- this only controls sizing.
+  @param {boolean} [small] - When true, renders a 12px glyph instead of the default 20px. Combine with `button` to keep a 44px touch target around the smaller glyph.
 
   @example
   {% render 'icon', name: 'search' %}
-  {% render 'icon', name: 'x', class: 'text-2xl text-primary', label: 'Luk' %}
+  {% render 'icon', name: 'x', button: true, label: 'Luk' %}
+  {% render 'icon', name: 'x', button: true, small: true, label: 'Fjern' %}
   {% render 'icon', name: 'star', class: 'text-[14px]', filled: true %}
 {% enddoc %}
 {%- capture icon_style -%}
@@ -26,7 +29,7 @@
   {{- style -}}
 {%- endcapture -%}
 <svg
-  class="icon{% if class %} {{ class }}{% endif %}{% if filled %} icon--filled{% endif %}"
+  class="icon{% if button %} icon--btn{% endif %}{% if small %} icon--small{% endif %}{% if class %} {{ class }}{% endif %}{% if filled %} icon--filled{% endif %}"
   {%- if label %}
     aria-label="{{ label }}"
   {%- else %}

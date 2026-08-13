@@ -40,11 +40,11 @@
 <div class="flex items-center" {{ block.shopify_attributes }}>
   <button
     type="button"
-    class="w-12 h-12 focus:outline-none bg-transparent border-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity focus-ring"
+    class="focus:outline-none bg-transparent border-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity focus-ring"
     aria-label="{{ 'search.submit' | t }}"
     data-predictive-search-mobile-trigger
   >
-    {% render 'icon', name: 'search', class: 'text-2xl text-primary block' %}
+    {% render 'icon', name: 'search', button: true, class: 'text-primary' %}
   </button>
 </div>
 
@@ -79,11 +79,11 @@
     <div class="h-14 px-4 flex items-center gap-2 border-b border-outline-variant bg-background sticky top-0 shrink-0">
       <button
         type="button"
-        class="w-12 h-12 shrink-0 flex items-center justify-center bg-transparent border-0 cursor-pointer focus-ring"
+        class="shrink-0 flex items-center justify-center bg-transparent border-0 cursor-pointer focus-ring"
         aria-label="{{ 'predictive_search.close' | t }}"
         data-ps-mobile-close
       >
-        {% render 'icon', name: 'arrow-left', class: 'text-2xl text-primary' %}
+        {% render 'icon', name: 'arrow-left', button: true, class: 'text-primary' %}
       </button>
       <div class="relative flex-1">
         <input
@@ -103,11 +103,11 @@
         >
         <button
           type="button"
-          class="hidden absolute right-0 top-0 w-11 h-12 flex items-center justify-center bg-transparent border-0 cursor-pointer focus-ring"
+          class="hidden absolute right-0 top-1/2 -translate-y-1/2 flex items-center justify-center bg-transparent border-0 cursor-pointer focus-ring"
           aria-label="{{ 'predictive_search.clear' | t }}"
           data-ps-mobile-clear
         >
-          {% render 'icon', name: 'x', class: 'text-[18px] text-primary' %}
+          {% render 'icon', name: 'x', button: true, class: 'text-primary' %}
         </button>
       </div>
     </div>

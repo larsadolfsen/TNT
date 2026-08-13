@@ -15,8 +15,8 @@
   <div class="bg-card-light w-5/6 max-w-sm h-full flex flex-col shadow-2xl p-6 transition-transform duration-300 translate-x-full overflow-y-auto">
     <div class="flex items-center justify-between pb-4 border-b border-outline-variant mb-2">
       <span class="font-sans text-xl font-bold text-primary tracking-tight">Sorter efter</span>
-      <button type="button" onclick="toggleSortDrawer(false)" class="bg-transparent border-0 cursor-pointer" aria-label="Luk sortering">
-        {%- render 'icon', name: 'x', class: 'text-2xl text-primary' -%}
+      <button type="button" onclick="toggleSortDrawer(false)" class="bg-transparent border-0 cursor-pointer flex items-center justify-center" aria-label="Luk sortering">
+        {%- render 'icon', name: 'x', button: true, class: 'text-primary' -%}
       </button>
     </div>
 

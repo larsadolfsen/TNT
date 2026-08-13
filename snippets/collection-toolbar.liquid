@@ -20,7 +20,7 @@
   <div class="flex items-center gap-2">
     <!-- Sorter Knap -->
     <button type="button" onclick="toggleSortDrawer(true)" class="flex flex-col items-center justify-center border border-outline-variant rounded-2xl bg-transparent w-12 h-12 text-primary cursor-pointer p-0" aria-label="Sortering">
-      {%- render 'icon', name: 'arrow-up-down', class: 'text-lg' -%}
+      {%- render 'icon', name: 'arrow-up-down', class: 'text-xl' -%}
       <span class="text-[9px] font-semibold mt-0.5 leading-none">Sorter</span>
     </button>
     <select id="sort-select" class="hidden" aria-hidden="true" tabindex="-1">
@@ -31,7 +31,7 @@
 
     <!-- Mobil Filter Knap -->
     <button onclick="toggleMobileFilter(true)" class="lg:hidden flex flex-col items-center justify-center border border-outline-variant rounded-2xl bg-transparent w-12 h-12 text-primary cursor-pointer p-0">
-      {%- render 'icon', name: 'list-filter', class: 'text-lg' -%}
+      {%- render 'icon', name: 'list-filter', class: 'text-xl' -%}
       <span class="text-[9px] font-semibold mt-0.5 leading-none">Filtrer</span>
     </button>
   </div>

@@ -72,19 +72,19 @@
       {%- if panel_enabled -%}
         <a
           href="{{ routes.account_url }}"
-          class="account-trigger-mobile w-12 h-12 flex items-center justify-center rounded-full hover:opacity-80 active:scale-95 transition-all no-underline focus-ring"
+          class="account-trigger-mobile w-11 h-11 flex items-center justify-center rounded-full hover:opacity-80 active:scale-95 transition-all no-underline focus-ring"
           aria-label="{{ accessible_name }}"
         >
           {%- if customer -%}
             <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider" aria-hidden="true">{{ initials }}</span>
           {%- else -%}
-            {% render 'icon', name: 'user', class: 'text-2xl text-primary' %}
+            {% render 'icon', name: 'user', class: 'text-xl text-primary' %}
           {%- endif -%}
         </a>
 
         <button
           type="button"
-          class="account-trigger-desktop items-center justify-center rounded-full hover:opacity-80 active:scale-95 transition-all cursor-pointer bg-transparent border-0 focus-ring h-12{% if show_label %} px-3 gap-1{% else %} w-12{% endif %}"
+          class="account-trigger-desktop items-center justify-center rounded-full hover:opacity-80 active:scale-95 transition-all cursor-pointer bg-transparent border-0 focus-ring h-11{% if show_label %} px-3 gap-1{% else %} w-11{% endif %}"
           aria-expanded="false"
           aria-haspopup="true"
           aria-controls="account-panel-{{ block.id }}"
@@ -94,7 +94,7 @@
           {%- if customer -%}
             <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider shrink-0" aria-hidden="true">{{ initials }}</span>
           {%- else -%}
-            {% render 'icon', name: 'user', class: 'text-2xl text-primary shrink-0' %}
+            {% render 'icon', name: 'user', class: 'text-xl text-primary shrink-0' %}
           {%- endif -%}
           {%- if show_label -%}
             <span class="text-sm font-medium text-primary ml-1">{{ label_text }}</span>
@@ -113,13 +113,13 @@
       {%- else -%}
         <a
           href="{{ routes.account_url }}"
-          class="w-12 h-12 flex items-center justify-center rounded-full hover:opacity-80 active:scale-95 transition-all no-underline focus-ring{% if show_label %} md:w-auto md:px-3 md:gap-1{% endif %}"
+          class="w-11 h-11 flex items-center justify-center rounded-full hover:opacity-80 active:scale-95 transition-all no-underline focus-ring{% if show_label %} md:w-auto md:px-3 md:gap-1{% endif %}"
           aria-label="{{ accessible_name }}"
         >
           {%- if customer -%}
             <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider shrink-0" aria-hidden="true">{{ initials }}</span>
           {%- else -%}
-            {% render 'icon', name: 'user', class: 'text-2xl text-primary shrink-0' %}
+            {% render 'icon', name: 'user', class: 'text-xl text-primary shrink-0' %}
           {%- endif -%}
           {%- if show_label -%}
             <span class="hidden md:inline text-sm font-medium text-primary ml-1">{{ label_text }}</span>

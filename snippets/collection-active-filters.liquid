@@ -24,8 +24,8 @@
       {%- for value in filter.active_values -%}
         <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-[11px] text-primary font-semibold transition-all">
           <span>{{ filter.label }}: {{ value.label }}</span>
-          <a href="{{ value.url_to_remove }}" onclick="removeFilterChipUrl(event, this.href)" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern {{ value.label }}">
-            {%- render 'icon', name: 'x', class: 'text-[10px]' -%}
+          <a href="{{ value.url_to_remove }}" onclick="removeFilterChipUrl(event, this.href)" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent" aria-label="Fjern {{ value.label }}">
+            {%- render 'icon', name: 'x', small: true -%}
           </a>
         </div>
       {%- endfor -%}
@@ -38,8 +38,8 @@
               -
               {%- if filter.max_value.value -%}{{ filter.max_value.value | money }}{%- else -%}Maks{%- endif -%}
             </span>
-            <a href="{{ filter.url_to_remove }}" onclick="removeFilterChipUrl(event, this.href)" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent text-[10px]" aria-label="Fjern prisfilter">
-              {%- render 'icon', name: 'x', class: 'text-[10px]' -%}
+            <a href="{{ filter.url_to_remove }}" onclick="removeFilterChipUrl(event, this.href)" class="flex items-center justify-center hover:bg-accent/20 rounded-full w-4 h-4 cursor-pointer text-primary/80 transition-colors border-0 p-0 bg-transparent" aria-label="Fjern prisfilter">
+              {%- render 'icon', name: 'x', small: true -%}
             </a>
           </div>
         {%- endif -%}
