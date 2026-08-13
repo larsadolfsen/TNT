@@ -6,9 +6,10 @@
   "scripts": {
     "tailwind:build": "tailwindcss -i ./assets/input.css -o ./assets/output.css --content \"./**/*.{js,json,liquid}\" --minify",
     "tailwind:watch": "tailwindcss -i ./assets/input.css -o ./assets/output.css --content \"./**/*.{js,json,liquid}\" --minify --watch",
+    "js:build": "node scripts/build-js.mjs",
     "shopify:dev": "shopify theme dev",
     "dev": "concurrently \"npm run tailwind:watch\" \"npm run shopify:dev\"",
-    "build": "npm run tailwind:build"
+    "build": "npm run tailwind:build && npm run js:build"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "@shopify/cli": "^3.69.0",
     "@tailwindcss/cli": "^4.0.0",
     "concurrently": "^9.1.2",
+    "esbuild": "^0.28.2",
     "lucide-static": "^1.31.0",
     "tailwindcss": "^4.0.0"
   }

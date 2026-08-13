@@ -32,7 +32,7 @@
 {%- assign trust_countdown_id = 'trust-countdown-' | append: block.id -%}
 {% render 'trust-checkmark-item', id: trust_countdown_id, content: countdown_content, attributes: countdown_attributes %}
 
-<script src="{{ 'trust-countdown.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'trust-countdown.min.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
