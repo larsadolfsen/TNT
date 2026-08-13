@@ -12,7 +12,7 @@
   {%- if product.media.size > 1 -%}
     {%- for media in product.media -%}
       <button
-        class="dot-btn w-2.5 h-2.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-slate-300{% endif %} focus:outline-none transition-colors cursor-pointer"
+        class="dot-btn w-2.5 h-2.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-primary/20{% endif %} focus:outline-none transition-colors cursor-pointer"
         data-src="{{ media.preview_image.src | image_url: width: 1200 }}"
         aria-label="Skift billede {{ forloop.index }}"
       ></button>

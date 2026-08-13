@@ -84,12 +84,12 @@
           {%- assign progress_message = block.settings.free_shipping_message | default: "Du er kun [beløb] fra fri fragt" -%}
           {%- if progress_message contains '[beløb]' -%}
             {%- assign message_parts = progress_message | split: '[beløb]' -%}
-            {{ message_parts[0] }}<span id="shipping-amount-ticker" class="font-mono font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
+            {{ message_parts[0] }}<span id="shipping-amount-ticker" class="font-mono font-bold text-blue-600 bg-blue-500/10 px-1.5 py-0.5 rounded">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
           {%- elsif progress_message contains '[amount]' -%}
             {%- assign message_parts = progress_message | split: '[amount]' -%}
-            {{ message_parts[0] }}<span id="shipping-amount-ticker" class="font-mono font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
+            {{ message_parts[0] }}<span id="shipping-amount-ticker" class="font-mono font-bold text-blue-600 bg-blue-500/10 px-1.5 py-0.5 rounded">{{ missing | times: 100 | money }}</span>{{ message_parts[1] }}
           {%- else -%}
-            {{ progress_message | replace: '[beløb]', '<span id="shipping-amount-ticker" class="font-mono font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded"></span>' }}
+            {{ progress_message | replace: '[beløb]', '<span id="shipping-amount-ticker" class="font-mono font-bold text-blue-600 bg-blue-500/10 px-1.5 py-0.5 rounded"></span>' }}
           {%- endif -%}
         </span>
         <span id="shipping-success-msg" class="{% if potential_total < threshold %}hidden{% endif %}">
@@ -97,7 +97,7 @@
         </span>
       </span>
     </div>
-    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex {% if hide_everything_except_text %}hidden{% endif %}">
+    <div class="w-full h-2 bg-card-high rounded-full overflow-hidden flex {% if hide_everything_except_text %}hidden{% endif %}">
       <div id="shipping-progress-bar" class="h-full {% if cart_total_dkk < threshold %}bg-emerald-600{% else %}bg-emerald-500{% endif %} transition-all duration-300" style="width: {{ progress }}%"></div>
       <div id="shipping-potential-bar" class="h-full bg-emerald-300 transition-all duration-300" style="width: {{ potential_width }}%"></div>
     </div>
