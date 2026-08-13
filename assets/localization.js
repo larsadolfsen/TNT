@@ -2,9 +2,11 @@
  * Footer country / language selector (Surface 14).
  *
  * Drives blocks/footer-localization.liquid + snippets/localization-picker.liquid:
- * opening/closing the <dialog>, the country/language tab switch, the
- * client-side substring filter, filling in flag glyphs, and locking the
- * list against double submission while a selection navigates away.
+ * the country/language tab switch, the client-side substring filter, filling
+ * in flag glyphs, and locking the list against double submission while a
+ * selection navigates away. Open/close/backdrop-click/Escape/focus-trap for
+ * the modal itself is handled generically by assets/panel.js (Q9) — this
+ * file only wires the content inside it.
  *
  * The actual selection itself is a real <form action="/localization">
  * <button type="submit"> — this file only manages the picker UI around it,
@@ -111,7 +113,7 @@
     });
   }
 
-  function initModal(modal, trigger) {
+  function initModal(modal) {
     if (modal.dataset.localizationInitialized) return;
     modal.dataset.localizationInitialized = 'true';
 
@@ -121,24 +123,6 @@
       initSubmitLock(panel);
     });
     initTabs(modal);
-
-    var closeButton = modal.querySelector('[data-localization-close]');
-    if (closeButton) {
-      closeButton.addEventListener('click', function () {
-        modal.close();
-      });
-    }
-
-    // Click on the ::backdrop (outside the panel) targets the <dialog>
-    // element itself, never a descendant — the standard "click outside to
-    // close" check for native <dialog>.
-    modal.addEventListener('click', function (event) {
-      if (event.target === modal) modal.close();
-    });
-
-    modal.addEventListener('close', function () {
-      if (trigger) trigger.focus();
-    });
   }
 
   function initTrigger(trigger) {
@@ -148,18 +132,11 @@
     var modal = document.getElementById(trigger.getAttribute('aria-controls'));
     if (!modal) return;
 
-    trigger.addEventListener('click', function () {
-      initModal(modal, trigger);
-      modal.showModal();
-
-      var firstFilter = modal.querySelector('[data-localization-panel]:not([hidden]) [data-localization-filter]');
-      var firstRow = modal.querySelector('[data-localization-panel]:not([hidden]) [data-localization-row]');
-      if (firstFilter) {
-        firstFilter.focus();
-      } else if (firstRow) {
-        firstRow.focus();
-      }
-    });
+    // Content wiring (flags/filter/tabs/submit-lock) happens once up front
+    // rather than lazily on first click — open/close itself is owned by
+    // assets/panel.js, which needs the panel's content already wired by the
+    // time its trigger click opens it.
+    initModal(modal);
   }
 
   function init() {

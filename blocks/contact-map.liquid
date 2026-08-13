@@ -28,7 +28,7 @@
         title="{{ 'contact.map_title' | t: shop_name: shop.name }}"
       ></iframe>
     {%- else -%}
-      {% render 'image', image: block.settings.map_image, fill: true, width: 800, height: 600, crop: 'center' %}
+      {% render 'image', image: block.settings.map_image, fill: true, width: 800, height: 600, crop: 'center', loading: 'lazy' %}
       {%- if block.settings.map_link != blank -%}
         <a
           href="{{ block.settings.map_link }}"

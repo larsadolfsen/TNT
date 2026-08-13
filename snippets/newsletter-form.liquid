@@ -66,46 +66,13 @@
         %}
       </div>
     {%- endif -%}
+    <script type="application/json" data-newsletter-form-config>
+      {
+        "formId": {{ newsletter_form_id | json }},
+        "submittingLabel": {{ 'newsletter.submitting' | t | json }}
+      }
+    </script>
   {% endform %}
 </div>
 
-<script>
-  (function () {
-    var form = document.getElementById({{ newsletter_form_id | json }});
-    if (!form || form.dataset.newsletterInitialized) return;
-    form.dataset.newsletterInitialized = 'true';
-
-    var email = form.querySelector('[data-newsletter-email]');
-    var submit = form.querySelector('[data-newsletter-submit]');
-    var invalidMessage = form.querySelector('[data-newsletter-invalid-message]');
-    var submittingLabel = {{ 'newsletter.submitting' | t | json }};
-
-    if (!email || !submit) return;
-
-    function setInvalid(isInvalid) {
-      email.classList.toggle('border-important', isInvalid);
-      email.setAttribute('aria-invalid', isInvalid ? 'true' : 'false');
-      if (invalidMessage) {
-        invalidMessage.classList.toggle('hidden', !isInvalid);
-      }
-    }
-
-    email.addEventListener('input', function () {
-      if (email.validity.valid) setInvalid(false);
-    });
-
-    form.addEventListener('submit', function (event) {
-      if (!email.validity.valid) {
-        event.preventDefault();
-        setInvalid(true);
-        email.focus();
-        return;
-      }
-      setInvalid(false);
-      submit.disabled = true;
-      submit.classList.add('opacity-70');
-      submit.textContent = submittingLabel;
-      email.disabled = true;
-    });
-  })();
-</script>
+<script src="{{ 'newsletter-form.min.js' | asset_url }}" defer="defer"></script>

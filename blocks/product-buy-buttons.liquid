@@ -61,7 +61,7 @@
 <script type="application/json" id="product-buy-buttons-config">
   {"defaultVariantId": {{ product.selected_or_first_available_variant.id | json }}, "stickyButtonText": {{ sticky_buy_button_text | json }}}
 </script>
-<script src="{{ 'product-buy-buttons.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-buy-buttons.min.js' | asset_url }}" defer="defer"></script>
 
 <!-- Mobile Sticky Buy Bar -->
 {%- render 'product-buy-sticky-bar', enable_sticky_buy_button: block.settings.enable_sticky_buy_button, sticky_buy_button_text: sticky_buy_button_text -%}
