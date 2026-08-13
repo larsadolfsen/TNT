@@ -33,16 +33,7 @@
 {%- if display_collections != blank or request.design_mode -%}
 <div id="collections-grid-{{ section.id }}" class="collections">
   {% for col_item in display_collections %}
-    {%- liquid
-      if forloop.index <= 4
-        assign card_loading = 'eager'
-        assign card_fetchpriority = 'high'
-      else
-        assign card_loading = 'lazy'
-        assign card_fetchpriority = nil
-      endif
-    -%}
-    {% render 'collection-card', collection: col_item, loading: card_loading, fetchpriority: card_fetchpriority %}
+    {% render 'collection-card', collection: col_item %}
   {% else %}
     {% if request.design_mode %}
       {% for i in (1..4) %}
