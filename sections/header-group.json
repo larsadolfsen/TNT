@@ -59,20 +59,6 @@
                 "alignment": "center"
               },
               "blocks": {
-                "header_search_icon_mQ3fXk": {
-                  "type": "header-search-icon",
-                  "name": "Search Icon",
-                  "settings": {
-                    "predictive_search": true,
-                    "results_products": 5,
-                    "results_other": 3,
-                    "show_queries": true,
-                    "hide_on_mobile": false,
-                    "hide_on_tablet": true,
-                    "hide_on_desktop": true
-                  },
-                  "blocks": {}
-                },
                 "header_search_TgXRt8": {
                   "type": "header-search",
                   "name": "Search Bar",
@@ -91,7 +77,6 @@
                 }
               },
               "block_order": [
-                "header_search_icon_mQ3fXk",
                 "header_search_TgXRt8"
               ]
             },
@@ -102,6 +87,20 @@
                 "alignment": "right"
               },
               "blocks": {
+                "header_search_icon_NNXbpV": {
+                  "type": "header-search-icon",
+                  "name": "Search Icon",
+                  "settings": {
+                    "predictive_search": true,
+                    "results_products": 5,
+                    "results_other": 3,
+                    "show_queries": true,
+                    "hide_on_mobile": false,
+                    "hide_on_tablet": true,
+                    "hide_on_desktop": true
+                  },
+                  "blocks": {}
+                },
                 "header_account_hd2K91": {
                   "type": "header-account",
                   "name": "Account",
@@ -120,6 +119,7 @@
                 }
               },
               "block_order": [
+                "header_search_icon_NNXbpV",
                 "header_account_hd2K91",
                 "header_cart_4wAidd"
               ]
