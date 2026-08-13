@@ -146,7 +146,7 @@
         const toggleBtn = document.createElement('button');
         toggleBtn.type = 'button';
         toggleBtn.className = 'text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0 mt-2 font-semibold flex items-center gap-1 w-full';
-        toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
+        toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><svg class="icon text-xs" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>`;
 
         toggleBtn.onclick = function() {
           const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
@@ -155,13 +155,13 @@
               labels[i].classList.add('hidden');
             }
             toggleBtn.setAttribute('aria-expanded', 'false');
-            toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
+            toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><svg class="icon text-xs" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>`;
           } else {
             for (let i = limit; i < labels.length; i++) {
               labels[i].classList.remove('hidden');
             }
             toggleBtn.setAttribute('aria-expanded', 'true');
-            toggleBtn.innerHTML = `<span>Vis færre</span><span class="material-symbols-outlined text-xs">keyboard_arrow_up</span>`;
+            toggleBtn.innerHTML = `<span>Vis færre</span><svg class="icon text-xs" aria-hidden="true"><use href="#icon-chevron-up"></use></svg>`;
           }
         };
 

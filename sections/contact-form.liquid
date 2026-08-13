@@ -37,7 +37,7 @@
       {% form 'contact', id: contact_form_id, class: 'flex flex-col gap-4' %}
         {%- if form.posted_successfully? -%}
           <div id="{{ contact_form_id }}-success" tabindex="-1" class="flex flex-col gap-1">
-            {% render 'icon', name: 'check_circle', class: 'text-primary text-2xl' %}
+            {% render 'icon', name: 'circle-check', class: 'text-primary text-2xl' %}
             <p class="text-base font-bold text-primary">{{ 'contact.success_heading' | t }}</p>
             <p class="text-sm text-primary/70">{{ 'contact.success_body' | t }}</p>
           </div>
@@ -50,7 +50,7 @@
         {%- else -%}
           {%- if form.errors -%}
             <div role="alert" class="flex items-center gap-1.5">
-              {% render 'icon', name: 'error', class: 'text-important text-[16px]' %}
+              {% render 'icon', name: 'circle-alert', class: 'text-important text-[16px]' %}
               <p class="text-sm text-important">{{ 'contact.error_generic' | t }}</p>
             </div>
           {%- endif -%}

@@ -8,7 +8,7 @@
   <button class="accordion-trigger flex items-center justify-between w-full text-left font-bold text-primary focus:outline-none">
     <h4 class="text-base font-sans">{{ block.settings.title }}</h4>
     <span class="w-8 h-8 flex items-center justify-center flex-shrink-0 text-primary/85 rounded-full hover:bg-black/5 transition-colors">
-      {% render 'icon', name: 'expand_more', class: expand_icon_class %}
+      {% render 'icon', name: 'chevron-down', class: expand_icon_class %}
     </span>
   </button>
   <div class="rte accordion-content{% unless block.settings.open_by_default %} hidden{% endunless %} pt-2 text-base text-primary/85">
@@ -22,7 +22,7 @@
     if (!trigger) return;
     trigger.addEventListener('click', function() {
       const content = this.nextElementSibling;
-      const icon = this.querySelector('.material-symbols-outlined');
+      const icon = this.querySelector('.icon');
       if (content.classList.contains('hidden')) {
         content.classList.remove('hidden');
         if (icon) icon.classList.add('rotate-180');

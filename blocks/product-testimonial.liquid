@@ -116,7 +116,7 @@
       <div class="bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center max-w-lg testimonial-single-card-{{ block.id }}">
         <div class="flex justify-center text-amber-500 mb-2">
           {%- for i in (1..block.settings.stars) -%}
-            {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
+            {% render 'icon', name: 'star', class: 'text-[14px]', filled: true, style: "font-size: 14px;" %}
           {%- endfor -%}
         </div>
         {%- if block.settings.quote != blank -%}
@@ -139,7 +139,7 @@
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars) -%}
-                    {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
+                    {% render 'icon', name: 'star', class: 'text-[14px]', filled: true, style: "font-size: 14px;" %}
                   {%- endfor -%}
                 </div>
                 <p class="text-base text-primary">"{{ block.settings.quote }}"</p>
@@ -156,7 +156,7 @@
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars_2) -%}
-                    {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
+                    {% render 'icon', name: 'star', class: 'text-[14px]', filled: true, style: "font-size: 14px;" %}
                   {%- endfor -%}
                 </div>
                 <p class="text-base text-primary">"{{ block.settings.quote_2 }}"</p>
@@ -173,7 +173,7 @@
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars_3) -%}
-                    {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
+                    {% render 'icon', name: 'star', class: 'text-[14px]', filled: true, style: "font-size: 14px;" %}
                   {%- endfor -%}
                 </div>
                 <p class="text-base text-primary">"{{ block.settings.quote_3 }}"</p>
@@ -190,7 +190,7 @@
               <div>
                 <div class="flex justify-center text-amber-500 mb-2">
                   {%- for i in (1..block.settings.stars_4) -%}
-                    {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
+                    {% render 'icon', name: 'star', class: 'text-[14px]', filled: true, style: "font-size: 14px;" %}
                   {%- endfor -%}
                 </div>
                 <p class="text-base text-primary">"{{ block.settings.quote_4 }}"</p>

@@ -78,7 +78,7 @@
           {%- if customer -%}
             <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider" aria-hidden="true">{{ initials }}</span>
           {%- else -%}
-            {% render 'icon', name: 'person', class: 'text-2xl text-primary' %}
+            {% render 'icon', name: 'user', class: 'text-2xl text-primary' %}
           {%- endif -%}
         </a>
 
@@ -94,7 +94,7 @@
           {%- if customer -%}
             <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider shrink-0" aria-hidden="true">{{ initials }}</span>
           {%- else -%}
-            {% render 'icon', name: 'person', class: 'text-2xl text-primary shrink-0' %}
+            {% render 'icon', name: 'user', class: 'text-2xl text-primary shrink-0' %}
           {%- endif -%}
           {%- if show_label -%}
             <span class="text-sm font-medium text-primary ml-1">{{ label_text }}</span>
@@ -119,7 +119,7 @@
           {%- if customer -%}
             <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center text-xs font-bold tracking-wider shrink-0" aria-hidden="true">{{ initials }}</span>
           {%- else -%}
-            {% render 'icon', name: 'person', class: 'text-2xl text-primary shrink-0' %}
+            {% render 'icon', name: 'user', class: 'text-2xl text-primary shrink-0' %}
           {%- endif -%}
           {%- if show_label -%}
             <span class="hidden md:inline text-sm font-medium text-primary ml-1">{{ label_text }}</span>
