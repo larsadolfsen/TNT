@@ -30,9 +30,9 @@
               <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="{{ link.url }}">{{ link.title }}</a>
             {%- endfor -%}
           {%- else -%}
-            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Fragt &amp; Retur</a>
-            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Handelsbetingelser</a>
-            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Kontakt os</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="{{ shop.shipping_policy.url | default: '#' }}">Fragt &amp; Retur</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="{{ shop.terms_of_service.url | default: '#' }}">Handelsbetingelser</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="{{ pages['contact'].url | default: '#' }}">Kontakt os</a>
           {%- endif -%}
         </nav>
       </div>
@@ -52,8 +52,8 @@
               <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="{{ link.url }}">{{ link.title }}</a>
             {%- endfor -%}
           {%- else -%}
-            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Om os</a>
-            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="#">Vaskevejledning</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="{{ pages['om-os'].url | default: '#' }}">Om os</a>
+            <a class="text-primary/80 no-underline hover:text-primary transition-colors" href="{{ pages['vaskevejledning'].url | default: '#' }}">Vaskevejledning</a>
           {%- endif -%}
         </nav>
       </div>
