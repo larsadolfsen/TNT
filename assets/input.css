@@ -46,6 +46,7 @@
 
   --radio-size: 20px;
   --radio-gap: 3px;
+  --radio-ring-width: 2px;
 
   @media (min-width: --theme(--breakpoint-lg)) {
     --grid-gap: 24px;
@@ -804,26 +805,26 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 /* Snippet/Section component styles migrated from {% stylesheet %} blocks */
 
 /* Radio snippet (snippets/radio.liquid) styles.
-   Selected state = outer ring + gap of the surrounding surface + filled inner dot:
-   the fill is clipped to the content box and held off the border by the padding.
-   Declared here rather than as Tailwind utilities because the unlayered global
-   `* { border-color: ... }` reset outranks any layered `checked:border-*` utility. */
+   The ring is always drawn in --color-control-selected; selecting the option adds
+   the inner dot, which is the same colour clipped to the content box and held off
+   the ring by the padding. Declared here rather than as Tailwind utilities because
+   the unlayered global `* { border-color: ... }` reset outranks any layered
+   `border-*` utility. */
 .radio-input {
   appearance: none;
   width: var(--radio-size);
   height: var(--radio-size);
   flex-shrink: 0;
   border-radius: 9999px;
-  border: 1px solid var(--color-border);
+  border: var(--radio-ring-width) solid var(--color-control-selected);
   padding: var(--radio-gap);
   background-color: transparent;
   background-clip: content-box;
   cursor: pointer;
-  transition: background-color 150ms ease, border-color 150ms ease;
+  transition: background-color 150ms ease;
 }
 
 .radio-input:checked {
-  border-color: var(--color-control-selected);
   background-color: var(--color-control-selected);
 }
 

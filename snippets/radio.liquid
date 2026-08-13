@@ -1,10 +1,11 @@
 {% doc %}
   Renders a single custom-styled radio input — a native `<input type="radio">` with the
   browser appearance stripped, so the control follows the theme tokens instead of the OS
-  accent colour. Selected state is an outer ring in `--color-control-selected` and a filled inner
-  dot of the same colour, separated by a gap of the surrounding surface; no wrapper
-  element or pseudo-element is needed. Visuals live in the `.radio-input` rule in
-  assets/input.css (sized via the `--radio-size`/`--radio-gap` tokens).
+  accent colour. Every option shows a ring in `--color-control-selected`; the selected
+  one adds a filled inner dot of the same colour, separated from the ring by a gap of
+  the surrounding surface, with no wrapper element or pseudo-element. Visuals live in
+  the `.radio-input` rule in assets/input.css (sized via the `--radio-size`,
+  `--radio-gap` and `--radio-ring-width` tokens).
 
   @param {string} name - required. Shared name of the radio group.
   @param {string} value - required. Value reported when this option is selected.
