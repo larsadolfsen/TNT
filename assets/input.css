@@ -172,6 +172,58 @@ h4,
   line-height: var(--leading-tight);
 }
 
+/* ==========================================================================
+   Typography system — .type-* primitives
+   Seven sizes and eight modifiers that replace the 95 ad-hoc combinations
+   counted in docs/typography-inventory.md. Named by size, not by function:
+   the functional names (title-page, caption, label …) live in
+   snippets/text-style.liquid, which maps a role to a set of these classes.
+   Specimen: docs/typography-specimen.html.
+
+   A size class sets font-size and the line-height that belongs to that size,
+   nothing else. Colour, weight, case and family are modifiers. Nothing here
+   sets margin, width or position — that stays at the call site.
+
+   Tokens live in snippets/css-variables.liquid under the --type-* prefix.
+   ========================================================================== */
+
+.type-3xl { font-size: var(--type-3xl); line-height: 1.05; letter-spacing: var(--type-tracking-tight); }
+.type-2xl { font-size: var(--type-2xl); line-height: 1.15; letter-spacing: var(--type-tracking-tight); }
+.type-xl  { font-size: var(--type-xl);  line-height: 1.2; }
+.type-lg  { font-size: var(--type-lg);  line-height: 1.25; }
+.type-md  { font-size: var(--type-md);  line-height: 1.5; }
+.type-sm  { font-size: var(--type-sm);  line-height: 1.55; }
+.type-xs  { font-size: var(--type-xs);  line-height: 1.35; }
+
+.type-medium { font-weight: var(--type-weight-medium); }
+.type-strong { font-weight: var(--type-weight-strong); }
+.type-bold   { font-weight: var(--type-weight-bold); }
+.type-caps   { text-transform: uppercase; letter-spacing: var(--type-tracking-caps); }
+.type-serif  { font-family: var(--font-header-family); }
+.type-muted  { color: var(--color-text-muted); }
+.type-faint  { color: var(--color-text-faint); }
+.type-error  { color: var(--color-important); }
+
+/* The badge is a surface, not a text style: background, padding, corners.
+   Its content is .type-xs .type-bold .type-caps, the same label used
+   everywhere else, so 12px exists in exactly one place in the system. */
+.type-badge {
+  display: inline-block;
+  padding: 0.4em 0.65em;
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.type-badge--important {
+  background: var(--color-important);
+  color: var(--color-on-important);
+}
+
+/* Note: `main { font-size: 16px }` above is deliberately left alone in this
+   step. Moving the inherited base to 14px is a separate change — icons size
+   themselves in 1em (snippets/icon.liquid), so an icon without an explicit
+   size would shrink with it. */
+
 .icon {
   width: 1em;
   height: 1em;

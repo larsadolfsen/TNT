@@ -1,0 +1,62 @@
+{%- comment -%}
+  text-style.liquid — resolves a semantic text role to a set of .type-* classes.
+  Exposes: a class string, printed straight into a class attribute.
+  Depends on: the .type-* classes in assets/input.css and the --type-* tokens
+  in snippets/css-variables.liquid.
+
+  Usage:
+    <p class="{% render 'text-style', role: 'caption' %}">…</p>
+    <h2 class="{% render 'text-style', role: 'title-section' %} mb-4">…</h2>
+
+  Why the indirection: the CSS classes are named after size, so they stay
+  honest about what they do. Call sites want to say what the text *is*. This
+  snippet is where those two vocabularies meet, which means a role can change
+  its appearance — or be added — without touching CSS or hunting call sites.
+
+  Layout classes (margins, widths, truncation) belong at the call site, after
+  the render tag. They are not typography.
+
+  Roles, and what they replace, are listed in docs/typography-inventory.md.
+  Specimen: docs/typography-specimen.html.
+
+  'body' resolves to an empty string on purpose: 14px / weight 400 / full
+  colour is inherited from the page, so plain body text needs no class at all.
+  An unrecognised role resolves the same way, so a typo degrades to body text
+  rather than to unstyled markup.
+{%- endcomment -%}
+
+{%- liquid
+  case role
+    when 'display'
+      assign type_classes = 'type-3xl type-bold'
+    when 'title-page'
+      assign type_classes = 'type-2xl type-bold type-serif'
+    when 'title-section'
+      assign type_classes = 'type-xl type-bold type-serif'
+    when 'title-card'
+      assign type_classes = 'type-lg type-bold type-serif'
+    when 'title-row'
+      assign type_classes = 'type-md type-strong'
+    when 'body-lg'
+      assign type_classes = 'type-md'
+    when 'body-lg-medium'
+      assign type_classes = 'type-md type-medium'
+    when 'body-strong'
+      assign type_classes = 'type-strong'
+    when 'caption'
+      assign type_classes = 'type-muted'
+    when 'caption-strong'
+      assign type_classes = 'type-strong type-muted'
+    when 'label'
+      assign type_classes = 'type-xs type-bold type-caps type-muted'
+    when 'badge-label'
+      assign type_classes = 'type-xs type-bold type-caps'
+    when 'error'
+      assign type_classes = 'type-error'
+    when 'disabled'
+      assign type_classes = 'type-faint'
+    else
+      assign type_classes = ''
+  endcase
+-%}
+{{- type_classes -}}

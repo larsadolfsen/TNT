@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TNT — typografi: i dag og anbefalet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   1. TEMAETS EGNE TOKENS
+   Kopieret fra snippets/css-variables.liquid + config/settings_data.json.
+   ========================================================================== */
+
+:root {
+  --font-body-family: "Work Sans", sans-serif;
+  --font-header-family: "Playfair Display", serif;
+
+  --color-primary: #0e1a28;
+  --color-background: #ffffff;
+  --color-background-shade: #f8f9fd;
+  --color-card-light: #ffffff;
+  --color-card-high: #ffffff;
+  --color-border: #eeeeee;
+  --color-accent: #ffd814;
+  --color-on-accent: #0e1a28;
+  --color-on-primary: #ffffff;
+  --color-important: #e11d48;
+  --color-on-important: #ffffff;
+
+  /* NYE — tekstfarver som tokens. Gennemsigtigheden er her stadig, men den
+     står præcis tre steder i stedet for at blive skrevet i hånden ved hvert
+     kaldsted. Fordi de peger på --color-primary, følger de automatisk med
+     over i mørk tilstand og skal ikke gentages i .dark nedenfor. */
+  --color-text:       var(--color-primary);
+  --color-text-muted: color-mix(in srgb, var(--color-primary) 70%, transparent);
+  --color-text-faint: color-mix(in srgb, var(--color-primary) 45%, transparent);
+}
+
+.dark {
+  --color-primary: #ffffff;
+  --color-background: #0e1a28;
+  --color-background-shade: #142131;
+  --color-card-light: #1a2635;
+  --color-card-high: #222f40;
+  --color-border: #253549;
+  --color-on-primary: #0e1a28;
+
+  /* Ingen tekstfarver her — --color-text, -muted og -faint peger på
+     --color-primary, som allerede er skiftet ovenfor. */
+}
+
+
+/* ==========================================================================
+   2. ANBEFALING — TYPOGRAFI-TOKENS
+   Nye. Hører hjemme i snippets/css-variables.liquid ved siden af farverne.
+   Alt i rem, så teksten følger brugerens egen browser-indstilling.
+   ========================================================================== */
+
+:root {
+  /* Skala — 7 trin, navngivet efter størrelse. I dag: 15 størrelser
+     skrevet på 20 måder. 20px er slået sammen med 18px. */
+  --type-3xl: 3rem;      /* 48px */
+  --type-2xl: 1.875rem;  /* 30px */
+  --type-xl:  1.5rem;    /* 24px */
+  --type-lg:  1.125rem;  /* 18px */
+  --type-md:  1rem;      /* 16px */
+  --type-sm:  0.875rem;  /* 14px  ← standard, arves fra body */
+  --type-xs:  0.75rem;   /* 12px  ← kun versal-etiketter */
+
+  /* Vægte — 4 trin. I dag: 5. Kun 900 udgår helt. */
+  --type-weight-normal: 400;
+  --type-weight-medium: 500;
+  --type-weight-strong: 600;
+  --type-weight-bold:   700;
+
+  /* Knibning — 2 trin. I dag: 4 varianter brugt i flæng. */
+  --type-tracking-tight: -0.025em;
+  --type-tracking-caps:   0.05em;
+
+  /* Dæmpning: se --color-text / -muted / -faint i afsnit 1.
+     De er farve-tokens på linje med resten af temaets farver, ikke
+     gennemsigtighed. I dag bruges ni opacitetsniveauer af samme farve. */
+}
+
+
+/* ==========================================================================
+   3. ANBEFALING — GRUNDLAGET
+   type-body sættes på <body>, så al tekst arver den. Et element får kun
+   en klasse, hvis det skal være noget ANDET end brødtekst. Det betyder at
+   langt de fleste af de 386 nuværende størrelsesangivelser bare kan slettes.
+   ========================================================================== */
+
+body {
+  font-family: var(--font-body-family);
+  font-size: var(--type-sm);
+  font-weight: var(--type-weight-normal);
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
+
+/* ==========================================================================
+   3a. ANBEFALING — 7 STØRRELSER
+   Navngivet efter størrelse, ikke efter funktion. En klasse sætter kun
+   font-size og den linjehøjde der hører til den størrelse — intet andet.
+   .type-sm er standarden, som body allerede giver; den er med, så noget
+   kan sættes tilbage til normal inde i en beholder der har hævet skriften.
+   ========================================================================== */
+
+.type-3xl { font-size: var(--type-3xl); line-height: 1.05; letter-spacing: var(--type-tracking-tight); }
+.type-2xl { font-size: var(--type-2xl); line-height: 1.15; letter-spacing: var(--type-tracking-tight); }
+.type-xl  { font-size: var(--type-xl);  line-height: 1.2; }
+.type-lg  { font-size: var(--type-lg);  line-height: 1.25; }
+.type-md  { font-size: var(--type-md);  line-height: 1.5; }
+.type-sm  { font-size: var(--type-sm);  line-height: 1.55; }
+.type-xs  { font-size: var(--type-xs);  line-height: 1.35; }
+
+
+/* ==========================================================================
+   3b. ANBEFALING — 8 MODIFIERE
+   Vægt, versaler, skrifttype og dæmpning. Kombineres frit med en størrelse.
+   Det er hele variationsrummet — der findes ikke andre knapper at dreje på.
+   ========================================================================== */
+
+.type-medium { font-weight: var(--type-weight-medium); }
+.type-strong { font-weight: var(--type-weight-strong); }
+.type-bold   { font-weight: var(--type-weight-bold); }
+.type-caps   { text-transform: uppercase; letter-spacing: var(--type-tracking-caps); }
+.type-serif  { font-family: var(--font-header-family); }
+.type-muted  { color: var(--color-text-muted); }
+.type-faint  { color: var(--color-text-faint); }
+.type-error  { color: var(--color-important); }
+
+
+/* ==========================================================================
+   3c. BADGE — en flade-komponent, ikke en tekst-rolle
+   Badgen leverer baggrund, polstring og hjørner. Teksten indeni er
+   .type-xs .type-bold .type-caps. Derfor findes 12px kun ét sted i systemet.
+   ========================================================================== */
+
+.type-badge {
+  display: inline-block;
+  padding: 0.4em 0.65em;
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.type-badge--important { background: var(--color-important); color: var(--color-on-important); }
+
+
+/* ==========================================================================
+   4. SPECIMEN-SIDENS EGEN OPSÆTNING — ikke en del af forslaget
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+/* Bemærk: font-family, font-size, font-weight, line-height og color for
+   <body> står i afsnit 3 — det er selve anbefalingen, ikke stillads. */
+body {
+  margin: 0;
+  padding: 28px 24px 120px;
+  background: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet { max-width: 900px; margin: 0 auto; }
+
+.masthead {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+  padding-bottom: 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+.masthead h1 {
+  margin: 0 0 6px;
+  font-family: var(--font-header-family);
+  font-size: 1.5rem; font-weight: 700; line-height: 1.2;
+}
+.masthead p {
+  margin: 0; font-size: 0.875rem; line-height: 1.5;
+  color: var(--color-text-muted);
+  max-width: 52ch;
+}
+
+.switch { display: flex; border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; flex: none; }
+.switch button {
+  font-family: inherit; font-size: 0.8125rem; font-weight: 500;
+  padding: 8px 16px; border: 0; cursor: pointer;
+  background: var(--color-card-light);
+  color: var(--color-text-muted);
+}
+.switch button[aria-pressed="true"] { background: var(--color-primary); color: var(--color-on-primary); }
+
+/* Del-overskrifter */
+.part { margin-top: 56px; }
+.part-head { padding: 20px 0 16px; border-bottom: 2px solid var(--color-primary); margin-bottom: 4px; }
+.part-head .kicker {
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--color-text-faint);
+  margin-bottom: 6px;
+}
+.part-head h2 {
+  margin: 0 0 8px;
+  font-family: var(--font-header-family);
+  font-size: 1.75rem; font-weight: 700; line-height: 1.15;
+}
+.part-head p {
+  margin: 0; font-size: 0.875rem; line-height: 1.55;
+  color: var(--color-text-muted);
+  max-width: 66ch;
+}
+
+.tally { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 14px; }
+.tally div { min-width: 84px; }
+.tally b {
+  display: block;
+  font-family: var(--font-body-family);
+  font-size: 1.5rem; font-weight: 700; line-height: 1.1;
+}
+.tally span {
+  display: block; margin-top: 2px;
+  font-size: 0.6875rem; line-height: 1.35;
+  color: var(--color-text-muted);
+}
+
+/* Grupper */
+.band { margin-bottom: 40px; }
+.band > h3 {
+  margin: 32px 0 3px;
+  font-size: 0.6875rem; font-weight: 600;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+.band > .band-sub {
+  margin: 0 0 14px; font-size: 0.8125rem; line-height: 1.5;
+  color: var(--color-text-muted);
+  max-width: 66ch;
+}
+
+.row {
+  display: grid; grid-template-columns: 208px 1fr;
+  gap: 22px; align-items: baseline;
+  padding: 11px 0;
+  border-top: 1px solid var(--color-border);
+}
+.band .row:last-of-type { border-bottom: 1px solid var(--color-border); }
+
+.meta { padding-top: 3px; }
+.meta code {
+  display: block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.6875rem; line-height: 1.5; letter-spacing: -0.01em;
+  color: var(--color-text);
+  word-break: break-word;
+}
+.meta .name {
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 3px;
+}
+.meta em {
+  display: block; margin-top: 4px;
+  font-family: var(--font-body-family); font-style: normal;
+  font-size: 0.6875rem; line-height: 1.45;
+  color: var(--color-text-faint);
+}
+.meta .flag { color: var(--color-important); font-weight: 500; }
+
+.sample { min-width: 0; }
+.sample p, .sample div { margin: 0; }
+
+/* Dæmpningssammenligning */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.compare h4 {
+  margin: 0 0 11px; font-size: 0.6875rem; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+.compare p { margin: 0 0 7px; font-size: 0.875rem; line-height: 1.4; }
+.compare .pct {
+  display: inline-block; width: 3.6em;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+  color: var(--color-text-faint);
+}
+
+/* Kontekstprøver */
+.context { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.card {
+  background: var(--color-card-light);
+  border: 1px solid var(--color-border);
+  border-radius: 12px; padding: 18px;
+}
+.card > * + * { margin-top: 7px; }
+.thumb {
+  height: 116px; border-radius: 8px; margin-bottom: 14px;
+  background: var(--color-background-shade);
+  border: 1px solid var(--color-border);
+  position: relative;
+}
+.thumb > span { position: absolute; top: 10px; left: 10px; }
+.divider { height: 1px; background: var(--color-border); margin: 13px 0; }
+.line { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+
+.note {
+  margin-top: 22px; padding: 16px 18px;
+  background: var(--color-background-shade);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 0.8125rem; line-height: 1.6;
+  color: var(--color-text-muted);
+}
+.note strong { color: var(--color-primary); font-weight: 600; }
+.note code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+.note + .note { margin-top: 12px; }
+
+table.map { width: 100%; border-collapse: collapse; margin-top: 6px; }
+table.map th {
+  text-align: left; padding: 8px 12px 8px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.6875rem; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+table.map td {
+  padding: 9px 12px 9px 0;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.6875rem; line-height: 1.5;
+  color: var(--color-text);
+}
+table.map td:first-child { font-weight: 600; color: var(--color-primary); white-space: nowrap; }
+table.map td:last-child {
+  font-family: var(--font-body-family); padding-right: 0;
+  color: var(--color-text-muted);
+}
+
+pre.snippet {
+  margin: 14px 0 0;
+  padding: 14px 16px;
+  background: var(--color-background-shade);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow-x: auto;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.75rem; line-height: 1.65;
+  color: var(--color-text);
+}
+
+@media (max-width: 720px) {
+  .row { grid-template-columns: 1fr; gap: 8px; }
+  .compare { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+<div class="sheet">
+
+  <header class="masthead">
+    <div>
+      <h1>Typografi — i dag og anbefalet</h1>
+      <p>Del 1 viser hvad temaet bruger i dag, målt i koden. Del 2 er forslaget. Butikkens egne farver og skrifter begge steder.</p>
+    </div>
+    <div class="switch" role="group" aria-label="Lys eller mørk tilstand">
+      <button id="b-light" aria-pressed="true">Lys</button>
+      <button id="b-dark" aria-pressed="false">Mørk</button>
+    </div>
+  </header>
+
+
+  <!-- ================================================================== -->
+  <!-- DEL 1 — I DAG                                                       -->
+  <!-- ================================================================== -->
+
+  <section class="part">
+    <div class="part-head">
+      <div class="kicker">Del 1</div>
+      <h2>Sådan ser det ud i dag</h2>
+      <p>Hver linje herunder er en kombination der faktisk står i temaets kode. Ingen af dem er opdigtede, og ingen er udeladt inden for de viste grupper. Klassestrengen står til venstre, så du kan slå den op.</p>
+      <div class="tally">
+        <div><b>95</b><span>kombinationer i alt</span></div>
+        <div><b>15</b><span>pixelstørrelser</span></div>
+        <div><b>9</b><span>dæmpningsniveauer</span></div>
+        <div><b>108</b><span>steder under 14px</span></div>
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>Overskrifter — 18 varianter</h3>
+      <p class="band-sub">Otte størrelser, fire vægte, tre knibninger. Bemærk 15px og 16px skrevet som vilkårlige værdier ved siden af <code>text-base</code>, der er præcis det samme som 16px.</p>
+
+      <div class="row">
+        <div class="meta"><code class="name">text-5xl font-black tracking-tight</code><em>product-price</em></div>
+        <div class="sample"><div style="font-size:48px;font-weight:900;letter-spacing:-0.025em;line-height:1.05">249,00&nbsp;kr</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-3xl font-bold tracking-tight</code><em>product-price</em></div>
+        <div class="sample"><div style="font-size:30px;font-weight:700;letter-spacing:-0.025em;line-height:1.2">249,00&nbsp;kr</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-3xl font-bold</code><em>search</em></div>
+        <div class="sample"><div style="font-size:30px;font-weight:700;line-height:1.2">Søgeresultater</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-2xl font-bold</code><em>contact-form, footer</em></div>
+        <div class="sample"><div style="font-size:24px;font-weight:700;line-height:1.2">Nyheder i sortimentet</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-2xl font-bold tracking-tight</code><em>password</em></div>
+        <div class="sample"><div style="font-size:24px;font-weight:700;letter-spacing:-0.025em;line-height:1.2">Nyheder i sortimentet</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-2xl font-bold tracking-wide</code><em>password</em><em class="flag">Modsat knibning, samme fil</em></div>
+        <div class="sample"><div style="font-size:24px;font-weight:700;letter-spacing:0.025em;line-height:1.2">Nyheder i sortimentet</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-2xl font-bold text-important</code><em>product-price, savings-badge</em></div>
+        <div class="sample"><div style="font-size:24px;font-weight:700;line-height:1.2;color:var(--color-important)">Spar 249,00&nbsp;kr</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-2xl font-semibold</code><em>page-title</em></div>
+        <div class="sample"><div style="font-size:24px;font-weight:600;line-height:1.2">Nyheder i sortimentet</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-xl font-bold tracking-tight</code><em>fire skuffe-titler</em></div>
+        <div class="sample"><div style="font-size:20px;font-weight:700;letter-spacing:-0.025em;line-height:1.25">Din kurv</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-xl font-bold</code><em>product-banner-text</em></div>
+        <div class="sample"><div style="font-size:20px;font-weight:700;line-height:1.25">Din kurv</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-lg font-bold</code><em>cart, product-description</em></div>
+        <div class="sample"><div style="font-size:18px;font-weight:700;line-height:1.25">Levering og retur</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-lg font-semibold</code><em>collection-children</em></div>
+        <div class="sample"><div style="font-size:18px;font-weight:600;line-height:1.25">Levering og retur</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-base font-bold</code><em>product-price, footer</em></div>
+        <div class="sample"><div style="font-size:16px;font-weight:700;line-height:1.35">Akryldug ensfarvet</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-base font-semibold</code><em>navigation, mobil-skuffe</em></div>
+        <div class="sample"><div style="font-size:16px;font-weight:600;line-height:1.35">Akryldug ensfarvet</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-base font-bold text-on-accent</code><em>product-buy-cta</em></div>
+        <div class="sample"><div style="font-size:16px;font-weight:700;line-height:1.35;background:var(--color-accent);color:var(--color-on-accent);display:inline-block;padding:8px 16px;border-radius:999px">Læg i kurv</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-[16px] font-bold</code><em>quantity-selector</em><em class="flag">Dublet af text-base</em></div>
+        <div class="sample"><div style="font-size:16px;font-weight:700;line-height:1.35">3</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-[15px] font-bold</code><em>product-buy-sticky-bar</em><em class="flag">Findes ikke i skalaen</em></div>
+        <div class="sample"><div style="font-size:15px;font-weight:700;line-height:1.35">249,00&nbsp;kr</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">text-[15px] font-bold text-on-accent</code><em>product-buy-sticky-bar</em></div>
+        <div class="sample"><div style="font-size:15px;font-weight:700;line-height:1.35;background:var(--color-accent);color:var(--color-on-accent);display:inline-block;padding:7px 14px;border-radius:999px">Læg i kurv</div></div>
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>Brødtekst — 22 varianter</h3>
+      <p class="band-sub">To størrelser, men fem vægte og syv dæmpningsniveauer oven i. Læg mærke til at 400, 500, 600 og 700 alle bruges i 14px, uden at det er tydeligt hvad forskellen betyder.</p>
+
+      <div class="row"><div class="meta"><code class="name">text-base</code><em>accordion</em></div>
+        <div class="sample"><p style="font-size:16px;font-weight:400;line-height:1.55">Vores voksduge er lette at tørre af og tåler daglig brug.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-base text-primary/85</code><em>accordion, banner</em></div>
+        <div class="sample"><p style="font-size:16px;font-weight:400;line-height:1.55;color:color-mix(in srgb,var(--color-primary) 85%,transparent)">Vores voksduge er lette at tørre af og tåler daglig brug.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[16px] text-primary/45</code><em>product-price</em></div>
+        <div class="sample"><p style="font-size:16px;font-weight:400;line-height:1.55;color:color-mix(in srgb,var(--color-primary) 45%,transparent)">Vores voksduge er lette at tørre af og tåler daglig brug.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm</code><em>page-title, cart, footer</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:400;line-height:1.55">Stoffet klippes i ét stykke, så du får den længde du bestiller.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm text-primary/85</code><em>otte filer</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:400;line-height:1.55;color:color-mix(in srgb,var(--color-primary) 85%,transparent)">Stoffet klippes i ét stykke, så du får den længde du bestiller.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm text-primary/70</code><em>contact-form, footer</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:400;line-height:1.55;color:color-mix(in srgb,var(--color-primary) 70%,transparent)">Stoffet klippes i ét stykke, så du får den længde du bestiller.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm text-primary/60</code><em>product-price</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:400;line-height:1.55;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">Stoffet klippes i ét stykke, så du får den længde du bestiller.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm text-primary/50</code><em>cart</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:400;line-height:1.55;color:color-mix(in srgb,var(--color-primary) 50%,transparent)">Stoffet klippes i ét stykke, så du får den længde du bestiller.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm text-slate-600</code><em>password</em><em class="flag">Hardkodet, følger ikke dark mode</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:400;line-height:1.55;color:#475569">Stoffet klippes i ét stykke, så du får den længde du bestiller.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm text-red-700</code><em>password</em><em class="flag">Hardkodet, følger ikke dark mode</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:400;line-height:1.55;color:#b91c1c">Adgangskoden er forkert.</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm text-important</code><em>contact-form, newsletter</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:400;line-height:1.55;color:var(--color-important)">Indtast en gyldig e-mailadresse</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm font-medium</code><em>seks filer</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:500;line-height:1.55">Bredde 140 cm · sælges pr. påbegyndt meter</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm font-medium text-primary/85</code><em>product-price</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:500;line-height:1.55;color:color-mix(in srgb,var(--color-primary) 85%,transparent)">Bredde 140 cm · sælges pr. påbegyndt meter</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm font-semibold</code><em>elleve filer — mest brugte</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:600;line-height:1.55">I alt inkl. moms</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm font-semibold text-primary/80</code><em>testimonial-card</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:600;line-height:1.55;color:color-mix(in srgb,var(--color-primary) 80%,transparent)">I alt inkl. moms</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm font-semibold text-primary/60</code><em>footer-localization</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:600;line-height:1.55;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">I alt inkl. moms</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm font-bold</code><em>elleve filer</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:700;line-height:1.55">I alt inkl. moms</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-sm font-normal</code><em>product-card, search-result-row</em><em class="flag">Samme som text-sm uden vægt</em></div>
+        <div class="sample"><p style="font-size:14px;font-weight:400;line-height:1.55">Akryldug ensfarvet — sand</p></div></div>
+    </div>
+
+    <div class="band">
+      <h3>Små tekster — 22 varianter, alle under 14px</h3>
+      <p class="band-sub">Her ligger problemet du pegede på. Fem forskellige størrelser under gulvet, ganget med vægte og dæmpninger. De to nederste vises i 9px, som de gør på storefronten i dag.</p>
+
+      <div class="row"><div class="meta"><code class="name">text-xs</code><em>product-card, unit-price</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:400;line-height:1.45">Normalt afsendt inden for 1–2 hverdage</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs text-primary/85</code><em>syv filer</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:400;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 85%,transparent)">Normalt afsendt inden for 1–2 hverdage</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs text-primary/70</code><em>cart, account-panel</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:400;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 70%,transparent)">Normalt afsendt inden for 1–2 hverdage</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs text-primary/60</code><em>fem filer</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:400;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">Normalt afsendt inden for 1–2 hverdage</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs text-slate-400</code><em>password</em><em class="flag">Hardkodet</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:400;line-height:1.45;color:#94a3b8">Normalt afsendt inden for 1–2 hverdage</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs text-important</code><em>contact-form, newsletter</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:400;line-height:1.45;color:var(--color-important)">Indtast en gyldig e-mailadresse</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-medium</code><em>product-buy-cta</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:500;line-height:1.45">129,00 kr pr. meter</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-semibold</code><em>collection-subcollections, product-card</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:600;line-height:1.45">129,00 kr pr. meter</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-bold</code><em>fem filer</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:700;line-height:1.45">129,00 kr pr. meter</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[12px] text-primary/85</code><em>breadcrumbs-nav</em><em class="flag">Dublet af text-xs</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:400;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 85%,transparent)">Forside / Voksdug / Ensfarvet</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[12px] text-primary/70</code><em>product-card-price</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:400;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 70%,transparent);text-decoration:line-through">159,00 kr</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[12px] font-medium text-primary/60</code><em>product-buy-sticky-bar</em></div>
+        <div class="sample"><p style="font-size:12px;font-weight:500;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">pr. meter</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[11px]</code><em>localization-picker, unit-price</em></div>
+        <div class="sample"><p style="font-size:11px;font-weight:400;line-height:1.45">Normalt afsendt inden for 1–2 hverdage</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[11px] text-primary/70</code><em>predictive-search-product</em></div>
+        <div class="sample"><p style="font-size:11px;font-weight:400;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 70%,transparent)">Normalt afsendt inden for 1–2 hverdage</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[11px] font-medium</code><em>metafield-pill</em></div>
+        <div class="sample"><p style="font-size:11px;font-weight:500;line-height:1.45">Bredde 140 cm</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[11px] font-semibold</code><em>collection-active-filters</em></div>
+        <div class="sample"><p style="font-size:11px;font-weight:600;line-height:1.45">Bredde 140 cm</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[10px]</code><em>product-card</em></div>
+        <div class="sample"><p style="font-size:10px;font-weight:400;line-height:1.45">Normalt afsendt inden for 1–2 hverdage</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[10px] text-primary/50</code><em>footer</em></div>
+        <div class="sample"><p style="font-size:10px;font-weight:400;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 50%,transparent)">© 2026 Textil og Voksdug · CVR 12345678</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[10px] font-semibold</code><em>collection-filter-list</em></div>
+        <div class="sample"><p style="font-size:10px;font-weight:600;line-height:1.45">Bredde 140 cm</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[9px]</code><em>collection-filter-list</em><em class="flag">Mindste tekst i temaet</em></div>
+        <div class="sample"><p style="font-size:9px;font-weight:400;line-height:1.45">Normalt afsendt inden for 1–2 hverdage</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[9px] font-semibold</code><em>collection-toolbar</em><em class="flag">Sorter- og Filtrer-knapperne</em></div>
+        <div class="sample"><p style="font-size:9px;font-weight:600;line-height:1.45">Sorter&nbsp;&nbsp;&nbsp;Filtrer</p></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[9px] font-semibold text-primary/75</code><em>product-card-price</em><em class="flag">Enhedspris på produktkort</em></div>
+        <div class="sample"><p style="font-size:9px;font-weight:600;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 75%,transparent)">/ pr. meter</p></div></div>
+    </div>
+
+    <div class="band">
+      <h3>Etiketter — 12 skrivemåder af det samme</h3>
+      <p class="band-sub">Alle tolv er den samme idé: en lille fed versal-etiket. Ingen af forskellene er bevidste designvalg — <code>wider</code> og <code>widest</code> står på naboelementer, og dæmpningen springer mellem fem niveauer.</p>
+
+      <div class="row"><div class="meta"><code class="name">text-xs font-bold uppercase tracking-widest text-primary/60</code><em>footer, product-recommendations, predictive-search</em></div>
+        <div class="sample"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-bold uppercase tracking-widest text-primary/50</code><em>cart, product-buy-cta</em></div>
+        <div class="sample"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in srgb,var(--color-primary) 50%,transparent)">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-bold uppercase tracking-wider text-primary/70</code><em>product-variant-picker, active-filters</em></div>
+        <div class="sample"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:color-mix(in srgb,var(--color-primary) 70%,transparent)">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-bold uppercase tracking-wider text-primary/80</code><em>badge</em></div>
+        <div class="sample"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:color-mix(in srgb,var(--color-primary) 80%,transparent)">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-bold uppercase tracking-wider text-primary/60</code><em>input</em></div>
+        <div class="sample"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-bold uppercase tracking-wider text-primary</code><em>collection-subcollections</em></div>
+        <div class="sample"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-bold uppercase tracking-wider text-slate-500</code><em>password</em><em class="flag">Hardkodet farve</em></div>
+        <div class="sample"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#64748b">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-xs font-bold tracking-wider text-on-primary</code><em>header-account</em><em class="flag">Uden uppercase</em></div>
+        <div class="sample"><div style="font-size:12px;font-weight:700;letter-spacing:0.05em;background:var(--color-primary);color:var(--color-on-primary);display:inline-block;padding:4px 9px;border-radius:6px">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[11px] font-bold uppercase tracking-wider text-primary/60</code><em>predictive-search-product</em></div>
+        <div class="sample"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[11px] font-bold uppercase tracking-wide text-primary</code><em>cart-discount-chip</em></div>
+        <div class="sample"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.025em">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[11px] font-semibold uppercase tracking-wider text-primary/70</code><em>search-result-row</em><em class="flag">Semibold, ikke bold</em></div>
+        <div class="sample"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:color-mix(in srgb,var(--color-primary) 70%,transparent)">Materiale</div></div></div>
+      <div class="row"><div class="meta"><code class="name">text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-on-primary</code><em>product-card-image</em><em class="flag">9px på mobil</em></div>
+        <div class="sample"><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;background:var(--color-primary);color:var(--color-on-primary);display:inline-block;padding:4px 7px;border-radius:6px">Nyhed</div></div></div>
+    </div>
+
+    <div class="band">
+      <h3>Dæmpning — 9 niveauer</h3>
+      <p class="band-sub">Den samme farve i ni styrker. Slå om til mørk tilstand og se hvor de nederste ender.</p>
+      <div style="padding:16px 0">
+        <p style="margin:0 0 7px;font-size:14px;line-height:1.4;color:var(--color-primary)"><span class="pct">100%</span>Ensfarvet voksdug</p>
+        <p style="margin:0 0 7px;font-size:14px;line-height:1.4;color:color-mix(in srgb,var(--color-primary) 85%,transparent)"><span class="pct">85%</span>Ensfarvet voksdug</p>
+        <p style="margin:0 0 7px;font-size:14px;line-height:1.4;color:color-mix(in srgb,var(--color-primary) 80%,transparent)"><span class="pct">80%</span>Ensfarvet voksdug</p>
+        <p style="margin:0 0 7px;font-size:14px;line-height:1.4;color:color-mix(in srgb,var(--color-primary) 75%,transparent)"><span class="pct">75%</span>Ensfarvet voksdug</p>
+        <p style="margin:0 0 7px;font-size:14px;line-height:1.4;color:color-mix(in srgb,var(--color-primary) 70%,transparent)"><span class="pct">70%</span>Ensfarvet voksdug</p>
+        <p style="margin:0 0 7px;font-size:14px;line-height:1.4;color:color-mix(in srgb,var(--color-primary) 60%,transparent)"><span class="pct">60%</span>Ensfarvet voksdug</p>
+        <p style="margin:0 0 7px;font-size:14px;line-height:1.4;color:color-mix(in srgb,var(--color-primary) 50%,transparent)"><span class="pct">50%</span>Ensfarvet voksdug</p>
+        <p style="margin:0 0 7px;font-size:14px;line-height:1.4;color:color-mix(in srgb,var(--color-primary) 45%,transparent)"><span class="pct">45%</span>Ensfarvet voksdug</p>
+        <p style="margin:0;font-size:14px;line-height:1.4;color:color-mix(in srgb,var(--color-primary) 40%,transparent)"><span class="pct">40%</span>Ensfarvet voksdug</p>
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>I kontekst — som det ser ud i dag</h3>
+      <p class="band-sub">Produktkort og kurv bygget med de klasser der faktisk står i <code>product-card.liquid</code>, <code>product-card-price.liquid</code> og <code>cart.liquid</code>.</p>
+
+      <div class="context">
+        <div class="card">
+          <div class="thumb"><span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;background:var(--color-primary);color:var(--color-on-primary);display:inline-block;padding:4px 8px;border-radius:6px">Nyhed</span></div>
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:color-mix(in srgb,var(--color-primary) 70%,transparent)">Voksdug</div>
+          <div style="font-size:12px;font-weight:600;line-height:1.4">Akryldug ensfarvet — sand</div>
+          <div style="font-size:10px;font-weight:400;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">Bredde 140 cm · aftørres med fugtig klud</div>
+          <div class="divider"></div>
+          <div class="line">
+            <span style="font-size:12px;font-weight:700;line-height:1">129,00 kr</span>
+            <span style="font-size:9px;font-weight:600;color:color-mix(in srgb,var(--color-primary) 75%,transparent)">/ pr. meter</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:20px;font-weight:700;letter-spacing:-0.025em;line-height:1.25;margin-bottom:14px">Din kurv</div>
+          <div class="line">
+            <span style="font-size:14px;font-weight:400;line-height:1.55">Akryldug ensfarvet — sand</span>
+            <span style="font-size:12px;font-weight:400;color:color-mix(in srgb,var(--color-primary) 85%,transparent)">3&nbsp;m</span>
+          </div>
+          <div style="font-size:12px;font-weight:400;line-height:1.45;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">Klippes i ét stykke</div>
+          <div class="divider"></div>
+          <div class="line">
+            <span style="font-size:12px;font-weight:400;color:color-mix(in srgb,var(--color-primary) 70%,transparent)">Levering</span>
+            <span style="font-size:12px;font-weight:400;color:color-mix(in srgb,var(--color-primary) 85%,transparent)">49,00 kr</span>
+          </div>
+          <div class="line" style="margin-top:8px">
+            <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in srgb,var(--color-primary) 50%,transparent)">I alt inkl. moms</span>
+            <span style="font-size:14px;font-weight:700">436,00 kr</span>
+          </div>
+          <div style="font-size:12px;font-weight:400;line-height:1.45;margin-top:10px;color:color-mix(in srgb,var(--color-primary) 60%,transparent)">Normalt afsendt inden for 1–2 hverdage</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================== -->
+  <!-- DEL 2 — ANBEFALET                                                   -->
+  <!-- ================================================================== -->
+
+  <section class="part">
+    <div class="part-head">
+      <div class="kicker">Del 2</div>
+      <h2>Det jeg anbefaler</h2>
+      <p>Ikke roller, men byggeklodser: syv størrelser og syv modifiere, der kan kombineres frit. Klasserne hedder <code>.type-*</code> og kan inspiceres i DevTools. De funktionelle navne findes stadig, men de bor i snippet'en — se sidste afsnit.</p>
+      <div class="tally">
+        <div><b>15</b><span>klasser i alt</span></div>
+        <div><b>7</b><span>størrelser</span></div>
+        <div><b>4</b><span>vægte</span></div>
+        <div><b>1</b><span>størrelse under 14px</span></div>
+      </div>
+      <div class="note" style="margin-top:18px">
+        <strong>Ændret efter dine kommentarer:</strong>
+        <br>· <code>.type-body</code> ligger nu på <code>&lt;body&gt;</code>, så al tekst arver den. Et element får kun en klasse, hvis det skal være noget andet end brødtekst.
+        <br>· Vægte skåret fra fem til tre — 500 og 900 udgår. Prisen på 48px går fra 900 til 700.
+        <br>· <code>caption</code> er ikke længere en rolle. Den var 14px ligesom brødtekst, så den er nu bare <code>.type-muted</code>.
+        <br>· Etiketten er 12px og bruges også inde i badges. Badgen er reduceret til en flade — baggrund, polstring, hjørner — uden egen tekststil.
+        <br>· 20px og 18px er slået sammen til 18px. Skuffe-titler og korttitler er nu den samme.
+        <br>· Klasserne hedder efter størrelse, ikke efter funktion.
+        <br>· <code>.type-medium</code> (500) tilføjet, så <code>body-lg</code> også findes i medium. Det bringer vægtene fra tre op på fire igen.
+        <br>· De ni dæmpningsniveauer er blevet til tre tokens i <code>css-variables.liquid</code>. Gennemsigtigheden er beholdt, men den skrives ikke længere ved kaldstederne.
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>Grundlaget — ingen klasse</h3>
+      <p class="band-sub">Afsættet er <code>&lt;body&gt;</code>. Al tekst er 14px, vægt 400, fuld farve — uden at nogen skriver noget. De 37 steder der i dag hedder <code>text-sm</code>, og de 78 der hedder <code>text-xs</code>, skal ikke laves om: de skal have klassen fjernet.</p>
+
+      <div class="row">
+        <div class="meta"><code class="name">(ingen)</code><code>14px · 400 · 100%</code><em>Arves fra body</em></div>
+        <div class="sample"><p>Stoffet klippes i ét stykke, så du får præcis den længde du bestiller. Ønsker du 2,5 meter, vælger du 3 i mængdefeltet.</p></div>
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>Størrelser — 7 klasser</h3>
+      <p class="band-sub">Navngivet efter størrelse, ikke efter funktion. Hver klasse sætter kun <code>font-size</code> og den linjehøjde der hører til. Vist herunder i ren form, uden vægt eller farve — det er præcis hvad klassen gør, hverken mere eller mindre.</p>
+
+      <div class="row">
+        <div class="meta"><code class="name">.type-3xl</code><code>48px</code><em>Prisen på produktsiden</em></div>
+        <div class="sample"><div class="type-3xl">249,00&nbsp;kr</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-2xl</code><code>30px</code><em>Sidetitel</em></div>
+        <div class="sample"><div class="type-2xl">Voksdug i metermål</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-xl</code><code>24px</code><em>Sektionsoverskrift</em></div>
+        <div class="sample"><div class="type-xl">Nyheder i sortimentet</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-lg</code><code>18px</code><em>Kort, skuffer, paneler<br>— 20px slået sammen hertil</em></div>
+        <div class="sample"><div class="type-lg">Din kurv</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-md</code><code>16px</code><em>Listerækker, introtekst</em></div>
+        <div class="sample"><div class="type-md">Akryldug ensfarvet — sand</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-sm</code><code>14px</code><em>Standarden. Behøves kun for at<br>sætte noget tilbage til normal</em></div>
+        <div class="sample"><div class="type-sm">Bredde 140 cm · sælges pr. påbegyndt meter</div></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-xs</code><code>12px</code><em>Kun sammen med .type-caps</em></div>
+        <div class="sample"><div class="type-xs">Materiale</div></div>
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>Modifiere — 8 klasser</h3>
+      <p class="band-sub">Vægt, versaler, skrifttype og dæmpning. Kombineres frit med en størrelse. Det er hele variationsrummet — der findes ikke andre knapper at dreje på, og det er dét der forhindrer at der opstår en 96. kombination.</p>
+
+      <div class="row">
+        <div class="meta"><code class="name">.type-medium</code><code>vægt 500</code><em>Let fremhævning</em></div>
+        <div class="sample"><p class="type-medium">Bredde 140 cm · sælges pr. påbegyndt meter</p></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-strong</code><code>vægt 600</code><em>Fremhævning i brødtekst</em></div>
+        <div class="sample"><p class="type-strong">I alt inkl. moms</p></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-bold</code><code>vægt 700</code><em>Overskrifter og etiketter</em></div>
+        <div class="sample"><p class="type-bold">I alt inkl. moms</p></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-caps</code><code>versaler · tracking 0.05em</code><em>Kun på .type-xs</em></div>
+        <div class="sample"><p class="type-xs type-bold type-caps">Materiale</p></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-serif</code><code>Playfair Display</code><em>Overskrifter</em></div>
+        <div class="sample"><p class="type-xl type-bold type-serif">Nyheder i sortimentet</p></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-muted</code><code>70%</code><em>Erstatter caption-rollen</em></div>
+        <div class="sample"><p class="type-muted">Normalt afsendt inden for 1–2 hverdage</p></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-faint</code><code>45%</code><em>Deaktiveret, pladsholdere</em></div>
+        <div class="sample"><p class="type-faint">Vælg længde</p></div>
+      </div>
+      <div class="row">
+        <div class="meta"><code class="name">.type-error</code><code>important-farven</code><em>Erstatter text-red-*</em></div>
+        <div class="sample"><p class="type-error">Indtast en gyldig e-mailadresse</p></div>
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>Badge — en flade, ikke en tekststil</h3>
+      <p class="band-sub">Badgen har ingen egen typografi. Den giver baggrund, polstring og hjørner; teksten indeni er den samme etiket som alle andre steder. Derfor findes 12px kun ét sted i systemet, og en ændring af etiketten slår igennem begge steder på én gang.</p>
+
+      <div class="row">
+        <div class="meta"><code class="name">.type-badge</code><code>baggrund · polstring · radius</code><em>Indhold: .type-xs .type-bold .type-caps</em></div>
+        <div class="sample">
+          <span class="type-badge"><span class="type-xs type-bold type-caps">Nyhed</span></span>
+          <span class="type-badge type-badge--important" style="margin-left:6px"><span class="type-xs type-bold type-caps">Spar 20%</span></span>
+          <span style="margin-left:14px" class="type-xs type-bold type-caps type-muted">Materiale</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>Tekstfarver — 3 tokens</h3>
+      <p class="band-sub">Erstatter de ni opacitetsniveauer. Gennemsigtigheden er der stadig, men den står nu tre steder i <code>css-variables.liquid</code> i stedet for at blive skrevet i hånden ved hvert kaldsted. Ingen skriver <code>/60</code> eller <code>/85</code> nogen steder igen.</p>
+
+      <div class="compare">
+        <div>
+          <p><span class="pct">text</span>Ensfarvet voksdug</p>
+          <p class="type-muted"><span class="pct">muted</span>Ensfarvet voksdug</p>
+          <p class="type-faint"><span class="pct">faint</span>Ensfarvet voksdug</p>
+        </div>
+        <div class="note" style="margin-top:0">
+          <code>--color-text</code> — ingen klasse. Alt der skal læses.<br>
+          <code>--color-text-muted</code> — <code>.type-muted</code>. Hjælpetekst og etiketter.<br>
+          <code>--color-text-faint</code> — <code>.type-faint</code>. Kun deaktiveret tekst og pladsholdere.
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>Fordelen ved at beholde gennemsigtigheden:</strong> de tre tokens peger på <code>--color-primary</code>, som temaet allerede skifter i mørk tilstand. Derfor skal de kun defineres én gang — <code>.dark</code>-blokken behøver ikke nævne dem, og der kan ikke opstå den fejl at lys og mørk kommer ud af trit.
+        <br><br>
+        <strong>Prisen:</strong> gennemsigtig tekst blander sig med det der ligger bagved, så <code>.type-muted</code> giver en anden faktisk farve på et kort (<code>#1a2635</code>) end på sidens baggrund. Forskellen er lille mellem kort og baggrund her, fordi de to farver ligger tæt. Den bliver først et problem oven på et produktbillede — og dér bør teksten alligevel have en fast farve, ikke en dæmpet.
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>I kontekst — med klasserne</h3>
+      <p class="band-sub">Samme to komponenter som i Del 1. Læg mærke til hvor mange elementer der slet ingen klasse har — produktnavn, leveringslinje og beløb i kurven arver bare fra <code>&lt;body&gt;</code>. Ser noget forkert ud her, er det en klasse der skal justeres, ikke et enkeltsted der skal have en undtagelse.</p>
+
+      <div class="context">
+        <div class="card">
+          <div class="thumb"><span class="type-badge"><span class="type-xs type-bold type-caps">Nyhed</span></span></div>
+          <div class="type-xs type-bold type-caps type-muted">Voksdug</div>
+          <div class="type-md type-strong">Akryldug ensfarvet — sand</div>
+          <div class="type-muted">Bredde 140 cm · aftørres med fugtig klud</div>
+          <div class="divider"></div>
+          <div class="line">
+            <span class="type-strong">129,00 kr</span>
+            <span class="type-muted">pr. meter</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="type-lg type-bold type-serif" style="margin-bottom:14px">Din kurv</div>
+          <div class="line">
+            <span>Akryldug ensfarvet — sand</span>
+            <span class="type-strong">3&nbsp;m</span>
+          </div>
+          <div class="type-muted">Klippes i ét stykke</div>
+          <div class="divider"></div>
+          <div class="line">
+            <span>Levering</span>
+            <span>49,00 kr</span>
+          </div>
+          <div class="line" style="margin-top:8px">
+            <span class="type-strong">I alt inkl. moms</span>
+            <span class="type-strong">436,00 kr</span>
+          </div>
+          <div class="type-muted" style="margin-top:10px">Normalt afsendt inden for 1–2 hverdage</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="band">
+      <h3>Lag 2 — snippet'en</h3>
+      <p class="band-sub">CSS'en ovenfor er navngivet efter størrelse, som du bad om. De funktionelle navne er ikke væk — de bor i snippet'en, som oversætter en rolle til en kombination af klasser. Kaldsteder siger stadig <em>hvad</em> teksten er; CSS'en beskriver kun <em>hvordan</em> den ser ud.</p>
+
+      <table class="map">
+        <thead>
+          <tr><th>Rolle i snippet</th><th>Klasser den udskriver</th><th>Resultat</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>display</td><td>type-3xl type-bold</td><td>48px · 700 · sans</td></tr>
+          <tr><td>title-page</td><td>type-2xl type-bold type-serif</td><td>30px · 700 · serif</td></tr>
+          <tr><td>title-section</td><td>type-xl type-bold type-serif</td><td>24px · 700 · serif</td></tr>
+          <tr><td>title-card</td><td>type-lg type-bold type-serif</td><td>18px · 700 · serif — også skuffer og paneler</td></tr>
+          <tr><td>title-row</td><td>type-md type-strong</td><td>16px · 600</td></tr>
+          <tr><td>body-lg</td><td>type-md</td><td>16px · 400</td></tr>
+          <tr><td>body-lg-medium</td><td>type-md type-medium</td><td>16px · 500</td></tr>
+          <tr><td>body</td><td><em>ingen</em></td><td>14px · 400 — arves fra body</td></tr>
+          <tr><td>body-strong</td><td>type-strong</td><td>14px · 600</td></tr>
+          <tr><td>caption</td><td>type-muted</td><td>14px · 400 · 70%</td></tr>
+          <tr><td>label</td><td>type-xs type-bold type-caps type-muted</td><td>12px · 700 · versaler · 70%</td></tr>
+          <tr><td>error</td><td>type-error</td><td>14px · 400 · important</td></tr>
+        </tbody>
+      </table>
+
+<pre class="snippet">&lt;span class="{% render 'text-style', role: 'label' %} mb-3"&gt;
+  {{ block.settings.label }}
+&lt;/span&gt;
+
+&lt;p class="{% render 'text-style', role: 'caption' %}"&gt;
+  {{ section.settings.delivery_note }}
+&lt;/p&gt;
+
+&lt;p&gt;{{ product.description }}&lt;/p&gt;   {%- comment -%} brødtekst: ingen klasse {%- endcomment -%}</pre>
+
+      <div class="note">
+        <strong>11 roller på 14 klasser.</strong> Roller kan komme til og gå uden at CSS'en røres, fordi en rolle kun er en kombination. Det er også dét der gør migreringen mekanisk: hver af de 95 nuværende kombinationer peger på præcis én rolle.
+      </div>
+
+      <div class="note">
+        <strong>Bemærk:</strong> alle størrelser er i <code>rem</code>, ikke <code>px</code>. Teksten følger dermed med, hvis brugeren har skruet op for skriftstørrelsen i sin browser — hvilket en del af målgruppen har. Temaet bruger px i dag, så det er en ændring ud over selve skalaen.
+      </div>
+
+      <div class="note">
+        <strong>To ting jeg ikke har afgjort:</strong> om prisen på 48px kan bære vægt 700 i stedet for 900 — sammenlign med Del 1, forskellen er tydelig. Og om <code>.type-serif</code> skal gælde alle overskrifter, når <code>h4</code> i dag er sans mens h1–h3, h5 og h6 er serif.
+      </div>
+
+      <div class="note">
+        <strong>Konsekvens af at flytte grundlaget til 14px:</strong> temaet sætter i dag <code>main { font-size: 16px }</code>, og ikoner måler sig selv i <code>1em</code> (<code>snippets/icon.liquid</code>). Et ikon uden egen størrelse bliver derfor mindre, når grundlaget falder fra 16 til 14. Det skal gennemgås separat.
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var bl = document.getElementById('b-light');
+    var bd = document.getElementById('b-dark');
+    function set(dark) {
+      root.classList.toggle('dark', dark);
+      bl.setAttribute('aria-pressed', String(!dark));
+      bd.setAttribute('aria-pressed', String(dark));
+    }
+    bl.addEventListener('click', function () { set(false); });
+    bd.addEventListener('click', function () { set(true); });
+  })();
+</script>
+</body>
+</html>
