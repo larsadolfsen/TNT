@@ -44,11 +44,13 @@
             >
               <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
                 {%- if sub_image != blank -%}
-                  <img 
-                    src="{{ sub_image | image_url: width: 400, height: 400, crop: 'center' }}" 
-                    alt="{{ sub_title | escape }}" 
+                  <img
+                    src="{{ sub_image | image_url: width: 400, height: 400, crop: 'center' }}"
+                    alt="{{ sub_title | escape }}"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
+                    width="400"
+                    height="400"
                   />
                 {%- else -%}
                   {{ 'image' | placeholder_svg_tag: 'w-full h-full bg-slate-200' }}
@@ -67,11 +69,13 @@
             >
               <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative w-full">
                 {%- if sub_image != blank -%}
-                  <img 
-                    src="{{ sub_image | image_url: width: 400, height: 400, crop: 'center' }}" 
-                    alt="{{ sub_title | escape }}" 
+                  <img
+                    src="{{ sub_image | image_url: width: 400, height: 400, crop: 'center' }}"
+                    alt="{{ sub_title | escape }}"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
+                    width="400"
+                    height="400"
                   />
                 {%- else -%}
                   {{ 'image' | placeholder_svg_tag: 'w-full h-full bg-slate-200' }}
@@ -91,9 +95,11 @@
         <button onclick="applyQuickFilter('tykkelse', '0,8 mm')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
           <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
             <img 
-              src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80" 
-              alt="Soft Transparens" 
+              src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80"
+              alt="Soft Transparens"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              width="400"
+              height="400"
             />
           </div>
           <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Soft Transparens</h3>
@@ -104,9 +110,11 @@
         <button onclick="applyQuickFilter('tykkelse', '2,0 mm')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
           <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
             <img 
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80" 
-              alt="Pure Shield" 
+              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=400&q=80"
+              alt="Pure Shield"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              width="400"
+              height="400"
             />
           </div>
           <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Pure Shield</h3>
@@ -117,9 +125,11 @@
         <button onclick="applyQuickFilter('form', 'Rund')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
           <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
             <img 
-              src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80" 
-              alt="Cirkel-serien" 
+              src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80"
+              alt="Cirkel-serien"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              width="400"
+              height="400"
             />
           </div>
           <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Cirkel-serien</h3>
@@ -130,9 +140,11 @@
         <button onclick="applyQuickFilter('form', 'Dækkeserviet')" class="flex-[0_0_150px] sm:flex-[0_0_180px] md:flex-initial snap-start text-left group focus:outline-none bg-transparent border-0 p-0 cursor-pointer">
           <div class="aspect-square rounded-2xl overflow-hidden border border-outline-variant bg-surface-container mb-2 group-hover:border-primary transition-colors relative">
             <img 
-              src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80" 
-              alt="Læder-serien" 
+              src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80"
+              alt="Læder-serien"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              width="400"
+              height="400"
             />
           </div>
           <h3 class="text-xs font-semibold text-primary group-hover:underline m-0">Eksklusivt Tilbehør</h3>

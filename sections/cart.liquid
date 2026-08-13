@@ -14,7 +14,7 @@
         <td>
           {%- if item.properties._image != blank -%}
             <a href="{{ item.url }}" class="image">
-              <img src="{{ item.properties._image }}" alt="{{ item.title }}" />
+              <img src="{{ item.properties._image }}" alt="{{ item.title }}" width="100" height="100" />
             </a>
           {%- else -%}
             {% render 'image', image: item.image, url: item.url %}

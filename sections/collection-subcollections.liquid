@@ -13,7 +13,6 @@
 {%- endstyle -%}
 
 {%- liquid
-  assign show_all_label = section.settings.show_all_label | default: "Vis alle"
   assign parent_col = collection.metafields.custom.parent.value
 
   # If the current collection has a parent, then the parent collection is the main one.
@@ -36,26 +35,6 @@
     assign has_subcollections = true
   endif
 
-  # Determine the "Vis alle" main link url
-  assign main_url = target_parent.url
-
-  # "Vis alle" is active if we are viewing the target parent collection page,
-  # or if we are not viewing any of the child collections.
-  assign is_show_all_active = false
-  if collection.handle == target_parent.handle
-    assign is_show_all_active = true
-  else
-    assign is_any_pill_active = false
-    for sub_col in child_collections
-      if sub_col != blank and collection.handle == sub_col.handle
-        assign is_any_pill_active = true
-        break
-      endif
-    endfor
-    if is_any_pill_active == false
-      assign is_show_all_active = true
-    endif
-  endif
 -%}
 
 {%- if has_subcollections or request.design_mode -%}
