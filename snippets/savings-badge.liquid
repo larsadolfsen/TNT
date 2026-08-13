@@ -27,4 +27,5 @@
     assign badge_text = settings.savings_badge_text | default: '[savings] % rabat' | replace: '[savings]', savings
   endif
 -%}
-<span class="product-savings-badge inline-block {{ badge_class }} {% render 'text-style', role: 'badge-label' %}">{{ badge_text }}</span>
+{%- capture badge_label_role %}{% render 'text-style', role: 'badge-label' %}{% endcapture -%}
+<span class="product-savings-badge inline-block {{ badge_class }}{% if size != 'lg' %} {{ badge_label_role }}{% endif %}">{{ badge_text }}</span>
