@@ -8,7 +8,9 @@
  * key used for the `section_id` param on filter fetches arrives through the
  * #main-collection-config JSON island rendered by that section — it is the
  * short template key ("main-collection"), not section.id, because the Section
- * Rendering API 404s on the long form; this file holds no Liquid. Exposes window.toggleMobileFilter /
+ * Rendering API 404s on the long form; this file holds no Liquid. Every fetch
+ * here checks res.ok before parsing, so a non-200 lands in the .catch and shows
+ * up in the console instead of quietly swapping in nothing. Exposes window.toggleMobileFilter /
  * toggleSortDrawer / selectSortOption / toggleFilterBlock / filterProducts /
  * syncPriceFilters / removeFilterChipUrl / clearAllFiltersUrl, which the
  * section's inline onclick/onchange/oninput handlers depend on.
@@ -297,7 +299,14 @@
     }
 
     fetch(url)
-      .then(res => res.text())
+      .then(function (res) {
+        // A 404 here returns an empty body, which would otherwise parse into a
+        // document with no #product-grid — the guards below then skip every swap
+        // and the URL is pushed anyway, so a total failure looks exactly like a
+        // successful filter. See docs/failure-log.md F-022.
+        if (!res.ok) throw new Error('Filter request failed: HTTP ' + res.status);
+        return res.text();
+      })
       .then(html => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
@@ -361,7 +370,13 @@
       }
 
       fetch(url.href)
-        .then(res => res.text())
+        .then(function (res) {
+          // Without this, a non-200 parses into a document with no #product-grid
+          // and the chip silently navigates to a URL whose products never loaded.
+          // See docs/failure-log.md F-022.
+          if (!res.ok) throw new Error('Collection chip request failed: HTTP ' + res.status);
+          return res.text();
+        })
         .then(html => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
@@ -431,7 +446,13 @@
     }
 
     fetch(`${url.pathname}?${params.toString()}`)
-      .then(res => res.text())
+      .then(function (res) {
+        // Without this, a non-200 parses into a document with no #product-grid,
+        // so removing a chip (or clearing all filters) leaves the old results on
+        // screen under the new URL. See docs/failure-log.md F-022.
+        if (!res.ok) throw new Error('Filter chip request failed: HTTP ' + res.status);
+        return res.text();
+      })
       .then(html => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');

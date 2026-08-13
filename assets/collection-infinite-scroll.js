@@ -54,7 +54,7 @@
       .then(function (res) {
         // A 404 here returns an empty body, which would otherwise parse into a
         // document with no #product-grid and look like "last page reached" —
-        // silently ending the scroll. See docs/failure-log.md F-015.
+        // silently ending the scroll. See docs/failure-log.md F-022.
         if (!res.ok) throw new Error('Load-more request failed: HTTP ' + res.status);
         return res.text();
       })
