@@ -91,7 +91,7 @@
   </div>
 
   <div data-ps-state="error" class="hidden py-8 px-6 text-center">
-    {% render 'icon', name: 'circle-alert', class: 'text-[24px]', style: 'color: var(--color-important);' %}
+    {% render 'icon', name: 'circle-alert', class: 'text-[24px] text-important' %}
     <p class="text-sm text-primary mt-2" data-field="error-message"></p>
     <button type="button" data-ps-retry class="mt-3 bg-card-high hover:bg-surface-container text-primary border border-outline-variant font-bold h-11 px-6 rounded-full text-sm cursor-pointer focus-ring">{{ 'predictive_search.try_again' | t }}</button>
   </div>
