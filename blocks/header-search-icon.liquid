@@ -28,7 +28,9 @@
   /* The overlay needs display:flex when open, which a plain `hidden`
      attribute can't express alongside a `.flex` utility class (author
      rules of equal origin beat the UA [hidden] default regardless of
-     specificity) — so visibility is a dedicated class instead. */
+     specificity) — so visibility is a dedicated class instead
+     (data-panel-display="class" below tells assets/panel.js to drive
+     `.is-open` only, and never touch the `hidden` attribute). */
   [data-ps-mobile-overlay] {
     display: none;
   }
@@ -42,6 +44,9 @@
     type="button"
     class="w-12 h-12 focus:outline-none bg-transparent border-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity focus-ring"
     aria-label="{{ 'search.submit' | t }}"
+    aria-expanded="false"
+    aria-controls="predictive-search-mobile-{{ block.id }}"
+    data-panel-trigger
     data-predictive-search-mobile-trigger
   >
     {% render 'icon', name: 'search', class: 'text-2xl text-primary block' %}
@@ -49,22 +54,33 @@
 </div>
 
 {%- comment -%}
-  Always loaded, independent of the `predictive_search` checkbox above: the
-  trigger button's only click handler now lives in predictive-search.js
-  (data-predictive-search-mobile-trigger), replacing the old inline
-  onclick="toggleSearchInput()". Even with predictive search off here, the
-  script must still be present to wire the fallback that calls
-  toggleSearchInput() itself (see assets/predictive-search.js
-  initMobileOverlay). The script guards its own init against running twice
-  when blocks/header-search.liquid also loads it on the same page.
+  Both scripts are always loaded, independent of the `predictive_search`
+  checkbox below:
+  - assets/panel.js binds [data-panel-trigger] to the overlay below when it
+    exists (predictive search on); when it doesn't (predictive search off,
+    so the overlay markup isn't rendered), panel.js finds no panel for
+    aria-controls to resolve to and leaves the trigger alone.
+  - assets/predictive-search.js's initMobileSearchTrigger then wires the
+    remaining search-specific behavior on top: a `panel:beforeopen` listener
+    that redirects to the desktop inline bar's toggleSearchInput() above the
+    840px breakpoint (data-predictive-search-mobile-trigger identifies which
+    trigger this applies to), and — only when the overlay panel doesn't
+    exist at all — a direct click fallback to toggleSearchInput() so the
+    button still does something with predictive search off.
+  Load order between the two script tags doesn't matter: both register
+  their init() on DOMContentLoaded, so by the time a real click can happen
+  every listener (panel.js's click handler, predictive-search.js's
+  panel:beforeopen listener) is already attached regardless of which ran
+  first.
 {%- endcomment -%}
 <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'panel.js' | asset_url }}" defer="defer"></script>
 
 {%- if block.settings.predictive_search -%}
   {%- comment -%}
-    Mobile full-screen predictive search takeover (Surface 4). Rendered once
-    per header-search-icon instance; opened/closed by
-    assets/predictive-search.js. Below 840px this is the only search entry
+    Mobile full-screen predictive search takeover (Surface 4), built on the
+    shared assets/panel.js drawer/panel primitive. Rendered once per
+    header-search-icon instance. Below 840px this is the only search entry
     point (blocks/header-search.liquid's inline bar is hidden on mobile in
     the shipped preset).
   {%- endcomment -%}
@@ -72,6 +88,11 @@
     id="predictive-search-mobile-{{ block.id }}"
     class="fixed inset-0 z-50 bg-background flex-col"
     data-ps-mobile-overlay="{{ block.id }}"
+    data-panel
+    data-panel-display="class"
+    data-panel-lock-scroll="true"
+    data-panel-inert-siblings="true"
+    data-panel-autofocus="[data-ps-input]"
     role="dialog"
     aria-modal="true"
     aria-label="{{ 'predictive_search.results_label' | t }}"
@@ -81,7 +102,7 @@
         type="button"
         class="w-12 h-12 shrink-0 flex items-center justify-center bg-transparent border-0 cursor-pointer focus-ring"
         aria-label="{{ 'predictive_search.close' | t }}"
-        data-ps-mobile-close
+        data-panel-close
       >
         {% render 'icon', name: 'arrow_back', class: 'text-2xl text-primary' %}
       </button>

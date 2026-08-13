@@ -34,6 +34,14 @@
  *   backdrop element toggled in sync with the panel (kept outside the
  *   panel's own DOM subtree so clicking it counts as an outside click).
  * - any `[data-panel-close]` element inside the panel closes it on click.
+ * - lifecycle hook: right before a panel would open, a cancelable
+ *   `panel:beforeopen` CustomEvent (bubbles, `detail: { panel, trigger }`)
+ *   is dispatched on the trigger. Calling `preventDefault()` on it aborts
+ *   the open entirely (no state changes at all) — for callers that need to
+ *   redirect a trigger's click to different behavior under some condition
+ *   (e.g. assets/predictive-search.js using it to send the mobile search
+ *   trigger to the desktop inline search bar above a breakpoint, instead of
+ *   opening the mobile takeover panel).
  *
  * Each trigger gets its own independent open/close state and its own
  * document-level listeners (added only while open, removed on close), so
@@ -109,6 +117,13 @@
     }
 
     function open() {
+      var beforeOpenEvent = new CustomEvent('panel:beforeopen', {
+        cancelable: true,
+        bubbles: true,
+        detail: { panel: panel, trigger: trigger },
+      });
+      if (!trigger.dispatchEvent(beforeOpenEvent)) return;
+
       lastFocused = document.activeElement;
 
       if (useHiddenAttr) panel.hidden = false;
