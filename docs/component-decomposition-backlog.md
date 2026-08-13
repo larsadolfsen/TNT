@@ -4,7 +4,7 @@ Status: backlog, deliberately held until after the Theme Store compliance
 feature work (see `theme-store-compliance-brainstorm.md`) is done. These
 files work today; splitting them mid-flight risks breaking the live client
 theme with no visual QA environment set up here. The rule in
-`.agents/AGENTS.md` ("each file should have a single, clear purpose") applies
+`CLAUDE.md` ("each file should have a single, clear purpose") applies
 starting now to new work — this doc is about cleaning up what already exists.
 
 ## Findings
