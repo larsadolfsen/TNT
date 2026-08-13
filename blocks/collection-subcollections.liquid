@@ -103,7 +103,7 @@
       -%}
       <a href="{{ sub_col.url }}" data-collection-chip="true" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
         {%- if is_pill_active -%}
-          {% render 'icon', name: 'check', class: 'text-xs mr-1 select-none pointer-events-none', style: 'font-size: 14px; stroke-width: 3px;' %}
+          {% render 'icon', name: 'check', class: 'text-[14px] mr-1 select-none pointer-events-none', stroke_width: '3px' %}
         {%- endif -%}
         {{ pill_label }}
       </a>

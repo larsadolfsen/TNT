@@ -26,7 +26,7 @@
                 <label class="relative group cursor-pointer filter-label select-none flex items-center justify-center" title="{{ value.label }}" data-color-name="{{ value.label }}">
                   <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} class="filter-checkbox sr-only peer"/>
                   <div class="swatch-circle w-8 h-8 rounded-full border border-outline-variant/65 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-[var(--color-accent)]/80 transition-all flex items-center justify-center relative shadow-sm hover:scale-105">
-                    {%- render 'icon', name: 'check', class: 'text-xs font-bold text-white hidden peer-checked:block select-none pointer-events-none', style: 'font-size: 14px;' -%}
+                    {%- render 'icon', name: 'check', class: 'text-[14px] font-bold text-white hidden peer-checked:block select-none pointer-events-none' -%}
                   </div>
                   <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-surface-container-high text-primary text-[10px] font-semibold rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md border border-outline-variant z-20">
                     {{ value.label }} <span class="filter-count text-[9px] text-primary/60 ml-0.5">({{ value.count }})</span>

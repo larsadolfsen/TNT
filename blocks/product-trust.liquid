@@ -13,11 +13,11 @@
   <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1" {{ block.shopify_attributes }}>
     <div class="flex items-center gap-1">
       <div class="flex text-amber-500">
-        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true, style: "font-size: 15px; line-height: 1;" %}
-        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true, style: "font-size: 15px; line-height: 1;" %}
-        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true, style: "font-size: 15px; line-height: 1;" %}
-        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true, style: "font-size: 15px; line-height: 1;" %}
-        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true, style: "font-size: 15px; line-height: 1;" %}
+        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true %}
+        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true %}
+        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true %}
+        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true %}
+        {% render 'icon', name: 'star', class: 'text-[15px]', filled: true %}
       </div>
       <span class="text-sm font-semibold text-primary">
         {{ block.settings.rating_score | default: "4,8" }} ({{ block.settings.rating_count | default: "163" }})
