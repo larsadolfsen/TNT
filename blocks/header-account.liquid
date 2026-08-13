@@ -42,6 +42,21 @@
     display: none;
   }
 
+  /*
+    <shopify-account> can inject its own default trigger content inside our
+    wrapper too (not just as a sibling), and that content ships with its own
+    non-theme-aware styling. Hide anything that isn't one of our own known
+    trigger elements, and force our icon glyph's color explicitly rather than
+    relying on inheritance, so it can't be silently overridden.
+  */
+  #shopify-block-{{ block.id }} .account-trigger-wrap > :not(.account-trigger-mobile):not(.account-trigger-desktop):not(.account-panel) {
+    display: none;
+  }
+
+  #shopify-block-{{ block.id }} .account-trigger-wrap .material-symbols-outlined {
+    color: var(--color-primary);
+  }
+
   #shopify-block-{{ block.id }} .account-trigger-desktop {
     display: none;
   }
