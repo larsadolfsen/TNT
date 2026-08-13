@@ -26,6 +26,8 @@
   var moneyFormat = config.moneyFormat || '';
   var iconShoppingBasketHtml = config.iconShoppingBasket || '';
   var iconDeleteHtml = config.iconDelete || '';
+  var iconPlusHtml = config.iconPlus || '';
+  var iconMinusHtml = config.iconMinus || '';
 
   function text(key) {
     return strings[key] || '';
@@ -253,9 +255,9 @@
             <div class="flex justify-between items-center mt-2">
               <div class="flex items-center gap-2">
                 <div class="flex items-center border border-outline-variant rounded-full bg-surface-container overflow-hidden">
-                  <button onclick="changeQuantity('${item.key}', -1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">-</button>
+                  <button onclick="changeQuantity('${item.key}', -1)" class="w-6 h-6 flex items-center justify-center text-primary bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">${iconMinusHtml}</button>
                   <span class="w-6 text-center text-xs sm:text-sm text-primary font-bold">${item.quantity}</span>
-                  <button onclick="changeQuantity('${item.key}', 1)" class="w-6 h-6 flex items-center justify-center text-primary text-xs font-bold bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">+</button>
+                  <button onclick="changeQuantity('${item.key}', 1)" class="w-6 h-6 flex items-center justify-center text-primary bg-transparent border-0 hover:bg-outline-variant/40 cursor-pointer transition-colors">${iconPlusHtml}</button>
                 </div>
                 <button onclick="removeItem('${item.key}')" class="w-8 h-8 flex items-center justify-center text-primary hover:opacity-80 bg-transparent border-0 cursor-pointer transition-opacity duration-200 md:opacity-0 md:group-hover:opacity-100 opacity-100 focus-ring" aria-label="${text('removeItem')}">
                   ${iconDeleteHtml}
