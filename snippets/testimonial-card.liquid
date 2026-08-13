@@ -1,0 +1,51 @@
+{% doc %}
+  Renders one testimonial card for blocks/product-testimonial.liquid. Two
+  layout variants match that block's two call sites:
+  - 'single': the lone-testimonial layout (centered, max-w-lg, no
+    flex-grow author pinning) used when only one review is configured.
+  - 'item' (default): a slider/grid tile - pins the author line to the
+    bottom via flex, and carries the testimonial-item-{{ block_id }} class
+    the block's own JS/CSS scroll-snap logic selects by.
+
+  @param {string} block_id - required. block.id, used to scope the
+    testimonial-item-{{ block_id }} / testimonial-single-card-{{ block_id }}
+    classes the parent block's <style> and <script> depend on.
+  @param {number} stars - required. Star rating (1-5).
+  @param {string} quote - required. Review text.
+  @param {string} [author] - optional. Reviewer byline.
+  @param {string} [layout] - 'single' or 'item' (default).
+
+  @example
+  {% render 'testimonial-card', block_id: block.id, stars: block.settings.stars, quote: block.settings.quote, author: block.settings.author, layout: 'single' %}
+  {% render 'testimonial-card', block_id: block.id, stars: block.settings.stars_2, quote: block.settings.quote_2, author: block.settings.author_2 %}
+{% enddoc %}
+
+{%- if layout == 'single' -%}
+  <div class="bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center max-w-lg testimonial-single-card-{{ block_id }}">
+    <div class="flex justify-center text-amber-500 mb-2">
+      {%- for i in (1..stars) -%}
+        {% render 'icon', name: 'star', class: 'text-[14px]', filled: true %}
+      {%- endfor -%}
+    </div>
+    {%- if quote != blank -%}
+      <p class="text-base text-primary">"{{ quote }}"</p>
+    {%- endif -%}
+    {%- if author != blank -%}
+      <p class="text-sm font-semibold text-primary/80 not-italic">— {{ author }}</p>
+    {%- endif -%}
+  </div>
+{%- else -%}
+  <div class="testimonial-item-{{ block_id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
+    <div>
+      <div class="flex justify-center text-amber-500 mb-2">
+        {%- for i in (1..stars) -%}
+          {% render 'icon', name: 'star', class: 'text-[14px]', filled: true %}
+        {%- endfor -%}
+      </div>
+      <p class="text-base text-primary">"{{ quote }}"</p>
+    </div>
+    {%- if author != blank -%}
+      <p class="text-sm font-semibold text-primary/80 not-italic mt-2">— {{ author }}</p>
+    {%- endif -%}
+  </div>
+{%- endif -%}
