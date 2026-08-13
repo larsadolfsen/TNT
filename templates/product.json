@@ -47,12 +47,15 @@
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
+        "order_mobile": "auto",
         "column_span_tablet": "1",
         "column_start_tablet": "2",
         "hide_on_tablet": true,
+        "order_tablet": "auto",
         "column_span_desktop": "1",
         "column_start_desktop": "3",
         "hide_on_desktop": true,
+        "order_desktop": "auto",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_left": 24,
@@ -86,12 +89,15 @@
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
+        "order_mobile": "auto",
         "column_span_tablet": "1",
         "column_start_tablet": "auto",
         "hide_on_tablet": false,
+        "order_tablet": "auto",
         "column_span_desktop": "2",
         "column_start_desktop": "1",
         "hide_on_desktop": false,
+        "order_desktop": "auto",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_left": 24,
@@ -135,7 +141,9 @@
           "name": "Product Price",
           "settings": {
             "price_suffix": "pr. stk. inkl. moms",
+            "compare_at_price_label": "Normalpris",
             "price_subtext": "",
+            "show_installments": true,
             "padding_top": 12,
             "padding_bottom": 0,
             "padding_sides": 0
@@ -167,20 +175,7 @@
             "custom_payment_icons_image": "shopify://shop_images/Pay-site-1-600x37.png_1.webp",
             "payment_icons_height": 16,
             "enable_sticky_buy_button": true,
-            "sticky_buy_button_text": "Læg i kurv",
-            "show_dynamic_checkout": true
-          },
-          "blocks": {}
-        },
-        "product_pickup_availability_Qk3tRv": {
-          "type": "product-pickup-availability",
-          "name": "Product Pickup Availability",
-          "settings": {
-            "show_hours": true,
-            "unavailable_text": "Afhentning ikke mulig for denne vare",
-            "padding_top": 12,
-            "padding_bottom": 0,
-            "padding_sides": 0
+            "sticky_buy_button_text": "Læg i kurv"
           },
           "blocks": {}
         }
@@ -190,20 +185,22 @@
         "product_trust_3CARKt",
         "product_price_TDzach",
         "product_urgency_kHLYUg",
-        "product_buy_buttons_ekNNjk",
-        "product_pickup_availability_Qk3tRv"
+        "product_buy_buttons_ekNNjk"
       ],
       "name": "Section",
       "settings": {
         "background_color": "transparent",
         "full_width": false,
         "hide_on_mobile": false,
+        "order_mobile": "auto",
         "column_span_tablet": "1",
         "column_start_tablet": "2",
         "hide_on_tablet": false,
+        "order_tablet": "auto",
         "column_span_desktop": "1",
         "column_start_desktop": "3",
         "hide_on_desktop": false,
+        "order_desktop": "auto",
         "padding_top": 12,
         "padding_bottom": 12,
         "padding_left": 24,
@@ -282,9 +279,17 @@
               "name": "Badge",
               "settings": {
                 "style": "icon",
+                "text": "BESTSELLER",
+                "only_if_in_stock": false,
+                "alignment": "left",
+                "background_color": "#000000",
+                "text_color": "#ffffff",
                 "icon": "cycle",
                 "title": "Genanvendt læder",
-                "width_cols": "2"
+                "width_cols": "2",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
               },
               "blocks": {}
             },
@@ -293,9 +298,17 @@
               "name": "Badge",
               "settings": {
                 "style": "icon",
+                "text": "BESTSELLER",
+                "only_if_in_stock": false,
+                "alignment": "left",
+                "background_color": "#000000",
+                "text_color": "#ffffff",
                 "icon": "eco",
                 "title": "100% Phthalatfri",
-                "width_cols": "2"
+                "width_cols": "2",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_sides": 0
               },
               "blocks": {}
             }
@@ -318,12 +331,15 @@
         "background_color": "shade",
         "full_width": false,
         "hide_on_mobile": false,
+        "order_mobile": "auto",
         "column_span_tablet": "2",
         "column_start_tablet": "auto",
         "hide_on_tablet": false,
+        "order_tablet": "auto",
         "column_span_desktop": "3",
         "column_start_desktop": "auto",
         "hide_on_desktop": false,
+        "order_desktop": "auto",
         "padding_top": 24,
         "padding_bottom": 24,
         "padding_left": 24,
@@ -378,12 +394,15 @@
         "background_color": "light",
         "full_width": false,
         "hide_on_mobile": false,
+        "order_mobile": "auto",
         "column_span_tablet": "2",
         "column_start_tablet": "auto",
         "hide_on_tablet": false,
+        "order_tablet": "auto",
         "column_span_desktop": "3",
         "column_start_desktop": "auto",
         "hide_on_desktop": false,
+        "order_desktop": "auto",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_left": 24,
@@ -392,108 +411,14 @@
         "block_spacing": 8,
         "border_top": false,
         "border_bottom": false
-      }
-    },
-    "row_RelPrd1": {
-      "type": "section",
-      "blocks": {
-        "product_recommendations_Rel1": {
-          "type": "product-recommendations",
-          "name": "Product Recommendations",
-          "settings": {
-            "intent": "related",
-            "heading": "Du synes måske også om",
-            "products_to_show": 4,
-            "padding_top": 40,
-            "padding_bottom": 40,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_recommendations_Rel1"
-      ],
-      "name": "Row - Related Products",
-      "settings": {
-        "background_color": "light",
-        "full_width": false,
-        "hide_on_mobile": false,
-        "column_span_tablet": "2",
-        "column_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "3",
-        "column_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "row_ComPrd1": {
-      "type": "section",
-      "blocks": {
-        "product_recommendations_Com1": {
-          "type": "product-recommendations",
-          "name": "Product Recommendations",
-          "settings": {
-            "intent": "complementary",
-            "heading": "Passer godt sammen med denne",
-            "products_to_show": 4,
-            "padding_top": 40,
-            "padding_bottom": 40,
-            "padding_sides": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "product_recommendations_Com1"
-      ],
-      "name": "Row - Complementary Products",
-      "settings": {
-        "background_color": "light",
-        "full_width": false,
-        "hide_on_mobile": false,
-        "column_span_tablet": "2",
-        "column_start_tablet": "auto",
-        "hide_on_tablet": false,
-        "column_span_desktop": "3",
-        "column_start_desktop": "auto",
-        "hide_on_desktop": false,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_left": 24,
-        "padding_right": 24,
-        "use_global_gap": true,
-        "block_spacing": 8,
-        "border_top": false,
-        "border_bottom": false
-      }
-    },
-    "breadcrumbs_ERkpwB": {
-      "type": "breadcrumbs",
-      "name": "Brødkrummer",
-      "settings": {
-        "max_width": "none",
-        "padding_top": 0,
-        "padding_bottom": 0
       }
     }
   },
   "order": [
-    "breadcrumbs_ERkpwB",
     "section_ndBcy7",
     "section_Ei7cMG",
     "section_4GmQ4N",
     "row_mHwx6E",
-    "row_WcWUGA",
-    "row_RelPrd1",
-    "row_ComPrd1"
+    "row_WcWUGA"
   ]
 }
