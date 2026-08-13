@@ -101,10 +101,10 @@
         {%- unless disable_reviews -%}
           {%- liquid
             assign star_size = 14
-            assign rating_wrapper_class = 'text-xs sm:text-sm'
+            assign rating_wrapper_class = 'type-sm'
             if is_minimal
               assign star_size = 12
-              assign rating_wrapper_class = 'text-[10px]'
+              assign rating_wrapper_class = 'type-xs'
             endif
           -%}
           {%- render 'star-rating',
