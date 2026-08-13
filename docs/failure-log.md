@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-021](#f-021--textcontent-on-an-inline-svg-wiped-the-collection-filter-toggle-icon) | 2026-08-13 | Live | Collection page | Filter block's expand/collapse icon disappeared permanently after first click |
 | [F-020](#f-020--two-parallel-sessions-both-claimed-f-018-and-the-conflict-markers-were-pushed) | 2026-08-13 | Live | Repo / process | `docs/failure-log.md` on `main` contained `<<<<<<<` conflict markers |
 | [F-019](#f-019--nav-hover-highlight-was-a-fixed-32px-band-not-the-items-hit-area) | 2026-08-13 | Live | Header / navigation | Nav item hover highlight shorter than the item it belongs to |
 | [F-018](#f-018--js-source-edit-made-on-a-branch-predating-the-minified-build) | 2026-08-13 | Caught | Collection / build | Sort-drawer close delay would have shipped dead |
@@ -37,6 +38,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 ## Entries
 
+### F-021 — `textContent` on an inline `<svg>` wiped the collection filter toggle icon
+
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** (this commit)
+- **Symptom:** On a collection page with filters, clicking a filter block's header to collapse it made its expand/collapse icon disappear permanently — it never came back on subsequent clicks.
+- **Root cause:** `toggleFilterBlock()` in `assets/main-collection.js` set `.toggle-icon.textContent = 'remove'`/`'add'` — leftovers from the old Material Symbols ligature-font icon implementation, where the element's text content *was* the glyph. The Lucide SVG-sprite migration turned `.toggle-icon` into an `<svg><use href="#icon-minus"></use></svg>`; setting `.textContent` on it destroys the `<use>` child, and the stale ligature names ('remove'/'add') don't match the sprite's symbol ids anyway.
+- **Fix:** Target the `<use>` child and rewrite its `href` instead of the SVG's text, matching the pattern `layout/theme.liquid` already uses for the same icon system (`use.setAttribute('href', '#icon-minus'/'#icon-plus')`).
+- **Prevention:** Same family as [F-011](#f-011--textcontent-on-an-inline-svg-wiped-the-theme-toggle-icon) — this is the second instance of the pattern, now folded into [Recurring pattern 9](#recurring-patterns). A grep across all `assets/*.js` for `.textContent`/`.innerText` assignments on icon elements found no further instances at the time of this fix. Numbered F-021 rather than F-018 (the id this branch was written against) per [F-020](#f-020--two-parallel-sessions-both-claimed-f-018-and-the-conflict-markers-were-pushed)'s prevention rule: assign the id against `origin/main` at merge time, not write time.
+
 ### F-020 — Two parallel sessions both claimed F-018, and the conflict markers were pushed
 
 - **Date:** 2026-08-13 · **Reach:** Live · **Fix:** this commit
@@ -60,6 +69,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 - **Root cause:** The branch was cut at `1.0.140`, when `sections/main-collection.liquid` still loaded `assets/main-collection.js` directly. While the branch was open, `main` gained an esbuild minify step (`scripts/build-js.mjs`, `npm run js:build`) and every section switched its `<script src>` to the `.min.js` build. Editing the source file was correct when the edit was made and wrong by the time it merged; `npm run tailwind:build` regenerates only `output.css`, so nothing rebuilt the stale `main-collection.min.js` that the page actually loads. `theme-check` cannot see this — both files parse fine.
 - **Fix:** Run `npm run js:build` (or `npm run build`, which does both) as part of resolving the merge, and commit the regenerated `assets/main-collection.min.js`.
 - **Prevention:** After merging `main` into a long-lived branch, run the full `npm run build` — not just the tailwind step — and check whether the section that loads your edited asset still points at the file you edited. Compiled artifacts (`output.css`, `*.min.js`) are tracked in this repo, so a merge that changes the build pipeline silently invalidates work done against the old one.
+
 ### F-017 — Empty sections still reserved a grid row (and its gaps)
 
 - **Date:** 2026-08-13 · **Reach:** Live · **Fix:** `61f7578`
@@ -211,7 +221,7 @@ Distilled from the entries above. These are the mistakes this codebase actually 
 6. **Silence is a symptom.** A feature that does nothing with a clean console usually means the script never loaded ([F-002](#f-002--predictive-search-never-activated-on-the-live-store), [F-014](#f-014--liquid-comparison-in-a-render-argument-killed-the-cart)) or the function never existed ([F-010](#f-010--toggletheme-was-never-defined)). Check the Network tab before debugging logic.
 7. **Blocks repeat; their scripts must be idempotent.** One `<script src>` per block instance means N executions ([F-006](#f-006--one-script-tag-per-block-instance-causes-duplicate-listeners)). Guard binding with a `dataset` flag.
 8. **Danish copy overflows single-row flex layouts.** Anything holding a sentence needs a wrap or shrink strategy, and `flex-grow: 1` + `width: 100%` on the same child is always a bug ([F-003](#f-003--mobile-header-icons-clipped-off-the-row), [F-012](#f-012--trust-bar-clipped-on-mobile)).
-9. **Delete a feature's CSS/JS with the feature.** Orphaned rules win the cascade on generic class names ([F-013](#f-013--dead-placeholder-css-stretched-every-icon-to-300px)), and stale JS keeps writing to a shape that no longer exists ([F-011](#f-011--textcontent-on-an-inline-svg-wiped-the-theme-toggle-icon)).
+9. **Delete a feature's CSS/JS with the feature.** Orphaned rules win the cascade on generic class names ([F-013](#f-013--dead-placeholder-css-stretched-every-icon-to-300px)), and stale JS keeps writing to a shape that no longer exists — twice now, both from the Material Symbols → Lucide migration: [F-011](#f-011--textcontent-on-an-inline-svg-wiped-the-theme-toggle-icon) (theme toggle) and [F-021](#f-021--textcontent-on-an-inline-svg-wiped-the-collection-filter-toggle-icon) (collection filter toggle). Setting `.textContent`/`.innerText` on an icon element is always wrong post-migration — target the `<use>` child's `href` instead.
 10. **A theme block is two boxes, not one** — the auto-generated `#shopify-block-{{ block.id }}.shopify-block` wrapper (which carries the platform's own default padding unless overridden, [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks)) and the block's own root element inside it (which silently cancels the wrapper's padding if it duplicates the wrapper's size with a hardcoded pixel value instead of a relative one, [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it)). Every new block's `{% style %}` should account for both. The same holds one level up: Shopify always emits the `.shopify-section` wrapper even when the section's Liquid renders nothing, and in a gapped grid that empty wrapper still costs a row plus a row-gap ([F-017](#f-017--empty-sections-still-reserved-a-grid-row-and-its-gaps)) — a "render nothing" branch must collapse the wrapper too.
 11. **Compiled artifacts are tracked, so edits to sources need a rebuild in the same commit.** `output.css` after any Tailwind class change, and `*.min.js` after any JS change ([F-018](#f-018--js-source-edit-made-on-a-branch-predating-the-minified-build)) — `npm run build` covers both. Neither `theme-check` nor a source diff will tell you the artifact is stale.
 
