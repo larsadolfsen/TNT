@@ -80,9 +80,13 @@
     background-color: var(--color-primary);
   }
 
+  /* Touch-target floor for coarse pointers. Derived from the row the same way
+     header-group derives its height, so the pill can never exceed the row's
+     content box — the row's content box is already 44px (WCAG 2.5.5) in both
+     row_height options, so a fixed pixel floor here only overflows it. */
   @media (pointer: coarse) {
     #shopify-block-{{ block.id }} .nav-link-pill {
-      min-height: 48px;
+      min-height: calc(var(--row-height, 56px) - (var(--row-padding-y, 6px) * 2));
     }
   }
 
