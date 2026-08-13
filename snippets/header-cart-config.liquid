@@ -14,6 +14,12 @@
   capture icon_delete_html
     render 'icon', name: 'trash-2', class: 'text-base'
   endcapture
+  capture icon_plus_html
+    render 'icon', name: 'plus', class: 'text-xs'
+  endcapture
+  capture icon_minus_html
+    render 'icon', name: 'minus', class: 'text-xs'
+  endcapture
 -%}
 
 <script type="application/json" id="header-cart-config">
@@ -21,6 +27,8 @@
   "moneyFormat": {{ shop.money_format | json }},
   "iconShoppingBasket": {{ icon_shopping_basket_html | strip_newlines | json }},
   "iconDelete": {{ icon_delete_html | strip_newlines | json }},
+  "iconPlus": {{ icon_plus_html | strip_newlines | json }},
+  "iconMinus": {{ icon_minus_html | strip_newlines | json }},
   "strings": {
     "cartEmpty": {{ 'cart.empty' | t | json }},
     "removeItem": {{ 'cart.remove_item' | t | json }},
