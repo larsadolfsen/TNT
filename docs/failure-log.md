@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-027](#f-027--product-card-carried-9-11px-text-with-no-token-behind-it) | 2026-08-13 | Caught | Product card | Badge/unit-price/meta text down to 9px, invisible to the token system |
 | [F-026](#f-026--paginate-inside-a-rendered-snippet-never-sliced-so-every-collection-page-showed-the-same-50-products) | 2026-08-13 | Live | Collection page | Pages 1, 2 and 3 all returned the identical 50 products; 4 products unreachable |
 | [F-025](#f-025--three-schema-and-liquid-errors-made-the-github-sync-drop-five-files-without-a-word) | 2026-08-13 | Live | Deploy / product page | Five product-page files never reached any theme; sync reported success |
 | [F-024](#f-024--nav-pills-coarse-pointer-touch-target-was-4px-taller-than-the-row-it-sits-in) | 2026-08-13 | Live | Header / navigation | Nav pills overflowed the header row by 4px on touch devices |
@@ -42,6 +43,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-027 — Product card carried 9-11px text with no token behind it
+
+- **Date:** 2026-08-13 · **Reach:** Caught (found via `docs/typography-inventory.md`'s scan, not a live report) · **Fix:** commits bf53810, bd02fb5, 9b99196, 7b5491a, e1261f0 (this branch)
+- **Symptom:** The product-card surface held the worst offenders in the theme's typography inventory: the tag-badge overlay dropped to `text-[9px]` on mobile (`product-card-image.liquid`), the unit-price suffix ("/ pr. meter") sat at `text-[9px] sm:text-[10px]` (`product-card-price.liquid`), the rating-count wrapper fell to `text-[10px]` on mobile (`product-card.liquid`), and `unit-price.liquid`'s `'xs'` size param compiled to `text-[11px]`. None of these were driven by a token — each was an independently-chosen Tailwind arbitrary value, so nothing connected them and nothing would have caught a fifth one being added the same way.
+- **Root cause:** The product card predates the `.type-*` typography system (added in `f1f296b`) and had never been migrated onto it. Sizes below 14px accumulated over time as ad-hoc `text-[Npx]` values with no shared definition, each looking like a reasonable one-off shrink for a "secondary" or "dense" piece of text.
+- **Fix:** Migrated all five files that compose the product card (`product-card.liquid`, `product-card-price.liquid`, `product-card-image.liquid`, `savings-badge.liquid`'s `sm` variant, `unit-price.liquid`) onto `.type-*` primitives and the `text-style.liquid` roles. Badges now use the existing `.type-badge` surface + `badge-label` role (fixed 12px, uppercase, bold — no more per-breakpoint shrink). The unit-price suffix and rating wrapper moved to `type-xs`/`type-sm`. The product title was unified across the `minimal`/standard layout variants onto `type-md type-bold`, a deliberate visual change approved during design. See `docs/superpowers/specs/2026-08-13-product-card-typography-design.md` for the full mapping and the rationale for using `type-xs` (12px) on two non-caps elements as a pragmatic exception to that token's "uppercase labels only" comment.
+- **Prevention:** When adding text to any surface, reach for a `text-style.liquid` role or a `.type-*` primitive first — `text-[Npx]`/`text-xs`/`text-sm` etc. on new markup is a regression back to the pre-token pattern this entry fixes. `docs/typography-inventory.md` is the place to check whether a surface still needs migrating before assuming its existing classes are fine to copy.
 
 ### F-026 — `{% paginate %}` inside a rendered snippet never sliced, so every collection page showed the same 50 products
 

@@ -235,6 +235,18 @@ versaler": nr. 8, 10, 33, 34, 35, 37 og 42 er alle en variation over
 
 108 forekomster fordelt på 105 linjer i 48 filer.
 
+> **Opdatering 2026-08-13:** Produktkort-overfladen er migreret til
+> `.type-*`-systemet — `snippets/product-card.liquid`,
+> `product-card-price.liquid`, `product-card-image.liquid`,
+> `savings-badge.liquid` (kun `sm`-varianten) og `unit-price.liquid`. De
+> 9-11px-forekomster fra disse fem filer nævnt nedenfor (badge på
+> produktbillede, enhedssuffiks i `product-card-price.liquid`,
+> produktkort-metatekst/rating-wrapper) er lukket. Se
+> `docs/superpowers/specs/2026-08-13-product-card-typography-design.md`
+> og `docs/failure-log.md` F-027 for detaljerne. Denne optælling er
+> stadig et snapshot fra 2026-08-13 og er ikke genkørt — øvrige linjer
+> nedenfor er fortsat uændrede.
+
 ### 9px (5)
 
 | Fil | Linje | Hvad det er |
