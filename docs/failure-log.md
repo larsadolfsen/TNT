@@ -12,11 +12,9 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
-<<<<<<< HEAD
+| [F-020](#f-020--two-parallel-sessions-both-claimed-f-018-and-the-conflict-markers-were-pushed) | 2026-08-13 | Live | Repo / process | `docs/failure-log.md` on `main` contained `<<<<<<<` conflict markers |
+| [F-019](#f-019--nav-hover-highlight-was-a-fixed-32px-band-not-the-items-hit-area) | 2026-08-13 | Live | Header / navigation | Nav item hover highlight shorter than the item it belongs to |
 | [F-018](#f-018--js-source-edit-made-on-a-branch-predating-the-minified-build) | 2026-08-13 | Caught | Collection / build | Sort-drawer close delay would have shipped dead |
-=======
-| [F-018](#f-018--nav-hover-highlight-was-a-fixed-32px-band-not-the-items-hit-area) | 2026-08-13 | Live | Header / navigation | Nav item hover highlight shorter than the item it belongs to |
->>>>>>> claude/hover-effect-fill-area-e86f93
 | [F-017](#f-017--empty-sections-still-reserved-a-grid-row-and-its-gaps) | 2026-08-13 | Live | Collection page | 42px of blank space between collection description and product grid |
 | [F-016](#f-016--default-shopify-block-padding-not-overridden-on-header-leaf-blocks) | 2026-08-13 | Live | Header | Hamburger/logo/cart/search icons carried large unexplained padding |
 | [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it) | 2026-08-13 | Live | Header | Row padding setting had no visible effect |
@@ -39,7 +37,22 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 ## Entries
 
-<<<<<<< HEAD
+### F-020 — Two parallel sessions both claimed F-018, and the conflict markers were pushed
+
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** this commit
+- **Symptom:** `docs/failure-log.md` on `main` (and therefore on the live theme) contained two unresolved `<<<<<<< HEAD` / `=======` / `>>>>>>>` blocks — one in the index table, one in `## Entries` — with two different bugs both numbered F-018.
+- **Root cause:** Two chains of causation, both from concurrent sessions. (1) The log's ID allocation rule ("take the next free `F-NNN`") is read at the moment a branch is written, not at merge time, so two branches open at once both saw F-017 as the newest and both wrote F-018 — a guaranteed conflict in the index row *and* the entry, since both insert at the top of the same two lists. (2) The resulting conflict was left in the working tree of the **primary checkout** while this session paused to back up another session's uncommitted files; a parallel session then committed and pushed everything in that tree, markers included. `theme-check` does not lint markdown, and nothing else checks for conflict markers, so nothing blocked the push.
+- **Fix:** Renumber this session's entry F-018 → F-019 (the other session's F-018 reached `main` first, so its number stands), keep both index rows, and add this entry as F-020.
+- **Prevention:** Two rules. (a) Assign the `F-NNN` id against `origin/main` at merge time, not at write time — when merging, always expect the log's top rows to conflict and renumber your own entry rather than the one already on `main`. (b) Never leave a conflicted merge sitting in the primary checkout: resolve it or `git merge --abort` before doing anything else, because a parallel session there will commit whatever it finds. Restated from the existing worktree rule in `CLAUDE.md`, which this violated in the reverse direction — the danger is not only switching branches under another session, but also leaving a half-finished index/tree behind for one.
+
+### F-019 — Nav hover highlight was a fixed 32px band, not the item's hit area
+
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** `bcacdb3`
+- **Symptom:** Hovering a main-nav item in header row 2 drew a rounded highlight noticeably shorter than the item itself — DevTools showed the `a.nav-link-pill` at 48px tall while the highlight measured 32px, leaving 8px of un-highlighted pill above and below.
+- **Root cause:** `blocks/header-navigation.liquid`'s `.nav-link-pill::before` (the highlight layer, also used for the `--open` state) was positioned with `inset-inline: 0; top: 50%; transform: translateY(-50%);` and a hardcoded `height: 32px`. The pill's own height is not fixed — it is `h-full` of the row (`row_height: 44` for header row 2, per `sections/header-group.json`) and gains `min-height: 48px` under `@media (pointer: coarse)`. So the highlight was a constant 32px against a pill that is 44–48px depending on row setting and input type, and could never match it.
+- **Fix:** Replace the fixed-height centred band with `inset: 0`, so the pseudo-element fills the pill's box whatever height the row resolves to. Border radius unchanged.
+- **Prevention:** A decoration layer for an element whose size comes from a setting or a media query must be sized relative to that element (`inset: 0`, `100%`, `calc()` against a shared custom property) — never a hardcoded pixel height that happens to look right at one row height. Same family as [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it): a hardcoded pixel size placed alongside a height that is actually derived from a theme setting.
+
 ### F-018 — JS source edit made on a branch predating the minified build
 
 - **Date:** 2026-08-13 · **Reach:** Caught · **Fix:** this commit
@@ -47,16 +60,6 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 - **Root cause:** The branch was cut at `1.0.140`, when `sections/main-collection.liquid` still loaded `assets/main-collection.js` directly. While the branch was open, `main` gained an esbuild minify step (`scripts/build-js.mjs`, `npm run js:build`) and every section switched its `<script src>` to the `.min.js` build. Editing the source file was correct when the edit was made and wrong by the time it merged; `npm run tailwind:build` regenerates only `output.css`, so nothing rebuilt the stale `main-collection.min.js` that the page actually loads. `theme-check` cannot see this — both files parse fine.
 - **Fix:** Run `npm run js:build` (or `npm run build`, which does both) as part of resolving the merge, and commit the regenerated `assets/main-collection.min.js`.
 - **Prevention:** After merging `main` into a long-lived branch, run the full `npm run build` — not just the tailwind step — and check whether the section that loads your edited asset still points at the file you edited. Compiled artifacts (`output.css`, `*.min.js`) are tracked in this repo, so a merge that changes the build pipeline silently invalidates work done against the old one.
-=======
-### F-018 — Nav hover highlight was a fixed 32px band, not the item's hit area
-
-- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** `bcacdb3`
-- **Symptom:** Hovering a main-nav item in header row 2 drew a rounded highlight noticeably shorter than the item itself — DevTools showed the `a.nav-link-pill` at 48px tall while the highlight measured 32px, leaving 8px of un-highlighted pill above and below.
-- **Root cause:** `blocks/header-navigation.liquid`'s `.nav-link-pill::before` (the highlight layer, also used for the `--open` state) was positioned with `inset-inline: 0; top: 50%; transform: translateY(-50%);` and a hardcoded `height: 32px`. The pill's own height is not fixed — it is `h-full` of the row (`row_height: 44` for header row 2, per `sections/header-group.json`) and gains `min-height: 48px` under `@media (pointer: coarse)`. So the highlight was a constant 32px against a pill that is 44–48px depending on row setting and input type, and could never match it.
-- **Fix:** Replace the fixed-height centred band with `inset: 0`, so the pseudo-element fills the pill's box whatever height the row resolves to. Border radius unchanged.
-- **Prevention:** A decoration layer for an element whose size comes from a setting or a media query must be sized relative to that element (`inset: 0`, `100%`, `calc()` against a shared custom property) — never a hardcoded pixel height that happens to look right at one row height. Same family as [F-015](#f-015--header-row-padding-had-zero-effect-because-a-child-height-cancelled-it): a hardcoded pixel size placed alongside a height that is actually derived from a theme setting.
->>>>>>> claude/hover-effect-fill-area-e86f93
-
 ### F-017 — Empty sections still reserved a grid row (and its gaps)
 
 - **Date:** 2026-08-13 · **Reach:** Live · **Fix:** `61f7578`
