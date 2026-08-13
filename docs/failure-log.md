@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-015](#f-015--section-rendering-api-404d-on-sectionid-so-collection-filters-did-nothing) | 2026-08-13 | Live | Collection filters | Clicking a filter changed the URL but not the products |
 | [F-014](#f-014--liquid-comparison-in-a-render-argument-killed-the-cart) | 2026-08-13 | Live | Header / cart | Cart icon gone, add-to-cart dead site-wide |
 | [F-013](#f-013--dead-placeholder-css-stretched-every-icon-to-300px) | 2026-08-13 | Live | CSS | Every icon 300px wide |
 | [F-012](#f-012--trust-bar-clipped-on-mobile) | 2026-08-13 | Live | Homepage | Trust bar showed one stray checkmark on mobile |
@@ -30,6 +31,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-015 — Section Rendering API 404'd on `section.id`, so collection filters did nothing
+
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** this commit
+- **Symptom:** On a collection page, ticking a filter updated the address bar to `?filter.v.availability=1&sort_by=most-relevant` but the product grid never changed. No console error, no visible failure — the page just quietly ignored the filter. Same for sorting and for the filter chips.
+- **Root cause:** `sections/main-collection.liquid` published `{{ section.id }}` into the `#main-collection-config` island, and `assets/main-collection.js` appended it as the `section_id` query parameter. Inside a JSON template, `section.id` resolves to the fully-qualified `template--28450753839437__main-collection`, but the Section Rendering API expects the section's *key* as written in `templates/collection.json` — `main-collection`. The long form returns **404 with an empty body**. `filterProducts()` calls `.then(res => res.text())` without checking `res.ok`, so the empty body parsed into a document with no `#product-grid`, the `if (newGrid && productGrid)` guard failed, and the function carried on to `pushState` the new URL and clear the loading state. Every failure path looked like a success.
+- **Fix:** Derive the short key with `assign section_render_id = section.id | split: '__' | last` and publish that instead. Verified against the live store: `?section_id=main-collection` returns 200 and honours the params (unfiltered 50 cards, `filter.v.availability=1` 39 cards, `sort_by=price-ascending` reorders), while `?section_id=template--28450753839437__main-collection` returns 404.
+- **Prevention:** Two rules. (1) In a JSON template, `section.id` is not the Section Rendering API's section id — derive the template key. (2) **Check `res.ok` before parsing a fetch response.** This bug was invisible for as long as it was because a 404 was treated as a successful render of an empty page; a `if (!res.ok) throw` would have surfaced it in the console the first time anyone clicked a filter. See also [F-002](#f-002--predictive-search-never-activated-on-the-live-store) — another live JS failure with no console error.
 
 ### F-014 — Liquid comparison in a `render` argument killed the cart
 

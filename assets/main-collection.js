@@ -4,10 +4,11 @@
  * collection-chip navigation that swaps #product-grid without a full page
  * reload. Pagination is handled by assets/collection-infinite-scroll.js.
  *
- * Moved out of sections/main-collection.liquid's inline <script>. The
- * section's id (needed for the `section_id` param on filter fetches) arrives
- * through the #main-collection-config JSON island rendered by that section;
- * this file holds no Liquid. Exposes window.toggleMobileFilter /
+ * Moved out of sections/main-collection.liquid's inline <script>. The section
+ * key used for the `section_id` param on filter fetches arrives through the
+ * #main-collection-config JSON island rendered by that section — it is the
+ * short template key ("main-collection"), not section.id, because the Section
+ * Rendering API 404s on the long form; this file holds no Liquid. Exposes window.toggleMobileFilter /
  * toggleSortDrawer / selectSortOption / toggleFilterBlock / filterProducts /
  * syncPriceFilters / removeFilterChipUrl / clearAllFiltersUrl, which the
  * section's inline onclick/onchange/oninput handlers depend on.

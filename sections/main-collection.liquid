@@ -104,7 +104,15 @@
     render 'icon', name: 'chevron-up', class: 'text-xs'
   endcapture
 -%}
-{%- assign section_id_json = section.id | json -%}
+{%- liquid
+  # The Section Rendering API expects the section's key as written in the JSON
+  # template ("main-collection"), NOT the fully-qualified section.id
+  # ("template--<template_id>__main-collection") that Liquid hands back inside a
+  # JSON template. Passing the long form returns 404, which silently left the
+  # grid untouched on every filter fetch — see docs/failure-log.md F-015.
+  assign section_render_id = section.id | split: '__' | last
+-%}
+{%- assign section_id_json = section_render_id | json -%}
 <script type="application/json" id="main-collection-config">
   {"sectionId": {{ section_id_json }}, "iconChevronDown": {{ icon_chevron_down_html | strip_newlines | json }}, "iconChevronUp": {{ icon_chevron_up_html | strip_newlines | json }}}
 </script>
