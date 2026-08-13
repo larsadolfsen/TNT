@@ -1,0 +1,54 @@
+{% doc %}
+  Renders a single sub-collection card: image, title, and optional
+  description. Shared by sections/collections.liquid and
+  blocks/subcollections-grid.liquid (both list sub-collections sourced
+  from the collection.metafields.custom.child metafield).
+
+  @param {object} [collection] - the collection to render. Omit to render a
+    numbered design-mode placeholder card instead (used when no child
+    collections are configured yet).
+  @param {number} [placeholder_index] - number shown on the placeholder
+    card. Required when `collection` is omitted.
+
+  @example
+  {% render 'collection-card', collection: col_item %}
+  {% render 'collection-card', placeholder_index: 1 %}
+{% enddoc %}
+
+{%- if collection != blank -%}
+  <a class="collection-card group" href="{{ collection.url }}">
+    <div class="collection-card__image-wrapper">
+      {% if collection.featured_image %}
+        {% render 'image',
+          class: 'collection-card__image',
+          image: collection.featured_image,
+          width: 600,
+          height: 600,
+          crop: 'center'
+        %}
+      {% else %}
+        <div class="w-full h-full flex items-center justify-center bg-outline-variant text-primary/85 aspect-square rounded-2xl border border-outline-variant">
+          {% render 'icon', name: 'image', class: 'text-4xl' %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="collection-card__content">
+      <h3 class="collection-card__title">{{ collection.title }}</h3>
+
+      {% if collection.description %}
+        <p class="collection-card__description">{{ collection.description | strip_html | truncatewords: 15 }}</p>
+      {% endif %}
+    </div>
+  </a>
+{%- else -%}
+  <div class="collection-card group">
+    <div class="collection-card__image-wrapper flex items-center justify-center">
+      {{ 'collection-' | append: placeholder_index | placeholder_svg_tag: 'w-full h-full bg-slate-100 opacity-50' }}
+    </div>
+    <div class="collection-card__content">
+      <h3 class="collection-card__title">Underkategori {{ placeholder_index }}</h3>
+      <p class="collection-card__description">Dette er en eksempel-underkategori i designvisning.</p>
+    </div>
+  </div>
+{%- endif -%}
