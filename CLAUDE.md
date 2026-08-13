@@ -64,6 +64,16 @@ Single entry point for all icons — a Lucide sprite (`snippets/icon-sprite.liqu
 
 Colors are CSS custom properties set from `settings_*_light`/`settings_*_dark` theme settings — light values on `:root`, dark values on `.dark` (toggled via a `dark` class on `<html>`, driven by `localStorage` + `prefers-color-scheme`, see `layout/theme.liquid`). `assets/input.css`'s `@theme` block maps these variables to Tailwind utility classes (`bg-primary`, `text-on-accent`, `border-outline-variant`, etc.). Per `ai.md`: prefer the semantic classes (`bg-card-light`, `bg-card-high`, `bg-background`) over hardcoded `bg-white`/`text-black`/arbitrary hex values, since those bypass dark-mode theming — `bg-card-light` for headers/cards/panels/drawers, `bg-card-high` for controls nested inside a card, `bg-background` for page/section backgrounds. New custom colors must be declared in `css-variables.liquid` and mapped in `input.css`'s `@theme` before use.
 
+### Typography system (`snippets/text-style.liquid`, `.type-*` in `assets/input.css`)
+
+Two layers. **Layer 1** is a set of CSS primitives in `input.css` named after *size*, not function: seven sizes (`.type-3xl` 48px → `.type-xs` 12px) plus eight modifiers (`.type-medium/strong/bold`, `.type-caps`, `.type-serif`, `.type-muted/faint/error`). A size class sets `font-size` and its line-height and nothing else; colour, weight, case and family are modifiers; margins and widths stay at the call site. Values come from `--type-*` tokens in `css-variables.liquid` — prefixed because Tailwind v4 already owns `--text-xl`/`--text-2xl`/`--text-3xl` at *different* values, so reusing those names would silently resize every existing `text-xl` in the theme.
+
+**Layer 2** is `{% render 'text-style', role: '…' %}`, which prints the class string for a semantic role (`title-page`, `title-card`, `body-strong`, `caption`, `label`, `badge-label`, `error`, …). Call sites say what the text *is*; the CSS says how big it is. `role: 'body'` prints nothing on purpose — 14px/400/full colour is inherited, so plain body text carries no class. An unknown role degrades to body text rather than to unstyled markup.
+
+Text colour is three tokens (`--color-text`, `--color-text-muted`, `--color-text-faint`) replacing the nine ad-hoc `text-primary/NN` opacity levels the theme accumulated. They point at `--color-primary`, which `.dark` already swaps, so they need no dark-mode counterpart. A badge is a *surface* (`.type-badge`), not a text style — its content is the same `.type-xs .type-bold .type-caps` label used elsewhere, so 12px exists in exactly one place.
+
+Migration is in progress: the old Tailwind `text-*` utilities and the new system coexist. See `docs/typography-inventory.md` for what is left and `docs/typography-specimen.html` for the specimen.
+
 ### Grid layout (`.grid-layout`)
 
 Responsive grids use the `.grid-layout` utility with per-child CSS custom properties (`--span-mobile`, `--span-expanded`, `--span-large`) set inline, rather than Tailwind's `grid-cols-*`/`col-span-*` utilities directly — see `assets/input.css` for the underlying `--section-span-*` variables.
@@ -77,5 +87,6 @@ Vanilla JS, one file per concern in `assets/` (e.g. `header.js` for header inter
 - `docs/failure-log.md` — maintained record of every bug found, with root cause, fix and the rule that prevents a repeat, plus a `Recurring patterns` digest. Maintaining it is a project rule (see above), not optional.
 - `docs/optimization-master-plan.md` — the active project plan (phases, parallelization rules, task tiers by model).
 - `docs/typography-inventory.md` — optælling af alle tekst-styles i temaet (størrelse, vægt, linjehøjde, knibning, versaler), inkl. fuld placeringsliste over alt under 14px. Inventar, ikke plan.
+- `docs/typography-specimen.html` — before/after-specimen for typografisystemet. Del 1 viser de 74 nuværende varianter med de klassestrenge der faktisk står i koden; Del 2 viser `.type-*`-systemet med rolletabellen. Åbn den i en browser; den er selvstændig og kræver ingen server.
 - `docs/component-decomposition-backlog.md`, `docs/missing-designs-brief.md`, `docs/missing-surface-designs.md`, `docs/theme-store-compliance-brainstorm.md` — scoped work backlogs.
 - `docs/testing-workflow.md` — how live-server verification works for this store, and the (blocked) fallback path for pushing to a theme via the Admin GraphQL API (`themeFilesUpsert`) when no local Shopify CLI auth is available.

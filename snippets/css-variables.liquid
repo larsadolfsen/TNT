@@ -79,6 +79,47 @@
 
     /* Deliberately not a light/dark pair — see docs/missing-surface-designs.md Shared foundations, Caveat 2 */
     --color-important: {{ settings.important_color | default: '#e11d48' }};
+
+    /* Foreground for --color-important. Mode-independent for the same reason
+       the background is: the important colour does not swap between light and
+       dark, so its text must not either. */
+    --color-on-important: #ffffff;
+
+    /* ---------------------------------------------------------------------
+       Typography scale — see docs/typography-specimen.html for the specimen
+       and docs/typography-inventory.md for what these replace. Sizes are in
+       rem so text follows the reader's own browser setting; the audience
+       skews 40+, where that matters. Consumed by the .type-* classes in
+       assets/input.css, which are selected via snippets/text-style.liquid.
+
+       Every name is prefixed --type-* on purpose: Tailwind v4 already owns
+       --text-xl (20px), --text-2xl (24px), --text-3xl (30px) and --tracking-*.
+       Reusing those names would silently resize every existing text-xl in the
+       theme, so the new scale gets its own namespace and the two coexist
+       until the migration is finished.
+       --------------------------------------------------------------------- */
+    --type-3xl: 3rem;      /* 48px */
+    --type-2xl: 1.875rem;  /* 30px */
+    --type-xl:  1.5rem;    /* 24px */
+    --type-lg:  1.125rem;  /* 18px */
+    --type-md:  1rem;      /* 16px */
+    --type-sm:  0.875rem;  /* 14px — the floor for readable text */
+    --type-xs:  0.75rem;   /* 12px — uppercase labels only */
+
+    --type-weight-normal: 400;
+    --type-weight-medium: 500;
+    --type-weight-strong: 600;
+    --type-weight-bold:   700;
+
+    --type-tracking-tight: -0.025em;
+    --type-tracking-caps:   0.05em;
+
+    /* Three text colours replacing nine ad-hoc opacity levels. They point at
+       --color-primary, which .dark already swaps, so they need no dark-mode
+       counterpart and cannot drift out of step. */
+    --color-text:       var(--color-primary);
+    --color-text-muted: color-mix(in srgb, var(--color-primary) 70%, transparent);
+    --color-text-faint: color-mix(in srgb, var(--color-primary) 45%, transparent);
   }
 
   .dark {
