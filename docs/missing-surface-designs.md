@@ -837,7 +837,7 @@ since it is broken in dark mode).
 | Focus-visible | 2px ring on the trigger, inset so it isn't clipped by the row | 2px ring on the row / on the disclosure button |
 | Open | Pill fills `--color-card-high`; chevron rotated 180°; `aria-expanded="true"`; scrim visible | Children visible; chevron rotated 180°; `aria-expanded="true"` |
 | Active/pressed | `opacity-80` for 100ms | Row background `bg-card-high` while pressed |
-| Current page | Existing `nav-menu-item--active` class retained; add a 2px `bg-primary` underline on the trigger's bottom edge and `font-semibold` on the label | `text-primary font-bold` + a 2px `border-l` in `--color-primary` on the row |
+| Current page | Existing `nav-menu-item--active` class retained; pill fills `--color-surface-container` (same declaration as Hover) and `font-semibold` on the label. The 2px `bg-primary` underline this row originally specified was dropped on 2026-08-13 at the merchant's request. | `text-primary font-bold` + a 2px `border-l` in `--color-primary` on the row |
 | Empty (link has no children) | No chevron, no panel, plain link | No disclosure button, plain link |
 | Menu not set / empty link list | Block renders nothing (existing `{% if menu_handle != blank %}` guard) | Drawer shows only the "Forside" home link |
 
