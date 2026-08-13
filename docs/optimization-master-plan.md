@@ -322,12 +322,55 @@ kr"; zero googleusercontent references; icons render via the primitive.
 Remaining for batch 3: Q2, Q4, Q5, Q6, Q9, Q11 (check R7's file list before
 starting those).
 
-**Batch 3 IN PROGRESS (started 2026-08-09, branch `claude/wave-3-5-batch-3-2e8851`):**
-R7 checked — only its design doc has merged to main (`dabb7eb`), no
-implementation files landed, so no conflicts with Q2/Q4/Q5/Q6/Q9. Running
-Q2 (image loading spec then mechanical migration), Q4+Q5 (inline script
-extraction), Q6 (subcollections dedup, coordinated with Q5), Q9 (shared
-panel primitive), Q11 (JS minify step) via subagent-driven development.
+**Batch 3 DONE (2026-08-13, merged as `facba43`, v1.0.141, theme-check clean
+at 140 files / 0 offenses).** Q2, Q4, Q5, Q6, Q9, Q11 — all nine plan tasks
+executed via subagent-driven development, each task-reviewed, plus a final
+whole-branch review whose findings were fixed before merge. R7 was checked
+first: only its design doc had landed (`dabb7eb`), no implementation files,
+so there was no file-list conflict with any of them.
+
+- **Q2** — `loading`/`fetchpriority` across 8 image call sites, spec-driven
+  (`docs/superpowers/specs/2026-08-09-image-loading-fetchpriority-spec.md`).
+  `snippets/image.liquid` needed a one-line change: it wasn't forwarding
+  `fetchpriority` to `image_tag` at all.
+- **Q4 + Q5** — twelve inline `<script>` blocks extracted to `assets/*.js`
+  using the IIFE + JSON config-island convention.
+- **Q6** — subcollections trio deduped. Deleted
+  `blocks/collection-subcollections.liquid` (unreachable near-duplicate; no
+  schema names it as a block type) and `sections/collection-subcategories
+  .liquid` (no template refs, and its `applyQuickFilter` onclick handlers
+  call a function defined nowhere in the repo — the buttons were already
+  broken), plus the orphaned `snippets/subcategory-tile-content.liquid`.
+- **Q9** — new shared `assets/panel.js` primitive. All three panels migrated:
+  `header-account`, `footer-localization` (off native `<dialog>`), and
+  `header-search-icon`'s mobile overlay. `assets/header-account.js` deleted;
+  `predictive-search.js`'s duplicated `initMobileOverlay()` removed.
+- **Q11** — esbuild minification, 186.9KB → 86.9KB (~53%). `assets/*.js` are
+  now source; `assets/*.min.js` are the built artifacts every `<script src>`
+  loads. `npm run dev` gained a `js:watch`, `ai.md` documents the step, and
+  CI fails if the committed artifacts are stale.
+
+**Bugs found by review, not by planning** — worth recording because each was
+silent: a duplicate-listener bug that made accordions open-then-close on one
+click; a focus-restore regression that yanked focus off whatever the user
+clicked; a focus trap that leaked because it counted `display:none` elements
+(the localization modal hides most language rows); and three extracted
+scripts still querying the `.material-symbols-outlined` class that the
+upstream Lucide migration had removed mid-batch.
+
+**Still owed: browser verification.** Nothing in this batch has been seen in
+a browser. Highest-risk surfaces, in order — the footer country/language
+modal on a *mobile product page* (it lost native `<dialog>`'s top-layer
+stacking and UA focus containment; both were hand-reimplemented), the mobile
+search takeover, the header account dropdown, and a spot-check that the Q6
+deletions left nothing reachable in the live store's section picker.
+
+**Separate pre-existing bug, live on main, not from this batch:**
+`assets/main-collection.js:245,248` sets `.textContent` on the collection
+filter's toggle icon, which the Lucide migration turned into
+`<svg><use href="#icon-minus"></use></svg>`. Setting `textContent` on an
+`<svg>` wipes its `<use>` child, so that icon disappears permanently on
+first click. Needs its own task.
 
 | ID | Task | Tier | Test on live server |
 |----|------|------|---------------------|
