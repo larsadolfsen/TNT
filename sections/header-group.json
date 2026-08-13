@@ -87,7 +87,7 @@
                 "alignment": "right"
               },
               "blocks": {
-                "header_search_icon_NNXbpV": {
+                "header_search_icon_DBiBjg": {
                   "type": "header-search-icon",
                   "name": "Search Icon",
                   "settings": {
@@ -119,7 +119,7 @@
                 }
               },
               "block_order": [
-                "header_search_icon_NNXbpV",
+                "header_search_icon_DBiBjg",
                 "header_account_hd2K91",
                 "header_cart_4wAidd"
               ]
