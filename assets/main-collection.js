@@ -1,8 +1,8 @@
 /**
  * Collection grid behaviour: color swatch styling, filter list truncation,
  * price-filter sync between desktop/mobile, and AJAX filtering/sorting/
- * pagination/collection-chip navigation that swaps #product-grid without a
- * full page reload.
+ * collection-chip navigation that swaps #product-grid without a full page
+ * reload. Pagination is handled by assets/collection-infinite-scroll.js.
  *
  * Moved out of sections/main-collection.liquid's inline <script>. The
  * section's id (needed for the `section_id` param on filter fetches) arrives
@@ -411,48 +411,6 @@
           }
         });
       return;
-    }
-
-    const navLink = e.target.closest('#product-grid nav[role="navigation"] a');
-    if (navLink) {
-      e.preventDefault();
-      const url = new URL(navLink.href);
-      const params = new URLSearchParams(url.search);
-      params.append('section_id', sectionId);
-
-      if (productGrid) {
-        productGrid.classList.add('opacity-50', 'pointer-events-none');
-      }
-
-      fetch(`${url.pathname}?${params.toString()}`)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-
-          const newGrid = doc.getElementById('product-grid');
-          if (newGrid && productGrid) {
-            productGrid.innerHTML = newGrid.innerHTML;
-          }
-
-          if (productGrid) {
-            productGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-
-          params.delete('section_id');
-          const newUrl = `${url.pathname}?${params.toString()}`;
-          window.history.pushState({ path: newUrl }, '', newUrl);
-
-          if (productGrid) {
-            productGrid.classList.remove('opacity-50', 'pointer-events-none');
-          }
-        })
-        .catch(err => {
-          console.error('Error paginating:', err);
-          if (productGrid) {
-            productGrid.classList.remove('opacity-50', 'pointer-events-none');
-          }
-        });
     }
   });
 
