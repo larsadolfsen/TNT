@@ -73,6 +73,10 @@
     --color-border: {{ settings.border_color_light | default: '#e2e8f0' }};
     --color-surface-container: {{ settings.background_shade_color_light | default: '#f9f9f9' }};
 
+    /* Selected state of custom form controls (radio dots etc.) — deliberately pure
+       black rather than --color-primary's #0e1a28, which carries a navy tint. */
+    --color-control-selected: #000000;
+
     /* Deliberately not a light/dark pair — see docs/missing-surface-designs.md Shared foundations, Caveat 2 */
     --color-important: {{ settings.important_color | default: '#e11d48' }};
   }
@@ -92,5 +96,8 @@
     --color-foreground: {{ settings.foreground_color_dark | default: '#e2e8f0' }};
     --color-border: {{ settings.border_color_dark | default: '#253549' }};
     --color-surface-container: {{ settings.background_shade_color_dark | default: '#142131' }};
+
+    /* Black would be invisible on a dark panel — the selected control inverts. */
+    --color-control-selected: #ffffff;
   }
 {% endstyle %}

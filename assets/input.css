@@ -823,12 +823,12 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 }
 
 .radio-input:checked {
-  border-color: var(--color-primary);
-  background-color: var(--color-primary);
+  border-color: var(--color-control-selected);
+  background-color: var(--color-control-selected);
 }
 
 .radio-input:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-control-selected);
   outline-offset: 2px;
 }
 
