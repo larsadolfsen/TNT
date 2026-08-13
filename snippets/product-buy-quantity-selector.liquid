@@ -9,11 +9,11 @@
 
 <!-- Quantity Selector (Only visible for simple products when no customizer is present) -->
 <div id="buy-buttons-quantity-container" class="w-full flex items-center bg-card-high rounded-full border border-outline-variant overflow-hidden mb-1">
-  <button type="button" id="btn-buy-qty-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer border-r border-outline-variant">
+  <button type="button" id="btn-buy-qty-minus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-primary/10 transition-colors cursor-pointer border-r border-outline-variant">
     {% render 'icon', name: 'remove', class: 'text-[16px] select-none', style: 'font-size: 16px;' %}
   </button>
   <input id="input-buy-qty" name="quantity" class="w-full h-12 text-center border-none focus:ring-0 text-[16px] font-bold text-primary bg-transparent focus:outline-none" type="text" inputmode="numeric" pattern="[0-9]*" value="1" style="border: none; padding: 0; margin: 0; box-shadow: none; outline: none; text-align: center; font-size: 16px; font-weight: 700; color: var(--color-primary); min-height: unset; line-height: 1;" />
-  <button type="button" id="btn-buy-qty-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-slate-100 transition-colors cursor-pointer border-l border-outline-variant">
+  <button type="button" id="btn-buy-qty-plus" class="w-12 h-12 flex items-center justify-center text-primary active:bg-primary/10 transition-colors cursor-pointer border-l border-outline-variant">
     {% render 'icon', name: 'add', class: 'text-[16px] select-none', style: 'font-size: 16px;' %}
   </button>
 </div>
