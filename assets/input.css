@@ -44,6 +44,9 @@
   --nav-block-height: 48px;
   --nav-menu-gap: 24px;
 
+  --radio-size: 20px;
+  --radio-gap: 3px;
+
   @media (min-width: --theme(--breakpoint-lg)) {
     --grid-gap: 24px;
     --grid-padding-y: 40px;
@@ -799,6 +802,35 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 }
 
 /* Snippet/Section component styles migrated from {% stylesheet %} blocks */
+
+/* Radio snippet (snippets/radio.liquid) styles.
+   Selected state = outer ring + gap of the surrounding surface + filled inner dot:
+   the fill is clipped to the content box and held off the border by the padding.
+   Declared here rather than as Tailwind utilities because the unlayered global
+   `* { border-color: ... }` reset outranks any layered `checked:border-*` utility. */
+.radio-input {
+  appearance: none;
+  width: var(--radio-size);
+  height: var(--radio-size);
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  padding: var(--radio-gap);
+  background-color: transparent;
+  background-clip: content-box;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.radio-input:checked {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+}
+
+.radio-input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
 
 /* Image snippet styles */
 .image {
