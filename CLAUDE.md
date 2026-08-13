@@ -67,6 +67,7 @@ Vanilla JS, one file per concern in `assets/` (e.g. `header.js` for header inter
 
 ## Docs worth knowing about
 
+- `docs/failure-log.md` — **maintained** record of every bug found, with root cause, fix and the rule that prevents a repeat. Check it when a symptom looks familiar; add an entry (next `F-NNN`, at the top) in the same commit as any bugfix.
 - `docs/optimization-master-plan.md` — the active project plan (phases, parallelization rules, task tiers by model).
 - `docs/component-decomposition-backlog.md`, `docs/missing-designs-brief.md`, `docs/missing-surface-designs.md`, `docs/theme-store-compliance-brainstorm.md` — scoped work backlogs.
 - `docs/testing-workflow.md` — how live-server verification works for this store, and the (blocked) fallback path for pushing to a theme via the Admin GraphQL API (`themeFilesUpsert`) when no local Shopify CLI auth is available.
