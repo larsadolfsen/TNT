@@ -17,7 +17,7 @@
   @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. title="...").
   @param {boolean} [button] - When true, this is the icon for a clickable control: fixes the glyph at 20px (12px if `small` is also set) and adds padding so the total box is always a 44x44px touch target. The caller still needs to wrap this in a real `<button>`/`<a>` for semantics/href/click handling -- this only controls sizing.
   @param {boolean} [small] - When true, renders a 12px glyph instead of the default 20px. Combine with `button` to keep a 44px touch target around the smaller glyph.
-  @param {boolean} [badge] - When true, renders a small count pill anchored to the glyph's top-right corner (e.g. a cart item count). Wraps the icon in an inner span sized to just the glyph, so the badge stays anchored to the visible icon even when `button` padding grows the outer clickable box.
+  @param {boolean} [badge] - When true, renders a small count pill anchored to the glyph's bottom-right corner (e.g. a cart item count). Wraps the icon in an inner span sized to just the glyph, so the badge stays anchored to the visible icon even when `button` padding grows the outer clickable box.
   @param {string} [badge_value] - Badge text/number. Only used when `badge` is true.
   @param {string} [badge_id] - id attribute on the badge element, so JS can find it (e.g. `document.getElementById(...)` to update count/visibility).
   @param {boolean} [badge_hidden] - When true, the badge starts scaled to 0 (hidden) instead of visible. Toggle by adding/removing the `scale-0`/`scale-100` classes on the badge element from JS.
@@ -59,7 +59,7 @@
       ><use href="#icon-{{ name }}"></use></svg>
       <span
         {%- if badge_id %} id="{{ badge_id }}"{% endif %}
-        class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300{% if badge_hidden %} scale-0{% endif %}"
+        class="absolute -bottom-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300{% if badge_hidden %} scale-0{% endif %}"
       >{{- badge_value -}}</span>
     </span>
   </span>
