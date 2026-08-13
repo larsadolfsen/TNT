@@ -229,13 +229,19 @@
     }
   }
 
+  // Hold the drawer open briefly after a sort option is picked, so the radio's
+  // selected state is visible before the panel slides away.
+  const SORT_SELECT_CLOSE_DELAY = 250;
+
   function selectSortOption(value) {
     const select = document.getElementById('sort-select');
     if (select) {
       select.value = value;
     }
-    toggleSortDrawer(false);
-    filterProducts();
+    setTimeout(() => {
+      toggleSortDrawer(false);
+      filterProducts();
+    }, SORT_SELECT_CLOSE_DELAY);
   }
 
   function toggleFilterBlock(headerEl) {
