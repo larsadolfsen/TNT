@@ -203,6 +203,13 @@ h4,
   padding: 16px;
 }
 
+/* Fixed 20px glyph with no padding -- used for the inner icon in the
+   badge+button case, where the outer icon--btn box handles padding instead. */
+.icon--glyph {
+  width: 20px;
+  height: 20px;
+}
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }

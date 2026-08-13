@@ -2,15 +2,9 @@
   <a
     href="{{ routes.cart_url }}"
     onclick="event.preventDefault(); toggleCartDrawer(true);"
-    class="cursor-pointer text-primary no-underline flex items-center justify-center hover:opacity-80 transition-opacity p-3"
+    class="cursor-pointer text-primary no-underline flex items-center justify-center hover:opacity-80 transition-opacity"
   >
-    <span class="relative flex items-center justify-center">
-      {% render 'icon', name: 'shopping-cart', class: 'text-xl text-primary' %}
-      <span
-        id="cart-counter"
-        class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}"
-      >{{ cart.item_count }}</span>
-    </span>
+    {% render 'icon', name: 'shopping-cart', button: true, class: 'text-primary', badge: true, badge_id: 'cart-counter', badge_value: cart.item_count, badge_hidden: cart.item_count == 0 %}
   </a>
 </div>
 
