@@ -16,7 +16,7 @@
           "type": "page-title",
           "settings": {
             "title_override": "{{ closest.collection.title }}",
-            "show_description": true,
+            "show_description": false,
             "padding_top": 12,
             "padding_bottom": 12,
             "padding_sides": 0
