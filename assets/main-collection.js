@@ -25,6 +25,8 @@
 
   var config = readConfig();
   var sectionId = config.sectionId || '';
+  var iconChevronDownHtml = config.iconChevronDown || '';
+  var iconChevronUpHtml = config.iconChevronUp || '';
 
   const productGrid = document.getElementById("product-grid");
   const productCountDisplay = document.getElementById("product-count-display");
@@ -146,7 +148,7 @@
         const toggleBtn = document.createElement('button');
         toggleBtn.type = 'button';
         toggleBtn.className = 'text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0 mt-2 font-semibold flex items-center gap-1 w-full';
-        toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><svg class="icon text-xs" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>`;
+        toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span>${iconChevronDownHtml}`;
 
         toggleBtn.onclick = function() {
           const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
@@ -155,13 +157,13 @@
               labels[i].classList.add('hidden');
             }
             toggleBtn.setAttribute('aria-expanded', 'false');
-            toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><svg class="icon text-xs" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>`;
+            toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span>${iconChevronDownHtml}`;
           } else {
             for (let i = limit; i < labels.length; i++) {
               labels[i].classList.remove('hidden');
             }
             toggleBtn.setAttribute('aria-expanded', 'true');
-            toggleBtn.innerHTML = `<span>Vis færre</span><svg class="icon text-xs" aria-hidden="true"><use href="#icon-chevron-up"></use></svg>`;
+            toggleBtn.innerHTML = `<span>Vis færre</span>${iconChevronUpHtml}`;
           }
         };
 
