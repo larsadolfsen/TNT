@@ -63,7 +63,7 @@ Responsive grids use the `.grid-layout` utility with per-child CSS custom proper
 
 ### JS
 
-Vanilla JS, one file per concern in `assets/` (e.g. `header.js` for header interactions, `header-cart.js` for the cart drawer, `navigation.js` for the nav dropdowns, `predictive-search.js`), loaded via `<script src="{{ '...' | asset_url }}" defer>` from the section/block that needs it — no bundler.
+Vanilla JS, one file per concern in `assets/` (e.g. `header.js` for header interactions, `header-cart.js` for the cart drawer, `navigation.js` for the nav dropdowns, `predictive-search.js`, `collection-infinite-scroll.js` for auto-loading the next page of collection products), loaded via `<script src="{{ '...' | asset_url }}" defer>` from the section/block that needs it — no bundler.
 
 ## Docs worth knowing about
 
