@@ -110,7 +110,7 @@ touched by Wave 2)
 
 | ID | Task | Tier | Test |
 |----|------|------|------|
-| D0 | Atomic primitives library: `snippets/icon.liquid` (wraps Material Symbols usage), `snippets/button.liquid`, `snippets/input.liquid`, shared price-display snippet. API spec by [S], then mechanical call-site migration by [H]. **Soft-gates Wave 2**: all new surfaces must be built from these primitives (per AGENTS.md rule) | [S]+[H] | Store renders identically after call-site migration; grep confirms no raw primitive markup remains |
+| D0 | Atomic primitives library: `snippets/icon.liquid` (wraps Material Symbols usage), `snippets/button.liquid`, `snippets/input.liquid`, shared price-display snippet. API spec by [S], then mechanical call-site migration by [H]. **Soft-gates Wave 2**: all new surfaces must be built from these primitives (per CLAUDE.md rule) | [S]+[H] | Store renders identically after call-site migration; grep confirms no raw primitive markup remains |
 | D1 | Trust-checkmark → one shared snippet (3 call sites) | [H] | Store product page: visually identical |
 | D2 | Badge consolidation: 3 implementations → 1 configurable block | [S] | Editor presets migrate; preview identical |
 | D3 | Rename `collection-grid` / `collections-grid` for clarity (incl. template refs) | [H] (spec: [S]) | Editor loads both blocks; existing templates unbroken |
@@ -126,7 +126,7 @@ touched by Wave 2)
 ## Wave 2 — Compliance build-out (needs E1 + D0; parallel by page area)
 
 All new surfaces are composed from the D0 primitives (icon/button/input/price
-snippets) — no re-inlined primitive markup, per the AGENTS.md rule.
+snippets) — no re-inlined primitive markup, per the CLAUDE.md rule.
 
 Each track owns its page area's files; no cross-track overlap by
 construction. Within a track, tasks run serially (same files).
