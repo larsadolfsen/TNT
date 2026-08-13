@@ -62,36 +62,7 @@
     {%- endfor -%}
   </div>
 
-  <script>
-    (() => {
-      const container = document.getElementById("pickup-availability-{{ block.id }}");
-      if (!container) return;
-
-      container.addEventListener("click", (e) => {
-        const trigger = e.target.closest(".pickup-row-trigger");
-        if (!trigger || !container.contains(trigger)) return;
-
-        const panel = document.getElementById(trigger.getAttribute("aria-controls"));
-        if (!panel) return;
-
-        const willOpen = trigger.getAttribute("aria-expanded") !== "true";
-        trigger.setAttribute("aria-expanded", String(willOpen));
-        panel.hidden = !willOpen;
-        trigger.classList.toggle("bg-card-high", willOpen);
-        trigger.classList.toggle("bg-card-light", !willOpen);
-
-        const chevron = trigger.querySelector(".pickup-chevron");
-        if (chevron) chevron.style.transform = willOpen ? "rotate(180deg)" : "";
-      });
-
-      document.addEventListener("variant-changed", (e) => {
-        if (!e.detail || !e.detail.variantId) return;
-        container.querySelectorAll(".pickup-variant-state").forEach((el) => {
-          el.hidden = el.dataset.variantId !== String(e.detail.variantId);
-        });
-      });
-    })();
-  </script>
+  <script src="{{ 'product-pickup-availability.min.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}

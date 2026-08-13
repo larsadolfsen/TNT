@@ -28,31 +28,7 @@
   {% content_for 'blocks' %}
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const sectionContainer = document.getElementById("shopify-section-accordions-{{ block.id }}");
-    if (!sectionContainer) return;
-    
-    const triggers = sectionContainer.querySelectorAll(".accordion-trigger");
-    triggers.forEach(trigger => {
-      if (trigger.dataset.accordionBound === "true") return;
-      trigger.dataset.accordionBound = "true";
-      
-      trigger.addEventListener("click", function() {
-        const content = this.nextElementSibling;
-        const icon = this.querySelector(".icon");
-        
-        if (content.classList.contains("hidden")) {
-          content.classList.remove("hidden");
-          if (icon) icon.classList.add("rotate-180");
-        } else {
-          content.classList.add("hidden");
-          if (icon) icon.classList.remove("rotate-180");
-        }
-      });
-    });
-  });
-</script>
+<script src="{{ 'product-accordions.min.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

@@ -9,9 +9,14 @@
     collections are configured yet).
   @param {number} [placeholder_index] - number shown on the placeholder
     card. Required when `collection` is omitted.
+  @param {string} [loading] - `loading` attribute passed through to the
+    featured-image render, e.g. 'eager' for above-the-fold cards.
+  @param {string} [fetchpriority] - `fetchpriority` attribute passed through
+    to the featured-image render, e.g. 'high' for above-the-fold cards.
 
   @example
   {% render 'collection-card', collection: col_item %}
+  {% render 'collection-card', collection: col_item, loading: 'eager', fetchpriority: 'high' %}
   {% render 'collection-card', placeholder_index: 1 %}
 {% enddoc %}
 
@@ -24,7 +29,9 @@
           image: collection.featured_image,
           width: 600,
           height: 600,
-          crop: 'center'
+          crop: 'center',
+          loading: loading,
+          fetchpriority: fetchpriority
         %}
       {% else %}
         <div class="w-full h-full flex items-center justify-center bg-outline-variant text-primary/85 aspect-square rounded-2xl border border-outline-variant">

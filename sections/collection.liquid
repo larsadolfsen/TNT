@@ -10,6 +10,15 @@
 <div class="collection-products">
   {% paginate collection.products by 20 %}
     {% for product in collection.products %}
+      {%- liquid
+        if forloop.index <= 2
+          assign card_loading = 'eager'
+          assign card_fetchpriority = 'high'
+        else
+          assign card_loading = 'lazy'
+          assign card_fetchpriority = nil
+        endif
+      -%}
       <div class="collection-product">
         {% if product.featured_image %}
           {% render 'image',
@@ -18,7 +27,9 @@
             url: product.url,
             width: 400,
             height: 400,
-            crop: 'center'
+            crop: 'center',
+            loading: card_loading,
+            fetchpriority: card_fetchpriority
           %}
         {% endif %}
         <div class="collection-product__content">
