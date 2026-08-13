@@ -50,10 +50,7 @@
     pointer-events: none;
   }
 
-  /* The current page's item carries the same grey fill as a hovered one — one
-     declaration, so the two states cannot drift apart. */
-  #shopify-block-{{ block.id }} .nav-link-pill:hover::before,
-  #shopify-block-{{ block.id }} .nav-menu-item--active .nav-link-pill::before {
+  #shopify-block-{{ block.id }} .nav-link-pill:hover::before {
     background-color: var(--color-surface-container, rgba(0,0,0,0.06));
   }
 
@@ -71,6 +68,16 @@
 
   #shopify-block-{{ block.id }} .nav-menu-item--active .nav-link-pill {
     font-weight: 600;
+  }
+
+  #shopify-block-{{ block.id }} .nav-menu-item--active .nav-link-pill::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: 2px;
+    background-color: var(--color-primary);
   }
 
   /* Touch-target floor for coarse pointers. Derived from the row the same way
