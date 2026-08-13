@@ -76,5 +76,6 @@ Vanilla JS, one file per concern in `assets/` (e.g. `header.js` for header inter
 
 - `docs/failure-log.md` — maintained record of every bug found, with root cause, fix and the rule that prevents a repeat, plus a `Recurring patterns` digest. Maintaining it is a project rule (see above), not optional.
 - `docs/optimization-master-plan.md` — the active project plan (phases, parallelization rules, task tiers by model).
+- `docs/typography-inventory.md` — optælling af alle tekst-styles i temaet (størrelse, vægt, linjehøjde, knibning, versaler), inkl. fuld placeringsliste over alt under 14px. Inventar, ikke plan.
 - `docs/component-decomposition-backlog.md`, `docs/missing-designs-brief.md`, `docs/missing-surface-designs.md`, `docs/theme-store-compliance-brainstorm.md` — scoped work backlogs.
 - `docs/testing-workflow.md` — how live-server verification works for this store, and the (blocked) fallback path for pushing to a theme via the Admin GraphQL API (`themeFilesUpsert`) when no local Shopify CLI auth is available.
