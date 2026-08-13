@@ -7,13 +7,33 @@
 
     <script>
       (function() {
-        const theme = localStorage.getItem('theme') || 'system';
-        const rootEl = document.documentElement;
-        if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          rootEl.classList.add('dark');
-        } else {
-          rootEl.classList.remove('dark');
+        function isDark(theme) {
+          return theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
         }
+
+        function updateToggleIcons(dark) {
+          document.querySelectorAll('.theme-toggle-icon').forEach(function(icon) {
+            icon.textContent = dark ? 'light_mode' : 'dark_mode';
+          });
+        }
+
+        function applyTheme(theme) {
+          const dark = isDark(theme);
+          document.documentElement.classList.toggle('dark', dark);
+          updateToggleIcons(dark);
+        }
+
+        applyTheme(localStorage.getItem('theme') || 'system');
+
+        window.toggleTheme = function() {
+          const next = isDark(localStorage.getItem('theme') || 'system') ? 'light' : 'dark';
+          localStorage.setItem('theme', next);
+          applyTheme(next);
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+          updateToggleIcons(document.documentElement.classList.contains('dark'));
+        });
       })();
     </script>
     <script src="{{ 'money.js' | asset_url }}" defer="defer"></script>
