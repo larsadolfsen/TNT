@@ -34,6 +34,7 @@ Theme colors are configured in the Shopify Customizer under separate "Lys Tema /
   - Avoid adding unnecessary/redundant utility classes (such as adding `shadow-none` to an element that has no shadow by default).
   - Avoid nesting unnecessary `div` elements; keep the HTML markup flat and semantic where possible.
 - If you change files that affect CSS styling, compile the output CSS using `cmd /c npm run tailwind:build`.
+- If you change any `assets/*.js` source file, rebuild its minified counterpart using `cmd /c npm run js:build`. Templates load `assets/*.min.js`, never the source file directly, so an unbuilt JS change has zero effect on the storefront. While running `npm run dev`, this happens automatically (`js:watch` runs alongside `tailwind:watch`); otherwise run `js:build` manually before committing.
 
 ## 3. Material Design 3 Surface Mapping Reference
 Our theme uses a three-tier elevation system to prevent visual blending in dark mode:
@@ -43,12 +44,14 @@ Our theme uses a three-tier elevation system to prevent visual blending in dark 
 
 ## 4. Git and Deployment Workflow
 - **Compilation**: Always build Tailwind CSS after changing styling classes in liquid files by running `cmd /c npm run tailwind:build`.
+- **JS Compilation**: Always rebuild minified JS after changing any `assets/*.js` source file by running `cmd /c npm run js:build`. There is no CI build step — the GitHub repo syncs straight to the live theme on push, so a forgotten `js:build` ships stale `assets/*.min.js` to customers with no warning.
 - **Workflow**:
   1. Make modifications and verify locally.
-  2. Run `cmd /c npm run tailwind:build` to compile.
-  3. Run `git add .` and commit changes.
-  4. Run `git pull --rebase` to integrate remote changes.
-  5. Push commits to the remote repository to deploy.
+  2. Run `cmd /c npm run tailwind:build` to compile CSS.
+  3. Run `cmd /c npm run js:build` to compile JS (skip if no `assets/*.js` files changed).
+  4. Run `git add .` and commit changes.
+  5. Run `git pull --rebase` to integrate remote changes.
+  6. Push commits to the remote repository to deploy.
 
 ## 5. CSS Customization & Specificity Guidelines
 - **Global CSS Variables & Defaults**: Define core style values as CSS variables globally (on `:root` or `.dark` in `snippets/css-variables.liquid`). Component stylesheets should reference these variables (with optional fallbacks).

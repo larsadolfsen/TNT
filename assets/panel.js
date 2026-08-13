@@ -4,7 +4,7 @@
  * and centered modal panels. Modeled on the mobile takeover pattern already
  * proven in assets/predictive-search.js (Surface 4).
  *
- * Markup contract (see snippets/panel.liquid):
+ * Markup contract (defined here, not a separate snippet — no snippets/panel.liquid exists):
  * - trigger: `[data-panel-trigger]` with `aria-controls="<panel id>"` and
  *   `aria-expanded`.
  * - panel root: `[data-panel]`, hidden by default via the `hidden`
@@ -49,12 +49,25 @@
  * header-search-icon) never interfere with each other.
  */
 (function () {
+  function isVisible(el) {
+    // getClientRects().length is 0 for display:none (including elements
+    // hidden via the `hidden` attribute, e.g. localization.js's row filter,
+    // or Liquid's `hidden: multi_country` on the language picker) and for
+    // any ancestor with display:none. Deliberately not offsetParent-based:
+    // offsetParent is null for position:fixed elements even when visible,
+    // which would wrongly exclude a focusable element that is itself
+    // fixed-positioned.
+    return el.getClientRects().length > 0;
+  }
+
   function focusablesIn(el) {
-    return Array.prototype.slice.call(
-      el.querySelectorAll(
-        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    return Array.prototype.slice
+      .call(
+        el.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
       )
-    );
+      .filter(isVisible);
   }
 
   function collectOutsideSiblings(el) {

@@ -291,7 +291,6 @@
 
     // Listen for product price updates (e.g. customizer or variant selection changes)
     document.addEventListener("product-price-updated", (e) => {
-      console.log("Shipping widget: received product-price-updated event:", e.detail);
       if (e.detail && typeof e.detail.price === "number") {
         productPrice = e.detail.price;
         updateUI();

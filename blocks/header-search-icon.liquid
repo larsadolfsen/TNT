@@ -67,11 +67,13 @@
     trigger this applies to), and — only when the overlay panel doesn't
     exist at all — a direct click fallback to toggleSearchInput() so the
     button still does something with predictive search off.
-  Load order between the two script tags doesn't matter: both register
-  their init() on DOMContentLoaded, so by the time a real click can happen
-  every listener (panel.js's click handler, predictive-search.js's
-  panel:beforeopen listener) is already attached regardless of which ran
-  first.
+  Load order between the two script tags doesn't matter: both scripts use
+  `defer`, so by the time either executes document.readyState is already
+  "interactive" and each calls its init() synchronously (not via a
+  DOMContentLoaded listener) rather than waiting for an event that already
+  fired. So by the time a real click can happen, every listener (panel.js's
+  click handler, predictive-search.js's panel:beforeopen listener) is
+  already attached regardless of which script ran first.
 {%- endcomment -%}
 <script src="{{ 'predictive-search.min.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'panel.min.js' | asset_url }}" defer="defer"></script>
