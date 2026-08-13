@@ -1,0 +1,24 @@
+{% doc %}
+  Load-more control for the collection product grid. Renders a single anchor to
+  the next page which doubles as the IntersectionObserver target for
+  assets/collection-infinite-scroll.js and as the working fallback when
+  JavaScript is unavailable. Renders nothing on the last page.
+
+  @param {object} paginate - required. The paginate object from collection-product-grid.
+  @param {string} label - required. Button text. Comes from a section setting so merchants can edit and translate it.
+
+  @example
+  {% render 'collection-load-more', paginate: paginate, label: load_more_label %}
+{% enddoc %}
+
+{%- if paginate.next -%}
+  <div class="col-span-full flex justify-center mt-8" data-load-more-wrapper>
+    {%- render 'button',
+      label: label,
+      variant: 'secondary',
+      as: 'a',
+      url: paginate.next.url,
+      attributes: 'data-load-more rel="next"'
+    -%}
+  </div>
+{%- endif -%}

@@ -1,12 +1,13 @@
 {% doc %}
   Paginated product-card grid for the collection page, with the "no matches"
-  empty state and pagination controls.
+  empty state and the load-more control that drives infinite scroll.
 
   @param {object} products - required. collection.products.
   @param {boolean} disable_reviews - required. section.settings.disable_reviews.
+  @param {string} load_more_label - required. section.settings.load_more_label, passed through to collection-load-more.
 
   @example
-  {% render 'collection-product-grid', products: collection.products, disable_reviews: section.settings.disable_reviews %}
+  {% render 'collection-product-grid', products: collection.products, disable_reviews: section.settings.disable_reviews, load_more_label: section.settings.load_more_label %}
 {% enddoc %}
 
 {%- paginate products by 24 -%}
@@ -18,7 +19,5 @@
       <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
     </div>
   {%- endfor -%}
-  {%- if paginate.pages > 1 -%}
-    {%- render 'pagination', paginate: paginate -%}
-  {%- endif -%}
+  {%- render 'collection-load-more', paginate: paginate, label: load_more_label -%}
 {%- endpaginate -%}
