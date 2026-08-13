@@ -40,7 +40,7 @@ Copied from `CLAUDE.md` and `.agents/AGENTS.md`. Every task's requirements impli
 | `assets/main-collection.js` | Modify | Delete the now-unreachable numbered-nav click handler. |
 | `CLAUDE.md` | Modify | Add the new asset to the JS inventory. |
 | `package.json`, `config/settings_schema.json` | Modify | Version bump. |
-| `snippets/pagination.liquid` | **Untouched** | Still rendered by `sections/search.liquid`, `blog.liquid`, `article.liquid`. Do not delete it. |
+| `snippets/pagination.liquid` | **Delete** | Corrected during implementation: `search`/`blog`/`article` use the built-in `default_pagination` filter, not this snippet. The collection grid was its only caller, so it is now orphaned. |
 
 ---
 
@@ -487,5 +487,16 @@ Deliberately not part of this plan, per the design doc:
 
 - **Canonical tags.** Verified already correct — Shopify's `canonical_url` self-canonicalises `?page=N` and strips `sort_by` / `filter.v.*`. No change.
 - **`templates/robots.txt.liquid`.** Deliberately not added; blocking those URLs would prevent the canonicals above from ever being read.
-- **`snippets/pagination.liquid` and the search/blog/article templates.** Untouched.
+- **The search/blog/article templates.** Untouched — they use `default_pagination`.
+
+## Discovered during implementation
+
+- **F-015 — collection filtering was broken on the live store.** `section.id`
+  resolves to `template--<id>__main-collection` inside a JSON template, but the
+  Section Rendering API expects the template key `main-collection` and returns
+  404 on the long form. Because `filterProducts()` never checked `res.ok`, the
+  empty 404 body parsed into a document with no `#product-grid`, the swap guard
+  failed, and the URL was pushed anyway — so filters and sorting silently did
+  nothing. Fixed here (the infinite scroll depends on the same value) and logged
+  as F-015. Hardening the other `res.ok` call sites is spun out separately.
 - **The 24-vs-50 page-size discrepancy** between the repo and the published theme. Recorded in the design doc, resolve separately.

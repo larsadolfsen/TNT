@@ -72,8 +72,12 @@ decoupled and `main-collection.js` needs no knowledge of the observer.
 Replace `{% render 'pagination', paginate: paginate %}` with
 `{% render 'collection-load-more', paginate: paginate %}`.
 
-`snippets/pagination.liquid` is **not** deleted — `sections/search.liquid`,
-`sections/blog.liquid` and `sections/article.liquid` still render it.
+**Correction (found during implementation):** this design originally claimed
+`snippets/pagination.liquid` was still needed by `search`/`blog`/`article`. It is
+not — those sections all use Shopify's built-in `default_pagination` filter, and
+`collection-product-grid.liquid` was the snippet's only caller. `theme-check`
+now reports it as an orphaned snippet. It should be deleted; the deletion was
+blocked by a permission prompt during implementation and is pending.
 
 ### Edit: `assets/main-collection.js`
 
