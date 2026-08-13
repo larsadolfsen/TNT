@@ -14,7 +14,7 @@
     {%- render 'product-card', product: product, layout: 'minimal', disable_reviews: disable_reviews -%}
   {%- else -%}
     <div class="col-span-full py-12 text-center">
-      {%- render 'icon', name: 'sentiment_dissatisfied', class: 'text-4xl text-primary/85 mb-2' -%}
+      {%- render 'icon', name: 'frown', class: 'text-4xl text-primary/85 mb-2' -%}
       <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
     </div>
   {%- endfor -%}

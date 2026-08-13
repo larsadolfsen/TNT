@@ -73,7 +73,7 @@
             </div>
             {%- if item.selling_plan_allocation -%}
               <div class="flex items-center gap-1.5 mt-1 text-xs text-primary/70">
-                {%- render 'icon', name: 'autorenew', class: 'text-[14px]' -%}
+                {%- render 'icon', name: 'refresh-cw', class: 'text-[14px]' -%}
                 <span class="font-medium text-primary/85">{{ item.selling_plan_allocation.selling_plan.name }}</span>
                 {%- if item.selling_plan_allocation.compare_at_price > item.selling_plan_allocation.price -%}
                   <span class="text-primary/50 line-through">{{ item.selling_plan_allocation.compare_at_price | money }}</span>
@@ -109,7 +109,7 @@
             {%- endif -%}
             {%- if item.selling_plan_allocation -%}
               <div class="flex items-center gap-1.5 mt-1 text-xs text-primary/70">
-                {%- render 'icon', name: 'autorenew', class: 'text-[14px]' -%}
+                {%- render 'icon', name: 'refresh-cw', class: 'text-[14px]' -%}
                 <span class="font-medium text-primary/85">{{ item.selling_plan_allocation.selling_plan.name }}</span>
                 {%- if item.selling_plan_allocation.compare_at_price > item.selling_plan_allocation.price -%}
                   <span class="text-primary/50 line-through">{{ item.selling_plan_allocation.compare_at_price | money }}</span>

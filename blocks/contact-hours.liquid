@@ -9,7 +9,7 @@
 {%- if block.settings.hours_text != blank -%}
   <div class="p-4 rounded-2xl bg-card-light border border-outline-variant flex flex-col gap-3" {{ block.shopify_attributes }}>
     <div class="flex items-center gap-2 mb-1">
-      {% render 'icon', name: 'schedule', class: 'text-[16px] text-primary/60' %}
+      {% render 'icon', name: 'clock', class: 'text-[16px] text-primary/60' %}
       <p class="text-sm font-bold text-primary">{{ 'contact.hours_heading' | t }}</p>
     </div>
     <p class="text-sm text-primary/85 whitespace-pre-line">{{ block.settings.hours_text }}</p>

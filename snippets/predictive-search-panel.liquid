@@ -13,10 +13,10 @@
 {%- liquid
   assign variant = variant | default: 'dropdown'
   capture icon_collection_html
-    render 'icon', name: 'storefront', class: 'text-[18px] text-primary/45'
+    render 'icon', name: 'store', class: 'text-[18px] text-primary/45'
   endcapture
   capture icon_page_html
-    render 'icon', name: 'description', class: 'text-[18px] text-primary/45'
+    render 'icon', name: 'file-text', class: 'text-[18px] text-primary/45'
   endcapture
 -%}
 
@@ -72,13 +72,13 @@
     <div data-ps-footer class="hidden sticky bottom-0 bg-card-light border-t border-outline-variant px-4 py-3">
       <button type="button" data-ps-see-all class="w-full h-11 flex items-center justify-between text-primary font-semibold text-sm bg-transparent border-0 cursor-pointer focus-ring">
         <span data-field="see-all-label"></span>
-        {% render 'icon', name: 'arrow_forward', class: 'text-[18px]' %}
+        {% render 'icon', name: 'arrow-right', class: 'text-[18px]' %}
       </button>
     </div>
   </div>
 
   <div data-ps-state="no-results" class="hidden py-10 px-6 text-center">
-    {% render 'icon', name: 'search_off', class: 'text-primary/45 text-[32px]' %}
+    {% render 'icon', name: 'search-x', class: 'text-primary/45 text-[32px]' %}
     <p class="text-sm font-semibold text-primary mt-2" data-field="no-results-title"></p>
     <p class="text-sm text-primary/70 mt-1">{{ 'predictive_search.no_results_hint' | t }}</p>
     <div data-ps-no-results-suggestions class="mt-4 hidden text-left">
@@ -91,7 +91,7 @@
   </div>
 
   <div data-ps-state="error" class="hidden py-8 px-6 text-center">
-    {% render 'icon', name: 'error', class: 'text-[24px]', style: 'color: var(--color-important);' %}
+    {% render 'icon', name: 'circle-alert', class: 'text-[24px]', style: 'color: var(--color-important);' %}
     <p class="text-sm text-primary mt-2" data-field="error-message"></p>
     <button type="button" data-ps-retry class="mt-3 bg-card-high hover:bg-surface-container text-primary border border-outline-variant font-bold h-11 px-6 rounded-full text-sm cursor-pointer focus-ring">{{ 'predictive_search.try_again' | t }}</button>
   </div>

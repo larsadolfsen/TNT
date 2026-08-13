@@ -25,7 +25,7 @@
     {%- endcapture -%}
     {%- assign address_line = address_line | strip -%}
     <div class="flex items-start gap-3 p-4">
-      {% render 'icon', name: 'check_circle', class: 'text-[18px] text-primary/70 mt-0.5' %}
+      {% render 'icon', name: 'circle-check', class: 'text-[18px] text-primary/70 mt-0.5' %}
       <div class="flex-1 flex flex-col gap-1 min-w-0">
         <span class="text-sm font-bold text-primary">{{ availability.location.name }}</span>
         {%- if address_line != blank -%}
@@ -36,7 +36,7 @@
         {%- endif -%}
         {%- if show_hours and availability.location.metafields.custom.hours != blank -%}
           <span class="flex items-center gap-1.5 mt-1 text-xs text-primary/60">
-            {% render 'icon', name: 'schedule', class: 'text-[14px] text-primary/45' %}{{ availability.location.metafields.custom.hours }}
+            {% render 'icon', name: 'clock', class: 'text-[14px] text-primary/45' %}{{ availability.location.metafields.custom.hours }}
           </span>
         {%- endif -%}
       </div>

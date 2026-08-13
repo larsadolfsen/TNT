@@ -1,22 +1,27 @@
 {% doc %}
-  Renders a Material Symbols icon.
+  Renders a Lucide icon from the sprite defined in snippets/icon-sprite.liquid.
 
   Icon usage should always go through this snippet instead of inlining
-  `<span class="material-symbols-outlined">` markup at call sites.
+  `<svg>`/`<use>` markup at call sites.
 
-  @param {string} name - required. The Material Symbols icon name (e.g. "search", "close", "check_circle").
-  @param {string} [class] - Extra CSS classes appended to the icon span.
+  Sizing follows the surrounding font-size (the icon is 1em square), so the
+  same Tailwind text-size classes used elsewhere (`text-2xl`, `text-[16px]`,
+  etc.) control icon size -- no separate width/height props.
+
+  @param {string} name - required. The Lucide icon name (e.g. "search", "x", "circle-check"). Must have a matching <symbol id="icon-{name}"> in the sprite.
+  @param {string} [class] - Extra CSS classes appended to the icon svg.
+  @param {boolean} [filled] - When true, fills the icon with currentColor instead of just stroking it (e.g. a solid star/checkmark).
   @param {string} [label] - Accessible label. When given, renders aria-label with this text and the icon is treated as meaningful to assistive tech (no aria-hidden). When omitted, the icon is treated as decorative and gets aria-hidden="true".
-  @param {string} [style] - Raw inline style attribute value (e.g. for font-variation-settings or a fixed font-size override).
+  @param {string} [style] - Raw inline style attribute value (e.g. for a fixed font-size override, which still controls the icon's 1em size).
   @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. title="...").
 
   @example
   {% render 'icon', name: 'search' %}
-  {% render 'icon', name: 'close', class: 'text-2xl text-primary', label: 'Luk' %}
-  {% render 'icon', name: 'star', class: 'text-[14px] filled-star', style: "font-variation-settings: 'FILL' 1;" %}
+  {% render 'icon', name: 'x', class: 'text-2xl text-primary', label: 'Luk' %}
+  {% render 'icon', name: 'star', class: 'text-[14px]', filled: true %}
 {% enddoc %}
-<span
-  class="material-symbols-outlined{% if class %} {{ class }}{% endif %}"
+<svg
+  class="icon{% if class %} {{ class }}{% endif %}{% if filled %} icon--filled{% endif %}"
   {%- if label %}
     aria-label="{{ label }}"
   {%- else %}
@@ -28,4 +33,4 @@
   {%- if attributes %}
     {{ attributes }}
   {%- endif -%}
->{{ name }}</span>
+><use href="#icon-{{ name }}"></use></svg>
