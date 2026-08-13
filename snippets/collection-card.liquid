@@ -1,6 +1,6 @@
 {% doc %}
-  Renders a single sub-collection card: image, title, and optional
-  description. Shared by sections/collections.liquid and
+  Renders a single sub-collection card: image and title only. Shared by
+  sections/collections.liquid and
   blocks/subcollections-grid.liquid (both list sub-collections sourced
   from the collection.metafields.custom.child metafield).
 
@@ -42,10 +42,6 @@
 
     <div class="collection-card__content">
       <h3 class="collection-card__title">{{ collection.title }}</h3>
-
-      {% if collection.description %}
-        <p class="collection-card__description">{{ collection.description | strip_html | truncatewords: 15 }}</p>
-      {% endif %}
     </div>
   </a>
 {%- else -%}
@@ -55,7 +51,6 @@
     </div>
     <div class="collection-card__content">
       <h3 class="collection-card__title">Underkategori {{ placeholder_index }}</h3>
-      <p class="collection-card__description">Dette er en eksempel-underkategori i designvisning.</p>
     </div>
   </div>
 {%- endif -%}
