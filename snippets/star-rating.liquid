@@ -1,7 +1,7 @@
 {% doc %}
   Renders a 5-star rating row with half-star support, followed by the numeric
   rating and the review count. Generic — not card-specific.
-  Depends on snippets/icon.liquid (Material Symbols 'star' / 'star_half').
+  Depends on snippets/icon.liquid (Lucide 'star' / 'star-half').
 
   Takes `wrapper_class` rather than a layout flag so the snippet stays free of
   any caller's layout knowledge.
@@ -23,20 +23,25 @@
   assign decimal = rating | minus: rating_floor
   assign rating_floor_plus_1 = rating_floor | plus: 1
 -%}
+{%- comment -%}
+  Size goes through the component's `style` param rather than a Tailwind class:
+  `text-[{{ star_size }}px]` is built from a Liquid variable, so Tailwind's
+  content scanner never sees the literal and the utility is only emitted by
+  coincidence when some other file happens to hardcode the same size.
+{%- endcomment -%}
 {%- capture star_style -%}font-size: {{ star_size }}px; line-height: 1;{%- endcapture -%}
-{%- capture star_size_class -%}text-[{{ star_size }}px]{%- endcapture -%}
-{%- assign star_class_filled = star_size_class | append: ' filled-star select-none' -%}
-{%- assign star_class_outline = star_size_class | append: ' text-outline-variant select-none' -%}
+{%- assign star_class_filled = 'select-none' -%}
+{%- assign star_class_outline = 'text-outline-variant select-none' -%}
 <div class="flex items-center gap-1 {{ wrapper_class }} text-secondary mt-1">
-  <div class="flex text-[#FFB800] gap-0.5">
+  <div class="flex text-amber-500 gap-0.5">
     {%- for i in (1..5) -%}
       {%- if i <= rating_floor -%}
-        {%- render 'icon', name: 'star', class: star_class_filled, style: star_style -%}
+        {%- render 'icon', name: 'star', class: star_class_filled, filled: true, style: star_style -%}
       {%- elsif i == rating_floor_plus_1 -%}
         {%- if decimal >= 0.75 -%}
-          {%- render 'icon', name: 'star', class: star_class_filled, style: star_style -%}
+          {%- render 'icon', name: 'star', class: star_class_filled, filled: true, style: star_style -%}
         {%- elsif decimal >= 0.25 -%}
-          {%- render 'icon', name: 'star_half', class: star_class_filled, style: star_style -%}
+          {%- render 'icon', name: 'star-half', class: star_class_filled, filled: true, style: star_style -%}
         {%- else -%}
           {%- render 'icon', name: 'star', class: star_class_outline, style: star_style -%}
         {%- endif -%}

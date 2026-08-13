@@ -113,19 +113,13 @@
     {%- endif -%}
 
     {%- if testimonial_count == 1 -%}
-      <div class="bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center max-w-lg testimonial-single-card-{{ block.id }}">
-        <div class="flex justify-center text-amber-500 mb-2">
-          {%- for i in (1..block.settings.stars) -%}
-            {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
-          {%- endfor -%}
-        </div>
-        {%- if block.settings.quote != blank -%}
-          <p class="text-base text-primary">"{{ block.settings.quote }}"</p>
-        {%- endif -%}
-        {%- if block.settings.author != blank -%}
-          <p class="text-sm font-semibold text-primary/80 not-italic">— {{ block.settings.author }}</p>
-        {%- endif -%}
-      </div>
+      {%- render 'testimonial-card',
+        block_id: block.id,
+        stars: block.settings.stars,
+        quote: block.settings.quote,
+        author: block.settings.author,
+        layout: 'single'
+      -%}
     {%- elsif testimonial_count > 1 -%}
       <div class="relative overflow-hidden">
         <!-- Slider / Grid wrapper -->
@@ -135,70 +129,22 @@
         >
           <!-- Review 1 -->
           {%- if block.settings.quote != blank -%}
-            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
-              <div>
-                <div class="flex justify-center text-amber-500 mb-2">
-                  {%- for i in (1..block.settings.stars) -%}
-                    {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
-                  {%- endfor -%}
-                </div>
-                <p class="text-base text-primary">"{{ block.settings.quote }}"</p>
-              </div>
-              {%- if block.settings.author != blank -%}
-                <p class="text-sm font-semibold text-primary/80 not-italic mt-2">— {{ block.settings.author }}</p>
-              {%- endif -%}
-            </div>
+            {%- render 'testimonial-card', block_id: block.id, stars: block.settings.stars, quote: block.settings.quote, author: block.settings.author -%}
           {%- endif -%}
 
           <!-- Review 2 -->
           {%- if block.settings.quote_2 != blank -%}
-            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
-              <div>
-                <div class="flex justify-center text-amber-500 mb-2">
-                  {%- for i in (1..block.settings.stars_2) -%}
-                    {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
-                  {%- endfor -%}
-                </div>
-                <p class="text-base text-primary">"{{ block.settings.quote_2 }}"</p>
-              </div>
-              {%- if block.settings.author_2 != blank -%}
-                <p class="text-sm font-semibold text-primary/80 not-italic mt-2">— {{ block.settings.author_2 }}</p>
-              {%- endif -%}
-            </div>
+            {%- render 'testimonial-card', block_id: block.id, stars: block.settings.stars_2, quote: block.settings.quote_2, author: block.settings.author_2 -%}
           {%- endif -%}
 
           <!-- Review 3 -->
           {%- if block.settings.quote_3 != blank -%}
-            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
-              <div>
-                <div class="flex justify-center text-amber-500 mb-2">
-                  {%- for i in (1..block.settings.stars_3) -%}
-                    {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
-                  {%- endfor -%}
-                </div>
-                <p class="text-base text-primary">"{{ block.settings.quote_3 }}"</p>
-              </div>
-              {%- if block.settings.author_3 != blank -%}
-                <p class="text-sm font-semibold text-primary/80 not-italic mt-2">— {{ block.settings.author_3 }}</p>
-              {%- endif -%}
-            </div>
+            {%- render 'testimonial-card', block_id: block.id, stars: block.settings.stars_3, quote: block.settings.quote_3, author: block.settings.author_3 -%}
           {%- endif -%}
 
           <!-- Review 4 -->
           {%- if block.settings.quote_4 != blank -%}
-            <div class="testimonial-item-{{ block.id }} bg-card-light p-6 rounded-2xl shadow-sm space-y-3 italic text-center flex flex-col justify-between">
-              <div>
-                <div class="flex justify-center text-amber-500 mb-2">
-                  {%- for i in (1..block.settings.stars_4) -%}
-                    {% render 'icon', name: 'star', class: 'text-[14px]', style: "font-variation-settings: 'FILL' 1; font-size: 14px;" %}
-                  {%- endfor -%}
-                </div>
-                <p class="text-base text-primary">"{{ block.settings.quote_4 }}"</p>
-              </div>
-              {%- if block.settings.author_4 != blank -%}
-                <p class="text-sm font-semibold text-primary/80 not-italic mt-2">— {{ block.settings.author_4 }}</p>
-              {%- endif -%}
-            </div>
+            {%- render 'testimonial-card', block_id: block.id, stars: block.settings.stars_4, quote: block.settings.quote_4, author: block.settings.author_4 -%}
           {%- endif -%}
         </div>
 

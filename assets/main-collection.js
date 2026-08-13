@@ -8,9 +8,9 @@
  * section's id (needed for the `section_id` param on filter fetches) arrives
  * through the #main-collection-config JSON island rendered by that section;
  * this file holds no Liquid. Exposes window.toggleMobileFilter /
- * toggleFilterBlock / filterProducts / syncPriceFilters / removeFilterChipUrl
- * / clearAllFiltersUrl, which the section's inline onclick/onchange/oninput
- * handlers depend on.
+ * toggleSortDrawer / selectSortOption / toggleFilterBlock / filterProducts /
+ * syncPriceFilters / removeFilterChipUrl / clearAllFiltersUrl, which the
+ * section's inline onclick/onchange/oninput handlers depend on.
  */
 (function () {
   function readConfig() {
@@ -146,7 +146,7 @@
         const toggleBtn = document.createElement('button');
         toggleBtn.type = 'button';
         toggleBtn.className = 'text-xs text-secondary hover:underline bg-transparent border-0 cursor-pointer p-0 mt-2 font-semibold flex items-center gap-1 w-full';
-        toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
+        toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><svg class="icon text-xs" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>`;
 
         toggleBtn.onclick = function() {
           const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
@@ -155,13 +155,13 @@
               labels[i].classList.add('hidden');
             }
             toggleBtn.setAttribute('aria-expanded', 'false');
-            toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>`;
+            toggleBtn.innerHTML = `<span>Vis flere (+${labels.length - limit})</span><svg class="icon text-xs" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>`;
           } else {
             for (let i = limit; i < labels.length; i++) {
               labels[i].classList.remove('hidden');
             }
             toggleBtn.setAttribute('aria-expanded', 'true');
-            toggleBtn.innerHTML = `<span>Vis færre</span><span class="material-symbols-outlined text-xs">keyboard_arrow_up</span>`;
+            toggleBtn.innerHTML = `<span>Vis færre</span><svg class="icon text-xs" aria-hidden="true"><use href="#icon-chevron-up"></use></svg>`;
           }
         };
 
@@ -208,6 +208,34 @@
     }
   }
 
+  function toggleSortDrawer(open) {
+    const drawer = document.getElementById("sort-drawer");
+    if (!drawer) return;
+    const panel = drawer.querySelector("div");
+    if (open) {
+      drawer.classList.remove("hidden");
+      setTimeout(() => {
+        drawer.classList.remove("opacity-0");
+        panel.classList.remove("translate-x-full");
+      }, 10);
+    } else {
+      drawer.classList.add("opacity-0");
+      panel.classList.add("translate-x-full");
+      setTimeout(() => {
+        drawer.classList.add("hidden");
+      }, 300);
+    }
+  }
+
+  function selectSortOption(value) {
+    const select = document.getElementById('sort-select');
+    if (select) {
+      select.value = value;
+    }
+    toggleSortDrawer(false);
+    filterProducts();
+  }
+
   function toggleFilterBlock(headerEl) {
     const block = headerEl.parentElement;
     const content = block.querySelector('.filter-content');
@@ -222,7 +250,7 @@
   }
 
   document.addEventListener('change', function(e) {
-    if (e.target.closest('#desktop-filters input, #mobile-filters input, #sort-select')) {
+    if (e.target.closest('#desktop-filters input, #mobile-filters input')) {
       if (e.target.classList.contains('filter-checkbox')) {
         const name = e.target.name;
         const value = e.target.value;
@@ -490,6 +518,8 @@
   }
 
   window.toggleMobileFilter = toggleMobileFilter;
+  window.toggleSortDrawer = toggleSortDrawer;
+  window.selectSortOption = selectSortOption;
   window.toggleFilterBlock = toggleFilterBlock;
   window.filterProducts = filterProducts;
   window.syncPriceFilters = syncPriceFilters;
@@ -501,6 +531,26 @@
     e.preventDefault();
     fetchAndSwapUrl(urlStr);
   };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileFilterDrawer = document.getElementById('mobile-filter-drawer');
+    if (mobileFilterDrawer) {
+      mobileFilterDrawer.addEventListener('click', (e) => {
+        if (e.target === mobileFilterDrawer) {
+          toggleMobileFilter(false);
+        }
+      });
+    }
+
+    const sortDrawer = document.getElementById('sort-drawer');
+    if (sortDrawer) {
+      sortDrawer.addEventListener('click', (e) => {
+        if (e.target === sortDrawer) {
+          toggleSortDrawer(false);
+        }
+      });
+    }
+  });
 
   enhanceColorSwatches();
   truncateFilterLists();

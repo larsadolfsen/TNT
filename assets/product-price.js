@@ -71,14 +71,14 @@
           <div class="flex items-center gap-1.5 text-sm text-primary/60 mt-1 select-none">
             <span>${compareAtPriceLabel}:</span>
             <span class="line-through">${variant.compare_at_price_formatted}</span>
-            <span class="material-symbols-outlined text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" title="Vejledende udsalgspris">info</span>
+            <svg class="icon text-[16px] cursor-help text-primary/45 hover:text-primary/70 flex items-center" aria-hidden="true" title="Vejledende udsalgspris"><use href="#icon-info"></use></svg>
           </div>`;
         }
 
         container.innerHTML = `
           <!-- Savings Tag Above Price -->
           <div class="product-savings-container flex items-center mb-1">
-            <span class="product-savings-badge inline-block text-[#c8102e] text-2xl font-bold leading-none">
+            <span class="product-savings-badge inline-block text-important text-2xl font-bold leading-none">
               Spar ${savings}%
             </span>
           </div>

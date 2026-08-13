@@ -42,45 +42,11 @@
         assign card_fetchpriority = nil
       endif
     -%}
-    <a class="collection-card group" href="{{ col_item.url }}">
-      <div class="collection-card__image-wrapper">
-        {% if col_item.featured_image %}
-          {% render 'image',
-            class: 'collection-card__image',
-            image: col_item.featured_image,
-            width: 600,
-            height: 600,
-            crop: 'center',
-            loading: card_loading,
-            fetchpriority: card_fetchpriority
-          %}
-        {% else %}
-          <div class="w-full h-full flex items-center justify-center bg-outline-variant text-primary/85 aspect-square rounded-2xl border border-outline-variant">
-            {% render 'icon', name: 'image', class: 'text-4xl' %}
-          </div>
-        {% endif %}
-      </div>
-
-      <div class="collection-card__content">
-        <h3 class="collection-card__title">{{ col_item.title }}</h3>
-
-        {% if col_item.description %}
-          <p class="collection-card__description">{{ col_item.description | strip_html | truncatewords: 15 }}</p>
-        {% endif %}
-      </div>
-    </a>
+    {% render 'collection-card', collection: col_item, loading: card_loading, fetchpriority: card_fetchpriority %}
   {% else %}
     {% if request.design_mode %}
       {% for i in (1..4) %}
-        <div class="collection-card group">
-          <div class="collection-card__image-wrapper flex items-center justify-center">
-            {{ 'collection-' | append: i | placeholder_svg_tag: 'w-full h-full bg-slate-100 opacity-50' }}
-          </div>
-          <div class="collection-card__content">
-            <h3 class="collection-card__title">Underkategori {{ i }}</h3>
-            <p class="collection-card__description">Dette er en eksempel-underkategori i designvisning.</p>
-          </div>
-        </div>
+        {% render 'collection-card', placeholder_index: i %}
       {% endfor %}
     {% endif %}
   {% endfor %}

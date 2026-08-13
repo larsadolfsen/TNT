@@ -1,31 +1,81 @@
 {% doc %}
-  Renders a Material Symbols icon.
+  Renders a Lucide icon from the sprite defined in snippets/icon-sprite.liquid.
 
   Icon usage should always go through this snippet instead of inlining
-  `<span class="material-symbols-outlined">` markup at call sites.
+  `<svg>`/`<use>` markup at call sites.
 
-  @param {string} name - required. The Material Symbols icon name (e.g. "search", "close", "check_circle").
-  @param {string} [class] - Extra CSS classes appended to the icon span.
+  Sizing follows the surrounding font-size (the icon is 1em square), so the
+  same Tailwind text-size classes used elsewhere (`text-2xl`, `text-[16px]`,
+  etc.) control icon size -- no separate width/height props.
+
+  @param {string} name - required. The Lucide icon name (e.g. "search", "x", "circle-check"). Must have a matching <symbol id="icon-{name}"> in the sprite.
+  @param {string} [class] - Extra CSS classes appended to the icon svg.
+  @param {boolean} [filled] - When true, fills the icon with currentColor instead of just stroking it (e.g. a solid star/checkmark).
   @param {string} [label] - Accessible label. When given, renders aria-label with this text and the icon is treated as meaningful to assistive tech (no aria-hidden). When omitted, the icon is treated as decorative and gets aria-hidden="true".
-  @param {string} [style] - Raw inline style attribute value (e.g. for font-variation-settings or a fixed font-size override).
+  @param {string} [stroke_width] - Stroke thickness override (e.g. "3px"). Emitted as inline style because the `.icon` class rule would win over an SVG presentation attribute.
+  @param {string} [style] - Raw inline style attribute value (e.g. for a fixed font-size override, which still controls the icon's 1em size).
   @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. title="...").
+  @param {boolean} [button] - When true, this is the icon for a clickable control: fixes the glyph at 20px (12px if `small` is also set) and adds padding so the total box is always a 44x44px touch target. The caller still needs to wrap this in a real `<button>`/`<a>` for semantics/href/click handling -- this only controls sizing.
+  @param {boolean} [small] - When true, renders a 12px glyph instead of the default 20px. Combine with `button` to keep a 44px touch target around the smaller glyph.
+  @param {boolean} [badge] - When true, renders a small count pill anchored to the glyph's bottom-right corner (e.g. a cart item count). Wraps the icon in an inner span sized to just the glyph, so the badge stays anchored to the visible icon even when `button` padding grows the outer clickable box.
+  @param {string} [badge_value] - Badge text/number. Only used when `badge` is true.
+  @param {string} [badge_id] - id attribute on the badge element, so JS can find it (e.g. `document.getElementById(...)` to update count/visibility).
+  @param {boolean} [badge_hidden] - When true, the badge starts scaled to 0 (hidden) instead of visible. Toggle by adding/removing the `scale-0`/`scale-100` classes on the badge element from JS. Pass a variable, not a comparison -- {% render %} arguments don't accept expressions, so `badge_hidden: cart.item_count == 0` is a syntax error; `assign` it first.
 
   @example
   {% render 'icon', name: 'search' %}
-  {% render 'icon', name: 'close', class: 'text-2xl text-primary', label: 'Luk' %}
-  {% render 'icon', name: 'star', class: 'text-[14px] filled-star', style: "font-variation-settings: 'FILL' 1;" %}
+  {% render 'icon', name: 'x', button: true, label: 'Luk' %}
+  {% render 'icon', name: 'x', button: true, small: true, label: 'Fjern' %}
+  {% render 'icon', name: 'star', class: 'text-[14px]', filled: true %}
+  {% render 'icon', name: 'shopping-cart', button: true, badge: true, badge_id: 'cart-counter', badge_value: cart.item_count, badge_hidden: cart_is_empty %}
 {% enddoc %}
-<span
-  class="material-symbols-outlined{% if class %} {{ class }}{% endif %}"
-  {%- if label %}
-    aria-label="{{ label }}"
-  {%- else %}
-    aria-hidden="true"
-  {%- endif %}
-  {%- if style %}
-    style="{{ style }}"
-  {%- endif %}
-  {%- if attributes %}
-    {{ attributes }}
-  {%- endif -%}
->{{ name }}</span>
+{%- capture icon_style -%}
+  {%- if stroke_width %}stroke-width: {{ stroke_width }};{% endif -%}
+  {{- style -}}
+{%- endcapture -%}
+{%- if badge -%}
+  {%- comment -%}
+    The badge must stay anchored to the visible glyph, not to the padded
+    44px touch-target box -- so sizing is split across two levels here: the
+    outer span carries the `icon--btn` padding (the touch target), while the
+    inner span is sized to just the glyph and is what the badge positions
+    against.
+  {%- endcomment -%}
+  <span class="{% if button %}icon--btn{% if small %} icon--small{% endif %} {% endif %}inline-flex items-center justify-center">
+    <span class="relative inline-flex items-center justify-center">
+      <svg
+        class="icon{% if small %} icon--small{% elsif button %} icon--glyph{% endif %}{% if class %} {{ class }}{% endif %}{% if filled %} icon--filled{% endif %}"
+        {%- if label %}
+          aria-label="{{ label }}"
+        {%- else %}
+          aria-hidden="true"
+        {%- endif %}
+        {%- if icon_style != blank %}
+          style="{{ icon_style }}"
+        {%- endif %}
+        {%- if attributes %}
+          {{ attributes }}
+        {%- endif -%}
+      ><use href="#icon-{{ name }}"></use></svg>
+      <span
+        {%- if badge_id %} id="{{ badge_id }}"{% endif %}
+        class="absolute -bottom-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300{% if badge_hidden %} scale-0{% endif %}"
+      >{{- badge_value -}}</span>
+    </span>
+  </span>
+{%- else -%}
+  <svg
+    class="icon{% if button %} icon--btn{% endif %}{% if small %} icon--small{% endif %}{% if class %} {{ class }}{% endif %}{% if filled %} icon--filled{% endif %}"
+    {%- if label %}
+      aria-label="{{ label }}"
+    {%- else %}
+      aria-hidden="true"
+    {%- endif %}
+    {%- if icon_style != blank %}
+      style="{{ icon_style }}"
+    {%- endif %}
+    {%- if attributes %}
+      {{ attributes }}
+    {%- endif -%}
+  ><use href="#icon-{{ name }}"></use></svg>
+{%- endif -%}

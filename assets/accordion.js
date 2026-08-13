@@ -10,7 +10,7 @@
 
     trigger.addEventListener('click', function () {
       const content = this.nextElementSibling;
-      const icon = this.querySelector('.material-symbols-outlined');
+      const icon = this.querySelector('.icon');
       if (content.classList.contains('hidden')) {
         content.classList.remove('hidden');
         if (icon) icon.classList.add('rotate-180');

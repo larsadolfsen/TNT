@@ -9,10 +9,16 @@
   # compile time, not from the dynamically-generated cart HTML — see
   # .agents/AGENTS.md icon rule.
   capture icon_shopping_basket_html
-    render 'icon', name: 'shopping_basket', class: 'text-4xl mb-2 text-primary/40'
+    render 'icon', name: 'shopping-basket', class: 'text-4xl mb-2 text-primary/40'
   endcapture
   capture icon_delete_html
-    render 'icon', name: 'delete', class: 'text-base'
+    render 'icon', name: 'trash-2', class: 'text-base'
+  endcapture
+  capture icon_plus_html
+    render 'icon', name: 'plus', class: 'text-xs'
+  endcapture
+  capture icon_minus_html
+    render 'icon', name: 'minus', class: 'text-xs'
   endcapture
 -%}
 
@@ -21,6 +27,8 @@
   "moneyFormat": {{ shop.money_format | json }},
   "iconShoppingBasket": {{ icon_shopping_basket_html | strip_newlines | json }},
   "iconDelete": {{ icon_delete_html | strip_newlines | json }},
+  "iconPlus": {{ icon_plus_html | strip_newlines | json }},
+  "iconMinus": {{ icon_minus_html | strip_newlines | json }},
   "strings": {
     "cartEmpty": {{ 'cart.empty' | t | json }},
     "removeItem": {{ 'cart.remove_item' | t | json }},

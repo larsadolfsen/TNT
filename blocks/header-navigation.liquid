@@ -145,7 +145,7 @@
                   aria-label="{{ 'navigation.show_submenu' | t: title: link.title }}"
                   data-nav-trigger
                 >
-                  {% render 'icon', name: 'expand_more', class: 'nav-chevron text-[18px] text-primary/70' %}
+                  {% render 'icon', name: 'chevron-down', class: 'nav-chevron text-xl text-primary/70' %}
                 </button>
               </span>
             {%- else -%}
@@ -159,7 +159,7 @@
                 data-nav-trigger
               >
                 <span style="position: relative; z-index: 1;">{{ link.title }}</span>
-                {% render 'icon', name: 'expand_more', class: 'nav-chevron text-[18px] text-primary/70 ml-1' %}
+                {% render 'icon', name: 'chevron-down', class: 'nav-chevron text-[18px] text-primary/70 ml-1' %}
               </button>
             {%- endif -%}
 

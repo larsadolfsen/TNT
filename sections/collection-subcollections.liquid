@@ -25,7 +25,6 @@
 {%- endstyle -%}
 
 {%- liquid
-  assign show_all_label = section.settings.show_all_label | default: "Vis alle"
   assign parent_col = collection.metafields.custom.parent.value
 
   # If the current collection has a parent, then the parent collection is the main one.
@@ -48,26 +47,6 @@
     assign has_subcollections = true
   endif
 
-  # Determine the "Vis alle" main link url
-  assign main_url = target_parent.url
-
-  # "Vis alle" is active if we are viewing the target parent collection page,
-  # or if we are not viewing any of the child collections.
-  assign is_show_all_active = false
-  if collection.handle == target_parent.handle
-    assign is_show_all_active = true
-  else
-    assign is_any_pill_active = false
-    for sub_col in child_collections
-      if sub_col != blank and collection.handle == sub_col.handle
-        assign is_any_pill_active = true
-        break
-      endif
-    endfor
-    if is_any_pill_active == false
-      assign is_show_all_active = true
-    endif
-  endif
 -%}
 
 {%- if has_subcollections or request.design_mode -%}
@@ -105,7 +84,7 @@
       -%}
       <a href="{{ sub_col.url }}" data-collection-chip="true" class="{{ pill_class }} px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap inline-flex items-center justify-center transition-colors no-underline">
         {%- if is_pill_active -%}
-          {% render 'icon', name: 'check', class: 'text-xs mr-1 select-none pointer-events-none', style: "font-size: 14px; font-weight: 900;" %}
+          {% render 'icon', name: 'check', class: 'text-[14px] mr-1 select-none pointer-events-none', stroke_width: '3px' %}
         {%- endif -%}
         {{ pill_label }}
       </a>

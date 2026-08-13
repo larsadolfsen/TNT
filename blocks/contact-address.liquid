@@ -21,7 +21,7 @@
     {%- endif -%}
     {%- if block.settings.phone != blank -%}
       <a href="tel:{{ block.settings.phone | remove: ' ' }}" class="flex items-center gap-2 text-sm text-primary no-underline hover:underline">
-        {% render 'icon', name: 'call', class: 'text-[16px] text-primary/60' %}
+        {% render 'icon', name: 'phone', class: 'text-[16px] text-primary/60' %}
         {{ block.settings.phone }}
       </a>
     {%- endif -%}

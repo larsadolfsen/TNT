@@ -98,11 +98,11 @@
     data-panel-trigger
     aria-label="{{ trigger_label }}"
   >
-    {% render 'icon', name: 'language', class: 'text-[18px] text-primary/70' %}
+    {% render 'icon', name: 'globe', class: 'text-[18px] text-primary/70' %}
     <span>
       {{ localization.country.name }}{% if multi_language %} · {{ language_endonym }}{% endif %}
     </span>
-    {% render 'icon', name: 'expand_more', class: 'text-[16px] text-primary/70' %}
+    {% render 'icon', name: 'chevron-down', class: 'text-[16px] text-primary/70' %}
   </button>
 
   <div
@@ -132,7 +132,7 @@
         data-panel-close
         aria-label="{{ 'localization.close' | t }}"
       >
-        {% render 'icon', name: 'close', class: 'text-2xl text-primary' %}
+        {% render 'icon', name: 'x', class: 'text-2xl text-primary' %}
       </button>
     </div>
 

@@ -28,14 +28,14 @@
 
     {%- if form.posted_successfully? -%}
       <div role="status" aria-live="polite" aria-atomic="true" class="flex items-center gap-2">
-        {% render 'icon', name: 'check_circle', class: 'text-primary text-[20px]' %}
+        {% render 'icon', name: 'circle-check', class: 'text-primary text-[20px]' %}
         <p class="text-sm font-medium text-primary">{{ 'newsletter.success' | t }}</p>
       </div>
     {%- else -%}
       <div role="status" aria-live="polite" aria-atomic="true">
         {%- if form.errors -%}
           <div class="flex items-center gap-1.5 mb-1" role="alert">
-            {% render 'icon', name: 'error', class: 'text-important text-[16px]' %}
+            {% render 'icon', name: 'circle-alert', class: 'text-important text-[16px]' %}
             <p class="text-sm text-important">
               {%- if form.errors.messages['email'] -%}
                 {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}

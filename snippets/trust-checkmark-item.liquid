@@ -1,5 +1,5 @@
 {% doc %}
-  Renders a single trust-checkmark list item: a filled green check_circle
+  Renders a single trust-checkmark list item: a filled green circle-check
   icon followed by arbitrary content, wrapped in the flex layout shared by
   blocks/trust-checkmark.liquid and blocks/trust-countdown.liquid.
 
@@ -12,6 +12,6 @@
 {% enddoc %}
 
 <div class="flex items-center gap-2.5 text-primary font-medium"{% if id %} id="{{ id }}"{% endif %}{% if attributes %} {{ attributes }}{% endif %}>
-  {% render 'icon', name: 'check_circle', class: 'text-lg text-emerald-600', style: "font-variation-settings: 'FILL' 1;" %}
+  {% render 'icon', name: 'circle-check', class: 'text-lg text-emerald-600', filled: true %}
   {{ content }}
 </div>

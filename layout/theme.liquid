@@ -7,13 +7,33 @@
 
     <script>
       (function() {
-        const theme = localStorage.getItem('theme') || 'system';
-        const rootEl = document.documentElement;
-        if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          rootEl.classList.add('dark');
-        } else {
-          rootEl.classList.remove('dark');
+        function isDark(theme) {
+          return theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
         }
+
+        function updateToggleIcons(dark) {
+          document.querySelectorAll('.theme-toggle-icon use').forEach(function(use) {
+            use.setAttribute('href', dark ? '#icon-sun' : '#icon-moon');
+          });
+        }
+
+        function applyTheme(theme) {
+          const dark = isDark(theme);
+          document.documentElement.classList.toggle('dark', dark);
+          updateToggleIcons(dark);
+        }
+
+        applyTheme(localStorage.getItem('theme') || 'system');
+
+        window.toggleTheme = function() {
+          const next = isDark(localStorage.getItem('theme') || 'system') ? 'light' : 'dark';
+          localStorage.setItem('theme', next);
+          applyTheme(next);
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+          updateToggleIcons(document.documentElement.classList.contains('dark'));
+        });
       })();
     </script>
     <script src="{{ 'money.js' | asset_url }}" defer="defer"></script>
@@ -33,18 +53,6 @@
       {{ settings.type_body_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {% endif %}
 
-    {% comment %}
-      Material Symbols Outlined is still loaded from Google Fonts because the
-      icon system currently renders every icon through this font. Scheduled
-      for replacement by the self-hosted/SVG icon snippet system in a later
-      task -- do not add other Google Fonts links back here; merchant font
-      choices (header/body) are already handled above via the native
-      font_picker + font_url preload logic.
-    {% endcomment %}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
-
     {% # Load and preload the compiled Tailwind CSS %}
     {{ 'output.css' | asset_url | stylesheet_tag: preload: true }}
 
@@ -59,6 +67,7 @@
   </head>
 
   <body class="template-{{ template.name | handle }} flex flex-col min-h-screen">
+    {% render 'icon-sprite' %}
     <a href="#MainContent" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary focus:text-on-primary focus:px-4 focus:py-2 focus:rounded">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
@@ -70,6 +79,6 @@
     </main>
 
     {% sections 'footer-group' %}
-    {{ 'masonry.js' | asset_url | script_tag }}
+    <script src="{{ 'masonry.js' | asset_url }}" defer></script>
   </body>
 </html>

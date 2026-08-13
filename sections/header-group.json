@@ -96,12 +96,6 @@
                 "alignment": "right"
               },
               "blocks": {
-                "header_theme_toggle_z9f7eF": {
-                  "type": "header-theme-toggle",
-                  "name": "Theme Toggle",
-                  "settings": {},
-                  "blocks": {}
-                },
                 "header_cart_4wAidd": {
                   "type": "header-cart",
                   "name": "Cart Icon",
@@ -120,7 +114,6 @@
                 }
               },
               "block_order": [
-                "header_theme_toggle_z9f7eF",
                 "header_account_hd2K91",
                 "header_cart_4wAidd"
               ]
@@ -136,7 +129,7 @@
           "type": "header-row-2",
           "name": "Header Row 2",
           "settings": {
-            "row_height": "40"
+            "row_height": "56"
           },
           "blocks": {
             "header_group_ftkNYf": {

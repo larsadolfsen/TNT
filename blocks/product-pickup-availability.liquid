@@ -41,7 +41,7 @@
             aria-expanded="false"
             aria-controls="{{ panel_id }}"
           >
-            {% render 'icon', name: 'storefront', class: 'text-[20px] text-primary/70' %}
+            {% render 'icon', name: 'store', class: 'text-[20px] text-primary/70' %}
             <span class="text-sm font-medium text-primary flex-1 truncate">
               {%- if available_locations.size == 1 -%}
                 {{ 'pickup.available_single' | t: location: available_locations.first.location.name }}
@@ -49,12 +49,12 @@
                 {{ 'pickup.available_multiple' | t: count: available_locations.size }}
               {%- endif -%}
             </span>
-            {% render 'icon', name: 'expand_more', class: 'pickup-chevron text-[20px] text-primary/60 transition-transform duration-200' %}
+            {% render 'icon', name: 'chevron-down', class: 'pickup-chevron text-[20px] text-primary/60 transition-transform duration-200' %}
           </button>
           {% render 'pickup-panel', panel_id: panel_id, available_locations: available_locations, show_hours: block.settings.show_hours %}
         {%- else -%}
           <div class="flex items-center gap-2 h-12 px-3 rounded-2xl border border-outline-variant bg-card-light w-full">
-            {% render 'icon', name: 'error', class: 'text-[20px] text-primary/60' %}
+            {% render 'icon', name: 'circle-alert', class: 'text-[20px] text-primary/60' %}
             <span class="text-sm font-medium text-primary flex-1 truncate">{{ block.settings.unavailable_text }}</span>
           </div>
         {%- endif -%}

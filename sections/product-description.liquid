@@ -41,16 +41,16 @@
       {%- endfor -%}
 
       {%- if has_any_metafield or section.settings.show_empty_fields -%}
-        <div class="mt-8 bg-slate-50/50 border border-outline-variant/80 rounded-2xl p-6 md:p-8 space-y-6">
+        <div class="mt-8 bg-card-light border border-outline-variant/80 rounded-2xl p-6 md:p-8 space-y-6">
           {% comment %} Header Row {% endcomment %}
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-outline-variant/60 pb-4">
-            <h4 class="text-base font-bold text-slate-800">Kategori-metafelter</h4>
-            
+            <h4 class="text-base font-bold text-primary">Kategori-metafelter</h4>
+
             {%- if product.category -%}
-              <div class="inline-flex items-center gap-1.5 bg-slate-200/60 border border-outline-variant/40 text-slate-700 text-xs font-semibold px-3 py-1 rounded-md self-start sm:self-auto">
+              <div class="inline-flex items-center gap-1.5 bg-card-high border border-outline-variant/40 text-primary/85 text-xs font-semibold px-3 py-1 rounded-md self-start sm:self-auto">
                 {{ product.category.name }}
                 {%- if product.category.ancestors.size > 0 -%}
-                  <span class="text-slate-500 font-normal font-sans">i</span>
+                  <span class="text-primary/60 font-normal font-sans">i</span>
                   {{ product.category.ancestors.last.name }}
                 {%- endif -%}
               </div>
@@ -78,8 +78,8 @@
                 {%- endcapture -%}
 
                 <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 py-1">
-                  <span class="text-sm font-medium text-slate-700 sm:w-1/4">{{ key_label | strip }}</span>
-                  <div class="w-full sm:w-3/4 bg-white border border-outline-variant rounded-lg min-h-[38px] p-1.5 flex flex-wrap gap-2 items-center">
+                  <span class="text-sm font-medium text-primary/85 sm:w-1/4">{{ key_label | strip }}</span>
+                  <div class="w-full sm:w-3/4 bg-card-high border border-outline-variant rounded-lg min-h-[38px] p-1.5 flex flex-wrap gap-2 items-center">
                     {%- if value != blank -%}
                       {%- if metafield.type contains 'list.' -%}
                         {%- for item in value -%}
@@ -184,9 +184,54 @@
       "name": "Checkliste punkt",
       "settings": [
         {
-          "type": "text",
+          "type": "select",
           "id": "icon",
           "label": "Ikon",
+          "options": [
+            { "value": "arrow-left", "label": "Pil venstre" },
+            { "value": "arrow-right", "label": "Pil højre" },
+            { "value": "arrow-up-down", "label": "Sortering" },
+            { "value": "check", "label": "Flueben" },
+            { "value": "chevron-down", "label": "Chevron ned" },
+            { "value": "chevron-left", "label": "Chevron venstre" },
+            { "value": "chevron-right", "label": "Chevron højre" },
+            { "value": "circle-alert", "label": "Fejl" },
+            { "value": "circle-check", "label": "Flueben i cirkel" },
+            { "value": "circle-play", "label": "Afspil i cirkel" },
+            { "value": "clock", "label": "Ur" },
+            { "value": "code", "label": "Kode" },
+            { "value": "file-text", "label": "Dokument" },
+            { "value": "frown", "label": "Utilfreds smiley" },
+            { "value": "globe", "label": "Globus / sprog" },
+            { "value": "image", "label": "Billede" },
+            { "value": "info", "label": "Info" },
+            { "value": "key", "label": "Nøgle" },
+            { "value": "leaf", "label": "Blad (øko)" },
+            { "value": "list-filter", "label": "Filter" },
+            { "value": "lock", "label": "Lås" },
+            { "value": "mail", "label": "Mail" },
+            { "value": "map-pin", "label": "Lokation" },
+            { "value": "menu", "label": "Menu" },
+            { "value": "minus", "label": "Minus" },
+            { "value": "moon", "label": "Måne" },
+            { "value": "phone", "label": "Telefon" },
+            { "value": "play", "label": "Afspil" },
+            { "value": "plus", "label": "Plus" },
+            { "value": "refresh-cw", "label": "Genindlæs" },
+            { "value": "search", "label": "Søg" },
+            { "value": "search-x", "label": "Søgning uden resultat" },
+            { "value": "shield-check", "label": "Skjold med flueben" },
+            { "value": "shopping-basket", "label": "Indkøbskurv" },
+            { "value": "shopping-cart", "label": "Indkøbsvogn" },
+            { "value": "star", "label": "Stjerne" },
+            { "value": "star-half", "label": "Halv stjerne" },
+            { "value": "store", "label": "Butik" },
+            { "value": "tag", "label": "Mærke" },
+            { "value": "trash-2", "label": "Papirkurv" },
+            { "value": "triangle-alert", "label": "Advarsel" },
+            { "value": "user", "label": "Person" },
+            { "value": "x", "label": "Luk" }
+          ],
           "default": "check"
         },
         {

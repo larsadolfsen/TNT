@@ -1,14 +1,23 @@
+{%- comment -%}
+  `badge_hidden` has to be resolved into a variable first: {% render %}
+  arguments only take literals and variable lookups, so passing a comparison
+  (`cart.item_count == 0`) is a Liquid syntax error that takes the whole
+  header section -- and the header-cart.js script tag with it -- down.
+{%- endcomment -%}
+{%- liquid
+  assign cart_is_empty = false
+  if cart.item_count == 0
+    assign cart_is_empty = true
+  endif
+-%}
+
 <div class="flex items-center" {{ block.shopify_attributes }}>
   <a
     href="{{ routes.cart_url }}"
     onclick="event.preventDefault(); toggleCartDrawer(true);"
-    class="relative cursor-pointer text-primary no-underline flex items-center justify-center hover:opacity-80 transition-opacity"
+    class="cursor-pointer text-primary no-underline flex items-center justify-center hover:opacity-80 transition-opacity"
   >
-    {% render 'icon', name: 'shopping_cart', class: 'text-2xl text-primary' %}
-    <span
-      id="cart-counter"
-      class="absolute -top-1 -right-1 bg-primary text-on-primary text-xs font-bold px-1.5 rounded-full transition-transform duration-300 {% if cart.item_count == 0 %}scale-0{% endif %}"
-    >{{ cart.item_count }}</span>
+    {% render 'icon', name: 'shopping-cart', button: true, class: 'text-primary', badge: true, badge_id: 'cart-counter', badge_value: cart.item_count, badge_hidden: cart_is_empty %}
   </a>
 </div>
 
