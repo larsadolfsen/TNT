@@ -12,8 +12,8 @@
         }
 
         function updateToggleIcons(dark) {
-          document.querySelectorAll('.theme-toggle-icon').forEach(function(icon) {
-            icon.textContent = dark ? 'light_mode' : 'dark_mode';
+          document.querySelectorAll('.theme-toggle-icon use').forEach(function(use) {
+            use.setAttribute('href', dark ? '#icon-sun' : '#icon-moon');
           });
         }
 
