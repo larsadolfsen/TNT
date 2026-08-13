@@ -9,21 +9,237 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
-    },
-    "collections_47hUyM": {
-      "type": "collections",
-      "name": "t:general.collections_grid",
+    "hero": {
+      "type": "custom-section",
+      "name": "Hero",
       "settings": {
-        "grid_item_width": "collections--full",
-        "grid_gap": 10
-      }
+        "disable_block_padding_vertical_mobile": false,
+        "disable_block_padding_horizontal_mobile": false
+      },
+      "blocks": {
+        "hero_group": {
+          "type": "group",
+          "settings": {
+            "layout_direction": "group--vertical",
+            "alignment": "flex-start",
+            "padding_top": 80,
+            "padding_bottom": 80,
+            "padding_sides": 24
+          },
+          "blocks": {
+            "hero_heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h1>Voksduge og tekstilduge på metermål – klippet til dit bord, sendt på rulle uden folder</h1>",
+                "alignment": "left"
+              }
+            },
+            "hero_cta": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"/collections/voksdug\"><strong>Se alle voksduge →</strong></a></p>",
+                "alignment": "left",
+                "padding_top": 16
+              }
+            }
+          },
+          "block_order": ["hero_heading", "hero_cta"]
+        }
+      },
+      "block_order": ["hero_group"]
+    },
+    "trust_bar": {
+      "type": "section",
+      "name": "Trust bar",
+      "settings": {
+        "background_color": "light_grey",
+        "full_width": true,
+        "padding_top": 16,
+        "padding_bottom": 16
+      },
+      "blocks": {
+        "trust_group": {
+          "type": "group",
+          "settings": {
+            "layout_direction": "group--horizontal",
+            "alignment": "center"
+          },
+          "blocks": {
+            "tc1": { "type": "trust-checkmark", "settings": { "text": "Gratis levering fra 599 kr." } },
+            "tc2": { "type": "trust-checkmark", "settings": { "text": "Miljø- og allergivenlig – Phthalatfri og ØKO-TEX®" } },
+            "tc3": { "type": "trust-checkmark", "settings": { "text": "Afsendes samme dag – bestil inden 12.00" } },
+            "tc4": { "type": "trust-checkmark", "settings": { "text": "Ingen folder – sendes på rulle" } }
+          },
+          "block_order": ["tc1", "tc2", "tc3", "tc4"]
+        }
+      },
+      "block_order": ["trust_group"]
+    },
+    "collection_grid": {
+      "type": "section",
+      "name": "Find din dug",
+      "settings": {
+        "background_color": "white",
+        "full_width": false,
+        "padding_top": 48,
+        "padding_bottom": 48
+      },
+      "blocks": {
+        "grid_header": {
+          "type": "text",
+          "settings": { "text": "<h2>Find din dug</h2>", "alignment": "left", "padding_bottom": 16 }
+        },
+        "card_voksdug": {
+          "type": "card",
+          "settings": { "design": "none", "card_link": "/collections/voksdug", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Voksdug</h3>", "alignment": "center" } } },
+          "block_order": ["t"]
+        },
+        "card_tekstildug": {
+          "type": "card",
+          "settings": { "design": "none", "card_link": "/collections/tekstildug", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Tekstildug</h3>", "alignment": "center" } } },
+          "block_order": ["t"]
+        },
+        "card_gennemsigtig": {
+          "type": "card",
+          "settings": { "design": "none", "card_link": "/collections/gennemsigtig-voksduge", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Gennemsigtig voksduge</h3>", "alignment": "center" } } },
+          "block_order": ["t"]
+        },
+        "card_boligtekstiler": {
+          "type": "card",
+          "settings": { "design": "none", "card_link": "/collections/boligtekstiler", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Runde duge</h3>", "alignment": "center" } } },
+          "block_order": ["t"]
+        },
+        "card_hojtider": {
+          "type": "card",
+          "settings": { "design": "none", "card_link": "/collections/hojtider-amp-fest", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Højtider &amp; Fest</h3>", "alignment": "center" } } },
+          "block_order": ["t"]
+        },
+        "card_outlet": {
+          "type": "card",
+          "settings": { "design": "none", "card_link": "/collections/outlet", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Billige duge</h3>", "alignment": "center" } } },
+          "block_order": ["t"]
+        }
+      },
+      "block_order": ["grid_header", "card_voksdug", "card_tekstildug", "card_gennemsigtig", "card_boligtekstiler", "card_hojtider", "card_outlet"]
+    },
+    "feature_callout": {
+      "type": "section",
+      "name": "Kraftig gennemsigtig voksdug",
+      "settings": {
+        "background_color": "white",
+        "full_width": false,
+        "padding_top": 48,
+        "padding_bottom": 48
+      },
+      "blocks": {
+        "callout_card": {
+          "type": "card",
+          "settings": {
+            "design": "raised",
+            "background_color": "light",
+            "card_link": "/collections/kraftig-gennemsigtig-voksdug",
+            "alignment": "left"
+          },
+          "blocks": {
+            "caption": { "type": "text", "settings": { "text": "<p>Populær og praktisk</p>" } },
+            "heading": { "type": "text", "settings": { "text": "<h3>Kraftig gennemsigtig voksdug</h3>" } },
+            "body": { "type": "text", "settings": { "text": "<p>Beskyt dit bord mod pletter, ridser og varme – uden at skjule bordpladens udtryk. Vælg mellem flere tykkelser, fra den bløde og fleksible til den ekstra kraftige.</p>" } },
+            "cta": { "type": "text", "settings": { "text": "<p><strong>Se kraftig gennemsigtig voksdug →</strong></p>", "padding_top": 12 } }
+          },
+          "block_order": ["caption", "heading", "body", "cta"]
+        }
+      },
+      "block_order": ["callout_card"]
+    },
+    "why_us": {
+      "type": "section",
+      "name": "Hvorfor vælge os",
+      "settings": {
+        "background_color": "light_grey",
+        "full_width": true,
+        "padding_top": 64,
+        "padding_bottom": 64
+      },
+      "blocks": {
+        "why_header": {
+          "type": "group",
+          "settings": { "layout_direction": "group--vertical", "padding_bottom": 16 },
+          "blocks": {
+            "label": { "type": "text", "settings": { "text": "<p>Hvorfor vælge os</p>" } },
+            "heading": { "type": "text", "settings": { "text": "<h2>30 år med duge og tekstiler</h2>" } }
+          },
+          "block_order": ["label", "heading"]
+        },
+        "why_1": {
+          "type": "card",
+          "settings": { "design": "border", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1" },
+          "blocks": {
+            "h": { "type": "text", "settings": { "text": "<h4>Skæres til dit mål</h4>" } },
+            "b": { "type": "text", "settings": { "text": "<p>Alle duge kan bestilles firkantet, rund eller oval – og i præcist den størrelse dit bord kræver.</p>" } }
+          },
+          "block_order": ["h", "b"]
+        },
+        "why_2": {
+          "type": "card",
+          "settings": { "design": "border", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1" },
+          "blocks": {
+            "h": { "type": "text", "settings": { "text": "<h4>Phthalatfri &amp; ØKO-TEX®</h4>" } },
+            "b": { "type": "text", "settings": { "text": "<p>Vi importerer selv og sikrer, at ingen duge indeholder sundheds- eller miljøskadelige stoffer.</p>" } }
+          },
+          "block_order": ["h", "b"]
+        },
+        "why_3": {
+          "type": "card",
+          "settings": { "design": "border", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1" },
+          "blocks": {
+            "h": { "type": "text", "settings": { "text": "<h4>Ingen folder – garanteret</h4>" } },
+            "b": { "type": "text", "settings": { "text": "<p>Vi sender altid dugene rullet på rør, så de ankommer krølfri og klar til brug.</p>" } }
+          },
+          "block_order": ["h", "b"]
+        },
+        "why_4": {
+          "type": "card",
+          "settings": { "design": "border", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1" },
+          "blocks": {
+            "h": { "type": "text", "settings": { "text": "<h4>Stærk kundetilfredshed</h4>" } },
+            "b": { "type": "text", "settings": { "text": "<p>Tilfredse kunder fremhæver hurtig levering og god service i deres anmeldelser.</p>" } }
+          },
+          "block_order": ["h", "b"]
+        }
+      },
+      "block_order": ["why_header", "why_1", "why_2", "why_3", "why_4"]
+    },
+    "news_products": {
+      "type": "section",
+      "name": "Nyheder",
+      "settings": {
+        "background_color": "white",
+        "full_width": false,
+        "padding_top": 48,
+        "padding_bottom": 48
+      },
+      "blocks": {
+        "product_grid": {
+          "type": "collection-products-grid",
+          "settings": {
+            "title": "Nyheder",
+            "collection": "nyheder",
+            "products_to_show": 8,
+            "layout": "standard",
+            "columns_mobile": 2,
+            "columns_tablet": 2,
+            "columns_desktop": 4
+          }
+        }
+      },
+      "block_order": ["product_grid"]
     }
   },
-  "order": [
-    "main",
-    "collections_47hUyM"
-  ]
+  "order": ["hero", "trust_bar", "collection_grid", "feature_callout", "why_us", "news_products"]
 }
