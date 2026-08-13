@@ -940,6 +940,13 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   flex-direction: column;
   align-items: var(--alignment);
 }
+@media (width < --theme(--breakpoint-md)) {
+  .group--horizontal {
+    flex-wrap: wrap;
+    row-gap: 12px;
+    column-gap: 16px;
+  }
+}
 
 /* Text block styles */
 .text {
