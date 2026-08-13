@@ -10,7 +10,7 @@
   {% render 'breadcrumbs-mobile-link', parent_url: parent_url, parent_title: parent_title %}
 {% enddoc %}
 
-<div class="mobile-breadcrumb md:hidden flex items-center justify-start h-12 text-left">
+<div class="mobile-breadcrumb md:hidden flex items-center justify-start h-12 text-left pl-3">
   <a href="{{ parent_url }}" class="flex items-center justify-start gap-1 hover:underline text-primary/85 no-underline text-sm">
     {% render 'icon', name: 'chevron-left', class: 'text-[18px] select-none' %}
     <span>{{ parent_title }}</span>
