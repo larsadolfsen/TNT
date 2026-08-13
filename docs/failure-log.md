@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-026](#f-026--paginate-inside-a-rendered-snippet-never-sliced-so-every-collection-page-showed-the-same-50-products) | 2026-08-13 | Live | Collection page | Pages 1, 2 and 3 all returned the identical 50 products; 4 products unreachable |
 | [F-025](#f-025--three-schema-and-liquid-errors-made-the-github-sync-drop-five-files-without-a-word) | 2026-08-13 | Live | Deploy / product page | Five product-page files never reached any theme; sync reported success |
 | [F-024](#f-024--nav-pills-coarse-pointer-touch-target-was-4px-taller-than-the-row-it-sits-in) | 2026-08-13 | Live | Header / navigation | Nav pills overflowed the header row by 4px on touch devices |
 | [F-023](#f-023--the-github-sync-has-been-silently-dropping-the-product-page-files) | 2026-08-13 | Live | Deploy / product page | Quantity stepper showed the words "remove"/"add" instead of − / + icons |
@@ -41,6 +42,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-026 — `{% paginate %}` inside a rendered snippet never sliced, so every collection page showed the same 50 products
+
+- **Date:** 2026-08-13 · **Reach:** Live · **Fix:** this commit
+- **Symptom:** On `/collections/borddaekning` (54 products), pages 1, 2 and 3 each returned **50 product cards, and the identical 50** — same first product, same last product, identical handle lists. The union across all three pages was 50 unique products, so 4 products in the collection were unreachable from the storefront entirely. Numbered pagination hid this: clicking "2" looked like it worked because the URL changed and the grid re-rendered — with the same items.
+- **Root cause:** `sections/main-collection.liquid` passed `products: collection.products` into `{% render 'collection-product-grid' %}`, and the snippet ran `{% paginate products by 24 %}` internally. `paginate` only slices a genuine paginatable drop. Crossing a `render` boundary materialises `collection.products` into a plain array, which Shopify caps at 50 items — so inside the snippet `paginate` still computed a page count from the real total (`ceil(54/24) = 3`, hence working next-links) while `{% for product in products %}` iterated the same unsliced 50 on every page. Both halves looked correct in isolation.
+- **Fix:** Move `{% paginate collection.products by 24 %}` up into the section so it wraps the render call in the same scope as the drop, and pass the resulting `paginate` object into the snippet as a parameter. The snippet no longer paginates, and its `{% doc %}` now says so explicitly — the broken arrangement looked entirely reasonable.
+- **Prevention:** **Never put `{% paginate %}` inside a snippet that receives the collection as a parameter** — paginate must wrap the loop in the same scope as the paginatable object. More generally: when verifying pagination, compare the *contents* of consecutive pages, not the card count or the presence of next-links. Both of those were correct here while the feature was completely broken. This survived a numbered-pagination implementation, an AJAX pagination handler and an infinite-scroll rewrite because nobody diffed page 1 against page 2.
 
 ### F-025 — Three schema and Liquid errors made the GitHub sync drop five files without a word
 

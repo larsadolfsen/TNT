@@ -1,23 +1,29 @@
 {% doc %}
-  Paginated product-card grid for the collection page, with the "no matches"
-  empty state and the load-more control that drives infinite scroll.
+  Product-card grid for the collection page, with the "no matches" empty state
+  and the load-more control that drives infinite scroll.
 
-  @param {object} products - required. collection.products.
+  Does NOT paginate. The {% paginate %} tag must wrap this render call in
+  sections/main-collection.liquid instead, because paginate only slices a real
+  paginatable drop — a snippet parameter is a plain array capped at 50 items.
+  See docs/failure-log.md F-026.
+
+  @param {object} products - required. collection.products, already sliced to the current page by the caller's paginate tag.
+  @param {object} paginate - required. The paginate object from the caller.
   @param {boolean} disable_reviews - required. section.settings.disable_reviews.
   @param {string} load_more_label - required. section.settings.load_more_label, passed through to collection-load-more.
 
   @example
-  {% render 'collection-product-grid', products: collection.products, disable_reviews: section.settings.disable_reviews, load_more_label: section.settings.load_more_label %}
+  {%- paginate collection.products by 24 -%}
+    {% render 'collection-product-grid', products: collection.products, paginate: paginate, disable_reviews: section.settings.disable_reviews, load_more_label: section.settings.load_more_label %}
+  {%- endpaginate -%}
 {% enddoc %}
 
-{%- paginate products by 24 -%}
-  {%- for product in products -%}
-    {%- render 'product-card', product: product, layout: 'minimal', disable_reviews: disable_reviews -%}
-  {%- else -%}
-    <div class="col-span-full py-12 text-center">
-      {%- render 'icon', name: 'frown', class: 'text-4xl text-primary/85 mb-2' -%}
-      <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
-    </div>
-  {%- endfor -%}
-  {%- render 'collection-load-more', paginate: paginate, label: load_more_label -%}
-{%- endpaginate -%}
+{%- for product in products -%}
+  {%- render 'product-card', product: product, layout: 'minimal', disable_reviews: disable_reviews -%}
+{%- else -%}
+  <div class="col-span-full py-12 text-center">
+    {%- render 'icon', name: 'frown', class: 'text-4xl text-primary/85 mb-2' -%}
+    <p class="text-sm font-semibold text-primary">Ingen produkter matchede dine kriterier.</p>
+  </div>
+{%- endfor -%}
+{%- render 'collection-load-more', paginate: paginate, label: load_more_label -%}

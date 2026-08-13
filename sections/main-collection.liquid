@@ -84,9 +84,18 @@
       </div>
 
       <!-- Product Grid -->
-      <div id="product-grid" class="grid gap-4 lg:gap-6 mt-4">
-        {%- render 'collection-product-grid', products: collection.products, disable_reviews: section.settings.disable_reviews, load_more_label: section.settings.load_more_label -%}
-      </div>
+      {%- comment -%}
+        The paginate tag must live here, in the same scope as the paginatable
+        collection.products drop. Inside a {% render %}d snippet, products is a
+        plain array capped at 50 items, so paginate emitted page links but never
+        sliced anything — every page returned the same 50 products. See
+        docs/failure-log.md F-026.
+      {%- endcomment -%}
+      {%- paginate collection.products by 24 -%}
+        <div id="product-grid" class="grid gap-4 lg:gap-6 mt-4">
+          {%- render 'collection-product-grid', products: collection.products, paginate: paginate, disable_reviews: section.settings.disable_reviews, load_more_label: section.settings.load_more_label -%}
+        </div>
+      {%- endpaginate -%}
     </section>
 
   </div>
