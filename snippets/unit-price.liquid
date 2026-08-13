@@ -21,11 +21,11 @@
 {%- if measurement != blank and show_unit_pricing -%}
   {%- case size -%}
     {%- when 'xs' -%}
-      {%- assign unit_price_size_class = 'text-[11px]' -%}
+      {%- assign unit_price_size_class = 'type-xs' -%}
     {%- when 'base' -%}
-      {%- assign unit_price_size_class = 'text-sm' -%}
+      {%- assign unit_price_size_class = 'type-sm' -%}
     {%- else -%}
-      {%- assign unit_price_size_class = 'text-xs' -%}
+      {%- assign unit_price_size_class = 'type-xs' -%}
   {%- endcase -%}
 
   {%- assign unit_suffix = measurement.reference_unit -%}
@@ -33,5 +33,5 @@
     {%- assign unit_suffix = measurement.reference_value | append: ' ' | append: measurement.reference_unit -%}
   {%- endif -%}
 
-  <span class="unit-price {{ unit_price_size_class }} text-primary/70">{{ variant.unit_price | money }} / {{ unit_suffix }}</span>
+  <span class="unit-price {{ unit_price_size_class }} type-muted">{{ variant.unit_price | money }} / {{ unit_suffix }}</span>
 {%- endif -%}
