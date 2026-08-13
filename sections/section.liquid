@@ -10,6 +10,7 @@
   endif
 
   # Clamp columns and starting positions dynamically based on global grid settings
+  assign cols_mb = settings.grid_cols_mobile | default: 2 | plus: 0
   assign cols_tb = settings.grid_cols_tablet | default: 2 | plus: 0
   assign cols_lg = settings.grid_cols_desktop | default: 3 | plus: 0
 
@@ -118,7 +119,7 @@
   }
 
   #shopify-section-{{ section.id }} {
-    --col-span: 4;
+    --col-span: {{ cols_mb }};
     grid-column-end: span var(--col-span);
     {%- if section.settings.order_mobile != 'auto' and section.settings.order_mobile != blank -%}
       order: {{ section.settings.order_mobile }};
