@@ -178,6 +178,38 @@ h4,
   fill: currentColor;
 }
 
+/*
+ * Standard icon-button sizing: a fixed 44x44px clickable area (WCAG target),
+ * built from icon size + padding via content-box so padding adds outside the
+ * glyph instead of shrinking it. `.icon--small` drops the glyph to 12px;
+ * combined with `.icon--btn` the padding grows to keep the total box at 44px.
+ */
+.icon--btn {
+  width: 20px;
+  height: 20px;
+  padding: 12px;
+  box-sizing: content-box;
+  cursor: pointer;
+}
+
+.icon--small {
+  width: 12px;
+  height: 12px;
+}
+
+.icon--btn.icon--small {
+  width: 12px;
+  height: 12px;
+  padding: 16px;
+}
+
+/* Fixed 20px glyph with no padding -- used for the inner icon in the
+   badge+button case, where the outer icon--btn box handles padding instead. */
+.icon--glyph {
+  width: 20px;
+  height: 20px;
+}
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }

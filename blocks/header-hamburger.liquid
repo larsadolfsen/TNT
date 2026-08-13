@@ -9,11 +9,11 @@
 <div class="flex items-center md:hidden" {{ block.shopify_attributes }}>
   <button
     id="menu-toggle"
-    class="focus:outline-none bg-transparent border-0 p-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity"
+    class="focus:outline-none bg-transparent border-0 cursor-pointer flex items-center justify-center hover:opacity-80 transition-opacity"
     aria-label="Menu"
     onclick="toggleMobileMenu(true)"
   >
-    {% render 'icon', name: 'menu', class: 'text-2xl text-primary block' %}
+    {% render 'icon', name: 'menu', button: true, class: 'text-primary block' %}
   </button>
 </div>
 
