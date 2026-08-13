@@ -20,14 +20,14 @@
   @param {boolean} [badge] - When true, renders a small count pill anchored to the glyph's bottom-right corner (e.g. a cart item count). Wraps the icon in an inner span sized to just the glyph, so the badge stays anchored to the visible icon even when `button` padding grows the outer clickable box.
   @param {string} [badge_value] - Badge text/number. Only used when `badge` is true.
   @param {string} [badge_id] - id attribute on the badge element, so JS can find it (e.g. `document.getElementById(...)` to update count/visibility).
-  @param {boolean} [badge_hidden] - When true, the badge starts scaled to 0 (hidden) instead of visible. Toggle by adding/removing the `scale-0`/`scale-100` classes on the badge element from JS.
+  @param {boolean} [badge_hidden] - When true, the badge starts scaled to 0 (hidden) instead of visible. Toggle by adding/removing the `scale-0`/`scale-100` classes on the badge element from JS. Pass a variable, not a comparison -- {% render %} arguments don't accept expressions, so `badge_hidden: cart.item_count == 0` is a syntax error; `assign` it first.
 
   @example
   {% render 'icon', name: 'search' %}
   {% render 'icon', name: 'x', button: true, label: 'Luk' %}
   {% render 'icon', name: 'x', button: true, small: true, label: 'Fjern' %}
   {% render 'icon', name: 'star', class: 'text-[14px]', filled: true %}
-  {% render 'icon', name: 'shopping-cart', button: true, badge: true, badge_id: 'cart-counter', badge_value: cart.item_count, badge_hidden: cart.item_count == 0 %}
+  {% render 'icon', name: 'shopping-cart', button: true, badge: true, badge_id: 'cart-counter', badge_value: cart.item_count, badge_hidden: cart_is_empty %}
 {% enddoc %}
 {%- capture icon_style -%}
   {%- if stroke_width %}stroke-width: {{ stroke_width }};{% endif -%}
