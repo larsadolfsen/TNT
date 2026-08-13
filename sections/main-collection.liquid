@@ -85,7 +85,7 @@
 
       <!-- Product Grid -->
       <div id="product-grid" class="grid gap-4 lg:gap-6 mt-4">
-        {%- render 'collection-product-grid', products: collection.products, disable_reviews: section.settings.disable_reviews -%}
+        {%- render 'collection-product-grid', products: collection.products, disable_reviews: section.settings.disable_reviews, load_more_label: section.settings.load_more_label -%}
       </div>
     </section>
 
@@ -140,6 +140,12 @@
       "id": "disable_reviews",
       "label": "Deaktiver anmeldelser",
       "default": false
+    },
+    {
+      "type": "text",
+      "id": "load_more_label",
+      "label": "Tekst på \"Vis flere\"-knappen",
+      "default": "Vis flere produkter"
     },
     {
       "type": "range",
