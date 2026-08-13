@@ -98,6 +98,13 @@ main > .shopify-section {
   }
 }
 
+/* A section that renders no markup (its wrapper holds only the section's own
+   <style>/<script>) still counts as a grid item, so it adds an empty row plus a
+   row-gap above and below it. Collapse those wrappers so no content means no gap. */
+main > .shopify-section:not(:has(> :not(style):not(script):not(link):not(template))) {
+  display: none;
+}
+
 
 .grid-layout {
   display: grid;
