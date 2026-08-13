@@ -10,11 +10,8 @@
     width: 100%;
     height: {{ block.settings.row_height }}px;
     --row-height: {{ block.settings.row_height }}px;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 6px;
     box-sizing: border-box;
-    padding-left: 0;
-    padding-right: 0;
   }
 
   /* Direct children that are NOT a header-group take full width */
@@ -26,7 +23,7 @@
 
 <div
   class="header-row-2 flex items-center w-full gap-4"
-  style="height: {{ block.settings.row_height }}px; --row-height: {{ block.settings.row_height }}px;"
+  style="height: 100%; --row-height: {{ block.settings.row_height }}px;"
   {{ block.shopify_attributes }}
 >
   {% content_for 'blocks' %}
