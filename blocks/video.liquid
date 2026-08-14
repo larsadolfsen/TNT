@@ -1,0 +1,235 @@
+{% doc %}
+  Renders a video block: an uploaded Shopify video, or (once the external
+  facade lands) a click-to-play embed from an external URL.
+
+  @example
+  {% content_for 'block', type: 'video', id: 'video' %}
+{% enddoc %}
+
+{%- liquid
+  assign border_color = 'transparent'
+  if block.settings.border == 'solid'
+    assign border_opacity = block.settings.border_opacity | default: 100
+    assign border_color = 'color-mix(in srgb, var(--color-outline-variant) ' | append: border_opacity | append: '%, transparent)'
+  endif
+  assign border_width = block.settings.border_width | default: 1
+-%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    {%- render 'block-padding-vars', block: block -%}
+    width: {{ block.settings.custom_width | default: 100 }}%;
+  }
+  @media screen and (max-width: 749px) {
+    #shopify-block-{{ block.id }}.shopify-block {
+      width: {{ block.settings.custom_width_mobile | default: 100 }}%;
+    }
+  }
+  #shopify-block-{{ block.id }}.shopify-block .video-block__media {
+    width: 100%;
+    display: block;
+    border-radius: {{ block.settings.border_radius | default: 0 }}px;
+    {%- if block.settings.border == 'solid' -%}
+      border: {{ border_width }}px solid {{ border_color }};
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<div {{ block.shopify_attributes }}>
+  {%- if block.settings.source == 'uploaded' and block.settings.video != blank -%}
+    {% render 'video-native',
+      video: block.settings.video,
+      autoplay: block.settings.video_autoplay,
+      loop: block.settings.video_loop,
+      class: 'video-block__media'
+    %}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:blocks_media.video",
+  "settings": [
+    {
+      "type": "select",
+      "id": "source",
+      "label": "t:blocks_media.video_source",
+      "options": [
+        { "value": "uploaded", "label": "t:blocks_media.video_uploaded" },
+        { "value": "url", "label": "t:blocks_media.video_url" }
+      ],
+      "default": "uploaded"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "t:blocks_media.video",
+      "visible_if": "{{ block.settings.source == 'uploaded' }}"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "t:blocks_media.video_url",
+      "accept": ["youtube", "vimeo"],
+      "visible_if": "{{ block.settings.source == 'url' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "t:blocks_media.video_autoplay",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "t:blocks_media.video_loop",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "t:blocks_media.cover_image",
+      "visible_if": "{{ block.settings.source == 'url' and block.settings.video_autoplay == false }}"
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "t:blocks_media.video_alt",
+      "visible_if": "{{ block.settings.source == 'url' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_media.size"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "t:blocks_media.width_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "t:blocks_media.width_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "t:blocks_media.image_ratio",
+      "visible_if": "{{ block.settings.source == 'url' and block.settings.cover_image == blank }}",
+      "options": [
+        { "value": "auto", "label": "t:blocks_media.ratio_auto" },
+        { "value": "9/16", "label": "t:blocks_media.ratio_portrait" },
+        { "value": "1/1", "label": "t:blocks_media.ratio_square" },
+        { "value": "16/9", "label": "t:blocks_media.ratio_landscape" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_media.borders"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "t:blocks_media.border_style",
+      "options": [
+        { "value": "none", "label": "t:blocks_layout.wrap_none" },
+        { "value": "solid", "label": "t:blocks_media.border_solid" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "t:blocks_layout.divider_thickness",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "label": "t:blocks_media.border_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:blocks_layout.divider_corner_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:blocks_layout.padding_top",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:blocks_layout.padding_bottom",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:blocks_layout.padding_left",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:blocks_layout.padding_right",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_media.video",
+      "category": "t:blocks_media.category_media"
+    }
+  ]
+}
+{% endschema %}

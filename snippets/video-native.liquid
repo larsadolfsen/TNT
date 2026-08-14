@@ -1,0 +1,22 @@
+{% doc %}
+  Renders an uploaded Shopify video via the built-in `video_tag` filter.
+  Poster comes from the video's own preview image automatically — Shopify
+  stores that at upload time, so no separate cover-image param is needed
+  here (unlike the external-video facade, which has no such built-in poster).
+
+  @param {video} video - required. A Shopify-hosted video reference.
+  @param {boolean} [autoplay] - When true, also forces muted + playsinline (autoplay with sound is blocked by browsers and would silently fail to start).
+  @param {boolean} [loop] - Restart playback when it ends.
+  @param {string} [class] - Extra CSS classes on the rendered <video>.
+  @param {string} [style] - Raw inline style on the rendered <video>.
+
+  @example
+  {% render 'video-native', video: block.settings.video, autoplay: block.settings.video_autoplay, loop: block.settings.video_loop, class: 'video-block__media' %}
+{% enddoc %}
+{%- liquid
+  assign muted = false
+  if autoplay
+    assign muted = true
+  endif
+-%}
+{{ video | video_tag: autoplay: autoplay, loop: loop, muted: muted, controls: true, playsinline: true, class: class, style: style }}

@@ -243,6 +243,14 @@
     "icon_trash": "Trash",
     "icon_triangle_alert": "Alert (triangle)",
     "icon_user": "User",
-    "icon_x": "Close (x)"
+    "icon_x": "Close (x)",
+    "video": "Video",
+    "video_source": "Source",
+    "video_uploaded": "Uploaded video",
+    "video_url": "External video URL",
+    "video_autoplay": "Autoplay",
+    "video_loop": "Loop",
+    "cover_image": "Cover image",
+    "video_alt": "Alt text"
   }
 }
