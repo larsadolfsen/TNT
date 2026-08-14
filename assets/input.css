@@ -838,8 +838,16 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   }
 }
 
-/* Color swatches selection checkmark visibility */
-.filter-checkbox:checked ~ div span {
+/* Colour-swatch filter: reveal the checkmark on the selected swatch.
+   Scoped to .swatch-check because the checkmark is an <svg> nested inside
+   .swatch-circle, so Tailwind's peer-checked: variant (a sibling selector)
+   cannot reach it. The previous `~ div span` rule matched no svg at all and
+   instead unhid the tooltip's count span. */
+.swatch-check {
+  display: none;
+}
+
+.filter-checkbox:checked ~ .swatch-circle .swatch-check {
   display: block;
 }
 
