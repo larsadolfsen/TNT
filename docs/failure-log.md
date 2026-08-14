@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-030](#f-030--dark-mode-followed-the-browsers-own-theme-setting-not-the-os-and-the-feature-was-disabled) | 2026-08-14 | Live | Theming | Site rendered fully dark on every page even though Windows was set to Light |
 | [F-029](#f-029--product-card-carried-9-11px-text-with-no-token-behind-it) | 2026-08-13 | Caught | Product card | Badge/unit-price/meta text down to 9px, invisible to the token system |
 | [F-028](#f-028--shopify-account-web-components-own-default-icon-is-not-aware-of-this-themes-dark-mode-tokens) | 2026-08-14 | Live | Theming / header | Account icon stayed dark in dark mode after the header background itself was fixed |
 | [F-027](#f-027--header-2-reintroduced-a-hardcoded-bg-white-that-f-009-had-already-fixed) | 2026-08-14 | Live | Theming / header | Header stayed white in dark mode on collection pages |
@@ -45,6 +46,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-030 — Dark mode followed the browser's own theme setting, not the OS, and the feature was disabled
+
+- **Date:** 2026-08-14 · **Reach:** Live · **Fix:** this commit
+- **Symptom:** Every page on `shopify.textilogvoksdug.dk` rendered with the theme's dark palette (exact `--color-background-dark` navy) on first load, with no toggle clicked and no `theme` key in `localStorage`, even though Windows' "Choose your default app mode" was set to Light. Shopify's separate hosted account page (`shopify.com/…/account/profile`) rendered light, which looked like a contradiction but is an unrelated surface — it's on a different domain, outside this theme entirely.
+- **Root cause:** Not a code bug. `layout/theme.liquid`'s `system` branch called `window.matchMedia('(prefers-color-scheme: dark)').matches`, which is correct and standard, but that query reflects the **browser's** effective color scheme, not necessarily the OS setting. The user's Chrome had its own theme (`chrome://settings/appearance` → Theme) set to Dark, independently of Windows. Chrome honored its own setting over the OS one, so the media query correctly reported dark, and the script correctly applied it. Confirmed by testing the same page with the in-app Browser pane (OS/browser both effectively light → page rendered light, `prefersDark: false`) and by forcing `colorScheme: dark` on it (→ `prefersDark: true`, page still showed no `.dark` class because that test happened to hit a build without the toggle script deployed) — the real repro only showed up in the user's actual Chrome, and their own check of `chrome://settings/appearance` confirmed Dark was selected there.
+- **Fix:** Per user request, the automatic (and manual) dark mode feature is disabled rather than "fixed" — it was working as designed, but the design (silently trusting the browser's own theme override, with no visible way for the merchant/customer to tell why the site looked dark) had already caused a string of small bugs (see F-009 through F-028, all dark-mode-specific). Removed the class-toggling `<script>` block from `layout/theme.liquid`; the theme now always renders its light palette. The `.dark` CSS block in `snippets/css-variables.liquid` and the unplaced `blocks/header-theme-toggle.liquid` block are left in place (inert, not currently referenced by any header block instance) so the feature can be restored later.
+- **Prevention:** `prefers-color-scheme` reflects the *browser's* effective scheme, which is not always the OS scheme — Chrome (and other browsers) can override it via their own appearance/theme setting. When "the site looks dark/light and I don't know why" is reported, check the browser's own theme setting before assuming a code bug, not just the OS setting. This is also why the feature was disabled rather than left as "working as intended": a mechanism whose actual driver isn't visible to the person looking at the page is a bad UX regardless of whether the code is technically correct.
 
 ### F-029 — Product card carried 9-11px text with no token behind it
 
