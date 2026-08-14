@@ -20,11 +20,13 @@
         "hero_group": {
           "type": "group",
           "settings": {
-            "layout_direction": "group--vertical",
-            "alignment": "flex-start",
-            "padding_top": 80,
-            "padding_bottom": 80,
-            "padding_sides": 24
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "gap": 0,
+            "padding-block-start": 80,
+            "padding-block-end": 80,
+            "padding-inline-start": 24,
+            "padding-inline-end": 24
           },
           "blocks": {
             "hero_heading": {
@@ -61,8 +63,11 @@
         "trust_group": {
           "type": "group",
           "settings": {
-            "layout_direction": "group--horizontal",
-            "alignment": "center"
+            "content_direction": "row",
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "center",
+            "vertical_on_mobile": true,
+            "gap": 12
           },
           "blocks": {
             "tc1": { "type": "trust-checkmark", "settings": { "text": "Gratis levering fra 599 kr." } },
@@ -169,7 +174,7 @@
       "blocks": {
         "why_header": {
           "type": "group",
-          "settings": { "layout_direction": "group--vertical", "padding_bottom": 16 },
+          "settings": { "content_direction": "column", "gap": 0, "padding-block-end": 16 },
           "blocks": {
             "label": { "type": "text", "settings": { "text": "<p>Hvorfor vælge os</p>" } },
             "heading": { "type": "text", "settings": { "text": "<h2>30 år med duge og tekstiler</h2>" } }

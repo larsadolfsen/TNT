@@ -1023,28 +1023,15 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   transform: rotate(180deg);
 }
 
-/* Flex group component styles */
+/* Flex group component styles. Direction, justify-content, align-items and
+   gap are all set per-block in blocks/group.liquid's own {% style %} tag
+   (scoped to #shopify-block-{id} > .group), so this base rule only supplies
+   the shared display/overflow behavior every group instance needs. */
 .group {
   display: flex;
   flex-wrap: nowrap;
   overflow: hidden;
   width: 100%;
-}
-.group--horizontal {
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-.group--vertical {
-  flex-direction: column;
-  align-items: var(--alignment);
-}
-@media (width < --theme(--breakpoint-md)) {
-  .group--horizontal {
-    flex-wrap: wrap;
-    row-gap: 12px;
-    column-gap: 16px;
-  }
 }
 
 /* Text block styles */
