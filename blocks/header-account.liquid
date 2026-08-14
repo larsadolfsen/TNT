@@ -42,23 +42,15 @@
     display: none;
   }
 
-  /* <shopify-account> is a Shopify-provided web component: its own default
-     signed-out/signed-in avatar and account sheet render inside a shadow
-     root, so this theme's --color-primary swap for dark mode cannot reach
-     them via ordinary CSS inheritance -- only via the CSS custom properties
-     Shopify documents for the component. These bridge that default UI to
-     the same tokens the rest of the header already uses, so it doesn't go
-     dark-mode-blind if it ever paints before/instead of our own markup. */
+  /* <shopify-account>'s own shadow-DOM button styles itself with
+     `color: currentColor` (confirmed via devtools), not a Shopify-specific
+     custom property -- so it just inherits `color` like any element.
+     Nothing in its ancestor chain sets one: `body` only sets
+     background-color, and `main { color: ... }` doesn't reach it because
+     the header sits outside <main>. Without this, it falls back to the
+     browser's default black text, dark mode or not. */
   #shopify-block-{{ block.id }} shopify-account {
-    --shopify-account-color: var(--color-card-light);
-    --shopify-account-color-text: var(--color-primary);
-    --shopify-account-color-border: var(--color-border);
-    --shopify-account-color-accent: var(--color-primary);
-    --shopify-account-color-accent-text: var(--color-on-primary);
-    --shopify-account-signed-in-avatar-color-background: var(--color-primary);
-    --shopify-account-signed-in-avatar-color-text: var(--color-on-primary);
-    --shopify-account-signed-in-avatar-color-accent: var(--color-primary);
-    --shopify-account-signed-in-avatar-color-border: var(--color-border);
+    color: var(--color-primary);
   }
 
   #shopify-block-{{ block.id }} .account-trigger-desktop {
