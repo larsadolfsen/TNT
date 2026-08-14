@@ -18,10 +18,10 @@
 
 <div class="flex flex-col items-start gap-0.5 mt-1">
   {%- unless is_minimal -%}
-    <span class="text-xs sm:text-sm text-primary/85 leading-none">Pris</span>
+    <span class="type-sm type-muted leading-none">Pris</span>
   {%- endunless -%}
   <div class="flex items-baseline gap-1.5 flex-wrap">
-    <span class="{% if is_minimal %}text-xs sm:text-sm md:text-base{% else %}text-sm sm:text-base md:text-lg{% endif %} font-bold text-primary leading-none">
+    <span class="{% if is_minimal %}type-md{% else %}type-lg{% endif %} type-bold leading-none">
       {%- assign show_fra = false -%}
       {%- if product.variants.size > 1 and product.price_varies -%}
         {%- assign show_fra = true -%}
@@ -31,11 +31,11 @@
     </span>
     {%- unless has_unit_price -%}
       {%- if original_price > price -%}
-        <span class="text-[12px] text-primary/70 line-through leading-none">{{ original_price | money }}</span>
+        <span class="type-sm type-muted line-through leading-none">{{ original_price | money }}</span>
       {%- endif -%}
     {%- endunless -%}
     {%- if has_unit_price -%}
-      <span class="text-[9px] sm:text-[10px] text-primary/75 font-semibold">/ {{ unit_suffix }}</span>
+      <span class="type-xs type-muted">/ {{ unit_suffix }}</span>
     {%- endif -%}
   </div>
   {%- comment -%}

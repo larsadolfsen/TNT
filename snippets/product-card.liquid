@@ -24,8 +24,8 @@
       {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'w-full h-full bg-slate-100 opacity-50' }}
     </div>
     <div class="space-y-1">
-      <h3 class="font-sans text-xs sm:text-sm font-normal text-primary leading-tight">Eksempel produkt {{ placeholder_index }}</h3>
-      <p class="text-xs font-semibold text-primary">199,00 kr.</p>
+      <h3 class="type-md type-bold">Eksempel produkt {{ placeholder_index }}</h3>
+      <p class="type-sm type-bold">199,00 kr.</p>
     </div>
   </div>
 {%- elsif product != blank -%}
@@ -79,12 +79,12 @@
     <div class="p-3 flex flex-col justify-start flex-1 min-w-0">
       <div class="space-y-1">
         {%- if is_minimal -%}
-          <h3 class="font-sans text-xs sm:text-sm font-normal text-primary leading-tight mb-1">
-            <a href="{{ product.url }}" class="text-primary no-underline">{{ product.title }}</a>
+          <h3 class="type-md type-bold mb-1">
+            <a href="{{ product.url }}" class="no-underline">{{ product.title }}</a>
           </h3>
         {%- else -%}
-          <h3 class="text-sm sm:text-base font-normal text-primary leading-tight hover:text-secondary mb-1">
-            <a href="{{ product.url }}" class="text-primary no-underline hover:text-secondary">{{ product.title }}</a>
+          <h3 class="type-md type-bold mb-1 hover:text-secondary">
+            <a href="{{ product.url }}" class="no-underline hover:text-secondary">{{ product.title }}</a>
           </h3>
         {%- endif -%}
         
@@ -101,10 +101,10 @@
         {%- unless disable_reviews -%}
           {%- liquid
             assign star_size = 14
-            assign rating_wrapper_class = 'text-xs sm:text-sm'
+            assign rating_wrapper_class = 'type-sm'
             if is_minimal
               assign star_size = 12
-              assign rating_wrapper_class = 'text-[10px]'
+              assign rating_wrapper_class = 'type-xs'
             endif
           -%}
           {%- render 'star-rating',

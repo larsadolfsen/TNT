@@ -23,8 +23,9 @@
     assign badge_class = 'text-important text-2xl font-bold leading-none'
     assign badge_text = savings | prepend: 'Spar ' | append: '%'
   else
-    assign badge_class = 'bg-important text-white text-[11px] font-semibold px-2 py-0.5 rounded-md uppercase'
+    assign badge_class = 'type-badge type-badge--important'
     assign badge_text = settings.savings_badge_text | default: '[savings] % rabat' | replace: '[savings]', savings
   endif
 -%}
-<span class="product-savings-badge inline-block {{ badge_class }}">{{ badge_text }}</span>
+{%- capture badge_label_role %}{% render 'text-style', role: 'badge-label' %}{% endcapture -%}
+<span class="product-savings-badge inline-block {{ badge_class }}{% if size != 'lg' %} {{ badge_label_role }}{% endif %}">{{ badge_text }}</span>

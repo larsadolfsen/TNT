@@ -35,6 +35,6 @@
     {%- endif -%}
   </a>
   {%- if badge != blank -%}
-    <span class="absolute top-2 left-2 bg-primary text-on-primary {% if is_minimal %}text-[9px] sm:text-[11px]{% else %}text-[11px]{% endif %} font-bold px-2 py-0.5 rounded-md tracking-wider uppercase z-10">{{ badge }}</span>
+    <span class="absolute top-2 left-2 type-badge {% render 'text-style', role: 'badge-label' %} z-10">{{ badge }}</span>
   {%- endif -%}
 </div>
