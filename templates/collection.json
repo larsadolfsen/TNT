@@ -55,9 +55,14 @@
       "name": "t:general.collections_grid",
       "settings": {
         "columns_mobile": 3,
-        "columns_tablet": 3,
-        "columns_desktop": 4,
-        "grid_gap": 16
+        "columns_tablet": 6,
+        "columns_desktop": 12,
+        "grid_gap": 16,
+        "visible_count_mobile": 6,
+        "visible_count_tablet": 8,
+        "visible_count_desktop": 12,
+        "show_more_label": "Vis flere kategorier",
+        "show_less_label": "Vis færre"
       }
     },
     "section_eUpcwy": {
@@ -88,8 +93,6 @@
     },
     "main-collection": {
       "type": "main-collection",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "filters_heading": "Filtre",
         "padding_top": 16,
