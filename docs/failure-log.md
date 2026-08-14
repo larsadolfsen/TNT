@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-032](#f-032--product-card-titles-inherited-serif-from-a-legacy-heading-rule-the-type--system-had-no-way-to-override) | 2026-08-14 | Caught | Product card | Product-card `<h3>` titles rendered serif despite carrying no `.type-serif` class |
 | [F-031](#f-031--dropping-text-primary-from-a-product-card-title-link-let-the-browsers-default-link-color-through) | 2026-08-14 | Live | Product card | Product-card titles rendered browser-default blue instead of the theme's text color |
 | [F-030](#f-030--dark-mode-followed-the-browsers-own-theme-setting-not-the-os-and-the-feature-was-disabled) | 2026-08-14 | Live | Theming | Site rendered fully dark on every page even though Windows was set to Light |
 | [F-029](#f-029--product-card-carried-9-11px-text-with-no-token-behind-it) | 2026-08-13 | Caught | Product card | Badge/unit-price/meta text down to 9px, invisible to the token system |
@@ -47,6 +48,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-032 — Product-card titles inherited serif from a legacy heading rule the `.type-*` system had no way to override
+
+- **Date:** 2026-08-14 · **Reach:** Caught (user spotted it visually before it was reported as a live bug) · **Fix:** this commit
+- **Symptom:** `snippets/product-card.liquid`'s `<h3>` title carries `type-md type-bold` — no `.type-serif` modifier — so by the typography system's own design it should render in the default sans body font. It rendered serif instead.
+- **Root cause:** Same mechanism as F-031, one property over: `assets/input.css` has a legacy, unscoped rule — `h1, h2, h3, h5, h6, .h1, .h2, .h3, .h5, .h6 { font-family: var(--font-serif); }` — that predates the `.type-*` system and intentionally drives serif page titles (every section's bare `<h1>`: 404, article, blog, cart, collection, page, product) and the `.rte` rich-text wrapper. It sets `font-family` as an explicit declaration directly on the heading tag. The `.type-*` system deliberately never sets `font-family` unless `.type-serif` is added, expecting plain elements to inherit sans from `main { font-family: var(--font-sans) }` — but an explicit declaration on the element itself always wins over an inherited one, no matter the specificity of the rule that made it explicit. `product-card.liquid` is the only place so far where a `.type-*`-styled element also happens to be a heading tag, so nothing else in the current migration hit this, but any future surface that migrates a heading-tag component would hit it again.
+- **Fix:** Added a `.type-sans { font-family: var(--font-sans); }` modifier to `assets/input.css`, mirroring the existing `.type-serif`. A class selector naturally outranks a bare-tag selector in specificity, so `.type-sans` reliably wins without touching the legacy rule (which still correctly drives serif page titles and `.rte` content). Applied to all three `<h3>` titles in `product-card.liquid` (minimal, standard, and the design-mode placeholder).
+- **Prevention:** Any element carrying `.type-*` classes that is also a heading tag (`h1`-`h6`) needs an explicit `.type-serif` or `.type-sans` — never assume inheritance for `font-family` on a heading element, for the same reason F-031 says never assume inheritance for `color` on an anchor: explicit UA/legacy-rule declarations on the element always beat inheritance, regardless of the typography component's own intent. Second instance of that pattern in as many days on the same migration — worth treating "does this element type have its own author/legacy CSS setting the property I'm relying on inheriting?" as a standing check whenever `.type-*` classes land on anything other than a plain `div`/`span`/`p`.
 
 ### F-031 — Dropping `text-primary` from a product-card title link let the browser's default link color through
 

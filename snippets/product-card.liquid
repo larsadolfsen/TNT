@@ -24,7 +24,7 @@
       {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'w-full h-full bg-slate-100 opacity-50' }}
     </div>
     <div class="space-y-1">
-      <h3 class="type-md type-bold">Eksempel produkt {{ placeholder_index }}</h3>
+      <h3 class="type-md type-bold type-sans">Eksempel produkt {{ placeholder_index }}</h3>
       <p class="type-sm type-bold">199,00 kr.</p>
     </div>
   </div>
@@ -79,11 +79,11 @@
     <div class="p-3 flex flex-col justify-start flex-1 min-w-0">
       <div class="space-y-1">
         {%- if is_minimal -%}
-          <h3 class="type-md type-bold mb-1">
+          <h3 class="type-md type-bold type-sans mb-1">
             <a href="{{ product.url }}" class="text-primary no-underline">{{ product.title }}</a>
           </h3>
         {%- else -%}
-          <h3 class="type-md type-bold mb-1 hover:text-secondary">
+          <h3 class="type-md type-bold type-sans mb-1 hover:text-secondary">
             <a href="{{ product.url }}" class="text-primary no-underline hover:text-secondary">{{ product.title }}</a>
           </h3>
         {%- endif -%}
