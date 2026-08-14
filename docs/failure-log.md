@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-028](#f-028--shopify-account-web-components-own-default-icon-is-not-aware-of-this-themes-dark-mode-tokens) | 2026-08-14 | Live | Theming / header | Account icon stayed dark in dark mode after the header background itself was fixed |
 | [F-027](#f-027--header-2-reintroduced-a-hardcoded-bg-white-that-f-009-had-already-fixed) | 2026-08-14 | Live | Theming / header | Header stayed white in dark mode on collection pages |
 | [F-026](#f-026--paginate-inside-a-rendered-snippet-never-sliced-so-every-collection-page-showed-the-same-50-products) | 2026-08-13 | Live | Collection page | Pages 1, 2 and 3 all returned the identical 50 products; 4 products unreachable |
 | [F-025](#f-025--three-schema-and-liquid-errors-made-the-github-sync-drop-five-files-without-a-word) | 2026-08-13 | Live | Deploy / product page | Five product-page files never reached any theme; sync reported success |
@@ -43,6 +44,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-028 — `<shopify-account>` web component's own default icon is not aware of this theme's dark-mode tokens
+
+- **Date:** 2026-08-14 · **Reach:** Live · **Fix:** this commit — **unconfirmed live**, see below
+- **Symptom:** After [F-027](#f-027--header-2-reintroduced-a-hardcoded-bg-white-that-f-009-had-already-fixed) fixed the header background, the account (person) icon in the header still rendered dark/near-black in dark mode instead of white, while the search and cart icons next to it rendered correctly.
+- **Root cause (best-supported hypothesis, not confirmed against the live DOM):** `blocks/header-account.liquid` wraps a fully custom trigger + panel in `<shopify-account>`, a Shopify-provided web component, and suppresses the component's own default UI with `shopify-account > :not(.account-trigger-wrap) { display: none }`. That selector only reaches **light-DOM children**. Per Shopify's `storefront-web-components` docs, `<shopify-account>` renders its own default signed-out/signed-in avatar icon internally (shadow DOM / named-slot fallback content when no `slot="signed-out-avatar"` element is supplied), which is outside the reach of ordinary light-DOM CSS and not wired to this theme's `--color-primary` swap — so it stays whatever fixed color Shopify ships by default. Isolating the actual icon markup (`.icon.text-primary` + the Lucide sprite) in a standalone test page confirmed *that* markup alone correctly resolves to white under `.dark` — the bug is specific to something `<shopify-account>` itself renders, not the theme's color-token plumbing.
+- **Fix:** Bridge Shopify's documented `--shopify-account-*` CSS custom properties (`--shopify-account-color`, `-color-text`, `-color-border`, `-color-accent`, `-color-accent-text`, and the `-signed-in-avatar-*` variants) to this theme's existing dark-aware tokens (`--color-card-light`, `--color-primary`, `--color-border`, `--color-on-primary`), scoped to `#shopify-block-{{ block.id }} shopify-account` in `blocks/header-account.liquid`'s `{% style %}`. Custom properties inherit through shadow DOM boundaries, so this reaches the component's internal rendering without needing `!important` or restructuring the existing custom trigger/panel markup.
+- **Prevention / open item:** This session could not load `textilogvoksdug.dk` or `shopify.dev` from its sandbox (network egress policy blocks both), so the fix is informed by Shopify's public web-component docs (via search) rather than by inspecting this store's actual rendered DOM or confirming the exact variable names against the live component version. **Needs live visual verification** — if the account icon is still dark after this ships, the next step is opening DevTools on the live page, finding `<shopify-account>`'s shadow root, and reading which CSS custom properties (or `::part()`s) its actual stylesheet references, since Shopify's public docs may lag or diverge from the shipped component.
 
 ### F-027 — `header-2.liquid` reintroduced a hardcoded `bg-white` that F-009 had already fixed
 
