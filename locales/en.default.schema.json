@@ -145,6 +145,13 @@
     "divider_corner_radius": "Corner radius",
     "corner_radius_square": "Square",
     "corner_radius_rounded": "Rounded",
-    "divider_length": "Length"
+    "divider_length": "Length",
+    "spacer": "Spacer",
+    "spacer_unit": "Unit",
+    "unit_pixel": "Pixels",
+    "unit_percent": "Percent",
+    "spacer_size": "Size",
+    "spacer_custom_mobile_size": "Customize on mobile",
+    "spacer_mobile_size": "Mobile size"
   }
 }
