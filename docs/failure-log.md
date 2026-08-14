@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-027](#f-027--header-2-reintroduced-a-hardcoded-bg-white-that-f-009-had-already-fixed) | 2026-08-14 | Live | Theming / header | Header stayed white in dark mode on collection pages |
 | [F-026](#f-026--paginate-inside-a-rendered-snippet-never-sliced-so-every-collection-page-showed-the-same-50-products) | 2026-08-13 | Live | Collection page | Pages 1, 2 and 3 all returned the identical 50 products; 4 products unreachable |
 | [F-025](#f-025--three-schema-and-liquid-errors-made-the-github-sync-drop-five-files-without-a-word) | 2026-08-13 | Live | Deploy / product page | Five product-page files never reached any theme; sync reported success |
 | [F-024](#f-024--nav-pills-coarse-pointer-touch-target-was-4px-taller-than-the-row-it-sits-in) | 2026-08-13 | Live | Header / navigation | Nav pills overflowed the header row by 4px on touch devices |
@@ -42,6 +43,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-027 — `header-2.liquid` reintroduced a hardcoded `bg-white` that F-009 had already fixed
+
+- **Date:** 2026-08-14 · **Reach:** Live · **Fix:** this commit
+- **Symptom:** On a collection page (`/collections/voksdug`) with dark mode on, the header row stayed white while the rest of the page (breadcrumb, title, body copy, category tiles) rendered dark as expected.
+- **Root cause:** [F-009](#f-009--hardcoded-light-mode-colors-ignored-dark-mode) fixed this exact symptom by replacing the header's `bg-white` with `bg-card-light` (`dd9a179`). A later commit, `e5af798` ("Make header background white"), deliberately reverted it back to `bg-white` — `bg-card-light` resolves to an off-white (`#F8F9FD`), and the intent was a pure-white header in light mode. That commit changed only the light-mode value; it never added a `dark:` override, so the header silently lost its dark-mode theming a second time. `theme-check` has no way to catch this — a Tailwind color utility is valid Liquid/CSS either way.
+- **Fix:** `bg-white dark:bg-card-light` — keeps the deliberate pure-white light-mode header from `e5af798` and restores dark-mode theming via the `dark:` variant (`@variant dark (&:where(.dark, .dark *));` in `assets/input.css`) instead of just reverting to F-009's value and undoing that design choice.
+- **Prevention:** When a hardcoded-color fix (`bg-white` → semantic token) gets deliberately reverted for a legitimate light-mode design reason, the revert must pair the light-mode value with an explicit `dark:` override — not just swap the token back out wholesale, which silently reopens the dark-mode bug. Second instance of the "hardcoded colour bypasses theming" pattern ([Recurring pattern 3](#recurring-patterns)) at the exact same call site, now worth grepping for: `grep -n "bg-white\|bg-slate\|text-black" sections/*.liquid blocks/*.liquid snippets/*.liquid` and confirm every hit either has a `dark:` sibling or is inside `.dark`-scoped CSS.
 
 ### F-026 — `{% paginate %}` inside a rendered snippet never sliced, so every collection page showed the same 50 products
 
