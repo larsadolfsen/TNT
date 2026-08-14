@@ -8,7 +8,7 @@
   assign mobile_menu_handle = section.settings.menu
 -%}
 
-<header class="header-2 bg-white border-b border-outline-variant">
+<header class="header-2 bg-white dark:bg-card-light border-b border-outline-variant">
   <div class="{% if section.settings.content_width == 'content' %}max-w-screen-xl mx-auto{% endif %} w-full">
     <div class="flex flex-col w-full">
       {% content_for 'blocks' %}
