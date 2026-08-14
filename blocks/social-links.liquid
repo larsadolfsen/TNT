@@ -1,0 +1,149 @@
+{% doc %}
+  Renders a row of social network icon links (brand marks from the icon
+  sprite). Only networks with a URL configured render; an all-empty block
+  collapses to nothing on the storefront but stays selectable in the editor.
+
+  @example
+  {% content_for 'block', type: 'social-links', id: 'social-links' %}
+{% enddoc %}
+
+{%- liquid
+  assign social_link_keys = 'facebook_url,instagram_url,youtube_url,tiktok_url,twitter_url,threads_url,linkedin_url,bluesky_url,snapchat_url,pinterest_url,tumblr_url,vimeo_url,custom_url' | split: ','
+-%}
+
+<div class="social-links flex flex-wrap items-center gap-3" {{ block.shopify_attributes }}>
+  {%- for link_key in social_link_keys -%}
+    {%- liquid
+      assign link_url = block.settings[link_key]
+      if link_url == blank
+        continue
+      endif
+
+      assign icon_class = 'icon--brand'
+      case link_key
+        when 'facebook_url'
+          assign icon_name = 'facebook'
+          assign label = 'social.facebook' | t
+        when 'instagram_url'
+          assign icon_name = 'instagram'
+          assign label = 'social.instagram' | t
+        when 'youtube_url'
+          assign icon_name = 'youtube'
+          assign label = 'social.youtube' | t
+        when 'tiktok_url'
+          assign icon_name = 'tiktok'
+          assign label = 'social.tiktok' | t
+        when 'twitter_url'
+          assign icon_name = 'twitter'
+          assign label = 'social.twitter' | t
+        when 'threads_url'
+          assign icon_name = 'threads'
+          assign label = 'social.threads' | t
+        when 'linkedin_url'
+          assign icon_name = 'linkedin'
+          assign label = 'social.linkedin' | t
+        when 'bluesky_url'
+          assign icon_name = 'bluesky'
+          assign label = 'social.bluesky' | t
+        when 'snapchat_url'
+          assign icon_name = 'snapchat'
+          assign label = 'social.snapchat' | t
+        when 'pinterest_url'
+          assign icon_name = 'pinterest'
+          assign label = 'social.pinterest' | t
+        when 'tumblr_url'
+          assign icon_name = 'tumblr'
+          assign label = 'social.tumblr' | t
+        when 'vimeo_url'
+          assign icon_name = 'vimeo'
+          assign label = 'social.vimeo' | t
+        when 'custom_url'
+          assign icon_name = 'link'
+          assign icon_class = ''
+          assign label = 'social.custom_link' | t
+      endcase
+    -%}
+    <a href="{{ link_url }}" target="_blank" rel="noopener" class="social-links__link text-primary hover:text-secondary transition-colors">
+      {%- render 'icon', name: icon_name, class: icon_class, label: label -%}
+    </a>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:blocks_commerce.social_links",
+  "settings": [
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "t:blocks_commerce.facebook"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "t:blocks_commerce.instagram"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "t:blocks_commerce.youtube"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "t:blocks_commerce.tiktok"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "t:blocks_commerce.twitter"
+    },
+    {
+      "type": "url",
+      "id": "threads_url",
+      "label": "t:blocks_commerce.threads"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "t:blocks_commerce.linkedin"
+    },
+    {
+      "type": "url",
+      "id": "bluesky_url",
+      "label": "t:blocks_commerce.bluesky"
+    },
+    {
+      "type": "url",
+      "id": "snapchat_url",
+      "label": "t:blocks_commerce.snapchat"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "t:blocks_commerce.pinterest"
+    },
+    {
+      "type": "url",
+      "id": "tumblr_url",
+      "label": "t:blocks_commerce.tumblr"
+    },
+    {
+      "type": "url",
+      "id": "vimeo_url",
+      "label": "t:blocks_commerce.vimeo"
+    },
+    {
+      "type": "url",
+      "id": "custom_url",
+      "label": "t:blocks_commerce.custom_link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_commerce.social_links",
+      "category": "t:blocks_commerce.category_commerce"
+    }
+  ]
+}
+{% endschema %}

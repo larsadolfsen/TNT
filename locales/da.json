@@ -143,6 +143,21 @@
   "video": {
     "play": "Afspil video"
   },
+  "social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "youtube": "YouTube",
+    "tiktok": "TikTok",
+    "twitter": "X (Twitter)",
+    "threads": "Threads",
+    "linkedin": "LinkedIn",
+    "bluesky": "Bluesky",
+    "snapchat": "Snapchat",
+    "pinterest": "Pinterest",
+    "tumblr": "Tumblr",
+    "vimeo": "Vimeo",
+    "custom_link": "Link"
+  },
   "newsletter": {
     "heading": "Tilmeld dig vores nyhedsbrev",
     "email_label": "E-mailadresse",
