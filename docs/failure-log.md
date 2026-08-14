@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-031](#f-031--dropping-text-primary-from-a-product-card-title-link-let-the-browsers-default-link-color-through) | 2026-08-14 | Live | Product card | Product-card titles rendered browser-default blue instead of the theme's text color |
 | [F-030](#f-030--dark-mode-followed-the-browsers-own-theme-setting-not-the-os-and-the-feature-was-disabled) | 2026-08-14 | Live | Theming | Site rendered fully dark on every page even though Windows was set to Light |
 | [F-029](#f-029--product-card-carried-9-11px-text-with-no-token-behind-it) | 2026-08-13 | Caught | Product card | Badge/unit-price/meta text down to 9px, invisible to the token system |
 | [F-028](#f-028--shopify-account-web-components-own-default-icon-is-not-aware-of-this-themes-dark-mode-tokens) | 2026-08-14 | Live | Theming / header | Account icon stayed dark in dark mode after the header background itself was fixed |
@@ -46,6 +47,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-031 — Dropping `text-primary` from a product-card title link let the browser's default link color through
+
+- **Date:** 2026-08-14 · **Reach:** Live · **Fix:** this commit
+- **Symptom:** After the F-029 product-card typography migration, product-card titles rendered in the browser's default link blue instead of the theme's text color, on both `minimal` and standard layouts. The price directly below looked similarly blue but was unaffected — that's `--color-text` resolving to `--color-primary` (the brand's blue-ish accent), which is unchanged/intentional.
+- **Root cause:** `snippets/product-card.liquid`'s title migration (part of F-029) dropped `text-primary` from the `<a href="{{ product.url }}">` wrapping the title, on the reasoning that color is already inherited from `main { color: var(--color-text) }`. That reasoning holds for ordinary elements but not for `<a>`: browsers ship a UA-stylesheet rule that sets an explicit `color` directly on anchor elements (the classic link-blue default), and an explicit value on the element itself always wins over an inherited value from an ancestor, regardless of what that inherited value would have been. So the anchor's color came from the browser default, not from `main`.
+- **Fix:** Restored `text-primary` on both `<a>` tags in `snippets/product-card.liquid`'s title block (`is_minimal` and standard branches).
+- **Prevention:** When migrating typography and reasoning "this color is redundant, it's already inherited" — check whether the element is an `<a>` (or another element type with its own UA-stylesheet color, e.g. `<button>`, form controls, `<mark>`) before dropping an explicit color class. Inheritance-based redundancy claims are only safe for plain elements (`<div>`, `<span>`, `<h1>`-`<h6>`, `<p>`) that carry no UA color of their own.
 
 ### F-030 — Dark mode followed the browser's own theme setting, not the OS, and the feature was disabled
 
