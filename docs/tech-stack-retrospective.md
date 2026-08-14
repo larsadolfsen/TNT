@@ -220,10 +220,63 @@ Skellet, der er værd at holde skarpt:
   Elements giver gratis.
 - **Monorepo/workspaces** — ét tema, én pakke.
 
-## Migrér eller ej
+## Omskrivning vs. videreudvikling — beslutningen
 
-Retrospektiv ≠ migrationsplan. Vurdering pr. skift, hvis noget skulle
-gennemføres på det *eksisterende* tema:
+**Besluttet 2026-08-14 (Lars): der bygges en ny template med samme design på
+greenfield-stakken ovenfor — men kun bag et sikkerhedsnet, der bevises
+først.** Begrundelsen, ærligt refereret fra begge sider:
+
+*For at fikse det eksisterende:* de 39 rettede bugs ligger indlejret i koden;
+i et Liquid-tema bor omkostningen i sømmene (parseren, settings-JSON,
+platform-wrappers, sync'en), som en omskrivning genskaber; og
+"land én ad gangen"-reglen tåler dårligt, at alt er uverificeret samtidig.
+
+*For at bygge nyt:* en stor del af fejlene opstod af manglende struktur
+(Lars' pointe, og loggen bekræfter den): hardcodede farver forbi tokens
+(F-007/F-009/F-027), ad hoc-idempotens (F-006), dødt CSS/JS der overlevede
+migrationer (F-011/F-013/F-021/F-034), tekst uden token (F-029) — alle
+steder hvor reglen kun fandtes som konvention, sessionerne skulle huske.
+En struktureret kodebase gør dem umulige frem for forbudte: findes der
+ingen palette-utility, bliver den ikke skrevet; ejer en Custom Element sit
+subtree, overlever intet forældreløst JS. Dertil: læringen ligger ikke kun
+i koden — den ligger i denne fil og failure-loggen, som tilsammen er en
+spec; det eksisterende tema bærer tre halvfærdige migrationer (typografi,
+grid→flexbox, dekomponering) plus to CSS-systemer; butikken har ingen
+kundetrafik, så der findes ikke et bedre tidspunkt; og den reelle flaskehals
+er Lars som eneste fejldetektor — *den* omkostning skal ned, uanset spor.
+
+Strukturargumentet dækker dog kun den ene halvdel af loggen. Den anden
+halvdel er platform-bugs, som ingen struktur forhindrer — sync'en der
+stille smed filer væk (F-023/F-025), schema-defaults der ikke backfiller
+(F-002), render-arg-fælderne (F-004/F-014), admin-datadubletten (F-039).
+De kan kun *opdages*, ikke designes væk. Derfor har planen begge ben:
+strukturen forebygger den første klasse, suiten fanger den anden.
+
+Det sidste punkt afgjorde både valget og betingelsen. Trætheden ved at
+"vælte rundt i fejl" skyldes ikke kodebasens alder men fraværet af
+automatisk verifikation — og den følger med over i en ny kodebase, hvis den
+ikke fikses først. Derfor er rækkefølgen ufravigelig:
+
+1. **Playwright-suiten skrives først, mod den nuværende live butik** — den
+   er facit. Suiten koder failure-loggens bugs som assertions (prisformat,
+   mobilikoner i viewport, søgning svarer, add-to-cart tæller op, …) og er
+   grøn mod kendt-god tilstand, før én linje ny template-kode skrives.
+2. **Ny template fra Skeleton** med stakken fra tabellen ovenfor og
+   Horizon-spejlede blok-interfaces. Samme design.
+3. **Udvikles som unpublished theme og skal bestå samme suite** som den
+   gamle består; siderne sammenlignes side om side.
+4. **Publish-skiftet sker først ved grøn suite**, og det gamle tema bliver
+   liggende som øjeblikkelig rollback.
+
+Lars' manuelle rolle er reduceret til det, suiten ikke kan dømme: den
+visuelle "ja, det ligner"-godkendelse — én gang til sidst, ikke pr. bug.
+
+## Migrér eller ej (skrevet før beslutningen ovenfor)
+
+Vurderingen herunder gjaldt spørgsmålet "hvad er værd at gennemføre på det
+*eksisterende* tema" og står som kontekst for beslutningen. Med
+rebuild-beslutningen er tabellens rækkefølge stadig gyldig for det gamle
+tema i overgangsperioden: skift 5 (suiten) er netop trin 1 i planen ovenfor.
 
 | Skift | Migrér nu? | Hvorfor |
 |---|---|---|
