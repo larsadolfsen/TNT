@@ -139,6 +139,12 @@
     "padding_top": "Top padding",
     "padding_bottom": "Bottom padding",
     "padding_left": "Left padding",
-    "padding_right": "Right padding"
+    "padding_right": "Right padding",
+    "divider": "Divider",
+    "divider_thickness": "Thickness",
+    "divider_corner_radius": "Corner radius",
+    "corner_radius_square": "Square",
+    "corner_radius_rounded": "Rounded",
+    "divider_length": "Length"
   }
 }

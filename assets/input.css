@@ -1111,3 +1111,14 @@ textarea:focus-visible,
   outline-offset: 2px;
   border-radius: inherit;
 }
+
+/* Divider block styles (blocks/_divider.liquid) */
+.divider-block {
+  height: var(--divider-thickness);
+  width: var(--divider-width);
+  margin-inline: auto;
+  background-color: var(--color-outline-variant);
+}
+.divider-block--rounded {
+  border-radius: 999px;
+}
