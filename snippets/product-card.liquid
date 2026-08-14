@@ -1,22 +1,21 @@
-{%- comment %}
+{% doc %}
   Renders a reusable product card. This file resolves the card's data (badge
   tag, variant, price, unit-pricing rule, rating) and composes the zones; the
   zones themselves live in product-card-image / product-card-price /
   star-rating / savings-badge / button.
 
-  Accepts:
-  - product: {Object} Shopify Product object (required unless placeholder_index is set)
-  - class: {String} Extra classes to apply to the card (optional)
-  - layout: {String} 'minimal' or 'standard' (optional)
-  - disable_reviews: {Boolean} Disable reviews display (optional)
-  - placeholder_index: {Number} Renders a numbered design-mode mockup card
-    instead, for editor previews when no real products are available yet.
-    Omit `product` when using this.
+  @param {object} [product] - Shopify Product object (required unless placeholder_index is set)
+  @param {string} [class] - Extra classes to apply to the card
+  @param {string} [layout] - 'minimal' or 'standard'
+  @param {boolean} [disable_reviews] - Disable reviews display
+  @param {number} [placeholder_index] - Renders a numbered design-mode mockup
+    card instead, for editor previews when no real products are available
+    yet. Omit `product` when using this.
 
-  Usage:
+  @example
   {% render 'product-card', product: product, layout: 'minimal', disable_reviews: section.settings.disable_reviews %}
   {% render 'product-card', placeholder_index: 1 %}
-{% endcomment -%}
+{% enddoc %}
 
 {%- if product == blank and placeholder_index != blank -%}
   <div class="product-card flex flex-col bg-transparent max-h-[420px] sm:max-h-none border border-outline-variant rounded-2xl p-3">

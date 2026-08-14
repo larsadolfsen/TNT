@@ -1,0 +1,213 @@
+{% doc %}
+  Renders a single product card via snippets/product-card.liquid, driven by
+  a merchant-selected product. Falls back to the snippet's own placeholder
+  card when no product is selected, so the block stays visible/selectable in
+  the editor. Price formatting stays entirely inside the snippet -- this
+  block only supplies layout (width/border/padding).
+
+  @example
+  {% content_for 'block', type: 'product-card', id: 'product-card' %}
+{% enddoc %}
+
+{%- liquid
+  assign border_color = 'transparent'
+  if block.settings.border == 'solid'
+    assign border_opacity = block.settings.border_opacity | default: 100
+    assign border_color = 'color-mix(in srgb, var(--color-outline-variant) ' | append: border_opacity | append: '%, transparent)'
+  endif
+  assign border_width = block.settings.border_width | default: 1
+-%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    {%- render 'block-padding-vars', block: block -%}
+    width: {% if block.settings.width == 'custom' %}{{ block.settings.custom_width }}%{% elsif block.settings.width == 'fit-content' %}fit-content{% else %}100%{% endif %};
+  }
+  @media screen and (max-width: 749px) {
+    #shopify-block-{{ block.id }}.shopify-block {
+      width: {% if block.settings.width_mobile == 'custom' %}{{ block.settings.custom_width_mobile }}%{% elsif block.settings.width_mobile == 'fit-content' %}fit-content{% else %}100%{% endif %};
+    }
+  }
+  #shopify-block-{{ block.id }}.shopify-block .product-card {
+    border-radius: {{ block.settings.border_radius | default: 0 }}px;
+    {%- if block.settings.border == 'solid' -%}
+      border: {{ border_width }}px solid {{ border_color }};
+    {%- else -%}
+      border: none;
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<div {{ block.shopify_attributes }}>
+  {%- if block.settings.product != blank -%}
+    {%- render 'product-card', product: block.settings.product -%}
+  {%- else -%}
+    {%- render 'product-card', placeholder_index: 1 -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:blocks_commerce.product_card",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "t:blocks_commerce.product"
+    },
+    {
+      "type": "range",
+      "id": "product_card_gap",
+      "label": "t:blocks_commerce.vertical_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_media.size"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:blocks_media.width_desktop",
+      "options": [
+        { "value": "fit-content", "label": "t:blocks_media.fit_content" },
+        { "value": "fill", "label": "t:blocks_media.fill" },
+        { "value": "custom", "label": "t:blocks_media.custom" }
+      ],
+      "default": "fill"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "t:blocks_media.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "width_mobile",
+      "label": "t:blocks_media.width_mobile",
+      "options": [
+        { "value": "fit-content", "label": "t:blocks_media.fit_content" },
+        { "value": "fill", "label": "t:blocks_media.fill" },
+        { "value": "custom", "label": "t:blocks_media.custom" }
+      ],
+      "default": "fill"
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "t:blocks_media.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width_mobile == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_media.borders"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "t:blocks_media.border_style",
+      "options": [
+        { "value": "none", "label": "t:blocks_layout.wrap_none" },
+        { "value": "solid", "label": "t:blocks_media.border_solid" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "t:blocks_layout.divider_thickness",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "label": "t:blocks_media.border_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:blocks_layout.divider_corner_radius",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:blocks_layout.padding_top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:blocks_layout.padding_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:blocks_layout.padding_left",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:blocks_layout.padding_right",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_commerce.product_card",
+      "category": "t:blocks_commerce.category_commerce"
+    }
+  ]
+}
+{% endschema %}
