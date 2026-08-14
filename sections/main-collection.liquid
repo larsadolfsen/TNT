@@ -3,6 +3,13 @@
   # markup, toolbar, active-filter chips, product grid and the mobile drawer
   # each live in their own snippets/collection-*.liquid; behaviour (filter
   # toggling, price sync, drawer open/close) lives in assets/main-collection.js.
+  #
+  # The section owns NO filter taxonomy and declares no blocks on purpose: which
+  # filters exist, their order, labels and values all come from collection.filters,
+  # i.e. whatever the merchant exposes in Shopify's Search & Discovery app (tags,
+  # variant options, product metafields, price). It previously declared a `filter`
+  # block type with tag/option/price settings that nothing ever read — see
+  # docs/superpowers/specs/2026-08-14-collection-filters-metafield-driven-design.md.
 -%}
 
 {%- style -%}
@@ -66,7 +73,7 @@
     <aside class="hidden lg:block {{ filter_class }} bg-transparent sticky top-28 pr-6">
       <div class="flex items-center gap-2 pb-3.5 border-b border-outline-variant mb-5">
         {%- render 'icon', name: 'list-filter', class: 'text-lg text-primary select-none' -%}
-        <h2 class="text-base font-semibold text-primary m-0 font-sans">Filtre</h2>
+        <h2 class="text-base font-semibold text-primary m-0 font-sans">{{ section.settings.filters_heading | default: 'Filtre' }}</h2>
       </div>
 
       <div id="desktop-filters" class="space-y-6">
@@ -133,6 +140,12 @@
   "name": "Kollektion Grid & Filtre",
   "class": "max-w-screen-xl mx-auto",
   "settings": [
+    {
+      "type": "text",
+      "id": "filters_heading",
+      "label": "Overskrift over filtre",
+      "default": "Filtre"
+    },
     {
       "type": "range",
       "id": "padding_top",
@@ -202,87 +215,9 @@
       "default": 3
     }
   ],
-  "blocks": [
-    {
-      "type": "filter",
-      "name": "Filter",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Filter overskrift",
-          "default": "Filter"
-        },
-        {
-          "type": "select",
-          "id": "filter_type",
-          "label": "Filter kildetype",
-          "options": [
-            { "value": "tag", "label": "Produkt Tag (f.eks. tykkelse:X)" },
-            { "value": "option", "label": "Variant Option (f.eks. Størrelse)" },
-            { "value": "price", "label": "Pris Range" }
-          ],
-          "default": "tag"
-        },
-        {
-          "type": "text",
-          "id": "key",
-          "label": "Søgenøgle / Præfiks",
-          "info": "For tag: f.eks. 'tykkelse'. For option: f.eks. 'bredde'. (Udfyldes ikke for pris)",
-          "default": "tykkelse"
-        },
-        {
-          "type": "select",
-          "id": "display_mapping",
-          "label": "Visningsformat (Valgfrit)",
-          "options": [
-            { "value": "none", "label": "Standard (Vis rå værdi)" },
-            { "value": "form", "label": "Form (Firkantet -> Rulle, Rund -> Rund skåret)" },
-            { "value": "width", "label": "Bredde (41x33 cm -> Dækkeserviet)" }
-          ],
-          "default": "none"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
-      "name": "Kollektion Grid & Filtre",
-      "blocks": [
-        {
-          "type": "filter",
-          "settings": {
-            "title": "Tykkelse",
-            "filter_type": "tag",
-            "key": "tykkelse"
-          }
-        },
-        {
-          "type": "filter",
-          "settings": {
-            "title": "Størrelse / Bredde",
-            "filter_type": "option",
-            "key": "bredde",
-            "display_mapping": "width"
-          }
-        },
-        {
-          "type": "filter",
-          "settings": {
-            "title": "Type / Form",
-            "filter_type": "option",
-            "key": "form",
-            "display_mapping": "form"
-          }
-        },
-        {
-          "type": "filter",
-          "settings": {
-            "title": "Pris",
-            "filter_type": "price"
-          }
-        }
-      ]
+      "name": "Kollektion Grid & Filtre"
     }
   ]
 }
