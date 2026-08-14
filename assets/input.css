@@ -55,11 +55,6 @@
 }
 
 main {
-  font-size: 16px;
-  font-family: var(--font-sans);
-  --color-text: var(--color-foreground, #595959);
-  color: var(--color-text);
-
   display: grid;
   grid-template-columns: repeat(var(--grid-cols-mobile, 2), minmax(0, 1fr));
   column-gap: var(--grid-gap);
@@ -202,7 +197,7 @@ h4,
 .type-serif  { font-family: var(--font-header-family); }
 /* Needed on any h1-h6 element: the legacy heading rule below sets an
    explicit font-family on the tag itself, which beats inheritance from
-   main -- .type-* classes alone can't win that without this. */
+   body -- .type-* classes alone can't win that without this. */
 .type-sans   { font-family: var(--font-sans); }
 .type-muted  { color: var(--color-text-muted); }
 .type-faint  { color: var(--color-text-faint); }
@@ -223,7 +218,7 @@ h4,
   color: var(--color-on-important);
 }
 
-/* Note: `main { font-size: 16px }` above is deliberately left alone in this
+/* Note: `body { font-size: 16px }` above is deliberately left alone in this
    step. Moving the inherited base to 14px is a separate change — icons size
    themselves in 1em (snippets/icon.liquid), so an icon without an explicit
    size would shrink with it. */
@@ -562,6 +557,10 @@ html, body {
 
 body {
   background-color: var(--color-background);
+  font-size: 16px;
+  font-family: var(--font-sans);
+  --color-text: var(--color-foreground, #595959);
+  color: var(--color-text);
 }
 
 /* Visible keyboard focus indicator (mandatory per docs/missing-surface-designs.md
@@ -962,7 +961,6 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   justify-content: flex-start;
 }
 .collection-card__title {
-  font-family: var(--font-sans-family), sans-serif;
   font-size: 0.875rem; /* text-sm */
   font-weight: 600;
   color: var(--color-primary, #000);
@@ -991,7 +989,6 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   gap: 0.375rem;
   list-style: none;
   cursor: pointer;
-  font-family: var(--font-sans-family), sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
   text-transform: uppercase;
