@@ -1,0 +1,236 @@
+{% doc %}
+  Renders a customer email-signup block: heading + form, via
+  snippets/newsletter-form.liquid's 'block' presentation variant.
+
+  @example
+  {% content_for 'block', type: 'email-signup', id: 'email-signup' %}
+{% enddoc %}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    {%- render 'block-padding-vars', block: block -%}
+    width: {% if block.settings.width == 'custom' %}{{ block.settings.custom_width }}%{% else %}100%{% endif %};
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign button_variant = 'primary'
+  if block.settings.style_class == 'button-secondary'
+    assign button_variant = 'secondary'
+  elsif block.settings.style_class == 'button-unstyled'
+    assign button_variant = 'link'
+  endif
+-%}
+
+<div {{ block.shopify_attributes }}>
+  {% render 'newsletter-form',
+    variant: 'block',
+    scope_id: block.id,
+    heading: block.settings.heading,
+    heading_preset: block.settings.heading_preset,
+    border_style: block.settings.border_style,
+    border_width: block.settings.border_width,
+    border_radius: block.settings.border_radius,
+    input_type_preset: block.settings.input_type_preset,
+    button_variant: button_variant,
+    display_type: block.settings.display_type,
+    label: block.settings.label,
+    integrated_button: block.settings.integrated_button
+  %}
+</div>
+
+{% schema %}
+{
+  "name": "t:blocks_commerce.email_signup",
+  "settings": [
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:blocks_media.width_desktop",
+      "options": [
+        { "value": "fill", "label": "t:blocks_media.fill" },
+        { "value": "custom", "label": "t:blocks_media.custom" }
+      ],
+      "default": "fill"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "t:blocks_media.custom_width",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_commerce.heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:blocks_layout.heading_text"
+    },
+    {
+      "type": "select",
+      "id": "heading_preset",
+      "label": "t:blocks_layout.heading_preset",
+      "options": [
+        { "value": "", "label": "t:blocks_layout.preset_default" },
+        { "value": "paragraph", "label": "t:blocks_layout.preset_paragraph" },
+        { "value": "h1", "label": "t:blocks_layout.preset_h1" },
+        { "value": "h2", "label": "t:blocks_layout.preset_h2" },
+        { "value": "h3", "label": "t:blocks_layout.preset_h3" },
+        { "value": "h4", "label": "t:blocks_layout.preset_h4" },
+        { "value": "h5", "label": "t:blocks_layout.preset_h5" },
+        { "value": "h6", "label": "t:blocks_layout.preset_h6" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_commerce.input"
+    },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "t:blocks_commerce.border_style",
+      "options": [
+        { "value": "all", "label": "t:blocks_commerce.border_all" },
+        { "value": "underline", "label": "t:blocks_commerce.border_underline" },
+        { "value": "none", "label": "t:blocks_layout.wrap_none" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "t:blocks_layout.divider_thickness",
+      "min": 0,
+      "max": 4,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1,
+      "visible_if": "{{ block.settings.border_style != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:blocks_layout.divider_corner_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 100,
+      "visible_if": "{{ block.settings.border_style != 'underline' }}"
+    },
+    {
+      "type": "select",
+      "id": "input_type_preset",
+      "label": "t:blocks_commerce.input_preset",
+      "options": [
+        { "value": "", "label": "t:blocks_layout.preset_default" },
+        { "value": "paragraph", "label": "t:blocks_layout.preset_paragraph" },
+        { "value": "h1", "label": "t:blocks_layout.preset_h1" },
+        { "value": "h2", "label": "t:blocks_layout.preset_h2" },
+        { "value": "h3", "label": "t:blocks_layout.preset_h3" },
+        { "value": "h4", "label": "t:blocks_layout.preset_h4" },
+        { "value": "h5", "label": "t:blocks_layout.preset_h5" },
+        { "value": "h6", "label": "t:blocks_layout.preset_h6" }
+      ],
+      "default": "paragraph"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_commerce.submit_button"
+    },
+    {
+      "type": "select",
+      "id": "style_class",
+      "label": "t:blocks_media.button_style",
+      "options": [
+        { "value": "button", "label": "t:blocks_media.style_primary" },
+        { "value": "button-secondary", "label": "t:blocks_media.style_secondary" },
+        { "value": "button-unstyled", "label": "t:blocks_media.style_link" }
+      ],
+      "default": "button"
+    },
+    {
+      "type": "select",
+      "id": "display_type",
+      "label": "t:blocks_commerce.display_type",
+      "options": [
+        { "value": "text", "label": "t:blocks_commerce.display_text" },
+        { "value": "arrow", "label": "t:blocks_commerce.display_arrow" }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "t:blocks_media.button_label",
+      "default": "Sign up",
+      "visible_if": "{{ block.settings.display_type == 'text' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "integrated_button",
+      "label": "t:blocks_commerce.integrated_button",
+      "default": false,
+      "visible_if": "{{ block.settings.border_style != 'underline' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:blocks_layout.padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:blocks_layout.padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:blocks_layout.padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:blocks_layout.padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_commerce.email_signup",
+      "category": "t:blocks_commerce.category_commerce"
+    }
+  ]
+}
+{% endschema %}

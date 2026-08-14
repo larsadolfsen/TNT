@@ -1,30 +1,62 @@
 {% doc %}
-  Renders the footer newsletter signup form (Surface 7): a single-field
-  Shopify native customer form (`contact[tags]=newsletter`) with default,
-  submitting, success and error states.
+  Renders a customer-signup form (`contact[tags]=newsletter`): a single
+  native Shopify customer form with default, submitting, success and error
+  states, driven by `form.posted_successfully?` / `form.errors` after the
+  native full-page POST/redirect — no AJAX interception of the submission
+  itself, only a light client-side "submitting" cue and inline-email-validity
+  styling before that POST fires.
 
-  Uses Shopify's own `form.posted_successfully?` / `form.errors` after the
-  native full-page POST/redirect to decide which state to render — no AJAX
-  interception of the submission itself, only a light client-side
-  "submitting" cue and inline-email-validity styling before that POST fires.
+  Reads the enclosing `section` object to scope the form/field ids, so
+  multiple forms on one page never collide; pass `scope_id` (e.g. `block.id`)
+  when more than one instance can exist within the same section.
 
-  Reads the enclosing `section` object (available since this snippet is
-  always rendered from within a section) to scope the form/field ids to the
-  section instance, so multiple newsletter forms on one page never collide.
+  Two presentational variants share the same form/state-handling markup:
+  `default` (the footer's own stacked/side-by-side layout, unchanged) and
+  `block` (an integrated input+button group with configurable border,
+  presets and button style, for blocks/email-signup.liquid).
 
   @param {section} [section] - implicit; the section this snippet is rendered from.
+  @param {string} [scope_id] - Extra id-scoping key appended to section.id, so sibling instances in the same section don't collide.
+  @param {string} [variant] - 'default' (default) | 'block'.
+  @param {string} [heading] - Only used by variant: 'block'.
+  @param {string} [heading_preset] - Horizon type_preset value for the heading; mapped via snippets/type-preset-class.liquid.
+  @param {string} [border_style] - 'all' (default) | 'underline' | 'none'. Only used by variant: 'block'.
+  @param {number} [border_width] - px. Only used by variant: 'block'.
+  @param {number} [border_radius] - px. Only used by variant: 'block'.
+  @param {string} [input_type_preset] - Horizon type_preset value for the input text.
+  @param {string} [button_variant] - 'primary' (default) | 'secondary' | 'link'. Passed straight through to snippets/button.liquid.
+  @param {string} [display_type] - 'text' (default) | 'arrow'. 'arrow' renders an icon-only button.
+  @param {string} [label] - Button label when display_type is 'text'.
+  @param {boolean} [integrated_button] - Lays the button inside the input group instead of beside it.
 
   @example
   {% render 'newsletter-form' %}
+  {% render 'newsletter-form', variant: 'block', scope_id: block.id, heading: block.settings.heading, heading_preset: block.settings.heading_preset, border_style: block.settings.border_style, border_width: block.settings.border_width, border_radius: block.settings.border_radius, input_type_preset: block.settings.input_type_preset, button_variant: 'primary', display_type: block.settings.display_type, label: block.settings.label, integrated_button: block.settings.integrated_button %}
 {% enddoc %}
 
-{%- assign newsletter_form_id = 'newsletter-form-' | append: section.id -%}
-{%- assign newsletter_email_id = newsletter_form_id | append: '-email' -%}
-{%- assign newsletter_error_id = newsletter_form_id | append: '-invalid' -%}
+{%- liquid
+  assign scope_suffix = section.id
+  if scope_id != blank
+    assign scope_suffix = scope_suffix | append: '-' | append: scope_id
+  endif
+  assign newsletter_form_id = 'newsletter-form-' | append: scope_suffix
+  assign newsletter_email_id = newsletter_form_id | append: '-email'
+  assign newsletter_error_id = newsletter_form_id | append: '-invalid'
+
+  assign is_block_variant = false
+  if variant == 'block'
+    assign is_block_variant = true
+  endif
+-%}
 
 <div class="newsletter-form">
   {% form 'customer', id: newsletter_form_id, class: 'flex flex-col gap-2' %}
     <input type="hidden" name="contact[tags]" value="newsletter">
+
+    {%- if is_block_variant and heading != blank -%}
+      {%- capture heading_type_classes -%}{% render 'type-preset-class', type_preset: heading_preset %}{%- endcapture -%}
+      <div class="{{ heading_type_classes | strip }}">{{ heading }}</div>
+    {%- endif -%}
 
     {%- if form.posted_successfully? -%}
       <div role="status" aria-live="polite" aria-atomic="true" class="flex items-center gap-2">
@@ -47,24 +79,81 @@
         {%- endif -%}
       </div>
 
-      <div class="flex flex-col gap-2 sm:flex-row sm:max-w-md" data-newsletter-fields>
-        <div id="{{ newsletter_email_id }}-wrapper" class="flex-1 [&_label]:sr-only">
-          {%- assign newsletter_email_label = 'newsletter.email_label' | t -%}
-          {%- capture newsletter_email_attributes -%}data-newsletter-email aria-describedby="{{ newsletter_error_id }}"{%- endcapture -%}
-          {% render 'input', id: newsletter_email_id, name: 'contact[email]', type: 'email', label: newsletter_email_label, required: true, autocomplete: 'email', class: 'h-12', attributes: newsletter_email_attributes %}
-          <p id="{{ newsletter_error_id }}" class="hidden text-xs text-important pl-4 mt-1" data-newsletter-invalid-message>
-            {{ 'newsletter.error_invalid' | t }}
-          </p>
+      {%- if is_block_variant -%}
+        {%- liquid
+          assign email_label = 'newsletter.email_label' | t
+          capture input_type_classes
+            render 'type-preset-class', type_preset: input_type_preset
+          endcapture
+          assign input_type_classes = input_type_classes | strip
+
+          assign group_class = 'flex items-stretch gap-2'
+          if integrated_button and border_style != 'underline'
+            assign group_class = 'flex items-stretch'
+          endif
+
+          assign field_border_class = 'border'
+          if border_style == 'none'
+            assign field_border_class = 'border-0'
+          elsif border_style == 'underline'
+            assign field_border_class = 'border-0 border-b'
+          endif
+        -%}
+        <div
+          class="{{ group_class }} flex-wrap sm:flex-nowrap"
+          style="--email-signup-border-width: {{ border_width | default: 1 }}px; --email-signup-border-radius: {{ border_radius | default: 100 }}px;"
+          data-newsletter-fields
+        >
+          <div class="flex-1 min-w-0">
+            <label for="{{ newsletter_email_id }}" class="sr-only">{{ email_label }}</label>
+            <input
+              id="{{ newsletter_email_id }}"
+              class="{{ input_type_classes }} {{ field_border_class }} w-full min-w-0 px-4 py-3 border-outline-variant bg-card-light text-primary placeholder:text-primary/40 focus:outline-none"
+              style="border-width: var(--email-signup-border-width); {% unless border_style == 'underline' %}border-radius: var(--email-signup-border-radius);{% endunless %}"
+              type="email"
+              name="contact[email]"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              placeholder="{{ 'newsletter.email_label' | t }}"
+              required
+              data-newsletter-email
+              aria-describedby="{{ newsletter_error_id }}"
+            >
+            <p id="{{ newsletter_error_id }}" class="hidden text-xs text-important pl-4 mt-1" data-newsletter-invalid-message>
+              {{ 'newsletter.error_invalid' | t }}
+            </p>
+          </div>
+          {%- assign submit_aria_label = 'newsletter.submit' | t -%}
+          {%- if display_type == 'arrow' -%}
+            {%- assign newsletter_submit_label = '→' -%}
+            {%- capture submit_attributes -%}data-newsletter-submit aria-label="{{ submit_aria_label }}"{%- endcapture -%}
+          {%- else -%}
+            {%- assign newsletter_submit_label = label | default: submit_aria_label -%}
+            {%- assign submit_attributes = 'data-newsletter-submit' -%}
+          {%- endif -%}
+          {% render 'button', label: newsletter_submit_label, variant: button_variant, as: 'submit', class: 'shrink-0', attributes: submit_attributes %}
         </div>
-        {%- assign newsletter_submit_label = 'newsletter.submit' | t -%}
-        {% render 'button',
-          label: newsletter_submit_label,
-          variant: 'primary',
-          as: 'submit',
-          class: 'h-12 px-6 shrink-0 w-full sm:w-auto',
-          attributes: 'data-newsletter-submit'
-        %}
-      </div>
+      {%- else -%}
+        <div class="flex flex-col gap-2 sm:flex-row sm:max-w-md" data-newsletter-fields>
+          <div id="{{ newsletter_email_id }}-wrapper" class="flex-1 [&_label]:sr-only">
+            {%- assign newsletter_email_label = 'newsletter.email_label' | t -%}
+            {%- capture newsletter_email_attributes -%}data-newsletter-email aria-describedby="{{ newsletter_error_id }}"{%- endcapture -%}
+            {% render 'input', id: newsletter_email_id, name: 'contact[email]', type: 'email', label: newsletter_email_label, required: true, autocomplete: 'email', class: 'h-12', attributes: newsletter_email_attributes %}
+            <p id="{{ newsletter_error_id }}" class="hidden text-xs text-important pl-4 mt-1" data-newsletter-invalid-message>
+              {{ 'newsletter.error_invalid' | t }}
+            </p>
+          </div>
+          {%- assign newsletter_submit_label = 'newsletter.submit' | t -%}
+          {% render 'button',
+            label: newsletter_submit_label,
+            variant: 'primary',
+            as: 'submit',
+            class: 'h-12 px-6 shrink-0 w-full sm:w-auto',
+            attributes: 'data-newsletter-submit'
+          %}
+        </div>
+      {%- endif -%}
     {%- endif -%}
     <script type="application/json" data-newsletter-form-config>
       {
