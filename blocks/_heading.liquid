@@ -27,6 +27,25 @@
     assign description = closest.product.description | default: product.description
   endif
 
+  # A richtext setting always returns its value wrapped in <p>, but <p> is not
+  # valid inside <h1>-<h6> and browsers do not auto-correct it (headings are
+  # not on the parser's implicit-close list). Unwrap it for the heading
+  # presets only; the 'rte'/'paragraph'/'custom' presets render a <div> and
+  # want the paragraphs kept. Turning every </p> into <br> first, then
+  # dropping the trailing one, preserves the break between two paragraphs —
+  # a plain strip would run them together into one unseparated line.
+  assign preset = block.settings.type_preset
+  assign renders_heading_tag = false
+  if preset == 'h1' or preset == 'h2' or preset == 'h3'
+    assign renders_heading_tag = true
+  elsif preset == 'h4' or preset == 'h5' or preset == 'h6'
+    assign renders_heading_tag = true
+  endif
+
+  if renders_heading_tag and source == 'custom'
+    assign heading_text = heading_text | replace: '</p>', '<br>' | replace_last: '<br>', '' | replace: '<p>', ''
+  endif
+
   capture type_classes
     render 'type-preset-class', type_preset: block.settings.type_preset, color: block.settings.color
   endcapture
