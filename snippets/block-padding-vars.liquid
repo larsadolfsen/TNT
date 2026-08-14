@@ -1,12 +1,18 @@
 {% doc %}
   Renders the `--block-padding-{top,bottom,left,right}` CSS custom
-  properties from a block's padding_top/padding_bottom/padding_sides
-  settings. Must be called from inside a `{% style %}...{% endstyle %}` tag.
+  properties from a block's padding settings. Must be called from inside a
+  `{% style %}...{% endstyle %}` tag.
 
-  @param {object} block - required. The section or block whose `settings` supplies padding_top/padding_bottom/padding_sides.
-  @param {number} [top_default] - Default px for padding_top when unset. Defaults to 0.
-  @param {number} [bottom_default] - Default px for padding_bottom when unset. Defaults to 0.
-  @param {number} [sides_default] - Default px for padding_sides when unset. Defaults to 0.
+  Reads Horizon's logical keys first (`padding-block-start`,
+  `padding-block-end`, `padding-inline-start`, `padding-inline-end`) and
+  falls back to the theme's own `padding_top`/`padding_bottom`/
+  `padding_sides` when a logical key is absent — one snippet, both
+  conventions; the block's own schema decides which keys it exposes.
+
+  @param {object} block - required. The section or block whose `settings` supplies the padding keys.
+  @param {number} [top_default] - Default px for the top padding when unset. Defaults to 0.
+  @param {number} [bottom_default] - Default px for the bottom padding when unset. Defaults to 0.
+  @param {number} [sides_default] - Default px for the left/right padding when unset. Defaults to 0.
 
   @example
   {%- style -%}
@@ -15,7 +21,7 @@
     }
   {%- endstyle -%}
 {% enddoc %}
---block-padding-top: {{ block.settings.padding_top | default: top_default | default: 0 }}px;
---block-padding-bottom: {{ block.settings.padding_bottom | default: bottom_default | default: 0 }}px;
---block-padding-left: {{ block.settings.padding_sides | default: sides_default | default: 0 }}px;
---block-padding-right: {{ block.settings.padding_sides | default: sides_default | default: 0 }}px;
+--block-padding-top: {{ block.settings["padding-block-start"] | default: block.settings.padding_top | default: top_default | default: 0 }}px;
+--block-padding-bottom: {{ block.settings["padding-block-end"] | default: block.settings.padding_bottom | default: bottom_default | default: 0 }}px;
+--block-padding-left: {{ block.settings["padding-inline-start"] | default: block.settings.padding_sides | default: sides_default | default: 0 }}px;
+--block-padding-right: {{ block.settings["padding-inline-end"] | default: block.settings.padding_sides | default: sides_default | default: 0 }}px;
