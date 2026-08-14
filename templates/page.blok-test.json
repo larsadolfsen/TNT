@@ -166,6 +166,113 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           }
+        },
+        "product_card_1": {
+          "type": "product-card",
+          "settings": {
+            "product": "",
+            "product_card_gap": 4,
+            "width": "custom",
+            "custom_width": 60,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "border": "solid",
+            "border_width": 2,
+            "border_opacity": 100,
+            "border_radius": 16,
+            "padding-block-start": 8,
+            "padding-block-end": 8,
+            "padding-inline-start": 8,
+            "padding-inline-end": 8
+          }
+        },
+        "collection_card_1": {
+          "type": "collection-card",
+          "settings": {
+            "collection": "",
+            "placement": "on_image",
+            "horizontal_alignment": "center",
+            "vertical_alignment": "flex-end",
+            "collection_card_gap": 8,
+            "border": "solid",
+            "border_width": 2,
+            "border_opacity": 100,
+            "border_radius": 24
+          }
+        },
+        "email_signup_1": {
+          "type": "email-signup",
+          "settings": {
+            "width": "fill",
+            "custom_width": 100,
+            "heading": "",
+            "heading_preset": "h3",
+            "border_style": "all",
+            "border_width": 1,
+            "border_radius": 100,
+            "input_type_preset": "paragraph",
+            "style_class": "button-unstyled",
+            "display_type": "arrow",
+            "label": "Tilmeld",
+            "integrated_button": true,
+            "button_type_preset": "paragraph",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "menu_1": {
+          "type": "menu",
+          "settings": {
+            "menu": "main-menu",
+            "heading": "Sortiment",
+            "menu_spacing": 12,
+            "show_as_accordion": false,
+            "accordion_icon": "caret",
+            "accordion_dividers": false,
+            "heading_preset": "h3",
+            "link_preset": "paragraph",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "menu_2_accordion": {
+          "type": "menu",
+          "settings": {
+            "menu": "footer",
+            "heading": "Nyttig information",
+            "menu_spacing": 12,
+            "show_as_accordion": true,
+            "accordion_icon": "plus",
+            "accordion_dividers": true,
+            "heading_preset": "h4",
+            "link_preset": "paragraph",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "social_links_1": {
+          "type": "social-links",
+          "settings": {
+            "facebook_url": "https://www.facebook.com/Textilogvoksdug.dk/",
+            "instagram_url": "",
+            "youtube_url": "",
+            "tiktok_url": "",
+            "twitter_url": "",
+            "threads_url": "",
+            "linkedin_url": "",
+            "bluesky_url": "",
+            "snapchat_url": "",
+            "pinterest_url": "",
+            "tumblr_url": "",
+            "vimeo_url": "",
+            "custom_url": ""
+          }
         }
       },
       "block_order": [
@@ -180,7 +287,13 @@
         "icon_1",
         "button_1",
         "image_1",
-        "video_1"
+        "video_1",
+        "product_card_1",
+        "collection_card_1",
+        "email_signup_1",
+        "menu_1",
+        "menu_2_accordion",
+        "social_links_1"
       ],
       "settings": {
         "background_color": "white",
