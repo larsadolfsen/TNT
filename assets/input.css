@@ -1044,6 +1044,12 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 .text {
   text-align: var(--text-align);
 }
+.text--max-narrow {
+  max-width: 30rem;
+}
+.text--max-normal {
+  max-width: 48rem;
+}
 
 /* Collection page layout styles */
 .collection-products {

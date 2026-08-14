@@ -154,6 +154,18 @@
     "spacer_custom_mobile_size": "Customize on mobile",
     "spacer_mobile_size": "Mobile size",
     "custom_liquid": "Custom Liquid",
-    "custom_liquid_field": "Liquid code"
+    "custom_liquid_field": "Liquid code",
+    "text": "Text",
+    "text_layout": "Layout",
+    "text_width": "Width",
+    "width_fit": "Fit content",
+    "width_fill": "Fill",
+    "text_max_width": "Max width",
+    "max_width_narrow": "Narrow",
+    "max_width_normal": "Normal",
+    "text_typography": "Typography",
+    "text_appearance": "Appearance",
+    "text_background": "Background",
+    "text_background_color": "Background color"
   }
 }

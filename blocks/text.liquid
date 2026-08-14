@@ -8,69 +8,191 @@
 {%- style -%}
   #shopify-block-{{ block.id }}.shopify-block {
     {%- render 'block-padding-vars', block: block -%}
+    {%- if block.settings.background -%}
+      background-color: {{ block.settings.background_color }};
+      border-radius: {{ block.settings.corner_radius | default: 0 }}px;
+    {%- endif -%}
   }
 {%- endstyle -%}
 
+{%- liquid
+  capture type_classes
+    render 'type-preset-class', type_preset: block.settings.type_preset, color: block.settings.color
+  endcapture
+  assign type_classes = type_classes | strip
+
+  assign max_width_class = ''
+  case block.settings.max_width
+    when 'narrow'
+      assign max_width_class = 'text--max-narrow'
+    when 'normal'
+      assign max_width_class = 'text--max-normal'
+  endcase
+
+  assign text_class = 'text rte ' | append: type_classes | append: ' ' | append: max_width_class
+  assign text_class = text_class | strip
+-%}
+
 <div
-  class="text rte"
-  style="--text-align: {{ block.settings.alignment }}"
+  class="{{ text_class }}"
+  style="--text-align: {{ block.settings.alignment }}; width: {{ block.settings.width | default: 'fit-content' }};"
   {{ block.shopify_attributes }}
 >
   {{ block.settings.text }}
 </div>
 
-
 {% schema %}
 {
-  "name": "t:general.text",
+  "name": "t:blocks_layout.text",
   "settings": [
     {
       "type": "richtext",
       "id": "text",
-      "label": "t:labels.text",
+      "label": "t:blocks_layout.heading_text",
       "default": "<p>Text</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.text_layout"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:blocks_layout.text_width",
+      "options": [
+        { "value": "fit-content", "label": "t:blocks_layout.width_fit" },
+        { "value": "100%", "label": "t:blocks_layout.width_fill" }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "t:blocks_layout.text_max_width",
+      "options": [
+        { "value": "narrow", "label": "t:blocks_layout.max_width_narrow" },
+        { "value": "normal", "label": "t:blocks_layout.max_width_normal" },
+        { "value": "none", "label": "t:blocks_layout.wrap_none" }
+      ],
+      "default": "normal"
     },
     {
       "type": "text_alignment",
       "id": "alignment",
-      "label": "t:labels.alignment",
-      "default": "left"
+      "label": "t:blocks_layout.heading_alignment",
+      "default": "left",
+      "visible_if": "{{ block.settings.width == '100%' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.text_typography"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:blocks_layout.heading_preset",
+      "options": [
+        { "value": "rte", "label": "t:blocks_layout.preset_default" },
+        { "value": "paragraph", "label": "t:blocks_layout.preset_paragraph" },
+        { "value": "h1", "label": "t:blocks_layout.preset_h1" },
+        { "value": "h2", "label": "t:blocks_layout.preset_h2" },
+        { "value": "h3", "label": "t:blocks_layout.preset_h3" },
+        { "value": "h4", "label": "t:blocks_layout.preset_h4" },
+        { "value": "h5", "label": "t:blocks_layout.preset_h5" },
+        { "value": "h6", "label": "t:blocks_layout.preset_h6" },
+        { "value": "custom", "label": "t:blocks_layout.preset_custom" }
+      ],
+      "default": "rte"
+    },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "t:blocks_layout.heading_color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "t:blocks_layout.color_text" },
+        { "value": "var(--color-foreground-heading)", "label": "t:blocks_layout.color_heading" },
+        { "value": "var(--color-primary)", "label": "t:blocks_layout.color_link" }
+      ],
+      "default": "var(--color-foreground)",
+      "visible_if": "{{ block.settings.type_preset != 'rte' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.text_appearance"
+    },
+    {
+      "type": "checkbox",
+      "id": "background",
+      "label": "t:blocks_layout.text_background",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:blocks_layout.text_background_color",
+      "alpha": true,
+      "default": "#00000026",
+      "visible_if": "{{ block.settings.background }}"
     },
     {
       "type": "range",
-      "id": "padding_top",
+      "id": "corner_radius",
+      "label": "t:blocks_layout.divider_corner_radius",
+      "default": 0,
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "visible_if": "{{ block.settings.background }}"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:blocks_layout.padding_top",
       "min": 0,
       "max": 100,
-      "step": 2,
+      "step": 1,
       "unit": "px",
-      "label": "Afstand i toppen",
       "default": 0
     },
     {
       "type": "range",
-      "id": "padding_bottom",
+      "id": "padding-block-end",
+      "label": "t:blocks_layout.padding_bottom",
       "min": 0,
       "max": 100,
-      "step": 2,
+      "step": 1,
       "unit": "px",
-      "label": "Afstand i bunden",
       "default": 0
     },
     {
       "type": "range",
-      "id": "padding_sides",
+      "id": "padding-inline-start",
+      "label": "t:blocks_layout.padding_left",
       "min": 0,
       "max": 100,
-      "step": 2,
+      "step": 1,
       "unit": "px",
-      "label": "Afstand i siderne",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:blocks_layout.padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
       "default": 0
     }
   ],
   "presets": [
     {
-      "name": "t:general.text",
-      "category": "t:general.general_category"
+      "name": "t:blocks_layout.text",
+      "category": "t:blocks_layout.category_layout"
     }
   ]
 }
