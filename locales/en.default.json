@@ -140,6 +140,9 @@
     "empty_title": "Custom Liquid",
     "empty_description": "Add code in the section settings to render content here."
   },
+  "video": {
+    "play": "Play video"
+  },
   "newsletter": {
     "heading": "Sign up for our newsletter",
     "email_label": "Email address",

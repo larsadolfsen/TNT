@@ -140,6 +140,9 @@
     "empty_title": "Brugerdefineret Liquid",
     "empty_description": "Tilføj kode i sektionens indstillinger for at vise indhold her."
   },
+  "video": {
+    "play": "Afspil video"
+  },
   "newsletter": {
     "heading": "Tilmeld dig vores nyhedsbrev",
     "email_label": "E-mailadresse",

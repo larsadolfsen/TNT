@@ -33,6 +33,13 @@
       border: {{ border_width }}px solid {{ border_color }};
     {%- endif -%}
   }
+  {%- if block.settings.source == 'url' and block.settings.cover_image == blank and block.settings.aspect_ratio != 'auto' -%}
+    #shopify-block-{{ block.id }}.shopify-block .video-block__media,
+    #shopify-block-{{ block.id }}.shopify-block .video-block__media .video-external__cover,
+    #shopify-block-{{ block.id }}.shopify-block .video-block__media iframe {
+      aspect-ratio: {{ block.settings.aspect_ratio }};
+    }
+  {%- endif -%}
 {%- endstyle -%}
 
 <div {{ block.shopify_attributes }}>
@@ -43,6 +50,16 @@
       loop: block.settings.video_loop,
       class: 'video-block__media'
     %}
+  {%- elsif block.settings.source == 'url' and block.settings.video_url != blank -%}
+    {% render 'video-external',
+      video_url: block.settings.video_url,
+      cover_image: block.settings.cover_image,
+      alt: block.settings.alt,
+      autoplay: block.settings.video_autoplay,
+      loop: block.settings.video_loop,
+      class: 'video-block__media'
+    %}
+    <script src="{{ 'video-external.min.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 </div>
 

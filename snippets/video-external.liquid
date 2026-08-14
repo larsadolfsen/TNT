@@ -1,0 +1,79 @@
+{% doc %}
+  Renders a click-to-play facade for an external (YouTube/Vimeo) video: a
+  cover image and play button, with no <iframe> until clicked. This is not
+  optional polish — an autoloaded embed costs Core Web Vitals and sets
+  third-party cookies before consent. The click handler lives in
+  assets/video-external.js.
+
+  @param {object} video_url - required. A Shopify video_url object (type: 'youtube'|'vimeo', id: string).
+  @param {object} [cover_image] - Merchant-chosen cover image. Falls back to a neutral surface when omitted — deliberately NOT the video service's own thumbnail (e.g. img.youtube.com), since fetching that would itself be a youtube.com network request before the click, defeating the entire point of this facade.
+  @param {string} [alt] - Alt text for the cover image.
+  @param {boolean} [autoplay] - When true, the embed autoplays once inserted after the click.
+  @param {boolean} [loop] - When true, the embed loops.
+  @param {string} [class] - Extra CSS classes on the wrapper.
+
+  @example
+  {% render 'video-external', video_url: block.settings.video_url, cover_image: block.settings.cover_image, alt: block.settings.alt, autoplay: block.settings.video_autoplay, loop: block.settings.video_loop, class: 'video-block__media' %}
+{% enddoc %}
+
+{%- liquid
+  assign has_cover = false
+  if cover_image != blank
+    assign has_cover = true
+  endif
+-%}
+
+<div
+  class="video-external {{ class }}"
+  data-video-external
+  data-video-id="{{ video_url.id }}"
+  data-video-type="{{ video_url.type }}"
+  {%- if autoplay %} data-video-autoplay="true"{% endif -%}
+  {%- if loop %} data-video-loop="true"{% endif -%}
+>
+  <div class="video-external__cover">
+    {%- if has_cover -%}
+      {% render 'image', image: cover_image, fill: true, img_class: 'w-full h-full object-cover', alt: alt %}
+    {%- else -%}
+      <div class="w-full h-full bg-card-high"></div>
+    {%- endif -%}
+  </div>
+  <button type="button" class="video-external__play" data-video-external-play aria-label="{{ 'video.play' | t }}">
+    {% render 'icon', name: 'circle-play', class: 'text-[48px]' %}
+  </button>
+</div>
+
+{% stylesheet %}
+  .video-external {
+    position: relative;
+    display: block;
+  }
+  .video-external__cover {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  .video-external iframe {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+    border: 0;
+  }
+  .video-external__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--color-background) 80%, transparent);
+    color: var(--color-primary);
+    border: none;
+    cursor: pointer;
+  }
+{% endstylesheet %}
