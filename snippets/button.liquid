@@ -5,18 +5,23 @@
   scale, accent color for primary actions.
 
   @param {string} label - required. Visible button text.
-  @param {string} [variant] - 'primary' (default) | 'secondary'. Primary uses the accent color (bg-accent/text-on-accent), matching the main CTA convention. Secondary uses the card-high surface with an outline border, matching the convention for buttons that sit inside a card (see ai.md section 2).
+  @param {string} [variant] - 'primary' (default) | 'secondary' | 'link'. Primary uses the accent color (bg-accent/text-on-accent), matching the main CTA convention. Secondary uses the card-high surface with an outline border, matching the convention for buttons that sit inside a card (see ai.md section 2). 'link' drops the pill/box entirely and renders plain underlined text in the accent-adjacent text color, for a tertiary/text-only call to action.
   @param {string} [as] - 'button' (default) | 'a' | 'submit'. 'a' renders an anchor tag (requires `url`); 'submit' renders a <button type="submit">.
   @param {string} [size] - 'md' (default, fixed h-12 and text-base) | 'sm' (compact py-2/px-3, text-xs sm:text-sm, no fixed height — for buttons inside a product card).
   @param {string} [url] - Destination URL. Used when as: 'a'.
   @param {string} [class] - Extra CSS classes appended to the base variant style.
   @param {string} [attributes] - Raw additional HTML attributes appended verbatim (e.g. id="...", data-*, aria-label="...", onclick="...").
+  @param {string} [width] - CSS width value (e.g. '100%', '240px'). Applied as inline style since it's a free-form merchant value, not a class. Omitted -> button sizes to its content as before.
+  @param {string} [background] - Override background color (any CSS color value). Applied as inline style, which naturally beats the variant class without `!important`. Omitted -> variant's own background.
+  @param {string} [text_color] - Override text color. Same override mechanism as `background`.
+  @param {string} [border_color] - Adds/overrides a 1px solid border in this color. Same override mechanism as `background`.
 
   @example
   {% render 'button', label: 'Læg i kurv' %}
   {% render 'button', label: 'Se alle produkter', variant: 'secondary', as: 'a', url: collection.url %}
   {% render 'button', label: 'Send', as: 'submit', attributes: 'id="btn-submit"' %}
   {% render 'button', label: 'Køb', size: 'sm', class: 'w-full' %}
+  {% render 'button', label: 'Se mere', as: 'a', url: '#', width: '100%', background: '#123456', text_color: '#ffffff' %}
 {% enddoc %}
 
 {%- liquid
@@ -34,21 +39,35 @@
 
   if variant == 'secondary'
     assign color_class = 'bg-card-high hover:bg-surface-container text-primary border border-outline-variant'
+  elsif variant == 'link'
+    assign color_class = 'bg-transparent text-primary underline-offset-4 hover:underline'
   else
     assign color_class = 'bg-accent hover:brightness-95 text-on-accent'
   endif
 -%}
-{%- capture base_class -%}
-{{ color_class }} font-bold uppercase tracking-wide {{ size_box }} rounded-full {{ size_text }} shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1
-{%- endcapture -%}
+{%- if variant == 'link' -%}
+  {%- capture base_class -%}
+  {{ color_class }} font-bold uppercase tracking-wide {{ size_text }} cursor-pointer focus:outline-none inline-flex items-center gap-1
+  {%- endcapture -%}
+{%- else -%}
+  {%- capture base_class -%}
+  {{ color_class }} font-bold uppercase tracking-wide {{ size_box }} rounded-full {{ size_text }} shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1
+  {%- endcapture -%}
+{%- endif -%}
 {%- liquid
   assign full_class = base_class
   if class
     assign full_class = full_class | append: ' ' | append: class
   endif
 -%}
+{%- capture override_style -%}
+  {%- if width %}width: {{ width }};{% endif -%}
+  {%- if background %}background-color: {{ background }};{% endif -%}
+  {%- if text_color %}color: {{ text_color }};{% endif -%}
+  {%- if border_color %}border-color: {{ border_color }}; border-width: 1px; border-style: solid;{% endif -%}
+{%- endcapture -%}
 {%- if as == 'a' -%}
-  <a href="{{ url }}" class="{{ full_class }} no-underline"{% if attributes %} {{ attributes }}{% endif %}>{{ label }}</a>
+  <a href="{{ url }}" class="{{ full_class }} no-underline"{% if override_style != blank %} style="{{ override_style }}"{% endif %}{% if attributes %} {{ attributes }}{% endif %}>{{ label }}</a>
 {%- else -%}
-  <button type="{% if as == 'submit' %}submit{% else %}button{% endif %}" class="{{ full_class }}"{% if attributes %} {{ attributes }}{% endif %}>{{ label }}</button>
+  <button type="{% if as == 'submit' %}submit{% else %}button{% endif %}" class="{{ full_class }}"{% if override_style != blank %} style="{{ override_style }}"{% endif %}{% if attributes %} {{ attributes }}{% endif %}>{{ label }}</button>
 {%- endif -%}
