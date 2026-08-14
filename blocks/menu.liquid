@@ -1,0 +1,243 @@
+{% doc %}
+  Renders a Shopify linklist as a list of links, one level of submenu
+  included. `show_as_accordion` collapses the list behind a native
+  `<details>`/`<summary>` heading, same pattern as blocks/accordion.liquid.
+
+  @example
+  {% content_for 'block', type: 'menu', id: 'menu' %}
+{% enddoc %}
+
+{%- liquid
+  assign menu = block.settings.menu
+  assign heading = block.settings.heading | default: menu.title
+  assign show_dividers = false
+  if block.settings.show_as_accordion and block.settings.accordion_dividers
+    assign show_dividers = true
+  endif
+-%}
+{%- capture heading_classes -%}{% render 'type-preset-class', type_preset: block.settings.heading_preset %}{%- endcapture -%}
+{%- assign heading_classes = heading_classes | strip -%}
+{%- capture link_classes -%}{% render 'type-preset-class', type_preset: block.settings.link_preset %}{%- endcapture -%}
+{%- assign link_classes = link_classes | strip -%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    {%- render 'block-padding-vars', block: block -%}
+    --menu-block-spacing: {{ block.settings.menu_spacing | default: 12 }}px;
+  }
+  #shopify-block-{{ block.id }}.shopify-block .menu-block__list > li + li {
+    margin-top: var(--menu-block-spacing);
+  }
+  #shopify-block-{{ block.id }}.shopify-block .menu-block__submenu {
+    margin-top: calc(var(--menu-block-spacing) / 2);
+  }
+  #shopify-block-{{ block.id }}.shopify-block .menu-block__nav {
+    margin-top: var(--menu-block-spacing);
+  }
+  #shopify-block-{{ block.id }}.shopify-block details[open] > summary .menu-block__chevron {
+    transform: rotate(180deg);
+  }
+  {%- if show_dividers -%}
+    #shopify-block-{{ block.id }}.shopify-block .menu-block__list > li {
+      border-top: 1px solid var(--color-outline-variant);
+      padding-top: var(--menu-block-spacing);
+    }
+    #shopify-block-{{ block.id }}.shopify-block .menu-block__list > li:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+{%- capture menu_list -%}
+  {%- if menu != blank -%}
+    <ul class="menu-block__list list-none m-0 p-0">
+      {%- for link in menu.links -%}
+        <li>
+          <a href="{{ link.url }}" class="{{ link_classes }} text-primary hover:text-secondary no-underline">{{ link.title }}</a>
+          {%- if link.links.size > 0 -%}
+            <ul class="menu-block__submenu list-none">
+              {%- for child_link in link.links -%}
+                <li>
+                  <a href="{{ child_link.url }}" class="{{ link_classes }} text-primary/85 hover:text-secondary no-underline">{{ child_link.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+{%- endcapture -%}
+
+<div {{ block.shopify_attributes }}>
+  {%- if menu != blank or heading != blank -%}
+    {%- if block.settings.show_as_accordion -%}
+      <details class="menu-block">
+        <summary class="menu-block__summary flex items-center justify-between w-full text-left cursor-pointer {{ heading_classes }}">
+          <span>{{ heading }}</span>
+          <span class="w-8 h-8 flex items-center justify-center flex-shrink-0 text-primary/85{% if block.settings.accordion_icon != 'plus' %} menu-block__chevron transition-transform duration-200{% endif %}">
+            {%- if block.settings.accordion_icon == 'plus' -%}
+              {%- render 'icon', name: 'plus' -%}
+            {%- else -%}
+              {%- render 'icon', name: 'chevron-down' -%}
+            {%- endif -%}
+          </span>
+        </summary>
+        <nav class="menu-block__nav" aria-label="{{ heading }}">
+          {{- menu_list -}}
+        </nav>
+      </details>
+    {%- else -%}
+      {%- if heading != blank -%}
+        <p class="menu-block__heading {{ heading_classes }}">{{ heading }}</p>
+      {%- endif -%}
+      <nav class="menu-block__nav" aria-label="{{ heading }}">
+        {{- menu_list -}}
+      </nav>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:blocks_commerce.menu",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:blocks_commerce.menu_field",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:blocks_commerce.heading"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.text_appearance"
+    },
+    {
+      "type": "range",
+      "id": "menu_spacing",
+      "label": "t:blocks_commerce.vertical_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_as_accordion",
+      "label": "t:blocks_commerce.show_as_accordion",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "accordion_icon",
+      "label": "t:blocks_commerce.accordion_icon",
+      "options": [
+        { "value": "caret", "label": "t:blocks_commerce.accordion_icon_caret" },
+        { "value": "plus", "label": "t:blocks_commerce.accordion_icon_plus" }
+      ],
+      "default": "caret",
+      "visible_if": "{{ block.settings.show_as_accordion == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "accordion_dividers",
+      "label": "t:blocks_commerce.accordion_dividers",
+      "default": false,
+      "visible_if": "{{ block.settings.show_as_accordion == true }}"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.text_typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_preset",
+      "label": "t:blocks_commerce.heading_preset",
+      "options": [
+        { "value": "", "label": "t:blocks_layout.preset_default" },
+        { "value": "paragraph", "label": "t:blocks_layout.preset_paragraph" },
+        { "value": "h1", "label": "t:blocks_layout.preset_h1" },
+        { "value": "h2", "label": "t:blocks_layout.preset_h2" },
+        { "value": "h3", "label": "t:blocks_layout.preset_h3" },
+        { "value": "h4", "label": "t:blocks_layout.preset_h4" },
+        { "value": "h5", "label": "t:blocks_layout.preset_h5" },
+        { "value": "h6", "label": "t:blocks_layout.preset_h6" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "select",
+      "id": "link_preset",
+      "label": "t:blocks_commerce.link_preset",
+      "options": [
+        { "value": "", "label": "t:blocks_layout.preset_default" },
+        { "value": "paragraph", "label": "t:blocks_layout.preset_paragraph" },
+        { "value": "h1", "label": "t:blocks_layout.preset_h1" },
+        { "value": "h2", "label": "t:blocks_layout.preset_h2" },
+        { "value": "h3", "label": "t:blocks_layout.preset_h3" },
+        { "value": "h4", "label": "t:blocks_layout.preset_h4" },
+        { "value": "h5", "label": "t:blocks_layout.preset_h5" },
+        { "value": "h6", "label": "t:blocks_layout.preset_h6" }
+      ],
+      "default": "paragraph"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:blocks_layout.padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:blocks_layout.padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:blocks_layout.padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:blocks_layout.padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_commerce.menu",
+      "category": "t:blocks_commerce.category_commerce"
+    }
+  ]
+}
+{% endschema %}
