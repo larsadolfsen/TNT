@@ -167,5 +167,22 @@
     "text_appearance": "Appearance",
     "text_background": "Background",
     "text_background_color": "Background color"
+  },
+  "blocks_media": {
+    "category_media": "Media",
+    "button": "Button",
+    "button_label": "Label",
+    "link": "Link",
+    "open_in_new_tab": "Open in new tab",
+    "button_style": "Style",
+    "style_primary": "Primary",
+    "style_secondary": "Secondary",
+    "style_link": "Link",
+    "size": "Size",
+    "width_desktop": "Width",
+    "fit_content": "Fit content",
+    "custom": "Custom",
+    "custom_width": "Custom width",
+    "width_mobile": "Width (mobile)"
   }
 }

@@ -5,7 +5,7 @@
   scale, accent color for primary actions.
 
   @param {string} label - required. Visible button text.
-  @param {string} [variant] - 'primary' (default) | 'secondary'. Primary uses the accent color (bg-accent/text-on-accent), matching the main CTA convention. Secondary uses the card-high surface with an outline border, matching the convention for buttons that sit inside a card (see ai.md section 2).
+  @param {string} [variant] - 'primary' (default) | 'secondary' | 'link'. Primary uses the accent color (bg-accent/text-on-accent), matching the main CTA convention. Secondary uses the card-high surface with an outline border, matching the convention for buttons that sit inside a card (see ai.md section 2). 'link' drops the pill/box entirely and renders plain underlined text in the accent-adjacent text color, for a tertiary/text-only call to action.
   @param {string} [as] - 'button' (default) | 'a' | 'submit'. 'a' renders an anchor tag (requires `url`); 'submit' renders a <button type="submit">.
   @param {string} [size] - 'md' (default, fixed h-12 and text-base) | 'sm' (compact py-2/px-3, text-xs sm:text-sm, no fixed height — for buttons inside a product card).
   @param {string} [url] - Destination URL. Used when as: 'a'.
@@ -39,13 +39,21 @@
 
   if variant == 'secondary'
     assign color_class = 'bg-card-high hover:bg-surface-container text-primary border border-outline-variant'
+  elsif variant == 'link'
+    assign color_class = 'bg-transparent text-primary underline-offset-4 hover:underline'
   else
     assign color_class = 'bg-accent hover:brightness-95 text-on-accent'
   endif
 -%}
-{%- capture base_class -%}
-{{ color_class }} font-bold uppercase tracking-wide {{ size_box }} rounded-full {{ size_text }} shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1
-{%- endcapture -%}
+{%- if variant == 'link' -%}
+  {%- capture base_class -%}
+  {{ color_class }} font-bold uppercase tracking-wide {{ size_text }} cursor-pointer focus:outline-none inline-flex items-center gap-1
+  {%- endcapture -%}
+{%- else -%}
+  {%- capture base_class -%}
+  {{ color_class }} font-bold uppercase tracking-wide {{ size_box }} rounded-full {{ size_text }} shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1
+  {%- endcapture -%}
+{%- endif -%}
 {%- liquid
   assign full_class = base_class
   if class
