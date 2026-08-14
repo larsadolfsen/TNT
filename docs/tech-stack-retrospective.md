@@ -171,7 +171,37 @@ så det aldrig igen er en *død indkøbskurv*, der venter på et menneskeblik.
 | Lint | theme-check | theme-check + `tsc` + Stylelint |
 | Test | ingen | **Playwright** + axe + Lighthouse CI |
 | Deploy | native GitHub-sync direkte til live tema | `theme push --unpublished` → test → `publish` |
-| Base | bespoke skeleton | start fra **Horizon** (primitiverne spejler den allerede 1:1) |
+| Base | Skeleton theme | **uændret** — Skeleton er den eneste godkendte kodebase (se nedenfor) |
+
+### Basen: Skeleton er ikke bare et valg, det er reglen
+
+Theme Store-kravene (§2, "Uniqueness from other themes") afgør det spørgsmål
+for os, ordret:
+
+> "Shopify's Skeleton Theme is the only approved codebase for Theme Store
+> development. Otherwise, themes must be built with fully original code.
+> New theme submissions built on or derived from Dawn or Horizon are not
+> eligible for the Shopify Theme Store."
+
+Et tema bygget *på* Horizon (eller Dawn) kan altså ikke sælges i Theme Store.
+Repoet gjorde det rigtige fra start — det er bygget på Skeleton
+(`shopify-skeleton-tailwind`).
+
+Skellet, der er værd at holde skarpt:
+
+- **Tilladt — interface-spejling.** Primitive-blokkene spejler Horizons
+  *filnavne og settings-id'er* 1:1 (masterplanen i
+  `superpowers/plans/2026-08-14-primitive-theme-blocks-master.md`), så en
+  Horizon-blokinstans i en `templates/*.json` kan limes ind og rendere.
+  Det er konfigurations-kompatibilitet, ikke afledt kode — implementeringen
+  bag id'erne er dette temas egen.
+- **Forbudt — kode-afledning.** Kopiering af Liquid/CSS/JS fra Horizon ind i
+  temaet gør det "derived from Horizon" og dermed uegnet til indsendelse.
+- **Risiko — design-spejling.** Horizon ligger selv i Theme Store, og
+  uniqueness-kravet forlanger, at et tema er "fundamentally different from
+  other themes on the Shopify Theme Store". Så også det *visuelle* udtryk
+  skal holde tydelig afstand til Horizon; id-kompatibilitet er usynlig for
+  revieweren, lookalike-design er ikke.
 
 ## Det der stadig ville blive fravalgt
 
