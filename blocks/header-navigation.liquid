@@ -50,10 +50,7 @@
     pointer-events: none;
   }
 
-  /* The current page's item carries the same grey fill as a hovered one — one
-     declaration, so the two states cannot drift apart. */
-  #shopify-block-{{ block.id }} .nav-link-pill:hover::before,
-  #shopify-block-{{ block.id }} .nav-menu-item--active .nav-link-pill::before {
+  #shopify-block-{{ block.id }} .nav-link-pill:hover::before {
     background-color: var(--color-surface-container, rgba(0,0,0,0.06));
   }
 

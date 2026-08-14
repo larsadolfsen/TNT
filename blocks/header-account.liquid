@@ -42,6 +42,17 @@
     display: none;
   }
 
+  /* <shopify-account>'s own shadow-DOM button styles itself with
+     `color: currentColor` (confirmed via devtools), not a Shopify-specific
+     custom property -- so it just inherits `color` like any element.
+     Nothing in its ancestor chain sets one: `body` only sets
+     background-color, and `main { color: ... }` doesn't reach it because
+     the header sits outside <main>. Without this, it falls back to the
+     browser's default black text, dark mode or not. */
+  #shopify-block-{{ block.id }} shopify-account {
+    color: var(--color-primary);
+  }
+
   #shopify-block-{{ block.id }} .account-trigger-desktop {
     display: none;
   }

@@ -243,7 +243,7 @@ versaler": nr. 8, 10, 33, 34, 35, 37 og 42 er alle en variation over
 > produktbillede, enhedssuffiks i `product-card-price.liquid`,
 > produktkort-metatekst/rating-wrapper) er lukket. Se
 > `docs/superpowers/specs/2026-08-13-product-card-typography-design.md`
-> og `docs/failure-log.md` F-027 for detaljerne. Denne optælling er
+> og `docs/failure-log.md` F-029 for detaljerne. Denne optælling er
 > stadig et snapshot fra 2026-08-13 og er ikke genkørt — øvrige linjer
 > nedenfor er fortsat uændrede.
 
