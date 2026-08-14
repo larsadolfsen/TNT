@@ -54,6 +54,21 @@
   }
 }
 
+/* Standard font and text color, set once here so every element inherits
+   it -- header and footer live outside <main>, so this has to be on body
+   to reach them too. font-family/color declared anywhere below this must
+   be a genuine deviation, not a redundant restatement of the default:
+   an explicit declaration on an element always beats what it would have
+   inherited, so restating the default elsewhere silently breaks
+   inheritance if that element's actual default value ever changes here. */
+body {
+  background-color: var(--color-background);
+  font-size: 16px;
+  font-family: var(--font-sans);
+  --color-text: var(--color-foreground, #595959);
+  color: var(--color-text);
+}
+
 main {
   display: grid;
   grid-template-columns: repeat(var(--grid-cols-mobile, 2), minmax(0, 1fr));
@@ -553,14 +568,6 @@ h4,
 /* Ensure no horizontal scrolling when using 100vw breakout layouts */
 html, body {
   overflow-x: clip;
-}
-
-body {
-  background-color: var(--color-background);
-  font-size: 16px;
-  font-family: var(--font-sans);
-  --color-text: var(--color-foreground, #595959);
-  color: var(--color-text);
 }
 
 /* Visible keyboard focus indicator (mandatory per docs/missing-surface-designs.md
