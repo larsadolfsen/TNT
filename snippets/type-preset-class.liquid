@@ -1,0 +1,37 @@
+{% doc %}
+  Maps a Horizon `type_preset` value and `color` setting value to this
+  theme's `.type-*` class string via `text-style.liquid`. Shared by
+  `_heading.liquid` and `text.liquid` so the mapping table exists once.
+
+  @param {string} type_preset - required. Horizon's type_preset value (rte, paragraph, h1-h6, custom).
+  @param {string} [color] - Horizon's color setting value (a CSS var() string). Only var(--color-primary) maps to a class; var(--color-foreground) and var(--color-foreground-heading) already inherit --color-text and need none.
+
+  @example
+  <div class="{% render 'type-preset-class', type_preset: block.settings.type_preset, color: block.settings.color %}">
+{% enddoc %}
+{%- liquid
+  case type_preset
+    when 'h1'
+      assign role = 'title-page'
+    when 'h2'
+      assign role = 'title-section'
+    when 'h3'
+      assign role = 'title-card'
+    when 'h4'
+      assign role = 'title-row'
+    when 'h5'
+      assign role = 'body-strong'
+    when 'h6'
+      assign role = 'label'
+    else
+      assign role = 'body'
+  endcase
+-%}
+{%- capture type_classes -%}{% render 'text-style', role: role %}{%- endcapture -%}
+{%- assign type_classes = type_classes | strip -%}
+{%- assign color_class = '' -%}
+{%- if color == 'var(--color-primary)' -%}
+  {%- assign color_class = 'text-primary' -%}
+{%- endif -%}
+{%- assign combined = type_classes | append: ' ' | append: color_class | strip -%}
+{{- combined -}}
