@@ -34,6 +34,12 @@ Tre af dem ville jeg vælge anderledes.
   HTTP/2 + Shopifys CDN gør bundling til en dårlig handel, og det holder
   blokke uafhængige af hinanden.
 - **Lucide-sprite gennem ét `{% render 'icon' %}`-indgangspunkt.**
+- **Horizon-spejlede blok-interfaces.** Primitive-blokkenes 1:1-spejling af
+  Horizons filnavne og settings-id'er fortsætter — det er den bevidste
+  strategi, ikke en overgangsordning. Kompatibilitetsfladen gør
+  Horizon-blokinstanser drop-in-kompatible og lader temaet følge med, når
+  Shopify udvikler konventionen. Se skellet mod kode-afledning under
+  [basen](#basen-skeleton-er-ikke-bare-et-valg-det-er-reglen).
 - **`docs/failure-log.md`.** Den mest værdifulde enkeltfil i repoet; det er
   den, dette dokument står på. Ville blive startet på dag 1 næste gang.
 
@@ -189,12 +195,13 @@ Repoet gjorde det rigtige fra start — det er bygget på Skeleton
 
 Skellet, der er værd at holde skarpt:
 
-- **Tilladt — interface-spejling.** Primitive-blokkene spejler Horizons
-  *filnavne og settings-id'er* 1:1 (masterplanen i
+- **Tilladt — interface-spejling, og det fortsætter.** Primitive-blokkene
+  spejler Horizons *filnavne og settings-id'er* 1:1 (masterplanen i
   `superpowers/plans/2026-08-14-primitive-theme-blocks-master.md`), så en
   Horizon-blokinstans i en `templates/*.json` kan limes ind og rendere.
   Det er konfigurations-kompatibilitet, ikke afledt kode — implementeringen
-  bag id'erne er dette temas egen.
+  bag id'erne er dette temas egen. Spejlingen er den blivende strategi for
+  nye blokke, ikke noget dette dokument ruller tilbage.
 - **Forbudt — kode-afledning.** Kopiering af Liquid/CSS/JS fra Horizon ind i
   temaet gør det "derived from Horizon" og dermed uegnet til indsendelse.
 - **Risiko — design-spejling.** Horizon ligger selv i Theme Store, og
