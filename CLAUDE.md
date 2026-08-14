@@ -74,6 +74,10 @@ Text colour is three tokens (`--color-text`, `--color-text-muted`, `--color-text
 
 Migration is in progress: the old Tailwind `text-*` utilities and the new system coexist. See `docs/typography-inventory.md` for what is left and `docs/typography-specimen.html` for the specimen.
 
+### Collection filters (`snippets/collection-filter-list.liquid`)
+
+The theme owns no filter taxonomy — every filter on the collection page comes from `collection.filters` (rendered via `{%- render 'collection-filter-list', filters: collection.filters -%}` in `sections/main-collection.liquid`), which is Shopify's native storefront filtering, populated in admin from Search & Discovery. Which filters exist, their order, labels, values, and swatch colours are all admin data; the snippet's only job is presentation (accordion, swatch circle, checkbox row, price range). Swatch colours render from `value.swatch.color`/`value.swatch.image`, never guessed or looked up from the label. Value labels render as `value.label`, unmodified. See `docs/superpowers/specs/2026-08-14-collection-filters-metafield-driven-design.md` for the full history and `docs/failure-log.md` F-033–F-035 for the bugs this replaced.
+
 ### Grid layout (`.grid-layout`)
 
 Responsive grids use the `.grid-layout` utility with per-child CSS custom properties (`--span-mobile`, `--span-expanded`, `--span-large`) set inline, rather than Tailwind's `grid-cols-*`/`col-span-*` utilities directly — see `assets/input.css` for the underlying `--section-span-*` variables.

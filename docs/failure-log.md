@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-035](#f-035--filter-value-labels-were-rewritten-in-liquid-against-metaobject-values-that-no-longer-matched) | 2026-08-14 | Caught | Collection filters | Size/form filter value overrides matched nothing — the metaobject values had moved on |
 | [F-034](#f-034--the-colour-swatch-checkmark-could-never-appear-because-the-css-revealing-it-targeted-an-element-type-the-icon-system-does-not-emit) | 2026-08-14 | Live | Collection filters | Checkmark never showed on a selected colour swatch; tooltip count reflowed instead |
 | [F-033](#f-033--colour-swatches-were-painted-from-a-hand-maintained-danish-colour-name-map-instead-of-the-swatch-data-shopify-already-serves) | 2026-08-14 | Live | Collection filters | Swatch colours guessed from Danish labels; unlisted colours rendered unpainted |
 | [F-032](#f-032--product-card-titles-inherited-serif-from-a-legacy-heading-rule-the-type--system-had-no-way-to-override) | 2026-08-14 | Caught | Product card | Product-card `<h3>` titles rendered serif despite carrying no `.type-serif` class |
@@ -50,6 +51,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-035 — Filter value labels were rewritten in Liquid against metaobject values that no longer matched
+
+- **Date:** 2026-08-14 · **Reach:** Caught · **Fix:** this commit
+- **Symptom:** `snippets/collection-filter-list.liquid` rewrote checkbox filter labels for size/form/type filters (`41x33 cm → 41x33 cm (Dækkeserviet)`, `Firkantet → Firkantet (Rulle)`, `Rund → Rund skåret`) via a hardcoded Liquid `if`/`elsif` block. Neither override could ever fire against live store data: the shape metaobject's actual value is `Firkant`, not `Firkantet`, and `41x33 cm` does not exist anywhere in the `centimeter` metaobject (its six values are 90/100/120/140/160/180). The overrides were dead code matching a taxonomy that had since changed underneath them.
+- **Root cause:** Same family as F-033/F-034's dead `filter` block type — the theme asserting ownership of value wording that belongs to Shopify admin's metaobject entries. Because the override was string-matched against a specific value, it silently stopped firing the moment the underlying admin data changed (a rename, a re-migration) — no error, no visible symptom beyond the override just never applying.
+- **Fix:** Deleted the override block; `value.label` now renders directly from `collection.filters`, matching Step 2's swatch fix. Per the collection-filters spec (`docs/superpowers/specs/2026-08-14-collection-filters-metafield-driven-design.md`), if customer-facing wording like "Firkantet (Rulle)" is ever needed, the correct fix is repointing the Form filter's source to the store's own `custom.form` metaobject in Search & Discovery — an admin decision, confirmed not needed for now.
+- **Prevention:** A label override hardcoded against a specific string value is a silent tripwire — it decays the moment the source data is edited in admin, with no theme-side signal that it broke. Same prevention as F-033: render `collection.filters` data as given; if wording needs to change, change it at the source (admin), not with a theme-side string match.
 
 ### F-034 — The colour-swatch checkmark could never appear, because the CSS revealing it targeted an element type the icon system does not emit
 
