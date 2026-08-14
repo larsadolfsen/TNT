@@ -166,6 +166,52 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           }
+        },
+        "group_portability": {
+          "type": "group",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "gap": 16,
+            "width": "fill",
+            "background_media": "image",
+            "background_image": "shopify://shop_images/TNT_Favicon_32x32_40294af4-1c3c-40e9-b2cd-1f513ef0d73f.png",
+            "background_image_position": "cover",
+            "toggle_overlay": true,
+            "overlay_color": "#00000066",
+            "overlay_style": "solid",
+            "border": "solid",
+            "border_width": 2,
+            "border_opacity": 100,
+            "border_radius": 16,
+            "padding-block-start": 32,
+            "padding-block-end": 32,
+            "padding-inline-start": 32,
+            "padding-inline-end": 32
+          },
+          "blocks": {
+            "group_portability_heading": {
+              "type": "text",
+              "settings": {
+                "type_preset": "h3",
+                "text": "<p>Batch 4 portability test</p>",
+                "alignment": "left",
+                "color": "var(--color-foreground-heading)"
+              }
+            },
+            "group_portability_button": {
+              "type": "button",
+              "settings": {
+                "label": "Se kollektionen",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button-secondary"
+              }
+            }
+          },
+          "block_order": ["group_portability_heading", "group_portability_button"]
         }
       },
       "block_order": [
@@ -180,7 +226,8 @@
         "icon_1",
         "button_1",
         "image_1",
-        "video_1"
+        "video_1",
+        "group_portability"
       ],
       "settings": {
         "background_color": "white",
