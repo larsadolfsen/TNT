@@ -200,6 +200,10 @@ h4,
 .type-bold   { font-weight: var(--type-weight-bold); }
 .type-caps   { text-transform: uppercase; letter-spacing: var(--type-tracking-caps); }
 .type-serif  { font-family: var(--font-header-family); }
+/* Needed on any h1-h6 element: the legacy heading rule below sets an
+   explicit font-family on the tag itself, which beats inheritance from
+   main -- .type-* classes alone can't win that without this. */
+.type-sans   { font-family: var(--font-sans); }
 .type-muted  { color: var(--color-text-muted); }
 .type-faint  { color: var(--color-text-faint); }
 .type-error  { color: var(--color-important); }
@@ -1002,9 +1006,6 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 }
 .collections-more[open] summary svg {
   transform: rotate(180deg);
-}
-.collections-more__grid {
-  margin-top: var(--grid-row-gap);
 }
 
 /* Flex group component styles */

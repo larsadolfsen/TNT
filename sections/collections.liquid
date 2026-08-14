@@ -4,15 +4,52 @@
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
+{%- liquid
+  assign display_collections = blank
+  if collection != blank and collection.metafields.custom.child.value != blank
+    assign display_collections = collection.metafields.custom.child.value
+  endif
+
+  assign visible_count_mobile = section.settings.visible_count_mobile | default: 6
+  assign visible_count_tablet = section.settings.visible_count_tablet | default: 6
+  assign visible_count_desktop = section.settings.visible_count_desktop | default: 6
+  assign total_count = display_collections.size
+
+  assign smallest_visible_count = visible_count_mobile | at_most: visible_count_tablet | at_most: visible_count_desktop
+  assign show_trigger = false
+  if total_count > smallest_visible_count
+    assign show_trigger = true
+  endif
+-%}
+
 {%- style -%}
   #collections-wrap-{{ section.id }} .collections {
     grid-template-columns: repeat({{ section.settings.columns_mobile | default: 2 }}, minmax(0, 1fr));
     --grid-gap: {{ section.settings.grid_gap | default: 16 }}px;
   }
 
+  #collections-wrap-{{ section.id }} .collections > .collection-card:nth-child(n+{{ visible_count_mobile | plus: 1 }}) {
+    display: none;
+  }
+
+  #collections-wrap-{{ section.id }} .collections-more {
+    display: {% if total_count > visible_count_mobile %}block{% else %}none{% endif %};
+  }
+
   @media screen and (min-width: 768px) {
     #collections-wrap-{{ section.id }} .collections {
       grid-template-columns: repeat({{ section.settings.columns_tablet | default: 2 }}, minmax(0, 1fr));
+    }
+
+    #collections-wrap-{{ section.id }} .collections > .collection-card:nth-child(n+{{ visible_count_mobile | plus: 1 }}) {
+      display: flex;
+    }
+    #collections-wrap-{{ section.id }} .collections > .collection-card:nth-child(n+{{ visible_count_tablet | plus: 1 }}) {
+      display: none;
+    }
+
+    #collections-wrap-{{ section.id }} .collections-more {
+      display: {% if total_count > visible_count_tablet %}block{% else %}none{% endif %};
     }
   }
 
@@ -20,30 +57,28 @@
     #collections-wrap-{{ section.id }} .collections {
       grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, minmax(0, 1fr));
     }
+
+    #collections-wrap-{{ section.id }} .collections > .collection-card:nth-child(n+{{ visible_count_tablet | plus: 1 }}) {
+      display: flex;
+    }
+    #collections-wrap-{{ section.id }} .collections > .collection-card:nth-child(n+{{ visible_count_desktop | plus: 1 }}) {
+      display: none;
+    }
+
+    #collections-wrap-{{ section.id }} .collections-more {
+      display: {% if total_count > visible_count_desktop %}block{% else %}none{% endif %};
+    }
+  }
+
+  #collections-wrap-{{ section.id }}:has(.collections-more[open]) .collections > .collection-card {
+    display: flex;
   }
 {%- endstyle -%}
-
-{%- liquid
-  assign display_collections = blank
-  if collection != blank and collection.metafields.custom.child.value != blank
-    assign display_collections = collection.metafields.custom.child.value
-  endif
-
-  assign visible_count = section.settings.visible_count | default: 6
-  assign total_count = display_collections.size
-  assign visible_collections = display_collections | slice: 0, visible_count
-
-  assign remaining_count = 0
-  if total_count > visible_count
-    assign remaining_collections = display_collections | slice: visible_count, total_count
-    assign remaining_count = remaining_collections.size
-  endif
--%}
 
 {%- if display_collections != blank or request.design_mode -%}
 <div id="collections-wrap-{{ section.id }}">
   <div class="collections">
-    {% for col_item in visible_collections %}
+    {% for col_item in display_collections %}
       {% render 'collection-card', collection: col_item %}
     {% else %}
       {% if request.design_mode %}
@@ -54,18 +89,13 @@
     {% endfor %}
   </div>
 
-  {%- if remaining_count > 0 -%}
+  {%- if show_trigger -%}
     <details class="collections-more">
       <summary class="collections-more__trigger">
         <span class="label-closed">{{ section.settings.show_more_label }}</span>
         <span class="label-open">{{ section.settings.show_less_label }}</span>
         {% render 'icon', name: 'chevron-down' %}
       </summary>
-      <div class="collections collections-more__grid">
-        {% for col_item in remaining_collections %}
-          {% render 'collection-card', collection: col_item %}
-        {% endfor %}
-      </div>
     </details>
   {%- endif -%}
 </div>
@@ -116,11 +146,29 @@
     },
     {
       "type": "range",
-      "id": "visible_count",
+      "id": "visible_count_mobile",
       "min": 2,
       "max": 12,
-      "step": 2,
-      "label": "Antal synlige underkategorier",
+      "step": 1,
+      "label": "Antal synlige underkategorier (mobil)",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "visible_count_tablet",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Antal synlige underkategorier (tablet)",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "visible_count_desktop",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Antal synlige underkategorier (desktop)",
       "default": 6
     },
     {
