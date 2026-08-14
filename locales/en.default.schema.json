@@ -152,6 +152,8 @@
     "unit_percent": "Percent",
     "spacer_size": "Size",
     "spacer_custom_mobile_size": "Customize on mobile",
-    "spacer_mobile_size": "Mobile size"
+    "spacer_mobile_size": "Mobile size",
+    "custom_liquid": "Custom Liquid",
+    "custom_liquid_field": "Liquid code"
   }
 }
