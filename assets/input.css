@@ -1003,7 +1003,10 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   font-family: var(--font-sans-family), sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--type-tracking-caps);
   color: var(--color-primary, #000);
+  min-height: 2.75rem;
   padding: 0.5rem 0;
 }
 .collections-more summary::-webkit-details-marker {

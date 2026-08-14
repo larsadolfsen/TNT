@@ -39,7 +39,7 @@
   endif
 -%}
 {%- capture base_class -%}
-{{ color_class }} font-bold {{ size_box }} rounded-full {{ size_text }} shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1
+{{ color_class }} font-bold uppercase tracking-wide {{ size_box }} rounded-full {{ size_text }} shadow-sm active:scale-95 transition-all cursor-pointer focus:outline-none flex items-center justify-center gap-1
 {%- endcapture -%}
 {%- liquid
   assign full_class = base_class

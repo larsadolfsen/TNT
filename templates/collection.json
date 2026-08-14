@@ -58,7 +58,7 @@
         "columns_tablet": 6,
         "columns_desktop": 12,
         "grid_gap": 16,
-        "visible_count_mobile": 6,
+        "visible_count_mobile": 3,
         "visible_count_tablet": 8,
         "visible_count_desktop": 12,
         "show_more_label": "Vis flere kategorier",
