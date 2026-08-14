@@ -62,9 +62,7 @@
     "show_payment_icons": "Show payment icons",
     "text_style": "Text style",
     "text": "Text",
-    "design": "Design",
-    "width_cols": "Width (columns)",
-    "card_link": "Card link"
+    "width_cols": "Width (columns)"
   },
   "options": {
     "alignment": {
