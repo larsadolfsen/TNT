@@ -183,6 +183,18 @@
     "fit_content": "Fit content",
     "custom": "Custom",
     "custom_width": "Custom width",
-    "width_mobile": "Width (mobile)"
+    "width_mobile": "Width (mobile)",
+    "image": "Image",
+    "image_ratio": "Aspect ratio",
+    "ratio_auto": "Auto",
+    "ratio_portrait": "Portrait",
+    "ratio_square": "Square",
+    "ratio_landscape": "Landscape",
+    "fill": "Fill",
+    "height": "Height",
+    "borders": "Borders",
+    "border_style": "Style",
+    "border_solid": "Solid",
+    "border_opacity": "Opacity"
   }
 }
