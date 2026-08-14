@@ -117,8 +117,7 @@
     /* Muted/faint text variants, derived from --color-primary so .dark
        already swaps them and they cannot drift out of step. The base
        --color-text itself is defined on body (assets/input.css) from
-       --color-foreground -- the merchant-facing "Tekstfarve" setting -- not
-       from --color-primary, so it is intentionally not declared here. */
+       --color-primary too, so it is intentionally not declared here. */
     --color-text-muted: color-mix(in srgb, var(--color-primary) 70%, transparent);
     --color-text-faint: color-mix(in srgb, var(--color-primary) 45%, transparent);
   }

@@ -21,7 +21,7 @@
     <span class="type-sm type-muted leading-none">Pris</span>
   {%- endunless -%}
   <div class="flex items-baseline gap-1.5 flex-wrap">
-    <span class="{% if is_minimal %}type-md{% else %}type-lg{% endif %} type-bold leading-none">
+    <span class="type-md type-bold text-primary leading-none">
       {%- assign show_fra = false -%}
       {%- if product.variants.size > 1 and product.price_varies -%}
         {%- assign show_fra = true -%}
