@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "blocks": {
+      "type": "section",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "background_color": "white",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    }
+  },
+  "order": [
+    "main",
+    "blocks"
+  ]
+}
