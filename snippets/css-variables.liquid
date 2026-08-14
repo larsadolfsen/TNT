@@ -114,10 +114,11 @@
     --type-tracking-tight: -0.025em;
     --type-tracking-caps:   0.05em;
 
-    /* Three text colours replacing nine ad-hoc opacity levels. They point at
-       --color-primary, which .dark already swaps, so they need no dark-mode
-       counterpart and cannot drift out of step. */
-    --color-text:       var(--color-primary);
+    /* Muted/faint text variants, derived from --color-primary so .dark
+       already swaps them and they cannot drift out of step. The base
+       --color-text itself is defined on body (assets/input.css) from
+       --color-foreground -- the merchant-facing "Tekstfarve" setting -- not
+       from --color-primary, so it is intentionally not declared here. */
     --color-text-muted: color-mix(in srgb, var(--color-primary) 70%, transparent);
     --color-text-faint: color-mix(in srgb, var(--color-primary) 45%, transparent);
   }
