@@ -65,7 +65,7 @@ body {
   background-color: var(--color-background);
   font-size: 16px;
   font-family: var(--font-sans);
-  --color-text: var(--color-foreground, #595959);
+  --color-text: var(--color-primary);
   color: var(--color-text);
 }
 
