@@ -104,6 +104,68 @@
             "pixel_size": 40,
             "custom_mobile_size": false
           }
+        },
+        "icon_1": {
+          "type": "icon",
+          "settings": {
+            "icon": "leaf",
+            "width": 28,
+            "open_in_new_tab": false
+          }
+        },
+        "button_1": {
+          "type": "button",
+          "settings": {
+            "label": "Continue shopping",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          }
+        },
+        "image_1": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "image_ratio": "landscape",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "solid",
+            "border_width": 2,
+            "border_opacity": 100,
+            "border_radius": 12,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "source": "url",
+            "video_url": "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+            "video_autoplay": false,
+            "video_loop": true,
+            "alt": "Me at the zoo",
+            "custom_width": 100,
+            "custom_width_mobile": 100,
+            "aspect_ratio": "16/9",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
         }
       },
       "block_order": [
@@ -114,7 +176,11 @@
         "text_h6",
         "text_rte_padding",
         "divider_1",
-        "spacer_1"
+        "spacer_1",
+        "icon_1",
+        "button_1",
+        "image_1",
+        "video_1"
       ],
       "settings": {
         "background_color": "white",

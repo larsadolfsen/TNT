@@ -1,0 +1,144 @@
+{% doc %}
+  Renders an icon (or an uploaded image in its place), optionally linked.
+
+  @example
+  {% content_for 'block', type: 'icon', id: 'icon' %}
+{% enddoc %}
+
+{%- liquid
+  assign valid_icons = 'arrow-left,arrow-right,arrow-up-down,check,chevron-down,chevron-left,chevron-right,chevron-up,circle-alert,circle-check,circle-play,clock,code,file-text,frown,globe,image,info,key,leaf,list-filter,lock,mail,map-pin,menu,minus,moon,phone,play,plus,refresh-cw,search,search-x,shield-check,shopping-basket,shopping-cart,star,star-half,store,sun,tag,trash-2,triangle-alert,user,x' | split: ','
+  assign icon_name = block.settings.icon
+  assign has_icon = false
+  if icon_name != blank and icon_name != 'none' and valid_icons contains icon_name
+    assign has_icon = true
+  endif
+  assign icon_size = block.settings.width | default: 24
+-%}
+{%- capture icon_style -%}font-size: {{ icon_size }}px;{%- endcapture -%}
+
+{%- capture icon_content -%}
+  {%- if block.settings.image_upload != blank -%}
+    {% render 'image', image: block.settings.image_upload, width: icon_size, height: icon_size, class: 'icon-block__image', img_class: 'w-full h-full object-contain' %}
+  {%- elsif has_icon -%}
+    {% render 'icon', name: icon_name, style: icon_style %}
+  {%- endif -%}
+{%- endcapture -%}
+
+<div class="icon-block" {{ block.shopify_attributes }}>
+  {%- if block.settings.link != blank -%}
+    <a
+      href="{{ block.settings.link }}"
+      class="text-inherit"
+      {%- if block.settings.open_in_new_tab %} target="_blank" rel="noopener"{% endif -%}
+    >{{ icon_content }}</a>
+  {%- else -%}
+    {{ icon_content }}
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .icon-block {
+    display: flex;
+    flex-shrink: 0;
+  }
+  .icon-block__image {
+    display: block;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:blocks_media.icon",
+  "settings": [
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "t:blocks_media.icon",
+      "options": [
+        { "value": "none", "label": "t:blocks_layout.wrap_none" },
+        { "value": "arrow-left", "label": "t:blocks_media.icon_arrow_left" },
+        { "value": "arrow-right", "label": "t:blocks_media.icon_arrow_right" },
+        { "value": "arrow-up-down", "label": "t:blocks_media.icon_arrow_up_down" },
+        { "value": "check", "label": "t:blocks_media.icon_check" },
+        { "value": "chevron-down", "label": "t:blocks_media.icon_chevron_down" },
+        { "value": "chevron-left", "label": "t:blocks_media.icon_chevron_left" },
+        { "value": "chevron-right", "label": "t:blocks_media.icon_chevron_right" },
+        { "value": "chevron-up", "label": "t:blocks_media.icon_chevron_up" },
+        { "value": "circle-alert", "label": "t:blocks_media.icon_circle_alert" },
+        { "value": "circle-check", "label": "t:blocks_media.icon_circle_check" },
+        { "value": "circle-play", "label": "t:blocks_media.icon_circle_play" },
+        { "value": "clock", "label": "t:blocks_media.icon_clock" },
+        { "value": "code", "label": "t:blocks_media.icon_code" },
+        { "value": "file-text", "label": "t:blocks_media.icon_file_text" },
+        { "value": "frown", "label": "t:blocks_media.icon_frown" },
+        { "value": "globe", "label": "t:blocks_media.icon_globe" },
+        { "value": "image", "label": "t:blocks_media.icon_image" },
+        { "value": "info", "label": "t:blocks_media.icon_info" },
+        { "value": "key", "label": "t:blocks_media.icon_key" },
+        { "value": "leaf", "label": "t:blocks_media.icon_leaf" },
+        { "value": "list-filter", "label": "t:blocks_media.icon_list_filter" },
+        { "value": "lock", "label": "t:blocks_media.icon_lock" },
+        { "value": "mail", "label": "t:blocks_media.icon_mail" },
+        { "value": "map-pin", "label": "t:blocks_media.icon_map_pin" },
+        { "value": "menu", "label": "t:blocks_media.icon_menu" },
+        { "value": "minus", "label": "t:blocks_media.icon_minus" },
+        { "value": "moon", "label": "t:blocks_media.icon_moon" },
+        { "value": "phone", "label": "t:blocks_media.icon_phone" },
+        { "value": "play", "label": "t:blocks_media.icon_play" },
+        { "value": "plus", "label": "t:blocks_media.icon_plus" },
+        { "value": "refresh-cw", "label": "t:blocks_media.icon_refresh_cw" },
+        { "value": "search", "label": "t:blocks_media.icon_search" },
+        { "value": "search-x", "label": "t:blocks_media.icon_search_x" },
+        { "value": "shield-check", "label": "t:blocks_media.icon_shield_check" },
+        { "value": "shopping-basket", "label": "t:blocks_media.icon_shopping_basket" },
+        { "value": "shopping-cart", "label": "t:blocks_media.icon_shopping_cart" },
+        { "value": "star", "label": "t:blocks_media.icon_star" },
+        { "value": "star-half", "label": "t:blocks_media.icon_star_half" },
+        { "value": "store", "label": "t:blocks_media.icon_store" },
+        { "value": "sun", "label": "t:blocks_media.icon_sun" },
+        { "value": "tag", "label": "t:blocks_media.icon_tag" },
+        { "value": "trash-2", "label": "t:blocks_media.icon_trash" },
+        { "value": "triangle-alert", "label": "t:blocks_media.icon_triangle_alert" },
+        { "value": "user", "label": "t:blocks_media.icon_user" },
+        { "value": "x", "label": "t:blocks_media.icon_x" }
+      ],
+      "default": "star"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_upload",
+      "label": "t:blocks_media.icon_image_upload"
+    },
+    {
+      "type": "range",
+      "id": "width",
+      "label": "t:blocks_media.icon_size",
+      "min": 12,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:blocks_media.link"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "t:blocks_media.open_in_new_tab",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_media.icon",
+      "category": "t:blocks_media.category_media",
+      "settings": {
+        "icon": "tag"
+      }
+    }
+  ]
+}
+{% endschema %}
