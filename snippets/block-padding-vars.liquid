@@ -1,12 +1,26 @@
 {% doc %}
   Renders the `--block-padding-{top,bottom,left,right}` CSS custom
-  properties from a block's padding_top/padding_bottom/padding_sides
-  settings. Must be called from inside a `{% style %}...{% endstyle %}` tag.
+  properties from a block's padding settings. Must be called from inside a
+  `{% style %}...{% endstyle %}` tag.
 
-  @param {object} block - required. The section or block whose `settings` supplies padding_top/padding_bottom/padding_sides.
-  @param {number} [top_default] - Default px for padding_top when unset. Defaults to 0.
-  @param {number} [bottom_default] - Default px for padding_bottom when unset. Defaults to 0.
-  @param {number} [sides_default] - Default px for padding_sides when unset. Defaults to 0.
+  Reads Horizon's logical padding keys first (`padding-block-start`,
+  `padding-block-end`, `padding-inline-start`, `padding-inline-end` — looked
+  up via bracket notation because the hyphens in their names are not valid
+  Liquid dot-notation identifiers), falling through to this theme's own
+  physical keys (`padding_top`, `padding_bottom`, `padding_sides`) when a
+  block's schema has no logical key. Horizon has no separate left/right
+  field — its single `padding_sides` covers both, which is why both inline
+  fallbacks read the same old key. A block only has the keys its own schema
+  declares; unset/undeclared keys resolve to `nil` in Liquid and fall
+  through via the `default` filter. An explicit `0` is not blank in Liquid's
+  `default` filter (it only replaces `nil`, `false`, and empty
+  strings/arrays), so a logical key explicitly saved as `0` wins and does
+  not fall through to the physical key.
+
+  @param {object} block - required. The section or block whose `settings` supplies the logical or physical padding keys.
+  @param {number} [top_default] - Default px for the top/block-start padding when unset. Defaults to 0.
+  @param {number} [bottom_default] - Default px for the bottom/block-end padding when unset. Defaults to 0.
+  @param {number} [sides_default] - Default px for the left/right/inline padding when unset. Defaults to 0.
 
   @example
   {%- style -%}
@@ -15,7 +29,7 @@
     }
   {%- endstyle -%}
 {% enddoc %}
---block-padding-top: {{ block.settings.padding_top | default: top_default | default: 0 }}px;
---block-padding-bottom: {{ block.settings.padding_bottom | default: bottom_default | default: 0 }}px;
---block-padding-left: {{ block.settings.padding_sides | default: sides_default | default: 0 }}px;
---block-padding-right: {{ block.settings.padding_sides | default: sides_default | default: 0 }}px;
+--block-padding-top: {{ block.settings["padding-block-start"] | default: block.settings.padding_top | default: top_default | default: 0 }}px;
+--block-padding-bottom: {{ block.settings["padding-block-end"] | default: block.settings.padding_bottom | default: bottom_default | default: 0 }}px;
+--block-padding-left: {{ block.settings["padding-inline-start"] | default: block.settings.padding_sides | default: sides_default | default: 0 }}px;
+--block-padding-right: {{ block.settings["padding-inline-end"] | default: block.settings.padding_sides | default: sides_default | default: 0 }}px;
