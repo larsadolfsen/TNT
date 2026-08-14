@@ -3,6 +3,12 @@
   the mobile drawer on the collection page: colour swatches, checkbox lists
   (with a couple of Danish display-value overrides), and a price range.
 
+  Swatch circles are painted here, in Liquid, from the filter value's own
+  `swatch.image`/`swatch.color` — the data Shopify derives from the backing
+  metaobject entries. The theme keeps no colour table of its own, and the
+  swatch layout is chosen by `filter.presentation`, never by sniffing the
+  filter's label. See docs/failure-log.md F-033.
+
   @param {object} filters - required. collection.filters (or a subset).
 
   @example
@@ -19,14 +25,38 @@
     <div class="filter-content space-y-2">
       {%- case filter.type -%}
         {%- when 'list' or 'boolean' -%}
-          {%- assign filter_label_down = filter.label | downcase -%}
-          {%- if filter.presentation == 'swatch' or filter_label_down contains 'farve' or filter_label_down contains 'color' -%}
+          {%- if filter.presentation == 'swatch' -%}
             <div class="flex flex-wrap gap-2.5 pt-1 filter-block-color">
               {%- for value in filter.values -%}
-                <label class="relative group cursor-pointer filter-label select-none flex items-center justify-center" title="{{ value.label }}" data-color-name="{{ value.label }}">
+                {%- liquid
+                  # Swatch appearance comes straight from Shopify: the filter's
+                  # metaobject entries (e.g. shopify--color-pattern) carry the
+                  # colour or image, so the theme never guesses one from the label.
+                  assign swatch_style = ''
+                  assign swatch_check_class = 'swatch-check text-[14px] font-bold select-none pointer-events-none text-white'
+                  if value.swatch.image
+                    assign swatch_image_url = value.swatch.image | image_url: width: 64
+                    capture swatch_style
+                      echo 'background-image:url('
+                      echo swatch_image_url
+                      echo ');background-size:cover;background-position:center;'
+                    endcapture
+                  elsif value.swatch.color
+                    capture swatch_style
+                      echo 'background-color:'
+                      echo value.swatch.color
+                      echo ';'
+                    endcapture
+                    assign swatch_brightness = value.swatch.color | color_brightness
+                    if swatch_brightness > 155
+                      assign swatch_check_class = 'swatch-check text-[14px] font-bold select-none pointer-events-none text-black'
+                    endif
+                  endif
+                -%}
+                <label class="relative group cursor-pointer filter-label select-none flex items-center justify-center" title="{{ value.label }}">
                   <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} class="filter-checkbox sr-only peer"/>
-                  <div class="swatch-circle w-8 h-8 rounded-full border border-outline-variant/65 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-[var(--color-accent)]/80 transition-all flex items-center justify-center relative shadow-sm hover:scale-105">
-                    {%- render 'icon', name: 'check', class: 'text-[14px] font-bold text-white hidden peer-checked:block select-none pointer-events-none' -%}
+                  <div class="swatch-circle w-8 h-8 rounded-full border border-outline-variant/65 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-[var(--color-accent)]/80 transition-all flex items-center justify-center relative shadow-sm hover:scale-105" style="{{ swatch_style }}">
+                    {%- render 'icon', name: 'check', class: swatch_check_class -%}
                   </div>
                   <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-surface-container-high text-primary text-[10px] font-semibold rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md border border-outline-variant z-20">
                     {{ value.label }} <span class="filter-count text-[9px] text-primary/60 ml-0.5">({{ value.count }})</span>

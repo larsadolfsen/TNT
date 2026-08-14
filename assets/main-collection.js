@@ -1,8 +1,12 @@
 /**
- * Collection grid behaviour: color swatch styling, filter list truncation,
- * price-filter sync between desktop/mobile, and AJAX filtering/sorting/
- * collection-chip navigation that swaps #product-grid without a full page
- * reload. Pagination is handled by assets/collection-infinite-scroll.js.
+ * Collection grid behaviour: filter list truncation, price-filter sync between
+ * desktop/mobile, and AJAX filtering/sorting/collection-chip navigation that
+ * swaps #product-grid without a full page reload. Pagination is handled by
+ * assets/collection-infinite-scroll.js.
+ *
+ * Deliberately holds no colour data: swatch colours are rendered in Liquid from
+ * collection.filters' own value.swatch.color/.image, so AJAX-swapped filter
+ * markup arrives already painted and needs no post-processing here.
  *
  * Moved out of sections/main-collection.liquid's inline <script>. The section
  * key used for the `section_id` param on filter fetches arrives through the
@@ -35,106 +39,6 @@
   const productCountDisplay = document.getElementById("product-count-display");
   const desktopFilters = document.getElementById("desktop-filters");
   const mobileFilters = document.getElementById("mobile-filters");
-
-  // Dynamic color map from metafields if needed on client side (progressive enhancement)
-  const metafieldColorMap = {};
-
-  function isHexLight(color) {
-    if (!color || typeof color !== 'string') return false;
-    let hex = color.trim();
-    if (hex.startsWith('#')) hex = hex.substring(1);
-    if (hex.length === 3) {
-      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-    }
-    if (hex.length !== 6) return false;
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-    const brightness = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
-    return brightness > 155;
-  }
-
-  function getColorSwatchStyles(colorName) {
-    const name = colorName.toLowerCase().trim();
-
-    if (metafieldColorMap[name]) {
-      const entry = metafieldColorMap[name];
-      if (entry.image) {
-        return { bg: `url(${entry.image}) center/cover no-repeat`, isLight: true };
-      }
-      if (entry.color) {
-        return { bg: entry.color, isLight: isHexLight(entry.color) };
-      }
-    }
-
-    let bg = '#cccccc';
-    const colorsMap = {
-      'hvid': { bg: '#ffffff', isLight: true },
-      'white': { bg: '#ffffff', isLight: true },
-      'sort': { bg: '#1a1a1a', isLight: false },
-      'black': { bg: '#1a1a1a', isLight: false },
-      'grå': { bg: '#8e8e93', isLight: false },
-      'graa': { bg: '#8e8e93', isLight: false },
-      'gray': { bg: '#8e8e93', isLight: false },
-      'grey': { bg: '#8e8e93', isLight: false },
-      'antracit': { bg: '#3a3a3c', isLight: false },
-      'rød': { bg: '#ff3b30', isLight: false },
-      'roed': { bg: '#ff3b30', isLight: false },
-      'red': { bg: '#ff3b30', isLight: false },
-      'blå': { bg: '#007aff', isLight: false },
-      'blaa': { bg: '#007aff', isLight: false },
-      'blue': { bg: '#007aff', isLight: false },
-      'grøn': { bg: '#34c759', isLight: false },
-      'groen': { bg: '#34c759', isLight: false },
-      'green': { bg: '#34c759', isLight: false },
-      'gul': { bg: '#ffcc00', isLight: true },
-      'yellow': { bg: '#ffcc00', isLight: true },
-      'orange': { bg: '#ff9500', isLight: false },
-      'brun': { bg: '#a2845e', isLight: false },
-      'brown': { bg: '#a2845e', isLight: false },
-      'pink': { bg: '#ff2d55', isLight: false },
-      'lyserød': { bg: '#ffb3c1', isLight: true },
-      'lyseroed': { bg: '#ffb3c1', isLight: true },
-      'lilla': { bg: '#af52de', isLight: false },
-      'purple': { bg: '#af52de', isLight: false },
-      'beige': { bg: '#f5f5dc', isLight: true },
-      'sand': { bg: '#e5d3b3', isLight: true },
-      'creme': { bg: '#fffdd0', isLight: true },
-      'cream': { bg: '#fffdd0', isLight: true },
-      'guld': { bg: 'linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)', isLight: true },
-      'gold': { bg: 'linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)', isLight: true },
-      'sølv': { bg: 'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)', isLight: true },
-      'soelv': { bg: 'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)', isLight: true },
-      'silver': { bg: 'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)', isLight: true },
-      'gennemsigtig': { bg: 'linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%), linear-gradient(45deg, #e0e0e0 25%, #ffffff 25%, #ffffff 75%, #e0e0e0 75%)', isLight: true, isCheckered: true },
-      'klar': { bg: 'linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%), linear-gradient(45deg, #e0e0e0 25%, #ffffff 25%, #ffffff 75%, #e0e0e0 75%)', isLight: true, isCheckered: true },
-      'transparent': { bg: 'linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%), linear-gradient(45deg, #e0e0e0 25%, #ffffff 25%, #ffffff 75%, #e0e0e0 75%)', isLight: true, isCheckered: true },
-      'frosted': { bg: 'linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%)', isLight: true }
-    };
-
-    const matchKey = Object.keys(colorsMap).find(k => name.includes(k));
-    if (matchKey) {
-      return colorsMap[matchKey];
-    }
-
-    return { bg: name, isLight: false };
-  }
-
-  function enhanceColorSwatches() {
-    const swatches = document.querySelectorAll('[data-color-name]');
-    swatches.forEach(el => {
-      const colorName = el.getAttribute('data-color-name');
-      const swatchCircle = el.querySelector('.swatch-circle');
-      if (colorName && swatchCircle) {
-        const styles = getColorSwatchStyles(colorName);
-        swatchCircle.style.background = styles.bg;
-        if (styles.isCheckered) {
-          swatchCircle.style.backgroundSize = '8px 8px';
-          swatchCircle.style.backgroundPosition = '0 0, 4px 4px';
-        }
-      }
-    });
-  }
 
   function truncateFilterLists() {
     const filterContainers = document.querySelectorAll('#desktop-filters > div > div.filter-content, #mobile-filters > div > div.filter-content');
@@ -340,7 +244,6 @@
           mobileFilters.innerHTML = newMobileFilters.innerHTML;
         }
 
-        enhanceColorSwatches();
         truncateFilterLists();
 
         params.delete('section_id');
@@ -417,7 +320,6 @@
             subcollections.className = newSubcollections.className;
           }
 
-          enhanceColorSwatches();
           truncateFilterLists();
 
           window.history.pushState({ path: url.href }, '', url.href);
@@ -486,7 +388,6 @@
           mobileFilters.innerHTML = newMobileFilters.innerHTML;
         }
 
-        enhanceColorSwatches();
         truncateFilterLists();
 
         params.delete('section_id');
@@ -540,6 +441,5 @@
     }
   });
 
-  enhanceColorSwatches();
   truncateFilterLists();
 })();
