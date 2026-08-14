@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-036](#f-036--base-font-styling-only-lived-on-main-so-header-and-footer-never-inherited-the-merchants-configured-font) | 2026-08-14 | Caught | Theming | Header/footer text rendered Tailwind's generic preflight font instead of the merchant's configured font; `--color-text` had two silently-conflicting definitions |
 | [F-035](#f-035--filter-value-labels-were-rewritten-in-liquid-against-metaobject-values-that-no-longer-matched) | 2026-08-14 | Caught | Collection filters | Size/form filter value overrides matched nothing — the metaobject values had moved on |
 | [F-034](#f-034--the-colour-swatch-checkmark-could-never-appear-because-the-css-revealing-it-targeted-an-element-type-the-icon-system-does-not-emit) | 2026-08-14 | Live | Collection filters | Checkmark never showed on a selected colour swatch; tooltip count reflowed instead |
 | [F-033](#f-033--colour-swatches-were-painted-from-a-hand-maintained-danish-colour-name-map-instead-of-the-swatch-data-shopify-already-serves) | 2026-08-14 | Live | Collection filters | Swatch colours guessed from Danish labels; unlisted colours rendered unpainted |
@@ -51,6 +52,15 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-036 — Base font styling only lived on `main`, so header and footer never inherited the merchant's configured font
+
+- **Date:** 2026-08-14 · **Reach:** Caught · **Fix:** this commit
+- **Symptom:** Spotted while fixing an unrelated touch-target issue: `.collection-card__title` and `.collections-more summary` both set `font-family: var(--font-sans-family), sans-serif`, but `--font-sans-family` is never defined anywhere in the theme (the real token is `--font-sans`). The `var()` reference was invalid, so the declaration was dead weight — it fell back to the inherited value, which happened to be correct only because `main` already set the right font-family on the ancestor. Following the inheritance chain up, `font-family`/`font-size`/`color` were declared only on the `main` selector (`assets/input.css`), never on `body` or `html`. Anything rendered outside `<main>` — the header and footer sections — had no explicit font-family in the theme's own CSS at all, and was silently falling back to Tailwind's preflight default sans stack instead of the merchant's configured body font (`settings.type_body_font`).
+- **Root cause:** The base typography rule was scoped to the page's grid container (`main`) rather than `body`, conflating "where the grid layout lives" with "where the site's base font applies." Nothing outside main ever inherited the real font, and no one noticed because Tailwind's own default sans stack is visually close to most configured fonts.
+- **Fix:** Moved `font-size: 16px`, `font-family: var(--font-sans)`, `--color-text`, and `color: var(--color-text)` from `main` to `body` in `assets/input.css`; `main` keeps only its grid-layout properties. Removed the two dead `var(--font-sans-family)` declarations now that `body` provides the correct value via inheritance.
+- **Related color finding, same audit:** `snippets/css-variables.liquid`'s `:root` separately defined `--color-text: var(--color-primary)` as the documented base of the typography colour system, but `main`/`body`'s own `--color-text: var(--color-foreground, #595959)` shadowed it for every element on the page (body wraps everything, so its own custom-property declaration always wins over the ancestor `:root` one). The two tokens had been silently disagreeing — confirmed with Lars that `--color-foreground` ("Tekstfarve", the merchant-facing text-color setting) is the intended winner, so the now-dead `:root` declaration pointing at `--color-primary` was deleted rather than the working one. `--color-text-muted`/`--color-text-faint` were unaffected — they compute from `--color-primary` directly, not through `--color-text`.
+- **Prevention:** Base/reset typography (font-family, font-size, base text color) belongs on `html`/`body`, never on a layout container like `main` — a layout element should never double as the typography root, since anything outside it silently loses the base styling. When a custom property is declared at more than one scope, the innermost one always wins for descendants regardless of source order or which one looks more "canonical" in a comment — grep for every declaration of a `--custom-property` name before trusting a doc comment about what it points to.
 
 ### F-035 — Filter value labels were rewritten in Liquid against metaobject values that no longer matched
 
