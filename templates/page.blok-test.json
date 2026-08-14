@@ -1,0 +1,130 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "blocks": {
+      "type": "section",
+      "blocks": {
+        "heading_h1": {
+          "type": "_heading",
+          "settings": {
+            "type_preset": "h1",
+            "text": "<p>Voksduge og tekstilduge på metermål</p>",
+            "alignment": "left",
+            "color": "var(--color-foreground-heading)",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "text_h2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Voksduge og tekstilduge på metermål – klippet til dit bord, sendt på rulle uden folder</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "text_h3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Kraftig gennemsigtig voksdug</p>",
+            "type_preset": "h3"
+          }
+        },
+        "text_h5": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>Skæres til dit mål</h4>",
+            "width": "100%",
+            "type_preset": "h5"
+          }
+        },
+        "text_h6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Hvorfor vælge os</p>",
+            "width": "fit-content",
+            "type_preset": "h6"
+          }
+        },
+        "text_rte_padding": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Find din dug</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "padding-block-start": 0,
+            "padding-block-end": 16,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "divider_1": {
+          "type": "_divider",
+          "settings": {
+            "thickness": 2,
+            "corner_radius": "rounded",
+            "width_percent": 60,
+            "padding-block-start": 24,
+            "padding-block-end": 24
+          }
+        },
+        "spacer_1": {
+          "type": "spacer",
+          "settings": {
+            "size": "pixel",
+            "pixel_size": 40,
+            "custom_mobile_size": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_h1",
+        "text_h2",
+        "text_h3",
+        "text_h5",
+        "text_h6",
+        "text_rte_padding",
+        "divider_1",
+        "spacer_1"
+      ],
+      "settings": {
+        "background_color": "white",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    }
+  },
+  "order": [
+    "main",
+    "blocks"
+  ]
+}

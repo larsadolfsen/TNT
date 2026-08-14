@@ -1,0 +1,128 @@
+{% doc %}
+  Renders empty vertical space between sibling blocks. Has no padding
+  settings of its own — the block itself is the space.
+
+  @example
+  {% content_for 'block', type: 'spacer', id: 'spacer' %}
+{% enddoc %}
+
+{%- liquid
+  if block.settings.size == 'percent'
+    assign spacer_height = block.settings.percent_size | append: 'vw'
+  else
+    assign spacer_height = block.settings.pixel_size | append: 'px'
+  endif
+
+  if block.settings.custom_mobile_size
+    if block.settings.size_mobile == 'percent'
+      assign spacer_height_mobile = block.settings.percent_size_mobile | append: 'vw'
+    else
+      assign spacer_height_mobile = block.settings.pixel_size_mobile | append: 'px'
+    endif
+  endif
+-%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    height: {{ spacer_height }};
+  }
+  {%- if spacer_height_mobile != blank -%}
+    @media screen and (max-width: 749px) {
+      #shopify-block-{{ block.id }}.shopify-block {
+        height: {{ spacer_height_mobile }};
+      }
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<div {{ block.shopify_attributes }}></div>
+
+{% schema %}
+{
+  "name": "t:blocks_layout.spacer",
+  "settings": [
+    {
+      "type": "select",
+      "id": "size",
+      "label": "t:blocks_layout.spacer_unit",
+      "options": [
+        { "value": "pixel", "label": "t:blocks_layout.unit_pixel" },
+        { "value": "percent", "label": "t:blocks_layout.unit_percent" }
+      ],
+      "default": "percent"
+    },
+    {
+      "type": "range",
+      "id": "percent_size",
+      "label": "t:blocks_layout.spacer_size",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.size == 'percent' }}"
+    },
+    {
+      "type": "range",
+      "id": "pixel_size",
+      "label": "t:blocks_layout.spacer_size",
+      "min": 0,
+      "max": 400,
+      "step": 4,
+      "unit": "px",
+      "default": 120,
+      "visible_if": "{{ block.settings.size == 'pixel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_mobile_size",
+      "label": "t:blocks_layout.spacer_custom_mobile_size",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.spacer_mobile_size",
+      "visible_if": "{{ block.settings.custom_mobile_size == true }}"
+    },
+    {
+      "type": "select",
+      "id": "size_mobile",
+      "label": "t:blocks_layout.spacer_unit",
+      "options": [
+        { "value": "pixel", "label": "t:blocks_layout.unit_pixel" },
+        { "value": "percent", "label": "t:blocks_layout.unit_percent" }
+      ],
+      "default": "percent",
+      "visible_if": "{{ block.settings.custom_mobile_size == true }}"
+    },
+    {
+      "type": "range",
+      "id": "percent_size_mobile",
+      "label": "t:blocks_layout.spacer_size",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.size_mobile == 'percent' and block.settings.custom_mobile_size == true }}"
+    },
+    {
+      "type": "range",
+      "id": "pixel_size_mobile",
+      "label": "t:blocks_layout.spacer_size",
+      "min": 0,
+      "max": 400,
+      "step": 4,
+      "unit": "px",
+      "default": 120,
+      "visible_if": "{{ block.settings.size_mobile == 'pixel' and block.settings.custom_mobile_size == true }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_layout.spacer",
+      "category": "t:blocks_layout.category_layout"
+    }
+  ]
+}
+{% endschema %}

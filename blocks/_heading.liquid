@@ -1,0 +1,201 @@
+{% doc %}
+  Renders a heading block. Text comes from the richtext field by default, or
+  from the page/collection/product title when `source` points at one of them.
+
+  @example
+  {% content_for 'block', type: '_heading', id: 'heading' %}
+{% enddoc %}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block {
+    {%- render 'block-padding-vars', block: block -%}
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign source = block.settings.source | default: 'custom'
+  assign heading_text = block.settings.text
+  assign description = blank
+
+  if source == 'page_title'
+    assign heading_text = closest.page.title | default: page.title
+  elsif source == 'collection_title'
+    assign heading_text = closest.collection.title | default: collection.title
+    assign description = closest.collection.description | default: collection.description
+  elsif source == 'product_title'
+    assign heading_text = closest.product.title | default: product.title
+    assign description = closest.product.description | default: product.description
+  endif
+
+  capture type_classes
+    render 'type-preset-class', type_preset: block.settings.type_preset, color: block.settings.color
+  endcapture
+  assign type_classes = type_classes | strip
+  assign heading_class = 'text ' | append: type_classes
+-%}
+
+<div {{ block.shopify_attributes }}>
+  {%- case block.settings.type_preset -%}
+    {%- when 'h1' -%}
+      <h1 class="{{ heading_class }}" style="--text-align: {{ block.settings.alignment }};{% if block.settings.wrap != blank %} text-wrap: {{ block.settings.wrap }};{% endif %}">{{ heading_text }}</h1>
+    {%- when 'h2' -%}
+      <h2 class="{{ heading_class }}" style="--text-align: {{ block.settings.alignment }};{% if block.settings.wrap != blank %} text-wrap: {{ block.settings.wrap }};{% endif %}">{{ heading_text }}</h2>
+    {%- when 'h3' -%}
+      <h3 class="{{ heading_class }}" style="--text-align: {{ block.settings.alignment }};{% if block.settings.wrap != blank %} text-wrap: {{ block.settings.wrap }};{% endif %}">{{ heading_text }}</h3>
+    {%- when 'h4' -%}
+      <h4 class="{{ heading_class }}" style="--text-align: {{ block.settings.alignment }};{% if block.settings.wrap != blank %} text-wrap: {{ block.settings.wrap }};{% endif %}">{{ heading_text }}</h4>
+    {%- when 'h5' -%}
+      <h5 class="{{ heading_class }}" style="--text-align: {{ block.settings.alignment }};{% if block.settings.wrap != blank %} text-wrap: {{ block.settings.wrap }};{% endif %}">{{ heading_text }}</h5>
+    {%- when 'h6' -%}
+      <h6 class="{{ heading_class }}" style="--text-align: {{ block.settings.alignment }};{% if block.settings.wrap != blank %} text-wrap: {{ block.settings.wrap }};{% endif %}">{{ heading_text }}</h6>
+    {%- else -%}
+      <div class="{{ heading_class }} rte" style="--text-align: {{ block.settings.alignment }};{% if block.settings.wrap != blank %} text-wrap: {{ block.settings.wrap }};{% endif %}">{{ heading_text }}</div>
+  {%- endcase -%}
+  {%- if block.settings.show_description and description != blank -%}
+    <div class="text type-sm type-muted mt-2">{{ description }}</div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:blocks_layout.heading",
+  "settings": [
+    {
+      "type": "select",
+      "id": "source",
+      "label": "t:blocks_layout.heading_source",
+      "options": [
+        { "value": "custom", "label": "t:blocks_layout.heading_source_custom" },
+        { "value": "page_title", "label": "t:blocks_layout.heading_source_page" },
+        { "value": "collection_title", "label": "t:blocks_layout.heading_source_collection" },
+        { "value": "product_title", "label": "t:blocks_layout.heading_source_product" }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:blocks_layout.heading_preset",
+      "options": [
+        { "value": "rte", "label": "t:blocks_layout.preset_default" },
+        { "value": "paragraph", "label": "t:blocks_layout.preset_paragraph" },
+        { "value": "h1", "label": "t:blocks_layout.preset_h1" },
+        { "value": "h2", "label": "t:blocks_layout.preset_h2" },
+        { "value": "h3", "label": "t:blocks_layout.preset_h3" },
+        { "value": "h4", "label": "t:blocks_layout.preset_h4" },
+        { "value": "h5", "label": "t:blocks_layout.preset_h5" },
+        { "value": "h6", "label": "t:blocks_layout.preset_h6" },
+        { "value": "custom", "label": "t:blocks_layout.preset_custom" }
+      ],
+      "default": "rte"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:blocks_layout.heading_text",
+      "default": "<p>Heading</p>",
+      "visible_if": "{{ block.settings.read_only != true and block.settings.source == 'custom' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "read_only",
+      "label": "t:blocks_layout.heading_read_only",
+      "visible_if": "{{ false }}",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "t:blocks_layout.heading_show_description",
+      "default": false,
+      "visible_if": "{{ block.settings.source != 'custom' }}"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:blocks_layout.heading_alignment",
+      "default": "left",
+      "visible_if": "{{ block.settings.show_alignment != false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_alignment",
+      "label": "t:blocks_layout.heading_show_alignment",
+      "default": true,
+      "visible_if": "{{ false }}"
+    },
+    {
+      "type": "select",
+      "id": "wrap",
+      "label": "t:blocks_layout.heading_wrap",
+      "options": [
+        { "value": "pretty", "label": "t:blocks_layout.wrap_pretty" },
+        { "value": "balance", "label": "t:blocks_layout.wrap_balance" },
+        { "value": "nowrap", "label": "t:blocks_layout.wrap_none" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "t:blocks_layout.heading_color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "t:blocks_layout.color_text" },
+        { "value": "var(--color-foreground-heading)", "label": "t:blocks_layout.color_heading" },
+        { "value": "var(--color-primary)", "label": "t:blocks_layout.color_link" }
+      ],
+      "default": "var(--color-foreground)",
+      "visible_if": "{{ block.settings.type_preset != 'rte' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:blocks_layout.padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:blocks_layout.padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:blocks_layout.padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:blocks_layout.padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_layout.heading",
+      "category": "t:blocks_layout.category_layout"
+    }
+  ]
+}
+{% endschema %}

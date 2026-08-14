@@ -39,7 +39,7 @@
               "settings": {
                 "text": "<p><a href=\"/collections/voksdug\"><strong>Se alle voksduge →</strong></a></p>",
                 "alignment": "left",
-                "padding_top": 16
+                "padding-block-start": 16
               }
             }
           },
@@ -87,7 +87,7 @@
       "blocks": {
         "grid_header": {
           "type": "text",
-          "settings": { "text": "<h2>Find din dug</h2>", "alignment": "left", "padding_bottom": 16 }
+          "settings": { "text": "<h2>Find din dug</h2>", "alignment": "left", "padding-block-end": 16 }
         },
         "card_voksdug": {
           "type": "card",
@@ -150,7 +150,7 @@
             "caption": { "type": "text", "settings": { "text": "<p>Populær og praktisk</p>" } },
             "heading": { "type": "text", "settings": { "text": "<h3>Kraftig gennemsigtig voksdug</h3>" } },
             "body": { "type": "text", "settings": { "text": "<p>Beskyt dit bord mod pletter, ridser og varme – uden at skjule bordpladens udtryk. Vælg mellem flere tykkelser, fra den bløde og fleksible til den ekstra kraftige.</p>" } },
-            "cta": { "type": "text", "settings": { "text": "<p><strong>Se kraftig gennemsigtig voksdug →</strong></p>", "padding_top": 12 } }
+            "cta": { "type": "text", "settings": { "text": "<p><strong>Se kraftig gennemsigtig voksdug →</strong></p>", "padding-block-start": 12 } }
           },
           "block_order": ["caption", "heading", "body", "cta"]
         }

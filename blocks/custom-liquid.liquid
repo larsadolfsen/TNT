@@ -1,0 +1,40 @@
+{% doc %}
+  Renders merchant-supplied raw Liquid. Same pattern as
+  sections/custom-liquid.liquid, in block form.
+
+  @example
+  {% content_for 'block', type: 'custom-liquid', id: 'custom-liquid' %}
+{% enddoc %}
+
+<div {{ block.shopify_attributes }}>
+  {%- if block.settings.custom_liquid != blank -%}
+    {{ block.settings.custom_liquid }}
+  {%- elsif request.design_mode -%}
+    <div class="flex items-center gap-3 p-6 rounded-2xl border border-dashed border-outline-variant bg-card-high">
+      {% render 'icon', name: 'code', class: 'text-2xl text-primary/45' %}
+      <div class="flex flex-col gap-0.5">
+        <p class="text-sm font-bold text-primary">{{ 'custom_liquid.empty_title' | t }}</p>
+        <p class="text-xs text-primary/60">{{ 'custom_liquid.empty_description' | t }}</p>
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:blocks_layout.custom_liquid",
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "custom_liquid",
+      "label": "t:blocks_layout.custom_liquid_field"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_layout.custom_liquid",
+      "category": "t:blocks_layout.category_layout"
+    }
+  ]
+}
+{% endschema %}

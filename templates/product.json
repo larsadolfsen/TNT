@@ -268,9 +268,9 @@
               "settings": {
                 "text": "{{ closest.product.metafields.custom.short_description | metafield_tag }}",
                 "alignment": "left",
-                "padding_top": 0,
-                "padding_bottom": 0,
-                "padding_sides": 0
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0, "padding-inline-end": 0
               },
               "blocks": {}
             },
