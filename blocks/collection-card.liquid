@@ -1,0 +1,173 @@
+{% doc %}
+  Renders a single collection card via snippets/collection-card.liquid,
+  driven by a merchant-selected collection. Falls back to the snippet's
+  numbered placeholder card when no collection is selected. `placement`
+  switches the title between the snippet's native below-image layout and an
+  overlay on top of the image.
+
+  @example
+  {% content_for 'block', type: 'collection-card', id: 'collection-card' %}
+{% enddoc %}
+
+{%- liquid
+  assign border_color = 'transparent'
+  if block.settings.border == 'solid'
+    assign border_opacity = block.settings.border_opacity | default: 100
+    assign border_color = 'color-mix(in srgb, var(--color-outline-variant) ' | append: border_opacity | append: '%, transparent)'
+  endif
+  assign border_width = block.settings.border_width | default: 1
+  assign is_on_image = false
+  if block.settings.placement == 'on_image'
+    assign is_on_image = true
+  endif
+-%}
+
+{%- style -%}
+  #shopify-block-{{ block.id }}.shopify-block .collection-card__image-wrapper {
+    border-radius: {{ block.settings.border_radius | default: 0 }}px;
+    {%- if block.settings.border == 'solid' -%}
+      border: {{ border_width }}px solid {{ border_color }};
+    {%- else -%}
+      border: none;
+    {%- endif -%}
+  }
+  #shopify-block-{{ block.id }}.shopify-block .collection-card__content {
+    align-items: {{ block.settings.horizontal_alignment | default: 'flex-start' }};
+    gap: {{ block.settings.collection_card_gap | default: 8 }}px;
+  }
+  {%- if is_on_image -%}
+    #shopify-block-{{ block.id }}.shopify-block .collection-card__image-wrapper {
+      position: relative;
+    }
+    #shopify-block-{{ block.id }}.shopify-block .collection-card__content {
+      position: absolute;
+      inset: 0;
+      justify-content: {{ block.settings.vertical_alignment | default: 'center' }};
+      background: linear-gradient(to top, rgb(0 0 0 / 0.55), transparent 65%);
+      color: white;
+      z-index: 1;
+    }
+    #shopify-block-{{ block.id }}.shopify-block .collection-card__title {
+      color: inherit;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<div {{ block.shopify_attributes }}>
+  {%- if block.settings.collection != blank -%}
+    {%- render 'collection-card', collection: block.settings.collection -%}
+  {%- else -%}
+    {%- render 'collection-card', placeholder_index: 1 -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:blocks_commerce.collection_card",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:blocks_commerce.collection"
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_layout.text"
+    },
+    {
+      "type": "select",
+      "id": "placement",
+      "label": "t:blocks_commerce.placement",
+      "options": [
+        { "value": "on_image", "label": "t:blocks_commerce.placement_on_image" },
+        { "value": "below_image", "label": "t:blocks_commerce.placement_below_image" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "t:blocks_commerce.alignment",
+      "options": [
+        { "value": "flex-start", "label": "t:blocks_commerce.align_left" },
+        { "value": "center", "label": "t:blocks_commerce.align_center" },
+        { "value": "flex-end", "label": "t:blocks_commerce.align_right" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "t:blocks_commerce.position",
+      "options": [
+        { "value": "flex-start", "label": "t:blocks_commerce.position_top" },
+        { "value": "center", "label": "t:blocks_commerce.position_center" },
+        { "value": "flex-end", "label": "t:blocks_commerce.position_bottom" }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.placement == 'on_image' }}"
+    },
+    {
+      "type": "range",
+      "id": "collection_card_gap",
+      "label": "t:blocks_commerce.vertical_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "t:blocks_media.borders"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "t:blocks_media.border_style",
+      "options": [
+        { "value": "none", "label": "t:blocks_layout.wrap_none" },
+        { "value": "solid", "label": "t:blocks_media.border_solid" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "t:blocks_layout.divider_thickness",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "label": "t:blocks_media.border_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:blocks_layout.divider_corner_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks_commerce.collection_card",
+      "category": "t:blocks_commerce.category_commerce"
+    }
+  ]
+}
+{% endschema %}
