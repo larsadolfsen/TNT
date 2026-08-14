@@ -255,6 +255,15 @@ h4,
   fill: currentColor;
 }
 
+/* Brand marks (Simple Icons) are filled logo shapes, not Lucide's stroked
+   line icons -- .icon's default fill:none/stroke:currentColor would make
+   them invisible or draw a wrong outline. Use this class instead of
+   .icon--filled, which only adds fill without removing the stroke. */
+.icon--brand {
+  fill: currentColor;
+  stroke: none;
+}
+
 /*
  * Standard icon-button sizing: a fixed 44x44px clickable area (WCAG target),
  * built from icon size + padding via content-box so padding adds outside the
