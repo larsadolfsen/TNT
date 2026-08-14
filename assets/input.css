@@ -969,6 +969,44 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
   margin: 0;
 }
 
+.collections-more {
+  margin-top: var(--grid-row-gap);
+}
+.collections-more summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font-sans-family), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary, #000);
+  padding: 0.5rem 0;
+}
+.collections-more summary::-webkit-details-marker {
+  display: none;
+}
+.collections-more .label-open {
+  display: none;
+}
+.collections-more[open] .label-open {
+  display: inline;
+}
+.collections-more[open] .label-closed {
+  display: none;
+}
+.collections-more summary svg {
+  transition: transform 0.2s ease;
+}
+.collections-more[open] summary svg {
+  transform: rotate(180deg);
+}
+.collections-more__grid {
+  margin-top: var(--grid-row-gap);
+}
+
 /* Flex group component styles */
 .group {
   display: flex;
