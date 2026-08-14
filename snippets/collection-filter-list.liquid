@@ -1,7 +1,8 @@
 {% doc %}
   Renders the filter-block accordions used by both the desktop sidebar and
-  the mobile drawer on the collection page: colour swatches, checkbox lists
-  (with a couple of Danish display-value overrides), and a price range.
+  the mobile drawer on the collection page: colour swatches, checkbox lists,
+  and a price range. Values render exactly as returned by collection.filters —
+  no label overrides.
 
   Swatch circles are painted here, in Liquid, from the filter value's own
   `swatch.image`/`swatch.color` — the data Shopify derives from the backing
@@ -66,24 +67,9 @@
             </div>
           {%- else -%}
             {%- for value in filter.values -%}
-              {%- liquid
-                assign display_val = value.label
-                assign val_label_down = value.label | downcase
-                if filter.label == 'størrelse' or filter.label == 'Størrelse' or filter.label == 'bredde' or filter.label == 'Bredde'
-                  if val_label_down == '41x33 cm'
-                    assign display_val = '41x33 cm (Dækkeserviet)'
-                  endif
-                elsif filter.label == 'form' or filter.label == 'Form' or filter.label == 'type' or filter.label == 'Type'
-                  if val_label_down == 'firkantet'
-                    assign display_val = 'Firkantet (Rulle)'
-                  elsif val_label_down == 'rund'
-                    assign display_val = 'Rund skåret'
-                  endif
-                endif
-              -%}
               <label class="flex items-center gap-2 text-sm text-primary/85 cursor-pointer filter-label transition-all {% if value.count == 0 and value.active == false %}opacity-40 cursor-not-allowed pointer-events-none{% endif %}">
                 <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} class="filter-checkbox rounded border-outline-variant text-primary focus:ring-primary" {% if value.count == 0 and value.active == false %}disabled{% endif %}/>
-                <span>{{ display_val }} <span class="filter-count text-xs text-primary/60 ml-0.5">({{ value.count }})</span></span>
+                <span>{{ value.label }} <span class="filter-count text-xs text-primary/60 ml-0.5">({{ value.count }})</span></span>
               </label>
             {%- endfor -%}
           {%- endif -%}
