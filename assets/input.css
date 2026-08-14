@@ -54,11 +54,20 @@
   }
 }
 
+/* Standard font and text color, set once here so every element inherits
+   it -- header and footer live outside <main>, so this has to be on body
+   to reach them too. font-family/color declared anywhere below this must
+   be a genuine deviation, not a redundant restatement of the default:
+   an explicit declaration on an element always beats what it would have
+   inherited, so restating the default elsewhere silently breaks
+   inheritance if that element's actual default value ever changes here. */
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+
 main {
   font-size: 16px;
-  font-family: var(--font-sans);
-  --color-text: var(--color-foreground, #595959);
-  color: var(--color-text);
 
   display: grid;
   grid-template-columns: repeat(var(--grid-cols-mobile, 2), minmax(0, 1fr));

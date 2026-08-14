@@ -12,6 +12,7 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 
 | ID | Date | Reach | Area | Symptom |
 |----|------|-------|------|---------|
+| [F-035](#f-035--main-shadowed---color-text-with-a-different-merchant-configured-colour-than-root-defined) | 2026-08-14 | Live | Theming | Product-card price, star-rating count, and other unclassed text rendered blue instead of the theme's near-black text colour |
 | [F-034](#f-034--the-colour-swatch-checkmark-could-never-appear-because-the-css-revealing-it-targeted-an-element-type-the-icon-system-does-not-emit) | 2026-08-14 | Live | Collection filters | Checkmark never showed on a selected colour swatch; tooltip count reflowed instead |
 | [F-033](#f-033--colour-swatches-were-painted-from-a-hand-maintained-danish-colour-name-map-instead-of-the-swatch-data-shopify-already-serves) | 2026-08-14 | Live | Collection filters | Swatch colours guessed from Danish labels; unlisted colours rendered unpainted |
 | [F-032](#f-032--product-card-titles-inherited-serif-from-a-legacy-heading-rule-the-type--system-had-no-way-to-override) | 2026-08-14 | Caught | Product card | Product-card `<h3>` titles rendered serif despite carrying no `.type-serif` class |
@@ -50,6 +51,14 @@ Newest first. `Live` = reached the published storefront; `Caught` = found before
 ---
 
 ## Entries
+
+### F-035 — `main` shadowed `--color-text` with a different, merchant-configured colour than `:root` defined
+
+- **Date:** 2026-08-14 · **Reach:** Live · **Fix:** this commit
+- **Symptom:** Product-card price (no color class, relying on inheritance since the F-029 migration) and the star-rating review count (`text-primary/85`) both rendered a saturated blue instead of the theme's intended near-black text. The product-card title, by contrast, looked correct — because F-031 had given it an explicit `text-primary` class.
+- **Root cause:** Two different CSS custom properties were both plausible candidates for "the standard text colour," and they resolved to different values. `snippets/css-variables.liquid`'s `:root` block defines `--color-text: var(--color-primary)` (configured to `#0e1a28`, a near-black navy). But `assets/input.css`'s `main` rule *locally redeclared* `--color-text: var(--color-foreground, #595959)` — and `--color-foreground` is configured to `#324DB8`, an actual blue, entirely unrelated to `--color-primary`. Any element inside `<main>` with no explicit color class inherited this second, shadowed definition instead of the root one. Elements using the Tailwind `text-primary` utility (which reads `--color-primary` directly, bypassing `--color-text` entirely) were unaffected — which is why the title, fixed via F-031's explicit class, looked right while everything relying on plain inheritance did not.
+- **Fix:** Consolidated the standard font-family and text colour onto a single `body { font-family: var(--font-sans); color: var(--color-text); }` rule (`body` reaches header and footer too, which sit outside `<main>` — see F-028). Removed `main`'s local `font-family` and shadowing `--color-text` declaration entirely, so `--color-text` now resolves consistently everywhere to `:root`'s definition. Also replaced the remaining ad-hoc opacity-suffix colour utilities this surfaced — `text-primary/85` in `snippets/star-rating.liquid` and `snippets/product-card-image.liquid`, `opacity-85` in `blocks/page-title.liquid`'s collection description — with the `type-muted` token, per the typography system's stated goal of replacing "nine ad-hoc opacity levels" with three CSS-variable-backed tokens.
+- **Prevention:** Don't redeclare an inheritable base property (font-family, standard text colour) below the root/body level "for convenience" — every redeclaration is a second source of truth that can silently drift from the first, and unlike a normal inheritance chain, whoever hits the shadowed rule has no visual sign anything is wrong (the color is still a valid color, just the wrong one). If a component-level rule needs to declare `color` or `font-family` at all, that's a signal to ask "should this actually differ from the standard, or am I about to shadow it?" before writing the declaration. Same root lesson as F-031/F-032, one level up: this is the third time this migration hit "an explicit declaration beats inheritance" — the first two were single elements; this one was the shared default itself.
 
 ### F-034 — The colour-swatch checkmark could never appear, because the CSS revealing it targeted an element type the icon system does not emit
 
