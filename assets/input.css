@@ -1003,9 +1003,6 @@ h1.font-sans, h2.font-sans, h3.font-sans, h4.font-sans, h5.font-sans, h6.font-sa
 .collections-more[open] summary svg {
   transform: rotate(180deg);
 }
-.collections-more__grid {
-  margin-top: var(--grid-row-gap);
-}
 
 /* Flex group component styles */
 .group {
