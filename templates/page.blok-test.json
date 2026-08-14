@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "block_test": {
+      "type": "section",
+      "name": "Bloktest",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "background_color": "white",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    }
+  },
+  "order": ["main", "block_test"]
+}
