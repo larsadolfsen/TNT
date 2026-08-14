@@ -95,38 +95,38 @@
           "settings": { "text": "<h2>Find din dug</h2>", "alignment": "left", "padding-block-end": 16 }
         },
         "card_voksdug": {
-          "type": "card",
-          "settings": { "design": "none", "card_link": "/collections/voksdug", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "type": "group",
+          "settings": { "content_direction": "column", "horizontal_alignment_flex_direction_column": "center", "gap": 16, "link": "/collections/voksdug", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "", "border": "none", "border_radius": 0, "shadow": false, "padding-block-start": 16, "padding-block-end": 16, "padding-inline-start": 0, "padding-inline-end": 0 },
           "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Voksdug</h3>", "alignment": "center" } } },
           "block_order": ["t"]
         },
         "card_tekstildug": {
-          "type": "card",
-          "settings": { "design": "none", "card_link": "/collections/tekstildug", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "type": "group",
+          "settings": { "content_direction": "column", "horizontal_alignment_flex_direction_column": "center", "gap": 16, "link": "/collections/tekstildug", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "", "border": "none", "border_radius": 0, "shadow": false, "padding-block-start": 16, "padding-block-end": 16, "padding-inline-start": 0, "padding-inline-end": 0 },
           "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Tekstildug</h3>", "alignment": "center" } } },
           "block_order": ["t"]
         },
         "card_gennemsigtig": {
-          "type": "card",
-          "settings": { "design": "none", "card_link": "/collections/gennemsigtig-voksduge", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "type": "group",
+          "settings": { "content_direction": "column", "horizontal_alignment_flex_direction_column": "center", "gap": 16, "link": "/collections/gennemsigtig-voksduge", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "", "border": "none", "border_radius": 0, "shadow": false, "padding-block-start": 16, "padding-block-end": 16, "padding-inline-start": 0, "padding-inline-end": 0 },
           "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Gennemsigtig voksduge</h3>", "alignment": "center" } } },
           "block_order": ["t"]
         },
         "card_boligtekstiler": {
-          "type": "card",
-          "settings": { "design": "none", "card_link": "/collections/boligtekstiler", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "type": "group",
+          "settings": { "content_direction": "column", "horizontal_alignment_flex_direction_column": "center", "gap": 16, "link": "/collections/boligtekstiler", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "", "border": "none", "border_radius": 0, "shadow": false, "padding-block-start": 16, "padding-block-end": 16, "padding-inline-start": 0, "padding-inline-end": 0 },
           "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Runde duge</h3>", "alignment": "center" } } },
           "block_order": ["t"]
         },
         "card_hojtider": {
-          "type": "card",
-          "settings": { "design": "none", "card_link": "/collections/hojtider-amp-fest", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "type": "group",
+          "settings": { "content_direction": "column", "horizontal_alignment_flex_direction_column": "center", "gap": 16, "link": "/collections/hojtider-amp-fest", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "", "border": "none", "border_radius": 0, "shadow": false, "padding-block-start": 16, "padding-block-end": 16, "padding-inline-start": 0, "padding-inline-end": 0 },
           "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Højtider &amp; Fest</h3>", "alignment": "center" } } },
           "block_order": ["t"]
         },
         "card_outlet": {
-          "type": "card",
-          "settings": { "design": "none", "card_link": "/collections/outlet", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "alignment": "center" },
+          "type": "group",
+          "settings": { "content_direction": "column", "horizontal_alignment_flex_direction_column": "center", "gap": 16, "link": "/collections/outlet", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "", "border": "none", "border_radius": 0, "shadow": false, "padding-block-start": 16, "padding-block-end": 16, "padding-inline-start": 0, "padding-inline-end": 0 },
           "blocks": { "t": { "type": "text", "settings": { "text": "<h3>Billige duge</h3>", "alignment": "center" } } },
           "block_order": ["t"]
         }
@@ -144,12 +144,20 @@
       },
       "blocks": {
         "callout_card": {
-          "type": "card",
+          "type": "group",
           "settings": {
-            "design": "raised",
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "gap": 16,
             "background_color": "light",
-            "card_link": "/collections/kraftig-gennemsigtig-voksdug",
-            "alignment": "left"
+            "shadow": true,
+            "border": "none",
+            "border_radius": 16,
+            "link": "/collections/kraftig-gennemsigtig-voksdug",
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "padding-inline-start": 24,
+            "padding-inline-end": 24
           },
           "blocks": {
             "caption": { "type": "text", "settings": { "text": "<p>Populær og praktisk</p>" } },
@@ -182,8 +190,8 @@
           "block_order": ["label", "heading"]
         },
         "why_1": {
-          "type": "card",
-          "settings": { "design": "border", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1" },
+          "type": "group",
+          "settings": { "content_direction": "column", "gap": 16, "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "light", "border": "solid", "border_width": 1, "border_radius": 16, "padding-block-start": 24, "padding-block-end": 24, "padding-inline-start": 24, "padding-inline-end": 24 },
           "blocks": {
             "h": { "type": "text", "settings": { "text": "<h4>Skæres til dit mål</h4>" } },
             "b": { "type": "text", "settings": { "text": "<p>Alle duge kan bestilles firkantet, rund eller oval – og i præcist den størrelse dit bord kræver.</p>" } }
@@ -191,8 +199,8 @@
           "block_order": ["h", "b"]
         },
         "why_2": {
-          "type": "card",
-          "settings": { "design": "border", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1" },
+          "type": "group",
+          "settings": { "content_direction": "column", "gap": 16, "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "light", "border": "solid", "border_width": 1, "border_radius": 16, "padding-block-start": 24, "padding-block-end": 24, "padding-inline-start": 24, "padding-inline-end": 24 },
           "blocks": {
             "h": { "type": "text", "settings": { "text": "<h4>Phthalatfri &amp; ØKO-TEX®</h4>" } },
             "b": { "type": "text", "settings": { "text": "<p>Vi importerer selv og sikrer, at ingen duge indeholder sundheds- eller miljøskadelige stoffer.</p>" } }
@@ -200,8 +208,8 @@
           "block_order": ["h", "b"]
         },
         "why_3": {
-          "type": "card",
-          "settings": { "design": "border", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1" },
+          "type": "group",
+          "settings": { "content_direction": "column", "gap": 16, "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "light", "border": "solid", "border_width": 1, "border_radius": 16, "padding-block-start": 24, "padding-block-end": 24, "padding-inline-start": 24, "padding-inline-end": 24 },
           "blocks": {
             "h": { "type": "text", "settings": { "text": "<h4>Ingen folder – garanteret</h4>" } },
             "b": { "type": "text", "settings": { "text": "<p>Vi sender altid dugene rullet på rør, så de ankommer krølfri og klar til brug.</p>" } }
@@ -209,8 +217,8 @@
           "block_order": ["h", "b"]
         },
         "why_4": {
-          "type": "card",
-          "settings": { "design": "border", "span_mobile": "1", "span_tablet": "1", "span_desktop": "1" },
+          "type": "group",
+          "settings": { "content_direction": "column", "gap": 16, "span_mobile": "1", "span_tablet": "1", "span_desktop": "1", "background_color": "light", "border": "solid", "border_width": 1, "border_radius": 16, "padding-block-start": 24, "padding-block-end": 24, "padding-inline-start": 24, "padding-inline-end": 24 },
           "blocks": {
             "h": { "type": "text", "settings": { "text": "<h4>Stærk kundetilfredshed</h4>" } },
             "b": { "type": "text", "settings": { "text": "<p>Tilfredse kunder fremhæver hurtig levering og god service i deres anmeldelser.</p>" } }
