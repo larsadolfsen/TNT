@@ -5,19 +5,19 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 {%- style -%}
-  #collections-grid-{{ section.id }} {
+  #collections-wrap-{{ section.id }} .collections {
     grid-template-columns: repeat({{ section.settings.columns_mobile | default: 2 }}, minmax(0, 1fr));
     --grid-gap: {{ section.settings.grid_gap | default: 16 }}px;
   }
 
   @media screen and (min-width: 768px) {
-    #collections-grid-{{ section.id }} {
+    #collections-wrap-{{ section.id }} .collections {
       grid-template-columns: repeat({{ section.settings.columns_tablet | default: 2 }}, minmax(0, 1fr));
     }
   }
 
   @media screen and (min-width: 1024px) {
-    #collections-grid-{{ section.id }} {
+    #collections-wrap-{{ section.id }} .collections {
       grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, minmax(0, 1fr));
     }
   }
@@ -28,19 +28,46 @@
   if collection != blank and collection.metafields.custom.child.value != blank
     assign display_collections = collection.metafields.custom.child.value
   endif
+
+  assign visible_count = section.settings.visible_count | default: 6
+  assign total_count = display_collections.size
+  assign visible_collections = display_collections | slice: 0, visible_count
+
+  assign remaining_count = 0
+  if total_count > visible_count
+    assign remaining_collections = display_collections | slice: visible_count, total_count
+    assign remaining_count = remaining_collections.size
+  endif
 -%}
 
 {%- if display_collections != blank or request.design_mode -%}
-<div id="collections-grid-{{ section.id }}" class="collections">
-  {% for col_item in display_collections %}
-    {% render 'collection-card', collection: col_item %}
-  {% else %}
-    {% if request.design_mode %}
-      {% for i in (1..4) %}
-        {% render 'collection-card', placeholder_index: i %}
-      {% endfor %}
-    {% endif %}
-  {% endfor %}
+<div id="collections-wrap-{{ section.id }}">
+  <div class="collections">
+    {% for col_item in visible_collections %}
+      {% render 'collection-card', collection: col_item %}
+    {% else %}
+      {% if request.design_mode %}
+        {% for i in (1..4) %}
+          {% render 'collection-card', placeholder_index: i %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {%- if remaining_count > 0 -%}
+    <details class="collections-more">
+      <summary class="collections-more__trigger">
+        <span class="label-closed">{{ section.settings.show_more_label }}</span>
+        <span class="label-open">{{ section.settings.show_less_label }}</span>
+        {% render 'icon', name: 'chevron-down' %}
+      </summary>
+      <div class="collections collections-more__grid">
+        {% for col_item in remaining_collections %}
+          {% render 'collection-card', collection: col_item %}
+        {% endfor %}
+      </div>
+    </details>
+  {%- endif -%}
 </div>
 {%- endif -%}
 
@@ -86,6 +113,27 @@
       "step": 2,
       "unit": "px",
       "default": 16
+    },
+    {
+      "type": "range",
+      "id": "visible_count",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "label": "Antal synlige underkategorier",
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "show_more_label",
+      "label": "Tekst: vis flere",
+      "default": "Vis flere kategorier"
+    },
+    {
+      "type": "text",
+      "id": "show_less_label",
+      "label": "Tekst: vis færre",
+      "default": "Vis færre"
     }
   ],
   "presets": [{ "name": "t:general.collections_grid" }]
