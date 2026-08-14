@@ -240,26 +240,25 @@
           "blocks": {}
         },
         "card_tymWUQ": {
-          "type": "card",
-          "name": "t:general.card",
+          "type": "group",
+          "name": "t:general.group",
           "settings": {
             "hide_on_mobile": false,
             "hide_on_desktop": false,
-            "design": "border",
             "background_color": "light",
-            "grid_direction": "vertical",
-            "block_gap": "12",
+            "border": "solid",
+            "border_width": 1,
+            "border_radius": 16,
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "gap": 12,
             "span_mobile": "4",
             "span_tablet": "8",
             "span_desktop": "12",
-            "card_link": "",
-            "alignment": "left",
-            "image_placement": "top",
-            "image_aspect_ratio": "landscape",
-            "image_overlay_opacity": 30,
-            "padding_top": 24,
-            "padding_bottom": 24,
-            "padding_sides": 24
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "padding-inline-start": 24,
+            "padding-inline-end": 24
           },
           "blocks": {
             "text_card_tymWUQ": {
