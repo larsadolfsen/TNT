@@ -62,7 +62,7 @@
       {%- if c_level_0 != blank -%}
         {%- assign has_ellipsis = true -%}
       {%- endif -%}
-    {%- when 'collection' and collection.handle -%}
+    {%- when 'collection' -%}
       {%- if c_level_1 != blank -%}
         {%- assign has_ellipsis = true -%}
       {%- endif -%}
@@ -83,7 +83,7 @@
         {%- assign parent_url = c_level_0.url -%}
         {%- assign parent_title = c_level_0.title -%}
       {%- endif -%}
-    {%- when 'collection' and collection.handle -%}
+    {%- when 'collection' -%}
       {%- if c_level_1 != blank -%}
         {%- assign parent_url = c_level_1.url -%}
         {%- assign parent_title = c_level_1.title -%}
@@ -102,7 +102,7 @@
 
   {%- render 'breadcrumbs-nav', t: t, has_ellipsis: has_ellipsis, c_level_0: c_level_0, c_level_1: c_level_1, c_level_2: c_level_2, c_level_3: c_level_3, c_level_4: c_level_4, c_level_5: c_level_5, c_level_6: c_level_6 -%}
 
-  <script src="{{ 'breadcrumbs.min.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'breadcrumbs.js' | asset_url }}" defer="defer"></script>
 
   {%- render 'breadcrumbs-json-ld', t: t, c_level_0: c_level_0, c_level_1: c_level_1, c_level_2: c_level_2, c_level_3: c_level_3, c_level_4: c_level_4, c_level_5: c_level_5, c_level_6: c_level_6 -%}
 {%- endunless -%}
@@ -169,3 +169,16 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- when 'collection' and collection.handle -%}"
+  to: "{%- when 'collection' -%}"
+  position: 2523..2548
+- from: "{%- when 'collection' and collection.handle -%}"
+  to: "{%- when 'collection' -%}"
+  position: 3149..3174
+{% endcomment %}

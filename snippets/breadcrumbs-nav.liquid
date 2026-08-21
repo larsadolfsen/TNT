@@ -141,7 +141,7 @@
           {%- endif -%}
           <span class="text-primary/85 font-medium" aria-current="page">{{ product.title }}</span>
 
-        {%- when 'collection' and collection.handle -%}
+        {%- when 'collection' -%}
           {%- if c_level_6 != blank -%}
             <a href="{{ c_level_6.url }}" class="breadcrumb-collapsed-item hover:underline text-primary/85 no-underline">{{ c_level_6.title }}</a>
             {% render 'icon', name: 'chevron-right', class: 'breadcrumb-collapsed-item text-[16px]' %}
@@ -189,3 +189,13 @@
     </nav>
     <div class="breadcrumbs-fade-right opacity-0"></div>
   </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- when 'collection' and collection.handle -%}"
+  to: "{%- when 'collection' -%}"
+  position: 6706..6731
+{% endcomment %}

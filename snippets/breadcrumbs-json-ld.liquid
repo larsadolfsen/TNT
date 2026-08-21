@@ -67,7 +67,7 @@
           "name": {{ article.title | json }},
           "item": "{{ shop.url }}{{ article.url }}"
         }
-      {%- when 'collection' and collection.handle -%}
+      {%- when 'collection' -%}
         {%- if c_level_6 != blank -%}
           ,{
             "@type": "ListItem",
@@ -209,3 +209,13 @@
   ]
 }
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- when 'collection' and collection.handle -%}"
+  to: "{%- when 'collection' -%}"
+  position: 2593..2618
+{% endcomment %}
